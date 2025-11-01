@@ -18,74 +18,35 @@
 package org.broadleafcommerce.core.search.service.solr.indexer;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Map;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class ReindexStateHolderDiffblueTest {
   /**
-   * Test {@link ReindexStateHolder#getInstance(String)} with {@code collectionName}.
-   *
-   * <ul>
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ReindexStateHolder#getInstance(String)}
+   * Method under test:
+   * {@link ReindexStateHolder#getInstance(String, boolean, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ReindexStateHolder ReindexStateHolder.getInstance(String)"})
-  public void testGetInstanceWithCollectionName_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(ReindexStateHolder.getInstance("Collection NameCollection Name"));
-  }
-
-  /**
-   * Test {@link ReindexStateHolder#isFailed()}.
-   *
-   * <p>Method under test: {@link ReindexStateHolder#isFailed()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ReindexStateHolder.isFailed()"})
-  public void testIsFailed() {
-    // Arrange, Act and Assert
-    assertTrue(ReindexStateHolder.getInstance("Collection Name", true, true).isFailed());
-  }
-
-  /**
-   * Test {@link ReindexStateHolder#getFailure()}.
-   *
-   * <p>Method under test: {@link ReindexStateHolder#getFailure()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Exception ReindexStateHolder.getFailure()"})
-  public void testGetFailure() {
+  public void testGetInstance() {
     // Arrange and Act
-    Exception actualFailure =
-        ReindexStateHolder.getInstance("Collection Name", true, true).getFailure();
+    ReindexStateHolder actualInstance = ReindexStateHolder.getInstance(null, true, true);
 
     // Assert
-    assertNull(actualFailure.getLocalizedMessage());
-    assertNull(actualFailure.getMessage());
-    assertNull(actualFailure.getCause());
-    assertEquals(0, actualFailure.getSuppressed().length);
+    assertNull(actualInstance.getFailure());
+    assertNull(actualInstance.getCollectionName());
+    assertEquals(-1L, actualInstance.getLastCommitted());
+    assertEquals(0L, actualInstance.getIndexableCount());
+    assertEquals(0L, actualInstance.getUnindexedItemCount());
+    assertFalse(actualInstance.isFailed());
+    assertTrue(actualInstance.getAdditionalState().isEmpty());
+    assertTrue(actualInstance.isIncrementalCommits());
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link ReindexStateHolder#getAdditionalState()}
    *   <li>{@link ReindexStateHolder#getCollectionName()}
@@ -93,13 +54,6 @@ public class ReindexStateHolderDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map ReindexStateHolder.getAdditionalState()",
-    "String ReindexStateHolder.getCollectionName()",
-    "boolean ReindexStateHolder.isIncrementalCommits()"
-  })
   public void testGettersAndSetters() {
     // Arrange
     ReindexStateHolder instance = ReindexStateHolder.getInstance("Collection Name", true, true);

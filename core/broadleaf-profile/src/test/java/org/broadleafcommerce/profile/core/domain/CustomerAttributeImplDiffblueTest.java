@@ -18,76 +18,86 @@
 package org.broadleafcommerce.profile.core.domain;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import org.broadleafcommerce.common.copy.CreateResponse;
+import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
+import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
+import org.broadleafcommerce.common.service.GenericEntityService;
+import org.broadleafcommerce.common.site.domain.CatalogImpl;
+import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.Mockito;
 
-@ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class CustomerAttributeImplDiffblueTest {
-  @Autowired private CustomerAttributeImpl customerAttributeImpl;
-
   /**
-   * Test {@link CustomerAttributeImpl#getValue()}.
-   *
-   * <p>Method under test: {@link CustomerAttributeImpl#getValue()}
+   * Method under test: {@link CustomerAttributeImpl#getValue()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String CustomerAttributeImpl.getValue()"})
   public void testGetValue() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
+    assertNull((new CustomerAttributeImpl()).getValue());
+  }
+
+  /**
+   * Method under test: {@link CustomerAttributeImpl#getValue()}
+   */
+  @Test
+  public void testGetValue2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CustomerAttributeImpl customerAttributeImpl = new CustomerAttributeImpl();
+    customerAttributeImpl.setCustomer(mock(CustomerImpl.class));
+
+    // Act and Assert
     assertNull(customerAttributeImpl.getValue());
   }
 
   /**
-   * Test {@link CustomerAttributeImpl#getName()}.
-   *
-   * <p>Method under test: {@link CustomerAttributeImpl#getName()}
+   * Method under test: {@link CustomerAttributeImpl#getName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String CustomerAttributeImpl.getName()"})
   public void testGetName() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
+    assertNull((new CustomerAttributeImpl()).getName());
+  }
+
+  /**
+   * Method under test: {@link CustomerAttributeImpl#getName()}
+   */
+  @Test
+  public void testGetName2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CustomerAttributeImpl customerAttributeImpl = new CustomerAttributeImpl();
+    customerAttributeImpl.setCustomer(mock(CustomerImpl.class));
+
+    // Act and Assert
     assertNull(customerAttributeImpl.getName());
   }
 
   /**
-   * Test {@link CustomerAttributeImpl#equals(Object)}, and {@link
-   * CustomerAttributeImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link CustomerAttributeImpl#equals(Object)}
    *   <li>{@link CustomerAttributeImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerAttributeImpl.equals(Object)",
-    "int CustomerAttributeImpl.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     CustomerAttributeImpl customerAttributeImpl = new CustomerAttributeImpl();
@@ -104,33 +114,47 @@ public class CustomerAttributeImplDiffblueTest {
 
     // Act and Assert
     assertEquals(customerAttributeImpl, customerAttributeImpl2);
-    assertEquals(customerAttributeImpl.hashCode(), customerAttributeImpl2.hashCode());
+    int expectedHashCodeResult = customerAttributeImpl.hashCode();
+    assertEquals(expectedHashCodeResult, customerAttributeImpl2.hashCode());
   }
 
   /**
-   * Test {@link CustomerAttributeImpl#equals(Object)}, and {@link
-   * CustomerAttributeImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link CustomerAttributeImpl#equals(Object)}
    *   <li>{@link CustomerAttributeImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerAttributeImpl.equals(Object)",
-    "int CustomerAttributeImpl.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
+    // Arrange
+    CustomerAttributeImpl customerAttributeImpl = new CustomerAttributeImpl();
+    customerAttributeImpl.setCustomer(mock(Customer.class));
+    customerAttributeImpl.setId(1L);
+    customerAttributeImpl.setName("Name");
+    customerAttributeImpl.setValue("42");
+
+    CustomerAttributeImpl customerAttributeImpl2 = new CustomerAttributeImpl();
+    customerAttributeImpl2.setCustomer(new CustomerImpl());
+    customerAttributeImpl2.setId(1L);
+    customerAttributeImpl2.setName("Name");
+    customerAttributeImpl2.setValue("42");
+
+    // Act and Assert
+    assertEquals(customerAttributeImpl, customerAttributeImpl2);
+    int notExpectedHashCodeResult = customerAttributeImpl.hashCode();
+    assertNotEquals(notExpectedHashCodeResult, customerAttributeImpl2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link CustomerAttributeImpl#equals(Object)}
+   *   <li>{@link CustomerAttributeImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     CustomerAttributeImpl customerAttributeImpl = new CustomerAttributeImpl();
     customerAttributeImpl.setCustomer(new CustomerImpl());
@@ -146,33 +170,19 @@ public class CustomerAttributeImplDiffblueTest {
 
     // Act and Assert
     assertEquals(customerAttributeImpl, customerAttributeImpl2);
-    assertEquals(customerAttributeImpl.hashCode(), customerAttributeImpl2.hashCode());
+    int expectedHashCodeResult = customerAttributeImpl.hashCode();
+    assertEquals(expectedHashCodeResult, customerAttributeImpl2.hashCode());
   }
 
   /**
-   * Test {@link CustomerAttributeImpl#equals(Object)}, and {@link
-   * CustomerAttributeImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link CustomerAttributeImpl#equals(Object)}
    *   <li>{@link CustomerAttributeImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerAttributeImpl.equals(Object)",
-    "int CustomerAttributeImpl.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
     CustomerAttributeImpl customerAttributeImpl = new CustomerAttributeImpl();
     customerAttributeImpl.setCustomer(new CustomerImpl());
@@ -188,33 +198,19 @@ public class CustomerAttributeImplDiffblueTest {
 
     // Act and Assert
     assertEquals(customerAttributeImpl, customerAttributeImpl2);
-    assertEquals(customerAttributeImpl.hashCode(), customerAttributeImpl2.hashCode());
+    int expectedHashCodeResult = customerAttributeImpl.hashCode();
+    assertEquals(expectedHashCodeResult, customerAttributeImpl2.hashCode());
   }
 
   /**
-   * Test {@link CustomerAttributeImpl#equals(Object)}, and {@link
-   * CustomerAttributeImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link CustomerAttributeImpl#equals(Object)}
    *   <li>{@link CustomerAttributeImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerAttributeImpl.equals(Object)",
-    "int CustomerAttributeImpl.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
     // Arrange
     CustomerAttributeImpl customerAttributeImpl = new CustomerAttributeImpl();
     customerAttributeImpl.setCustomer(null);
@@ -230,33 +226,19 @@ public class CustomerAttributeImplDiffblueTest {
 
     // Act and Assert
     assertEquals(customerAttributeImpl, customerAttributeImpl2);
-    assertEquals(customerAttributeImpl.hashCode(), customerAttributeImpl2.hashCode());
+    int expectedHashCodeResult = customerAttributeImpl.hashCode();
+    assertEquals(expectedHashCodeResult, customerAttributeImpl2.hashCode());
   }
 
   /**
-   * Test {@link CustomerAttributeImpl#equals(Object)}, and {@link
-   * CustomerAttributeImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link CustomerAttributeImpl#equals(Object)}
    *   <li>{@link CustomerAttributeImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerAttributeImpl.equals(Object)",
-    "int CustomerAttributeImpl.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual6() {
     // Arrange
     CustomerAttributeImpl customerAttributeImpl = new CustomerAttributeImpl();
     customerAttributeImpl.setCustomer(new CustomerImpl());
@@ -272,74 +254,18 @@ public class CustomerAttributeImplDiffblueTest {
 
     // Act and Assert
     assertEquals(customerAttributeImpl, customerAttributeImpl2);
-    assertEquals(customerAttributeImpl.hashCode(), customerAttributeImpl2.hashCode());
+    int expectedHashCodeResult = customerAttributeImpl.hashCode();
+    assertEquals(expectedHashCodeResult, customerAttributeImpl2.hashCode());
   }
 
   /**
-   * Test {@link CustomerAttributeImpl#equals(Object)}, and {@link
-   * CustomerAttributeImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link CustomerAttributeImpl#equals(Object)}
    *   <li>{@link CustomerAttributeImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerAttributeImpl.equals(Object)",
-    "int CustomerAttributeImpl.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual6() {
-    // Arrange
-    CustomerAttributeImpl customerAttributeImpl = new CustomerAttributeImpl();
-    customerAttributeImpl.setCustomer(new CustomerImpl());
-    customerAttributeImpl.setId(null);
-    customerAttributeImpl.setName("Name");
-    customerAttributeImpl.setValue(null);
-
-    CustomerAttributeImpl customerAttributeImpl2 = new CustomerAttributeImpl();
-    customerAttributeImpl2.setCustomer(new CustomerImpl());
-    customerAttributeImpl2.setId(1L);
-    customerAttributeImpl2.setName("Name");
-    customerAttributeImpl2.setValue(null);
-
-    // Act and Assert
-    assertEquals(customerAttributeImpl, customerAttributeImpl2);
-    assertEquals(customerAttributeImpl.hashCode(), customerAttributeImpl2.hashCode());
-  }
-
-  /**
-   * Test {@link CustomerAttributeImpl#equals(Object)}, and {@link
-   * CustomerAttributeImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link CustomerAttributeImpl#equals(Object)}
-   *   <li>{@link CustomerAttributeImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerAttributeImpl.equals(Object)",
-    "int CustomerAttributeImpl.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     CustomerAttributeImpl customerAttributeImpl = new CustomerAttributeImpl();
@@ -355,22 +281,67 @@ public class CustomerAttributeImplDiffblueTest {
   }
 
   /**
-   * Test {@link CustomerAttributeImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link CustomerAttributeImpl#equals(Object)}
+   * Method under test:
+   * {@link CustomerAttributeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerAttributeImpl.equals(Object)",
-    "int CustomerAttributeImpl.hashCode()"
-  })
+  public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CustomerAttributeImpl customerAttributeImpl = new CustomerAttributeImpl();
+    GenericEntityService genericEntityService = mock(GenericEntityService.class);
+    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
+
+    // Act
+    CreateResponse<CustomerAttribute> actualCreateOrRetrieveCopyInstanceResult = customerAttributeImpl
+        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+            genericEntityService, new MultiTenantCopierExtensionManager()));
+
+    // Assert
+    verify(genericEntityService)
+        .getCeilingImplClass(eq("org.broadleafcommerce.profile.core.domain.CustomerAttributeImpl"));
+    verify(genericEntityService).getIdentifier(isA(Object.class));
+    CustomerAttribute clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
+    assertTrue(clone instanceof CustomerAttributeImpl);
+    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
+    assertEquals(customerAttributeImpl, clone);
+  }
+
+  /**
+   * Method under test:
+   * {@link CustomerAttributeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CustomerAttributeImpl customerAttributeImpl = new CustomerAttributeImpl();
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    CreateResponse<CustomerAttribute> actualCreateOrRetrieveCopyInstanceResult = customerAttributeImpl
+        .createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+  }
+
+  /**
+   * Method under test: {@link CustomerAttributeImpl#equals(Object)}
+   */
+  @Test
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     CustomerAttributeImpl customerAttributeImpl = new CustomerAttributeImpl();
@@ -390,23 +361,32 @@ public class CustomerAttributeImplDiffblueTest {
   }
 
   /**
-   * Test {@link CustomerAttributeImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link CustomerAttributeImpl#equals(Object)}
+   * Method under test: {@link CustomerAttributeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerAttributeImpl.equals(Object)",
-    "int CustomerAttributeImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange
+    CustomerAttributeImpl customerAttributeImpl = new CustomerAttributeImpl();
+    customerAttributeImpl.setCustomer(mock(Customer.class));
+    customerAttributeImpl.setId(null);
+    customerAttributeImpl.setName("Name");
+    customerAttributeImpl.setValue("42");
+
+    CustomerAttributeImpl customerAttributeImpl2 = new CustomerAttributeImpl();
+    customerAttributeImpl2.setCustomer(new CustomerImpl());
+    customerAttributeImpl2.setId(1L);
+    customerAttributeImpl2.setName("Name");
+    customerAttributeImpl2.setValue("42");
+
+    // Act and Assert
+    assertNotEquals(customerAttributeImpl, customerAttributeImpl2);
+  }
+
+  /**
+   * Method under test: {@link CustomerAttributeImpl#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     CustomerAttributeImpl customerAttributeImpl = new CustomerAttributeImpl();
     customerAttributeImpl.setCustomer(null);
@@ -425,57 +405,9 @@ public class CustomerAttributeImplDiffblueTest {
   }
 
   /**
-   * Test {@link CustomerAttributeImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link CustomerAttributeImpl#equals(Object)}
+   * Method under test: {@link CustomerAttributeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerAttributeImpl.equals(Object)",
-    "int CustomerAttributeImpl.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
-    // Arrange
-    CustomerAttributeImpl customerAttributeImpl = new CustomerAttributeImpl();
-    customerAttributeImpl.setCustomer(mock(CustomerImpl.class));
-    customerAttributeImpl.setId(null);
-    customerAttributeImpl.setName("Name");
-    customerAttributeImpl.setValue("42");
-
-    CustomerAttributeImpl customerAttributeImpl2 = new CustomerAttributeImpl();
-    customerAttributeImpl2.setCustomer(new CustomerImpl());
-    customerAttributeImpl2.setId(1L);
-    customerAttributeImpl2.setName("Name");
-    customerAttributeImpl2.setValue("42");
-
-    // Act and Assert
-    assertNotEquals(customerAttributeImpl, customerAttributeImpl2);
-  }
-
-  /**
-   * Test {@link CustomerAttributeImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link CustomerAttributeImpl#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerAttributeImpl.equals(Object)",
-    "int CustomerAttributeImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     CustomerAttributeImpl customerAttributeImpl = new CustomerAttributeImpl();
@@ -495,22 +427,9 @@ public class CustomerAttributeImplDiffblueTest {
   }
 
   /**
-   * Test {@link CustomerAttributeImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link CustomerAttributeImpl#equals(Object)}
+   * Method under test: {@link CustomerAttributeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerAttributeImpl.equals(Object)",
-    "int CustomerAttributeImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     CustomerAttributeImpl customerAttributeImpl = new CustomerAttributeImpl();
@@ -530,22 +449,9 @@ public class CustomerAttributeImplDiffblueTest {
   }
 
   /**
-   * Test {@link CustomerAttributeImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link CustomerAttributeImpl#equals(Object)}
+   * Method under test: {@link CustomerAttributeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerAttributeImpl.equals(Object)",
-    "int CustomerAttributeImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     CustomerAttributeImpl customerAttributeImpl = new CustomerAttributeImpl();
@@ -565,22 +471,9 @@ public class CustomerAttributeImplDiffblueTest {
   }
 
   /**
-   * Test {@link CustomerAttributeImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link CustomerAttributeImpl#equals(Object)}
+   * Method under test: {@link CustomerAttributeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerAttributeImpl.equals(Object)",
-    "int CustomerAttributeImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
     CustomerAttributeImpl customerAttributeImpl = new CustomerAttributeImpl();
@@ -600,22 +493,9 @@ public class CustomerAttributeImplDiffblueTest {
   }
 
   /**
-   * Test {@link CustomerAttributeImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link CustomerAttributeImpl#equals(Object)}
+   * Method under test: {@link CustomerAttributeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerAttributeImpl.equals(Object)",
-    "int CustomerAttributeImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     CustomerAttributeImpl customerAttributeImpl = new CustomerAttributeImpl();
@@ -629,22 +509,9 @@ public class CustomerAttributeImplDiffblueTest {
   }
 
   /**
-   * Test {@link CustomerAttributeImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link CustomerAttributeImpl#equals(Object)}
+   * Method under test: {@link CustomerAttributeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CustomerAttributeImpl.equals(Object)",
-    "int CustomerAttributeImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     CustomerAttributeImpl customerAttributeImpl = new CustomerAttributeImpl();
@@ -658,10 +525,7 @@ public class CustomerAttributeImplDiffblueTest {
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link CustomerAttributeImpl}
    *   <li>{@link CustomerAttributeImpl#setCustomer(Customer)}
@@ -674,18 +538,6 @@ public class CustomerAttributeImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CustomerAttributeImpl.<init>()",
-    "Customer CustomerAttributeImpl.getCustomer()",
-    "Long CustomerAttributeImpl.getId()",
-    "void CustomerAttributeImpl.setCustomer(Customer)",
-    "void CustomerAttributeImpl.setId(Long)",
-    "void CustomerAttributeImpl.setName(String)",
-    "void CustomerAttributeImpl.setValue(String)",
-    "String CustomerAttributeImpl.toString()"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     CustomerAttributeImpl actualCustomerAttributeImpl = new CustomerAttributeImpl();
@@ -697,7 +549,7 @@ public class CustomerAttributeImplDiffblueTest {
     Customer actualCustomer = actualCustomerAttributeImpl.getCustomer();
     Long actualId = actualCustomerAttributeImpl.getId();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("42", actualCustomerAttributeImpl.toString());
     assertEquals(1L, actualId.longValue());
     assertSame(customer, actualCustomer);

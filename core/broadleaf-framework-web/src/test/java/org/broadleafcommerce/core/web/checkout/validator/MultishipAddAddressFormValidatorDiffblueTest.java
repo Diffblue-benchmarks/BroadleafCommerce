@@ -19,60 +19,33 @@ package org.broadleafcommerce.core.web.checkout.validator;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.web.checkout.model.ShippingInfoForm;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 class MultishipAddAddressFormValidatorDiffblueTest {
   /**
-   * Test {@link MultishipAddAddressFormValidator#supports(Class)}.
-   *
-   * <ul>
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link MultishipAddAddressFormValidator#supports(Class)}
+   * Method under test: {@link MultishipAddAddressFormValidator#supports(Class)}
    */
   @Test
-  @DisplayName("Test supports(Class); then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean MultishipAddAddressFormValidator.supports(Class)"})
-  void testSupports_thenReturnTrue() {
+  void testSupports() {
     // Arrange
-    MultishipAddAddressFormValidator multishipAddAddressFormValidator =
-        new MultishipAddAddressFormValidator();
-    Class<ShippingInfoForm> clazz = ShippingInfoForm.class;
-
-    // Act and Assert
-    assertTrue(multishipAddAddressFormValidator.supports(clazz));
-  }
-
-  /**
-   * Test {@link MultishipAddAddressFormValidator#supports(Class)}.
-   *
-   * <ul>
-   *   <li>When {@code Object}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link MultishipAddAddressFormValidator#supports(Class)}
-   */
-  @Test
-  @DisplayName("Test supports(Class); when 'java.lang.Object'; then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean MultishipAddAddressFormValidator.supports(Class)"})
-  void testSupports_whenJavaLangObject_thenReturnFalse() {
-    // Arrange
-    MultishipAddAddressFormValidator multishipAddAddressFormValidator =
-        new MultishipAddAddressFormValidator();
+    MultishipAddAddressFormValidator multishipAddAddressFormValidator = new MultishipAddAddressFormValidator();
     Class<Object> clazz = Object.class;
 
     // Act and Assert
     assertFalse(multishipAddAddressFormValidator.supports(clazz));
+  }
+
+  /**
+   * Method under test: {@link MultishipAddAddressFormValidator#supports(Class)}
+   */
+  @Test
+  void testSupports2() {
+    // Arrange
+    MultishipAddAddressFormValidator multishipAddAddressFormValidator = new MultishipAddAddressFormValidator();
+    Class<ShippingInfoForm> clazz = ShippingInfoForm.class;
+
+    // Act and Assert
+    assertTrue(multishipAddAddressFormValidator.supports(clazz));
   }
 }

@@ -18,6 +18,7 @@
 package org.broadleafcommerce.core.catalog.domain;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
@@ -26,104 +27,24 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
+import java.util.List;
 import org.broadleafcommerce.common.copy.CreateResponse;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.broadleafcommerce.core.catalog.service.type.ProductBundlePricingModelType;
+import org.broadleafcommerce.core.search.domain.FieldEntity;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 public class FeaturedProductImplDiffblueTest {
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link FeaturedProductImpl#setCategory(Category)}
-   *   <li>{@link FeaturedProductImpl#setId(Long)}
-   *   <li>{@link FeaturedProductImpl#setProduct(Product)}
-   *   <li>{@link FeaturedProductImpl#setPromotionMessage(String)}
-   *   <li>{@link FeaturedProductImpl#setSequence(BigDecimal)}
-   *   <li>{@link FeaturedProductImpl#getCategory()}
-   *   <li>{@link FeaturedProductImpl#getId()}
-   *   <li>{@link FeaturedProductImpl#getProduct()}
-   *   <li>{@link FeaturedProductImpl#getPromotionMessage()}
-   *   <li>{@link FeaturedProductImpl#getRelatedProduct()}
-   *   <li>{@link FeaturedProductImpl#getSequence()}
-   * </ul>
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Category FeaturedProductImpl.getCategory()",
-    "Long FeaturedProductImpl.getId()",
-    "Product FeaturedProductImpl.getProduct()",
-    "String FeaturedProductImpl.getPromotionMessage()",
-    "Product FeaturedProductImpl.getRelatedProduct()",
-    "BigDecimal FeaturedProductImpl.getSequence()",
-    "void FeaturedProductImpl.setCategory(Category)",
-    "void FeaturedProductImpl.setId(Long)",
-    "void FeaturedProductImpl.setProduct(Product)",
-    "void FeaturedProductImpl.setPromotionMessage(String)",
-    "void FeaturedProductImpl.setSequence(BigDecimal)"
-  })
-  public void testGettersAndSetters() {
-    // Arrange
-    FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
-    CategoryImpl category = new CategoryImpl();
-
-    // Act
-    featuredProductImpl.setCategory(category);
-    featuredProductImpl.setId(1L);
-    ProductBundleImpl product = new ProductBundleImpl();
-    featuredProductImpl.setProduct(product);
-    featuredProductImpl.setPromotionMessage("Promotion Message");
-    BigDecimal sequence = new BigDecimal("2.3");
-    featuredProductImpl.setSequence(sequence);
-    Category actualCategory = featuredProductImpl.getCategory();
-    Long actualId = featuredProductImpl.getId();
-    Product actualProduct = featuredProductImpl.getProduct();
-    String actualPromotionMessage = featuredProductImpl.getPromotionMessage();
-    Product actualRelatedProduct = featuredProductImpl.getRelatedProduct();
-    BigDecimal actualSequence = featuredProductImpl.getSequence();
-
-    // Assert
-    assertEquals("Promotion Message", actualPromotionMessage);
-    assertEquals(1L, actualId.longValue());
-    assertEquals(new BigDecimal("2.3"), actualSequence);
-    assertSame(sequence, actualSequence);
-    assertSame(category, actualCategory);
-    assertSame(product, actualProduct);
-    assertSame(product, actualRelatedProduct);
-  }
-
-  /**
-   * Test {@link FeaturedProductImpl#equals(Object)}, and {@link FeaturedProductImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link FeaturedProductImpl#equals(Object)}
    *   <li>{@link FeaturedProductImpl#hashCode()}
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FeaturedProductImpl.equals(Object)",
-    "int FeaturedProductImpl.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
@@ -142,31 +63,18 @@ public class FeaturedProductImplDiffblueTest {
 
     // Act and Assert
     assertEquals(featuredProductImpl, featuredProductImpl2);
-    assertEquals(featuredProductImpl.hashCode(), featuredProductImpl2.hashCode());
+    int expectedHashCodeResult = featuredProductImpl.hashCode();
+    assertEquals(expectedHashCodeResult, featuredProductImpl2.hashCode());
   }
 
   /**
-   * Test {@link FeaturedProductImpl#equals(Object)}, and {@link FeaturedProductImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link FeaturedProductImpl#equals(Object)}
    *   <li>{@link FeaturedProductImpl#hashCode()}
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FeaturedProductImpl.equals(Object)",
-    "int FeaturedProductImpl.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
@@ -185,160 +93,18 @@ public class FeaturedProductImplDiffblueTest {
 
     // Act and Assert
     assertEquals(featuredProductImpl, featuredProductImpl2);
-    assertEquals(featuredProductImpl.hashCode(), featuredProductImpl2.hashCode());
+    int expectedHashCodeResult = featuredProductImpl.hashCode();
+    assertEquals(expectedHashCodeResult, featuredProductImpl2.hashCode());
   }
 
   /**
-   * Test {@link FeaturedProductImpl#equals(Object)}, and {@link FeaturedProductImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link FeaturedProductImpl#equals(Object)}
    *   <li>{@link FeaturedProductImpl#hashCode()}
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FeaturedProductImpl.equals(Object)",
-    "int FeaturedProductImpl.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
-    // Arrange
-    FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
-    featuredProductImpl.setCategory(new CategoryImpl());
-    featuredProductImpl.setId(1L);
-    featuredProductImpl.setProduct(null);
-    featuredProductImpl.setPromotionMessage("Promotion Message");
-    featuredProductImpl.setSequence(new BigDecimal("2.3"));
-
-    FeaturedProductImpl featuredProductImpl2 = new FeaturedProductImpl();
-    featuredProductImpl2.setCategory(new CategoryImpl());
-    featuredProductImpl2.setId(1L);
-    featuredProductImpl2.setProduct(null);
-    featuredProductImpl2.setPromotionMessage("Promotion Message");
-    featuredProductImpl2.setSequence(new BigDecimal("2.3"));
-
-    // Act and Assert
-    assertEquals(featuredProductImpl, featuredProductImpl2);
-    assertEquals(featuredProductImpl.hashCode(), featuredProductImpl2.hashCode());
-  }
-
-  /**
-   * Test {@link FeaturedProductImpl#equals(Object)}, and {@link FeaturedProductImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link FeaturedProductImpl#equals(Object)}
-   *   <li>{@link FeaturedProductImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FeaturedProductImpl.equals(Object)",
-    "int FeaturedProductImpl.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
-    // Arrange
-    FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
-    featuredProductImpl.setCategory(new CategoryImpl());
-    featuredProductImpl.setId(1L);
-    featuredProductImpl.setProduct(new ProductBundleImpl());
-    featuredProductImpl.setPromotionMessage(null);
-    featuredProductImpl.setSequence(new BigDecimal("2.3"));
-
-    FeaturedProductImpl featuredProductImpl2 = new FeaturedProductImpl();
-    featuredProductImpl2.setCategory(new CategoryImpl());
-    featuredProductImpl2.setId(1L);
-    featuredProductImpl2.setProduct(new ProductBundleImpl());
-    featuredProductImpl2.setPromotionMessage(null);
-    featuredProductImpl2.setSequence(new BigDecimal("2.3"));
-
-    // Act and Assert
-    assertEquals(featuredProductImpl, featuredProductImpl2);
-    assertEquals(featuredProductImpl.hashCode(), featuredProductImpl2.hashCode());
-  }
-
-  /**
-   * Test {@link FeaturedProductImpl#equals(Object)}, and {@link FeaturedProductImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link FeaturedProductImpl#equals(Object)}
-   *   <li>{@link FeaturedProductImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FeaturedProductImpl.equals(Object)",
-    "int FeaturedProductImpl.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
-    // Arrange
-    FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
-    featuredProductImpl.setCategory(new CategoryImpl());
-    featuredProductImpl.setId(1L);
-    featuredProductImpl.setProduct(new ProductBundleImpl());
-    featuredProductImpl.setPromotionMessage("Promotion Message");
-    featuredProductImpl.setSequence(null);
-
-    FeaturedProductImpl featuredProductImpl2 = new FeaturedProductImpl();
-    featuredProductImpl2.setCategory(new CategoryImpl());
-    featuredProductImpl2.setId(1L);
-    featuredProductImpl2.setProduct(new ProductBundleImpl());
-    featuredProductImpl2.setPromotionMessage("Promotion Message");
-    featuredProductImpl2.setSequence(null);
-
-    // Act and Assert
-    assertEquals(featuredProductImpl, featuredProductImpl2);
-    assertEquals(featuredProductImpl.hashCode(), featuredProductImpl2.hashCode());
-  }
-
-  /**
-   * Test {@link FeaturedProductImpl#equals(Object)}, and {@link FeaturedProductImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link FeaturedProductImpl#equals(Object)}
-   *   <li>{@link FeaturedProductImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FeaturedProductImpl.equals(Object)",
-    "int FeaturedProductImpl.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
@@ -355,22 +121,31 @@ public class FeaturedProductImplDiffblueTest {
   }
 
   /**
-   * Test {@link FeaturedProductImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FeaturedProductImpl#equals(Object)}
+   * Method under test:
+   * {@link FeaturedProductImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FeaturedProductImpl.equals(Object)",
-    "int FeaturedProductImpl.hashCode()"
-  })
+  public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
+    // Arrange
+    FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    CreateResponse<FeaturedProduct> actualCreateOrRetrieveCopyInstanceResult = featuredProductImpl
+        .createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+  }
+
+  /**
+   * Method under test: {@link FeaturedProductImpl#equals(Object)}
+   */
+  @Test
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
@@ -392,22 +167,9 @@ public class FeaturedProductImplDiffblueTest {
   }
 
   /**
-   * Test {@link FeaturedProductImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FeaturedProductImpl#equals(Object)}
+   * Method under test: {@link FeaturedProductImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FeaturedProductImpl.equals(Object)",
-    "int FeaturedProductImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
@@ -429,22 +191,9 @@ public class FeaturedProductImplDiffblueTest {
   }
 
   /**
-   * Test {@link FeaturedProductImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FeaturedProductImpl#equals(Object)}
+   * Method under test: {@link FeaturedProductImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FeaturedProductImpl.equals(Object)",
-    "int FeaturedProductImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     ProductBundleImpl product = new ProductBundleImpl();
@@ -469,22 +218,9 @@ public class FeaturedProductImplDiffblueTest {
   }
 
   /**
-   * Test {@link FeaturedProductImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FeaturedProductImpl#equals(Object)}
+   * Method under test: {@link FeaturedProductImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FeaturedProductImpl.equals(Object)",
-    "int FeaturedProductImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
@@ -506,22 +242,9 @@ public class FeaturedProductImplDiffblueTest {
   }
 
   /**
-   * Test {@link FeaturedProductImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FeaturedProductImpl#equals(Object)}
+   * Method under test: {@link FeaturedProductImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FeaturedProductImpl.equals(Object)",
-    "int FeaturedProductImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
@@ -543,22 +266,9 @@ public class FeaturedProductImplDiffblueTest {
   }
 
   /**
-   * Test {@link FeaturedProductImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FeaturedProductImpl#equals(Object)}
+   * Method under test: {@link FeaturedProductImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FeaturedProductImpl.equals(Object)",
-    "int FeaturedProductImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
@@ -580,23 +290,34 @@ public class FeaturedProductImplDiffblueTest {
   }
 
   /**
-   * Test {@link FeaturedProductImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FeaturedProductImpl#equals(Object)}
+   * Method under test: {@link FeaturedProductImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FeaturedProductImpl.equals(Object)",
-    "int FeaturedProductImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
+    // Arrange
+    FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
+    featuredProductImpl.setCategory(new CategoryImpl());
+    featuredProductImpl.setId(1L);
+    featuredProductImpl.setProduct(new ProductBundleImpl());
+    featuredProductImpl.setPromotionMessage("Promotion Message");
+    featuredProductImpl.setSequence(new BigDecimal("4.5"));
+
+    FeaturedProductImpl featuredProductImpl2 = new FeaturedProductImpl();
+    featuredProductImpl2.setCategory(new CategoryImpl());
+    featuredProductImpl2.setId(1L);
+    featuredProductImpl2.setProduct(new ProductBundleImpl());
+    featuredProductImpl2.setPromotionMessage("Promotion Message");
+    featuredProductImpl2.setSequence(new BigDecimal("2.3"));
+
+    // Act and Assert
+    assertNotEquals(featuredProductImpl, featuredProductImpl2);
+  }
+
+  /**
+   * Method under test: {@link FeaturedProductImpl#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
     // Arrange
     FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
     featuredProductImpl.setCategory(new CategoryImpl());
@@ -617,59 +338,9 @@ public class FeaturedProductImplDiffblueTest {
   }
 
   /**
-   * Test {@link FeaturedProductImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FeaturedProductImpl#equals(Object)}
+   * Method under test: {@link FeaturedProductImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FeaturedProductImpl.equals(Object)",
-    "int FeaturedProductImpl.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
-    // Arrange
-    FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
-    featuredProductImpl.setCategory(new CategoryImpl());
-    featuredProductImpl.setId(1L);
-    featuredProductImpl.setProduct(new ProductBundleImpl());
-    featuredProductImpl.setPromotionMessage("Promotion Message");
-    featuredProductImpl.setSequence(BigDecimal.valueOf(1L));
-
-    FeaturedProductImpl featuredProductImpl2 = new FeaturedProductImpl();
-    featuredProductImpl2.setCategory(new CategoryImpl());
-    featuredProductImpl2.setId(1L);
-    featuredProductImpl2.setProduct(new ProductBundleImpl());
-    featuredProductImpl2.setPromotionMessage("Promotion Message");
-    featuredProductImpl2.setSequence(new BigDecimal("2.3"));
-
-    // Act and Assert
-    assertNotEquals(featuredProductImpl, featuredProductImpl2);
-  }
-
-  /**
-   * Test {@link FeaturedProductImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FeaturedProductImpl#equals(Object)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FeaturedProductImpl.equals(Object)",
-    "int FeaturedProductImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
@@ -684,22 +355,9 @@ public class FeaturedProductImplDiffblueTest {
   }
 
   /**
-   * Test {@link FeaturedProductImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FeaturedProductImpl#equals(Object)}
+   * Method under test: {@link FeaturedProductImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FeaturedProductImpl.equals(Object)",
-    "int FeaturedProductImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
@@ -714,54 +372,205 @@ public class FeaturedProductImplDiffblueTest {
   }
 
   /**
-   * Test {@link FeaturedProductImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * FeaturedProductImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Methods under test:
+   * <ul>
+   *   <li>{@link FeaturedProductImpl#setCategory(Category)}
+   *   <li>{@link FeaturedProductImpl#setId(Long)}
+   *   <li>{@link FeaturedProductImpl#setProduct(Product)}
+   *   <li>{@link FeaturedProductImpl#setPromotionMessage(String)}
+   *   <li>{@link FeaturedProductImpl#setSequence(BigDecimal)}
+   *   <li>{@link FeaturedProductImpl#getCategory()}
+   *   <li>{@link FeaturedProductImpl#getId()}
+   *   <li>{@link FeaturedProductImpl#getProduct()}
+   *   <li>{@link FeaturedProductImpl#getPromotionMessage()}
+   *   <li>{@link FeaturedProductImpl#getRelatedProduct()}
+   *   <li>{@link FeaturedProductImpl#getSequence()}
+   * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse FeaturedProductImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
+  public void testGettersAndSetters() {
     // Arrange
     FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(new FeaturedProductImpl(), true);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+    CategoryImpl category = new CategoryImpl();
 
     // Act
-    CreateResponse<FeaturedProduct> actualCreateOrRetrieveCopyInstanceResult =
-        featuredProductImpl.createOrRetrieveCopyInstance(context);
+    featuredProductImpl.setCategory(category);
+    featuredProductImpl.setId(1L);
+    ProductBundleImpl product = new ProductBundleImpl();
+    featuredProductImpl.setProduct(product);
+    featuredProductImpl.setPromotionMessage("Promotion Message");
+    BigDecimal sequence = new BigDecimal("2.3");
+    featuredProductImpl.setSequence(sequence);
+    Category actualCategory = featuredProductImpl.getCategory();
+    Long actualId = featuredProductImpl.getId();
+    Product actualProduct = featuredProductImpl.getProduct();
+    String actualPromotionMessage = featuredProductImpl.getPromotionMessage();
+    Product actualRelatedProduct = featuredProductImpl.getRelatedProduct();
+    BigDecimal actualSequence = featuredProductImpl.getSequence();
 
-    // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+    // Assert that nothing has changed
+    assertEquals("Promotion Message", actualPromotionMessage);
+    assertEquals(1L, actualId.longValue());
+    assertEquals(new BigDecimal("2.3"), actualSequence);
+    assertSame(sequence, actualSequence);
+    assertSame(category, actualCategory);
+    assertSame(product, actualProduct);
+    assertSame(product, actualRelatedProduct);
   }
 
   /**
-   * Test new {@link FeaturedProductImpl} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link FeaturedProductImpl}
+   * Method under test: default or parameterless constructor of
+   * {@link FeaturedProductImpl}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FeaturedProductImpl.<init>()"})
   public void testNewFeaturedProductImpl() {
     // Arrange and Act
     FeaturedProductImpl actualFeaturedProductImpl = new FeaturedProductImpl();
 
     // Assert
-    assertTrue(actualFeaturedProductImpl.getCategory() instanceof CategoryImpl);
+    Category category = actualFeaturedProductImpl.getCategory();
+    assertTrue(category instanceof CategoryImpl);
     Product product = actualFeaturedProductImpl.getProduct();
     assertTrue(product instanceof ProductImpl);
+    FieldEntity fieldEntityType = product.getFieldEntityType();
+    List<String> allLookupTypes = fieldEntityType.getAllLookupTypes();
+    assertEquals(1, allLookupTypes.size());
+    assertEquals("PRODUCT", allLookupTypes.get(0));
+    assertEquals("PRODUCT", fieldEntityType.getType());
+    assertEquals("Product", fieldEntityType.getFriendlyType());
+    assertEquals("null", category.getGeneratedUrl());
+    assertEquals('N', ((CategoryImpl) category).archiveStatus.getArchived().charValue());
+    assertEquals('N', ((ProductImpl) product).archiveStatus.getArchived().charValue());
+    assertEquals('N', ((CategoryImpl) category).getArchived().charValue());
+    assertEquals('N', ((ProductImpl) product).getArchived().charValue());
+    assertNull(category.getId());
     assertNull(actualFeaturedProductImpl.getId());
+    assertNull(product.getId());
+    assertNull(category.getDescription());
+    assertNull(category.getDisplayTemplate());
+    assertNull(category.getExternalId());
+    assertNull(category.getLongDescription());
+    assertNull(category.getMetaDescription());
+    assertNull(category.getMetaTitle());
+    assertNull(category.getName());
+    assertNull(category.getProductDescriptionPatternOverride());
+    assertNull(category.getProductTitlePatternOverride());
+    assertNull(category.getTaxCode());
+    assertNull(category.getUrl());
+    assertNull(category.getUrlKey());
+    assertNull(((CategoryImpl) category).getLocation());
+    assertNull(((CategoryImpl) category).getMainEntityName());
     assertNull(actualFeaturedProductImpl.getPromotionMessage());
+    assertNull(product.getCanonicalUrl());
+    assertNull(product.getDisplayTemplate());
+    assertNull(product.getGeneratedUrl());
+    assertNull(product.getManufacturer());
+    assertNull(product.getMetaDescription());
+    assertNull(product.getMetaTitle());
+    assertNull(product.getModel());
+    assertNull(product.getPromoMessage());
+    assertNull(product.getUrl());
+    assertNull(((ProductImpl) product).getLocation());
+    assertNull(((CategoryImpl) category).description);
+    assertNull(((CategoryImpl) category).fulfillmentType);
+    assertNull(((CategoryImpl) category).inventoryType);
+    assertNull(((CategoryImpl) category).longDescription);
+    assertNull(((CategoryImpl) category).name);
+    assertNull(((CategoryImpl) category).url);
+    assertNull(((CategoryImpl) category).urlKey);
+    assertNull(((ProductImpl) product).url);
+    assertNull(((ProductImpl) product).urlKey);
+    assertNull(category.getRootDisplayOrder());
     assertNull(actualFeaturedProductImpl.getSequence());
+    assertNull(category.getActiveEndDate());
+    assertNull(category.getActiveStartDate());
+    assertNull(((CategoryImpl) category).activeStartDate);
+    assertNull(((CategoryImpl) category).childCategoryIds);
+    assertNull(((CategoryImpl) category).filteredFeaturedProducts);
+    assertNull(((CategoryImpl) category).filteredCrossSales);
+    assertNull(((CategoryImpl) category).filteredUpSales);
+    assertNull(((CategoryImpl) category).childCategoryURLMap);
+    assertNull(product.getPrice());
+    assertNull(product.getRetailPrice());
+    assertNull(product.getSalePrice());
+    assertNull(((ProductImpl) product).getRetailPriceInternal());
+    assertNull(((ProductImpl) product).getSalePriceInternal());
+    assertNull(category.getDefaultParentCategory());
+    assertNull(category.getParentCategory());
+    assertNull(product.getCategory());
+    assertNull(product.getDefaultCategory());
+    assertNull(((CategoryImpl) category).defaultParentCategory);
+    assertNull(((ProductImpl) product).defaultCategory);
+    assertNull(category.getParentCategoryXref());
+    List<Sku> allSellableSkus = product.getAllSellableSkus();
+    assertEquals(1, allSellableSkus.size());
+    assertNull(allSellableSkus.get(0));
+    List<Sku> allSkus = product.getAllSkus();
+    assertEquals(1, allSkus.size());
+    assertNull(allSkus.get(0));
+    assertNull(product.getDefaultSku());
+    assertNull(category.getInventoryType());
+    assertNull(category.getFulfillmentType());
+    assertFalse(category.getOverrideGeneratedUrl());
+    assertFalse(category.hasAllChildCategories());
+    assertFalse(category.hasChildCategories());
+    assertFalse(product.getCanSellWithoutOptions());
+    assertFalse(product.getOverrideGeneratedUrl());
+    assertFalse(product.hasRetailPrice());
+    assertFalse(((CategoryImpl) category).overrideGeneratedUrl);
+    assertFalse(((ProductImpl) product).canSellWithoutOptions);
+    assertFalse(((ProductImpl) product).isFeaturedProduct);
+    assertFalse(((ProductImpl) product).overrideGeneratedUrl);
+    assertTrue(category.getActiveProductXrefs().isEmpty());
+    assertTrue(category.getActiveProducts().isEmpty());
+    assertTrue(category.getAllChildCategories().isEmpty());
+    assertTrue(category.getAllChildCategoryXrefs().isEmpty());
+    assertTrue(category.getAllParentCategories().isEmpty());
+    assertTrue(category.getAllParentCategoryXrefs().isEmpty());
+    assertTrue(category.getAllProductXrefs().isEmpty());
+    assertTrue(category.getAllProducts().isEmpty());
+    assertTrue(category.getCategoryAttributes().isEmpty());
+    assertTrue(category.getChildCategories().isEmpty());
+    assertTrue(category.getChildCategoryXrefs().isEmpty());
+    assertTrue(category.getCrossSaleProducts().isEmpty());
+    assertTrue(category.getCumulativeCrossSaleProducts().isEmpty());
+    assertTrue(category.getCumulativeFeaturedProducts().isEmpty());
+    assertTrue(category.getCumulativeSearchFacets().isEmpty());
+    assertTrue(category.getCumulativeUpSaleProducts().isEmpty());
+    assertTrue(category.getExcludedSearchFacets().isEmpty());
+    assertTrue(category.getFeaturedProducts().isEmpty());
+    assertTrue(category.getSearchFacets().isEmpty());
+    assertTrue(category.getUpSaleProducts().isEmpty());
+    assertTrue(product.getAdditionalSkus().isEmpty());
+    assertTrue(product.getAllParentCategories().isEmpty());
+    assertTrue(product.getAllParentCategoryIds().isEmpty());
+    assertTrue(product.getAllParentCategoryXrefs().isEmpty());
+    List<RelatedProduct> crossSaleProducts = product.getCrossSaleProducts();
+    assertTrue(crossSaleProducts.isEmpty());
+    List<RelatedProduct> cumulativeUpSaleProducts = product.getCumulativeUpSaleProducts();
+    assertTrue(cumulativeUpSaleProducts.isEmpty());
+    assertTrue(product.getParentCategoryHierarchyIds().isEmpty());
+    assertTrue(product.getProductOptionXrefs().isEmpty());
+    assertTrue(product.getProductOptions().isEmpty());
+    assertTrue(product.getSkus().isEmpty());
+    assertTrue(fieldEntityType.getAdditionalLookupTypes().isEmpty());
+    assertTrue(((CategoryImpl) category).allLegacyChildCategories.isEmpty());
+    assertTrue(((CategoryImpl) category).childCategoryXrefs.isEmpty());
+    assertTrue(((CategoryImpl) category).legacyChildCategories.isEmpty());
+    assertTrue(((ProductImpl) product).productAttributes.isEmpty());
+    assertTrue(((ProductImpl) product).productOptions.isEmpty());
+    assertTrue(((ProductImpl) product).skus.isEmpty());
+    assertTrue(category.getCategoryAttributesMap().isEmpty());
+    assertTrue(category.getCategoryMedia().isEmpty());
+    assertTrue(category.getCategoryMediaXref().isEmpty());
+    assertTrue(category.getMappedCategoryAttributes().isEmpty());
+    assertTrue(category.getMultiValueCategoryAttributes().isEmpty());
+    assertTrue(product.getMultiValueProductAttributes().isEmpty());
+    assertTrue(product.getProductAttributes().isEmpty());
+    assertTrue(product.getProductOptionValuesMap().isEmpty());
+    assertTrue(((CategoryImpl) category).legacyCategoryMedia.isEmpty());
+    assertSame(crossSaleProducts, product.getCumulativeCrossSaleProducts());
+    assertSame(cumulativeUpSaleProducts, product.getUpSaleProducts());
     assertSame(product, actualFeaturedProductImpl.getRelatedProduct());
   }
 }

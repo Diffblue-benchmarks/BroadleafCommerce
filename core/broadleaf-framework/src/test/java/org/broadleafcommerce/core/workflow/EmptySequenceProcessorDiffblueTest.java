@@ -21,39 +21,44 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class EmptySequenceProcessorDiffblueTest {
   /**
-   * Test {@link EmptySequenceProcessor#createContext(Object)}.
-   *
-   * <p>Method under test: {@link EmptySequenceProcessor#createContext(Object)}
+   * Method under test: {@link EmptySequenceProcessor#createContext(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.core.workflow.ProcessContext EmptySequenceProcessor.createContext(Object)"
-  })
   public void testCreateContext() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertNull(new EmptySequenceProcessor().createContext("Seed Data"));
+    assertNull((new EmptySequenceProcessor()).createContext("Seed Data"));
   }
 
   /**
-   * Test new {@link EmptySequenceProcessor} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link EmptySequenceProcessor}
+   * Method under test: {@link EmptySequenceProcessor#createContext(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void EmptySequenceProcessor.<init>()"})
+  public void testCreateContext2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EmptySequenceProcessor emptySequenceProcessor = new EmptySequenceProcessor();
+    emptySequenceProcessor.setProcessContextFactory(mock(ProcessContextFactory.class));
+
+    // Act and Assert
+    assertNull(emptySequenceProcessor.createContext("Seed Data"));
+  }
+
+  /**
+   * Method under test: default or parameterless constructor of
+   * {@link EmptySequenceProcessor}
+   */
+  @Test
   public void testNewEmptySequenceProcessor() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange and Act
     EmptySequenceProcessor actualEmptySequenceProcessor = new EmptySequenceProcessor();
 

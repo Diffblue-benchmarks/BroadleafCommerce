@@ -17,14 +17,12 @@
  */
 package org.broadleafcommerce.core.web.order;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -32,50 +30,43 @@ import java.util.Date;
 import java.util.HashMap;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.broadleafcommerce.common.audit.Auditable;
+import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
+import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
+import org.broadleafcommerce.core.order.domain.Order;
+import org.broadleafcommerce.core.order.domain.OrderImpl;
+import org.broadleafcommerce.core.order.service.type.OrderStatus;
 import org.broadleafcommerce.profile.core.domain.ChallengeQuestionImpl;
+import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.context.ApplicationContext;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 class OrderStateAOPDiffblueTest {
   /**
-   * Test {@link OrderStateAOP#processOrderRetrieval(ProceedingJoinPoint)}.
-   *
-   * <ul>
-   *   <li>Given {@link NullOrderImpl} (default constructor).
-   *   <li>Then return {@link NullOrderImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderStateAOP#processOrderRetrieval(ProceedingJoinPoint)}
+   * Method under test:
+   * {@link OrderStateAOP#processOrderRetrieval(ProceedingJoinPoint)}
    */
   @Test
-  @DisplayName(
-      "Test processOrderRetrieval(ProceedingJoinPoint); given NullOrderImpl (default constructor); then return NullOrderImpl (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object OrderStateAOP.processOrderRetrieval(ProceedingJoinPoint)"})
-  void testProcessOrderRetrieval_givenNullOrderImpl_thenReturnNullOrderImpl() throws Throwable {
+  void testProcessOrderRetrieval() throws Throwable {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    ApplicationContext applicationContext = mock(ApplicationContext.class);
-    when(applicationContext.getBean(Mockito.<String>any())).thenReturn(new OrderState());
+    OrderState orderState = mock(OrderState.class);
+    NullOrderImpl nullOrderImpl = new NullOrderImpl();
+    when(orderState.getOrder(Mockito.<Customer>any())).thenReturn(nullOrderImpl);
+    AnnotationConfigApplicationContext applicationContext = mock(AnnotationConfigApplicationContext.class);
+    when(applicationContext.getBean(Mockito.<String>any())).thenReturn(orderState);
 
     OrderStateAOP orderStateAOP = new OrderStateAOP();
     orderStateAOP.setApplicationContext(applicationContext);
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     CustomerImpl customerImpl = new CustomerImpl();
@@ -100,51 +91,42 @@ class OrderStateAOPDiffblueTest {
     customerImpl.setUnencodedChallengeAnswer("secret");
     customerImpl.setUnencodedPassword("secret");
     customerImpl.setUsername("janedoe");
-
     ProceedingJoinPoint call = mock(ProceedingJoinPoint.class);
-    NullOrderImpl nullOrderImpl = new NullOrderImpl();
-    when(call.proceed()).thenReturn(nullOrderImpl);
-    when(call.getArgs()).thenReturn(new Object[] {customerImpl});
+    when(call.getArgs()).thenReturn(new Object[]{customerImpl});
 
     // Act
     Object actualProcessOrderRetrievalResult = orderStateAOP.processOrderRetrieval(call);
 
     // Assert
     verify(call).getArgs();
-    verify(call).proceed();
-    verify(applicationContext).getBean("blOrderState");
+    verify(orderState).getOrder(isA(Customer.class));
+    verify(applicationContext).getBean(eq("blOrderState"));
     assertSame(nullOrderImpl, actualProcessOrderRetrievalResult);
   }
 
   /**
-   * Test {@link OrderStateAOP#processOrderRetrieval(ProceedingJoinPoint)}.
-   *
-   * <ul>
-   *   <li>Given {@code null}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderStateAOP#processOrderRetrieval(ProceedingJoinPoint)}
+   * Method under test:
+   * {@link OrderStateAOP#processOrderRetrieval(ProceedingJoinPoint)}
    */
   @Test
-  @DisplayName("Test processOrderRetrieval(ProceedingJoinPoint); given 'null'; then return 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object OrderStateAOP.processOrderRetrieval(ProceedingJoinPoint)"})
-  void testProcessOrderRetrieval_givenNull_thenReturnNull() throws Throwable {
+  void testProcessOrderRetrieval2() throws Throwable {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    ApplicationContext applicationContext = mock(ApplicationContext.class);
-    when(applicationContext.getBean(Mockito.<String>any())).thenReturn(new OrderState());
+    OrderState orderState = mock(OrderState.class);
+    NullOrderImpl nullOrderImpl = new NullOrderImpl();
+    when(orderState.setOrder(Mockito.<Customer>any(), Mockito.<Order>any())).thenReturn(nullOrderImpl);
+    when(orderState.getOrder(Mockito.<Customer>any())).thenReturn(null);
+    AnnotationConfigApplicationContext applicationContext = mock(AnnotationConfigApplicationContext.class);
+    when(applicationContext.getBean(Mockito.<String>any())).thenReturn(orderState);
 
     OrderStateAOP orderStateAOP = new OrderStateAOP();
     orderStateAOP.setApplicationContext(applicationContext);
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     CustomerImpl customerImpl = new CustomerImpl();
@@ -170,9 +152,39 @@ class OrderStateAOPDiffblueTest {
     customerImpl.setUnencodedPassword("secret");
     customerImpl.setUsername("janedoe");
 
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(1L);
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(1L);
+
+    OrderImpl orderImpl = new OrderImpl();
+    orderImpl.setAdditionalOfferInformation(new HashMap<>());
+    orderImpl.setAuditable(auditable2);
+    orderImpl.setCandidateOrderOffers(new ArrayList<>());
+    orderImpl.setCurrency(new BroadleafCurrencyImpl());
+    orderImpl.setCustomer(new CustomerImpl());
+    orderImpl.setEmailAddress("42 Main St");
+    orderImpl.setFulfillmentGroups(new ArrayList<>());
+    orderImpl.setId(1L);
+    orderImpl.setLocale(new LocaleImpl());
+    orderImpl.setName("blOrderState");
+    orderImpl.setOrderAttributes(new HashMap<>());
+    orderImpl.setOrderItems(new ArrayList<>());
+    orderImpl.setOrderMessages(new ArrayList<>());
+    orderImpl.setOrderNumber("42");
+    orderImpl.setPayments(new ArrayList<>());
+    orderImpl.setStatus(new OrderStatus("blOrderState", "blOrderState"));
+    orderImpl.setSubTotal(new Money());
+    orderImpl.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    orderImpl.setTaxOverride(true);
+    orderImpl.setTotal(new Money());
+    orderImpl.setTotalFulfillmentCharges(new Money());
+    orderImpl.setTotalShipping(new Money());
+    orderImpl.setTotalTax(new Money());
     ProceedingJoinPoint call = mock(ProceedingJoinPoint.class);
-    when(call.proceed()).thenReturn(null);
-    when(call.getArgs()).thenReturn(new Object[] {customerImpl});
+    when(call.proceed()).thenReturn(orderImpl);
+    when(call.getArgs()).thenReturn(new Object[]{customerImpl});
 
     // Act
     Object actualProcessOrderRetrievalResult = orderStateAOP.processOrderRetrieval(call);
@@ -180,73 +192,9 @@ class OrderStateAOPDiffblueTest {
     // Assert
     verify(call).getArgs();
     verify(call).proceed();
-    verify(applicationContext).getBean("blOrderState");
-    assertNull(actualProcessOrderRetrievalResult);
-  }
-
-  /**
-   * Test {@link OrderStateAOP#processOrderRetrieval(ProceedingJoinPoint)}.
-   *
-   * <ul>
-   *   <li>Given {@link Throwable#Throwable()}.
-   *   <li>Then throw {@link Throwable}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderStateAOP#processOrderRetrieval(ProceedingJoinPoint)}
-   */
-  @Test
-  @DisplayName(
-      "Test processOrderRetrieval(ProceedingJoinPoint); given Throwable(); then throw Throwable")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object OrderStateAOP.processOrderRetrieval(ProceedingJoinPoint)"})
-  void testProcessOrderRetrieval_givenThrowable_thenThrowThrowable() throws Throwable {
-    // Arrange
-    ApplicationContext applicationContext = mock(ApplicationContext.class);
-    when(applicationContext.getBean(Mockito.<String>any())).thenReturn(new OrderState());
-
-    OrderStateAOP orderStateAOP = new OrderStateAOP();
-    orderStateAOP.setApplicationContext(applicationContext);
-
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    CustomerImpl customerImpl = new CustomerImpl();
-    customerImpl.setAuditable(auditable);
-    customerImpl.setChallengeAnswer("blOrderState");
-    customerImpl.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl.setCustomerAddresses(new ArrayList<>());
-    customerImpl.setCustomerAttributes(new HashMap<>());
-    customerImpl.setCustomerLocale(new LocaleImpl());
-    customerImpl.setCustomerPayments(new ArrayList<>());
-    customerImpl.setCustomerPhones(new ArrayList<>());
-    customerImpl.setDeactivated(true);
-    customerImpl.setEmailAddress("42 Main St");
-    customerImpl.setExternalId("42");
-    customerImpl.setFirstName("Jane");
-    customerImpl.setId(1L);
-    customerImpl.setLastName("Doe");
-    customerImpl.setPassword("iloveyou");
-    customerImpl.setPasswordChangeRequired(true);
-    customerImpl.setReceiveEmail(true);
-    customerImpl.setRegistered(true);
-    customerImpl.setUnencodedChallengeAnswer("secret");
-    customerImpl.setUnencodedPassword("secret");
-    customerImpl.setUsername("janedoe");
-
-    ProceedingJoinPoint call = mock(ProceedingJoinPoint.class);
-    when(call.proceed()).thenThrow(new Throwable());
-    when(call.getArgs()).thenReturn(new Object[] {customerImpl});
-
-    // Act and Assert
-    assertThrows(Throwable.class, () -> orderStateAOP.processOrderRetrieval(call));
-    verify(call).getArgs();
-    verify(call).proceed();
-    verify(applicationContext).getBean("blOrderState");
+    verify(orderState).getOrder(isA(Customer.class));
+    verify(orderState).setOrder(isA(Customer.class), isA(Order.class));
+    verify(applicationContext).getBean(eq("blOrderState"));
+    assertSame(nullOrderImpl, actualProcessOrderRetrievalResult);
   }
 }

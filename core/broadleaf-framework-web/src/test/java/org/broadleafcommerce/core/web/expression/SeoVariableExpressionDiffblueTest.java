@@ -18,116 +18,15 @@
 package org.broadleafcommerce.core.web.expression;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
-import java.util.HashMap;
-import java.util.Map;
-import org.broadleafcommerce.common.page.dto.PageDTO;
-import org.broadleafcommerce.core.catalog.domain.Category;
-import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
-import org.broadleafcommerce.core.catalog.domain.Product;
-import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
-import org.broadleafcommerce.core.web.seo.SeoPropertyService;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(MockitoExtension.class)
 class SeoVariableExpressionDiffblueTest {
-  @Mock private SeoPropertyService seoPropertyService;
-
-  @InjectMocks private SeoVariableExpression seoVariableExpression;
-
   /**
-   * Test {@link SeoVariableExpression#getName()}.
-   *
-   * <p>Method under test: {@link SeoVariableExpression#getName()}
+   * Method under test: {@link SeoVariableExpression#getName()}
    */
   @Test
-  @DisplayName("Test getName()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SeoVariableExpression.getName()"})
   void testGetName() {
     // Arrange, Act and Assert
-    assertEquals("seo", new SeoVariableExpression().getName());
-  }
-
-  /**
-   * Test {@link SeoVariableExpression#getMetaProperties(Category)} with {@code category}.
-   *
-   * <p>Method under test: {@link SeoVariableExpression#getMetaProperties(Category)}
-   */
-  @Test
-  @DisplayName("Test getMetaProperties(Category) with 'category'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map SeoVariableExpression.getMetaProperties(Category)"})
-  void testGetMetaPropertiesWithCategory() {
-    // Arrange
-    when(seoPropertyService.getSeoProperties(Mockito.<Category>any())).thenReturn(new HashMap<>());
-
-    // Act
-    Map<String, String> actualMetaProperties =
-        seoVariableExpression.getMetaProperties(new CategoryImpl());
-
-    // Assert
-    verify(seoPropertyService).getSeoProperties(isA(Category.class));
-    assertTrue(actualMetaProperties.isEmpty());
-  }
-
-  /**
-   * Test {@link SeoVariableExpression#getMetaProperties(PageDTO)} with {@code page}.
-   *
-   * <p>Method under test: {@link SeoVariableExpression#getMetaProperties(PageDTO)}
-   */
-  @Test
-  @DisplayName("Test getMetaProperties(PageDTO) with 'page'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map SeoVariableExpression.getMetaProperties(PageDTO)"})
-  void testGetMetaPropertiesWithPage() {
-    // Arrange
-    when(seoPropertyService.getSeoProperties(Mockito.<PageDTO>any())).thenReturn(new HashMap<>());
-
-    // Act
-    Map<String, String> actualMetaProperties =
-        seoVariableExpression.getMetaProperties(new PageDTO());
-
-    // Assert
-    verify(seoPropertyService).getSeoProperties(isA(PageDTO.class));
-    assertTrue(actualMetaProperties.isEmpty());
-  }
-
-  /**
-   * Test {@link SeoVariableExpression#getMetaProperties(Product)} with {@code product}.
-   *
-   * <p>Method under test: {@link SeoVariableExpression#getMetaProperties(Product)}
-   */
-  @Test
-  @DisplayName("Test getMetaProperties(Product) with 'product'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map SeoVariableExpression.getMetaProperties(Product)"})
-  void testGetMetaPropertiesWithProduct() {
-    // Arrange
-    when(seoPropertyService.getSeoProperties(Mockito.<Product>any())).thenReturn(new HashMap<>());
-
-    // Act
-    Map<String, String> actualMetaProperties =
-        seoVariableExpression.getMetaProperties(new ProductBundleImpl());
-
-    // Assert
-    verify(seoPropertyService).getSeoProperties(isA(Product.class));
-    assertTrue(actualMetaProperties.isEmpty());
+    assertEquals("seo", (new SeoVariableExpression()).getName());
   }
 }

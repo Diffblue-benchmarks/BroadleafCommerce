@@ -24,13 +24,9 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.lang.reflect.Method;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -42,447 +38,229 @@ import org.springframework.web.util.UriComponentsBuilder;
 @ContextConfiguration(classes = {FrameworkMvcUriComponentsBuilder.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class FrameworkMvcUriComponentsBuilderDiffblueTest {
-  @Autowired private FrameworkMvcUriComponentsBuilder frameworkMvcUriComponentsBuilder;
+  @Autowired
+  private FrameworkMvcUriComponentsBuilder frameworkMvcUriComponentsBuilder;
 
-  @MockBean private UriComponentsBuilder uriComponentsBuilder;
+  @MockBean
+  private UriComponentsBuilder uriComponentsBuilder;
 
   /**
-   * Test {@link FrameworkMvcUriComponentsBuilder#fromController(UriComponentsBuilder, Class)} with
-   * {@code builder}, {@code controllerType}.
-   *
-   * <ul>
-   *   <li>Then clone return {@link UriComponentsBuilder}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * FrameworkMvcUriComponentsBuilder#fromController(UriComponentsBuilder, Class)}
+   * Method under test:
+   * {@link FrameworkMvcUriComponentsBuilder#fromController(UriComponentsBuilder, Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "UriComponentsBuilder FrameworkMvcUriComponentsBuilder.fromController(UriComponentsBuilder, Class)"
-  })
-  public void testFromControllerWithBuilderControllerType_thenCloneReturnUriComponentsBuilder() {
+  public void testFromController() {
     // Arrange
     UriComponentsBuilder builder = UriComponentsBuilder.newInstance();
     Class<Object> controllerType = Object.class;
 
     // Act
-    UriComponentsBuilder actualFromControllerResult =
-        FrameworkMvcUriComponentsBuilder.fromController(builder, controllerType);
+    UriComponentsBuilder actualFromControllerResult = FrameworkMvcUriComponentsBuilder.fromController(builder,
+        controllerType);
 
     // Assert
     assertTrue(actualFromControllerResult.clone() instanceof UriComponentsBuilder);
     assertEquals("/", actualFromControllerResult.toUriString());
-    UriComponents uriComponents = actualFromControllerResult.build();
-    assertNull(uriComponents.getFragment());
-    assertNull(uriComponents.getScheme());
+    UriComponents buildResult = actualFromControllerResult.build();
+    assertNull(buildResult.getFragment());
+    assertNull(buildResult.getScheme());
   }
 
   /**
-   * Test {@link FrameworkMvcUriComponentsBuilder#fromMethodName(UriComponentsBuilder, Class,
-   * String, Object[])} with {@code builder}, {@code controllerType}, {@code methodName}, {@code
-   * args}.
-   *
-   * <p>Method under test: {@link
-   * FrameworkMvcUriComponentsBuilder#fromMethodName(UriComponentsBuilder, Class, String, Object[])}
+   * Method under test:
+   * {@link FrameworkMvcUriComponentsBuilder#fromMethodName(Class, String, Object[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "UriComponentsBuilder FrameworkMvcUriComponentsBuilder.fromMethodName(UriComponentsBuilder, Class, String, Object[])"
-  })
-  public void testFromMethodNameWithBuilderControllerTypeMethodNameArgs() {
-    // Arrange
-    Class<Method> controllerType = Method.class;
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            FrameworkMvcUriComponentsBuilder.fromMethodName(
-                uriComponentsBuilder,
-                controllerType,
-                "handleParameterNumberMismatch",
-                BLCFieldUtils.NULL_FIELD));
-  }
-
-  /**
-   * Test {@link FrameworkMvcUriComponentsBuilder#fromMethodName(UriComponentsBuilder, Class,
-   * String, Object[])} with {@code builder}, {@code controllerType}, {@code methodName}, {@code
-   * args}.
-   *
-   * <ul>
-   *   <li>When {@code Object}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * FrameworkMvcUriComponentsBuilder#fromMethodName(UriComponentsBuilder, Class, String, Object[])}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "UriComponentsBuilder FrameworkMvcUriComponentsBuilder.fromMethodName(UriComponentsBuilder, Class, String, Object[])"
-  })
-  public void testFromMethodNameWithBuilderControllerTypeMethodNameArgs_whenJavaLangObject() {
+  public void testFromMethodName() {
     // Arrange
     Class<Object> controllerType = Object.class;
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            FrameworkMvcUriComponentsBuilder.fromMethodName(
-                uriComponentsBuilder, controllerType, "Method Name", BLCFieldUtils.NULL_FIELD));
+    assertThrows(IllegalArgumentException.class,
+        () -> FrameworkMvcUriComponentsBuilder.fromMethodName(controllerType, "Method Name", BLCFieldUtils.NULL_FIELD));
   }
 
   /**
-   * Test {@link FrameworkMvcUriComponentsBuilder#fromMethodName(UriComponentsBuilder, Class,
-   * String, Object[])} with {@code builder}, {@code controllerType}, {@code methodName}, {@code
-   * args}.
-   *
-   * <ul>
-   *   <li>When {@code Method Name}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * FrameworkMvcUriComponentsBuilder#fromMethodName(UriComponentsBuilder, Class, String, Object[])}
+   * Method under test:
+   * {@link FrameworkMvcUriComponentsBuilder#fromMethodName(Class, String, Object[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "UriComponentsBuilder FrameworkMvcUriComponentsBuilder.fromMethodName(UriComponentsBuilder, Class, String, Object[])"
-  })
-  public void testFromMethodNameWithBuilderControllerTypeMethodNameArgs_whenMethodName() {
+  public void testFromMethodName2() {
     // Arrange
     Class<Method> controllerType = Method.class;
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            FrameworkMvcUriComponentsBuilder.fromMethodName(
-                uriComponentsBuilder, controllerType, "Method Name", BLCFieldUtils.NULL_FIELD));
+    assertThrows(IllegalArgumentException.class,
+        () -> FrameworkMvcUriComponentsBuilder.fromMethodName(controllerType, "Method Name", BLCFieldUtils.NULL_FIELD));
   }
 
   /**
-   * Test {@link FrameworkMvcUriComponentsBuilder#fromMethodName(Class, String, Object[])} with
-   * {@code controllerType}, {@code methodName}, {@code args}.
-   *
-   * <p>Method under test: {@link FrameworkMvcUriComponentsBuilder#fromMethodName(Class, String,
-   * Object[])}
+   * Method under test:
+   * {@link FrameworkMvcUriComponentsBuilder#fromMethodName(Class, String, Object[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "UriComponentsBuilder FrameworkMvcUriComponentsBuilder.fromMethodName(Class, String, Object[])"
-  })
-  public void testFromMethodNameWithControllerTypeMethodNameArgs() {
+  public void testFromMethodName3() {
     // Arrange
     Class<Method> controllerType = Method.class;
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            FrameworkMvcUriComponentsBuilder.fromMethodName(
-                controllerType, "Method Name", BLCFieldUtils.NULL_FIELD));
+    assertThrows(IllegalArgumentException.class,
+        () -> FrameworkMvcUriComponentsBuilder.fromMethodName(controllerType, "invoke", BLCFieldUtils.NULL_FIELD));
   }
 
   /**
-   * Test {@link FrameworkMvcUriComponentsBuilder#fromMethodName(Class, String, Object[])} with
-   * {@code controllerType}, {@code methodName}, {@code args}.
-   *
-   * <p>Method under test: {@link FrameworkMvcUriComponentsBuilder#fromMethodName(Class, String,
-   * Object[])}
+   * Method under test:
+   * {@link FrameworkMvcUriComponentsBuilder#fromMethodName(UriComponentsBuilder, Class, String, Object[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "UriComponentsBuilder FrameworkMvcUriComponentsBuilder.fromMethodName(Class, String, Object[])"
-  })
-  public void testFromMethodNameWithControllerTypeMethodNameArgs2() {
-    // Arrange
-    Class<Method> controllerType = Method.class;
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            FrameworkMvcUriComponentsBuilder.fromMethodName(
-                controllerType, "handleParameterNumberMismatch", BLCFieldUtils.NULL_FIELD));
-  }
-
-  /**
-   * Test {@link FrameworkMvcUriComponentsBuilder#fromMethodName(Class, String, Object[])} with
-   * {@code controllerType}, {@code methodName}, {@code args}.
-   *
-   * <ul>
-   *   <li>When {@code Object}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FrameworkMvcUriComponentsBuilder#fromMethodName(Class, String,
-   * Object[])}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "UriComponentsBuilder FrameworkMvcUriComponentsBuilder.fromMethodName(Class, String, Object[])"
-  })
-  public void testFromMethodNameWithControllerTypeMethodNameArgs_whenJavaLangObject() {
+  public void testFromMethodName4() {
     // Arrange
     Class<Object> controllerType = Object.class;
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            FrameworkMvcUriComponentsBuilder.fromMethodName(
-                controllerType, "Method Name", BLCFieldUtils.NULL_FIELD));
+    assertThrows(IllegalArgumentException.class, () -> FrameworkMvcUriComponentsBuilder
+        .fromMethodName(uriComponentsBuilder, controllerType, "Method Name", BLCFieldUtils.NULL_FIELD));
   }
 
   /**
-   * Test {@link FrameworkMvcUriComponentsBuilder#fromMethod(UriComponentsBuilder, Class, Method,
-   * Object[])} with {@code baseUrl}, {@code controllerType}, {@code method}, {@code args}.
-   *
-   * <p>Method under test: {@link FrameworkMvcUriComponentsBuilder#fromMethod(UriComponentsBuilder,
-   * Class, Method, Object[])}
+   * Method under test:
+   * {@link FrameworkMvcUriComponentsBuilder#fromMethodName(UriComponentsBuilder, Class, String, Object[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "UriComponentsBuilder FrameworkMvcUriComponentsBuilder.fromMethod(UriComponentsBuilder, Class, Method, Object[])"
-  })
-  public void testFromMethodWithBaseUrlControllerTypeMethodArgs() {
+  public void testFromMethodName5() {
+    // Arrange
+    Class<Method> controllerType = Method.class;
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> FrameworkMvcUriComponentsBuilder
+        .fromMethodName(uriComponentsBuilder, controllerType, "Method Name", BLCFieldUtils.NULL_FIELD));
+  }
+
+  /**
+   * Method under test:
+   * {@link FrameworkMvcUriComponentsBuilder#fromMethodName(UriComponentsBuilder, Class, String, Object[])}
+   */
+  @Test
+  public void testFromMethodName6() {
+    // Arrange
+    Class<Method> controllerType = Method.class;
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> FrameworkMvcUriComponentsBuilder
+        .fromMethodName(uriComponentsBuilder, controllerType, "invoke", BLCFieldUtils.NULL_FIELD));
+  }
+
+  /**
+   * Method under test:
+   * {@link FrameworkMvcUriComponentsBuilder#fromMethod(UriComponentsBuilder, Class, Method, Object[])}
+   */
+  @Test
+  public void testFromMethod() {
     // Arrange
     UriComponentsBuilder baseUrl = mock(UriComponentsBuilder.class);
-    when(baseUrl.cloneBuilder()).thenThrow(new IllegalArgumentException());
+    when(baseUrl.cloneBuilder()).thenThrow(new IllegalArgumentException("'controllerType' must not be null"));
     Class<Object> controllerType = Object.class;
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            FrameworkMvcUriComponentsBuilder.fromMethod(
-                baseUrl, controllerType, null, BLCFieldUtils.NULL_FIELD));
+    assertThrows(IllegalArgumentException.class,
+        () -> FrameworkMvcUriComponentsBuilder.fromMethod(baseUrl, controllerType, null, BLCFieldUtils.NULL_FIELD));
     verify(baseUrl).cloneBuilder();
   }
 
   /**
-   * Test {@link FrameworkMvcUriComponentsBuilder#withController(Class)}.
-   *
-   * <ul>
-   *   <li>Then clone return {@link UriComponentsBuilder}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FrameworkMvcUriComponentsBuilder#withController(Class)}
+   * Method under test:
+   * {@link FrameworkMvcUriComponentsBuilder#withController(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"UriComponentsBuilder FrameworkMvcUriComponentsBuilder.withController(Class)"})
-  public void testWithController_thenCloneReturnUriComponentsBuilder() {
+  public void testWithController() {
     // Arrange
-    FrameworkMvcUriComponentsBuilder relativeToResult =
-        FrameworkMvcUriComponentsBuilder.relativeTo(UriComponentsBuilder.newInstance());
+    FrameworkMvcUriComponentsBuilder relativeToResult = FrameworkMvcUriComponentsBuilder
+        .relativeTo(UriComponentsBuilder.newInstance());
     Class<Object> controllerType = Object.class;
 
     // Act
-    UriComponentsBuilder actualWithControllerResult =
-        relativeToResult.withController(controllerType);
+    UriComponentsBuilder actualWithControllerResult = relativeToResult.withController(controllerType);
 
     // Assert
     assertTrue(actualWithControllerResult.clone() instanceof UriComponentsBuilder);
     assertEquals("/", actualWithControllerResult.toUriString());
-    UriComponents uriComponents = actualWithControllerResult.build();
-    assertNull(uriComponents.getFragment());
-    assertNull(uriComponents.getScheme());
+    UriComponents buildResult = actualWithControllerResult.build();
+    assertNull(buildResult.getFragment());
+    assertNull(buildResult.getScheme());
   }
 
   /**
-   * Test {@link FrameworkMvcUriComponentsBuilder#withMethodName(Class, String, Object[])}.
-   *
-   * <p>Method under test: {@link FrameworkMvcUriComponentsBuilder#withMethodName(Class, String,
-   * Object[])}
+   * Method under test:
+   * {@link FrameworkMvcUriComponentsBuilder#withMethodName(Class, String, Object[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "UriComponentsBuilder FrameworkMvcUriComponentsBuilder.withMethodName(Class, String, Object[])"
-  })
   public void testWithMethodName() {
     // Arrange
-    when(uriComponentsBuilder.cloneBuilder()).thenThrow(new IllegalArgumentException());
-    Class<Method> controllerType = Method.class;
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            frameworkMvcUriComponentsBuilder.withMethodName(
-                controllerType,
-                "handleParameterNumberMismatch",
-                BLCFieldUtils.NULL_FIELD,
-                BLCFieldUtils.NULL_FIELD));
-    verify(uriComponentsBuilder).cloneBuilder();
-  }
-
-  /**
-   * Test {@link FrameworkMvcUriComponentsBuilder#withMethodName(Class, String, Object[])}.
-   *
-   * <ul>
-   *   <li>Given {@link UriComponentsBuilder}.
-   *   <li>When {@code handleParameterNumberMismatch}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FrameworkMvcUriComponentsBuilder#withMethodName(Class, String,
-   * Object[])}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "UriComponentsBuilder FrameworkMvcUriComponentsBuilder.withMethodName(Class, String, Object[])"
-  })
-  public void testWithMethodName_givenUriComponentsBuilder_whenHandleParameterNumberMismatch() {
-    // Arrange
-    Class<Method> controllerType = Method.class;
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            frameworkMvcUriComponentsBuilder.withMethodName(
-                controllerType, "handleParameterNumberMismatch", BLCFieldUtils.NULL_FIELD));
-  }
-
-  /**
-   * Test {@link FrameworkMvcUriComponentsBuilder#withMethodName(Class, String, Object[])}.
-   *
-   * <ul>
-   *   <li>Given {@link UriComponentsBuilder}.
-   *   <li>When {@code Object}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FrameworkMvcUriComponentsBuilder#withMethodName(Class, String,
-   * Object[])}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "UriComponentsBuilder FrameworkMvcUriComponentsBuilder.withMethodName(Class, String, Object[])"
-  })
-  public void testWithMethodName_givenUriComponentsBuilder_whenJavaLangObject() {
-    // Arrange
     Class<Object> controllerType = Object.class;
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            frameworkMvcUriComponentsBuilder.withMethodName(
-                controllerType, "Method Name", BLCFieldUtils.NULL_FIELD));
+    assertThrows(IllegalArgumentException.class,
+        () -> frameworkMvcUriComponentsBuilder.withMethodName(controllerType, "Method Name", BLCFieldUtils.NULL_FIELD));
   }
 
   /**
-   * Test {@link FrameworkMvcUriComponentsBuilder#withMethodName(Class, String, Object[])}.
-   *
-   * <ul>
-   *   <li>Given {@link UriComponentsBuilder}.
-   *   <li>When {@code Method Name}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FrameworkMvcUriComponentsBuilder#withMethodName(Class, String,
-   * Object[])}
+   * Method under test:
+   * {@link FrameworkMvcUriComponentsBuilder#withMethodName(Class, String, Object[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "UriComponentsBuilder FrameworkMvcUriComponentsBuilder.withMethodName(Class, String, Object[])"
-  })
-  public void testWithMethodName_givenUriComponentsBuilder_whenMethodName() {
+  public void testWithMethodName2() {
     // Arrange
     Class<Method> controllerType = Method.class;
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            frameworkMvcUriComponentsBuilder.withMethodName(
-                controllerType, "Method Name", BLCFieldUtils.NULL_FIELD));
+    assertThrows(IllegalArgumentException.class,
+        () -> frameworkMvcUriComponentsBuilder.withMethodName(controllerType, "Method Name", BLCFieldUtils.NULL_FIELD));
   }
 
   /**
-   * Test {@link FrameworkMvcUriComponentsBuilder#withMethodName(Class, String, Object[])}.
-   *
-   * <ul>
-   *   <li>Then calls {@link UriComponentsBuilder#cloneBuilder()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FrameworkMvcUriComponentsBuilder#withMethodName(Class, String,
-   * Object[])}
+   * Method under test:
+   * {@link FrameworkMvcUriComponentsBuilder#withMethodName(Class, String, Object[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "UriComponentsBuilder FrameworkMvcUriComponentsBuilder.withMethodName(Class, String, Object[])"
-  })
-  public void testWithMethodName_thenCallsCloneBuilder() {
+  public void testWithMethodName3() {
     // Arrange
-    when(uriComponentsBuilder.cloneBuilder()).thenReturn(UriComponentsBuilder.newInstance());
     Class<Method> controllerType = Method.class;
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            frameworkMvcUriComponentsBuilder.withMethodName(
-                controllerType,
-                "handleParameterNumberMismatch",
-                BLCFieldUtils.NULL_FIELD,
-                BLCFieldUtils.NULL_FIELD));
+    assertThrows(IllegalArgumentException.class,
+        () -> frameworkMvcUriComponentsBuilder.withMethodName(controllerType, "invoke", BLCFieldUtils.NULL_FIELD));
+  }
+
+  /**
+   * Method under test:
+   * {@link FrameworkMvcUriComponentsBuilder#withMethodName(Class, String, Object[])}
+   */
+  @Test
+  public void testWithMethodName4() {
+    // Arrange
+    when(uriComponentsBuilder.cloneBuilder()).thenReturn(uriComponentsBuilder);
+    Class<Method> controllerType = Method.class;
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> frameworkMvcUriComponentsBuilder.withMethodName(controllerType, "equals", BLCFieldUtils.NULL_FIELD));
     verify(uriComponentsBuilder).cloneBuilder();
   }
 
   /**
-   * Test {@link FrameworkMvcUriComponentsBuilder#withMethod(Class, Method, Object[])}.
-   *
-   * <ul>
-   *   <li>Then throw {@link IllegalArgumentException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FrameworkMvcUriComponentsBuilder#withMethod(Class, Method,
-   * Object[])}
+   * Method under test:
+   * {@link FrameworkMvcUriComponentsBuilder#withMethod(Class, Method, Object[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "UriComponentsBuilder FrameworkMvcUriComponentsBuilder.withMethod(Class, Method, Object[])"
-  })
-  public void testWithMethod_thenThrowIllegalArgumentException() {
+  public void testWithMethod() {
     // Arrange
     UriComponentsBuilder baseUrl = mock(UriComponentsBuilder.class);
-    when(baseUrl.cloneBuilder()).thenThrow(new IllegalArgumentException());
-    FrameworkMvcUriComponentsBuilder relativeToResult =
-        FrameworkMvcUriComponentsBuilder.relativeTo(baseUrl);
+    when(baseUrl.cloneBuilder()).thenThrow(new IllegalArgumentException("'controllerType' must not be null"));
+    FrameworkMvcUriComponentsBuilder relativeToResult = FrameworkMvcUriComponentsBuilder.relativeTo(baseUrl);
     Class<Object> controllerType = Object.class;
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
+    assertThrows(IllegalArgumentException.class,
         () -> relativeToResult.withMethod(controllerType, null, BLCFieldUtils.NULL_FIELD));
     verify(baseUrl).cloneBuilder();
   }

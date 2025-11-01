@@ -23,9 +23,6 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -41,86 +38,36 @@ import org.broadleafcommerce.core.order.domain.OrderImpl;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
 public class CheckoutServiceImplDiffblueTest {
-  @InjectMocks private CheckoutServiceImpl checkoutServiceImpl;
-
   /**
-   * Test {@link CheckoutServiceImpl#hasOrderBeenCompleted(Order)}.
-   *
-   * <p>Method under test: {@link CheckoutServiceImpl#hasOrderBeenCompleted(Order)}
+   * Method under test: {@link CheckoutServiceImpl#hasOrderBeenCompleted(Order)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean CheckoutServiceImpl.hasOrderBeenCompleted(Order)"})
   public void testHasOrderBeenCompleted() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getStatus()).thenReturn(new OrderStatus("SUBMITTED", "SUBMITTED"));
+    CheckoutServiceImpl checkoutServiceImpl = new CheckoutServiceImpl();
 
-    // Act
-    boolean actualHasOrderBeenCompletedResult = checkoutServiceImpl.hasOrderBeenCompleted(order);
-
-    // Assert
-    verify(order).getStatus();
-    assertTrue(actualHasOrderBeenCompletedResult);
+    // Act and Assert
+    assertFalse(checkoutServiceImpl.hasOrderBeenCompleted(new NullOrderImpl()));
   }
 
   /**
-   * Test {@link CheckoutServiceImpl#hasOrderBeenCompleted(Order)}.
-   *
-   * <ul>
-   *   <li>Given {@link OrderStatus#ARCHIVED}.
-   *   <li>When {@link NullOrderImpl} {@link NullOrderImpl#getStatus()} return {@link
-   *       OrderStatus#ARCHIVED}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CheckoutServiceImpl#hasOrderBeenCompleted(Order)}
+   * Method under test: {@link CheckoutServiceImpl#hasOrderBeenCompleted(Order)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean CheckoutServiceImpl.hasOrderBeenCompleted(Order)"})
-  public void testHasOrderBeenCompleted_givenArchived_whenNullOrderImplGetStatusReturnArchived() {
+  public void testHasOrderBeenCompleted2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getStatus()).thenReturn(OrderStatus.ARCHIVED);
+    CheckoutServiceImpl checkoutServiceImpl = new CheckoutServiceImpl();
 
-    // Act
-    boolean actualHasOrderBeenCompletedResult = checkoutServiceImpl.hasOrderBeenCompleted(order);
-
-    // Assert
-    verify(order, atLeast(1)).getStatus();
-    assertFalse(actualHasOrderBeenCompletedResult);
-  }
-
-  /**
-   * Test {@link CheckoutServiceImpl#hasOrderBeenCompleted(Order)}.
-   *
-   * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link CheckoutServiceImpl#hasOrderBeenCompleted(Order)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean CheckoutServiceImpl.hasOrderBeenCompleted(Order)"})
-  public void testHasOrderBeenCompleted_givenAuditableCreatedByIsOne() {
-    // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     OrderImpl order = new OrderImpl();
@@ -141,11 +88,11 @@ public class CheckoutServiceImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
 
     // Act and Assert
@@ -153,20 +100,34 @@ public class CheckoutServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link CheckoutServiceImpl#hasOrderBeenCompleted(Order)}.
-   *
-   * <ul>
-   *   <li>Given {@link OrderStatus#CANCELLED}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CheckoutServiceImpl#hasOrderBeenCompleted(Order)}
+   * Method under test: {@link CheckoutServiceImpl#hasOrderBeenCompleted(Order)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean CheckoutServiceImpl.hasOrderBeenCompleted(Order)"})
-  public void testHasOrderBeenCompleted_givenCancelled() {
+  public void testHasOrderBeenCompleted3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    CheckoutServiceImpl checkoutServiceImpl = new CheckoutServiceImpl();
+    NullOrderImpl order = mock(NullOrderImpl.class);
+    when(order.getStatus()).thenReturn(OrderStatus.ARCHIVED);
+
+    // Act
+    boolean actualHasOrderBeenCompletedResult = checkoutServiceImpl.hasOrderBeenCompleted(order);
+
+    // Assert
+    verify(order, atLeast(1)).getStatus();
+    assertFalse(actualHasOrderBeenCompletedResult);
+  }
+
+  /**
+   * Method under test: {@link CheckoutServiceImpl#hasOrderBeenCompleted(Order)}
+   */
+  @Test
+  public void testHasOrderBeenCompleted4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CheckoutServiceImpl checkoutServiceImpl = new CheckoutServiceImpl();
     NullOrderImpl order = mock(NullOrderImpl.class);
     when(order.getStatus()).thenReturn(OrderStatus.CANCELLED);
 
@@ -179,20 +140,14 @@ public class CheckoutServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link CheckoutServiceImpl#hasOrderBeenCompleted(Order)}.
-   *
-   * <ul>
-   *   <li>Given {@link OrderStatus#SUBMITTED}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CheckoutServiceImpl#hasOrderBeenCompleted(Order)}
+   * Method under test: {@link CheckoutServiceImpl#hasOrderBeenCompleted(Order)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean CheckoutServiceImpl.hasOrderBeenCompleted(Order)"})
-  public void testHasOrderBeenCompleted_givenSubmitted() {
+  public void testHasOrderBeenCompleted5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    CheckoutServiceImpl checkoutServiceImpl = new CheckoutServiceImpl();
     NullOrderImpl order = mock(NullOrderImpl.class);
     when(order.getStatus()).thenReturn(OrderStatus.SUBMITTED);
 
@@ -205,21 +160,22 @@ public class CheckoutServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link CheckoutServiceImpl#hasOrderBeenCompleted(Order)}.
-   *
-   * <ul>
-   *   <li>When {@link NullOrderImpl} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CheckoutServiceImpl#hasOrderBeenCompleted(Order)}
+   * Method under test: {@link CheckoutServiceImpl#hasOrderBeenCompleted(Order)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean CheckoutServiceImpl.hasOrderBeenCompleted(Order)"})
-  public void testHasOrderBeenCompleted_whenNullOrderImpl_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(checkoutServiceImpl.hasOrderBeenCompleted(new NullOrderImpl()));
+  public void testHasOrderBeenCompleted6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CheckoutServiceImpl checkoutServiceImpl = new CheckoutServiceImpl();
+    NullOrderImpl order = mock(NullOrderImpl.class);
+    when(order.getStatus()).thenReturn(new OrderStatus("SUBMITTED", "SUBMITTED"));
+
+    // Act
+    boolean actualHasOrderBeenCompletedResult = checkoutServiceImpl.hasOrderBeenCompleted(order);
+
+    // Assert
+    verify(order).getStatus();
+    assertTrue(actualHasOrderBeenCompletedResult);
   }
 }

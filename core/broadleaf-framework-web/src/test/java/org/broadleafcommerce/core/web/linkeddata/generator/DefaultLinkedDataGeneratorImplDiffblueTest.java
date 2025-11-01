@@ -18,37 +18,47 @@
 package org.broadleafcommerce.core.web.linkeddata.generator;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
+import org.broadleafcommerce.core.web.security.XssRequestWrapper;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 
-@ExtendWith(MockitoExtension.class)
 class DefaultLinkedDataGeneratorImplDiffblueTest {
-  @InjectMocks private DefaultLinkedDataGeneratorImpl defaultLinkedDataGeneratorImpl;
-
   /**
-   * Test {@link DefaultLinkedDataGeneratorImpl#canHandle(HttpServletRequest)}.
-   *
-   * <p>Method under test: {@link DefaultLinkedDataGeneratorImpl#canHandle(HttpServletRequest)}
+   * Method under test:
+   * {@link DefaultLinkedDataGeneratorImpl#canHandle(HttpServletRequest)}
    */
   @Test
-  @DisplayName("Test canHandle(HttpServletRequest)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean DefaultLinkedDataGeneratorImpl.canHandle(HttpServletRequest)"})
   void testCanHandle() {
-    // Arrange, Act and Assert
-    assertTrue(
-        defaultLinkedDataGeneratorImpl.canHandle(
-            new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()))));
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    DefaultLinkedDataGeneratorImpl defaultLinkedDataGeneratorImpl = new DefaultLinkedDataGeneratorImpl();
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+
+    // Act and Assert
+    assertTrue(defaultLinkedDataGeneratorImpl.canHandle(new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}))));
+  }
+
+  /**
+   * Method under test:
+   * {@link DefaultLinkedDataGeneratorImpl#canHandle(HttpServletRequest)}
+   */
+  @Test
+  void testCanHandle2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    DefaultLinkedDataGeneratorImpl defaultLinkedDataGeneratorImpl = new DefaultLinkedDataGeneratorImpl();
+    DefaultMultipartHttpServletRequest servletRequest = mock(DefaultMultipartHttpServletRequest.class);
+
+    // Act and Assert
+    assertTrue(defaultLinkedDataGeneratorImpl.canHandle(new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}))));
   }
 }

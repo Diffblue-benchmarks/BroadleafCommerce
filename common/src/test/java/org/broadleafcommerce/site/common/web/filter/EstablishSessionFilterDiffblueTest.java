@@ -21,6 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
@@ -28,177 +29,161 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
+import java.nio.file.Paths;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletRequestWrapper;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
 import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrapper;
+import org.broadleafcommerce.common.web.util.FileSystemResponseWrapper;
 import org.broadleafcommerce.common.web.util.StatusExposingServletResponse;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.StandardEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 
-@ContextConfiguration(classes = {EstablishSessionFilter.class})
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
 public class EstablishSessionFilterDiffblueTest {
-  @Autowired private EstablishSessionFilter establishSessionFilter;
-
   /**
-   * Test {@link EstablishSessionFilter#doFilterUnlessIgnored(ServletRequest, ServletResponse,
-   * FilterChain)}.
-   *
-   * <p>Method under test: {@link EstablishSessionFilter#doFilterUnlessIgnored(ServletRequest,
-   * ServletResponse, FilterChain)}
+   * Method under test:
+   * {@link EstablishSessionFilter#doFilterUnlessIgnored(ServletRequest, ServletResponse, FilterChain)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void EstablishSessionFilter.doFilterUnlessIgnored(ServletRequest, ServletResponse, FilterChain)"
-  })
   public void testDoFilterUnlessIgnored() throws IOException, ServletException {
-    // Arrange
-    HttpServletRequestWrapper request = new HttpServletRequestWrapper(new MockHttpServletRequest());
-    HttpServletResponseWrapper response =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
+    // Arrange
+    EstablishSessionFilter establishSessionFilter = new EstablishSessionFilter();
+    MockHttpServletRequest request = new MockHttpServletRequest();
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse response2 = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
     FilterChain filterChain = mock(FilterChain.class);
-    doNothing()
-        .when(filterChain)
-        .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
+    doNothing().when(filterChain).doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
 
     // Act
-    establishSessionFilter.doFilterUnlessIgnored(request, response, filterChain);
+    establishSessionFilter.doFilterUnlessIgnored(request, response2, filterChain);
 
     // Assert
     verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
   }
 
   /**
-   * Test {@link EstablishSessionFilter#doFilterUnlessIgnored(ServletRequest, ServletResponse,
-   * FilterChain)}.
-   *
-   * <ul>
-   *   <li>Given {@link IOException#IOException()}.
-   *   <li>Then throw {@link IOException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EstablishSessionFilter#doFilterUnlessIgnored(ServletRequest,
-   * ServletResponse, FilterChain)}
+   * Method under test:
+   * {@link EstablishSessionFilter#doFilterUnlessIgnored(ServletRequest, ServletResponse, FilterChain)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void EstablishSessionFilter.doFilterUnlessIgnored(ServletRequest, ServletResponse, FilterChain)"
-  })
-  public void testDoFilterUnlessIgnored_givenIOException_thenThrowIOException()
-      throws IOException, ServletException {
-    // Arrange
-    HttpServletRequestWrapper request = new HttpServletRequestWrapper(new MockHttpServletRequest());
-    HttpServletResponseWrapper response =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
+  public void testDoFilterUnlessIgnored2() throws IOException, ServletException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
+    // Arrange
+    EstablishSessionFilter establishSessionFilter = new EstablishSessionFilter();
+    MockHttpServletRequest request = new MockHttpServletRequest();
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse response2 = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
     FilterChain filterChain = mock(FilterChain.class);
-    doThrow(new IOException())
-        .when(filterChain)
+    doThrow(new IOException("foo")).when(filterChain)
         .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
 
     // Act and Assert
-    assertThrows(
-        IOException.class,
-        () -> establishSessionFilter.doFilterUnlessIgnored(request, response, filterChain));
+    assertThrows(IOException.class,
+        () -> establishSessionFilter.doFilterUnlessIgnored(request, response2, filterChain));
     verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
   }
 
   /**
-   * Test {@link EstablishSessionFilter#doFilterUnlessIgnored(ServletRequest, ServletResponse,
-   * FilterChain)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link ServletException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EstablishSessionFilter#doFilterUnlessIgnored(ServletRequest,
-   * ServletResponse, FilterChain)}
+   * Method under test:
+   * {@link EstablishSessionFilter#doFilterUnlessIgnored(ServletRequest, ServletResponse, FilterChain)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void EstablishSessionFilter.doFilterUnlessIgnored(ServletRequest, ServletResponse, FilterChain)"
-  })
-  public void testDoFilterUnlessIgnored_thenThrowServletException()
-      throws IOException, ServletException {
-    // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
-    ServletRequestWrapper request2 = new ServletRequestWrapper(request);
-    HttpServletResponseWrapper response =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
+  public void testDoFilterUnlessIgnored3() throws IOException, ServletException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
+    // Arrange
+    EstablishSessionFilter establishSessionFilter = new EstablishSessionFilter();
+    ServletRequestWrapper request = new ServletRequestWrapper(
+        new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse response2 = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
     FilterChain filterChain = mock(FilterChain.class);
-    doThrow(new ServletException("An error occurred"))
-        .when(filterChain)
+    doThrow(new ServletException("An error occurred")).when(filterChain)
         .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
 
     // Act and Assert
-    assertThrows(
-        ServletException.class,
-        () -> establishSessionFilter.doFilterUnlessIgnored(request2, response, filterChain));
+    assertThrows(ServletException.class,
+        () -> establishSessionFilter.doFilterUnlessIgnored(request, response2, filterChain));
     verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
   }
 
   /**
-   * Test {@link EstablishSessionFilter#isIgnored(HttpServletRequest, HttpServletResponse)}.
-   *
-   * <ul>
-   *   <li>Given {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EstablishSessionFilter#isIgnored(HttpServletRequest,
-   * HttpServletResponse)}
+   * Method under test:
+   * {@link EstablishSessionFilter#isIgnored(HttpServletRequest, HttpServletResponse)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean EstablishSessionFilter.isIgnored(HttpServletRequest, HttpServletResponse)"
-  })
-  public void testIsIgnored_givenFalse() {
+  public void testIsIgnored() throws IOException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    DefaultMultipartHttpServletRequest httpServletRequest =
-        mock(DefaultMultipartHttpServletRequest.class);
-    when(httpServletRequest.getAttribute(Mockito.<String>any())).thenReturn(false);
+    EstablishSessionFilter establishSessionFilter = new EstablishSessionFilter();
+    SessionlessHttpServletRequestWrapper httpServletRequest = new SessionlessHttpServletRequestWrapper(
+        new MockHttpServletRequest());
+    MockHttpServletResponse response = new MockHttpServletResponse();
+
+    // Act and Assert
+    assertFalse(establishSessionFilter.isIgnored(httpServletRequest,
+        new StatusExposingServletResponse(new FileSystemResponseWrapper(response,
+            Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()))));
+  }
+
+  /**
+   * Method under test:
+   * {@link EstablishSessionFilter#isIgnored(HttpServletRequest, HttpServletResponse)}
+   */
+  @Test
+  public void testIsIgnored2() throws IOException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EstablishSessionFilter establishSessionFilter = new EstablishSessionFilter();
+    DefaultMultipartHttpServletRequest httpServletRequest = mock(DefaultMultipartHttpServletRequest.class);
+    when(httpServletRequest.getAttribute(Mockito.<String>any())).thenReturn(true);
+    MockHttpServletResponse response = new MockHttpServletResponse();
 
     // Act
-    boolean actualIsIgnoredResult =
-        establishSessionFilter.isIgnored(
-            httpServletRequest,
-            new HttpServletResponseWrapper(
-                new StatusExposingServletResponse(new MockHttpServletResponse())));
+    boolean actualIsIgnoredResult = establishSessionFilter.isIgnored(httpServletRequest,
+        new StatusExposingServletResponse(new FileSystemResponseWrapper(response,
+            Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile())));
+
+    // Assert
+    verify(httpServletRequest).getAttribute(eq("blUriIsFilterIgnored"));
+    assertTrue(actualIsIgnoredResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link EstablishSessionFilter#isIgnored(HttpServletRequest, HttpServletResponse)}
+   */
+  @Test
+  public void testIsIgnored3() throws IOException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EstablishSessionFilter establishSessionFilter = new EstablishSessionFilter();
+    DefaultMultipartHttpServletRequest httpServletRequest = mock(DefaultMultipartHttpServletRequest.class);
+    when(httpServletRequest.getAttribute(Mockito.<String>any())).thenReturn(false);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+
+    // Act
+    boolean actualIsIgnoredResult = establishSessionFilter.isIgnored(httpServletRequest,
+        new StatusExposingServletResponse(new FileSystemResponseWrapper(response,
+            Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile())));
 
     // Assert
     verify(httpServletRequest, atLeast(1)).getAttribute(Mockito.<String>any());
@@ -206,83 +191,28 @@ public class EstablishSessionFilterDiffblueTest {
   }
 
   /**
-   * Test {@link EstablishSessionFilter#isIgnored(HttpServletRequest, HttpServletResponse)}.
-   *
-   * <ul>
-   *   <li>Given {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EstablishSessionFilter#isIgnored(HttpServletRequest,
-   * HttpServletResponse)}
+   * Method under test: {@link EstablishSessionFilter#getOrder()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean EstablishSessionFilter.isIgnored(HttpServletRequest, HttpServletResponse)"
-  })
-  public void testIsIgnored_givenTrue() {
-    // Arrange
-    DefaultMultipartHttpServletRequest httpServletRequest =
-        mock(DefaultMultipartHttpServletRequest.class);
-    when(httpServletRequest.getAttribute(Mockito.<String>any())).thenReturn(true);
-
-    // Act
-    boolean actualIsIgnoredResult =
-        establishSessionFilter.isIgnored(
-            httpServletRequest,
-            new HttpServletResponseWrapper(
-                new StatusExposingServletResponse(new MockHttpServletResponse())));
-
-    // Assert
-    verify(httpServletRequest).getAttribute("blUriIsFilterIgnored");
-    assertTrue(actualIsIgnoredResult);
-  }
-
-  /**
-   * Test {@link EstablishSessionFilter#isIgnored(HttpServletRequest, HttpServletResponse)}.
-   *
-   * <ul>
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EstablishSessionFilter#isIgnored(HttpServletRequest,
-   * HttpServletResponse)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean EstablishSessionFilter.isIgnored(HttpServletRequest, HttpServletResponse)"
-  })
-  public void testIsIgnored_thenReturnFalse() {
-    // Arrange
-    HttpServletRequestWrapper httpServletRequest =
-        new HttpServletRequestWrapper(
-            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
-
-    // Act
-    boolean actualIsIgnoredResult =
-        establishSessionFilter.isIgnored(
-            httpServletRequest,
-            new HttpServletResponseWrapper(
-                new StatusExposingServletResponse(new MockHttpServletResponse())));
-
-    // Assert
-    assertFalse(actualIsIgnoredResult);
-  }
-
-  /**
-   * Test {@link EstablishSessionFilter#getOrder()}.
-   *
-   * <p>Method under test: {@link EstablishSessionFilter#getOrder()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int EstablishSessionFilter.getOrder()"})
   public void testGetOrder() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
+    assertEquals(-10000, (new EstablishSessionFilter()).getOrder());
+  }
+
+  /**
+   * Method under test: {@link EstablishSessionFilter#getOrder()}
+   */
+  @Test
+  public void testGetOrder2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EstablishSessionFilter establishSessionFilter = new EstablishSessionFilter();
+    establishSessionFilter.setEnvironment(mock(StandardEnvironment.class));
+
+    // Act and Assert
     assertEquals(-10000, establishSessionFilter.getOrder());
   }
 }

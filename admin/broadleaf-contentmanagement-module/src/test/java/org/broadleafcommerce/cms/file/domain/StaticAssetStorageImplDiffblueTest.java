@@ -19,22 +19,13 @@ package org.broadleafcommerce.cms.file.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
-import java.io.UnsupportedEncodingException;
+import static org.mockito.Mockito.mock;
 import java.sql.Blob;
-import java.sql.SQLException;
-import javax.sql.rowset.serial.SerialBlob;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class StaticAssetStorageImplDiffblueTest {
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link StaticAssetStorageImpl}
    *   <li>{@link StaticAssetStorageImpl#setFileData(Blob)}
@@ -46,21 +37,10 @@ public class StaticAssetStorageImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void StaticAssetStorageImpl.<init>()",
-    "Blob StaticAssetStorageImpl.getFileData()",
-    "Long StaticAssetStorageImpl.getId()",
-    "Long StaticAssetStorageImpl.getStaticAssetId()",
-    "void StaticAssetStorageImpl.setFileData(Blob)",
-    "void StaticAssetStorageImpl.setId(Long)",
-    "void StaticAssetStorageImpl.setStaticAssetId(Long)"
-  })
-  public void testGettersAndSetters() throws UnsupportedEncodingException, SQLException {
+  public void testGettersAndSetters() {
     // Arrange and Act
     StaticAssetStorageImpl actualStaticAssetStorageImpl = new StaticAssetStorageImpl();
-    SerialBlob fileData = new SerialBlob("AXAXAXAX".getBytes("UTF-8"));
+    Blob fileData = mock(Blob.class);
     actualStaticAssetStorageImpl.setFileData(fileData);
     actualStaticAssetStorageImpl.setId(1L);
     actualStaticAssetStorageImpl.setStaticAssetId(1L);
@@ -68,7 +48,7 @@ public class StaticAssetStorageImplDiffblueTest {
     Long actualId = actualStaticAssetStorageImpl.getId();
     Long actualStaticAssetId = actualStaticAssetStorageImpl.getStaticAssetId();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals(1L, actualId.longValue());
     assertEquals(1L, actualStaticAssetId.longValue());
     assertSame(fileData, actualFileData);

@@ -18,74 +18,72 @@
 package org.broadleafcommerce.admin.web.controller.extension;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import java.util.function.Function;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
-import org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.Mockito;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
 
-@ContextConfiguration(classes = {AdminOfferControllerExtensionHandler.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class AdminOfferControllerExtensionHandlerDiffblueTest {
-  @MockBean(name = "blAdminAbstractControllerExtensionManager")
-  private AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
-
-  @Autowired private AdminOfferControllerExtensionHandler adminOfferControllerExtensionHandler;
-
   /**
-   * Test {@link AdminOfferControllerExtensionHandler#setAdditionalModelAttributes(Model, String)}.
-   *
-   * <ul>
-   *   <li>When {@code offer}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminOfferControllerExtensionHandler#setAdditionalModelAttributes(Model, String)}
+   * Method under test:
+   * {@link AdminOfferControllerExtensionHandler#setAdditionalModelAttributes(Model, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AdminOfferControllerExtensionHandler.setAdditionalModelAttributes(Model, String)"
-  })
-  public void testSetAdditionalModelAttributes_whenOffer() {
-    // Arrange, Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.HANDLED_CONTINUE,
-        adminOfferControllerExtensionHandler.setAdditionalModelAttributes(
-            new ConcurrentModel(), "offer"));
+  public void testSetAdditionalModelAttributes() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AdminOfferControllerExtensionHandler adminOfferControllerExtensionHandler = new AdminOfferControllerExtensionHandler();
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.HANDLED_CONTINUE,
+        adminOfferControllerExtensionHandler.setAdditionalModelAttributes(new ConcurrentModel(), "Section Key"));
   }
 
   /**
-   * Test {@link AdminOfferControllerExtensionHandler#setAdditionalModelAttributes(Model, String)}.
-   *
-   * <ul>
-   *   <li>When {@code Section Key}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminOfferControllerExtensionHandler#setAdditionalModelAttributes(Model, String)}
+   * Method under test:
+   * {@link AdminOfferControllerExtensionHandler#setAdditionalModelAttributes(Model, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AdminOfferControllerExtensionHandler.setAdditionalModelAttributes(Model, String)"
-  })
-  public void testSetAdditionalModelAttributes_whenSectionKey() {
-    // Arrange, Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.HANDLED_CONTINUE,
-        adminOfferControllerExtensionHandler.setAdditionalModelAttributes(
-            new ConcurrentModel(), "Section Key"));
+  public void testSetAdditionalModelAttributes2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AdminOfferControllerExtensionHandler adminOfferControllerExtensionHandler = new AdminOfferControllerExtensionHandler();
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.HANDLED_CONTINUE,
+        adminOfferControllerExtensionHandler.setAdditionalModelAttributes(new ConcurrentModel(), "offer"));
+  }
+
+  /**
+   * Method under test:
+   * {@link AdminOfferControllerExtensionHandler#setAdditionalModelAttributes(Model, String)}
+   */
+  @Test
+  public void testSetAdditionalModelAttributes3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AdminOfferControllerExtensionHandler adminOfferControllerExtensionHandler = new AdminOfferControllerExtensionHandler();
+    Function<String, Object> function = mock(Function.class);
+    when(function.apply(Mockito.<String>any())).thenReturn("Apply");
+
+    ConcurrentModel model = new ConcurrentModel();
+    model.computeIfAbsent("offer", function);
+
+    // Act
+    ExtensionResultStatusType actualSetAdditionalModelAttributesResult = adminOfferControllerExtensionHandler
+        .setAdditionalModelAttributes(model, "Section Key");
+
+    // Assert
+    verify(function).apply(eq("offer"));
+    assertEquals(ExtensionResultStatusType.HANDLED_CONTINUE, actualSetAdditionalModelAttributesResult);
   }
 }

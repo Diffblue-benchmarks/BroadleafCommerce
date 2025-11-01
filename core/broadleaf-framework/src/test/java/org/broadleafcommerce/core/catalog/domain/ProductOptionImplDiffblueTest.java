@@ -24,75 +24,90 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.broadleafcommerce.common.copy.CreateResponse;
+import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
-import org.broadleafcommerce.core.catalog.domain.CategoryAdminPresentation.GroupOrder;
+import org.broadleafcommerce.common.service.GenericEntityService;
+import org.broadleafcommerce.common.site.domain.CatalogImpl;
+import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.broadleafcommerce.core.catalog.service.type.ProductOptionType;
 import org.broadleafcommerce.core.catalog.service.type.ProductOptionValidationStrategyType;
 import org.broadleafcommerce.core.catalog.service.type.ProductOptionValidationType;
+import org.broadleafcommerce.core.search.domain.FieldEntity;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(SpringJUnit4ClassRunner.class)
 public class ProductOptionImplDiffblueTest {
-  @Autowired private ProductOptionImpl productOptionImpl;
-
   /**
-   * Test {@link ProductOptionImpl#getName()}.
-   *
-   * <ul>
-   *   <li>Given {@link ProductOptionImpl} Name is empty string.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionImpl#getName()}
+   * Method under test: {@link ProductOptionImpl#getName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ProductOptionImpl.getName()"})
-  public void testGetName_givenProductOptionImplNameIsEmptyString_thenReturnNull() {
-    // Arrange
-    productOptionImpl.setName("");
+  public void testGetName() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Act and Assert
-    assertNull(productOptionImpl.getName());
+    // Arrange, Act and Assert
+    assertNull((new ProductOptionImpl()).getName());
   }
 
   /**
-   * Test {@link ProductOptionImpl#getName()}.
-   *
-   * <ul>
-   *   <li>Given {@link ProductOptionImpl} Name is {@code foo}.
-   *   <li>Then return {@code foo}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionImpl#getName()}
+   * Method under test: {@link ProductOptionImpl#getName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ProductOptionImpl.getName()"})
-  public void testGetName_givenProductOptionImplNameIsFoo_thenReturnFoo() {
+  public void testGetName2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+    productOptionImpl.setAllowedValues(new ArrayList<>());
+    productOptionImpl.setAttributeName("Attribute Name");
+    productOptionImpl.setDisplayOrder(1);
+    productOptionImpl.setErrorCode("An error occurred");
+    productOptionImpl.setErrorMessage("An error occurred");
+    productOptionImpl.setId(1L);
+    productOptionImpl.setLabel("Label");
+    productOptionImpl.setProductOptionValidationStrategyType(ProductOptionValidationStrategyType.ADD_ITEM);
+    productOptionImpl.setProductOptionValidationType(ProductOptionValidationType.REGEX);
+    productOptionImpl.setProductXrefs(new ArrayList<>());
+    productOptionImpl.setRequired(true);
+    productOptionImpl.setType(ProductOptionType.BOOLEAN);
+    productOptionImpl.setUseInSkuGeneration(true);
+    productOptionImpl.setValidationString("Validation String");
+    productOptionImpl.setName("");
+
+    // Act and Assert
+    assertEquals("Label", productOptionImpl.getName());
+  }
+
+  /**
+   * Method under test: {@link ProductOptionImpl#getName()}
+   */
+  @Test
+  public void testGetName3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+    productOptionImpl.setAllowedValues(new ArrayList<>());
+    productOptionImpl.setAttributeName("Attribute Name");
+    productOptionImpl.setDisplayOrder(1);
+    productOptionImpl.setErrorCode("An error occurred");
+    productOptionImpl.setErrorMessage("An error occurred");
+    productOptionImpl.setId(1L);
+    productOptionImpl.setLabel("Label");
+    productOptionImpl.setProductOptionValidationStrategyType(ProductOptionValidationStrategyType.ADD_ITEM);
+    productOptionImpl.setProductOptionValidationType(ProductOptionValidationType.REGEX);
+    productOptionImpl.setProductXrefs(new ArrayList<>());
+    productOptionImpl.setRequired(true);
+    productOptionImpl.setType(ProductOptionType.BOOLEAN);
+    productOptionImpl.setUseInSkuGeneration(true);
+    productOptionImpl.setValidationString("Validation String");
     productOptionImpl.setName("foo");
 
     // Act and Assert
@@ -100,117 +115,176 @@ public class ProductOptionImplDiffblueTest {
   }
 
   /**
-   * Test {@link ProductOptionImpl#getName()}.
-   *
-   * <ul>
-   *   <li>Given {@link ProductOptionImpl}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionImpl#getName()}
+   * Method under test: {@link ProductOptionImpl#getName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ProductOptionImpl.getName()"})
-  public void testGetName_givenProductOptionImpl_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(productOptionImpl.getName());
-  }
+  public void testGetName4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-  /**
-   * Test {@link ProductOptionImpl#getType()}.
-   *
-   * <p>Method under test: {@link ProductOptionImpl#getType()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ProductOptionType ProductOptionImpl.getType()"})
-  public void testGetType() {
-    // Arrange, Act and Assert
-    assertNull(productOptionImpl.getType());
-  }
+    // Arrange
+    ProductOptionValidationStrategyType productOptionValidationStrategyType = mock(
+        ProductOptionValidationStrategyType.class);
+    when(productOptionValidationStrategyType.getType()).thenReturn("Type");
 
-  /**
-   * Test {@link ProductOptionImpl#setType(ProductOptionType)}.
-   *
-   * <ul>
-   *   <li>When {@link ProductOptionType#BOOLEAN}.
-   *   <li>Then {@link ProductOptionImpl} {@link ProductOptionImpl#type} is {@code BOOLEAN}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionImpl#setType(ProductOptionType)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ProductOptionImpl.setType(ProductOptionType)"})
-  public void testSetType_whenBoolean_thenProductOptionImplTypeIsBoolean() {
-    // Arrange and Act
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+    productOptionImpl.setAllowedValues(new ArrayList<>());
+    productOptionImpl.setAttributeName("Attribute Name");
+    productOptionImpl.setDisplayOrder(1);
+    productOptionImpl.setErrorCode("An error occurred");
+    productOptionImpl.setErrorMessage("An error occurred");
+    productOptionImpl.setId(1L);
+    productOptionImpl.setLabel("Label");
+    productOptionImpl.setProductOptionValidationStrategyType(productOptionValidationStrategyType);
+    productOptionImpl.setProductOptionValidationType(ProductOptionValidationType.REGEX);
+    productOptionImpl.setProductXrefs(new ArrayList<>());
+    productOptionImpl.setRequired(true);
     productOptionImpl.setType(ProductOptionType.BOOLEAN);
+    productOptionImpl.setUseInSkuGeneration(true);
+    productOptionImpl.setValidationString("Validation String");
+    productOptionImpl.setName("");
+
+    // Act
+    String actualName = productOptionImpl.getName();
+
+    // Assert
+    verify(productOptionValidationStrategyType).getType();
+    assertEquals("Label", actualName);
+  }
+
+  /**
+   * Method under test: {@link ProductOptionImpl#getType()}
+   */
+  @Test
+  public void testGetType() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertNull((new ProductOptionImpl()).getType());
+  }
+
+  /**
+   * Method under test: {@link ProductOptionImpl#setType(ProductOptionType)}
+   */
+  @Test
+  public void testSetType() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+    ProductOptionType type = ProductOptionType.BOOLEAN;
+
+    // Act
+    productOptionImpl.setType(type);
 
     // Assert
     assertEquals("BOOLEAN", productOptionImpl.type);
-    assertSame(ProductOptionType.BOOLEAN, productOptionImpl.getType());
+    ProductOptionType expectedType = type.BOOLEAN;
+    assertSame(expectedType, productOptionImpl.getType());
   }
 
   /**
-   * Test {@link ProductOptionImpl#setType(ProductOptionType)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then {@link ProductOptionImpl} {@link ProductOptionImpl#type} is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionImpl#setType(ProductOptionType)}
+   * Method under test: {@link ProductOptionImpl#setType(ProductOptionType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ProductOptionImpl.setType(ProductOptionType)"})
-  public void testSetType_whenNull_thenProductOptionImplTypeIsNull() {
-    // Arrange and Act
+  public void testSetType2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+    productOptionImpl.setAllowedValues(new ArrayList<>());
+    productOptionImpl.setAttributeName("Attribute Name");
+    productOptionImpl.setDisplayOrder(1);
+    productOptionImpl.setErrorCode("An error occurred");
+    productOptionImpl.setErrorMessage("An error occurred");
+    productOptionImpl.setId(1L);
+    productOptionImpl.setLabel("Label");
+    productOptionImpl.setName("Name");
+    productOptionImpl.setProductOptionValidationStrategyType(ProductOptionValidationStrategyType.ADD_ITEM);
+    productOptionImpl.setProductOptionValidationType(ProductOptionValidationType.REGEX);
+    productOptionImpl.setProductXrefs(new ArrayList<>());
+    productOptionImpl.setRequired(true);
+    productOptionImpl.setType(ProductOptionType.BOOLEAN);
+    productOptionImpl.setUseInSkuGeneration(true);
+    productOptionImpl.setValidationString("Validation String");
+
+    // Act
     productOptionImpl.setType(null);
 
-    // Assert that nothing has changed
+    // Assert
     assertNull(productOptionImpl.type);
     assertNull(productOptionImpl.getType());
   }
 
   /**
-   * Test {@link ProductOptionImpl#getLabel()}.
-   *
-   * <p>Method under test: {@link ProductOptionImpl#getLabel()}
+   * Method under test: {@link ProductOptionImpl#getLabel()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ProductOptionImpl.getLabel()"})
   public void testGetLabel() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertNull(productOptionImpl.getLabel());
+    assertNull((new ProductOptionImpl()).getLabel());
   }
 
   /**
-   * Test {@link ProductOptionImpl#getProducts()}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link ProductOptionXrefImpl} (default
-   *       constructor).
-   *   <li>Then return size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionImpl#getProducts()}
+   * Method under test: {@link ProductOptionImpl#getLabel()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List ProductOptionImpl.getProducts()"})
-  public void testGetProducts_givenArrayListAddProductOptionXrefImpl_thenReturnSizeIsOne() {
+  public void testGetLabel2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionType type = mock(ProductOptionType.class);
+    when(type.getType()).thenReturn("Type");
+
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+    productOptionImpl.setType(type);
+
+    // Act
+    String actualLabel = productOptionImpl.getLabel();
+
+    // Assert
+    verify(type).getType();
+    assertNull(actualLabel);
+  }
+
+  /**
+   * Method under test: {@link ProductOptionImpl#getProducts()}
+   */
+  @Test
+  public void testGetProducts() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertTrue((new ProductOptionImpl()).getProducts().isEmpty());
+  }
+
+  /**
+   * Method under test: {@link ProductOptionImpl#getProducts()}
+   */
+  @Test
+  public void testGetProducts2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     ArrayList<ProductOptionXref> xrefs = new ArrayList<>();
     xrefs.add(new ProductOptionXrefImpl());
+
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+    productOptionImpl.setAllowedValues(new ArrayList<>());
+    productOptionImpl.setAttributeName("Attribute Name");
+    productOptionImpl.setDisplayOrder(1);
+    productOptionImpl.setErrorCode("An error occurred");
+    productOptionImpl.setErrorMessage("An error occurred");
+    productOptionImpl.setId(1L);
+    productOptionImpl.setLabel("Label");
+    productOptionImpl.setName("Name");
+    productOptionImpl.setProductOptionValidationStrategyType(ProductOptionValidationStrategyType.ADD_ITEM);
+    productOptionImpl.setProductOptionValidationType(ProductOptionValidationType.REGEX);
+    productOptionImpl.setRequired(true);
+    productOptionImpl.setType(ProductOptionType.BOOLEAN);
+    productOptionImpl.setUseInSkuGeneration(true);
+    productOptionImpl.setValidationString("Validation String");
     productOptionImpl.setProductXrefs(xrefs);
 
     // Act
@@ -218,102 +292,955 @@ public class ProductOptionImplDiffblueTest {
 
     // Assert
     assertEquals(1, actualProducts.size());
-    assertTrue(actualProducts.get(0) instanceof ProductImpl);
+    Product getResult = actualProducts.get(0);
+    assertTrue(getResult instanceof ProductImpl);
+    FieldEntity fieldEntityType = getResult.getFieldEntityType();
+    List<String> allLookupTypes = fieldEntityType.getAllLookupTypes();
+    assertEquals(1, allLookupTypes.size());
+    assertEquals("PRODUCT", allLookupTypes.get(0));
+    assertEquals("PRODUCT", fieldEntityType.getType());
+    assertEquals("Product", fieldEntityType.getFriendlyType());
+    assertEquals('N', ((ProductImpl) getResult).archiveStatus.getArchived().charValue());
+    assertEquals('N', ((ProductImpl) getResult).getArchived().charValue());
+    assertNull(getResult.getId());
+    assertNull(getResult.getCanonicalUrl());
+    assertNull(getResult.getDisplayTemplate());
+    assertNull(getResult.getGeneratedUrl());
+    assertNull(getResult.getManufacturer());
+    assertNull(getResult.getMetaDescription());
+    assertNull(getResult.getMetaTitle());
+    assertNull(getResult.getModel());
+    assertNull(getResult.getPromoMessage());
+    assertNull(getResult.getUrl());
+    assertNull(((ProductImpl) getResult).getLocation());
+    assertNull(((ProductImpl) getResult).url);
+    assertNull(((ProductImpl) getResult).urlKey);
+    assertNull(getResult.getPrice());
+    assertNull(getResult.getRetailPrice());
+    assertNull(getResult.getSalePrice());
+    assertNull(((ProductImpl) getResult).getRetailPriceInternal());
+    assertNull(((ProductImpl) getResult).getSalePriceInternal());
+    assertNull(getResult.getCategory());
+    assertNull(getResult.getDefaultCategory());
+    assertNull(((ProductImpl) getResult).defaultCategory);
+    List<Sku> allSellableSkus = getResult.getAllSellableSkus();
+    assertEquals(1, allSellableSkus.size());
+    assertNull(allSellableSkus.get(0));
+    List<Sku> allSkus = getResult.getAllSkus();
+    assertEquals(1, allSkus.size());
+    assertNull(allSkus.get(0));
+    assertNull(getResult.getDefaultSku());
+    assertFalse(getResult.getCanSellWithoutOptions());
+    assertFalse(getResult.getOverrideGeneratedUrl());
+    assertFalse(getResult.hasRetailPrice());
+    assertFalse(((ProductImpl) getResult).canSellWithoutOptions);
+    assertFalse(((ProductImpl) getResult).isFeaturedProduct);
+    assertFalse(((ProductImpl) getResult).overrideGeneratedUrl);
+    assertTrue(getResult.getAdditionalSkus().isEmpty());
+    assertTrue(getResult.getAllParentCategories().isEmpty());
+    assertTrue(getResult.getAllParentCategoryIds().isEmpty());
+    assertTrue(getResult.getAllParentCategoryXrefs().isEmpty());
+    List<RelatedProduct> crossSaleProducts = getResult.getCrossSaleProducts();
+    assertTrue(crossSaleProducts.isEmpty());
+    List<RelatedProduct> cumulativeUpSaleProducts = getResult.getCumulativeUpSaleProducts();
+    assertTrue(cumulativeUpSaleProducts.isEmpty());
+    assertTrue(getResult.getParentCategoryHierarchyIds().isEmpty());
+    assertTrue(getResult.getProductOptionXrefs().isEmpty());
+    assertTrue(getResult.getProductOptions().isEmpty());
+    assertTrue(getResult.getSkus().isEmpty());
+    assertTrue(fieldEntityType.getAdditionalLookupTypes().isEmpty());
+    assertTrue(((ProductImpl) getResult).productAttributes.isEmpty());
+    assertTrue(((ProductImpl) getResult).productOptions.isEmpty());
+    assertTrue(((ProductImpl) getResult).skus.isEmpty());
+    assertTrue(getResult.getMultiValueProductAttributes().isEmpty());
+    assertTrue(getResult.getProductAttributes().isEmpty());
+    assertTrue(getResult.getProductOptionValuesMap().isEmpty());
+    assertSame(crossSaleProducts, getResult.getCumulativeCrossSaleProducts());
+    assertSame(cumulativeUpSaleProducts, getResult.getUpSaleProducts());
   }
 
   /**
-   * Test {@link ProductOptionImpl#getProducts()}.
-   *
-   * <ul>
-   *   <li>Given {@link ProductOptionImpl}.
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionImpl#getProducts()}
+   * Method under test: {@link ProductOptionImpl#getProducts()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List ProductOptionImpl.getProducts()"})
-  public void testGetProducts_givenProductOptionImpl_thenReturnEmpty() {
-    // Arrange, Act and Assert
-    assertTrue(productOptionImpl.getProducts().isEmpty());
-  }
+  public void testGetProducts3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-  /**
-   * Test {@link ProductOptionImpl#setProducts(List)}.
-   *
-   * <ul>
-   *   <li>Given {@link ProductBundleImpl} (default constructor).
-   *   <li>When {@link ArrayList#ArrayList()} add {@link ProductBundleImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionImpl#setProducts(List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ProductOptionImpl.setProducts(List)"})
-  public void testSetProducts_givenProductBundleImpl_whenArrayListAddProductBundleImpl() {
     // Arrange
+    ProductOptionValidationStrategyType productOptionValidationStrategyType = mock(
+        ProductOptionValidationStrategyType.class);
+    when(productOptionValidationStrategyType.getType()).thenReturn("Type");
+
+    ArrayList<ProductOptionXref> xrefs = new ArrayList<>();
+    xrefs.add(new ProductOptionXrefImpl());
+
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+    productOptionImpl.setAllowedValues(new ArrayList<>());
+    productOptionImpl.setAttributeName("Attribute Name");
+    productOptionImpl.setDisplayOrder(1);
+    productOptionImpl.setErrorCode("An error occurred");
+    productOptionImpl.setErrorMessage("An error occurred");
+    productOptionImpl.setId(1L);
+    productOptionImpl.setLabel("Label");
+    productOptionImpl.setName("Name");
+    productOptionImpl.setProductOptionValidationStrategyType(productOptionValidationStrategyType);
+    productOptionImpl.setProductOptionValidationType(ProductOptionValidationType.REGEX);
+    productOptionImpl.setRequired(true);
+    productOptionImpl.setType(ProductOptionType.BOOLEAN);
+    productOptionImpl.setUseInSkuGeneration(true);
+    productOptionImpl.setValidationString("Validation String");
+    productOptionImpl.setProductXrefs(xrefs);
+
+    // Act
+    List<Product> actualProducts = productOptionImpl.getProducts();
+
+    // Assert
+    verify(productOptionValidationStrategyType).getType();
+    assertEquals(1, actualProducts.size());
+    Product getResult = actualProducts.get(0);
+    assertTrue(getResult instanceof ProductImpl);
+    FieldEntity fieldEntityType = getResult.getFieldEntityType();
+    List<String> allLookupTypes = fieldEntityType.getAllLookupTypes();
+    assertEquals(1, allLookupTypes.size());
+    assertEquals("PRODUCT", allLookupTypes.get(0));
+    assertEquals("PRODUCT", fieldEntityType.getType());
+    assertEquals("Product", fieldEntityType.getFriendlyType());
+    assertEquals('N', ((ProductImpl) getResult).archiveStatus.getArchived().charValue());
+    assertEquals('N', ((ProductImpl) getResult).getArchived().charValue());
+    assertNull(getResult.getId());
+    assertNull(getResult.getCanonicalUrl());
+    assertNull(getResult.getDisplayTemplate());
+    assertNull(getResult.getGeneratedUrl());
+    assertNull(getResult.getManufacturer());
+    assertNull(getResult.getMetaDescription());
+    assertNull(getResult.getMetaTitle());
+    assertNull(getResult.getModel());
+    assertNull(getResult.getPromoMessage());
+    assertNull(getResult.getUrl());
+    assertNull(((ProductImpl) getResult).getLocation());
+    assertNull(((ProductImpl) getResult).url);
+    assertNull(((ProductImpl) getResult).urlKey);
+    assertNull(getResult.getPrice());
+    assertNull(getResult.getRetailPrice());
+    assertNull(getResult.getSalePrice());
+    assertNull(((ProductImpl) getResult).getRetailPriceInternal());
+    assertNull(((ProductImpl) getResult).getSalePriceInternal());
+    assertNull(getResult.getCategory());
+    assertNull(getResult.getDefaultCategory());
+    assertNull(((ProductImpl) getResult).defaultCategory);
+    List<Sku> allSellableSkus = getResult.getAllSellableSkus();
+    assertEquals(1, allSellableSkus.size());
+    assertNull(allSellableSkus.get(0));
+    List<Sku> allSkus = getResult.getAllSkus();
+    assertEquals(1, allSkus.size());
+    assertNull(allSkus.get(0));
+    assertNull(getResult.getDefaultSku());
+    assertFalse(getResult.getCanSellWithoutOptions());
+    assertFalse(getResult.getOverrideGeneratedUrl());
+    assertFalse(getResult.hasRetailPrice());
+    assertFalse(((ProductImpl) getResult).canSellWithoutOptions);
+    assertFalse(((ProductImpl) getResult).isFeaturedProduct);
+    assertFalse(((ProductImpl) getResult).overrideGeneratedUrl);
+    assertTrue(getResult.getAdditionalSkus().isEmpty());
+    assertTrue(getResult.getAllParentCategories().isEmpty());
+    assertTrue(getResult.getAllParentCategoryIds().isEmpty());
+    assertTrue(getResult.getAllParentCategoryXrefs().isEmpty());
+    List<RelatedProduct> crossSaleProducts = getResult.getCrossSaleProducts();
+    assertTrue(crossSaleProducts.isEmpty());
+    List<RelatedProduct> cumulativeUpSaleProducts = getResult.getCumulativeUpSaleProducts();
+    assertTrue(cumulativeUpSaleProducts.isEmpty());
+    assertTrue(getResult.getParentCategoryHierarchyIds().isEmpty());
+    assertTrue(getResult.getProductOptionXrefs().isEmpty());
+    assertTrue(getResult.getProductOptions().isEmpty());
+    assertTrue(getResult.getSkus().isEmpty());
+    assertTrue(fieldEntityType.getAdditionalLookupTypes().isEmpty());
+    assertTrue(((ProductImpl) getResult).productAttributes.isEmpty());
+    assertTrue(((ProductImpl) getResult).productOptions.isEmpty());
+    assertTrue(((ProductImpl) getResult).skus.isEmpty());
+    assertTrue(getResult.getMultiValueProductAttributes().isEmpty());
+    assertTrue(getResult.getProductAttributes().isEmpty());
+    assertTrue(getResult.getProductOptionValuesMap().isEmpty());
+    assertSame(crossSaleProducts, getResult.getCumulativeCrossSaleProducts());
+    assertSame(cumulativeUpSaleProducts, getResult.getUpSaleProducts());
+  }
+
+  /**
+   * Method under test: {@link ProductOptionImpl#setProducts(List)}
+   */
+  @Test
+  public void testSetProducts() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+
+    // Act and Assert
+    assertThrows(UnsupportedOperationException.class, () -> productOptionImpl.setProducts(new ArrayList<>()));
+  }
+
+  /**
+   * Method under test: {@link ProductOptionImpl#setProducts(List)}
+   */
+  @Test
+  public void testSetProducts2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+
     ArrayList<Product> products = new ArrayList<>();
     products.add(new ProductBundleImpl());
 
     // Act and Assert
-    assertThrows(
-        UnsupportedOperationException.class, () -> productOptionImpl.setProducts(products));
+    assertThrows(UnsupportedOperationException.class, () -> productOptionImpl.setProducts(products));
   }
 
   /**
-   * Test {@link ProductOptionImpl#setProducts(List)}.
-   *
-   * <ul>
-   *   <li>Given {@link ProductBundleImpl} (default constructor).
-   *   <li>When {@link ArrayList#ArrayList()} add {@link ProductBundleImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionImpl#setProducts(List)}
+   * Method under test: {@link ProductOptionImpl#setProducts(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ProductOptionImpl.setProducts(List)"})
-  public void testSetProducts_givenProductBundleImpl_whenArrayListAddProductBundleImpl2() {
+  public void testSetProducts3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+
     ArrayList<Product> products = new ArrayList<>();
     products.add(new ProductBundleImpl());
     products.add(new ProductBundleImpl());
 
     // Act and Assert
-    assertThrows(
-        UnsupportedOperationException.class, () -> productOptionImpl.setProducts(products));
+    assertThrows(UnsupportedOperationException.class, () -> productOptionImpl.setProducts(products));
   }
 
   /**
-   * Test {@link ProductOptionImpl#setProducts(List)}.
-   *
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionImpl#setProducts(List)}
+   * Method under test: {@link ProductOptionImpl#getUseInSkuGeneration()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ProductOptionImpl.setProducts(List)"})
-  public void testSetProducts_whenArrayList() {
+  public void testGetUseInSkuGeneration() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertThrows(
-        UnsupportedOperationException.class,
-        () -> productOptionImpl.setProducts(new ArrayList<>()));
+    assertFalse((new ProductOptionImpl()).getUseInSkuGeneration());
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Method under test: {@link ProductOptionImpl#getUseInSkuGeneration()}
+   */
+  @Test
+  public void testGetUseInSkuGeneration2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+    productOptionImpl.setAllowedValues(new ArrayList<>());
+    productOptionImpl.setAttributeName("Attribute Name");
+    productOptionImpl.setDisplayOrder(1);
+    productOptionImpl.setErrorCode("An error occurred");
+    productOptionImpl.setErrorMessage("An error occurred");
+    productOptionImpl.setId(1L);
+    productOptionImpl.setLabel("Label");
+    productOptionImpl.setName("Name");
+    productOptionImpl.setProductOptionValidationStrategyType(ProductOptionValidationStrategyType.ADD_ITEM);
+    productOptionImpl.setProductOptionValidationType(ProductOptionValidationType.REGEX);
+    productOptionImpl.setProductXrefs(new ArrayList<>());
+    productOptionImpl.setRequired(true);
+    productOptionImpl.setType(ProductOptionType.BOOLEAN);
+    productOptionImpl.setValidationString("Validation String");
+    productOptionImpl.setUseInSkuGeneration(null);
+
+    // Act and Assert
+    assertTrue(productOptionImpl.getUseInSkuGeneration());
+  }
+
+  /**
+   * Method under test: {@link ProductOptionImpl#getUseInSkuGeneration()}
+   */
+  @Test
+  public void testGetUseInSkuGeneration3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionValidationStrategyType productOptionValidationStrategyType = mock(
+        ProductOptionValidationStrategyType.class);
+    when(productOptionValidationStrategyType.getType()).thenReturn("Type");
+
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+    productOptionImpl.setAllowedValues(new ArrayList<>());
+    productOptionImpl.setAttributeName("Attribute Name");
+    productOptionImpl.setDisplayOrder(1);
+    productOptionImpl.setErrorCode("An error occurred");
+    productOptionImpl.setErrorMessage("An error occurred");
+    productOptionImpl.setId(1L);
+    productOptionImpl.setLabel("Label");
+    productOptionImpl.setName("Name");
+    productOptionImpl.setProductOptionValidationStrategyType(productOptionValidationStrategyType);
+    productOptionImpl.setProductOptionValidationType(ProductOptionValidationType.REGEX);
+    productOptionImpl.setProductXrefs(new ArrayList<>());
+    productOptionImpl.setRequired(true);
+    productOptionImpl.setType(ProductOptionType.BOOLEAN);
+    productOptionImpl.setValidationString("Validation String");
+    productOptionImpl.setUseInSkuGeneration(null);
+
+    // Act
+    Boolean actualUseInSkuGeneration = productOptionImpl.getUseInSkuGeneration();
+
+    // Assert
+    verify(productOptionValidationStrategyType).getType();
+    assertTrue(actualUseInSkuGeneration);
+  }
+
+  /**
+   * Method under test:
+   * {@link ProductOptionImpl#getProductOptionValidationStrategyType()}
+   */
+  @Test
+  public void testGetProductOptionValidationStrategyType() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertNull((new ProductOptionImpl()).getProductOptionValidationStrategyType());
+  }
+
+  /**
+   * Method under test:
+   * {@link ProductOptionImpl#getProductOptionValidationStrategyType()}
+   */
+  @Test
+  public void testGetProductOptionValidationStrategyType2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionType type = mock(ProductOptionType.class);
+    when(type.getType()).thenReturn("Type");
+
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+    productOptionImpl.setType(type);
+
+    // Act
+    ProductOptionValidationStrategyType actualProductOptionValidationStrategyType = productOptionImpl
+        .getProductOptionValidationStrategyType();
+
+    // Assert
+    verify(type).getType();
+    assertNull(actualProductOptionValidationStrategyType);
+  }
+
+  /**
+   * Method under test:
+   * {@link ProductOptionImpl#setProductOptionValidationStrategyType(ProductOptionValidationStrategyType)}
+   */
+  @Test
+  public void testSetProductOptionValidationStrategyType() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+    ProductOptionValidationStrategyType productOptionValidationStrategyType = ProductOptionValidationStrategyType.ADD_ITEM;
+
+    // Act
+    productOptionImpl.setProductOptionValidationStrategyType(productOptionValidationStrategyType);
+
+    // Assert
+    ProductOptionValidationStrategyType expectedProductOptionValidationStrategyType = productOptionValidationStrategyType.ADD_ITEM;
+    assertSame(expectedProductOptionValidationStrategyType, productOptionImpl.getProductOptionValidationStrategyType());
+  }
+
+  /**
+   * Method under test:
+   * {@link ProductOptionImpl#setProductOptionValidationStrategyType(ProductOptionValidationStrategyType)}
+   */
+  @Test
+  public void testSetProductOptionValidationStrategyType2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+    productOptionImpl.setAllowedValues(new ArrayList<>());
+    productOptionImpl.setAttributeName("Attribute Name");
+    productOptionImpl.setDisplayOrder(1);
+    productOptionImpl.setErrorCode("An error occurred");
+    productOptionImpl.setErrorMessage("An error occurred");
+    productOptionImpl.setId(1L);
+    productOptionImpl.setLabel("Label");
+    productOptionImpl.setName("Name");
+    productOptionImpl.setProductOptionValidationStrategyType(ProductOptionValidationStrategyType.ADD_ITEM);
+    productOptionImpl.setProductOptionValidationType(ProductOptionValidationType.REGEX);
+    productOptionImpl.setProductXrefs(new ArrayList<>());
+    productOptionImpl.setRequired(true);
+    productOptionImpl.setType(ProductOptionType.BOOLEAN);
+    productOptionImpl.setUseInSkuGeneration(true);
+    productOptionImpl.setValidationString("Validation String");
+
+    // Act
+    productOptionImpl.setProductOptionValidationStrategyType(null);
+
+    // Assert
+    assertNull(productOptionImpl.getProductOptionValidationStrategyType());
+  }
+
+  /**
+   * Method under test: {@link ProductOptionImpl#getProductOptionValidationType()}
+   */
+  @Test
+  public void testGetProductOptionValidationType() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange and Act
+    ProductOptionValidationType actualProductOptionValidationType = (new ProductOptionImpl())
+        .getProductOptionValidationType();
+
+    // Assert
+    assertSame(actualProductOptionValidationType.REGEX, actualProductOptionValidationType);
+  }
+
+  /**
+   * Method under test: {@link ProductOptionImpl#getProductOptionValidationType()}
+   */
+  @Test
+  public void testGetProductOptionValidationType2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+    productOptionImpl.setAllowedValues(new ArrayList<>());
+    productOptionImpl.setAttributeName("Attribute Name");
+    productOptionImpl.setDisplayOrder(1);
+    productOptionImpl.setErrorCode("An error occurred");
+    productOptionImpl.setErrorMessage("An error occurred");
+    productOptionImpl.setId(1L);
+    productOptionImpl.setLabel("Label");
+    productOptionImpl.setName("Name");
+    productOptionImpl.setProductOptionValidationStrategyType(ProductOptionValidationStrategyType.ADD_ITEM);
+    productOptionImpl.setProductXrefs(new ArrayList<>());
+    productOptionImpl.setRequired(true);
+    productOptionImpl.setType(ProductOptionType.BOOLEAN);
+    productOptionImpl.setUseInSkuGeneration(true);
+    productOptionImpl.setValidationString("Validation String");
+    productOptionImpl.setProductOptionValidationType(ProductOptionValidationType.REGEX);
+
+    // Act
+    ProductOptionValidationType actualProductOptionValidationType = productOptionImpl.getProductOptionValidationType();
+
+    // Assert
+    assertSame(actualProductOptionValidationType.REGEX, actualProductOptionValidationType);
+  }
+
+  /**
+   * Method under test: {@link ProductOptionImpl#getProductOptionValidationType()}
+   */
+  @Test
+  public void testGetProductOptionValidationType3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionValidationStrategyType productOptionValidationStrategyType = mock(
+        ProductOptionValidationStrategyType.class);
+    when(productOptionValidationStrategyType.getType()).thenReturn("Type");
+
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+    productOptionImpl.setAllowedValues(new ArrayList<>());
+    productOptionImpl.setAttributeName("Attribute Name");
+    productOptionImpl.setDisplayOrder(1);
+    productOptionImpl.setErrorCode("An error occurred");
+    productOptionImpl.setErrorMessage("An error occurred");
+    productOptionImpl.setId(1L);
+    productOptionImpl.setLabel("Label");
+    productOptionImpl.setName("Name");
+    productOptionImpl.setProductOptionValidationStrategyType(productOptionValidationStrategyType);
+    productOptionImpl.setProductXrefs(new ArrayList<>());
+    productOptionImpl.setRequired(true);
+    productOptionImpl.setType(ProductOptionType.BOOLEAN);
+    productOptionImpl.setUseInSkuGeneration(true);
+    productOptionImpl.setValidationString("Validation String");
+    productOptionImpl.setProductOptionValidationType(ProductOptionValidationType.REGEX);
+
+    // Act
+    ProductOptionValidationType actualProductOptionValidationType = productOptionImpl.getProductOptionValidationType();
+
+    // Assert
+    verify(productOptionValidationStrategyType).getType();
+    assertSame(actualProductOptionValidationType.REGEX, actualProductOptionValidationType);
+  }
+
+  /**
+   * Method under test:
+   * {@link ProductOptionImpl#setProductOptionValidationType(ProductOptionValidationType)}
+   */
+  @Test
+  public void testSetProductOptionValidationType() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+    ProductOptionValidationType productOptionValidationType = ProductOptionValidationType.REGEX;
+
+    // Act
+    productOptionImpl.setProductOptionValidationType(productOptionValidationType);
+
+    // Assert
+    ProductOptionValidationType expectedProductOptionValidationType = productOptionValidationType.REGEX;
+    assertSame(expectedProductOptionValidationType, productOptionImpl.getProductOptionValidationType());
+  }
+
+  /**
+   * Method under test:
+   * {@link ProductOptionImpl#setProductOptionValidationType(ProductOptionValidationType)}
+   */
+  @Test
+  public void testSetProductOptionValidationType2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+    productOptionImpl.setAllowedValues(new ArrayList<>());
+    productOptionImpl.setAttributeName("Attribute Name");
+    productOptionImpl.setDisplayOrder(1);
+    productOptionImpl.setErrorCode("An error occurred");
+    productOptionImpl.setErrorMessage("An error occurred");
+    productOptionImpl.setId(1L);
+    productOptionImpl.setLabel("Label");
+    productOptionImpl.setName("Name");
+    productOptionImpl.setProductOptionValidationStrategyType(ProductOptionValidationStrategyType.ADD_ITEM);
+    productOptionImpl.setProductOptionValidationType(ProductOptionValidationType.REGEX);
+    productOptionImpl.setProductXrefs(new ArrayList<>());
+    productOptionImpl.setRequired(true);
+    productOptionImpl.setType(ProductOptionType.BOOLEAN);
+    productOptionImpl.setUseInSkuGeneration(true);
+    productOptionImpl.setValidationString("Validation String");
+
+    // Act
+    productOptionImpl.setProductOptionValidationType(null);
+
+    // Assert
+    ProductOptionValidationType productOptionValidationType = productOptionImpl.getProductOptionValidationType();
+    assertEquals("REGEX", productOptionValidationType.getType());
+    assertEquals("Regular Expression", productOptionValidationType.getFriendlyType());
+  }
+
+  /**
+   * Method under test: {@link ProductOptionImpl#getErrorMessage()}
+   */
+  @Test
+  public void testGetErrorMessage() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertNull((new ProductOptionImpl()).getErrorMessage());
+  }
+
+  /**
+   * Method under test: {@link ProductOptionImpl#getErrorMessage()}
+   */
+  @Test
+  public void testGetErrorMessage2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionType type = mock(ProductOptionType.class);
+    when(type.getType()).thenReturn("Type");
+
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+    productOptionImpl.setType(type);
+
+    // Act
+    String actualErrorMessage = productOptionImpl.getErrorMessage();
+
+    // Assert
+    verify(type).getType();
+    assertNull(actualErrorMessage);
+  }
+
+  /**
+   * Method under test: {@link ProductOptionImpl#getMainEntityName()}
+   */
+  @Test
+  public void testGetMainEntityName() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertNull((new ProductOptionImpl()).getMainEntityName());
+  }
+
+  /**
+   * Method under test: {@link ProductOptionImpl#getMainEntityName()}
+   */
+  @Test
+  public void testGetMainEntityName2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionType type = mock(ProductOptionType.class);
+    when(type.getType()).thenReturn("Type");
+
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+    productOptionImpl.setType(type);
+
+    // Act
+    String actualMainEntityName = productOptionImpl.getMainEntityName();
+
+    // Assert
+    verify(type).getType();
+    assertNull(actualMainEntityName);
+  }
+
+  /**
+   * Method under test:
+   * {@link ProductOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+    GenericEntityService genericEntityService = mock(GenericEntityService.class);
+    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
+
+    // Act
+    CreateResponse<ProductOption> actualCreateOrRetrieveCopyInstanceResult = productOptionImpl
+        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+            genericEntityService, new MultiTenantCopierExtensionManager()));
+
+    // Assert
+    verify(genericEntityService).getCeilingImplClass(eq("org.broadleafcommerce.core.catalog.domain.ProductOptionImpl"));
+    verify(genericEntityService).getIdentifier(isA(Object.class));
+    ProductOption clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
+    assertTrue(clone instanceof ProductOptionImpl);
+    ProductOptionValidationType productOptionValidationType = clone.getProductOptionValidationType();
+    assertEquals("REGEX", productOptionValidationType.getType());
+    assertEquals("Regular Expression", productOptionValidationType.getFriendlyType());
+    assertNull(clone.getRequired());
+    assertNull(clone.getDisplayOrder());
+    assertNull(clone.getId());
+    assertNull(clone.getAttributeName());
+    assertNull(clone.getErrorCode());
+    assertNull(clone.getErrorMessage());
+    assertNull(clone.getLabel());
+    assertNull(clone.getName());
+    assertNull(clone.getValidationString());
+    assertNull(((ProductOptionImpl) clone).getMainEntityName());
+    assertNull(((ProductOptionImpl) clone).errorMessage);
+    assertNull(((ProductOptionImpl) clone).label);
+    assertNull(((ProductOptionImpl) clone).name);
+    assertNull(((ProductOptionImpl) clone).type);
+    assertNull(clone.getType());
+    assertNull(clone.getProductOptionValidationStrategyType());
+    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
+    assertFalse(clone.getUseInSkuGeneration());
+    assertTrue(clone.getAllowedValues().isEmpty());
+    assertTrue(clone.getProductXrefs().isEmpty());
+    assertTrue(clone.getProducts().isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link ProductOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    CreateResponse<ProductOption> actualCreateOrRetrieveCopyInstanceResult = productOptionImpl
+        .createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link ProductOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  public void testCreateOrRetrieveCopyInstance3() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionType type = mock(ProductOptionType.class);
+    when(type.getType()).thenReturn("Type");
+
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+    productOptionImpl.setType(type);
+
+    ProductOptionImpl productOptionImpl2 = new ProductOptionImpl();
+    productOptionImpl2.setAllowedValues(new ArrayList<>());
+    productOptionImpl2.setAttributeName("Attribute Name");
+    productOptionImpl2.setDisplayOrder(1);
+    productOptionImpl2.setErrorCode("An error occurred");
+    productOptionImpl2.setErrorMessage("An error occurred");
+    productOptionImpl2.setId(1L);
+    productOptionImpl2.setLabel("Label");
+    productOptionImpl2.setName("Name");
+    productOptionImpl2.setProductOptionValidationStrategyType(ProductOptionValidationStrategyType.ADD_ITEM);
+    productOptionImpl2.setProductOptionValidationType(ProductOptionValidationType.REGEX);
+    productOptionImpl2.setProductXrefs(new ArrayList<>());
+    productOptionImpl2.setRequired(true);
+    productOptionImpl2.setType(ProductOptionType.BOOLEAN);
+    productOptionImpl2.setUseInSkuGeneration(true);
+    productOptionImpl2.setValidationString("Validation String");
+    CreateResponse<Object> createResponse = mock(CreateResponse.class);
+    when(createResponse.isAlreadyPopulated()).thenReturn(false);
+    when(createResponse.getClone()).thenReturn(productOptionImpl2);
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    productOptionImpl.createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(createResponse).getClone();
+    verify(createResponse).isAlreadyPopulated();
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    verify(type).getType();
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link ProductOptionImpl#equals(Object)}
+   *   <li>{@link ProductOptionImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
+    // Arrange
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+    productOptionImpl.setAllowedValues(new ArrayList<>());
+    productOptionImpl.setAttributeName("Attribute Name");
+    productOptionImpl.setDisplayOrder(1);
+    productOptionImpl.setErrorCode("An error occurred");
+    productOptionImpl.setErrorMessage("An error occurred");
+    productOptionImpl.setId(1L);
+    productOptionImpl.setLabel("Label");
+    productOptionImpl.setName("Name");
+    productOptionImpl.setProductOptionValidationStrategyType(ProductOptionValidationStrategyType.ADD_ITEM);
+    productOptionImpl.setProductOptionValidationType(ProductOptionValidationType.REGEX);
+    productOptionImpl.setProductXrefs(new ArrayList<>());
+    productOptionImpl.setRequired(true);
+    productOptionImpl.setType(ProductOptionType.BOOLEAN);
+    productOptionImpl.setUseInSkuGeneration(true);
+    productOptionImpl.setValidationString("Validation String");
+
+    ProductOptionImpl productOptionImpl2 = new ProductOptionImpl();
+    productOptionImpl2.setAllowedValues(new ArrayList<>());
+    productOptionImpl2.setAttributeName("Attribute Name");
+    productOptionImpl2.setDisplayOrder(1);
+    productOptionImpl2.setErrorCode("An error occurred");
+    productOptionImpl2.setErrorMessage("An error occurred");
+    productOptionImpl2.setId(1L);
+    productOptionImpl2.setLabel("Label");
+    productOptionImpl2.setName("Name");
+    productOptionImpl2.setProductOptionValidationStrategyType(ProductOptionValidationStrategyType.ADD_ITEM);
+    productOptionImpl2.setProductOptionValidationType(ProductOptionValidationType.REGEX);
+    productOptionImpl2.setProductXrefs(new ArrayList<>());
+    productOptionImpl2.setRequired(true);
+    productOptionImpl2.setType(ProductOptionType.BOOLEAN);
+    productOptionImpl2.setUseInSkuGeneration(true);
+    productOptionImpl2.setValidationString("Validation String");
+
+    // Act and Assert
+    assertEquals(productOptionImpl, productOptionImpl2);
+    int expectedHashCodeResult = productOptionImpl.hashCode();
+    assertEquals(expectedHashCodeResult, productOptionImpl2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link ProductOptionImpl#equals(Object)}
+   *   <li>{@link ProductOptionImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
+    // Arrange
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+    productOptionImpl.setAllowedValues(new ArrayList<>());
+    productOptionImpl.setAttributeName("Attribute Name");
+    productOptionImpl.setDisplayOrder(1);
+    productOptionImpl.setErrorCode("An error occurred");
+    productOptionImpl.setErrorMessage("An error occurred");
+    productOptionImpl.setId(1L);
+    productOptionImpl.setLabel("Label");
+    productOptionImpl.setName("Name");
+    productOptionImpl.setProductOptionValidationStrategyType(ProductOptionValidationStrategyType.ADD_ITEM);
+    productOptionImpl.setProductOptionValidationType(ProductOptionValidationType.REGEX);
+    productOptionImpl.setProductXrefs(new ArrayList<>());
+    productOptionImpl.setRequired(true);
+    productOptionImpl.setType(ProductOptionType.BOOLEAN);
+    productOptionImpl.setUseInSkuGeneration(true);
+    productOptionImpl.setValidationString("Validation String");
+
+    // Act and Assert
+    assertEquals(productOptionImpl, productOptionImpl);
+    int expectedHashCodeResult = productOptionImpl.hashCode();
+    assertEquals(expectedHashCodeResult, productOptionImpl.hashCode());
+  }
+
+  /**
+   * Method under test: {@link ProductOptionImpl#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+    // Arrange
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+    productOptionImpl.setAllowedValues(new ArrayList<>());
+    productOptionImpl.setAttributeName(null);
+    productOptionImpl.setDisplayOrder(1);
+    productOptionImpl.setErrorCode("An error occurred");
+    productOptionImpl.setErrorMessage("An error occurred");
+    productOptionImpl.setId(1L);
+    productOptionImpl.setLabel("Label");
+    productOptionImpl.setName("Name");
+    productOptionImpl.setProductOptionValidationStrategyType(ProductOptionValidationStrategyType.ADD_ITEM);
+    productOptionImpl.setProductOptionValidationType(ProductOptionValidationType.REGEX);
+    productOptionImpl.setProductXrefs(new ArrayList<>());
+    productOptionImpl.setRequired(true);
+    productOptionImpl.setType(ProductOptionType.BOOLEAN);
+    productOptionImpl.setUseInSkuGeneration(true);
+    productOptionImpl.setValidationString("Validation String");
+
+    ProductOptionImpl productOptionImpl2 = new ProductOptionImpl();
+    productOptionImpl2.setAllowedValues(new ArrayList<>());
+    productOptionImpl2.setAttributeName("Attribute Name");
+    productOptionImpl2.setDisplayOrder(1);
+    productOptionImpl2.setErrorCode("An error occurred");
+    productOptionImpl2.setErrorMessage("An error occurred");
+    productOptionImpl2.setId(1L);
+    productOptionImpl2.setLabel("Label");
+    productOptionImpl2.setName("Name");
+    productOptionImpl2.setProductOptionValidationStrategyType(ProductOptionValidationStrategyType.ADD_ITEM);
+    productOptionImpl2.setProductOptionValidationType(ProductOptionValidationType.REGEX);
+    productOptionImpl2.setProductXrefs(new ArrayList<>());
+    productOptionImpl2.setRequired(true);
+    productOptionImpl2.setType(ProductOptionType.BOOLEAN);
+    productOptionImpl2.setUseInSkuGeneration(true);
+    productOptionImpl2.setValidationString("Validation String");
+
+    // Act and Assert
+    assertNotEquals(productOptionImpl, productOptionImpl2);
+  }
+
+  /**
+   * Method under test: {@link ProductOptionImpl#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange
+    ProductOptionValidationStrategyType productOptionValidationStrategyType = mock(
+        ProductOptionValidationStrategyType.class);
+    when(productOptionValidationStrategyType.getType()).thenReturn("Type");
+
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+    productOptionImpl.setAllowedValues(new ArrayList<>());
+    productOptionImpl.setAttributeName("Attribute Name");
+    productOptionImpl.setDisplayOrder(1);
+    productOptionImpl.setErrorCode("An error occurred");
+    productOptionImpl.setErrorMessage("An error occurred");
+    productOptionImpl.setId(1L);
+    productOptionImpl.setLabel("Label");
+    productOptionImpl.setName("Name");
+    productOptionImpl.setProductOptionValidationStrategyType(productOptionValidationStrategyType);
+    productOptionImpl.setProductOptionValidationType(ProductOptionValidationType.REGEX);
+    productOptionImpl.setProductXrefs(new ArrayList<>());
+    productOptionImpl.setRequired(true);
+    productOptionImpl.setType(ProductOptionType.BOOLEAN);
+    productOptionImpl.setUseInSkuGeneration(true);
+    productOptionImpl.setValidationString("Validation String");
+
+    ProductOptionImpl productOptionImpl2 = new ProductOptionImpl();
+    productOptionImpl2.setAllowedValues(new ArrayList<>());
+    productOptionImpl2.setAttributeName("Attribute Name");
+    productOptionImpl2.setDisplayOrder(1);
+    productOptionImpl2.setErrorCode("An error occurred");
+    productOptionImpl2.setErrorMessage("An error occurred");
+    productOptionImpl2.setId(1L);
+    productOptionImpl2.setLabel("Label");
+    productOptionImpl2.setName("Name");
+    productOptionImpl2.setProductOptionValidationStrategyType(ProductOptionValidationStrategyType.ADD_ITEM);
+    productOptionImpl2.setProductOptionValidationType(ProductOptionValidationType.REGEX);
+    productOptionImpl2.setProductXrefs(new ArrayList<>());
+    productOptionImpl2.setRequired(true);
+    productOptionImpl2.setType(ProductOptionType.BOOLEAN);
+    productOptionImpl2.setUseInSkuGeneration(true);
+    productOptionImpl2.setValidationString("Validation String");
+
+    // Act and Assert
+    assertNotEquals(productOptionImpl, productOptionImpl2);
+  }
+
+  /**
+   * Method under test: {@link ProductOptionImpl#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
+    // Arrange
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+    productOptionImpl.setAllowedValues(new ArrayList<>());
+    productOptionImpl.setAttributeName("Attribute Name");
+    productOptionImpl.setDisplayOrder(1);
+    productOptionImpl.setErrorCode("An error occurred");
+    productOptionImpl.setErrorMessage("An error occurred");
+    productOptionImpl.setId(1L);
+    productOptionImpl.setLabel("Label");
+    productOptionImpl.setName("Name");
+    productOptionImpl.setProductOptionValidationStrategyType(ProductOptionValidationStrategyType.ADD_ITEM);
+    productOptionImpl.setProductOptionValidationType(ProductOptionValidationType.REGEX);
+    productOptionImpl.setProductXrefs(new ArrayList<>());
+    productOptionImpl.setRequired(true);
+    productOptionImpl.setType(ProductOptionType.BOOLEAN);
+    productOptionImpl.setUseInSkuGeneration(true);
+    productOptionImpl.setValidationString("Validation String");
+
+    // Act and Assert
+    assertNotEquals(productOptionImpl, null);
+  }
+
+  /**
+   * Method under test: {@link ProductOptionImpl#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+    // Arrange
+    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
+    productOptionImpl.setAllowedValues(new ArrayList<>());
+    productOptionImpl.setAttributeName("Attribute Name");
+    productOptionImpl.setDisplayOrder(1);
+    productOptionImpl.setErrorCode("An error occurred");
+    productOptionImpl.setErrorMessage("An error occurred");
+    productOptionImpl.setId(1L);
+    productOptionImpl.setLabel("Label");
+    productOptionImpl.setName("Name");
+    productOptionImpl.setProductOptionValidationStrategyType(ProductOptionValidationStrategyType.ADD_ITEM);
+    productOptionImpl.setProductOptionValidationType(ProductOptionValidationType.REGEX);
+    productOptionImpl.setProductXrefs(new ArrayList<>());
+    productOptionImpl.setRequired(true);
+    productOptionImpl.setType(ProductOptionType.BOOLEAN);
+    productOptionImpl.setUseInSkuGeneration(true);
+    productOptionImpl.setValidationString("Validation String");
+
+    // Act and Assert
+    assertNotEquals(productOptionImpl, "Different type to ProductOptionImpl");
+  }
+
+  /**
+   * Methods under test:
    * <ul>
    *   <li>{@link ProductOptionImpl#setAllowedValues(List)}
    *   <li>{@link ProductOptionImpl#setAttributeName(String)}
@@ -338,30 +1265,6 @@ public class ProductOptionImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List ProductOptionImpl.getAllowedValues()",
-    "String ProductOptionImpl.getAttributeName()",
-    "Integer ProductOptionImpl.getDisplayOrder()",
-    "String ProductOptionImpl.getErrorCode()",
-    "Long ProductOptionImpl.getId()",
-    "List ProductOptionImpl.getProductXrefs()",
-    "Boolean ProductOptionImpl.getRequired()",
-    "String ProductOptionImpl.getValidationString()",
-    "void ProductOptionImpl.setAllowedValues(List)",
-    "void ProductOptionImpl.setAttributeName(String)",
-    "void ProductOptionImpl.setDisplayOrder(Integer)",
-    "void ProductOptionImpl.setErrorCode(String)",
-    "void ProductOptionImpl.setErrorMessage(String)",
-    "void ProductOptionImpl.setId(Long)",
-    "void ProductOptionImpl.setLabel(String)",
-    "void ProductOptionImpl.setName(String)",
-    "void ProductOptionImpl.setProductXrefs(List)",
-    "void ProductOptionImpl.setRequired(Boolean)",
-    "void ProductOptionImpl.setUseInSkuGeneration(Boolean)",
-    "void ProductOptionImpl.setValidationString(String)"
-  })
   public void testGettersAndSetters() {
     // Arrange
     ProductOptionImpl productOptionImpl = new ProductOptionImpl();
@@ -389,7 +1292,7 @@ public class ProductOptionImplDiffblueTest {
     List<ProductOptionXref> actualProductXrefs = productOptionImpl.getProductXrefs();
     Boolean actualRequired = productOptionImpl.getRequired();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("An error occurred", actualErrorCode);
     assertEquals("Attribute Name", actualAttributeName);
     assertEquals("Validation String", productOptionImpl.getValidationString());
@@ -403,710 +1306,20 @@ public class ProductOptionImplDiffblueTest {
   }
 
   /**
-   * Test {@link ProductOptionImpl#getUseInSkuGeneration()}.
-   *
-   * <ul>
-   *   <li>Given {@link ProductOptionImpl}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionImpl#getUseInSkuGeneration()}
+   * Method under test: default or parameterless constructor of
+   * {@link ProductOptionImpl}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ProductOptionImpl.getUseInSkuGeneration()"})
-  public void testGetUseInSkuGeneration_givenProductOptionImpl_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(productOptionImpl.getUseInSkuGeneration());
-  }
-
-  /**
-   * Test {@link ProductOptionImpl#getUseInSkuGeneration()}.
-   *
-   * <ul>
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionImpl#getUseInSkuGeneration()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ProductOptionImpl.getUseInSkuGeneration()"})
-  public void testGetUseInSkuGeneration_thenReturnTrue() {
-    // Arrange
-    productOptionImpl.setUseInSkuGeneration(null);
-
-    // Act and Assert
-    assertTrue(productOptionImpl.getUseInSkuGeneration());
-  }
-
-  /**
-   * Test {@link ProductOptionImpl#getProductOptionValidationStrategyType()}.
-   *
-   * <p>Method under test: {@link ProductOptionImpl#getProductOptionValidationStrategyType()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ProductOptionValidationStrategyType ProductOptionImpl.getProductOptionValidationStrategyType()"
-  })
-  public void testGetProductOptionValidationStrategyType() {
-    // Arrange, Act and Assert
-    assertNull(productOptionImpl.getProductOptionValidationStrategyType());
-  }
-
-  /**
-   * Test {@link
-   * ProductOptionImpl#setProductOptionValidationStrategyType(ProductOptionValidationStrategyType)}.
-   *
-   * <p>Method under test: {@link
-   * ProductOptionImpl#setProductOptionValidationStrategyType(ProductOptionValidationStrategyType)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductOptionImpl.setProductOptionValidationStrategyType(ProductOptionValidationStrategyType)"
-  })
-  public void testSetProductOptionValidationStrategyType() {
-    // Arrange and Act
-    productOptionImpl.setProductOptionValidationStrategyType(
-        ProductOptionValidationStrategyType.ADD_ITEM);
-
-    // Assert
-    assertSame(
-        ProductOptionValidationStrategyType.ADD_ITEM,
-        productOptionImpl.getProductOptionValidationStrategyType());
-  }
-
-  /**
-   * Test {@link
-   * ProductOptionImpl#setProductOptionValidationStrategyType(ProductOptionValidationStrategyType)}.
-   *
-   * <p>Method under test: {@link
-   * ProductOptionImpl#setProductOptionValidationStrategyType(ProductOptionValidationStrategyType)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductOptionImpl.setProductOptionValidationStrategyType(ProductOptionValidationStrategyType)"
-  })
-  public void testSetProductOptionValidationStrategyType2() {
-    // Arrange and Act
-    productOptionImpl.setProductOptionValidationStrategyType(null);
-
-    // Assert that nothing has changed
-    assertNull(productOptionImpl.getProductOptionValidationStrategyType());
-  }
-
-  /**
-   * Test {@link ProductOptionImpl#getProductOptionValidationType()}.
-   *
-   * <p>Method under test: {@link ProductOptionImpl#getProductOptionValidationType()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ProductOptionValidationType ProductOptionImpl.getProductOptionValidationType()"
-  })
-  public void testGetProductOptionValidationType() {
-    // Arrange
-    productOptionImpl.setProductOptionValidationType(ProductOptionValidationType.REGEX);
-
-    // Act and Assert
-    assertSame(
-        ProductOptionValidationType.REGEX, productOptionImpl.getProductOptionValidationType());
-  }
-
-  /**
-   * Test {@link ProductOptionImpl#getProductOptionValidationType()}.
-   *
-   * <p>Method under test: {@link ProductOptionImpl#getProductOptionValidationType()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ProductOptionValidationType ProductOptionImpl.getProductOptionValidationType()"
-  })
-  public void testGetProductOptionValidationType2() {
-    // Arrange
-    productOptionImpl.setProductOptionValidationType(
-        new ProductOptionValidationType("", "Friendly Type"));
-
-    // Act and Assert
-    assertSame(
-        ProductOptionValidationType.REGEX, productOptionImpl.getProductOptionValidationType());
-  }
-
-  /**
-   * Test {@link ProductOptionImpl#getProductOptionValidationType()}.
-   *
-   * <ul>
-   *   <li>Given {@link ProductOptionImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionImpl#getProductOptionValidationType()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ProductOptionValidationType ProductOptionImpl.getProductOptionValidationType()"
-  })
-  public void testGetProductOptionValidationType_givenProductOptionImpl() {
-    // Arrange, Act and Assert
-    assertSame(
-        ProductOptionValidationType.REGEX, productOptionImpl.getProductOptionValidationType());
-  }
-
-  /**
-   * Test {@link ProductOptionImpl#setProductOptionValidationType(ProductOptionValidationType)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ProductOptionImpl#setProductOptionValidationType(ProductOptionValidationType)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductOptionImpl.setProductOptionValidationType(ProductOptionValidationType)"
-  })
-  public void testSetProductOptionValidationType_whenNull() {
-    // Arrange and Act
-    productOptionImpl.setProductOptionValidationType(null);
-
-    // Assert that nothing has changed
-    ProductOptionValidationType productOptionValidationType =
-        productOptionImpl.getProductOptionValidationType();
-    assertEquals("REGEX", productOptionValidationType.getType());
-    assertEquals("Regular Expression", productOptionValidationType.getFriendlyType());
-  }
-
-  /**
-   * Test {@link ProductOptionImpl#getErrorMessage()}.
-   *
-   * <p>Method under test: {@link ProductOptionImpl#getErrorMessage()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ProductOptionImpl.getErrorMessage()"})
-  public void testGetErrorMessage() {
-    // Arrange, Act and Assert
-    assertNull(productOptionImpl.getErrorMessage());
-  }
-
-  /**
-   * Test {@link ProductOptionImpl#getMainEntityName()}.
-   *
-   * <p>Method under test: {@link ProductOptionImpl#getMainEntityName()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ProductOptionImpl.getMainEntityName()"})
-  public void testGetMainEntityName() {
-    // Arrange, Act and Assert
-    assertNull(productOptionImpl.getMainEntityName());
-  }
-
-  /**
-   * Test {@link ProductOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * ProductOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse ProductOptionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
-    // Arrange
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(new ProductOptionImpl(), true);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    CreateResponse<ProductOption> actualCreateOrRetrieveCopyInstanceResult =
-        productOptionImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
-  }
-
-  /**
-   * Test {@link ProductOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * ProductOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse ProductOptionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
-    // Arrange
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(productOptionImpl, false);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    CreateResponse<ProductOption> actualCreateOrRetrieveCopyInstanceResult =
-        productOptionImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
-  }
-
-  /**
-   * Test {@link ProductOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * ProductOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse ProductOptionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance3() throws CloneNotSupportedException {
-    // Arrange
-    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
-    productOptionImpl.setProductOptionValidationStrategyType(
-        ProductOptionValidationStrategyType.ADD_ITEM);
-
-    ProductOptionImpl productOptionImpl2 = new ProductOptionImpl();
-    productOptionImpl2.setAllowedValues(new ArrayList<>());
-    productOptionImpl2.setAttributeName("Attribute Name");
-    productOptionImpl2.setDisplayOrder(1);
-    productOptionImpl2.setErrorCode("An error occurred");
-    productOptionImpl2.setErrorMessage("An error occurred");
-    productOptionImpl2.setId(1L);
-    productOptionImpl2.setLabel("Label");
-    productOptionImpl2.setName("Name");
-    productOptionImpl2.setProductOptionValidationStrategyType(
-        ProductOptionValidationStrategyType.ADD_ITEM);
-    productOptionImpl2.setProductOptionValidationType(ProductOptionValidationType.REGEX);
-    productOptionImpl2.setProductXrefs(new ArrayList<>());
-    productOptionImpl2.setRequired(true);
-    productOptionImpl2.setType(ProductOptionType.BOOLEAN);
-    productOptionImpl2.setUseInSkuGeneration(true);
-    productOptionImpl2.setValidationString("Validation String");
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any()))
-        .thenReturn(new CreateResponse<>(productOptionImpl2, false));
-
-    // Act
-    CreateResponse<ProductOption> actualCreateOrRetrieveCopyInstanceResult =
-        productOptionImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    ProductOption clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
-    assertTrue(clone instanceof ProductOptionImpl);
-    ProductOptionValidationStrategyType productOptionValidationStrategyType =
-        clone.getProductOptionValidationStrategyType();
-    assertEquals("ADD_ITEM", productOptionValidationStrategyType.getType());
-    assertEquals("Validate On Add Item", productOptionValidationStrategyType.getFriendlyType());
-    assertNull(((ProductOptionImpl) clone).type);
-    assertNull(clone.getType());
-    assertEquals(
-        GroupOrder.Miscellaneous, productOptionValidationStrategyType.getRank().intValue());
-  }
-
-  /**
-   * Test {@link ProductOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * ProductOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse ProductOptionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance4() throws CloneNotSupportedException {
-    // Arrange
-    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
-    productOptionImpl.setProductOptionValidationType(ProductOptionValidationType.REGEX);
-
-    ProductOptionImpl productOptionImpl2 = new ProductOptionImpl();
-    productOptionImpl2.setAllowedValues(new ArrayList<>());
-    productOptionImpl2.setAttributeName("Attribute Name");
-    productOptionImpl2.setDisplayOrder(1);
-    productOptionImpl2.setErrorCode("An error occurred");
-    productOptionImpl2.setErrorMessage("An error occurred");
-    productOptionImpl2.setId(1L);
-    productOptionImpl2.setLabel("Label");
-    productOptionImpl2.setName("Name");
-    productOptionImpl2.setProductOptionValidationStrategyType(
-        ProductOptionValidationStrategyType.ADD_ITEM);
-    productOptionImpl2.setProductOptionValidationType(ProductOptionValidationType.REGEX);
-    productOptionImpl2.setProductXrefs(new ArrayList<>());
-    productOptionImpl2.setRequired(true);
-    productOptionImpl2.setType(ProductOptionType.BOOLEAN);
-    productOptionImpl2.setUseInSkuGeneration(true);
-    productOptionImpl2.setValidationString("Validation String");
-    CreateResponse<Object> createResponse = new CreateResponse<>(productOptionImpl2, false);
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    CreateResponse<ProductOption> actualCreateOrRetrieveCopyInstanceResult =
-        productOptionImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
-  }
-
-  /**
-   * Test {@link ProductOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <ul>
-   *   <li>Then return Clone Type Type is {@code BOOLEAN}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ProductOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse ProductOptionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance_thenReturnCloneTypeTypeIsBoolean()
-      throws CloneNotSupportedException {
-    // Arrange
-    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
-    productOptionImpl.setType(ProductOptionType.BOOLEAN);
-
-    ProductOptionImpl productOptionImpl2 = new ProductOptionImpl();
-    productOptionImpl2.setAllowedValues(new ArrayList<>());
-    productOptionImpl2.setAttributeName("Attribute Name");
-    productOptionImpl2.setDisplayOrder(1);
-    productOptionImpl2.setErrorCode("An error occurred");
-    productOptionImpl2.setErrorMessage("An error occurred");
-    productOptionImpl2.setId(1L);
-    productOptionImpl2.setLabel("Label");
-    productOptionImpl2.setName("Name");
-    productOptionImpl2.setProductOptionValidationStrategyType(
-        ProductOptionValidationStrategyType.ADD_ITEM);
-    productOptionImpl2.setProductOptionValidationType(ProductOptionValidationType.REGEX);
-    productOptionImpl2.setProductXrefs(new ArrayList<>());
-    productOptionImpl2.setRequired(true);
-    productOptionImpl2.setType(ProductOptionType.BOOLEAN);
-    productOptionImpl2.setUseInSkuGeneration(true);
-    productOptionImpl2.setValidationString("Validation String");
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any()))
-        .thenReturn(new CreateResponse<>(productOptionImpl2, false));
-
-    // Act
-    CreateResponse<ProductOption> actualCreateOrRetrieveCopyInstanceResult =
-        productOptionImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    ProductOption clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
-    assertTrue(clone instanceof ProductOptionImpl);
-    ProductOptionType type = clone.getType();
-    assertEquals("BOOLEAN", type.getType());
-    assertEquals("BOOLEAN", ((ProductOptionImpl) clone).type);
-    assertEquals("Boolean", type.getFriendlyType());
-    assertNull(clone.getProductOptionValidationStrategyType());
-  }
-
-  /**
-   * Test {@link ProductOptionImpl#equals(Object)}, and {@link ProductOptionImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link ProductOptionImpl#equals(Object)}
-   *   <li>{@link ProductOptionImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductOptionImpl.equals(Object)",
-    "int ProductOptionImpl.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
-    // Arrange
-    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
-    productOptionImpl.setAllowedValues(new ArrayList<>());
-    productOptionImpl.setAttributeName("Attribute Name");
-    productOptionImpl.setDisplayOrder(1);
-    productOptionImpl.setErrorCode("An error occurred");
-    productOptionImpl.setErrorMessage("An error occurred");
-    productOptionImpl.setId(1L);
-    productOptionImpl.setLabel("Label");
-    productOptionImpl.setName("Name");
-    productOptionImpl.setProductOptionValidationStrategyType(
-        ProductOptionValidationStrategyType.ADD_ITEM);
-    productOptionImpl.setProductOptionValidationType(ProductOptionValidationType.REGEX);
-    productOptionImpl.setProductXrefs(new ArrayList<>());
-    productOptionImpl.setRequired(true);
-    productOptionImpl.setType(ProductOptionType.BOOLEAN);
-    productOptionImpl.setUseInSkuGeneration(true);
-    productOptionImpl.setValidationString("Validation String");
-
-    ProductOptionImpl productOptionImpl2 = new ProductOptionImpl();
-    productOptionImpl2.setAllowedValues(new ArrayList<>());
-    productOptionImpl2.setAttributeName("Attribute Name");
-    productOptionImpl2.setDisplayOrder(1);
-    productOptionImpl2.setErrorCode("An error occurred");
-    productOptionImpl2.setErrorMessage("An error occurred");
-    productOptionImpl2.setId(1L);
-    productOptionImpl2.setLabel("Label");
-    productOptionImpl2.setName("Name");
-    productOptionImpl2.setProductOptionValidationStrategyType(
-        ProductOptionValidationStrategyType.ADD_ITEM);
-    productOptionImpl2.setProductOptionValidationType(ProductOptionValidationType.REGEX);
-    productOptionImpl2.setProductXrefs(new ArrayList<>());
-    productOptionImpl2.setRequired(true);
-    productOptionImpl2.setType(ProductOptionType.BOOLEAN);
-    productOptionImpl2.setUseInSkuGeneration(true);
-    productOptionImpl2.setValidationString("Validation String");
-
-    // Act and Assert
-    assertEquals(productOptionImpl, productOptionImpl2);
-    assertEquals(productOptionImpl.hashCode(), productOptionImpl2.hashCode());
-  }
-
-  /**
-   * Test {@link ProductOptionImpl#equals(Object)}, and {@link ProductOptionImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link ProductOptionImpl#equals(Object)}
-   *   <li>{@link ProductOptionImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductOptionImpl.equals(Object)",
-    "int ProductOptionImpl.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
-    // Arrange
-    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
-    productOptionImpl.setAllowedValues(new ArrayList<>());
-    productOptionImpl.setAttributeName("Attribute Name");
-    productOptionImpl.setDisplayOrder(1);
-    productOptionImpl.setErrorCode("An error occurred");
-    productOptionImpl.setErrorMessage("An error occurred");
-    productOptionImpl.setId(1L);
-    productOptionImpl.setLabel("Label");
-    productOptionImpl.setName("Name");
-    productOptionImpl.setProductOptionValidationStrategyType(
-        ProductOptionValidationStrategyType.ADD_ITEM);
-    productOptionImpl.setProductOptionValidationType(ProductOptionValidationType.REGEX);
-    productOptionImpl.setProductXrefs(new ArrayList<>());
-    productOptionImpl.setRequired(true);
-    productOptionImpl.setType(ProductOptionType.BOOLEAN);
-    productOptionImpl.setUseInSkuGeneration(true);
-    productOptionImpl.setValidationString("Validation String");
-
-    // Act and Assert
-    assertEquals(productOptionImpl, productOptionImpl);
-    int expectedHashCodeResult = productOptionImpl.hashCode();
-    assertEquals(expectedHashCodeResult, productOptionImpl.hashCode());
-  }
-
-  /**
-   * Test {@link ProductOptionImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionImpl#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductOptionImpl.equals(Object)",
-    "int ProductOptionImpl.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
-    // Arrange
-    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
-    productOptionImpl.setAllowedValues(new ArrayList<>());
-    productOptionImpl.setAttributeName(null);
-    productOptionImpl.setDisplayOrder(1);
-    productOptionImpl.setErrorCode("An error occurred");
-    productOptionImpl.setErrorMessage("An error occurred");
-    productOptionImpl.setId(1L);
-    productOptionImpl.setLabel("Label");
-    productOptionImpl.setName("Name");
-    productOptionImpl.setProductOptionValidationStrategyType(
-        ProductOptionValidationStrategyType.ADD_ITEM);
-    productOptionImpl.setProductOptionValidationType(ProductOptionValidationType.REGEX);
-    productOptionImpl.setProductXrefs(new ArrayList<>());
-    productOptionImpl.setRequired(true);
-    productOptionImpl.setType(ProductOptionType.BOOLEAN);
-    productOptionImpl.setUseInSkuGeneration(true);
-    productOptionImpl.setValidationString("Validation String");
-
-    ProductOptionImpl productOptionImpl2 = new ProductOptionImpl();
-    productOptionImpl2.setAllowedValues(new ArrayList<>());
-    productOptionImpl2.setAttributeName("Attribute Name");
-    productOptionImpl2.setDisplayOrder(1);
-    productOptionImpl2.setErrorCode("An error occurred");
-    productOptionImpl2.setErrorMessage("An error occurred");
-    productOptionImpl2.setId(1L);
-    productOptionImpl2.setLabel("Label");
-    productOptionImpl2.setName("Name");
-    productOptionImpl2.setProductOptionValidationStrategyType(
-        ProductOptionValidationStrategyType.ADD_ITEM);
-    productOptionImpl2.setProductOptionValidationType(ProductOptionValidationType.REGEX);
-    productOptionImpl2.setProductXrefs(new ArrayList<>());
-    productOptionImpl2.setRequired(true);
-    productOptionImpl2.setType(ProductOptionType.BOOLEAN);
-    productOptionImpl2.setUseInSkuGeneration(true);
-    productOptionImpl2.setValidationString("Validation String");
-
-    // Act and Assert
-    assertNotEquals(productOptionImpl, productOptionImpl2);
-  }
-
-  /**
-   * Test {@link ProductOptionImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionImpl#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductOptionImpl.equals(Object)",
-    "int ProductOptionImpl.hashCode()"
-  })
-  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
-    // Arrange
-    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
-    productOptionImpl.setAllowedValues(new ArrayList<>());
-    productOptionImpl.setAttributeName("Attribute Name");
-    productOptionImpl.setDisplayOrder(1);
-    productOptionImpl.setErrorCode("An error occurred");
-    productOptionImpl.setErrorMessage("An error occurred");
-    productOptionImpl.setId(1L);
-    productOptionImpl.setLabel("Label");
-    productOptionImpl.setName("Name");
-    productOptionImpl.setProductOptionValidationStrategyType(
-        ProductOptionValidationStrategyType.ADD_ITEM);
-    productOptionImpl.setProductOptionValidationType(ProductOptionValidationType.REGEX);
-    productOptionImpl.setProductXrefs(new ArrayList<>());
-    productOptionImpl.setRequired(true);
-    productOptionImpl.setType(ProductOptionType.BOOLEAN);
-    productOptionImpl.setUseInSkuGeneration(true);
-    productOptionImpl.setValidationString("Validation String");
-
-    // Act and Assert
-    assertNotEquals(productOptionImpl, null);
-  }
-
-  /**
-   * Test {@link ProductOptionImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionImpl#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductOptionImpl.equals(Object)",
-    "int ProductOptionImpl.hashCode()"
-  })
-  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
-    // Arrange
-    ProductOptionImpl productOptionImpl = new ProductOptionImpl();
-    productOptionImpl.setAllowedValues(new ArrayList<>());
-    productOptionImpl.setAttributeName("Attribute Name");
-    productOptionImpl.setDisplayOrder(1);
-    productOptionImpl.setErrorCode("An error occurred");
-    productOptionImpl.setErrorMessage("An error occurred");
-    productOptionImpl.setId(1L);
-    productOptionImpl.setLabel("Label");
-    productOptionImpl.setName("Name");
-    productOptionImpl.setProductOptionValidationStrategyType(
-        ProductOptionValidationStrategyType.ADD_ITEM);
-    productOptionImpl.setProductOptionValidationType(ProductOptionValidationType.REGEX);
-    productOptionImpl.setProductXrefs(new ArrayList<>());
-    productOptionImpl.setRequired(true);
-    productOptionImpl.setType(ProductOptionType.BOOLEAN);
-    productOptionImpl.setUseInSkuGeneration(true);
-    productOptionImpl.setValidationString("Validation String");
-
-    // Act and Assert
-    assertNotEquals(productOptionImpl, "Different type to ProductOptionImpl");
-  }
-
-  /**
-   * Test new {@link ProductOptionImpl} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link ProductOptionImpl}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ProductOptionImpl.<init>()"})
   public void testNewProductOptionImpl() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange and Act
     ProductOptionImpl actualProductOptionImpl = new ProductOptionImpl();
 
     // Assert
+    ProductOptionValidationType productOptionValidationType = actualProductOptionImpl.getProductOptionValidationType();
+    assertEquals("REGEX", productOptionValidationType.getType());
+    assertEquals("Regular Expression", productOptionValidationType.getFriendlyType());
     assertNull(actualProductOptionImpl.getRequired());
     assertNull(actualProductOptionImpl.getDisplayOrder());
     assertNull(actualProductOptionImpl.getId());

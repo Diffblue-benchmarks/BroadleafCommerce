@@ -18,210 +18,258 @@
 package org.broadleafcommerce.common.config.domain;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.config.service.type.SystemPropertyFieldType;
 import org.broadleafcommerce.common.copy.CreateResponse;
+import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
+import org.broadleafcommerce.common.service.GenericEntityService;
+import org.broadleafcommerce.common.site.domain.CatalogImpl;
+import org.broadleafcommerce.common.site.domain.SiteImpl;
+import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-common-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(SpringJUnit4ClassRunner.class)
 public class SystemPropertyImplDiffblueTest {
-  @Autowired private SystemPropertyImpl systemPropertyImpl;
-
   /**
-   * Test {@link SystemPropertyImpl#getPropertyType()}.
-   *
-   * <ul>
-   *   <li>Given {@link SystemPropertyImpl}.
-   *   <li>Then return {@link SystemPropertyFieldType#STRING_TYPE}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SystemPropertyImpl#getPropertyType()}
+   * Method under test: {@link SystemPropertyImpl#getPropertyType()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"SystemPropertyFieldType SystemPropertyImpl.getPropertyType()"})
-  public void testGetPropertyType_givenSystemPropertyImpl_thenReturnString_type() {
-    // Arrange, Act and Assert
-    assertSame(SystemPropertyFieldType.STRING_TYPE, systemPropertyImpl.getPropertyType());
-  }
+  public void testGetPropertyType() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-  /**
-   * Test {@link SystemPropertyImpl#getPropertyType()}.
-   *
-   * <ul>
-   *   <li>Then return {@link SystemPropertyFieldType#BOOLEAN_TYPE}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SystemPropertyImpl#getPropertyType()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"SystemPropertyFieldType SystemPropertyImpl.getPropertyType()"})
-  public void testGetPropertyType_thenReturnBoolean_type() {
-    // Arrange
-    systemPropertyImpl.setPropertyType(SystemPropertyFieldType.BOOLEAN_TYPE);
-
-    // Act and Assert
-    assertSame(SystemPropertyFieldType.BOOLEAN_TYPE, systemPropertyImpl.getPropertyType());
-  }
-
-  /**
-   * Test {@link SystemPropertyImpl#setPropertyType(SystemPropertyFieldType)}.
-   *
-   * <ul>
-   *   <li>Then {@link SystemPropertyImpl} {@link SystemPropertyImpl#propertyType} is {@code
-   *       BOOLEAN_TYPE}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SystemPropertyImpl#setPropertyType(SystemPropertyFieldType)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SystemPropertyImpl.setPropertyType(SystemPropertyFieldType)"})
-  public void testSetPropertyType_thenSystemPropertyImplPropertyTypeIsBooleanType() {
     // Arrange and Act
+    SystemPropertyFieldType actualPropertyType = (new SystemPropertyImpl()).getPropertyType();
+
+    // Assert
+    assertSame(actualPropertyType.STRING_TYPE, actualPropertyType);
+  }
+
+  /**
+   * Method under test: {@link SystemPropertyImpl#getPropertyType()}
+   */
+  @Test
+  public void testGetPropertyType2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
+    systemPropertyImpl.setFriendlyGroup("Friendly Group");
+    systemPropertyImpl.setFriendlyName("Friendly Name");
+    systemPropertyImpl.setFriendlyTab("Friendly Tab");
+    systemPropertyImpl.setId(1L);
+    systemPropertyImpl.setName("Name");
+    systemPropertyImpl.setOverrideGeneratedPropertyName(true);
+    systemPropertyImpl.setValue("42");
     systemPropertyImpl.setPropertyType(SystemPropertyFieldType.BOOLEAN_TYPE);
+
+    // Act
+    SystemPropertyFieldType actualPropertyType = systemPropertyImpl.getPropertyType();
+
+    // Assert
+    assertSame(actualPropertyType.BOOLEAN_TYPE, actualPropertyType);
+  }
+
+  /**
+   * Method under test: {@link SystemPropertyImpl#getPropertyType()}
+   */
+  @Test
+  public void testGetPropertyType3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SystemPropertyFieldType propertyType = mock(SystemPropertyFieldType.class);
+    when(propertyType.getType()).thenReturn("foo");
+
+    SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
+    systemPropertyImpl.setFriendlyGroup("Friendly Group");
+    systemPropertyImpl.setFriendlyName("Friendly Name");
+    systemPropertyImpl.setFriendlyTab("Friendly Tab");
+    systemPropertyImpl.setId(1L);
+    systemPropertyImpl.setName("Name");
+    systemPropertyImpl.setOverrideGeneratedPropertyName(true);
+    systemPropertyImpl.setValue("42");
+    systemPropertyImpl.setPropertyType(propertyType);
+
+    // Act
+    SystemPropertyFieldType actualPropertyType = systemPropertyImpl.getPropertyType();
+
+    // Assert
+    verify(propertyType).getType();
+    assertSame(actualPropertyType.STRING_TYPE, actualPropertyType);
+  }
+
+  /**
+   * Method under test:
+   * {@link SystemPropertyImpl#setPropertyType(SystemPropertyFieldType)}
+   */
+  @Test
+  public void testSetPropertyType() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
+    SystemPropertyFieldType propertyType = SystemPropertyFieldType.BOOLEAN_TYPE;
+
+    // Act
+    systemPropertyImpl.setPropertyType(propertyType);
 
     // Assert
     assertEquals("BOOLEAN_TYPE", systemPropertyImpl.propertyType);
-    assertSame(SystemPropertyFieldType.BOOLEAN_TYPE, systemPropertyImpl.getPropertyType());
+    SystemPropertyFieldType expectedPropertyType = propertyType.BOOLEAN_TYPE;
+    assertSame(expectedPropertyType, systemPropertyImpl.getPropertyType());
   }
 
   /**
-   * Test {@link SystemPropertyImpl#getMainEntityName()}.
-   *
-   * <p>Method under test: {@link SystemPropertyImpl#getMainEntityName()}
+   * Method under test: {@link SystemPropertyImpl#getMainEntityName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SystemPropertyImpl.getMainEntityName()"})
   public void testGetMainEntityName() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertNull(systemPropertyImpl.getMainEntityName());
+    assertNull((new SystemPropertyImpl()).getMainEntityName());
   }
 
   /**
-   * Test {@link SystemPropertyImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * SystemPropertyImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link SystemPropertyImpl#getMainEntityName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse SystemPropertyImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
+  public void testGetMainEntityName2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SystemPropertyFieldType propertyType = mock(SystemPropertyFieldType.class);
+    when(propertyType.getType()).thenReturn("Type");
+
+    SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
+    systemPropertyImpl.setPropertyType(propertyType);
+
+    // Act
+    String actualMainEntityName = systemPropertyImpl.getMainEntityName();
+
+    // Assert
+    verify(propertyType).getType();
+    assertNull(actualMainEntityName);
+  }
+
+  /**
+   * Method under test:
+   * {@link SystemPropertyImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
-    // Arrange
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(new NullSystemProperty(), true);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Act
-    CreateResponse<SystemProperty> actualCreateOrRetrieveCopyInstanceResult =
-        systemPropertyImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
-  }
-
-  /**
-   * Test {@link SystemPropertyImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * SystemPropertyImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse SystemPropertyImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
-    // Arrange
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(systemPropertyImpl, false);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    CreateResponse<SystemProperty> actualCreateOrRetrieveCopyInstanceResult =
-        systemPropertyImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
-  }
-
-  /**
-   * Test {@link SystemPropertyImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * SystemPropertyImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse SystemPropertyImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance3() throws CloneNotSupportedException {
-    // Arrange
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(new NullSystemProperty(), false);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    CreateResponse<SystemProperty> actualCreateOrRetrieveCopyInstanceResult =
-        systemPropertyImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
-  }
-
-  /**
-   * Test {@link SystemPropertyImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * SystemPropertyImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse SystemPropertyImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance4() throws CloneNotSupportedException {
     // Arrange
     SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
-    systemPropertyImpl.setPropertyType(SystemPropertyFieldType.BOOLEAN_TYPE);
+    GenericEntityService genericEntityService = mock(GenericEntityService.class);
+    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
+
+    // Act
+    CreateResponse<SystemProperty> actualCreateOrRetrieveCopyInstanceResult = systemPropertyImpl
+        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+            genericEntityService, new MultiTenantCopierExtensionManager()));
+
+    // Assert
+    verify(genericEntityService)
+        .getCeilingImplClass(eq("org.broadleafcommerce.common.config.domain.SystemPropertyImpl"));
+    verify(genericEntityService).getIdentifier(isA(Object.class));
+    SystemProperty clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
+    assertTrue(clone instanceof SystemPropertyImpl);
+    SystemPropertyFieldType propertyType = clone.getPropertyType();
+    assertEquals("STRING", propertyType.getType());
+    assertEquals("STRING", ((SystemPropertyImpl) clone).propertyType);
+    assertEquals("String value", propertyType.getFriendlyType());
+    assertNull(clone.getId());
+    assertNull(clone.getFriendlyGroup());
+    assertNull(clone.getFriendlyName());
+    assertNull(clone.getFriendlyTab());
+    assertNull(clone.getName());
+    assertNull(clone.getValue());
+    assertNull(((SystemPropertyImpl) clone).getMainEntityName());
+    assertFalse(clone.getOverrideGeneratedPropertyName());
+    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
+  }
+
+  /**
+   * Method under test:
+   * {@link SystemPropertyImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    CreateResponse<Object> createResponse = new CreateResponse<>(BLCFieldUtils.NULL_FIELD, true);
+
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    CreateResponse<SystemProperty> actualCreateOrRetrieveCopyInstanceResult = systemPropertyImpl
+        .createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link SystemPropertyImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  public void testCreateOrRetrieveCopyInstance3() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
+    CreateResponse<Object> createResponse = mock(CreateResponse.class);
+    when(createResponse.isAlreadyPopulated()).thenReturn(false);
+    when(createResponse.getClone()).thenReturn(new NullSystemProperty());
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    systemPropertyImpl.createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(createResponse).getClone();
+    verify(createResponse).isAlreadyPopulated();
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+  }
+
+  /**
+   * Method under test:
+   * {@link SystemPropertyImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  public void testCreateOrRetrieveCopyInstance4() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SystemPropertyFieldType propertyType = mock(SystemPropertyFieldType.class);
+    when(propertyType.getType()).thenReturn("Type");
+
+    SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
+    systemPropertyImpl.setPropertyType(propertyType);
 
     SystemPropertyImpl systemPropertyImpl2 = new SystemPropertyImpl();
     systemPropertyImpl2.setFriendlyGroup("Friendly Group");
@@ -232,42 +280,70 @@ public class SystemPropertyImplDiffblueTest {
     systemPropertyImpl2.setOverrideGeneratedPropertyName(true);
     systemPropertyImpl2.setPropertyType(SystemPropertyFieldType.BOOLEAN_TYPE);
     systemPropertyImpl2.setValue("42");
-    CreateResponse<Object> createResponse = new CreateResponse<>(systemPropertyImpl2, false);
-
+    CreateResponse<Object> createResponse = mock(CreateResponse.class);
+    when(createResponse.isAlreadyPopulated()).thenReturn(false);
+    when(createResponse.getClone()).thenReturn(systemPropertyImpl2);
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<SystemProperty> actualCreateOrRetrieveCopyInstanceResult =
-        systemPropertyImpl.createOrRetrieveCopyInstance(context);
+    systemPropertyImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
+    verify(propertyType).getType();
+    verify(createResponse).getClone();
+    verify(createResponse).isAlreadyPopulated();
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
   }
 
   /**
-   * Test {@link SystemPropertyImpl#equals(Object)}, and {@link SystemPropertyImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Method under test:
+   * {@link SystemPropertyImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  public void testCreateOrRetrieveCopyInstance5() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SystemPropertyFieldType propertyType = mock(SystemPropertyFieldType.class);
+    when(propertyType.getType()).thenReturn("foo");
+
+    SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
+    systemPropertyImpl.setPropertyType(propertyType);
+
+    SystemPropertyImpl systemPropertyImpl2 = new SystemPropertyImpl();
+    systemPropertyImpl2.setFriendlyGroup("Friendly Group");
+    systemPropertyImpl2.setFriendlyName("Friendly Name");
+    systemPropertyImpl2.setFriendlyTab("Friendly Tab");
+    systemPropertyImpl2.setId(1L);
+    systemPropertyImpl2.setName("Name");
+    systemPropertyImpl2.setOverrideGeneratedPropertyName(true);
+    systemPropertyImpl2.setPropertyType(SystemPropertyFieldType.BOOLEAN_TYPE);
+    systemPropertyImpl2.setValue("42");
+    CreateResponse<Object> createResponse = mock(CreateResponse.class);
+    when(createResponse.isAlreadyPopulated()).thenReturn(false);
+    when(createResponse.getClone()).thenReturn(systemPropertyImpl2);
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    systemPropertyImpl.createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(propertyType).getType();
+    verify(createResponse).getClone();
+    verify(createResponse).isAlreadyPopulated();
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+  }
+
+  /**
+   * Methods under test:
    * <ul>
    *   <li>{@link SystemPropertyImpl#equals(Object)}
    *   <li>{@link SystemPropertyImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SystemPropertyImpl.equals(Object)",
-    "int SystemPropertyImpl.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
@@ -292,31 +368,18 @@ public class SystemPropertyImplDiffblueTest {
 
     // Act and Assert
     assertEquals(systemPropertyImpl, systemPropertyImpl2);
-    assertEquals(systemPropertyImpl.hashCode(), systemPropertyImpl2.hashCode());
+    int expectedHashCodeResult = systemPropertyImpl.hashCode();
+    assertEquals(expectedHashCodeResult, systemPropertyImpl2.hashCode());
   }
 
   /**
-   * Test {@link SystemPropertyImpl#equals(Object)}, and {@link SystemPropertyImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link SystemPropertyImpl#equals(Object)}
    *   <li>{@link SystemPropertyImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SystemPropertyImpl.equals(Object)",
-    "int SystemPropertyImpl.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
@@ -336,22 +399,9 @@ public class SystemPropertyImplDiffblueTest {
   }
 
   /**
-   * Test {@link SystemPropertyImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link SystemPropertyImpl#equals(Object)}
+   * Method under test: {@link SystemPropertyImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SystemPropertyImpl.equals(Object)",
-    "int SystemPropertyImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
@@ -379,22 +429,42 @@ public class SystemPropertyImplDiffblueTest {
   }
 
   /**
-   * Test {@link SystemPropertyImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link SystemPropertyImpl#equals(Object)}
+   * Method under test: {@link SystemPropertyImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SystemPropertyImpl.equals(Object)",
-    "int SystemPropertyImpl.hashCode()"
-  })
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange
+    SystemPropertyFieldType propertyType = mock(SystemPropertyFieldType.class);
+    when(propertyType.getType()).thenReturn("Type");
+
+    SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
+    systemPropertyImpl.setFriendlyGroup("Friendly Group");
+    systemPropertyImpl.setFriendlyName("Friendly Name");
+    systemPropertyImpl.setFriendlyTab("Friendly Tab");
+    systemPropertyImpl.setId(1L);
+    systemPropertyImpl.setName("Name");
+    systemPropertyImpl.setOverrideGeneratedPropertyName(true);
+    systemPropertyImpl.setPropertyType(propertyType);
+    systemPropertyImpl.setValue("42");
+
+    SystemPropertyImpl systemPropertyImpl2 = new SystemPropertyImpl();
+    systemPropertyImpl2.setFriendlyGroup("Friendly Group");
+    systemPropertyImpl2.setFriendlyName("Friendly Name");
+    systemPropertyImpl2.setFriendlyTab("Friendly Tab");
+    systemPropertyImpl2.setId(1L);
+    systemPropertyImpl2.setName("Name");
+    systemPropertyImpl2.setOverrideGeneratedPropertyName(true);
+    systemPropertyImpl2.setPropertyType(SystemPropertyFieldType.BOOLEAN_TYPE);
+    systemPropertyImpl2.setValue("42");
+
+    // Act and Assert
+    assertNotEquals(systemPropertyImpl, systemPropertyImpl2);
+  }
+
+  /**
+   * Method under test: {@link SystemPropertyImpl#equals(Object)}
+   */
+  @Test
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
@@ -412,22 +482,9 @@ public class SystemPropertyImplDiffblueTest {
   }
 
   /**
-   * Test {@link SystemPropertyImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link SystemPropertyImpl#equals(Object)}
+   * Method under test: {@link SystemPropertyImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SystemPropertyImpl.equals(Object)",
-    "int SystemPropertyImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
@@ -445,10 +502,7 @@ public class SystemPropertyImplDiffblueTest {
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link SystemPropertyImpl}
    *   <li>{@link SystemPropertyImpl#setFriendlyGroup(String)}
@@ -468,25 +522,6 @@ public class SystemPropertyImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SystemPropertyImpl.<init>()",
-    "String SystemPropertyImpl.getFriendlyGroup()",
-    "String SystemPropertyImpl.getFriendlyName()",
-    "String SystemPropertyImpl.getFriendlyTab()",
-    "Long SystemPropertyImpl.getId()",
-    "String SystemPropertyImpl.getName()",
-    "Boolean SystemPropertyImpl.getOverrideGeneratedPropertyName()",
-    "String SystemPropertyImpl.getValue()",
-    "void SystemPropertyImpl.setFriendlyGroup(String)",
-    "void SystemPropertyImpl.setFriendlyName(String)",
-    "void SystemPropertyImpl.setFriendlyTab(String)",
-    "void SystemPropertyImpl.setId(Long)",
-    "void SystemPropertyImpl.setName(String)",
-    "void SystemPropertyImpl.setOverrideGeneratedPropertyName(Boolean)",
-    "void SystemPropertyImpl.setValue(String)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     SystemPropertyImpl actualSystemPropertyImpl = new SystemPropertyImpl();
@@ -502,10 +537,9 @@ public class SystemPropertyImplDiffblueTest {
     String actualFriendlyTab = actualSystemPropertyImpl.getFriendlyTab();
     Long actualId = actualSystemPropertyImpl.getId();
     String actualName = actualSystemPropertyImpl.getName();
-    Boolean actualOverrideGeneratedPropertyName =
-        actualSystemPropertyImpl.getOverrideGeneratedPropertyName();
+    Boolean actualOverrideGeneratedPropertyName = actualSystemPropertyImpl.getOverrideGeneratedPropertyName();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("42", actualSystemPropertyImpl.getValue());
     assertEquals("Friendly Group", actualFriendlyGroup);
     assertEquals("Friendly Name", actualFriendlyName);

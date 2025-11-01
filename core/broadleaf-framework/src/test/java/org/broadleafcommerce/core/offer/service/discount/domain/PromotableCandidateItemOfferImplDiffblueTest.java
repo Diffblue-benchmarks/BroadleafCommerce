@@ -20,9 +20,6 @@ package org.broadleafcommerce.core.offer.service.discount.domain;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,24 +31,24 @@ import org.broadleafcommerce.core.offer.domain.OfferItemCriteria;
 import org.broadleafcommerce.core.offer.domain.OfferPriceData;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class PromotableCandidateItemOfferImplDiffblueTest {
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
-   *   <li>{@link PromotableCandidateItemOfferImpl#setCandidateFixedTargetsMap(HashMap)}
-   *   <li>{@link PromotableCandidateItemOfferImpl#setCandidateQualifiersMap(HashMap)}
+   *   <li>
+   * {@link PromotableCandidateItemOfferImpl#setCandidateFixedTargetsMap(HashMap)}
+   *   <li>
+   * {@link PromotableCandidateItemOfferImpl#setCandidateQualifiersMap(HashMap)}
    *   <li>{@link PromotableCandidateItemOfferImpl#setCandidateTargetsMap(HashMap)}
    *   <li>{@link PromotableCandidateItemOfferImpl#setLegacyCandidateTargets(List)}
    *   <li>{@link PromotableCandidateItemOfferImpl#setOriginalPrice(Money)}
    *   <li>{@link PromotableCandidateItemOfferImpl#setPotentialSavings(Money)}
    *   <li>{@link PromotableCandidateItemOfferImpl#setPotentialSavingsQtyOne(Money)}
-   *   <li>{@link PromotableCandidateItemOfferImpl#setUseQtyOnlyTierCalculation(boolean)}
-   *   <li>{@link PromotableCandidateItemOfferImpl#setWeightedPercentSaved(BigDecimal)}
+   *   <li>
+   * {@link PromotableCandidateItemOfferImpl#setUseQtyOnlyTierCalculation(boolean)}
+   *   <li>
+   * {@link PromotableCandidateItemOfferImpl#setWeightedPercentSaved(BigDecimal)}
    *   <li>{@link PromotableCandidateItemOfferImpl#addUse()}
    *   <li>{@link PromotableCandidateItemOfferImpl#resetUses()}
    *   <li>{@link PromotableCandidateItemOfferImpl#getCandidateFixedTargetsMap()}
@@ -65,39 +62,15 @@ public class PromotableCandidateItemOfferImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PromotableCandidateItemOfferImpl.addUse()",
-    "HashMap PromotableCandidateItemOfferImpl.getCandidateFixedTargetsMap()",
-    "HashMap PromotableCandidateItemOfferImpl.getCandidateQualifiersMap()",
-    "HashMap PromotableCandidateItemOfferImpl.getCandidateTargetsMap()",
-    "List PromotableCandidateItemOfferImpl.getLegacyCandidateTargets()",
-    "Offer PromotableCandidateItemOfferImpl.getOffer()",
-    "Money PromotableCandidateItemOfferImpl.getOriginalPrice()",
-    "int PromotableCandidateItemOfferImpl.getUses()",
-    "boolean PromotableCandidateItemOfferImpl.isUseQtyOnlyTierCalculation()",
-    "void PromotableCandidateItemOfferImpl.resetUses()",
-    "void PromotableCandidateItemOfferImpl.setCandidateFixedTargetsMap(HashMap)",
-    "void PromotableCandidateItemOfferImpl.setCandidateQualifiersMap(HashMap)",
-    "void PromotableCandidateItemOfferImpl.setCandidateTargetsMap(HashMap)",
-    "void PromotableCandidateItemOfferImpl.setLegacyCandidateTargets(List)",
-    "void PromotableCandidateItemOfferImpl.setOriginalPrice(Money)",
-    "void PromotableCandidateItemOfferImpl.setPotentialSavings(Money)",
-    "void PromotableCandidateItemOfferImpl.setPotentialSavingsQtyOne(Money)",
-    "void PromotableCandidateItemOfferImpl.setUseQtyOnlyTierCalculation(boolean)",
-    "void PromotableCandidateItemOfferImpl.setWeightedPercentSaved(BigDecimal)"
-  })
   public void testGettersAndSetters() {
     // Arrange
     NullOrderImpl order = new NullOrderImpl();
-    PromotableOrderImpl promotableOrder =
-        new PromotableOrderImpl(
-            order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-    OfferImpl offer = new OfferImpl();
+    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
 
-    PromotableCandidateItemOfferImpl promotableCandidateItemOfferImpl =
-        new PromotableCandidateItemOfferImpl(promotableOrder, offer);
+    OfferImpl offer = new OfferImpl();
+    PromotableCandidateItemOfferImpl promotableCandidateItemOfferImpl = new PromotableCandidateItemOfferImpl(
+        promotableOrder, offer);
     HashMap<OfferPriceData, List<PromotableOrderItem>> candidateFixedTargetsMap = new HashMap<>();
 
     // Act
@@ -116,21 +89,20 @@ public class PromotableCandidateItemOfferImplDiffblueTest {
     promotableCandidateItemOfferImpl.setWeightedPercentSaved(new BigDecimal("2.3"));
     promotableCandidateItemOfferImpl.addUse();
     promotableCandidateItemOfferImpl.resetUses();
-    HashMap<OfferPriceData, List<PromotableOrderItem>> actualCandidateFixedTargetsMap =
-        promotableCandidateItemOfferImpl.getCandidateFixedTargetsMap();
-    HashMap<OfferItemCriteria, List<PromotableOrderItem>> actualCandidateQualifiersMap =
-        promotableCandidateItemOfferImpl.getCandidateQualifiersMap();
-    HashMap<OfferItemCriteria, List<PromotableOrderItem>> actualCandidateTargetsMap =
-        promotableCandidateItemOfferImpl.getCandidateTargetsMap();
-    List<PromotableOrderItem> actualLegacyCandidateTargets =
-        promotableCandidateItemOfferImpl.getLegacyCandidateTargets();
+    HashMap<OfferPriceData, List<PromotableOrderItem>> actualCandidateFixedTargetsMap = promotableCandidateItemOfferImpl
+        .getCandidateFixedTargetsMap();
+    HashMap<OfferItemCriteria, List<PromotableOrderItem>> actualCandidateQualifiersMap = promotableCandidateItemOfferImpl
+        .getCandidateQualifiersMap();
+    HashMap<OfferItemCriteria, List<PromotableOrderItem>> actualCandidateTargetsMap = promotableCandidateItemOfferImpl
+        .getCandidateTargetsMap();
+    List<PromotableOrderItem> actualLegacyCandidateTargets = promotableCandidateItemOfferImpl
+        .getLegacyCandidateTargets();
     Offer actualOffer = promotableCandidateItemOfferImpl.getOffer();
     Money actualOriginalPrice = promotableCandidateItemOfferImpl.getOriginalPrice();
     int actualUses = promotableCandidateItemOfferImpl.getUses();
-    boolean actualIsUseQtyOnlyTierCalculationResult =
-        promotableCandidateItemOfferImpl.isUseQtyOnlyTierCalculation();
+    boolean actualIsUseQtyOnlyTierCalculationResult = promotableCandidateItemOfferImpl.isUseQtyOnlyTierCalculation();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals(0, actualUses);
     assertTrue(actualLegacyCandidateTargets.isEmpty());
     assertTrue(actualIsUseQtyOnlyTierCalculationResult);

@@ -19,182 +19,93 @@ package org.broadleafcommerce.common.security.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrapper;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
 import org.owasp.esapi.filters.SecurityWrapperRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockServletContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 
-@ContextConfiguration(classes = {GenericCookieUtilsImpl.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class GenericCookieUtilsImplDiffblueTest {
-  @Autowired private GenericCookieUtilsImpl genericCookieUtilsImpl;
-
   /**
-   * Test {@link GenericCookieUtilsImpl#getCookieValue(HttpServletRequest, String)}.
-   *
-   * <p>Method under test: {@link GenericCookieUtilsImpl#getCookieValue(HttpServletRequest, String)}
+   * Method under test:
+   * {@link GenericCookieUtilsImpl#getCookieValue(HttpServletRequest, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String GenericCookieUtilsImpl.getCookieValue(HttpServletRequest, String)"})
   public void testGetCookieValue() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
-    SecurityWrapperRequest request2 = new SecurityWrapperRequest(request);
-    SessionlessHttpServletRequestWrapper request3 =
-        new SessionlessHttpServletRequestWrapper(request2);
+    GenericCookieUtilsImpl genericCookieUtilsImpl = new GenericCookieUtilsImpl();
 
     // Act and Assert
-    assertNull(
-        genericCookieUtilsImpl.getCookieValue(
-            new HttpServletRequestWrapper(request3), "Cookie Name"));
+    assertNull(genericCookieUtilsImpl
+        .getCookieValue(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()), "Cookie Name"));
   }
 
   /**
-   * Test {@link GenericCookieUtilsImpl#getCookieValue(HttpServletRequest, String)}.
-   *
-   * <p>Method under test: {@link GenericCookieUtilsImpl#getCookieValue(HttpServletRequest, String)}
+   * Method under test:
+   * {@link GenericCookieUtilsImpl#getCookieValue(HttpServletRequest, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String GenericCookieUtilsImpl.getCookieValue(HttpServletRequest, String)"})
   public void testGetCookieValue2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
-    SecurityWrapperRequest request2 = new SecurityWrapperRequest(request);
-    SessionlessHttpServletRequestWrapper request3 =
-        new SessionlessHttpServletRequestWrapper(request2);
-    HttpServletRequestWrapper request4 = new HttpServletRequestWrapper(request3);
-    SecurityWrapperRequest request5 = new SecurityWrapperRequest(request4);
-    SessionlessHttpServletRequestWrapper request6 =
-        new SessionlessHttpServletRequestWrapper(request5);
+    GenericCookieUtilsImpl genericCookieUtilsImpl = new GenericCookieUtilsImpl();
 
     // Act and Assert
-    assertNull(
-        genericCookieUtilsImpl.getCookieValue(
-            new HttpServletRequestWrapper(request6), "Cookie Name"));
+    assertNull(genericCookieUtilsImpl.getCookieValue(
+        new SessionlessHttpServletRequestWrapper(
+            new SecurityWrapperRequest(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()))),
+        "Cookie Name"));
   }
 
   /**
-   * Test {@link GenericCookieUtilsImpl#getCookieValue(HttpServletRequest, String)}.
-   *
-   * <p>Method under test: {@link GenericCookieUtilsImpl#getCookieValue(HttpServletRequest, String)}
+   * Method under test:
+   * {@link GenericCookieUtilsImpl#getCookieValue(HttpServletRequest, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String GenericCookieUtilsImpl.getCookieValue(HttpServletRequest, String)"})
   public void testGetCookieValue3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     GenericCookieUtilsImpl genericCookieUtilsImpl = new GenericCookieUtilsImpl();
+    DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
+    when(request.getCookies()).thenReturn(new Cookie[]{new Cookie("Name", "https://example.org/example")});
 
-    MockHttpServletRequest request = new MockHttpServletRequest(new MockServletContext());
-    request.setCookies(new Cookie("Name", "https://example.org/example"));
+    // Act
+    String actualCookieValue = genericCookieUtilsImpl.getCookieValue(new SessionlessHttpServletRequestWrapper(request),
+        "Cookie Name");
 
-    // Act and Assert
-    assertNull(genericCookieUtilsImpl.getCookieValue(request, "Cookie Name"));
+    // Assert
+    verify(request).getCookies();
+    assertNull(actualCookieValue);
   }
 
   /**
-   * Test {@link GenericCookieUtilsImpl#getCookieValue(HttpServletRequest, String)}.
-   *
-   * <ul>
-   *   <li>Given {@link GenericCookieUtilsImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link GenericCookieUtilsImpl#getCookieValue(HttpServletRequest, String)}
+   * Method under test:
+   * {@link GenericCookieUtilsImpl#getCookieValue(HttpServletRequest, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String GenericCookieUtilsImpl.getCookieValue(HttpServletRequest, String)"})
-  public void testGetCookieValue_givenGenericCookieUtilsImpl() {
-    // Arrange, Act and Assert
-    assertNull(
-        genericCookieUtilsImpl.getCookieValue(
-            new HttpServletRequestWrapper(
-                new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest())),
-            "Cookie Name"));
-  }
+  public void testGetCookieValue4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-  /**
-   * Test {@link GenericCookieUtilsImpl#getCookieValue(HttpServletRequest, String)}.
-   *
-   * <ul>
-   *   <li>Given {@link GenericCookieUtilsImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link GenericCookieUtilsImpl#getCookieValue(HttpServletRequest, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String GenericCookieUtilsImpl.getCookieValue(HttpServletRequest, String)"})
-  public void testGetCookieValue_givenGenericCookieUtilsImpl2() {
     // Arrange
     GenericCookieUtilsImpl genericCookieUtilsImpl = new GenericCookieUtilsImpl();
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
-    SecurityWrapperRequest request2 = new SecurityWrapperRequest(request);
-    SessionlessHttpServletRequestWrapper request3 =
-        new SessionlessHttpServletRequestWrapper(request2);
-    HttpServletRequestWrapper request4 = new HttpServletRequestWrapper(request3);
-    SecurityWrapperRequest request5 = new SecurityWrapperRequest(request4);
-    SessionlessHttpServletRequestWrapper request6 =
-        new SessionlessHttpServletRequestWrapper(request5);
-    HttpServletRequestWrapper request7 = new HttpServletRequestWrapper(request6);
-    SecurityWrapperRequest request8 = new SecurityWrapperRequest(request7);
-    SessionlessHttpServletRequestWrapper request9 =
-        new SessionlessHttpServletRequestWrapper(request8);
+    DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
+    when(request.getCookies()).thenReturn(new Cookie[]{new Cookie("Name", "https://example.org/example")});
 
-    // Act and Assert
-    assertNull(
-        genericCookieUtilsImpl.getCookieValue(
-            new HttpServletRequestWrapper(request9), "Cookie Name"));
-  }
+    // Act
+    String actualCookieValue = genericCookieUtilsImpl.getCookieValue(new SessionlessHttpServletRequestWrapper(request),
+        "Name");
 
-  /**
-   * Test {@link GenericCookieUtilsImpl#getCookieValue(HttpServletRequest, String)}.
-   *
-   * <ul>
-   *   <li>When {@code Name}.
-   *   <li>Then return {@code https://example.org/example}.
-   * </ul>
-   *
-   * <p>Method under test: {@link GenericCookieUtilsImpl#getCookieValue(HttpServletRequest, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String GenericCookieUtilsImpl.getCookieValue(HttpServletRequest, String)"})
-  public void testGetCookieValue_whenName_thenReturnHttpsExampleOrgExample() {
-    // Arrange
-    GenericCookieUtilsImpl genericCookieUtilsImpl = new GenericCookieUtilsImpl();
-
-    MockHttpServletRequest request = new MockHttpServletRequest(new MockServletContext());
-    request.setCookies(new Cookie("Name", "https://example.org/example"));
-
-    // Act and Assert
-    assertEquals(
-        "https://example.org/example", genericCookieUtilsImpl.getCookieValue(request, "Name"));
+    // Assert
+    verify(request).getCookies();
+    assertEquals("https://example.org/example", actualCookieValue);
   }
 }

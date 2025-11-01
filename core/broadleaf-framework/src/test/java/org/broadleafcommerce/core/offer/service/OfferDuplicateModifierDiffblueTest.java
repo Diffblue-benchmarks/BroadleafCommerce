@@ -23,9 +23,6 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.copy.MultiTenantCloneable;
 import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
@@ -35,59 +32,37 @@ import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.broadleafcommerce.core.offer.domain.Offer;
 import org.broadleafcommerce.core.offer.domain.OfferImpl;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.core.env.Environment;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = {OfferDuplicateModifier.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class OfferDuplicateModifierDiffblueTest {
-  @MockBean private Environment environment;
-
-  @Autowired private OfferDuplicateModifier offerDuplicateModifier;
-
   /**
-   * Test {@link OfferDuplicateModifier#canHandle(MultiTenantCloneable)}.
-   *
-   * <ul>
-   *   <li>When {@link MultiTenantCloneable}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OfferDuplicateModifier#canHandle(MultiTenantCloneable)}
+   * Method under test:
+   * {@link OfferDuplicateModifier#canHandle(MultiTenantCloneable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean OfferDuplicateModifier.canHandle(MultiTenantCloneable)"})
-  public void testCanHandle_whenMultiTenantCloneable_thenReturnFalse() {
+  public void testCanHandle() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertFalse(offerDuplicateModifier.canHandle(mock(MultiTenantCloneable.class)));
+    assertFalse(
+        (new OfferDuplicateModifier(new StandardReactiveWebEnvironment())).canHandle(mock(MultiTenantCloneable.class)));
   }
 
   /**
-   * Test {@link OfferDuplicateModifier#modifyInitialDuplicateState(Offer, Offer,
-   * MultiTenantCopyContext)} with {@code Offer}, {@code Offer}, {@code MultiTenantCopyContext}.
-   *
-   * <p>Method under test: {@link OfferDuplicateModifier#modifyInitialDuplicateState(Offer, Offer,
-   * MultiTenantCopyContext)}
+   * Method under test:
+   * {@link OfferDuplicateModifier#modifyInitialDuplicateState(Offer, Offer, MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OfferDuplicateModifier.modifyInitialDuplicateState(Offer, Offer, MultiTenantCopyContext)"
-  })
-  public void testModifyInitialDuplicateStateWithOfferOfferMultiTenantCopyContext() {
+  public void testModifyInitialDuplicateState() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<String>>any(), Mockito.<String>any()))
+    Environment environment = mock(Environment.class);
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<String>>any(), Mockito.<String>any()))
         .thenReturn("Property");
+    OfferDuplicateModifier offerDuplicateModifier = new OfferDuplicateModifier(environment);
     OfferImpl original = new OfferImpl();
     OfferImpl copy = new OfferImpl();
     CatalogImpl fromCatalog = new CatalogImpl();
@@ -96,21 +71,11 @@ public class OfferDuplicateModifierDiffblueTest {
     SiteImpl toSite = new SiteImpl();
     GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
 
-    MultiTenantCopyContext context =
-        new MultiTenantCopyContext(
-            fromCatalog,
-            toCatalog,
-            fromSite,
-            toSite,
-            genericEntityService,
-            new MultiTenantCopierExtensionManager());
-
     // Act
-    offerDuplicateModifier.modifyInitialDuplicateState(original, copy, context);
+    offerDuplicateModifier.modifyInitialDuplicateState(original, copy, new MultiTenantCopyContext(fromCatalog,
+        toCatalog, fromSite, toSite, genericEntityService, new MultiTenantCopierExtensionManager()));
 
     // Assert
-    verify(environment)
-        .getProperty(
-            eq("admin.entity.duplication.suffix.default"), isA(Class.class), eq(" - Copy"));
+    verify(environment).getProperty(eq("admin.entity.duplication.suffix.default"), isA(Class.class), eq(" - Copy"));
   }
 }

@@ -18,18 +18,11 @@
 package org.broadleafcommerce.openadmin.web.form;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class ResetPasswordFormDiffblueTest {
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link ResetPasswordForm}
    *   <li>{@link ResetPasswordForm#setConfirmPassword(String)}
@@ -45,21 +38,6 @@ public class ResetPasswordFormDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ResetPasswordForm.<init>()",
-    "String ResetPasswordForm.getConfirmPassword()",
-    "String ResetPasswordForm.getOldPassword()",
-    "String ResetPasswordForm.getPassword()",
-    "String ResetPasswordForm.getToken()",
-    "String ResetPasswordForm.getUsername()",
-    "void ResetPasswordForm.setConfirmPassword(String)",
-    "void ResetPasswordForm.setOldPassword(String)",
-    "void ResetPasswordForm.setPassword(String)",
-    "void ResetPasswordForm.setToken(String)",
-    "void ResetPasswordForm.setUsername(String)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     ResetPasswordForm actualResetPasswordForm = new ResetPasswordForm();
@@ -73,7 +51,7 @@ public class ResetPasswordFormDiffblueTest {
     String actualPassword = actualResetPasswordForm.getPassword();
     String actualToken = actualResetPasswordForm.getToken();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("ABC123", actualToken);
     assertEquals("iloveyou", actualConfirmPassword);
     assertEquals("iloveyou", actualOldPassword);

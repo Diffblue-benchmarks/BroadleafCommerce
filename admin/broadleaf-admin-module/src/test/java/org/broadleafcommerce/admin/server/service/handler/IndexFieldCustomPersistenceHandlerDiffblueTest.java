@@ -20,15 +20,13 @@ package org.broadleafcommerce.admin.server.service.handler;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
 import org.broadleafcommerce.common.exception.ServiceException;
@@ -44,281 +42,336 @@ import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.RecordHelper;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = {IndexFieldCustomPersistenceHandler.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class IndexFieldCustomPersistenceHandlerDiffblueTest {
-  @Autowired private IndexFieldCustomPersistenceHandler indexFieldCustomPersistenceHandler;
-
-  @MockBean(name = "blIndexFieldCustomPersistenceHandlerExtensionManager")
-  private IndexFieldCustomPersistenceHandlerExtensionManager
-      indexFieldCustomPersistenceHandlerExtensionManager;
-
   /**
-   * Test {@link IndexFieldCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   *
-   * <ul>
-   *   <li>When {@link PersistencePackage#PersistencePackage()}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * IndexFieldCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * Method under test:
+   * {@link IndexFieldCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean IndexFieldCustomPersistenceHandler.canHandleAdd(PersistencePackage)"
-  })
-  public void testCanHandleAdd_whenPersistencePackage_thenReturnFalse() {
-    // Arrange, Act and Assert
+  public void testCanHandleAdd() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    IndexFieldCustomPersistenceHandler indexFieldCustomPersistenceHandler = new IndexFieldCustomPersistenceHandler();
+
+    // Act and Assert
     assertFalse(indexFieldCustomPersistenceHandler.canHandleAdd(new PersistencePackage()));
   }
 
   /**
-   * Test {@link IndexFieldCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   *
-   * <ul>
-   *   <li>When {@link PersistencePackage#PersistencePackage()}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * IndexFieldCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * Method under test:
+   * {@link IndexFieldCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean IndexFieldCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"
-  })
-  public void testCanHandleUpdate_whenPersistencePackage_thenReturnFalse() {
-    // Arrange, Act and Assert
+  public void testCanHandleAdd2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    IndexFieldCustomPersistenceHandler indexFieldCustomPersistenceHandler = new IndexFieldCustomPersistenceHandler();
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
+
+    // Act
+    Boolean actualCanHandleAddResult = indexFieldCustomPersistenceHandler.canHandleAdd(persistencePackage);
+
+    // Assert
+    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
+    assertFalse(actualCanHandleAddResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link IndexFieldCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   */
+  @Test
+  public void testCanHandleAdd3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    IndexFieldCustomPersistenceHandler indexFieldCustomPersistenceHandler = new IndexFieldCustomPersistenceHandler();
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getCeilingEntityFullyQualifiedClassname())
+        .thenReturn("org.broadleafcommerce.core.search.domain.IndexField");
+
+    // Act
+    Boolean actualCanHandleAddResult = indexFieldCustomPersistenceHandler.canHandleAdd(persistencePackage);
+
+    // Assert
+    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
+    assertTrue(actualCanHandleAddResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link IndexFieldCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   */
+  @Test
+  public void testCanHandleUpdate() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    IndexFieldCustomPersistenceHandler indexFieldCustomPersistenceHandler = new IndexFieldCustomPersistenceHandler();
+
+    // Act and Assert
     assertFalse(indexFieldCustomPersistenceHandler.canHandleUpdate(new PersistencePackage()));
   }
 
   /**
-   * Test {@link IndexFieldCustomPersistenceHandler#canHandleRemove(PersistencePackage)}.
-   *
-   * <ul>
-   *   <li>When {@link PersistencePackage#PersistencePackage()}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * IndexFieldCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
+   * Method under test:
+   * {@link IndexFieldCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean IndexFieldCustomPersistenceHandler.canHandleRemove(PersistencePackage)"
-  })
-  public void testCanHandleRemove_whenPersistencePackage_thenReturnFalse() {
-    // Arrange, Act and Assert
+  public void testCanHandleUpdate2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    IndexFieldCustomPersistenceHandler indexFieldCustomPersistenceHandler = new IndexFieldCustomPersistenceHandler();
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
+
+    // Act
+    Boolean actualCanHandleUpdateResult = indexFieldCustomPersistenceHandler.canHandleUpdate(persistencePackage);
+
+    // Assert
+    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
+    assertFalse(actualCanHandleUpdateResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link IndexFieldCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   */
+  @Test
+  public void testCanHandleUpdate3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    IndexFieldCustomPersistenceHandler indexFieldCustomPersistenceHandler = new IndexFieldCustomPersistenceHandler();
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getCeilingEntityFullyQualifiedClassname())
+        .thenReturn("org.broadleafcommerce.core.search.domain.IndexField");
+
+    // Act
+    Boolean actualCanHandleUpdateResult = indexFieldCustomPersistenceHandler.canHandleUpdate(persistencePackage);
+
+    // Assert
+    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
+    assertTrue(actualCanHandleUpdateResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link IndexFieldCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
+   */
+  @Test
+  public void testCanHandleRemove() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    IndexFieldCustomPersistenceHandler indexFieldCustomPersistenceHandler = new IndexFieldCustomPersistenceHandler();
+
+    // Act and Assert
     assertFalse(indexFieldCustomPersistenceHandler.canHandleRemove(new PersistencePackage()));
   }
 
   /**
-   * Test {@link IndexFieldCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
-   *
-   * <ul>
-   *   <li>When {@link PersistencePackage#PersistencePackage()}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * IndexFieldCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
+   * Method under test:
+   * {@link IndexFieldCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean IndexFieldCustomPersistenceHandler.canHandleFetch(PersistencePackage)"
-  })
-  public void testCanHandleFetch_whenPersistencePackage_thenReturnFalse() {
-    // Arrange, Act and Assert
+  public void testCanHandleRemove2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    IndexFieldCustomPersistenceHandler indexFieldCustomPersistenceHandler = new IndexFieldCustomPersistenceHandler();
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
+
+    // Act
+    Boolean actualCanHandleRemoveResult = indexFieldCustomPersistenceHandler.canHandleRemove(persistencePackage);
+
+    // Assert
+    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
+    assertFalse(actualCanHandleRemoveResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link IndexFieldCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
+   */
+  @Test
+  public void testCanHandleFetch() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    IndexFieldCustomPersistenceHandler indexFieldCustomPersistenceHandler = new IndexFieldCustomPersistenceHandler();
+
+    // Act and Assert
     assertFalse(indexFieldCustomPersistenceHandler.canHandleFetch(new PersistencePackage()));
   }
 
   /**
-   * Test {@link IndexFieldCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link ServiceException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link IndexFieldCustomPersistenceHandler#remove(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
+   * Method under test:
+   * {@link IndexFieldCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void IndexFieldCustomPersistenceHandler.remove(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testRemove_thenThrowServiceException() throws ServiceException {
+  public void testCanHandleFetch2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    Entity entity = new Entity();
-    entity.setType(new String[] {"Unable to perform remove for entity: "});
+    IndexFieldCustomPersistenceHandler indexFieldCustomPersistenceHandler = new IndexFieldCustomPersistenceHandler();
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
 
-    PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.setEntity(entity);
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+    // Act
+    Boolean actualCanHandleFetchResult = indexFieldCustomPersistenceHandler.canHandleFetch(persistencePackage);
 
-    AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
-    when(helper.getPrimaryKey(Mockito.<Entity>any(), Mockito.<Map<String, FieldMetadata>>any()))
-        .thenReturn("Primary Key");
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
-        .thenReturn(new HashMap<>());
-
-    // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () ->
-            indexFieldCustomPersistenceHandler.remove(
-                persistencePackage, dynamicEntityDao, helper));
-    verify(helper).getPrimaryKey(isA(Entity.class), isA(Map.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.search.domain.IndexField"), isNull());
+    // Assert
+    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
+    assertFalse(actualCanHandleFetchResult);
   }
 
   /**
-   * Test {@link IndexFieldCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link ServiceException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link IndexFieldCustomPersistenceHandler#update(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
+   * Method under test:
+   * {@link IndexFieldCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity IndexFieldCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testUpdate_thenThrowServiceException() throws ServiceException {
+  public void testCanHandleFetch3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    Entity entity = new Entity();
-    entity.setType(new String[] {"Unable to perform update for entity: "});
+    IndexFieldCustomPersistenceHandler indexFieldCustomPersistenceHandler = new IndexFieldCustomPersistenceHandler();
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getCeilingEntityFullyQualifiedClassname())
+        .thenReturn("org.broadleafcommerce.core.search.domain.IndexField");
 
-    PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.setEntity(entity);
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+    // Act
+    Boolean actualCanHandleFetchResult = indexFieldCustomPersistenceHandler.canHandleFetch(persistencePackage);
 
-    AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
-    when(helper.getPrimaryKey(Mockito.<Entity>any(), Mockito.<Map<String, FieldMetadata>>any()))
-        .thenReturn("Primary Key");
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
-        .thenReturn(new HashMap<>());
-
-    // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () ->
-            indexFieldCustomPersistenceHandler.update(
-                persistencePackage, dynamicEntityDao, helper));
-    verify(helper).getPrimaryKey(isA(Entity.class), isA(Map.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.search.domain.IndexField"), isNull());
+    // Assert
+    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
+    assertTrue(actualCanHandleFetchResult);
   }
 
   /**
-   * Test {@link IndexFieldCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link Entity} {@link Entity#getType()} return array of {@link String} with {@code
-   *       Type}.
-   *   <li>Then throw {@link ServiceException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link IndexFieldCustomPersistenceHandler#add(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
+   * Method under test:
+   * {@link IndexFieldCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity IndexFieldCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testAdd_givenEntityGetTypeReturnArrayOfStringWithType_thenThrowServiceException()
-      throws ServiceException {
+  public void testRemove() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    IndexFieldCustomPersistenceHandler indexFieldCustomPersistenceHandler = new IndexFieldCustomPersistenceHandler();
     Entity entity = mock(Entity.class);
-    when(entity.getType()).thenReturn(new String[] {"Type"});
+    when(entity.getType()).thenReturn(new String[]{"Type"});
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getEntity()).thenReturn(entity);
+    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+    RecordHelper helper = mock(RecordHelper.class);
+    when(helper.getPrimaryKey(Mockito.<Entity>any(), Mockito.<Map<String, FieldMetadata>>any()))
+        .thenReturn("Primary Key");
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+        .thenReturn(new HashMap<>());
+
+    // Act and Assert
+    assertThrows(ServiceException.class,
+        () -> indexFieldCustomPersistenceHandler.remove(persistencePackage, dynamicEntityDao, helper));
+    verify(entity, atLeast(1)).getType();
+    verify(persistencePackage).getEntity();
+    verify(persistencePackage).getPersistencePerspective();
+    verify(helper).getPrimaryKey(isA(Entity.class), isA(Map.class));
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.search.domain.IndexField"),
+        isA(PersistencePerspective.class));
+  }
+
+  /**
+   * Method under test:
+   * {@link IndexFieldCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   */
+  @Test
+  public void testUpdate() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    IndexFieldCustomPersistenceHandler indexFieldCustomPersistenceHandler = new IndexFieldCustomPersistenceHandler();
+    Entity entity = mock(Entity.class);
+    when(entity.getType()).thenReturn(new String[]{"Type"});
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getEntity()).thenReturn(entity);
+    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+    RecordHelper helper = mock(RecordHelper.class);
+    when(helper.getPrimaryKey(Mockito.<Entity>any(), Mockito.<Map<String, FieldMetadata>>any()))
+        .thenReturn("Primary Key");
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+        .thenReturn(new HashMap<>());
+
+    // Act and Assert
+    assertThrows(ServiceException.class,
+        () -> indexFieldCustomPersistenceHandler.update(persistencePackage, dynamicEntityDao, helper));
+    verify(entity).getType();
+    verify(persistencePackage).getEntity();
+    verify(persistencePackage).getPersistencePerspective();
+    verify(helper).getPrimaryKey(isA(Entity.class), isA(Map.class));
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.search.domain.IndexField"),
+        isA(PersistencePerspective.class));
+  }
+
+  /**
+   * Method under test:
+   * {@link IndexFieldCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   */
+  @Test
+  public void testAdd() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    IndexFieldCustomPersistenceHandler indexFieldCustomPersistenceHandler = new IndexFieldCustomPersistenceHandler();
+    Entity entity = mock(Entity.class);
+    when(entity.getType()).thenReturn(new String[]{"Type"});
 
     PersistencePackage persistencePackage = new PersistencePackage();
     persistencePackage.setEntity(entity);
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () ->
-            indexFieldCustomPersistenceHandler.add(
-                persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule()));
+    assertThrows(ServiceException.class, () -> indexFieldCustomPersistenceHandler.add(persistencePackage,
+        dynamicEntityDao, new AdornedTargetListPersistenceModule()));
     verify(entity).getType();
   }
 
   /**
-   * Test {@link IndexFieldCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Then return {@link DynamicResultSet#DynamicResultSet()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link IndexFieldCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   * Method under test:
+   * {@link IndexFieldCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet IndexFieldCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
-  })
-  public void testFetch_thenReturnDynamicResultSet() throws ServiceException {
+  public void testFetch() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    IndexFieldCustomPersistenceHandler indexFieldCustomPersistenceHandler = new IndexFieldCustomPersistenceHandler();
     PersistencePackage persistencePackage = new PersistencePackage();
     CriteriaTransferObject cto = new CriteriaTransferObject();
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule =
-        mock(AdornedTargetListPersistenceModule.class);
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = mock(
+        AdornedTargetListPersistenceModule.class);
     DynamicResultSet dynamicResultSet = new DynamicResultSet();
-    when(adornedTargetListPersistenceModule.fetch(
-            Mockito.<PersistencePackage>any(), Mockito.<CriteriaTransferObject>any()))
-        .thenReturn(dynamicResultSet);
-
+    when(adornedTargetListPersistenceModule.fetch(Mockito.<PersistencePackage>any(),
+        Mockito.<CriteriaTransferObject>any())).thenReturn(dynamicResultSet);
     RecordHelper helper = mock(RecordHelper.class);
-    when(helper.getCompatibleModule(Mockito.<OperationType>any()))
-        .thenReturn(adornedTargetListPersistenceModule);
+    when(helper.getCompatibleModule(Mockito.<OperationType>any())).thenReturn(adornedTargetListPersistenceModule);
 
     // Act
-    DynamicResultSet actualFetchResult =
-        indexFieldCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao, helper);
+    DynamicResultSet actualFetchResult = indexFieldCustomPersistenceHandler.fetch(persistencePackage, cto,
+        dynamicEntityDao, helper);
 
     // Assert
-    verify(adornedTargetListPersistenceModule)
-        .fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
-    verify(helper).getCompatibleModule(OperationType.BASIC);
+    verify(adornedTargetListPersistenceModule).fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
+    verify(helper).getCompatibleModule(eq(OperationType.BASIC));
     assertSame(dynamicResultSet, actualFetchResult);
   }
 }

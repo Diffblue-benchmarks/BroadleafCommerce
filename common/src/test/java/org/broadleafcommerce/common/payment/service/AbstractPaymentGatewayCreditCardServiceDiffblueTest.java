@@ -18,90 +18,50 @@
 package org.broadleafcommerce.common.payment.service;
 
 import static org.junit.Assert.assertThrows;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.payment.dto.PaymentRequestDTO;
 import org.broadleafcommerce.common.vendor.service.exception.PaymentException;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class AbstractPaymentGatewayCreditCardServiceDiffblueTest {
   /**
-   * Test {@link
-   * AbstractPaymentGatewayCreditCardService#createGatewayCreditCard(PaymentRequestDTO)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractPaymentGatewayCreditCardService#createGatewayCreditCard(PaymentRequestDTO)}
+   * Method under test:
+   * {@link AbstractPaymentGatewayCreditCardService#createGatewayCreditCard(PaymentRequestDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.common.payment.dto.PaymentResponseDTO AbstractPaymentGatewayCreditCardService.createGatewayCreditCard(PaymentRequestDTO)"
-  })
   public void testCreateGatewayCreditCard() throws PaymentException {
     // Arrange
-    AbstractPaymentGatewayCreditCardService abstractPaymentGatewayCreditCardService =
-        new AbstractPaymentGatewayCreditCardService();
+    AbstractPaymentGatewayCreditCardService abstractPaymentGatewayCreditCardService = new AbstractPaymentGatewayCreditCardService();
 
     // Act and Assert
-    assertThrows(
-        UnsupportedOperationException.class,
-        () ->
-            abstractPaymentGatewayCreditCardService.createGatewayCreditCard(
-                new PaymentRequestDTO()));
+    assertThrows(UnsupportedOperationException.class,
+        () -> abstractPaymentGatewayCreditCardService.createGatewayCreditCard(new PaymentRequestDTO()));
   }
 
   /**
-   * Test {@link
-   * AbstractPaymentGatewayCreditCardService#updateGatewayCreditCard(PaymentRequestDTO)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractPaymentGatewayCreditCardService#updateGatewayCreditCard(PaymentRequestDTO)}
+   * Method under test:
+   * {@link AbstractPaymentGatewayCreditCardService#updateGatewayCreditCard(PaymentRequestDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.common.payment.dto.PaymentResponseDTO AbstractPaymentGatewayCreditCardService.updateGatewayCreditCard(PaymentRequestDTO)"
-  })
   public void testUpdateGatewayCreditCard() throws PaymentException {
     // Arrange
-    AbstractPaymentGatewayCreditCardService abstractPaymentGatewayCreditCardService =
-        new AbstractPaymentGatewayCreditCardService();
+    AbstractPaymentGatewayCreditCardService abstractPaymentGatewayCreditCardService = new AbstractPaymentGatewayCreditCardService();
 
     // Act and Assert
-    assertThrows(
-        UnsupportedOperationException.class,
-        () ->
-            abstractPaymentGatewayCreditCardService.updateGatewayCreditCard(
-                new PaymentRequestDTO()));
+    assertThrows(UnsupportedOperationException.class,
+        () -> abstractPaymentGatewayCreditCardService.updateGatewayCreditCard(new PaymentRequestDTO()));
   }
 
   /**
-   * Test {@link
-   * AbstractPaymentGatewayCreditCardService#deleteGatewayCreditCard(PaymentRequestDTO)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractPaymentGatewayCreditCardService#deleteGatewayCreditCard(PaymentRequestDTO)}
+   * Method under test:
+   * {@link AbstractPaymentGatewayCreditCardService#deleteGatewayCreditCard(PaymentRequestDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.common.payment.dto.PaymentResponseDTO AbstractPaymentGatewayCreditCardService.deleteGatewayCreditCard(PaymentRequestDTO)"
-  })
   public void testDeleteGatewayCreditCard() throws PaymentException {
     // Arrange
-    AbstractPaymentGatewayCreditCardService abstractPaymentGatewayCreditCardService =
-        new AbstractPaymentGatewayCreditCardService();
+    AbstractPaymentGatewayCreditCardService abstractPaymentGatewayCreditCardService = new AbstractPaymentGatewayCreditCardService();
 
     // Act and Assert
-    assertThrows(
-        UnsupportedOperationException.class,
-        () ->
-            abstractPaymentGatewayCreditCardService.deleteGatewayCreditCard(
-                new PaymentRequestDTO()));
+    assertThrows(UnsupportedOperationException.class,
+        () -> abstractPaymentGatewayCreditCardService.deleteGatewayCreditCard(new PaymentRequestDTO()));
   }
 }

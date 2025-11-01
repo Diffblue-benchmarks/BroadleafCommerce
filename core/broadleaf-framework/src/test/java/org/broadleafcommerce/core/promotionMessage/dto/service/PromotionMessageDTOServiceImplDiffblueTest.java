@@ -21,9 +21,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -35,6 +40,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.broadleafcommerce.common.locale.domain.Locale;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.media.domain.Media;
 import org.broadleafcommerce.common.money.Money;
@@ -52,34 +58,40 @@ import org.broadleafcommerce.core.offer.service.type.OfferType;
 import org.broadleafcommerce.core.promotionMessage.domain.PromotionMessage;
 import org.broadleafcommerce.core.promotionMessage.domain.PromotionMessageImpl;
 import org.broadleafcommerce.core.promotionMessage.dto.PromotionMessageDTO;
+import org.broadleafcommerce.profile.core.dto.CustomerRuleHolder;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.Mockito;
 
-@ContextConfiguration(classes = {PromotionMessageDTOServiceImpl.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class PromotionMessageDTOServiceImplDiffblueTest {
-  @Autowired private PromotionMessageDTOServiceImpl promotionMessageDTOServiceImpl;
-
   /**
-   * Test {@link PromotionMessageDTOServiceImpl#convertPromotionMessagesToDTOs(Set)} with {@code
-   * promotionMessages}.
-   *
-   * <p>Method under test: {@link
-   * PromotionMessageDTOServiceImpl#convertPromotionMessagesToDTOs(Set)}
+   * Method under test:
+   * {@link PromotionMessageDTOServiceImpl#convertPromotionMessagesToDTOs(Set)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map PromotionMessageDTOServiceImpl.convertPromotionMessagesToDTOs(Set)"})
-  public void testConvertPromotionMessagesToDTOsWithPromotionMessages() {
+  public void testConvertPromotionMessagesToDTOs() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    PromotionMessageDTOServiceImpl promotionMessageDTOServiceImpl = new PromotionMessageDTOServiceImpl();
+
+    // Act and Assert
+    assertTrue(promotionMessageDTOServiceImpl.convertPromotionMessagesToDTOs(new HashSet<>()).isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link PromotionMessageDTOServiceImpl#convertPromotionMessagesToDTOs(Set)}
+   */
+  @Test
+  public void testConvertPromotionMessagesToDTOs2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PromotionMessageDTOServiceImpl promotionMessageDTOServiceImpl = new PromotionMessageDTOServiceImpl();
+
     PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
-    promotionMessageImpl.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    Date endDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    promotionMessageImpl.setEndDate(endDate);
     promotionMessageImpl.setId(PromotionMessageImpl.serialVersionUID);
     CategoryMediaXrefImpl media = new CategoryMediaXrefImpl();
     promotionMessageImpl.setMedia(media);
@@ -87,48 +99,45 @@ public class PromotionMessageDTOServiceImplDiffblueTest {
     promotionMessageImpl.setMessagePlacement("Message Location");
     promotionMessageImpl.setName("Name");
     promotionMessageImpl.setPriority(1);
-    promotionMessageImpl.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    promotionMessageImpl
+        .setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     promotionMessageImpl.setLocale(null);
 
     LinkedHashSet<PromotionMessage> promotionMessages = new LinkedHashSet<>();
     promotionMessages.add(promotionMessageImpl);
 
     // Act
-    Map<String, List<PromotionMessageDTO>> actualConvertPromotionMessagesToDTOsResult =
-        promotionMessageDTOServiceImpl.convertPromotionMessagesToDTOs(promotionMessages);
+    Map<String, List<PromotionMessageDTO>> actualConvertPromotionMessagesToDTOsResult = promotionMessageDTOServiceImpl
+        .convertPromotionMessagesToDTOs(promotionMessages);
 
     // Assert
     assertEquals(1, actualConvertPromotionMessagesToDTOsResult.size());
-    List<PromotionMessageDTO> getResult =
-        actualConvertPromotionMessagesToDTOsResult.get("Message Location");
+    List<PromotionMessageDTO> getResult = actualConvertPromotionMessagesToDTOsResult.get("Message Location");
     assertEquals(1, getResult.size());
     PromotionMessageDTO getResult2 = getResult.get(0);
-    Media media2 = getResult2.getMedia();
-    assertTrue(media2 instanceof CategoryMediaXrefImpl);
     assertEquals("Message Location", getResult2.getMessagePlacement());
     assertEquals("Promotion Message", getResult2.getMessage());
     assertNull(getResult2.getLocaleCode());
+    assertNull(getResult2.getCustomerRuleHolder().getCustomerRule());
     assertEquals(1, getResult2.getPriority().intValue());
-    assertSame(media, media2);
+    assertSame(media, getResult2.getMedia());
+    assertSame(endDate, getResult2.getEndDate());
   }
 
   /**
-   * Test {@link PromotionMessageDTOServiceImpl#convertPromotionMessagesToDTOs(Set)} with {@code
-   * promotionMessages}.
-   *
-   * <p>Method under test: {@link
-   * PromotionMessageDTOServiceImpl#convertPromotionMessagesToDTOs(Set)}
+   * Method under test:
+   * {@link PromotionMessageDTOServiceImpl#convertPromotionMessagesToDTOs(Set)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map PromotionMessageDTOServiceImpl.convertPromotionMessagesToDTOs(Set)"})
-  public void testConvertPromotionMessagesToDTOsWithPromotionMessages2() {
+  public void testConvertPromotionMessagesToDTOs3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    PromotionMessageDTOServiceImpl promotionMessageDTOServiceImpl = new PromotionMessageDTOServiceImpl();
+
     PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
-    promotionMessageImpl.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    Date endDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    promotionMessageImpl.setEndDate(endDate);
     promotionMessageImpl.setId(PromotionMessageImpl.serialVersionUID);
     CategoryMediaXrefImpl media = new CategoryMediaXrefImpl();
     promotionMessageImpl.setMedia(media);
@@ -136,321 +145,138 @@ public class PromotionMessageDTOServiceImplDiffblueTest {
     promotionMessageImpl.setMessagePlacement("Message Location");
     promotionMessageImpl.setName("Name");
     promotionMessageImpl.setPriority(1);
-    promotionMessageImpl.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    promotionMessageImpl
+        .setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     promotionMessageImpl.setLocale(new LocaleImpl());
 
     LinkedHashSet<PromotionMessage> promotionMessages = new LinkedHashSet<>();
     promotionMessages.add(promotionMessageImpl);
 
     // Act
-    Map<String, List<PromotionMessageDTO>> actualConvertPromotionMessagesToDTOsResult =
-        promotionMessageDTOServiceImpl.convertPromotionMessagesToDTOs(promotionMessages);
+    Map<String, List<PromotionMessageDTO>> actualConvertPromotionMessagesToDTOsResult = promotionMessageDTOServiceImpl
+        .convertPromotionMessagesToDTOs(promotionMessages);
 
     // Assert
     assertEquals(1, actualConvertPromotionMessagesToDTOsResult.size());
-    List<PromotionMessageDTO> getResult =
-        actualConvertPromotionMessagesToDTOsResult.get("Message Location");
+    List<PromotionMessageDTO> getResult = actualConvertPromotionMessagesToDTOsResult.get("Message Location");
     assertEquals(1, getResult.size());
     PromotionMessageDTO getResult2 = getResult.get(0);
-    Media media2 = getResult2.getMedia();
-    assertTrue(media2 instanceof CategoryMediaXrefImpl);
     assertEquals("Message Location", getResult2.getMessagePlacement());
     assertEquals("Promotion Message", getResult2.getMessage());
     assertNull(getResult2.getLocaleCode());
+    assertNull(getResult2.getCustomerRuleHolder().getCustomerRule());
     assertEquals(1, getResult2.getPriority().intValue());
-    assertSame(media, media2);
+    assertSame(media, getResult2.getMedia());
+    assertSame(endDate, getResult2.getEndDate());
   }
 
   /**
-   * Test {@link PromotionMessageDTOServiceImpl#convertPromotionMessagesToDTOs(Set, Offer)} with
-   * {@code promotionMessages}, {@code offer}.
-   *
-   * <p>Method under test: {@link PromotionMessageDTOServiceImpl#convertPromotionMessagesToDTOs(Set,
-   * Offer)}
+   * Method under test:
+   * {@link PromotionMessageDTOServiceImpl#convertPromotionMessagesToDTOs(Set)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map PromotionMessageDTOServiceImpl.convertPromotionMessagesToDTOs(Set, Offer)"
-  })
-  public void testConvertPromotionMessagesToDTOsWithPromotionMessagesOffer() {
+  public void testConvertPromotionMessagesToDTOs4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
-    promotionMessageImpl.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    PromotionMessageDTOServiceImpl promotionMessageDTOServiceImpl = new PromotionMessageDTOServiceImpl();
+    PromotionMessageImpl promotionMessageImpl = mock(PromotionMessageImpl.class);
+    when(promotionMessageImpl.getPriority()).thenReturn(1);
+    when(promotionMessageImpl.getMessage()).thenReturn("Not all who wander are lost");
+    when(promotionMessageImpl.getMessagePlacement()).thenReturn("Message Placement");
+    Date fromResult = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    when(promotionMessageImpl.getEndDate()).thenReturn(fromResult);
+    when(promotionMessageImpl.getLocale()).thenReturn(new LocaleImpl());
+    CategoryMediaXrefImpl categoryMediaXrefImpl = new CategoryMediaXrefImpl();
+    when(promotionMessageImpl.getMedia()).thenReturn(categoryMediaXrefImpl);
+    doNothing().when(promotionMessageImpl).setEndDate(Mockito.<Date>any());
+    doNothing().when(promotionMessageImpl).setId(Mockito.<Long>any());
+    doNothing().when(promotionMessageImpl).setLocale(Mockito.<Locale>any());
+    doNothing().when(promotionMessageImpl).setMedia(Mockito.<Media>any());
+    doNothing().when(promotionMessageImpl).setMessage(Mockito.<String>any());
+    doNothing().when(promotionMessageImpl).setMessagePlacement(Mockito.<String>any());
+    doNothing().when(promotionMessageImpl).setName(Mockito.<String>any());
+    doNothing().when(promotionMessageImpl).setPriority(Mockito.<Integer>any());
+    doNothing().when(promotionMessageImpl).setStartDate(Mockito.<Date>any());
+    promotionMessageImpl
+        .setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     promotionMessageImpl.setId(PromotionMessageImpl.serialVersionUID);
-    CategoryMediaXrefImpl media = new CategoryMediaXrefImpl();
-    promotionMessageImpl.setMedia(media);
+    promotionMessageImpl.setMedia(new CategoryMediaXrefImpl());
     promotionMessageImpl.setMessage("Promotion Message");
     promotionMessageImpl.setMessagePlacement("Message Location");
     promotionMessageImpl.setName("Name");
     promotionMessageImpl.setPriority(1);
-    promotionMessageImpl.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    promotionMessageImpl
+        .setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     promotionMessageImpl.setLocale(null);
 
     LinkedHashSet<PromotionMessage> promotionMessages = new LinkedHashSet<>();
     promotionMessages.add(promotionMessageImpl);
 
-    HashMap<String, OfferOfferRuleXref> offerMatchRulesXref = new HashMap<>();
-    offerMatchRulesXref.put("CUSTOMER", new OfferOfferRuleXrefImpl());
-
-    OfferImpl offer = new OfferImpl();
-    offer.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offer.setApplyDiscountToSalePrice(true);
-    offer.setApplyToChildItems(true);
-    offer.setAutomaticallyAdded(true);
-    offer.setCombinableWithOtherOffers(true);
-    offer.setDescription("The characteristics of someone or something");
-    offer.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offer.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offer.setId(OfferImpl.serialVersionUID);
-    offer.setMarketingMessage("Marketing Message");
-    offer.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offer.setMaxUsesPerOrder(3);
-    offer.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offer.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offer.setName("Name");
-    offer.setOfferCodes(new ArrayList<>());
-    offer.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offer.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offer.setOfferPriceData(new ArrayList<>());
-    offer.setOrderMinSubTotal(new Money());
-    offer.setPriority(1);
-    offer.setQualifyingItemCriteriaXref(new HashSet<>());
-    offer.setQualifyingItemSubTotal(new Money());
-    offer.setRequiresRelatedTargetAndQualifiers(true);
-    offer.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offer.setTargetItemCriteriaXref(new HashSet<>());
-    offer.setTargetMinSubTotal(new Money());
-    offer.setTargetSystem("Target System");
-    offer.setTotalitarianOffer(true);
-    offer.setType(OfferType.FULFILLMENT_GROUP);
-    offer.setUseListForDiscounts(true);
-    offer.setValue(new BigDecimal("2.3"));
-    offer.setOfferMatchRulesXref(offerMatchRulesXref);
-
     // Act
-    Map<String, List<PromotionMessageDTO>> actualConvertPromotionMessagesToDTOsResult =
-        promotionMessageDTOServiceImpl.convertPromotionMessagesToDTOs(promotionMessages, offer);
+    Map<String, List<PromotionMessageDTO>> actualConvertPromotionMessagesToDTOsResult = promotionMessageDTOServiceImpl
+        .convertPromotionMessagesToDTOs(promotionMessages);
 
     // Assert
+    verify(promotionMessageImpl).getEndDate();
+    verify(promotionMessageImpl, atLeast(1)).getLocale();
+    verify(promotionMessageImpl).getMedia();
+    verify(promotionMessageImpl).getMessage();
+    verify(promotionMessageImpl).getMessagePlacement();
+    verify(promotionMessageImpl).getPriority();
+    verify(promotionMessageImpl).setEndDate(isA(Date.class));
+    verify(promotionMessageImpl).setId(eq(1L));
+    verify(promotionMessageImpl).setLocale(isNull());
+    verify(promotionMessageImpl).setMedia(isA(Media.class));
+    verify(promotionMessageImpl).setMessage(eq("Promotion Message"));
+    verify(promotionMessageImpl).setMessagePlacement(eq("Message Location"));
+    verify(promotionMessageImpl).setName(eq("Name"));
+    verify(promotionMessageImpl).setPriority(eq(1));
+    verify(promotionMessageImpl).setStartDate(isA(Date.class));
     assertEquals(1, actualConvertPromotionMessagesToDTOsResult.size());
-    List<PromotionMessageDTO> getResult =
-        actualConvertPromotionMessagesToDTOsResult.get("Message Location");
+    List<PromotionMessageDTO> getResult = actualConvertPromotionMessagesToDTOsResult.get("Message Placement");
     assertEquals(1, getResult.size());
     PromotionMessageDTO getResult2 = getResult.get(0);
-    Media media2 = getResult2.getMedia();
-    assertTrue(media2 instanceof CategoryMediaXrefImpl);
-    assertEquals("Message Location", getResult2.getMessagePlacement());
-    assertEquals("Promotion Message", getResult2.getMessage());
+    assertEquals("Message Placement", getResult2.getMessagePlacement());
+    assertEquals("Not all who wander are lost", getResult2.getMessage());
     assertNull(getResult2.getLocaleCode());
+    assertNull(getResult2.getCustomerRuleHolder().getCustomerRule());
     assertEquals(1, getResult2.getPriority().intValue());
-    assertSame(media, media2);
+    assertSame(categoryMediaXrefImpl, getResult2.getMedia());
+    assertSame(fromResult, getResult2.getEndDate());
   }
 
   /**
-   * Test {@link PromotionMessageDTOServiceImpl#convertPromotionMessagesToDTOs(Set, Offer)} with
-   * {@code promotionMessages}, {@code offer}.
-   *
-   * <p>Method under test: {@link PromotionMessageDTOServiceImpl#convertPromotionMessagesToDTOs(Set,
-   * Offer)}
+   * Method under test:
+   * {@link PromotionMessageDTOServiceImpl#convertPromotionMessagesToDTOs(Set, Offer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map PromotionMessageDTOServiceImpl.convertPromotionMessagesToDTOs(Set, Offer)"
-  })
-  public void testConvertPromotionMessagesToDTOsWithPromotionMessagesOffer2() {
+  public void testConvertPromotionMessagesToDTOs5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
-    promotionMessageImpl.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    promotionMessageImpl.setId(PromotionMessageImpl.serialVersionUID);
-    CategoryMediaXrefImpl media = new CategoryMediaXrefImpl();
-    promotionMessageImpl.setMedia(media);
-    promotionMessageImpl.setMessage("Promotion Message");
-    promotionMessageImpl.setMessagePlacement("Message Location");
-    promotionMessageImpl.setName("Name");
-    promotionMessageImpl.setPriority(1);
-    promotionMessageImpl.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    promotionMessageImpl.setLocale(null);
-
-    LinkedHashSet<PromotionMessage> promotionMessages = new LinkedHashSet<>();
-    promotionMessages.add(promotionMessageImpl);
-
-    OfferOfferRuleXrefImpl offerOfferRuleXrefImpl = new OfferOfferRuleXrefImpl();
-    offerOfferRuleXrefImpl.setId(1L);
-    offerOfferRuleXrefImpl.setKey("Key");
-    offerOfferRuleXrefImpl.setOffer(new OfferImpl());
-    offerOfferRuleXrefImpl.setOfferRule(new OfferRuleImpl());
-
-    HashMap<String, OfferOfferRuleXref> offerMatchRulesXref = new HashMap<>();
-    offerMatchRulesXref.put("CUSTOMER", offerOfferRuleXrefImpl);
-
-    OfferImpl offer = new OfferImpl();
-    offer.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offer.setApplyDiscountToSalePrice(true);
-    offer.setApplyToChildItems(true);
-    offer.setAutomaticallyAdded(true);
-    offer.setCombinableWithOtherOffers(true);
-    offer.setDescription("The characteristics of someone or something");
-    offer.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offer.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offer.setId(OfferImpl.serialVersionUID);
-    offer.setMarketingMessage("Marketing Message");
-    offer.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offer.setMaxUsesPerOrder(3);
-    offer.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offer.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offer.setName("Name");
-    offer.setOfferCodes(new ArrayList<>());
-    offer.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offer.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offer.setOfferPriceData(new ArrayList<>());
-    offer.setOrderMinSubTotal(new Money());
-    offer.setPriority(1);
-    offer.setQualifyingItemCriteriaXref(new HashSet<>());
-    offer.setQualifyingItemSubTotal(new Money());
-    offer.setRequiresRelatedTargetAndQualifiers(true);
-    offer.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offer.setTargetItemCriteriaXref(new HashSet<>());
-    offer.setTargetMinSubTotal(new Money());
-    offer.setTargetSystem("Target System");
-    offer.setTotalitarianOffer(true);
-    offer.setType(OfferType.FULFILLMENT_GROUP);
-    offer.setUseListForDiscounts(true);
-    offer.setValue(new BigDecimal("2.3"));
-    offer.setOfferMatchRulesXref(offerMatchRulesXref);
-
-    // Act
-    Map<String, List<PromotionMessageDTO>> actualConvertPromotionMessagesToDTOsResult =
-        promotionMessageDTOServiceImpl.convertPromotionMessagesToDTOs(promotionMessages, offer);
-
-    // Assert
-    assertEquals(1, actualConvertPromotionMessagesToDTOsResult.size());
-    List<PromotionMessageDTO> getResult =
-        actualConvertPromotionMessagesToDTOsResult.get("Message Location");
-    assertEquals(1, getResult.size());
-    PromotionMessageDTO getResult2 = getResult.get(0);
-    Media media2 = getResult2.getMedia();
-    assertTrue(media2 instanceof CategoryMediaXrefImpl);
-    assertEquals("Message Location", getResult2.getMessagePlacement());
-    assertEquals("Promotion Message", getResult2.getMessage());
-    assertNull(getResult2.getLocaleCode());
-    assertEquals(1, getResult2.getPriority().intValue());
-    assertSame(media, media2);
-  }
-
-  /**
-   * Test {@link PromotionMessageDTOServiceImpl#convertPromotionMessagesToDTOs(Set, Offer)} with
-   * {@code promotionMessages}, {@code offer}.
-   *
-   * <p>Method under test: {@link PromotionMessageDTOServiceImpl#convertPromotionMessagesToDTOs(Set,
-   * Offer)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map PromotionMessageDTOServiceImpl.convertPromotionMessagesToDTOs(Set, Offer)"
-  })
-  public void testConvertPromotionMessagesToDTOsWithPromotionMessagesOffer3() {
-    // Arrange
-    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
-    promotionMessageImpl.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    promotionMessageImpl.setId(PromotionMessageImpl.serialVersionUID);
-    CategoryMediaXrefImpl media = new CategoryMediaXrefImpl();
-    promotionMessageImpl.setMedia(media);
-    promotionMessageImpl.setMessage("Promotion Message");
-    promotionMessageImpl.setMessagePlacement("Message Location");
-    promotionMessageImpl.setName("Name");
-    promotionMessageImpl.setPriority(1);
-    promotionMessageImpl.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    promotionMessageImpl.setLocale(new LocaleImpl());
-
-    LinkedHashSet<PromotionMessage> promotionMessages = new LinkedHashSet<>();
-    promotionMessages.add(promotionMessageImpl);
-
-    // Act
-    Map<String, List<PromotionMessageDTO>> actualConvertPromotionMessagesToDTOsResult =
-        promotionMessageDTOServiceImpl.convertPromotionMessagesToDTOs(promotionMessages, null);
-
-    // Assert
-    assertEquals(1, actualConvertPromotionMessagesToDTOsResult.size());
-    List<PromotionMessageDTO> getResult =
-        actualConvertPromotionMessagesToDTOsResult.get("Message Location");
-    assertEquals(1, getResult.size());
-    PromotionMessageDTO getResult2 = getResult.get(0);
-    Media media2 = getResult2.getMedia();
-    assertTrue(media2 instanceof CategoryMediaXrefImpl);
-    assertEquals("Message Location", getResult2.getMessagePlacement());
-    assertEquals("Promotion Message", getResult2.getMessage());
-    assertNull(getResult2.getLocaleCode());
-    assertEquals(1, getResult2.getPriority().intValue());
-    assertSame(media, media2);
-  }
-
-  /**
-   * Test {@link PromotionMessageDTOServiceImpl#convertPromotionMessagesToDTOs(Set, Offer)} with
-   * {@code promotionMessages}, {@code offer}.
-   *
-   * <ul>
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotionMessageDTOServiceImpl#convertPromotionMessagesToDTOs(Set,
-   * Offer)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map PromotionMessageDTOServiceImpl.convertPromotionMessagesToDTOs(Set, Offer)"
-  })
-  public void testConvertPromotionMessagesToDTOsWithPromotionMessagesOffer_thenReturnEmpty() {
-    // Arrange
+    PromotionMessageDTOServiceImpl promotionMessageDTOServiceImpl = new PromotionMessageDTOServiceImpl();
     HashSet<PromotionMessage> promotionMessages = new HashSet<>();
 
     // Act and Assert
     assertTrue(
-        promotionMessageDTOServiceImpl
-            .convertPromotionMessagesToDTOs(promotionMessages, new OfferImpl())
-            .isEmpty());
+        promotionMessageDTOServiceImpl.convertPromotionMessagesToDTOs(promotionMessages, new OfferImpl()).isEmpty());
   }
 
   /**
-   * Test {@link PromotionMessageDTOServiceImpl#convertPromotionMessagesToDTOs(Set, Offer)} with
-   * {@code promotionMessages}, {@code offer}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotionMessageDTOServiceImpl#convertPromotionMessagesToDTOs(Set,
-   * Offer)}
+   * Method under test:
+   * {@link PromotionMessageDTOServiceImpl#convertPromotionMessagesToDTOs(Set, Offer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map PromotionMessageDTOServiceImpl.convertPromotionMessagesToDTOs(Set, Offer)"
-  })
-  public void testConvertPromotionMessagesToDTOsWithPromotionMessagesOffer_whenNull() {
+  public void testConvertPromotionMessagesToDTOs6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    PromotionMessageDTOServiceImpl promotionMessageDTOServiceImpl = new PromotionMessageDTOServiceImpl();
+
     PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
-    promotionMessageImpl.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    Date endDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    promotionMessageImpl.setEndDate(endDate);
     promotionMessageImpl.setId(PromotionMessageImpl.serialVersionUID);
     CategoryMediaXrefImpl media = new CategoryMediaXrefImpl();
     promotionMessageImpl.setMedia(media);
@@ -458,54 +284,45 @@ public class PromotionMessageDTOServiceImplDiffblueTest {
     promotionMessageImpl.setMessagePlacement("Message Location");
     promotionMessageImpl.setName("Name");
     promotionMessageImpl.setPriority(1);
-    promotionMessageImpl.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    promotionMessageImpl
+        .setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     promotionMessageImpl.setLocale(null);
 
     LinkedHashSet<PromotionMessage> promotionMessages = new LinkedHashSet<>();
     promotionMessages.add(promotionMessageImpl);
 
     // Act
-    Map<String, List<PromotionMessageDTO>> actualConvertPromotionMessagesToDTOsResult =
-        promotionMessageDTOServiceImpl.convertPromotionMessagesToDTOs(promotionMessages, null);
+    Map<String, List<PromotionMessageDTO>> actualConvertPromotionMessagesToDTOsResult = promotionMessageDTOServiceImpl
+        .convertPromotionMessagesToDTOs(promotionMessages, null);
 
     // Assert
     assertEquals(1, actualConvertPromotionMessagesToDTOsResult.size());
-    List<PromotionMessageDTO> getResult =
-        actualConvertPromotionMessagesToDTOsResult.get("Message Location");
+    List<PromotionMessageDTO> getResult = actualConvertPromotionMessagesToDTOsResult.get("Message Location");
     assertEquals(1, getResult.size());
     PromotionMessageDTO getResult2 = getResult.get(0);
-    Media media2 = getResult2.getMedia();
-    assertTrue(media2 instanceof CategoryMediaXrefImpl);
     assertEquals("Message Location", getResult2.getMessagePlacement());
     assertEquals("Promotion Message", getResult2.getMessage());
     assertNull(getResult2.getLocaleCode());
+    assertNull(getResult2.getCustomerRuleHolder().getCustomerRule());
     assertEquals(1, getResult2.getPriority().intValue());
-    assertSame(media, media2);
+    assertSame(media, getResult2.getMedia());
+    assertSame(endDate, getResult2.getEndDate());
   }
 
   /**
-   * Test {@link PromotionMessageDTOServiceImpl#convertPromotionMessagesToDTOs(Set, Offer)} with
-   * {@code promotionMessages}, {@code offer}.
-   *
-   * <ul>
-   *   <li>When {@link OfferImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotionMessageDTOServiceImpl#convertPromotionMessagesToDTOs(Set,
-   * Offer)}
+   * Method under test:
+   * {@link PromotionMessageDTOServiceImpl#convertPromotionMessagesToDTOs(Set, Offer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map PromotionMessageDTOServiceImpl.convertPromotionMessagesToDTOs(Set, Offer)"
-  })
-  public void testConvertPromotionMessagesToDTOsWithPromotionMessagesOffer_whenOfferImpl() {
+  public void testConvertPromotionMessagesToDTOs7() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    PromotionMessageDTOServiceImpl promotionMessageDTOServiceImpl = new PromotionMessageDTOServiceImpl();
+
     PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
-    promotionMessageImpl.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    Date endDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    promotionMessageImpl.setEndDate(endDate);
     promotionMessageImpl.setId(PromotionMessageImpl.serialVersionUID);
     CategoryMediaXrefImpl media = new CategoryMediaXrefImpl();
     promotionMessageImpl.setMedia(media);
@@ -513,72 +330,59 @@ public class PromotionMessageDTOServiceImplDiffblueTest {
     promotionMessageImpl.setMessagePlacement("Message Location");
     promotionMessageImpl.setName("Name");
     promotionMessageImpl.setPriority(1);
-    promotionMessageImpl.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    promotionMessageImpl
+        .setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     promotionMessageImpl.setLocale(null);
 
     LinkedHashSet<PromotionMessage> promotionMessages = new LinkedHashSet<>();
     promotionMessages.add(promotionMessageImpl);
 
     // Act
-    Map<String, List<PromotionMessageDTO>> actualConvertPromotionMessagesToDTOsResult =
-        promotionMessageDTOServiceImpl.convertPromotionMessagesToDTOs(
-            promotionMessages, new OfferImpl());
+    Map<String, List<PromotionMessageDTO>> actualConvertPromotionMessagesToDTOsResult = promotionMessageDTOServiceImpl
+        .convertPromotionMessagesToDTOs(promotionMessages, new OfferImpl());
 
     // Assert
     assertEquals(1, actualConvertPromotionMessagesToDTOsResult.size());
-    List<PromotionMessageDTO> getResult =
-        actualConvertPromotionMessagesToDTOsResult.get("Message Location");
+    List<PromotionMessageDTO> getResult = actualConvertPromotionMessagesToDTOsResult.get("Message Location");
     assertEquals(1, getResult.size());
     PromotionMessageDTO getResult2 = getResult.get(0);
-    Media media2 = getResult2.getMedia();
-    assertTrue(media2 instanceof CategoryMediaXrefImpl);
     assertEquals("Message Location", getResult2.getMessagePlacement());
     assertEquals("Promotion Message", getResult2.getMessage());
     assertNull(getResult2.getLocaleCode());
+    assertNull(getResult2.getCustomerRuleHolder().getCustomerRule());
     assertEquals(1, getResult2.getPriority().intValue());
-    assertSame(media, media2);
+    assertSame(media, getResult2.getMedia());
+    assertSame(endDate, getResult2.getEndDate());
   }
 
   /**
-   * Test {@link PromotionMessageDTOServiceImpl#convertPromotionMessagesToDTOs(Set)} with {@code
-   * promotionMessages}.
-   *
-   * <ul>
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * PromotionMessageDTOServiceImpl#convertPromotionMessagesToDTOs(Set)}
+   * Method under test:
+   * {@link PromotionMessageDTOServiceImpl#convertPromotionMessagesToDTOs(Set, Offer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map PromotionMessageDTOServiceImpl.convertPromotionMessagesToDTOs(Set)"})
-  public void testConvertPromotionMessagesToDTOsWithPromotionMessages_thenReturnEmpty() {
-    // Arrange, Act and Assert
-    assertTrue(
-        promotionMessageDTOServiceImpl.convertPromotionMessagesToDTOs(new HashSet<>()).isEmpty());
-  }
+  public void testConvertPromotionMessagesToDTOs8() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-  /**
-   * Test {@link PromotionMessageDTOServiceImpl#buildCustomerRuleHolder(Offer)}.
-   *
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code CUSTOMER} is {@link
-   *       OfferOfferRuleXrefImpl#OfferOfferRuleXrefImpl()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotionMessageDTOServiceImpl#buildCustomerRuleHolder(Offer)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.profile.core.dto.CustomerRuleHolder PromotionMessageDTOServiceImpl.buildCustomerRuleHolder(Offer)"
-  })
-  public void testBuildCustomerRuleHolder_givenHashMapCustomerIsOfferOfferRuleXrefImpl() {
     // Arrange
+    PromotionMessageDTOServiceImpl promotionMessageDTOServiceImpl = new PromotionMessageDTOServiceImpl();
+
+    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
+    Date endDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    promotionMessageImpl.setEndDate(endDate);
+    promotionMessageImpl.setId(PromotionMessageImpl.serialVersionUID);
+    CategoryMediaXrefImpl media = new CategoryMediaXrefImpl();
+    promotionMessageImpl.setMedia(media);
+    promotionMessageImpl.setMessage("Promotion Message");
+    promotionMessageImpl.setMessagePlacement("Message Location");
+    promotionMessageImpl.setName("Name");
+    promotionMessageImpl.setPriority(1);
+    promotionMessageImpl
+        .setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    promotionMessageImpl.setLocale(null);
+
+    LinkedHashSet<PromotionMessage> promotionMessages = new LinkedHashSet<>();
+    promotionMessages.add(promotionMessageImpl);
+
     HashMap<String, OfferOfferRuleXref> offerMatchRulesXref = new HashMap<>();
     offerMatchRulesXref.put("CUSTOMER", new OfferOfferRuleXrefImpl());
 
@@ -590,8 +394,7 @@ public class PromotionMessageDTOServiceImplDiffblueTest {
     offer.setCombinableWithOtherOffers(true);
     offer.setDescription("The characteristics of someone or something");
     offer.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offer.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offer.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offer.setId(OfferImpl.serialVersionUID);
     offer.setMarketingMessage("Marketing Message");
     offer.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
@@ -608,8 +411,7 @@ public class PromotionMessageDTOServiceImplDiffblueTest {
     offer.setQualifyingItemCriteriaXref(new HashSet<>());
     offer.setQualifyingItemSubTotal(new Money());
     offer.setRequiresRelatedTargetAndQualifiers(true);
-    offer.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offer.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offer.setTargetItemCriteriaXref(new HashSet<>());
     offer.setTargetMinSubTotal(new Money());
     offer.setTargetSystem("Target System");
@@ -619,27 +421,52 @@ public class PromotionMessageDTOServiceImplDiffblueTest {
     offer.setValue(new BigDecimal("2.3"));
     offer.setOfferMatchRulesXref(offerMatchRulesXref);
 
-    // Act and Assert
-    assertNull(promotionMessageDTOServiceImpl.buildCustomerRuleHolder(offer).getCustomerRule());
+    // Act
+    Map<String, List<PromotionMessageDTO>> actualConvertPromotionMessagesToDTOsResult = promotionMessageDTOServiceImpl
+        .convertPromotionMessagesToDTOs(promotionMessages, offer);
+
+    // Assert
+    assertEquals(1, actualConvertPromotionMessagesToDTOsResult.size());
+    List<PromotionMessageDTO> getResult = actualConvertPromotionMessagesToDTOsResult.get("Message Location");
+    assertEquals(1, getResult.size());
+    PromotionMessageDTO getResult2 = getResult.get(0);
+    assertEquals("Message Location", getResult2.getMessagePlacement());
+    assertEquals("Promotion Message", getResult2.getMessage());
+    assertNull(getResult2.getLocaleCode());
+    assertNull(getResult2.getCustomerRuleHolder().getCustomerRule());
+    assertEquals(1, getResult2.getPriority().intValue());
+    assertSame(media, getResult2.getMedia());
+    assertSame(endDate, getResult2.getEndDate());
   }
 
   /**
-   * Test {@link PromotionMessageDTOServiceImpl#buildCustomerRuleHolder(Offer)}.
-   *
-   * <ul>
-   *   <li>Given {@link OfferOfferRuleXrefImpl#OfferOfferRuleXrefImpl()} Id is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotionMessageDTOServiceImpl#buildCustomerRuleHolder(Offer)}
+   * Method under test:
+   * {@link PromotionMessageDTOServiceImpl#convertPromotionMessagesToDTOs(Set, Offer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.profile.core.dto.CustomerRuleHolder PromotionMessageDTOServiceImpl.buildCustomerRuleHolder(Offer)"
-  })
-  public void testBuildCustomerRuleHolder_givenOfferOfferRuleXrefImplIdIsOne() {
+  public void testConvertPromotionMessagesToDTOs9() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    PromotionMessageDTOServiceImpl promotionMessageDTOServiceImpl = new PromotionMessageDTOServiceImpl();
+
+    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
+    Date endDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    promotionMessageImpl.setEndDate(endDate);
+    promotionMessageImpl.setId(PromotionMessageImpl.serialVersionUID);
+    CategoryMediaXrefImpl media = new CategoryMediaXrefImpl();
+    promotionMessageImpl.setMedia(media);
+    promotionMessageImpl.setMessage("Promotion Message");
+    promotionMessageImpl.setMessagePlacement("Message Location");
+    promotionMessageImpl.setName("Name");
+    promotionMessageImpl.setPriority(1);
+    promotionMessageImpl
+        .setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    promotionMessageImpl.setLocale(null);
+
+    LinkedHashSet<PromotionMessage> promotionMessages = new LinkedHashSet<>();
+    promotionMessages.add(promotionMessageImpl);
+
     OfferOfferRuleXrefImpl offerOfferRuleXrefImpl = new OfferOfferRuleXrefImpl();
     offerOfferRuleXrefImpl.setId(1L);
     offerOfferRuleXrefImpl.setKey("Key");
@@ -657,8 +484,7 @@ public class PromotionMessageDTOServiceImplDiffblueTest {
     offer.setCombinableWithOtherOffers(true);
     offer.setDescription("The characteristics of someone or something");
     offer.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offer.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offer.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offer.setId(OfferImpl.serialVersionUID);
     offer.setMarketingMessage("Marketing Message");
     offer.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
@@ -675,8 +501,163 @@ public class PromotionMessageDTOServiceImplDiffblueTest {
     offer.setQualifyingItemCriteriaXref(new HashSet<>());
     offer.setQualifyingItemSubTotal(new Money());
     offer.setRequiresRelatedTargetAndQualifiers(true);
-    offer.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offer.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offer.setTargetItemCriteriaXref(new HashSet<>());
+    offer.setTargetMinSubTotal(new Money());
+    offer.setTargetSystem("Target System");
+    offer.setTotalitarianOffer(true);
+    offer.setType(OfferType.FULFILLMENT_GROUP);
+    offer.setUseListForDiscounts(true);
+    offer.setValue(new BigDecimal("2.3"));
+    offer.setOfferMatchRulesXref(offerMatchRulesXref);
+
+    // Act
+    Map<String, List<PromotionMessageDTO>> actualConvertPromotionMessagesToDTOsResult = promotionMessageDTOServiceImpl
+        .convertPromotionMessagesToDTOs(promotionMessages, offer);
+
+    // Assert
+    assertEquals(1, actualConvertPromotionMessagesToDTOsResult.size());
+    List<PromotionMessageDTO> getResult = actualConvertPromotionMessagesToDTOsResult.get("Message Location");
+    assertEquals(1, getResult.size());
+    PromotionMessageDTO getResult2 = getResult.get(0);
+    assertEquals("Message Location", getResult2.getMessagePlacement());
+    assertEquals("Promotion Message", getResult2.getMessage());
+    assertNull(getResult2.getLocaleCode());
+    assertNull(getResult2.getCustomerRuleHolder().getCustomerRule());
+    assertEquals(1, getResult2.getPriority().intValue());
+    assertSame(media, getResult2.getMedia());
+    assertSame(endDate, getResult2.getEndDate());
+  }
+
+  /**
+   * Method under test:
+   * {@link PromotionMessageDTOServiceImpl#convertPromotionMessagesToDTOs(Set, Offer)}
+   */
+  @Test
+  public void testConvertPromotionMessagesToDTOs10() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PromotionMessageDTOServiceImpl promotionMessageDTOServiceImpl = new PromotionMessageDTOServiceImpl();
+
+    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
+    Date endDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    promotionMessageImpl.setEndDate(endDate);
+    promotionMessageImpl.setId(PromotionMessageImpl.serialVersionUID);
+    CategoryMediaXrefImpl media = new CategoryMediaXrefImpl();
+    promotionMessageImpl.setMedia(media);
+    promotionMessageImpl.setMessage("Promotion Message");
+    promotionMessageImpl.setMessagePlacement("Message Location");
+    promotionMessageImpl.setName("Name");
+    promotionMessageImpl.setPriority(1);
+    promotionMessageImpl
+        .setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    promotionMessageImpl.setLocale(new LocaleImpl());
+
+    LinkedHashSet<PromotionMessage> promotionMessages = new LinkedHashSet<>();
+    promotionMessages.add(promotionMessageImpl);
+
+    // Act
+    Map<String, List<PromotionMessageDTO>> actualConvertPromotionMessagesToDTOsResult = promotionMessageDTOServiceImpl
+        .convertPromotionMessagesToDTOs(promotionMessages, null);
+
+    // Assert
+    assertEquals(1, actualConvertPromotionMessagesToDTOsResult.size());
+    List<PromotionMessageDTO> getResult = actualConvertPromotionMessagesToDTOsResult.get("Message Location");
+    assertEquals(1, getResult.size());
+    PromotionMessageDTO getResult2 = getResult.get(0);
+    assertEquals("Message Location", getResult2.getMessagePlacement());
+    assertEquals("Promotion Message", getResult2.getMessage());
+    assertNull(getResult2.getLocaleCode());
+    assertNull(getResult2.getCustomerRuleHolder().getCustomerRule());
+    assertEquals(1, getResult2.getPriority().intValue());
+    assertSame(media, getResult2.getMedia());
+    assertSame(endDate, getResult2.getEndDate());
+  }
+
+  /**
+   * Method under test:
+   * {@link PromotionMessageDTOServiceImpl#convertPromotionMessagesToDTOs(Set, Offer)}
+   */
+  @Test
+  public void testConvertPromotionMessagesToDTOs11() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PromotionMessageDTOServiceImpl promotionMessageDTOServiceImpl = new PromotionMessageDTOServiceImpl();
+
+    // Act and Assert
+    assertTrue(promotionMessageDTOServiceImpl.convertPromotionMessagesToDTOs(new HashSet<>(), mock(OfferImpl.class))
+        .isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link PromotionMessageDTOServiceImpl#buildCustomerRuleHolder(Offer)}
+   */
+  @Test
+  public void testBuildCustomerRuleHolder() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PromotionMessageDTOServiceImpl promotionMessageDTOServiceImpl = new PromotionMessageDTOServiceImpl();
+
+    // Act and Assert
+    assertNull(promotionMessageDTOServiceImpl.buildCustomerRuleHolder(new OfferImpl()).getCustomerRule());
+  }
+
+  /**
+   * Method under test:
+   * {@link PromotionMessageDTOServiceImpl#buildCustomerRuleHolder(Offer)}
+   */
+  @Test
+  public void testBuildCustomerRuleHolder2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertNull((new PromotionMessageDTOServiceImpl()).buildCustomerRuleHolder(null).getCustomerRule());
+  }
+
+  /**
+   * Method under test:
+   * {@link PromotionMessageDTOServiceImpl#buildCustomerRuleHolder(Offer)}
+   */
+  @Test
+  public void testBuildCustomerRuleHolder3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PromotionMessageDTOServiceImpl promotionMessageDTOServiceImpl = new PromotionMessageDTOServiceImpl();
+
+    HashMap<String, OfferOfferRuleXref> offerMatchRulesXref = new HashMap<>();
+    offerMatchRulesXref.put("CUSTOMER", new OfferOfferRuleXrefImpl());
+
+    OfferImpl offer = new OfferImpl();
+    offer.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offer.setApplyDiscountToSalePrice(true);
+    offer.setApplyToChildItems(true);
+    offer.setAutomaticallyAdded(true);
+    offer.setCombinableWithOtherOffers(true);
+    offer.setDescription("The characteristics of someone or something");
+    offer.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offer.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offer.setId(OfferImpl.serialVersionUID);
+    offer.setMarketingMessage("Marketing Message");
+    offer.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offer.setMaxUsesPerOrder(3);
+    offer.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offer.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offer.setName("Name");
+    offer.setOfferCodes(new ArrayList<>());
+    offer.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offer.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offer.setOfferPriceData(new ArrayList<>());
+    offer.setOrderMinSubTotal(new Money());
+    offer.setPriority(1);
+    offer.setQualifyingItemCriteriaXref(new HashSet<>());
+    offer.setQualifyingItemSubTotal(new Money());
+    offer.setRequiresRelatedTargetAndQualifiers(true);
+    offer.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offer.setTargetItemCriteriaXref(new HashSet<>());
     offer.setTargetMinSubTotal(new Money());
     offer.setTargetSystem("Target System");
@@ -691,121 +672,16 @@ public class PromotionMessageDTOServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link PromotionMessageDTOServiceImpl#buildCustomerRuleHolder(Offer)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotionMessageDTOServiceImpl#buildCustomerRuleHolder(Offer)}
+   * Method under test:
+   * {@link PromotionMessageDTOServiceImpl#buildCustomerRuleHolder(Offer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.profile.core.dto.CustomerRuleHolder PromotionMessageDTOServiceImpl.buildCustomerRuleHolder(Offer)"
-  })
-  public void testBuildCustomerRuleHolder_whenNull() {
-    // Arrange, Act and Assert
-    assertNull(promotionMessageDTOServiceImpl.buildCustomerRuleHolder(null).getCustomerRule());
-  }
+  public void testBuildCustomerRuleHolder4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-  /**
-   * Test {@link PromotionMessageDTOServiceImpl#buildCustomerRuleHolder(Offer)}.
-   *
-   * <ul>
-   *   <li>When {@link OfferImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotionMessageDTOServiceImpl#buildCustomerRuleHolder(Offer)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.profile.core.dto.CustomerRuleHolder PromotionMessageDTOServiceImpl.buildCustomerRuleHolder(Offer)"
-  })
-  public void testBuildCustomerRuleHolder_whenOfferImpl() {
-    // Arrange, Act and Assert
-    assertNull(
-        promotionMessageDTOServiceImpl.buildCustomerRuleHolder(new OfferImpl()).getCustomerRule());
-  }
-
-  /**
-   * Test {@link PromotionMessageDTOServiceImpl#getCustomerRule(Offer)}.
-   *
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code CUSTOMER} is {@link
-   *       OfferOfferRuleXrefImpl#OfferOfferRuleXrefImpl()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotionMessageDTOServiceImpl#getCustomerRule(Offer)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String PromotionMessageDTOServiceImpl.getCustomerRule(Offer)"})
-  public void testGetCustomerRule_givenHashMapCustomerIsOfferOfferRuleXrefImpl() {
     // Arrange
-    HashMap<String, OfferOfferRuleXref> offerMatchRulesXref = new HashMap<>();
-    offerMatchRulesXref.put("CUSTOMER", new OfferOfferRuleXrefImpl());
+    PromotionMessageDTOServiceImpl promotionMessageDTOServiceImpl = new PromotionMessageDTOServiceImpl();
 
-    OfferImpl offer = new OfferImpl();
-    offer.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offer.setApplyDiscountToSalePrice(true);
-    offer.setApplyToChildItems(true);
-    offer.setAutomaticallyAdded(true);
-    offer.setCombinableWithOtherOffers(true);
-    offer.setDescription("The characteristics of someone or something");
-    offer.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offer.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offer.setId(OfferImpl.serialVersionUID);
-    offer.setMarketingMessage("Marketing Message");
-    offer.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offer.setMaxUsesPerOrder(3);
-    offer.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offer.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offer.setName("Name");
-    offer.setOfferCodes(new ArrayList<>());
-    offer.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offer.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offer.setOfferPriceData(new ArrayList<>());
-    offer.setOrderMinSubTotal(new Money());
-    offer.setPriority(1);
-    offer.setQualifyingItemCriteriaXref(new HashSet<>());
-    offer.setQualifyingItemSubTotal(new Money());
-    offer.setRequiresRelatedTargetAndQualifiers(true);
-    offer.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offer.setTargetItemCriteriaXref(new HashSet<>());
-    offer.setTargetMinSubTotal(new Money());
-    offer.setTargetSystem("Target System");
-    offer.setTotalitarianOffer(true);
-    offer.setType(OfferType.FULFILLMENT_GROUP);
-    offer.setUseListForDiscounts(true);
-    offer.setValue(new BigDecimal("2.3"));
-    offer.setOfferMatchRulesXref(offerMatchRulesXref);
-
-    // Act and Assert
-    assertNull(promotionMessageDTOServiceImpl.getCustomerRule(offer));
-  }
-
-  /**
-   * Test {@link PromotionMessageDTOServiceImpl#getCustomerRule(Offer)}.
-   *
-   * <ul>
-   *   <li>Given {@link OfferOfferRuleXrefImpl#OfferOfferRuleXrefImpl()} Id is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotionMessageDTOServiceImpl#getCustomerRule(Offer)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String PromotionMessageDTOServiceImpl.getCustomerRule(Offer)"})
-  public void testGetCustomerRule_givenOfferOfferRuleXrefImplIdIsOne() {
-    // Arrange
     OfferOfferRuleXrefImpl offerOfferRuleXrefImpl = new OfferOfferRuleXrefImpl();
     offerOfferRuleXrefImpl.setId(1L);
     offerOfferRuleXrefImpl.setKey("Key");
@@ -823,8 +699,7 @@ public class PromotionMessageDTOServiceImplDiffblueTest {
     offer.setCombinableWithOtherOffers(true);
     offer.setDescription("The characteristics of someone or something");
     offer.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offer.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offer.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offer.setId(OfferImpl.serialVersionUID);
     offer.setMarketingMessage("Marketing Message");
     offer.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
@@ -841,8 +716,7 @@ public class PromotionMessageDTOServiceImplDiffblueTest {
     offer.setQualifyingItemCriteriaXref(new HashSet<>());
     offer.setQualifyingItemSubTotal(new Money());
     offer.setRequiresRelatedTargetAndQualifiers(true);
-    offer.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offer.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offer.setTargetItemCriteriaXref(new HashSet<>());
     offer.setTargetMinSubTotal(new Money());
     offer.setTargetSystem("Target System");
@@ -853,42 +727,188 @@ public class PromotionMessageDTOServiceImplDiffblueTest {
     offer.setOfferMatchRulesXref(offerMatchRulesXref);
 
     // Act and Assert
-    assertNull(promotionMessageDTOServiceImpl.getCustomerRule(offer));
+    assertNull(promotionMessageDTOServiceImpl.buildCustomerRuleHolder(offer).getCustomerRule());
   }
 
   /**
-   * Test {@link PromotionMessageDTOServiceImpl#getCustomerRule(Offer)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotionMessageDTOServiceImpl#getCustomerRule(Offer)}
+   * Method under test:
+   * {@link PromotionMessageDTOServiceImpl#buildCustomerRuleHolder(Offer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String PromotionMessageDTOServiceImpl.getCustomerRule(Offer)"})
-  public void testGetCustomerRule_whenNull() {
-    // Arrange, Act and Assert
-    assertNull(promotionMessageDTOServiceImpl.getCustomerRule(null));
+  public void testBuildCustomerRuleHolder5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PromotionMessageDTOServiceImpl promotionMessageDTOServiceImpl = new PromotionMessageDTOServiceImpl();
+    Offer offer = mock(Offer.class);
+    when(offer.getOfferMatchRulesXref()).thenReturn(new HashMap<>());
+
+    // Act
+    CustomerRuleHolder actualBuildCustomerRuleHolderResult = promotionMessageDTOServiceImpl
+        .buildCustomerRuleHolder(offer);
+
+    // Assert
+    verify(offer).getOfferMatchRulesXref();
+    assertNull(actualBuildCustomerRuleHolderResult.getCustomerRule());
   }
 
   /**
-   * Test {@link PromotionMessageDTOServiceImpl#getCustomerRule(Offer)}.
-   *
-   * <ul>
-   *   <li>When {@link OfferImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotionMessageDTOServiceImpl#getCustomerRule(Offer)}
+   * Method under test:
+   * {@link PromotionMessageDTOServiceImpl#getCustomerRule(Offer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String PromotionMessageDTOServiceImpl.getCustomerRule(Offer)"})
-  public void testGetCustomerRule_whenOfferImpl() {
-    // Arrange, Act and Assert
+  public void testGetCustomerRule() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PromotionMessageDTOServiceImpl promotionMessageDTOServiceImpl = new PromotionMessageDTOServiceImpl();
+
+    // Act and Assert
     assertNull(promotionMessageDTOServiceImpl.getCustomerRule(new OfferImpl()));
+  }
+
+  /**
+   * Method under test:
+   * {@link PromotionMessageDTOServiceImpl#getCustomerRule(Offer)}
+   */
+  @Test
+  public void testGetCustomerRule2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertNull((new PromotionMessageDTOServiceImpl()).getCustomerRule(null));
+  }
+
+  /**
+   * Method under test:
+   * {@link PromotionMessageDTOServiceImpl#getCustomerRule(Offer)}
+   */
+  @Test
+  public void testGetCustomerRule3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PromotionMessageDTOServiceImpl promotionMessageDTOServiceImpl = new PromotionMessageDTOServiceImpl();
+
+    HashMap<String, OfferOfferRuleXref> offerMatchRulesXref = new HashMap<>();
+    offerMatchRulesXref.put("CUSTOMER", new OfferOfferRuleXrefImpl());
+
+    OfferImpl offer = new OfferImpl();
+    offer.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offer.setApplyDiscountToSalePrice(true);
+    offer.setApplyToChildItems(true);
+    offer.setAutomaticallyAdded(true);
+    offer.setCombinableWithOtherOffers(true);
+    offer.setDescription("The characteristics of someone or something");
+    offer.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offer.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offer.setId(OfferImpl.serialVersionUID);
+    offer.setMarketingMessage("Marketing Message");
+    offer.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offer.setMaxUsesPerOrder(3);
+    offer.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offer.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offer.setName("Name");
+    offer.setOfferCodes(new ArrayList<>());
+    offer.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offer.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offer.setOfferPriceData(new ArrayList<>());
+    offer.setOrderMinSubTotal(new Money());
+    offer.setPriority(1);
+    offer.setQualifyingItemCriteriaXref(new HashSet<>());
+    offer.setQualifyingItemSubTotal(new Money());
+    offer.setRequiresRelatedTargetAndQualifiers(true);
+    offer.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offer.setTargetItemCriteriaXref(new HashSet<>());
+    offer.setTargetMinSubTotal(new Money());
+    offer.setTargetSystem("Target System");
+    offer.setTotalitarianOffer(true);
+    offer.setType(OfferType.FULFILLMENT_GROUP);
+    offer.setUseListForDiscounts(true);
+    offer.setValue(new BigDecimal("2.3"));
+    offer.setOfferMatchRulesXref(offerMatchRulesXref);
+
+    // Act and Assert
+    assertNull(promotionMessageDTOServiceImpl.getCustomerRule(offer));
+  }
+
+  /**
+   * Method under test:
+   * {@link PromotionMessageDTOServiceImpl#getCustomerRule(Offer)}
+   */
+  @Test
+  public void testGetCustomerRule4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PromotionMessageDTOServiceImpl promotionMessageDTOServiceImpl = new PromotionMessageDTOServiceImpl();
+
+    OfferOfferRuleXrefImpl offerOfferRuleXrefImpl = new OfferOfferRuleXrefImpl();
+    offerOfferRuleXrefImpl.setId(1L);
+    offerOfferRuleXrefImpl.setKey("Key");
+    offerOfferRuleXrefImpl.setOffer(new OfferImpl());
+    offerOfferRuleXrefImpl.setOfferRule(new OfferRuleImpl());
+
+    HashMap<String, OfferOfferRuleXref> offerMatchRulesXref = new HashMap<>();
+    offerMatchRulesXref.put("CUSTOMER", offerOfferRuleXrefImpl);
+
+    OfferImpl offer = new OfferImpl();
+    offer.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offer.setApplyDiscountToSalePrice(true);
+    offer.setApplyToChildItems(true);
+    offer.setAutomaticallyAdded(true);
+    offer.setCombinableWithOtherOffers(true);
+    offer.setDescription("The characteristics of someone or something");
+    offer.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offer.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offer.setId(OfferImpl.serialVersionUID);
+    offer.setMarketingMessage("Marketing Message");
+    offer.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offer.setMaxUsesPerOrder(3);
+    offer.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offer.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offer.setName("Name");
+    offer.setOfferCodes(new ArrayList<>());
+    offer.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offer.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offer.setOfferPriceData(new ArrayList<>());
+    offer.setOrderMinSubTotal(new Money());
+    offer.setPriority(1);
+    offer.setQualifyingItemCriteriaXref(new HashSet<>());
+    offer.setQualifyingItemSubTotal(new Money());
+    offer.setRequiresRelatedTargetAndQualifiers(true);
+    offer.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offer.setTargetItemCriteriaXref(new HashSet<>());
+    offer.setTargetMinSubTotal(new Money());
+    offer.setTargetSystem("Target System");
+    offer.setTotalitarianOffer(true);
+    offer.setType(OfferType.FULFILLMENT_GROUP);
+    offer.setUseListForDiscounts(true);
+    offer.setValue(new BigDecimal("2.3"));
+    offer.setOfferMatchRulesXref(offerMatchRulesXref);
+
+    // Act and Assert
+    assertNull(promotionMessageDTOServiceImpl.getCustomerRule(offer));
+  }
+
+  /**
+   * Method under test:
+   * {@link PromotionMessageDTOServiceImpl#getCustomerRule(Offer)}
+   */
+  @Test
+  public void testGetCustomerRule5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PromotionMessageDTOServiceImpl promotionMessageDTOServiceImpl = new PromotionMessageDTOServiceImpl();
+    Offer offer = mock(Offer.class);
+    when(offer.getOfferMatchRulesXref()).thenReturn(new HashMap<>());
+
+    // Act
+    String actualCustomerRule = promotionMessageDTOServiceImpl.getCustomerRule(offer);
+
+    // Assert
+    verify(offer).getOfferMatchRulesXref();
+    assertNull(actualCustomerRule);
   }
 }

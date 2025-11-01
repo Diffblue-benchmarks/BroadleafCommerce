@@ -20,23 +20,40 @@ package org.broadleafcommerce.openadmin.server.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
+import java.sql.Date;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 public class ValidationExceptionDiffblueTest {
+  @MockBean
+  private ValidationException validationException;
+
   /**
-   * Test {@link ValidationException#ValidationException(Entity)}.
-   *
-   * <p>Method under test: {@link ValidationException#ValidationException(Entity)}
+   * Methods under test:
+   * <ul>
+   *   <li>{@link ValidationException#setEntity(Entity)}
+   *   <li>{@link ValidationException#getEntity()}
+   * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ValidationException.<init>(Entity)"})
+  public void testGettersAndSetters() {
+    // Arrange
+    ValidationException validationException = new ValidationException(new Entity());
+    Entity entity = new Entity();
+
+    // Act
+    validationException.setEntity(entity);
+
+    // Assert that nothing has changed
+    assertSame(entity, validationException.getEntity());
+  }
+
+  /**
+   * Method under test: {@link ValidationException#ValidationException(Entity)}
+   */
+  @Test
   public void testNewValidationException() {
     // Arrange
     Entity entity = new Entity();
@@ -53,25 +70,36 @@ public class ValidationExceptionDiffblueTest {
   }
 
   /**
-   * Test {@link ValidationException#ValidationException(Entity, String)}.
-   *
-   * <ul>
-   *   <li>Then return LocalizedMessage is {@code An error occurred}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ValidationException#ValidationException(Entity, String)}
+   * Method under test: {@link ValidationException#ValidationException(Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ValidationException.<init>(Entity, String)"})
-  public void testNewValidationException_thenReturnLocalizedMessageIsAnErrorOccurred() {
+  public void testNewValidationException2() {
+    // Arrange
+    Entity entity = new Entity();
+    entity.setDeployDate(mock(Date.class));
+
+    // Act
+    ValidationException actualValidationException = new ValidationException(entity);
+
+    // Assert
+    assertNull(actualValidationException.getLocalizedMessage());
+    assertNull(actualValidationException.getMessage());
+    assertNull(actualValidationException.getCause());
+    assertEquals(0, actualValidationException.getSuppressed().length);
+    assertSame(entity, actualValidationException.getEntity());
+  }
+
+  /**
+   * Method under test:
+   * {@link ValidationException#ValidationException(Entity, String)}
+   */
+  @Test
+  public void testNewValidationException3() {
     // Arrange
     Entity entity = new Entity();
 
     // Act
-    ValidationException actualValidationException =
-        new ValidationException(entity, "An error occurred");
+    ValidationException actualValidationException = new ValidationException(entity, "An error occurred");
 
     // Assert
     assertEquals("An error occurred", actualValidationException.getLocalizedMessage());
@@ -82,31 +110,22 @@ public class ValidationExceptionDiffblueTest {
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link ValidationException#setEntity(Entity)}
-   *   <li>{@link ValidationException#getEntity()}
-   * </ul>
+   * Method under test:
+   * {@link ValidationException#ValidationException(Entity, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity ValidationException.getEntity()",
-    "void ValidationException.setEntity(Entity)"
-  })
-  public void testGettersAndSetters() {
+  public void testNewValidationException4() {
     // Arrange
-    ValidationException validationException = new ValidationException(new Entity());
-    Entity entity = new Entity();
+    Entity entity = mock(Entity.class);
 
     // Act
-    validationException.setEntity(entity);
+    ValidationException actualValidationException = new ValidationException(entity, "An error occurred");
 
     // Assert
-    assertSame(entity, validationException.getEntity());
+    assertEquals("An error occurred", actualValidationException.getLocalizedMessage());
+    assertEquals("An error occurred", actualValidationException.getMessage());
+    assertNull(actualValidationException.getCause());
+    assertEquals(0, actualValidationException.getSuppressed().length);
+    assertSame(entity, actualValidationException.getEntity());
   }
 }

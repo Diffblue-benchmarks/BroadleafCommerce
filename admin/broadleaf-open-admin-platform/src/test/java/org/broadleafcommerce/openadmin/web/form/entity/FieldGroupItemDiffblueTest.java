@@ -22,23 +22,231 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import org.broadleafcommerce.openadmin.web.form.component.ListGrid;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class FieldGroupItemDiffblueTest {
   /**
-   * Test {@link FieldGroupItem#FieldGroupItem(ListGrid)}.
-   *
-   * <p>Method under test: {@link FieldGroupItem#FieldGroupItem(ListGrid)}
+   * Method under test: {@link FieldGroupItem#setField(Field)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FieldGroupItem.<init>(ListGrid)"})
+  public void testSetField() {
+    // Arrange
+    FieldGroupItem fieldGroupItem = new FieldGroupItem(new ListGrid());
+    Field field = new Field();
+
+    // Act
+    fieldGroupItem.setField(field);
+
+    // Assert
+    assertEquals("FIELD", fieldGroupItem.getType());
+    assertNull(fieldGroupItem.getOrder());
+    assertFalse(fieldGroupItem.isListGrid());
+    assertTrue(fieldGroupItem.isField());
+    assertSame(field, fieldGroupItem.getField());
+  }
+
+  /**
+   * Method under test: {@link FieldGroupItem#setCustomField(Field)}
+   */
+  @Test
+  public void testSetCustomField() {
+    // Arrange
+    FieldGroupItem fieldGroupItem = new FieldGroupItem(new ListGrid());
+    Field field = new Field();
+
+    // Act
+    fieldGroupItem.setCustomField(field);
+
+    // Assert
+    assertEquals("CUSTOM_FIELD", fieldGroupItem.getType());
+    assertNull(fieldGroupItem.getOrder());
+    assertFalse(fieldGroupItem.isListGrid());
+    assertTrue(fieldGroupItem.isCustomField());
+    assertSame(field, fieldGroupItem.getField());
+  }
+
+  /**
+   * Method under test: {@link FieldGroupItem#setListGrid(ListGrid)}
+   */
+  @Test
+  public void testSetListGrid() {
+    // Arrange
+    FieldGroupItem fieldGroupItem = new FieldGroupItem(mock(ListGrid.class));
+    ListGrid listGrid = new ListGrid();
+
+    // Act
+    fieldGroupItem.setListGrid(listGrid);
+
+    // Assert
+    assertSame(listGrid, fieldGroupItem.getListGrid());
+  }
+
+  /**
+   * Method under test: {@link FieldGroupItem#isField()}
+   */
+  @Test
+  public void testIsField() {
+    // Arrange, Act and Assert
+    assertFalse((new FieldGroupItem(new ListGrid())).isField());
+    assertTrue((new FieldGroupItem(new Field())).isField());
+  }
+
+  /**
+   * Method under test: {@link FieldGroupItem#isListGrid()}
+   */
+  @Test
+  public void testIsListGrid() {
+    // Arrange, Act and Assert
+    assertTrue((new FieldGroupItem(new ListGrid())).isListGrid());
+    assertFalse((new FieldGroupItem(new Field())).isListGrid());
+  }
+
+  /**
+   * Method under test: {@link FieldGroupItem#isCustomField()}
+   */
+  @Test
+  public void testIsCustomField() {
+    // Arrange, Act and Assert
+    assertFalse((new FieldGroupItem(new ListGrid())).isCustomField());
+  }
+
+  /**
+   * Method under test: {@link FieldGroupItem#isCustomField()}
+   */
+  @Test
+  public void testIsCustomField2() {
+    // Arrange
+    FieldGroupItem fieldGroupItem = new FieldGroupItem(new ListGrid());
+    fieldGroupItem.setType("CUSTOM_FIELD");
+
+    // Act and Assert
+    assertTrue(fieldGroupItem.isCustomField());
+  }
+
+  /**
+   * Method under test: {@link FieldGroupItem#getOrder()}
+   */
+  @Test
+  public void testGetOrder() {
+    // Arrange, Act and Assert
+    assertEquals(0, (new FieldGroupItem(new ListGrid())).getOrder().intValue());
+    assertNull((new FieldGroupItem(new Field())).getOrder());
+  }
+
+  /**
+   * Method under test: {@link FieldGroupItem#getOrder()}
+   */
+  @Test
+  public void testGetOrder2() {
+    // Arrange
+    FieldGroupItem fieldGroupItem = new FieldGroupItem(new ListGrid());
+    fieldGroupItem.setCustomField(new Field());
+
+    // Act and Assert
+    assertNull(fieldGroupItem.getOrder());
+  }
+
+  /**
+   * Method under test: {@link FieldGroupItem#getFriendlyName()}
+   */
+  @Test
+  public void testGetFriendlyName() {
+    // Arrange, Act and Assert
+    assertNull((new FieldGroupItem(new ListGrid())).getFriendlyName());
+    assertNull((new FieldGroupItem(new Field())).getFriendlyName());
+  }
+
+  /**
+   * Method under test: {@link FieldGroupItem#getFriendlyName()}
+   */
+  @Test
+  public void testGetFriendlyName2() {
+    // Arrange
+    FieldGroupItem fieldGroupItem = new FieldGroupItem(new ListGrid());
+    fieldGroupItem.setCustomField(new Field());
+
+    // Act and Assert
+    assertNull(fieldGroupItem.getFriendlyName());
+  }
+
+  /**
+   * Method under test: {@link FieldGroupItem#getName()}
+   */
+  @Test
+  public void testGetName() {
+    // Arrange, Act and Assert
+    assertNull((new FieldGroupItem(new ListGrid())).getName());
+    assertNull((new FieldGroupItem(new Field())).getName());
+  }
+
+  /**
+   * Method under test: {@link FieldGroupItem#getName()}
+   */
+  @Test
+  public void testGetName2() {
+    // Arrange
+    FieldGroupItem fieldGroupItem = new FieldGroupItem(new ListGrid());
+    fieldGroupItem.setCustomField(new Field());
+
+    // Act and Assert
+    assertNull(fieldGroupItem.getName());
+  }
+
+  /**
+   * Method under test: {@link FieldGroupItem#isVisible()}
+   */
+  @Test
+  public void testIsVisible() {
+    // Arrange, Act and Assert
+    assertTrue((new FieldGroupItem(new ListGrid())).isVisible());
+    assertFalse((new FieldGroupItem((ListGrid) null)).isVisible());
+    assertTrue((new FieldGroupItem(new Field())).isVisible());
+  }
+
+  /**
+   * Method under test: {@link FieldGroupItem#isVisible()}
+   */
+  @Test
+  public void testIsVisible2() {
+    // Arrange
+    FieldGroupItem fieldGroupItem = new FieldGroupItem(new ListGrid());
+    fieldGroupItem.setCustomField(new Field());
+
+    // Act and Assert
+    assertTrue(fieldGroupItem.isVisible());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link FieldGroupItem#setType(String)}
+   *   <li>{@link FieldGroupItem#getField()}
+   *   <li>{@link FieldGroupItem#getListGrid()}
+   *   <li>{@link FieldGroupItem#getType()}
+   * </ul>
+   */
+  @Test
+  public void testGettersAndSetters() {
+    // Arrange
+    ListGrid listGrid = new ListGrid();
+    FieldGroupItem fieldGroupItem = new FieldGroupItem(listGrid);
+
+    // Act
+    fieldGroupItem.setType("Type");
+    fieldGroupItem.getField();
+    ListGrid actualListGrid = fieldGroupItem.getListGrid();
+
+    // Assert that nothing has changed
+    assertEquals("Type", fieldGroupItem.getType());
+    assertSame(listGrid, actualListGrid);
+  }
+
+  /**
+   * Method under test: {@link FieldGroupItem#FieldGroupItem(ListGrid)}
+   */
+  @Test
   public void testNewFieldGroupItem() {
     // Arrange
     ListGrid listGrid = new ListGrid();
@@ -59,14 +267,9 @@ public class FieldGroupItemDiffblueTest {
   }
 
   /**
-   * Test {@link FieldGroupItem#FieldGroupItem(Field)}.
-   *
-   * <p>Method under test: {@link FieldGroupItem#FieldGroupItem(Field)}
+   * Method under test: {@link FieldGroupItem#FieldGroupItem(Field)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FieldGroupItem.<init>(Field)"})
   public void testNewFieldGroupItem2() {
     // Arrange
     Field field = new Field();
@@ -84,492 +287,5 @@ public class FieldGroupItemDiffblueTest {
     assertFalse(actualFieldGroupItem.isListGrid());
     assertTrue(actualFieldGroupItem.isField());
     assertSame(field, actualFieldGroupItem.getField());
-  }
-
-  /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link FieldGroupItem#setType(String)}
-   *   <li>{@link FieldGroupItem#getField()}
-   *   <li>{@link FieldGroupItem#getListGrid()}
-   *   <li>{@link FieldGroupItem#getType()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Field FieldGroupItem.getField()",
-    "ListGrid FieldGroupItem.getListGrid()",
-    "String FieldGroupItem.getType()",
-    "void FieldGroupItem.setType(String)"
-  })
-  public void testGettersAndSetters() {
-    // Arrange
-    ListGrid listGrid = new ListGrid();
-    FieldGroupItem fieldGroupItem = new FieldGroupItem(listGrid);
-
-    // Act
-    fieldGroupItem.setType("Type");
-    Field actualField = fieldGroupItem.getField();
-    ListGrid actualListGrid = fieldGroupItem.getListGrid();
-
-    // Assert
-    assertEquals("Type", fieldGroupItem.getType());
-    assertNull(actualField);
-    assertSame(listGrid, actualListGrid);
-  }
-
-  /**
-   * Test {@link FieldGroupItem#setField(Field)}.
-   *
-   * <p>Method under test: {@link FieldGroupItem#setField(Field)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FieldGroupItem.setField(Field)"})
-  public void testSetField() {
-    // Arrange
-    FieldGroupItem fieldGroupItem = new FieldGroupItem(new ListGrid());
-    Field field = new Field();
-
-    // Act
-    fieldGroupItem.setField(field);
-
-    // Assert
-    assertEquals("FIELD", fieldGroupItem.getType());
-    assertNull(fieldGroupItem.getOrder());
-    assertFalse(fieldGroupItem.isListGrid());
-    assertTrue(fieldGroupItem.isField());
-    assertSame(field, fieldGroupItem.getField());
-  }
-
-  /**
-   * Test {@link FieldGroupItem#setCustomField(Field)}.
-   *
-   * <p>Method under test: {@link FieldGroupItem#setCustomField(Field)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FieldGroupItem.setCustomField(Field)"})
-  public void testSetCustomField() {
-    // Arrange
-    FieldGroupItem fieldGroupItem = new FieldGroupItem(new ListGrid());
-    Field field = new Field();
-
-    // Act
-    fieldGroupItem.setCustomField(field);
-
-    // Assert
-    assertEquals("CUSTOM_FIELD", fieldGroupItem.getType());
-    assertNull(fieldGroupItem.getOrder());
-    assertFalse(fieldGroupItem.isListGrid());
-    assertTrue(fieldGroupItem.isCustomField());
-    assertSame(field, fieldGroupItem.getField());
-  }
-
-  /**
-   * Test {@link FieldGroupItem#isField()}.
-   *
-   * <ul>
-   *   <li>Given {@link FieldGroupItem#FieldGroupItem(Field)} with field is {@link Field} (default
-   *       constructor).
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldGroupItem#isField()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean FieldGroupItem.isField()"})
-  public void testIsField_givenFieldGroupItemWithFieldIsField_thenReturnTrue() {
-    // Arrange, Act and Assert
-    assertTrue(new FieldGroupItem(new Field()).isField());
-  }
-
-  /**
-   * Test {@link FieldGroupItem#isField()}.
-   *
-   * <ul>
-   *   <li>Given {@link FieldGroupItem#FieldGroupItem(ListGrid)} with listGrid is {@link ListGrid}
-   *       (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldGroupItem#isField()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean FieldGroupItem.isField()"})
-  public void testIsField_givenFieldGroupItemWithListGridIsListGrid_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(new FieldGroupItem(new ListGrid()).isField());
-  }
-
-  /**
-   * Test {@link FieldGroupItem#isListGrid()}.
-   *
-   * <ul>
-   *   <li>Given {@link FieldGroupItem#FieldGroupItem(Field)} with field is {@link Field} (default
-   *       constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldGroupItem#isListGrid()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean FieldGroupItem.isListGrid()"})
-  public void testIsListGrid_givenFieldGroupItemWithFieldIsField_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(new FieldGroupItem(new Field()).isListGrid());
-  }
-
-  /**
-   * Test {@link FieldGroupItem#isListGrid()}.
-   *
-   * <ul>
-   *   <li>Given {@link FieldGroupItem#FieldGroupItem(ListGrid)} with listGrid is {@link ListGrid}
-   *       (default constructor).
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldGroupItem#isListGrid()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean FieldGroupItem.isListGrid()"})
-  public void testIsListGrid_givenFieldGroupItemWithListGridIsListGrid_thenReturnTrue() {
-    // Arrange, Act and Assert
-    assertTrue(new FieldGroupItem(new ListGrid()).isListGrid());
-  }
-
-  /**
-   * Test {@link FieldGroupItem#isCustomField()}.
-   *
-   * <ul>
-   *   <li>Given {@link FieldGroupItem#FieldGroupItem(ListGrid)} with listGrid is {@link ListGrid}
-   *       (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldGroupItem#isCustomField()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean FieldGroupItem.isCustomField()"})
-  public void testIsCustomField_givenFieldGroupItemWithListGridIsListGrid_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(new FieldGroupItem(new ListGrid()).isCustomField());
-  }
-
-  /**
-   * Test {@link FieldGroupItem#isCustomField()}.
-   *
-   * <ul>
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldGroupItem#isCustomField()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean FieldGroupItem.isCustomField()"})
-  public void testIsCustomField_thenReturnTrue() {
-    // Arrange
-    FieldGroupItem fieldGroupItem = new FieldGroupItem(new ListGrid());
-    fieldGroupItem.setType("CUSTOM_FIELD");
-
-    // Act and Assert
-    assertTrue(fieldGroupItem.isCustomField());
-  }
-
-  /**
-   * Test {@link FieldGroupItem#getOrder()}.
-   *
-   * <ul>
-   *   <li>Given {@link FieldGroupItem#FieldGroupItem(Field)} with field is {@link Field} (default
-   *       constructor).
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldGroupItem#getOrder()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.lang.Integer FieldGroupItem.getOrder()"})
-  public void testGetOrder_givenFieldGroupItemWithFieldIsField_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(new FieldGroupItem(new Field()).getOrder());
-  }
-
-  /**
-   * Test {@link FieldGroupItem#getOrder()}.
-   *
-   * <ul>
-   *   <li>Given {@link FieldGroupItem#FieldGroupItem(ListGrid)} with listGrid is {@link ListGrid}
-   *       (default constructor) CustomField is {@link Field} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldGroupItem#getOrder()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.lang.Integer FieldGroupItem.getOrder()"})
-  public void testGetOrder_givenFieldGroupItemWithListGridIsListGridCustomFieldIsField() {
-    // Arrange
-    FieldGroupItem fieldGroupItem = new FieldGroupItem(new ListGrid());
-    fieldGroupItem.setCustomField(new Field());
-
-    // Act and Assert
-    assertNull(fieldGroupItem.getOrder());
-  }
-
-  /**
-   * Test {@link FieldGroupItem#getOrder()}.
-   *
-   * <ul>
-   *   <li>Given {@link FieldGroupItem#FieldGroupItem(ListGrid)} with listGrid is {@link ListGrid}
-   *       (default constructor).
-   *   <li>Then return intValue is zero.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldGroupItem#getOrder()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.lang.Integer FieldGroupItem.getOrder()"})
-  public void testGetOrder_givenFieldGroupItemWithListGridIsListGrid_thenReturnIntValueIsZero() {
-    // Arrange, Act and Assert
-    assertEquals(0, new FieldGroupItem(new ListGrid()).getOrder().intValue());
-  }
-
-  /**
-   * Test {@link FieldGroupItem#getFriendlyName()}.
-   *
-   * <ul>
-   *   <li>Given {@link FieldGroupItem#FieldGroupItem(Field)} with field is {@link Field} (default
-   *       constructor).
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldGroupItem#getFriendlyName()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String FieldGroupItem.getFriendlyName()"})
-  public void testGetFriendlyName_givenFieldGroupItemWithFieldIsField_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(new FieldGroupItem(new Field()).getFriendlyName());
-  }
-
-  /**
-   * Test {@link FieldGroupItem#getFriendlyName()}.
-   *
-   * <ul>
-   *   <li>Given {@link FieldGroupItem#FieldGroupItem(ListGrid)} with listGrid is {@link ListGrid}
-   *       (default constructor) CustomField is {@link Field} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldGroupItem#getFriendlyName()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String FieldGroupItem.getFriendlyName()"})
-  public void testGetFriendlyName_givenFieldGroupItemWithListGridIsListGridCustomFieldIsField() {
-    // Arrange
-    FieldGroupItem fieldGroupItem = new FieldGroupItem(new ListGrid());
-    fieldGroupItem.setCustomField(new Field());
-
-    // Act and Assert
-    assertNull(fieldGroupItem.getFriendlyName());
-  }
-
-  /**
-   * Test {@link FieldGroupItem#getFriendlyName()}.
-   *
-   * <ul>
-   *   <li>Given {@link FieldGroupItem#FieldGroupItem(ListGrid)} with listGrid is {@link ListGrid}
-   *       (default constructor).
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldGroupItem#getFriendlyName()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String FieldGroupItem.getFriendlyName()"})
-  public void testGetFriendlyName_givenFieldGroupItemWithListGridIsListGrid_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(new FieldGroupItem(new ListGrid()).getFriendlyName());
-  }
-
-  /**
-   * Test {@link FieldGroupItem#getName()}.
-   *
-   * <ul>
-   *   <li>Given {@link FieldGroupItem#FieldGroupItem(Field)} with field is {@link Field} (default
-   *       constructor).
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldGroupItem#getName()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String FieldGroupItem.getName()"})
-  public void testGetName_givenFieldGroupItemWithFieldIsField_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(new FieldGroupItem(new Field()).getName());
-  }
-
-  /**
-   * Test {@link FieldGroupItem#getName()}.
-   *
-   * <ul>
-   *   <li>Given {@link FieldGroupItem#FieldGroupItem(ListGrid)} with listGrid is {@link ListGrid}
-   *       (default constructor) CustomField is {@link Field} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldGroupItem#getName()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String FieldGroupItem.getName()"})
-  public void testGetName_givenFieldGroupItemWithListGridIsListGridCustomFieldIsField() {
-    // Arrange
-    FieldGroupItem fieldGroupItem = new FieldGroupItem(new ListGrid());
-    fieldGroupItem.setCustomField(new Field());
-
-    // Act and Assert
-    assertNull(fieldGroupItem.getName());
-  }
-
-  /**
-   * Test {@link FieldGroupItem#getName()}.
-   *
-   * <ul>
-   *   <li>Given {@link FieldGroupItem#FieldGroupItem(ListGrid)} with listGrid is {@link ListGrid}
-   *       (default constructor).
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldGroupItem#getName()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String FieldGroupItem.getName()"})
-  public void testGetName_givenFieldGroupItemWithListGridIsListGrid_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(new FieldGroupItem(new ListGrid()).getName());
-  }
-
-  /**
-   * Test {@link FieldGroupItem#isVisible()}.
-   *
-   * <ul>
-   *   <li>Given {@link FieldGroupItem#FieldGroupItem(ListGrid)} with listGrid is {@link ListGrid}
-   *       (default constructor) CustomField is {@link Field} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldGroupItem#isVisible()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean FieldGroupItem.isVisible()"})
-  public void testIsVisible_givenFieldGroupItemWithListGridIsListGridCustomFieldIsField() {
-    // Arrange
-    FieldGroupItem fieldGroupItem = new FieldGroupItem(new ListGrid());
-    fieldGroupItem.setCustomField(new Field());
-
-    // Act and Assert
-    assertTrue(fieldGroupItem.isVisible());
-  }
-
-  /**
-   * Test {@link FieldGroupItem#isVisible()}.
-   *
-   * <ul>
-   *   <li>Given {@link FieldGroupItem#FieldGroupItem(ListGrid)} with listGrid is {@link ListGrid}
-   *       (default constructor).
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldGroupItem#isVisible()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean FieldGroupItem.isVisible()"})
-  public void testIsVisible_givenFieldGroupItemWithListGridIsListGrid_thenReturnTrue() {
-    // Arrange, Act and Assert
-    assertTrue(new FieldGroupItem(new ListGrid()).isVisible());
-  }
-
-  /**
-   * Test {@link FieldGroupItem#isVisible()}.
-   *
-   * <ul>
-   *   <li>Given {@link FieldGroupItem#FieldGroupItem(ListGrid)} with listGrid is {@code null}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldGroupItem#isVisible()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean FieldGroupItem.isVisible()"})
-  public void testIsVisible_givenFieldGroupItemWithListGridIsNull_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(new FieldGroupItem((ListGrid) null).isVisible());
-  }
-
-  /**
-   * Test {@link FieldGroupItem#isVisible()}.
-   *
-   * <ul>
-   *   <li>Given {@link Field} (default constructor) IsVisible is {@code null}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldGroupItem#isVisible()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean FieldGroupItem.isVisible()"})
-  public void testIsVisible_givenFieldIsVisibleIsNull_thenReturnTrue() {
-    // Arrange
-    Field field = new Field();
-    field.setIsVisible(null);
-    field.setFieldType(null);
-
-    FieldGroupItem fieldGroupItem = new FieldGroupItem((ListGrid) null);
-    fieldGroupItem.setField(field);
-
-    // Act and Assert
-    assertTrue(fieldGroupItem.isVisible());
   }
 }

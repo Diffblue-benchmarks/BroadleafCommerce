@@ -18,46 +18,26 @@
 package org.broadleafcommerce.core.web.processor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(MockitoExtension.class)
 class RemoveFacetValuesLinkProcessorDiffblueTest {
-  @InjectMocks private RemoveFacetValuesLinkProcessor removeFacetValuesLinkProcessor;
-
   /**
-   * Test {@link RemoveFacetValuesLinkProcessor#getName()}.
-   *
-   * <p>Method under test: {@link RemoveFacetValuesLinkProcessor#getName()}
+   * Method under test: {@link RemoveFacetValuesLinkProcessor#getName()}
    */
   @Test
-  @DisplayName("Test getName()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.lang.String RemoveFacetValuesLinkProcessor.getName()"})
   void testGetName() {
     // Arrange, Act and Assert
-    assertEquals("removefacetvalueslink", new RemoveFacetValuesLinkProcessor().getName());
+    assertEquals("removefacetvalueslink", (new RemoveFacetValuesLinkProcessor()).getName());
   }
 
   /**
-   * Test {@link RemoveFacetValuesLinkProcessor#getPrecedence()}.
-   *
-   * <p>Method under test: {@link RemoveFacetValuesLinkProcessor#getPrecedence()}
+   * Method under test: {@link RemoveFacetValuesLinkProcessor#getPrecedence()}
    */
   @Test
-  @DisplayName("Test getPrecedence()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int RemoveFacetValuesLinkProcessor.getPrecedence()"})
   void testGetPrecedence() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertEquals(10000, removeFacetValuesLinkProcessor.getPrecedence());
+    assertEquals(10000, (new RemoveFacetValuesLinkProcessor()).getPrecedence());
   }
 }

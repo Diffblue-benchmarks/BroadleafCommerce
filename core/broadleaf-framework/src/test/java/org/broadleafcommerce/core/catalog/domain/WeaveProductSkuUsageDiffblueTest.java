@@ -19,46 +19,23 @@ package org.broadleafcommerce.core.catalog.domain;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class WeaveProductSkuUsageDiffblueTest {
   /**
-   * Test {@link WeaveProductSkuUsage#getUseDefaultSkuInInventory()}.
-   *
-   * <ul>
-   *   <li>Given {@link WeaveProductSkuUsage} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link WeaveProductSkuUsage#getUseDefaultSkuInInventory()}
+   * Method under test: {@link WeaveProductSkuUsage#getUseDefaultSkuInInventory()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean WeaveProductSkuUsage.getUseDefaultSkuInInventory()"})
-  public void testGetUseDefaultSkuInInventory_givenWeaveProductSkuUsage_thenReturnFalse() {
+  public void testGetUseDefaultSkuInInventory() {
     // Arrange, Act and Assert
-    assertFalse(new WeaveProductSkuUsage().getUseDefaultSkuInInventory());
+    assertFalse((new WeaveProductSkuUsage()).getUseDefaultSkuInInventory());
   }
 
   /**
-   * Test {@link WeaveProductSkuUsage#getUseDefaultSkuInInventory()}.
-   *
-   * <ul>
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link WeaveProductSkuUsage#getUseDefaultSkuInInventory()}
+   * Method under test: {@link WeaveProductSkuUsage#getUseDefaultSkuInInventory()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean WeaveProductSkuUsage.getUseDefaultSkuInInventory()"})
-  public void testGetUseDefaultSkuInInventory_thenReturnTrue() {
+  public void testGetUseDefaultSkuInInventory2() {
     // Arrange
     WeaveProductSkuUsage weaveProductSkuUsage = new WeaveProductSkuUsage();
     weaveProductSkuUsage.setUseDefaultSkuInInventory(true);
@@ -68,41 +45,11 @@ public class WeaveProductSkuUsageDiffblueTest {
   }
 
   /**
-   * Test {@link WeaveProductSkuUsage#setUseDefaultSkuInInventory(Boolean)}.
-   *
-   * <p>Method under test: {@link WeaveProductSkuUsage#setUseDefaultSkuInInventory(Boolean)}
+   * Method under test:
+   * {@link WeaveProductSkuUsage#setUseDefaultSkuInInventory(Boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void WeaveProductSkuUsage.setUseDefaultSkuInInventory(Boolean)"})
   public void testSetUseDefaultSkuInInventory() {
-    // Arrange
-    WeaveProductSkuUsage weaveProductSkuUsage = new WeaveProductSkuUsage();
-    weaveProductSkuUsage.setUseDefaultSkuInInventory(true);
-
-    // Act
-    weaveProductSkuUsage.setUseDefaultSkuInInventory(null);
-
-    // Assert
-    assertFalse(weaveProductSkuUsage.getUseDefaultSkuInInventory());
-    assertFalse(weaveProductSkuUsage.useDefaultSkuInInventory);
-  }
-
-  /**
-   * Test {@link WeaveProductSkuUsage#setUseDefaultSkuInInventory(Boolean)}.
-   *
-   * <ul>
-   *   <li>Then {@link WeaveProductSkuUsage} (default constructor) UseDefaultSkuInInventory.
-   * </ul>
-   *
-   * <p>Method under test: {@link WeaveProductSkuUsage#setUseDefaultSkuInInventory(Boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void WeaveProductSkuUsage.setUseDefaultSkuInInventory(Boolean)"})
-  public void testSetUseDefaultSkuInInventory_thenWeaveProductSkuUsageUseDefaultSkuInInventory() {
     // Arrange
     WeaveProductSkuUsage weaveProductSkuUsage = new WeaveProductSkuUsage();
 
@@ -115,39 +62,44 @@ public class WeaveProductSkuUsageDiffblueTest {
   }
 
   /**
-   * Test {@link WeaveProductSkuUsage#setUseDefaultSkuInInventory(Boolean)}.
-   *
-   * <ul>
-   *   <li>When {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link WeaveProductSkuUsage#setUseDefaultSkuInInventory(Boolean)}
+   * Method under test:
+   * {@link WeaveProductSkuUsage#setUseDefaultSkuInInventory(Boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void WeaveProductSkuUsage.setUseDefaultSkuInInventory(Boolean)"})
-  public void testSetUseDefaultSkuInInventory_whenFalse() {
+  public void testSetUseDefaultSkuInInventory2() {
     // Arrange
     WeaveProductSkuUsage weaveProductSkuUsage = new WeaveProductSkuUsage();
 
     // Act
     weaveProductSkuUsage.setUseDefaultSkuInInventory(false);
 
-    // Assert that nothing has changed
+    // Assert
     assertFalse(weaveProductSkuUsage.getUseDefaultSkuInInventory());
     assertFalse(weaveProductSkuUsage.useDefaultSkuInInventory);
   }
 
   /**
-   * Test new {@link WeaveProductSkuUsage} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link WeaveProductSkuUsage}
+   * Method under test:
+   * {@link WeaveProductSkuUsage#setUseDefaultSkuInInventory(Boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void WeaveProductSkuUsage.<init>()"})
+  public void testSetUseDefaultSkuInInventory3() {
+    // Arrange
+    WeaveProductSkuUsage weaveProductSkuUsage = new WeaveProductSkuUsage();
+
+    // Act
+    weaveProductSkuUsage.setUseDefaultSkuInInventory(null);
+
+    // Assert
+    assertFalse(weaveProductSkuUsage.getUseDefaultSkuInInventory());
+    assertFalse(weaveProductSkuUsage.useDefaultSkuInInventory);
+  }
+
+  /**
+   * Method under test: default or parameterless constructor of
+   * {@link WeaveProductSkuUsage}
+   */
+  @Test
   public void testNewWeaveProductSkuUsage() {
     // Arrange and Act
     WeaveProductSkuUsage actualWeaveProductSkuUsage = new WeaveProductSkuUsage();

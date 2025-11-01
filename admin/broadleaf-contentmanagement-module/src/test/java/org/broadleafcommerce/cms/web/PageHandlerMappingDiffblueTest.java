@@ -20,25 +20,66 @@ package org.broadleafcommerce.cms.web;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
+import javax.servlet.http.HttpServletRequest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.util.AntPathMatcher;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.DefaultCorsProcessor;
 
 public class PageHandlerMappingDiffblueTest {
   /**
-   * Test new {@link PageHandlerMapping} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link PageHandlerMapping}
+   * Method under test:
+   * {@link PageHandlerMapping#getHandlerInternal(HttpServletRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PageHandlerMapping.<init>()"})
+  public void testGetHandlerInternal() throws Exception {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PageHandlerMapping pageHandlerMapping = new PageHandlerMapping();
+
+    // Act and Assert
+    assertNull(pageHandlerMapping.getHandlerInternal(new MockHttpServletRequest()));
+  }
+
+  /**
+   * Method under test:
+   * {@link PageHandlerMapping#getHandlerInternal(HttpServletRequest)}
+   */
+  @Test
+  public void testGetHandlerInternal2() throws Exception {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertNull((new PageHandlerMapping()).getHandlerInternal(null));
+  }
+
+  /**
+   * Method under test:
+   * {@link PageHandlerMapping#getHandlerInternal(HttpServletRequest)}
+   */
+  @Test
+  public void testGetHandlerInternal3() throws Exception {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PageHandlerMapping pageHandlerMapping = new PageHandlerMapping();
+    pageHandlerMapping.setCorsConfigurationSource(mock(CorsConfigurationSource.class));
+
+    // Act and Assert
+    assertNull(pageHandlerMapping.getHandlerInternal(new MockHttpServletRequest()));
+  }
+
+  /**
+   * Method under test: default or parameterless constructor of
+   * {@link PageHandlerMapping}
+   */
+  @Test
   public void testNewPageHandlerMapping() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange and Act
     PageHandlerMapping actualPageHandlerMapping = new PageHandlerMapping();
 

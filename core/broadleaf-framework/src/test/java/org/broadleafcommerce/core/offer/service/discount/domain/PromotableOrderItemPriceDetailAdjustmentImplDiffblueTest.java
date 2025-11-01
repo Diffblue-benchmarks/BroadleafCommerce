@@ -26,9 +26,7 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.math.RoundingMode;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.money.Money;
@@ -37,146 +35,28 @@ import org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustment;
 import org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustmentImpl;
 import org.broadleafcommerce.core.order.domain.BundleOrderItemImpl;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class PromotableOrderItemPriceDetailAdjustmentImplDiffblueTest {
   /**
-   * Test {@link
-   * PromotableOrderItemPriceDetailAdjustmentImpl#PromotableOrderItemPriceDetailAdjustmentImpl(OrderItemPriceDetailAdjustment,
-   * PromotableOrderItemPriceDetail)}.
-   *
-   * <p>Method under test: {@link
-   * PromotableOrderItemPriceDetailAdjustmentImpl#PromotableOrderItemPriceDetailAdjustmentImpl(OrderItemPriceDetailAdjustment,
-   * PromotableOrderItemPriceDetail)}
+   * Method under test:
+   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#getCurrency()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PromotableOrderItemPriceDetailAdjustmentImpl.<init>(OrderItemPriceDetailAdjustment, PromotableOrderItemPriceDetail)"
-  })
-  public void testNewPromotableOrderItemPriceDetailAdjustmentImpl() {
+  public void testGetCurrency() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl itemAdjustment =
-        mock(OrderItemPriceDetailAdjustmentImpl.class);
-    when(itemAdjustment.isAppliedToSalePrice()).thenReturn(false);
-    when(itemAdjustment.getSalesPriceValue()).thenReturn(new Money());
-    when(itemAdjustment.getValue()).thenReturn(new Money());
-    when(itemAdjustment.getOffer()).thenReturn(new OfferImpl());
-    Money expectedSaleAdjustmentValue = new Money();
-    PromotableOrderItemImpl promotableOrderItem =
-        new PromotableOrderItemImpl(new BundleOrderItemImpl(), null, null, true);
-
-    // Act
-    PromotableOrderItemPriceDetailAdjustmentImpl
-        actualPromotableOrderItemPriceDetailAdjustmentImpl =
-            new PromotableOrderItemPriceDetailAdjustmentImpl(
-                itemAdjustment,
-                new PromotableOrderItemPriceDetailWrapper(
-                    new PromotableOrderItemPriceDetailImpl(promotableOrderItem, 1)));
-
-    // Assert
-    verify(itemAdjustment).getOffer();
-    verify(itemAdjustment).getSalesPriceValue();
-    verify(itemAdjustment, atLeast(1)).getValue();
-    verify(itemAdjustment, atLeast(1)).isAppliedToSalePrice();
-    assertFalse(actualPromotableOrderItemPriceDetailAdjustmentImpl.isAppliedToSalePrice());
-    assertEquals(
-        expectedSaleAdjustmentValue,
-        actualPromotableOrderItemPriceDetailAdjustmentImpl.getSaleAdjustmentValue());
-  }
-
-  /**
-   * Test {@link
-   * PromotableOrderItemPriceDetailAdjustmentImpl#PromotableOrderItemPriceDetailAdjustmentImpl(OrderItemPriceDetailAdjustment,
-   * PromotableOrderItemPriceDetail)}.
-   *
-   * <ul>
-   *   <li>Then return AppliedToSalePrice.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * PromotableOrderItemPriceDetailAdjustmentImpl#PromotableOrderItemPriceDetailAdjustmentImpl(OrderItemPriceDetailAdjustment,
-   * PromotableOrderItemPriceDetail)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PromotableOrderItemPriceDetailAdjustmentImpl.<init>(OrderItemPriceDetailAdjustment, PromotableOrderItemPriceDetail)"
-  })
-  public void testNewPromotableOrderItemPriceDetailAdjustmentImpl_thenReturnAppliedToSalePrice() {
-    // Arrange
-    OrderItemPriceDetailAdjustmentImpl itemAdjustment =
-        mock(OrderItemPriceDetailAdjustmentImpl.class);
-    Money money = new Money();
-    when(itemAdjustment.getRetailPriceValue()).thenReturn(money);
-    when(itemAdjustment.isAppliedToSalePrice()).thenReturn(true);
-    when(itemAdjustment.getValue()).thenReturn(new Money());
-    when(itemAdjustment.getOffer()).thenReturn(new OfferImpl());
-    PromotableOrderItemImpl promotableOrderItem =
-        new PromotableOrderItemImpl(new BundleOrderItemImpl(), null, null, true);
-
-    // Act
-    PromotableOrderItemPriceDetailAdjustmentImpl
-        actualPromotableOrderItemPriceDetailAdjustmentImpl =
-            new PromotableOrderItemPriceDetailAdjustmentImpl(
-                itemAdjustment,
-                new PromotableOrderItemPriceDetailWrapper(
-                    new PromotableOrderItemPriceDetailImpl(promotableOrderItem, 1)));
-
-    // Assert
-    verify(itemAdjustment).getOffer();
-    verify(itemAdjustment).getRetailPriceValue();
-    verify(itemAdjustment, atLeast(1)).getValue();
-    verify(itemAdjustment, atLeast(1)).isAppliedToSalePrice();
-    assertTrue(actualPromotableOrderItemPriceDetailAdjustmentImpl.isAppliedToSalePrice());
-    Money retailAdjustmentValue =
-        actualPromotableOrderItemPriceDetailAdjustmentImpl.getRetailAdjustmentValue();
-    assertEquals(money, retailAdjustmentValue.abs());
-    Money adjustmentValue = actualPromotableOrderItemPriceDetailAdjustmentImpl.getAdjustmentValue();
-    assertEquals(retailAdjustmentValue, adjustmentValue.abs());
-    assertEquals(retailAdjustmentValue, adjustmentValue.zero());
-    assertSame(
-        adjustmentValue,
-        actualPromotableOrderItemPriceDetailAdjustmentImpl.getSaleAdjustmentValue());
-  }
-
-  /**
-   * Test {@link PromotableOrderItemPriceDetailAdjustmentImpl#getCurrency()}.
-   *
-   * <ul>
-   *   <li>Then return {@link BroadleafCurrencyImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotableOrderItemPriceDetailAdjustmentImpl#getCurrency()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BroadleafCurrency PromotableOrderItemPriceDetailAdjustmentImpl.getCurrency()"
-  })
-  public void testGetCurrency_thenReturnBroadleafCurrencyImpl() {
-    // Arrange
-    OrderItemPriceDetailAdjustmentImpl itemAdjustment =
-        mock(OrderItemPriceDetailAdjustmentImpl.class);
+    OrderItemPriceDetailAdjustmentImpl itemAdjustment = mock(OrderItemPriceDetailAdjustmentImpl.class);
     when(itemAdjustment.getRetailPriceValue()).thenReturn(new Money());
     when(itemAdjustment.isAppliedToSalePrice()).thenReturn(true);
     when(itemAdjustment.getValue()).thenReturn(new Money());
     when(itemAdjustment.getOffer()).thenReturn(new OfferImpl());
-
     PromotableOrderItemImpl promotableOrderItem = mock(PromotableOrderItemImpl.class);
     BroadleafCurrencyImpl broadleafCurrencyImpl = new BroadleafCurrencyImpl();
     when(promotableOrderItem.getCurrency()).thenReturn(broadleafCurrencyImpl);
-    PromotableOrderItemPriceDetailImpl wrappedDetail =
-        new PromotableOrderItemPriceDetailImpl(promotableOrderItem, 1);
-    PromotableOrderItemPriceDetailAdjustmentImpl promotableOrderItemPriceDetailAdjustmentImpl =
-        new PromotableOrderItemPriceDetailAdjustmentImpl(
-            itemAdjustment, new PromotableOrderItemPriceDetailWrapper(wrappedDetail));
 
     // Act
-    BroadleafCurrency actualCurrency = promotableOrderItemPriceDetailAdjustmentImpl.getCurrency();
+    BroadleafCurrency actualCurrency = (new PromotableOrderItemPriceDetailAdjustmentImpl(itemAdjustment,
+        new PromotableOrderItemPriceDetailWrapper(new PromotableOrderItemPriceDetailImpl(promotableOrderItem, 1))))
+        .getCurrency();
 
     // Assert
     verify(itemAdjustment).getOffer();
@@ -188,37 +68,48 @@ public class PromotableOrderItemPriceDetailAdjustmentImplDiffblueTest {
   }
 
   /**
-   * Test {@link PromotableOrderItemPriceDetailAdjustmentImpl#isCombinable()}.
-   *
-   * <ul>
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotableOrderItemPriceDetailAdjustmentImpl#isCombinable()}
+   * Method under test:
+   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#isCombinable()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PromotableOrderItemPriceDetailAdjustmentImpl.isCombinable()"})
-  public void testIsCombinable_thenReturnFalse() {
+  public void testIsCombinable() {
+    // Arrange
+    OrderItemPriceDetailAdjustmentImpl itemAdjustment = mock(OrderItemPriceDetailAdjustmentImpl.class);
+    when(itemAdjustment.getRetailPriceValue()).thenReturn(new Money());
+    when(itemAdjustment.isAppliedToSalePrice()).thenReturn(true);
+    when(itemAdjustment.getValue()).thenReturn(new Money());
+    when(itemAdjustment.getOffer()).thenReturn(new OfferImpl());
+
+    // Act
+    boolean actualIsCombinableResult = (new PromotableOrderItemPriceDetailAdjustmentImpl(itemAdjustment,
+        new PromotableOrderItemPriceDetailWrapper(new PromotableOrderItemPriceDetailImpl(null, 1)))).isCombinable();
+
+    // Assert
+    verify(itemAdjustment).getOffer();
+    verify(itemAdjustment).getRetailPriceValue();
+    verify(itemAdjustment, atLeast(1)).getValue();
+    verify(itemAdjustment, atLeast(1)).isAppliedToSalePrice();
+    assertTrue(actualIsCombinableResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#isCombinable()}
+   */
+  @Test
+  public void testIsCombinable2() {
     // Arrange
     OfferImpl offerImpl = mock(OfferImpl.class);
     when(offerImpl.isCombinableWithOtherOffers()).thenReturn(false);
-
-    OrderItemPriceDetailAdjustmentImpl itemAdjustment =
-        mock(OrderItemPriceDetailAdjustmentImpl.class);
+    OrderItemPriceDetailAdjustmentImpl itemAdjustment = mock(OrderItemPriceDetailAdjustmentImpl.class);
     when(itemAdjustment.getRetailPriceValue()).thenReturn(new Money());
     when(itemAdjustment.isAppliedToSalePrice()).thenReturn(true);
     when(itemAdjustment.getValue()).thenReturn(new Money());
     when(itemAdjustment.getOffer()).thenReturn(offerImpl);
-    PromotableOrderItemPriceDetailAdjustmentImpl promotableOrderItemPriceDetailAdjustmentImpl =
-        new PromotableOrderItemPriceDetailAdjustmentImpl(
-            itemAdjustment,
-            new PromotableOrderItemPriceDetailWrapper(
-                new PromotableOrderItemPriceDetailImpl(null, 1)));
 
     // Act
-    boolean actualIsCombinableResult = promotableOrderItemPriceDetailAdjustmentImpl.isCombinable();
+    boolean actualIsCombinableResult = (new PromotableOrderItemPriceDetailAdjustmentImpl(itemAdjustment,
+        new PromotableOrderItemPriceDetailWrapper(new PromotableOrderItemPriceDetailImpl(null, 1)))).isCombinable();
 
     // Assert
     verify(offerImpl).isCombinableWithOtherOffers();
@@ -230,69 +121,21 @@ public class PromotableOrderItemPriceDetailAdjustmentImplDiffblueTest {
   }
 
   /**
-   * Test {@link PromotableOrderItemPriceDetailAdjustmentImpl#isCombinable()}.
-   *
-   * <ul>
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotableOrderItemPriceDetailAdjustmentImpl#isCombinable()}
+   * Method under test:
+   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#isTotalitarian()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PromotableOrderItemPriceDetailAdjustmentImpl.isCombinable()"})
-  public void testIsCombinable_thenReturnTrue() {
-    // Arrange
-    OrderItemPriceDetailAdjustmentImpl itemAdjustment =
-        mock(OrderItemPriceDetailAdjustmentImpl.class);
-    when(itemAdjustment.getRetailPriceValue()).thenReturn(new Money());
-    when(itemAdjustment.isAppliedToSalePrice()).thenReturn(true);
-    when(itemAdjustment.getValue()).thenReturn(new Money());
-    when(itemAdjustment.getOffer()).thenReturn(new OfferImpl());
-    PromotableOrderItemPriceDetailAdjustmentImpl promotableOrderItemPriceDetailAdjustmentImpl =
-        new PromotableOrderItemPriceDetailAdjustmentImpl(
-            itemAdjustment,
-            new PromotableOrderItemPriceDetailWrapper(
-                new PromotableOrderItemPriceDetailImpl(null, 1)));
-
-    // Act
-    boolean actualIsCombinableResult = promotableOrderItemPriceDetailAdjustmentImpl.isCombinable();
-
-    // Assert
-    verify(itemAdjustment).getOffer();
-    verify(itemAdjustment).getRetailPriceValue();
-    verify(itemAdjustment, atLeast(1)).getValue();
-    verify(itemAdjustment, atLeast(1)).isAppliedToSalePrice();
-    assertTrue(actualIsCombinableResult);
-  }
-
-  /**
-   * Test {@link PromotableOrderItemPriceDetailAdjustmentImpl#isTotalitarian()}.
-   *
-   * <p>Method under test: {@link PromotableOrderItemPriceDetailAdjustmentImpl#isTotalitarian()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PromotableOrderItemPriceDetailAdjustmentImpl.isTotalitarian()"})
   public void testIsTotalitarian() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl itemAdjustment =
-        mock(OrderItemPriceDetailAdjustmentImpl.class);
+    OrderItemPriceDetailAdjustmentImpl itemAdjustment = mock(OrderItemPriceDetailAdjustmentImpl.class);
     when(itemAdjustment.getRetailPriceValue()).thenReturn(new Money());
     when(itemAdjustment.isAppliedToSalePrice()).thenReturn(true);
     when(itemAdjustment.getValue()).thenReturn(new Money());
     when(itemAdjustment.getOffer()).thenReturn(new OfferImpl());
-    PromotableOrderItemPriceDetailAdjustmentImpl promotableOrderItemPriceDetailAdjustmentImpl =
-        new PromotableOrderItemPriceDetailAdjustmentImpl(
-            itemAdjustment,
-            new PromotableOrderItemPriceDetailWrapper(
-                new PromotableOrderItemPriceDetailImpl(null, 1)));
 
     // Act
-    boolean actualIsTotalitarianResult =
-        promotableOrderItemPriceDetailAdjustmentImpl.isTotalitarian();
+    boolean actualIsTotalitarianResult = (new PromotableOrderItemPriceDetailAdjustmentImpl(itemAdjustment,
+        new PromotableOrderItemPriceDetailWrapper(new PromotableOrderItemPriceDetailImpl(null, 1)))).isTotalitarian();
 
     // Assert
     verify(itemAdjustment).getOffer();
@@ -303,83 +146,23 @@ public class PromotableOrderItemPriceDetailAdjustmentImplDiffblueTest {
   }
 
   /**
-   * Test {@link PromotableOrderItemPriceDetailAdjustmentImpl#isTotalitarian()}.
-   *
-   * <ul>
-   *   <li>Given {@link OfferImpl} {@link OfferImpl#isTotalitarianOffer()} return {@code null}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotableOrderItemPriceDetailAdjustmentImpl#isTotalitarian()}
+   * Method under test:
+   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#isTotalitarian()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PromotableOrderItemPriceDetailAdjustmentImpl.isTotalitarian()"})
-  public void testIsTotalitarian_givenOfferImplIsTotalitarianOfferReturnNull_thenReturnFalse() {
-    // Arrange
-    OfferImpl offerImpl = mock(OfferImpl.class);
-    when(offerImpl.isTotalitarianOffer()).thenReturn(null);
-
-    OrderItemPriceDetailAdjustmentImpl itemAdjustment =
-        mock(OrderItemPriceDetailAdjustmentImpl.class);
-    when(itemAdjustment.getRetailPriceValue()).thenReturn(new Money());
-    when(itemAdjustment.isAppliedToSalePrice()).thenReturn(true);
-    when(itemAdjustment.getValue()).thenReturn(new Money());
-    when(itemAdjustment.getOffer()).thenReturn(offerImpl);
-    PromotableOrderItemPriceDetailAdjustmentImpl promotableOrderItemPriceDetailAdjustmentImpl =
-        new PromotableOrderItemPriceDetailAdjustmentImpl(
-            itemAdjustment,
-            new PromotableOrderItemPriceDetailWrapper(
-                new PromotableOrderItemPriceDetailImpl(null, 1)));
-
-    // Act
-    boolean actualIsTotalitarianResult =
-        promotableOrderItemPriceDetailAdjustmentImpl.isTotalitarian();
-
-    // Assert
-    verify(offerImpl).isTotalitarianOffer();
-    verify(itemAdjustment).getOffer();
-    verify(itemAdjustment).getRetailPriceValue();
-    verify(itemAdjustment, atLeast(1)).getValue();
-    verify(itemAdjustment, atLeast(1)).isAppliedToSalePrice();
-    assertFalse(actualIsTotalitarianResult);
-  }
-
-  /**
-   * Test {@link PromotableOrderItemPriceDetailAdjustmentImpl#isTotalitarian()}.
-   *
-   * <ul>
-   *   <li>Given {@link OfferImpl} {@link OfferImpl#isTotalitarianOffer()} return {@code true}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotableOrderItemPriceDetailAdjustmentImpl#isTotalitarian()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PromotableOrderItemPriceDetailAdjustmentImpl.isTotalitarian()"})
-  public void testIsTotalitarian_givenOfferImplIsTotalitarianOfferReturnTrue_thenReturnTrue() {
+  public void testIsTotalitarian2() {
     // Arrange
     OfferImpl offerImpl = mock(OfferImpl.class);
     when(offerImpl.isTotalitarianOffer()).thenReturn(true);
-
-    OrderItemPriceDetailAdjustmentImpl itemAdjustment =
-        mock(OrderItemPriceDetailAdjustmentImpl.class);
+    OrderItemPriceDetailAdjustmentImpl itemAdjustment = mock(OrderItemPriceDetailAdjustmentImpl.class);
     when(itemAdjustment.getRetailPriceValue()).thenReturn(new Money());
     when(itemAdjustment.isAppliedToSalePrice()).thenReturn(true);
     when(itemAdjustment.getValue()).thenReturn(new Money());
     when(itemAdjustment.getOffer()).thenReturn(offerImpl);
-    PromotableOrderItemPriceDetailAdjustmentImpl promotableOrderItemPriceDetailAdjustmentImpl =
-        new PromotableOrderItemPriceDetailAdjustmentImpl(
-            itemAdjustment,
-            new PromotableOrderItemPriceDetailWrapper(
-                new PromotableOrderItemPriceDetailImpl(null, 1)));
 
     // Act
-    boolean actualIsTotalitarianResult =
-        promotableOrderItemPriceDetailAdjustmentImpl.isTotalitarian();
+    boolean actualIsTotalitarianResult = (new PromotableOrderItemPriceDetailAdjustmentImpl(itemAdjustment,
+        new PromotableOrderItemPriceDetailWrapper(new PromotableOrderItemPriceDetailImpl(null, 1)))).isTotalitarian();
 
     // Assert
     verify(offerImpl).isTotalitarianOffer();
@@ -391,34 +174,49 @@ public class PromotableOrderItemPriceDetailAdjustmentImplDiffblueTest {
   }
 
   /**
-   * Test {@link PromotableOrderItemPriceDetailAdjustmentImpl#getOfferId()}.
-   *
-   * <ul>
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotableOrderItemPriceDetailAdjustmentImpl#getOfferId()}
+   * Method under test:
+   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#isTotalitarian()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Long PromotableOrderItemPriceDetailAdjustmentImpl.getOfferId()"})
-  public void testGetOfferId_thenReturnNull() {
+  public void testIsTotalitarian3() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl itemAdjustment =
-        mock(OrderItemPriceDetailAdjustmentImpl.class);
+    OfferImpl offerImpl = mock(OfferImpl.class);
+    when(offerImpl.isTotalitarianOffer()).thenReturn(null);
+    OrderItemPriceDetailAdjustmentImpl itemAdjustment = mock(OrderItemPriceDetailAdjustmentImpl.class);
+    when(itemAdjustment.getRetailPriceValue()).thenReturn(new Money());
+    when(itemAdjustment.isAppliedToSalePrice()).thenReturn(true);
+    when(itemAdjustment.getValue()).thenReturn(new Money());
+    when(itemAdjustment.getOffer()).thenReturn(offerImpl);
+
+    // Act
+    boolean actualIsTotalitarianResult = (new PromotableOrderItemPriceDetailAdjustmentImpl(itemAdjustment,
+        new PromotableOrderItemPriceDetailWrapper(new PromotableOrderItemPriceDetailImpl(null, 1)))).isTotalitarian();
+
+    // Assert
+    verify(offerImpl).isTotalitarianOffer();
+    verify(itemAdjustment).getOffer();
+    verify(itemAdjustment).getRetailPriceValue();
+    verify(itemAdjustment, atLeast(1)).getValue();
+    verify(itemAdjustment, atLeast(1)).isAppliedToSalePrice();
+    assertFalse(actualIsTotalitarianResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#getOfferId()}
+   */
+  @Test
+  public void testGetOfferId() {
+    // Arrange
+    OrderItemPriceDetailAdjustmentImpl itemAdjustment = mock(OrderItemPriceDetailAdjustmentImpl.class);
     when(itemAdjustment.getRetailPriceValue()).thenReturn(new Money());
     when(itemAdjustment.isAppliedToSalePrice()).thenReturn(true);
     when(itemAdjustment.getValue()).thenReturn(new Money());
     when(itemAdjustment.getOffer()).thenReturn(new OfferImpl());
-    PromotableOrderItemPriceDetailAdjustmentImpl promotableOrderItemPriceDetailAdjustmentImpl =
-        new PromotableOrderItemPriceDetailAdjustmentImpl(
-            itemAdjustment,
-            new PromotableOrderItemPriceDetailWrapper(
-                new PromotableOrderItemPriceDetailImpl(null, 1)));
 
     // Act
-    Long actualOfferId = promotableOrderItemPriceDetailAdjustmentImpl.getOfferId();
+    Long actualOfferId = (new PromotableOrderItemPriceDetailAdjustmentImpl(itemAdjustment,
+        new PromotableOrderItemPriceDetailWrapper(new PromotableOrderItemPriceDetailImpl(null, 1)))).getOfferId();
 
     // Assert
     verify(itemAdjustment).getOffer();
@@ -429,76 +227,52 @@ public class PromotableOrderItemPriceDetailAdjustmentImplDiffblueTest {
   }
 
   /**
-   * Test {@link PromotableOrderItemPriceDetailAdjustmentImpl#finalizeAdjustment(boolean)}.
-   *
-   * <p>Method under test: {@link
-   * PromotableOrderItemPriceDetailAdjustmentImpl#finalizeAdjustment(boolean)}
+   * Method under test:
+   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#finalizeAdjustment(boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PromotableOrderItemPriceDetailAdjustmentImpl.finalizeAdjustment(boolean)"
-  })
   public void testFinalizeAdjustment() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl itemAdjustment =
-        mock(OrderItemPriceDetailAdjustmentImpl.class);
+    OrderItemPriceDetailAdjustmentImpl itemAdjustment = mock(OrderItemPriceDetailAdjustmentImpl.class);
     Money money = new Money();
     when(itemAdjustment.getRetailPriceValue()).thenReturn(money);
     when(itemAdjustment.isAppliedToSalePrice()).thenReturn(true);
     Money money2 = new Money();
     when(itemAdjustment.getValue()).thenReturn(money2);
     when(itemAdjustment.getOffer()).thenReturn(new OfferImpl());
-    PromotableOrderItemPriceDetailAdjustmentImpl promotableOrderItemPriceDetailAdjustmentImpl =
-        new PromotableOrderItemPriceDetailAdjustmentImpl(
-            itemAdjustment,
-            new PromotableOrderItemPriceDetailWrapper(
-                new PromotableOrderItemPriceDetailImpl(null, 1)));
+    PromotableOrderItemPriceDetailAdjustmentImpl promotableOrderItemPriceDetailAdjustmentImpl = new PromotableOrderItemPriceDetailAdjustmentImpl(
+        itemAdjustment, new PromotableOrderItemPriceDetailWrapper(new PromotableOrderItemPriceDetailImpl(null, 1)));
 
     // Act
     promotableOrderItemPriceDetailAdjustmentImpl.finalizeAdjustment(true);
 
-    // Assert that nothing has changed
+    // Assert
     verify(itemAdjustment).getOffer();
     verify(itemAdjustment).getRetailPriceValue();
     verify(itemAdjustment, atLeast(1)).getValue();
     verify(itemAdjustment, atLeast(1)).isAppliedToSalePrice();
     assertTrue(promotableOrderItemPriceDetailAdjustmentImpl.isAppliedToSalePrice());
-    Money adjustmentValue = promotableOrderItemPriceDetailAdjustmentImpl.getAdjustmentValue();
-    assertEquals(money, adjustmentValue.abs());
-    assertEquals(money, adjustmentValue.zero());
+    assertSame(money2, promotableOrderItemPriceDetailAdjustmentImpl.getAdjustmentValue());
     assertSame(money, promotableOrderItemPriceDetailAdjustmentImpl.getRetailAdjustmentValue());
     assertSame(money2, promotableOrderItemPriceDetailAdjustmentImpl.getSaleAdjustmentValue());
   }
 
   /**
-   * Test {@link PromotableOrderItemPriceDetailAdjustmentImpl#finalizeAdjustment(boolean)}.
-   *
-   * <p>Method under test: {@link
-   * PromotableOrderItemPriceDetailAdjustmentImpl#finalizeAdjustment(boolean)}
+   * Method under test:
+   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#finalizeAdjustment(boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PromotableOrderItemPriceDetailAdjustmentImpl.finalizeAdjustment(boolean)"
-  })
   public void testFinalizeAdjustment2() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl itemAdjustment =
-        mock(OrderItemPriceDetailAdjustmentImpl.class);
+    OrderItemPriceDetailAdjustmentImpl itemAdjustment = mock(OrderItemPriceDetailAdjustmentImpl.class);
     Money money = new Money();
     when(itemAdjustment.getRetailPriceValue()).thenReturn(money);
     when(itemAdjustment.isAppliedToSalePrice()).thenReturn(true);
     Money money2 = new Money();
     when(itemAdjustment.getValue()).thenReturn(money2);
     when(itemAdjustment.getOffer()).thenReturn(new OfferImpl());
-    PromotableOrderItemPriceDetailAdjustmentImpl promotableOrderItemPriceDetailAdjustmentImpl =
-        new PromotableOrderItemPriceDetailAdjustmentImpl(
-            itemAdjustment,
-            new PromotableOrderItemPriceDetailWrapper(
-                new PromotableOrderItemPriceDetailImpl(null, 1)));
+    PromotableOrderItemPriceDetailAdjustmentImpl promotableOrderItemPriceDetailAdjustmentImpl = new PromotableOrderItemPriceDetailAdjustmentImpl(
+        itemAdjustment, new PromotableOrderItemPriceDetailWrapper(new PromotableOrderItemPriceDetailImpl(null, 1)));
 
     // Act
     promotableOrderItemPriceDetailAdjustmentImpl.finalizeAdjustment(false);
@@ -509,10 +283,92 @@ public class PromotableOrderItemPriceDetailAdjustmentImplDiffblueTest {
     verify(itemAdjustment, atLeast(1)).getValue();
     verify(itemAdjustment, atLeast(1)).isAppliedToSalePrice();
     assertFalse(promotableOrderItemPriceDetailAdjustmentImpl.isAppliedToSalePrice());
-    Money adjustmentValue = promotableOrderItemPriceDetailAdjustmentImpl.getAdjustmentValue();
-    assertEquals(money, adjustmentValue.abs());
-    assertEquals(money, adjustmentValue.zero());
+    assertSame(money, promotableOrderItemPriceDetailAdjustmentImpl.getAdjustmentValue());
     assertSame(money, promotableOrderItemPriceDetailAdjustmentImpl.getRetailAdjustmentValue());
     assertSame(money2, promotableOrderItemPriceDetailAdjustmentImpl.getSaleAdjustmentValue());
+  }
+
+  /**
+   * Method under test:
+   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#PromotableOrderItemPriceDetailAdjustmentImpl(OrderItemPriceDetailAdjustment, PromotableOrderItemPriceDetail)}
+   */
+  @Test
+  public void testNewPromotableOrderItemPriceDetailAdjustmentImpl() {
+    // Arrange
+    OrderItemPriceDetailAdjustmentImpl itemAdjustment = mock(OrderItemPriceDetailAdjustmentImpl.class);
+    Money money = new Money();
+    when(itemAdjustment.getRetailPriceValue()).thenReturn(money);
+    when(itemAdjustment.isAppliedToSalePrice()).thenReturn(true);
+    Money money2 = new Money();
+    when(itemAdjustment.getValue()).thenReturn(money2);
+    OfferImpl offerImpl = new OfferImpl();
+    when(itemAdjustment.getOffer()).thenReturn(offerImpl);
+    PromotableOrderItemPriceDetailWrapper orderItemPriceDetail = new PromotableOrderItemPriceDetailWrapper(
+        new PromotableOrderItemPriceDetailImpl(new PromotableOrderItemImpl(new BundleOrderItemImpl(), null, null, true),
+            1));
+
+    // Act
+    PromotableOrderItemPriceDetailAdjustmentImpl actualPromotableOrderItemPriceDetailAdjustmentImpl = new PromotableOrderItemPriceDetailAdjustmentImpl(
+        itemAdjustment, orderItemPriceDetail);
+
+    // Assert
+    verify(itemAdjustment).getOffer();
+    verify(itemAdjustment).getRetailPriceValue();
+    verify(itemAdjustment, atLeast(1)).getValue();
+    verify(itemAdjustment, atLeast(1)).isAppliedToSalePrice();
+    assertNull(actualPromotableOrderItemPriceDetailAdjustmentImpl.getRoundingScale());
+    assertNull(actualPromotableOrderItemPriceDetailAdjustmentImpl.getOfferId());
+    assertNull(actualPromotableOrderItemPriceDetailAdjustmentImpl.roundingMode);
+    assertNull(actualPromotableOrderItemPriceDetailAdjustmentImpl.promotableCandidateItemOffer);
+    assertEquals(RoundingMode.HALF_EVEN, actualPromotableOrderItemPriceDetailAdjustmentImpl.getRoundingMode());
+    assertTrue(actualPromotableOrderItemPriceDetailAdjustmentImpl.isAppliedToSalePrice());
+    assertSame(money2, actualPromotableOrderItemPriceDetailAdjustmentImpl.getAdjustmentValue());
+    assertSame(money, actualPromotableOrderItemPriceDetailAdjustmentImpl.getRetailAdjustmentValue());
+    assertSame(money2, actualPromotableOrderItemPriceDetailAdjustmentImpl.getSaleAdjustmentValue());
+    assertSame(offerImpl, actualPromotableOrderItemPriceDetailAdjustmentImpl.getOffer());
+    assertSame(orderItemPriceDetail,
+        actualPromotableOrderItemPriceDetailAdjustmentImpl.getPromotableOrderItemPriceDetail());
+  }
+
+  /**
+   * Method under test:
+   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#PromotableOrderItemPriceDetailAdjustmentImpl(OrderItemPriceDetailAdjustment, PromotableOrderItemPriceDetail)}
+   */
+  @Test
+  public void testNewPromotableOrderItemPriceDetailAdjustmentImpl2() {
+    // Arrange
+    OrderItemPriceDetailAdjustmentImpl itemAdjustment = mock(OrderItemPriceDetailAdjustmentImpl.class);
+    when(itemAdjustment.isAppliedToSalePrice()).thenReturn(false);
+    Money money = new Money();
+    when(itemAdjustment.getSalesPriceValue()).thenReturn(money);
+    Money money2 = new Money();
+    when(itemAdjustment.getValue()).thenReturn(money2);
+    OfferImpl offerImpl = new OfferImpl();
+    when(itemAdjustment.getOffer()).thenReturn(offerImpl);
+    PromotableOrderItemPriceDetailWrapper orderItemPriceDetail = new PromotableOrderItemPriceDetailWrapper(
+        new PromotableOrderItemPriceDetailImpl(new PromotableOrderItemImpl(new BundleOrderItemImpl(), null, null, true),
+            1));
+
+    // Act
+    PromotableOrderItemPriceDetailAdjustmentImpl actualPromotableOrderItemPriceDetailAdjustmentImpl = new PromotableOrderItemPriceDetailAdjustmentImpl(
+        itemAdjustment, orderItemPriceDetail);
+
+    // Assert
+    verify(itemAdjustment).getOffer();
+    verify(itemAdjustment).getSalesPriceValue();
+    verify(itemAdjustment, atLeast(1)).getValue();
+    verify(itemAdjustment, atLeast(1)).isAppliedToSalePrice();
+    assertNull(actualPromotableOrderItemPriceDetailAdjustmentImpl.getRoundingScale());
+    assertNull(actualPromotableOrderItemPriceDetailAdjustmentImpl.getOfferId());
+    assertNull(actualPromotableOrderItemPriceDetailAdjustmentImpl.roundingMode);
+    assertNull(actualPromotableOrderItemPriceDetailAdjustmentImpl.promotableCandidateItemOffer);
+    assertEquals(RoundingMode.HALF_EVEN, actualPromotableOrderItemPriceDetailAdjustmentImpl.getRoundingMode());
+    assertFalse(actualPromotableOrderItemPriceDetailAdjustmentImpl.isAppliedToSalePrice());
+    assertSame(money2, actualPromotableOrderItemPriceDetailAdjustmentImpl.getAdjustmentValue());
+    assertSame(money2, actualPromotableOrderItemPriceDetailAdjustmentImpl.getRetailAdjustmentValue());
+    assertSame(money, actualPromotableOrderItemPriceDetailAdjustmentImpl.getSaleAdjustmentValue());
+    assertSame(offerImpl, actualPromotableOrderItemPriceDetailAdjustmentImpl.getOffer());
+    assertSame(orderItemPriceDetail,
+        actualPromotableOrderItemPriceDetailAdjustmentImpl.getPromotableOrderItemPriceDetail());
   }
 }

@@ -22,54 +22,60 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.Date;
 import org.broadleafcommerce.common.copy.CreateResponse;
+import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.broadleafcommerce.common.locale.domain.Locale;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.media.domain.Media;
+import org.broadleafcommerce.common.media.domain.MediaImpl;
+import org.broadleafcommerce.common.service.GenericEntityService;
+import org.broadleafcommerce.common.site.domain.CatalogImpl;
+import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.broadleafcommerce.core.catalog.domain.CategoryMediaXrefImpl;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(SpringJUnit4ClassRunner.class)
 public class PromotionMessageImplDiffblueTest {
-  @Autowired private PromotionMessageImpl promotionMessageImpl;
-
   /**
-   * Test {@link PromotionMessageImpl#getPriority()}.
-   *
-   * <ul>
-   *   <li>Given {@link PromotionMessageImpl} Priority is one.
-   *   <li>Then return one.
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotionMessageImpl#getPriority()}
+   * Method under test: {@link PromotionMessageImpl#getPriority()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int PromotionMessageImpl.getPriority()"})
-  public void testGetPriority_givenPromotionMessageImplPriorityIsOne_thenReturnOne() {
+  public void testGetPriority() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertEquals(2147483646, (new PromotionMessageImpl()).getPriority());
+  }
+
+  /**
+   * Method under test: {@link PromotionMessageImpl#getPriority()}
+   */
+  @Test
+  public void testGetPriority2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
+    promotionMessageImpl
+        .setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    promotionMessageImpl.setId(PromotionMessageImpl.serialVersionUID);
+    promotionMessageImpl.setLocale(new LocaleImpl());
+    promotionMessageImpl.setMedia(new CategoryMediaXrefImpl());
+    promotionMessageImpl.setMessage("Promotion Message");
+    promotionMessageImpl.setMessagePlacement("Message Location");
+    promotionMessageImpl.setName("Name");
+    promotionMessageImpl
+        .setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     promotionMessageImpl.setPriority(1);
 
     // Act and Assert
@@ -77,40 +83,49 @@ public class PromotionMessageImplDiffblueTest {
   }
 
   /**
-   * Test {@link PromotionMessageImpl#getPriority()}.
-   *
-   * <ul>
-   *   <li>Given {@link PromotionMessageImpl}.
-   *   <li>Then return {@link Integer#MAX_VALUE} less one.
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotionMessageImpl#getPriority()}
+   * Method under test: {@link PromotionMessageImpl#getPriority()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int PromotionMessageImpl.getPriority()"})
-  public void testGetPriority_givenPromotionMessageImpl_thenReturnMax_valueLessOne() {
-    // Arrange, Act and Assert
-    assertEquals(2147483646, promotionMessageImpl.getPriority());
+  public void testGetPriority3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
+    promotionMessageImpl.setEndDate(mock(java.sql.Date.class));
+    promotionMessageImpl.setId(PromotionMessageImpl.serialVersionUID);
+    promotionMessageImpl.setLocale(new LocaleImpl());
+    promotionMessageImpl.setMedia(new CategoryMediaXrefImpl());
+    promotionMessageImpl.setMessage("Promotion Message");
+    promotionMessageImpl.setMessagePlacement("Message Location");
+    promotionMessageImpl.setName("Name");
+    promotionMessageImpl
+        .setStartDate(java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    promotionMessageImpl.setPriority(1);
+
+    // Act and Assert
+    assertEquals(1, promotionMessageImpl.getPriority());
   }
 
   /**
-   * Test {@link PromotionMessageImpl#getStartDate()}.
-   *
-   * <ul>
-   *   <li>Given {@link PromotionMessageImpl} Archived is {@code Y}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotionMessageImpl#getStartDate()}
+   * Method under test: {@link PromotionMessageImpl#getStartDate()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Date PromotionMessageImpl.getStartDate()"})
-  public void testGetStartDate_givenPromotionMessageImplArchivedIsY_thenReturnNull() {
+  public void testGetStartDate() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertNull((new PromotionMessageImpl()).getStartDate());
+  }
+
+  /**
+   * Method under test: {@link PromotionMessageImpl#getStartDate()}
+   */
+  @Test
+  public void testGetStartDate2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
     promotionMessageImpl.setArchived('Y');
 
     // Act and Assert
@@ -118,29 +133,450 @@ public class PromotionMessageImplDiffblueTest {
   }
 
   /**
-   * Test {@link PromotionMessageImpl#getStartDate()}.
-   *
-   * <ul>
-   *   <li>Given {@link PromotionMessageImpl}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotionMessageImpl#getStartDate()}
+   * Method under test: {@link PromotionMessageImpl#getArchived()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Date PromotionMessageImpl.getStartDate()"})
-  public void testGetStartDate_givenPromotionMessageImpl_thenReturnNull() {
+  public void testGetArchived() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertNull(promotionMessageImpl.getStartDate());
+    assertEquals('N', (new PromotionMessageImpl()).getArchived().charValue());
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Method under test: {@link PromotionMessageImpl#getArchived()}
+   */
+  @Test
+  public void testGetArchived2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
+    promotionMessageImpl.setMedia(mock(MediaImpl.class));
+
+    // Act and Assert
+    assertEquals('N', promotionMessageImpl.getArchived().charValue());
+  }
+
+  /**
+   * Method under test: {@link PromotionMessageImpl#setArchived(Character)}
+   */
+  @Test
+  public void testSetArchived() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
+
+    // Act
+    promotionMessageImpl.setArchived('A');
+
+    // Assert
+    assertEquals('A', promotionMessageImpl.archiveStatus.getArchived().charValue());
+    assertEquals('A', promotionMessageImpl.getArchived().charValue());
+  }
+
+  /**
+   * Method under test: {@link PromotionMessageImpl#setArchived(Character)}
+   */
+  @Test
+  public void testSetArchived2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
+    promotionMessageImpl.setMedia(mock(MediaImpl.class));
+
+    // Act
+    promotionMessageImpl.setArchived('A');
+
+    // Assert
+    assertEquals('A', promotionMessageImpl.archiveStatus.getArchived().charValue());
+    assertEquals('A', promotionMessageImpl.getArchived().charValue());
+  }
+
+  /**
+   * Method under test: {@link PromotionMessageImpl#isActive()}
+   */
+  @Test
+  public void testIsActive() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertFalse((new PromotionMessageImpl()).isActive());
+  }
+
+  /**
+   * Method under test: {@link PromotionMessageImpl#isActive()}
+   */
+  @Test
+  public void testIsActive2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
+    promotionMessageImpl.setId(PromotionMessageImpl.serialVersionUID);
+    promotionMessageImpl.setLocale(new LocaleImpl());
+    promotionMessageImpl.setMedia(new CategoryMediaXrefImpl());
+    promotionMessageImpl.setMessage("Promotion Message");
+    promotionMessageImpl.setMessagePlacement("Message Location");
+    promotionMessageImpl.setName("Name");
+    promotionMessageImpl.setPriority(1);
+    promotionMessageImpl.setArchived(null);
+    promotionMessageImpl
+        .setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    promotionMessageImpl
+        .setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+
+    // Act and Assert
+    assertFalse(promotionMessageImpl.isActive());
+  }
+
+  /**
+   * Method under test: {@link PromotionMessageImpl#isActive()}
+   */
+  @Test
+  public void testIsActive3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
+    promotionMessageImpl.setId(PromotionMessageImpl.serialVersionUID);
+    promotionMessageImpl.setLocale(new LocaleImpl());
+    promotionMessageImpl.setMedia(new CategoryMediaXrefImpl());
+    promotionMessageImpl.setMessage("Promotion Message");
+    promotionMessageImpl.setMessagePlacement("Message Location");
+    promotionMessageImpl.setName("Name");
+    promotionMessageImpl.setPriority(1);
+    promotionMessageImpl.setArchived('Y');
+    promotionMessageImpl
+        .setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    promotionMessageImpl.setEndDate(null);
+
+    // Act and Assert
+    assertFalse(promotionMessageImpl.isActive());
+  }
+
+  /**
+   * Method under test: {@link PromotionMessageImpl#getMainEntityName()}
+   */
+  @Test
+  public void testGetMainEntityName() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertNull((new PromotionMessageImpl()).getMainEntityName());
+  }
+
+  /**
+   * Method under test: {@link PromotionMessageImpl#getMainEntityName()}
+   */
+  @Test
+  public void testGetMainEntityName2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
+    promotionMessageImpl.setMedia(mock(MediaImpl.class));
+
+    // Act and Assert
+    assertNull(promotionMessageImpl.getMainEntityName());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link PromotionMessageImpl#equals(Object)}
+   *   <li>{@link PromotionMessageImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
+    // Arrange
+    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
+    promotionMessageImpl
+        .setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    promotionMessageImpl.setId(PromotionMessageImpl.serialVersionUID);
+    promotionMessageImpl.setLocale(new LocaleImpl());
+    promotionMessageImpl.setMedia(new CategoryMediaXrefImpl());
+    promotionMessageImpl.setMessage("Promotion Message");
+    promotionMessageImpl.setMessagePlacement("Message Location");
+    promotionMessageImpl.setName("Name");
+    promotionMessageImpl.setPriority(1);
+    promotionMessageImpl
+        .setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+
+    PromotionMessageImpl promotionMessageImpl2 = new PromotionMessageImpl();
+    promotionMessageImpl2
+        .setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    promotionMessageImpl2.setId(PromotionMessageImpl.serialVersionUID);
+    promotionMessageImpl2.setLocale(new LocaleImpl());
+    promotionMessageImpl2.setMedia(new CategoryMediaXrefImpl());
+    promotionMessageImpl2.setMessage("Promotion Message");
+    promotionMessageImpl2.setMessagePlacement("Message Location");
+    promotionMessageImpl2.setName("Name");
+    promotionMessageImpl2.setPriority(1);
+    promotionMessageImpl2
+        .setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+
+    // Act and Assert
+    assertEquals(promotionMessageImpl, promotionMessageImpl2);
+    int expectedHashCodeResult = promotionMessageImpl.hashCode();
+    assertEquals(expectedHashCodeResult, promotionMessageImpl2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link PromotionMessageImpl#equals(Object)}
+   *   <li>{@link PromotionMessageImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
+    // Arrange
+    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
+    promotionMessageImpl
+        .setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    promotionMessageImpl.setId(PromotionMessageImpl.serialVersionUID);
+    promotionMessageImpl.setLocale(mock(Locale.class));
+    promotionMessageImpl.setMedia(new CategoryMediaXrefImpl());
+    promotionMessageImpl.setMessage("Promotion Message");
+    promotionMessageImpl.setMessagePlacement("Message Location");
+    promotionMessageImpl.setName("Name");
+    promotionMessageImpl.setPriority(1);
+    promotionMessageImpl
+        .setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+
+    PromotionMessageImpl promotionMessageImpl2 = new PromotionMessageImpl();
+    promotionMessageImpl2
+        .setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    promotionMessageImpl2.setId(PromotionMessageImpl.serialVersionUID);
+    promotionMessageImpl2.setLocale(new LocaleImpl());
+    promotionMessageImpl2.setMedia(new CategoryMediaXrefImpl());
+    promotionMessageImpl2.setMessage("Promotion Message");
+    promotionMessageImpl2.setMessagePlacement("Message Location");
+    promotionMessageImpl2.setName("Name");
+    promotionMessageImpl2.setPriority(1);
+    promotionMessageImpl2
+        .setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+
+    // Act and Assert
+    assertEquals(promotionMessageImpl, promotionMessageImpl2);
+    int expectedHashCodeResult = promotionMessageImpl.hashCode();
+    assertEquals(expectedHashCodeResult, promotionMessageImpl2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link PromotionMessageImpl#equals(Object)}
+   *   <li>{@link PromotionMessageImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
+    // Arrange
+    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
+    promotionMessageImpl
+        .setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    promotionMessageImpl.setId(PromotionMessageImpl.serialVersionUID);
+    promotionMessageImpl.setLocale(new LocaleImpl());
+    promotionMessageImpl.setMedia(new CategoryMediaXrefImpl());
+    promotionMessageImpl.setMessage("Promotion Message");
+    promotionMessageImpl.setMessagePlacement("Message Location");
+    promotionMessageImpl.setName("Name");
+    promotionMessageImpl.setPriority(1);
+    promotionMessageImpl
+        .setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+
+    // Act and Assert
+    assertEquals(promotionMessageImpl, promotionMessageImpl);
+    int expectedHashCodeResult = promotionMessageImpl.hashCode();
+    assertEquals(expectedHashCodeResult, promotionMessageImpl.hashCode());
+  }
+
+  /**
+   * Method under test:
+   * {@link PromotionMessageImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
+    GenericEntityService genericEntityService = mock(GenericEntityService.class);
+    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
+
+    // Act
+    CreateResponse<PromotionMessage> actualCreateOrRetrieveCopyInstanceResult = promotionMessageImpl
+        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+            genericEntityService, new MultiTenantCopierExtensionManager()));
+
+    // Assert
+    verify(genericEntityService)
+        .getCeilingImplClass(eq("org.broadleafcommerce.core.promotionMessage.domain.PromotionMessageImpl"));
+    verify(genericEntityService).getIdentifier(isA(Object.class));
+    PromotionMessage clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
+    assertTrue(clone instanceof PromotionMessageImpl);
+    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
+    assertEquals(promotionMessageImpl, clone);
+  }
+
+  /**
+   * Method under test:
+   * {@link PromotionMessageImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    CreateResponse<PromotionMessage> actualCreateOrRetrieveCopyInstanceResult = promotionMessageImpl
+        .createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link PromotionMessageImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  public void testCreateOrRetrieveCopyInstance3() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
+    promotionMessageImpl.setPriority(1);
+
+    PromotionMessageImpl promotionMessageImpl2 = new PromotionMessageImpl();
+    promotionMessageImpl2
+        .setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    promotionMessageImpl2.setId(PromotionMessageImpl.serialVersionUID);
+    promotionMessageImpl2.setLocale(new LocaleImpl());
+    promotionMessageImpl2.setMedia(new CategoryMediaXrefImpl());
+    promotionMessageImpl2.setMessage("Promotion Message");
+    promotionMessageImpl2.setMessagePlacement("Message Location");
+    promotionMessageImpl2.setName("Name");
+    promotionMessageImpl2.setPriority(1);
+    promotionMessageImpl2
+        .setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    CreateResponse<Object> createResponse = mock(CreateResponse.class);
+    when(createResponse.isAlreadyPopulated()).thenReturn(false);
+    when(createResponse.getClone()).thenReturn(promotionMessageImpl2);
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    promotionMessageImpl.createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(createResponse).getClone();
+    verify(createResponse).isAlreadyPopulated();
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+  }
+
+  /**
+   * Method under test: {@link PromotionMessageImpl#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+    // Arrange
+    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
+    promotionMessageImpl
+        .setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    promotionMessageImpl.setId(2L);
+    promotionMessageImpl.setLocale(new LocaleImpl());
+    promotionMessageImpl.setMedia(new CategoryMediaXrefImpl());
+    promotionMessageImpl.setMessage("Promotion Message");
+    promotionMessageImpl.setMessagePlacement("Message Location");
+    promotionMessageImpl.setName("Name");
+    promotionMessageImpl.setPriority(1);
+    promotionMessageImpl
+        .setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+
+    PromotionMessageImpl promotionMessageImpl2 = new PromotionMessageImpl();
+    promotionMessageImpl2
+        .setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    promotionMessageImpl2.setId(PromotionMessageImpl.serialVersionUID);
+    promotionMessageImpl2.setLocale(new LocaleImpl());
+    promotionMessageImpl2.setMedia(new CategoryMediaXrefImpl());
+    promotionMessageImpl2.setMessage("Promotion Message");
+    promotionMessageImpl2.setMessagePlacement("Message Location");
+    promotionMessageImpl2.setName("Name");
+    promotionMessageImpl2.setPriority(1);
+    promotionMessageImpl2
+        .setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+
+    // Act and Assert
+    assertNotEquals(promotionMessageImpl, promotionMessageImpl2);
+  }
+
+  /**
+   * Method under test: {@link PromotionMessageImpl#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
+    // Arrange
+    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
+    promotionMessageImpl
+        .setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    promotionMessageImpl.setId(PromotionMessageImpl.serialVersionUID);
+    promotionMessageImpl.setLocale(new LocaleImpl());
+    promotionMessageImpl.setMedia(new CategoryMediaXrefImpl());
+    promotionMessageImpl.setMessage("Promotion Message");
+    promotionMessageImpl.setMessagePlacement("Message Location");
+    promotionMessageImpl.setName("Name");
+    promotionMessageImpl.setPriority(1);
+    promotionMessageImpl
+        .setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+
+    // Act and Assert
+    assertNotEquals(promotionMessageImpl, null);
+  }
+
+  /**
+   * Method under test: {@link PromotionMessageImpl#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+    // Arrange
+    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
+    promotionMessageImpl
+        .setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    promotionMessageImpl.setId(PromotionMessageImpl.serialVersionUID);
+    promotionMessageImpl.setLocale(new LocaleImpl());
+    promotionMessageImpl.setMedia(new CategoryMediaXrefImpl());
+    promotionMessageImpl.setMessage("Promotion Message");
+    promotionMessageImpl.setMessagePlacement("Message Location");
+    promotionMessageImpl.setName("Name");
+    promotionMessageImpl.setPriority(1);
+    promotionMessageImpl
+        .setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+
+    // Act and Assert
+    assertNotEquals(promotionMessageImpl, "Different type to PromotionMessageImpl");
+  }
+
+  /**
+   * Methods under test:
    * <ul>
    *   <li>{@link PromotionMessageImpl#setEndDate(Date)}
    *   <li>{@link PromotionMessageImpl#setId(Long)}
@@ -161,31 +597,10 @@ public class PromotionMessageImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Date PromotionMessageImpl.getEndDate()",
-    "Long PromotionMessageImpl.getId()",
-    "Locale PromotionMessageImpl.getLocale()",
-    "Media PromotionMessageImpl.getMedia()",
-    "String PromotionMessageImpl.getMessage()",
-    "String PromotionMessageImpl.getMessagePlacement()",
-    "String PromotionMessageImpl.getName()",
-    "void PromotionMessageImpl.setEndDate(Date)",
-    "void PromotionMessageImpl.setId(Long)",
-    "void PromotionMessageImpl.setLocale(Locale)",
-    "void PromotionMessageImpl.setMedia(Media)",
-    "void PromotionMessageImpl.setMessage(String)",
-    "void PromotionMessageImpl.setMessagePlacement(String)",
-    "void PromotionMessageImpl.setName(String)",
-    "void PromotionMessageImpl.setPriority(Integer)",
-    "void PromotionMessageImpl.setStartDate(Date)"
-  })
   public void testGettersAndSetters() {
     // Arrange
     PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
-    Date endDate =
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    Date endDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
 
     // Act
     promotionMessageImpl.setEndDate(endDate);
@@ -198,8 +613,8 @@ public class PromotionMessageImplDiffblueTest {
     promotionMessageImpl.setMessagePlacement("Message Location");
     promotionMessageImpl.setName("Name");
     promotionMessageImpl.setPriority(1);
-    promotionMessageImpl.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    promotionMessageImpl
+        .setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     Date actualEndDate = promotionMessageImpl.getEndDate();
     Long actualId = promotionMessageImpl.getId();
     Locale actualLocale = promotionMessageImpl.getLocale();
@@ -207,7 +622,7 @@ public class PromotionMessageImplDiffblueTest {
     String actualMessage = promotionMessageImpl.getMessage();
     String actualMessagePlacement = promotionMessageImpl.getMessagePlacement();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("Message Location", actualMessagePlacement);
     assertEquals("Name", promotionMessageImpl.getName());
     assertEquals("Promotion Message", actualMessage);
@@ -218,471 +633,18 @@ public class PromotionMessageImplDiffblueTest {
   }
 
   /**
-   * Test {@link PromotionMessageImpl#getArchived()}.
-   *
-   * <p>Method under test: {@link PromotionMessageImpl#getArchived()}
+   * Method under test: default or parameterless constructor of
+   * {@link PromotionMessageImpl}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Character PromotionMessageImpl.getArchived()"})
-  public void testGetArchived() {
-    // Arrange, Act and Assert
-    assertEquals('N', promotionMessageImpl.getArchived().charValue());
-  }
-
-  /**
-   * Test {@link PromotionMessageImpl#setArchived(Character)}.
-   *
-   * <p>Method under test: {@link PromotionMessageImpl#setArchived(Character)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PromotionMessageImpl.setArchived(Character)"})
-  public void testSetArchived() {
-    // Arrange and Act
-    promotionMessageImpl.setArchived('A');
-
-    // Assert
-    assertEquals('A', promotionMessageImpl.archiveStatus.getArchived().charValue());
-    assertEquals('A', promotionMessageImpl.getArchived().charValue());
-  }
-
-  /**
-   * Test {@link PromotionMessageImpl#isActive()}.
-   *
-   * <p>Method under test: {@link PromotionMessageImpl#isActive()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PromotionMessageImpl.isActive()"})
-  public void testIsActive() {
-    // Arrange
-    promotionMessageImpl.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    promotionMessageImpl.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    promotionMessageImpl.setArchived(null);
-
-    // Act and Assert
-    assertFalse(promotionMessageImpl.isActive());
-  }
-
-  /**
-   * Test {@link PromotionMessageImpl#isActive()}.
-   *
-   * <ul>
-   *   <li>Given {@link PromotionMessageImpl} Archived is {@code Y}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotionMessageImpl#isActive()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PromotionMessageImpl.isActive()"})
-  public void testIsActive_givenPromotionMessageImplArchivedIsY_thenReturnFalse() {
-    // Arrange
-    promotionMessageImpl.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    promotionMessageImpl.setEndDate(null);
-    promotionMessageImpl.setArchived('Y');
-
-    // Act and Assert
-    assertFalse(promotionMessageImpl.isActive());
-  }
-
-  /**
-   * Test {@link PromotionMessageImpl#isActive()}.
-   *
-   * <ul>
-   *   <li>Given {@link PromotionMessageImpl} EndDate is {@link Date#Date()}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotionMessageImpl#isActive()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PromotionMessageImpl.isActive()"})
-  public void testIsActive_givenPromotionMessageImplEndDateIsDate_thenReturnFalse() {
-    // Arrange
-    promotionMessageImpl.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    promotionMessageImpl.setEndDate(new Date());
-    promotionMessageImpl.setArchived('Y');
-
-    // Act and Assert
-    assertFalse(promotionMessageImpl.isActive());
-  }
-
-  /**
-   * Test {@link PromotionMessageImpl#isActive()}.
-   *
-   * <ul>
-   *   <li>Given {@link PromotionMessageImpl}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotionMessageImpl#isActive()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PromotionMessageImpl.isActive()"})
-  public void testIsActive_givenPromotionMessageImpl_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(promotionMessageImpl.isActive());
-  }
-
-  /**
-   * Test {@link PromotionMessageImpl#getMainEntityName()}.
-   *
-   * <p>Method under test: {@link PromotionMessageImpl#getMainEntityName()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String PromotionMessageImpl.getMainEntityName()"})
-  public void testGetMainEntityName() {
-    // Arrange, Act and Assert
-    assertNull(promotionMessageImpl.getMainEntityName());
-  }
-
-  /**
-   * Test {@link PromotionMessageImpl#equals(Object)}, and {@link PromotionMessageImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link PromotionMessageImpl#equals(Object)}
-   *   <li>{@link PromotionMessageImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PromotionMessageImpl.equals(Object)",
-    "int PromotionMessageImpl.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
-    // Arrange
-    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
-    promotionMessageImpl.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    promotionMessageImpl.setId(PromotionMessageImpl.serialVersionUID);
-    promotionMessageImpl.setLocale(new LocaleImpl());
-    promotionMessageImpl.setMedia(new CategoryMediaXrefImpl());
-    promotionMessageImpl.setMessage("Promotion Message");
-    promotionMessageImpl.setMessagePlacement("Message Location");
-    promotionMessageImpl.setName("Name");
-    promotionMessageImpl.setPriority(1);
-    promotionMessageImpl.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-
-    PromotionMessageImpl promotionMessageImpl2 = new PromotionMessageImpl();
-    promotionMessageImpl2.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    promotionMessageImpl2.setId(PromotionMessageImpl.serialVersionUID);
-    promotionMessageImpl2.setLocale(new LocaleImpl());
-    promotionMessageImpl2.setMedia(new CategoryMediaXrefImpl());
-    promotionMessageImpl2.setMessage("Promotion Message");
-    promotionMessageImpl2.setMessagePlacement("Message Location");
-    promotionMessageImpl2.setName("Name");
-    promotionMessageImpl2.setPriority(1);
-    promotionMessageImpl2.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-
-    // Act and Assert
-    assertEquals(promotionMessageImpl, promotionMessageImpl2);
-    assertEquals(promotionMessageImpl.hashCode(), promotionMessageImpl2.hashCode());
-  }
-
-  /**
-   * Test {@link PromotionMessageImpl#equals(Object)}, and {@link PromotionMessageImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link PromotionMessageImpl#equals(Object)}
-   *   <li>{@link PromotionMessageImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PromotionMessageImpl.equals(Object)",
-    "int PromotionMessageImpl.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
-    // Arrange
-    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
-    promotionMessageImpl.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    promotionMessageImpl.setId(PromotionMessageImpl.serialVersionUID);
-    promotionMessageImpl.setLocale(new LocaleImpl());
-    promotionMessageImpl.setMedia(new CategoryMediaXrefImpl());
-    promotionMessageImpl.setMessage("Promotion Message");
-    promotionMessageImpl.setMessagePlacement("Message Location");
-    promotionMessageImpl.setName("Name");
-    promotionMessageImpl.setPriority(1);
-    promotionMessageImpl.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-
-    // Act and Assert
-    assertEquals(promotionMessageImpl, promotionMessageImpl);
-    int expectedHashCodeResult = promotionMessageImpl.hashCode();
-    assertEquals(expectedHashCodeResult, promotionMessageImpl.hashCode());
-  }
-
-  /**
-   * Test {@link PromotionMessageImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotionMessageImpl#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PromotionMessageImpl.equals(Object)",
-    "int PromotionMessageImpl.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
-    // Arrange
-    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
-    promotionMessageImpl.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    promotionMessageImpl.setId(2L);
-    promotionMessageImpl.setLocale(new LocaleImpl());
-    promotionMessageImpl.setMedia(new CategoryMediaXrefImpl());
-    promotionMessageImpl.setMessage("Promotion Message");
-    promotionMessageImpl.setMessagePlacement("Message Location");
-    promotionMessageImpl.setName("Name");
-    promotionMessageImpl.setPriority(1);
-    promotionMessageImpl.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-
-    PromotionMessageImpl promotionMessageImpl2 = new PromotionMessageImpl();
-    promotionMessageImpl2.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    promotionMessageImpl2.setId(PromotionMessageImpl.serialVersionUID);
-    promotionMessageImpl2.setLocale(new LocaleImpl());
-    promotionMessageImpl2.setMedia(new CategoryMediaXrefImpl());
-    promotionMessageImpl2.setMessage("Promotion Message");
-    promotionMessageImpl2.setMessagePlacement("Message Location");
-    promotionMessageImpl2.setName("Name");
-    promotionMessageImpl2.setPriority(1);
-    promotionMessageImpl2.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-
-    // Act and Assert
-    assertNotEquals(promotionMessageImpl, promotionMessageImpl2);
-  }
-
-  /**
-   * Test {@link PromotionMessageImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotionMessageImpl#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PromotionMessageImpl.equals(Object)",
-    "int PromotionMessageImpl.hashCode()"
-  })
-  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
-    // Arrange
-    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
-    promotionMessageImpl.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    promotionMessageImpl.setId(PromotionMessageImpl.serialVersionUID);
-    promotionMessageImpl.setLocale(new LocaleImpl());
-    promotionMessageImpl.setMedia(new CategoryMediaXrefImpl());
-    promotionMessageImpl.setMessage("Promotion Message");
-    promotionMessageImpl.setMessagePlacement("Message Location");
-    promotionMessageImpl.setName("Name");
-    promotionMessageImpl.setPriority(1);
-    promotionMessageImpl.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-
-    // Act and Assert
-    assertNotEquals(promotionMessageImpl, null);
-  }
-
-  /**
-   * Test {@link PromotionMessageImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotionMessageImpl#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PromotionMessageImpl.equals(Object)",
-    "int PromotionMessageImpl.hashCode()"
-  })
-  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
-    // Arrange
-    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
-    promotionMessageImpl.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    promotionMessageImpl.setId(PromotionMessageImpl.serialVersionUID);
-    promotionMessageImpl.setLocale(new LocaleImpl());
-    promotionMessageImpl.setMedia(new CategoryMediaXrefImpl());
-    promotionMessageImpl.setMessage("Promotion Message");
-    promotionMessageImpl.setMessagePlacement("Message Location");
-    promotionMessageImpl.setName("Name");
-    promotionMessageImpl.setPriority(1);
-    promotionMessageImpl.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-
-    // Act and Assert
-    assertNotEquals(promotionMessageImpl, "Different type to PromotionMessageImpl");
-  }
-
-  /**
-   * Test {@link PromotionMessageImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * PromotionMessageImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse PromotionMessageImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
-    // Arrange
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(new PromotionMessageImpl(), true);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    CreateResponse<PromotionMessage> actualCreateOrRetrieveCopyInstanceResult =
-        promotionMessageImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
-  }
-
-  /**
-   * Test {@link PromotionMessageImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * PromotionMessageImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse PromotionMessageImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
-    // Arrange
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(promotionMessageImpl, false);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    CreateResponse<PromotionMessage> actualCreateOrRetrieveCopyInstanceResult =
-        promotionMessageImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
-  }
-
-  /**
-   * Test {@link PromotionMessageImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * PromotionMessageImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse PromotionMessageImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance3() throws CloneNotSupportedException {
-    // Arrange
-    PromotionMessageImpl promotionMessageImpl = new PromotionMessageImpl();
-    promotionMessageImpl.setPriority(1);
-
-    PromotionMessageImpl promotionMessageImpl2 = new PromotionMessageImpl();
-    promotionMessageImpl2.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    promotionMessageImpl2.setId(PromotionMessageImpl.serialVersionUID);
-    promotionMessageImpl2.setLocale(new LocaleImpl());
-    promotionMessageImpl2.setMedia(new CategoryMediaXrefImpl());
-    promotionMessageImpl2.setMessage("Promotion Message");
-    promotionMessageImpl2.setMessagePlacement("Message Location");
-    promotionMessageImpl2.setName("Name");
-    promotionMessageImpl2.setPriority(1);
-    promotionMessageImpl2.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    CreateResponse<Object> createResponse = new CreateResponse<>(promotionMessageImpl2, false);
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    CreateResponse<PromotionMessage> actualCreateOrRetrieveCopyInstanceResult =
-        promotionMessageImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
-  }
-
-  /**
-   * Test new {@link PromotionMessageImpl} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link PromotionMessageImpl}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PromotionMessageImpl.<init>()"})
   public void testNewPromotionMessageImpl() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange and Act
     PromotionMessageImpl actualPromotionMessageImpl = new PromotionMessageImpl();
 
     // Assert
+    assertEquals('N', actualPromotionMessageImpl.archiveStatus.getArchived().charValue());
     assertEquals('N', actualPromotionMessageImpl.getArchived().charValue());
     assertNull(actualPromotionMessageImpl.priority);
     assertNull(actualPromotionMessageImpl.getId());

@@ -19,279 +19,51 @@ package org.broadleafcommerce.core.web.processor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.List;
-import org.broadleafcommerce.core.order.domain.NullOrderImpl;
-import org.broadleafcommerce.core.order.domain.Order;
-import org.broadleafcommerce.core.order.service.FulfillmentGroupService;
-import org.broadleafcommerce.core.web.order.service.CartStateService;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(MockitoExtension.class)
 class OnePageCheckoutProcessorDiffblueTest {
-  @Mock private CartStateService cartStateService;
-
-  @Mock private FulfillmentGroupService fulfillmentGroupService;
-
-  @InjectMocks private OnePageCheckoutProcessor onePageCheckoutProcessor;
-
   /**
-   * Test {@link OnePageCheckoutProcessor#getName()}.
-   *
-   * <p>Method under test: {@link OnePageCheckoutProcessor#getName()}
+   * Method under test: {@link OnePageCheckoutProcessor#getName()}
    */
   @Test
-  @DisplayName("Test getName()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String OnePageCheckoutProcessor.getName()"})
   void testGetName() {
     // Arrange, Act and Assert
-    assertEquals("one_page_checkout", new OnePageCheckoutProcessor().getName());
+    assertEquals("one_page_checkout", (new OnePageCheckoutProcessor()).getName());
   }
 
   /**
-   * Test {@link OnePageCheckoutProcessor#getPrecedence()}.
-   *
-   * <p>Method under test: {@link OnePageCheckoutProcessor#getPrecedence()}
+   * Method under test: {@link OnePageCheckoutProcessor#getPrecedence()}
    */
   @Test
-  @DisplayName("Test getPrecedence()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int OnePageCheckoutProcessor.getPrecedence()"})
   void testGetPrecedence() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertEquals(100, onePageCheckoutProcessor.getPrecedence());
+    assertEquals(100, (new OnePageCheckoutProcessor()).getPrecedence());
   }
 
   /**
-   * Test {@link OnePageCheckoutProcessor#useGlobalScope()}.
-   *
-   * <p>Method under test: {@link OnePageCheckoutProcessor#useGlobalScope()}
+   * Method under test: {@link OnePageCheckoutProcessor#useGlobalScope()}
    */
   @Test
-  @DisplayName("Test useGlobalScope()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean OnePageCheckoutProcessor.useGlobalScope()"})
   void testUseGlobalScope() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertFalse(onePageCheckoutProcessor.useGlobalScope());
+    assertFalse((new OnePageCheckoutProcessor()).useGlobalScope());
   }
 
   /**
-   * Test {@link OnePageCheckoutProcessor#calculateNumShippableFulfillmentGroups()}.
-   *
-   * <p>Method under test: {@link OnePageCheckoutProcessor#calculateNumShippableFulfillmentGroups()}
+   * Method under test:
+   * {@link OnePageCheckoutProcessor#populateExpirationMonths()}
    */
   @Test
-  @DisplayName("Test calculateNumShippableFulfillmentGroups()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int OnePageCheckoutProcessor.calculateNumShippableFulfillmentGroups()"})
-  void testCalculateNumShippableFulfillmentGroups() {
-    // Arrange
-    when(fulfillmentGroupService.calculateNumShippableFulfillmentGroups(Mockito.<Order>any()))
-        .thenReturn(10);
-
-    // Act
-    int actualCalculateNumShippableFulfillmentGroupsResult =
-        onePageCheckoutProcessor.calculateNumShippableFulfillmentGroups();
-
-    // Assert
-    verify(fulfillmentGroupService).calculateNumShippableFulfillmentGroups(isNull());
-    assertEquals(10, actualCalculateNumShippableFulfillmentGroupsResult);
-  }
-
-  /**
-   * Test {@link OnePageCheckoutProcessor#hasPopulatedOrderInfo(Order)}.
-   *
-   * <ul>
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OnePageCheckoutProcessor#hasPopulatedOrderInfo(Order)}
-   */
-  @Test
-  @DisplayName("Test hasPopulatedOrderInfo(Order); then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean OnePageCheckoutProcessor.hasPopulatedOrderInfo(Order)"})
-  void testHasPopulatedOrderInfo_thenReturnFalse() {
-    // Arrange
-    when(cartStateService.cartHasPopulatedOrderInfo()).thenReturn(false);
-
-    // Act
-    boolean actualHasPopulatedOrderInfoResult =
-        onePageCheckoutProcessor.hasPopulatedOrderInfo(new NullOrderImpl());
-
-    // Assert
-    verify(cartStateService).cartHasPopulatedOrderInfo();
-    assertFalse(actualHasPopulatedOrderInfoResult);
-  }
-
-  /**
-   * Test {@link OnePageCheckoutProcessor#hasPopulatedOrderInfo(Order)}.
-   *
-   * <ul>
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OnePageCheckoutProcessor#hasPopulatedOrderInfo(Order)}
-   */
-  @Test
-  @DisplayName("Test hasPopulatedOrderInfo(Order); then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean OnePageCheckoutProcessor.hasPopulatedOrderInfo(Order)"})
-  void testHasPopulatedOrderInfo_thenReturnTrue() {
-    // Arrange
-    when(cartStateService.cartHasPopulatedOrderInfo()).thenReturn(true);
-
-    // Act
-    boolean actualHasPopulatedOrderInfoResult =
-        onePageCheckoutProcessor.hasPopulatedOrderInfo(new NullOrderImpl());
-
-    // Assert
-    verify(cartStateService).cartHasPopulatedOrderInfo();
-    assertTrue(actualHasPopulatedOrderInfoResult);
-  }
-
-  /**
-   * Test {@link OnePageCheckoutProcessor#hasPopulatedBillingAddress(Order)}.
-   *
-   * <ul>
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OnePageCheckoutProcessor#hasPopulatedBillingAddress(Order)}
-   */
-  @Test
-  @DisplayName("Test hasPopulatedBillingAddress(Order); then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean OnePageCheckoutProcessor.hasPopulatedBillingAddress(Order)"})
-  void testHasPopulatedBillingAddress_thenReturnFalse() {
-    // Arrange
-    when(cartStateService.cartHasPopulatedBillingAddress()).thenReturn(false);
-
-    // Act
-    boolean actualHasPopulatedBillingAddressResult =
-        onePageCheckoutProcessor.hasPopulatedBillingAddress(new NullOrderImpl());
-
-    // Assert
-    verify(cartStateService).cartHasPopulatedBillingAddress();
-    assertFalse(actualHasPopulatedBillingAddressResult);
-  }
-
-  /**
-   * Test {@link OnePageCheckoutProcessor#hasPopulatedBillingAddress(Order)}.
-   *
-   * <ul>
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OnePageCheckoutProcessor#hasPopulatedBillingAddress(Order)}
-   */
-  @Test
-  @DisplayName("Test hasPopulatedBillingAddress(Order); then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean OnePageCheckoutProcessor.hasPopulatedBillingAddress(Order)"})
-  void testHasPopulatedBillingAddress_thenReturnTrue() {
-    // Arrange
-    when(cartStateService.cartHasPopulatedBillingAddress()).thenReturn(true);
-
-    // Act
-    boolean actualHasPopulatedBillingAddressResult =
-        onePageCheckoutProcessor.hasPopulatedBillingAddress(new NullOrderImpl());
-
-    // Assert
-    verify(cartStateService).cartHasPopulatedBillingAddress();
-    assertTrue(actualHasPopulatedBillingAddressResult);
-  }
-
-  /**
-   * Test {@link OnePageCheckoutProcessor#hasPopulatedShippingAddress(Order)}.
-   *
-   * <ul>
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OnePageCheckoutProcessor#hasPopulatedShippingAddress(Order)}
-   */
-  @Test
-  @DisplayName("Test hasPopulatedShippingAddress(Order); then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean OnePageCheckoutProcessor.hasPopulatedShippingAddress(Order)"})
-  void testHasPopulatedShippingAddress_thenReturnFalse() {
-    // Arrange
-    when(cartStateService.cartHasPopulatedShippingAddress()).thenReturn(false);
-
-    // Act
-    boolean actualHasPopulatedShippingAddressResult =
-        onePageCheckoutProcessor.hasPopulatedShippingAddress(new NullOrderImpl());
-
-    // Assert
-    verify(cartStateService).cartHasPopulatedShippingAddress();
-    assertFalse(actualHasPopulatedShippingAddressResult);
-  }
-
-  /**
-   * Test {@link OnePageCheckoutProcessor#hasPopulatedShippingAddress(Order)}.
-   *
-   * <ul>
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OnePageCheckoutProcessor#hasPopulatedShippingAddress(Order)}
-   */
-  @Test
-  @DisplayName("Test hasPopulatedShippingAddress(Order); then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean OnePageCheckoutProcessor.hasPopulatedShippingAddress(Order)"})
-  void testHasPopulatedShippingAddress_thenReturnTrue() {
-    // Arrange
-    when(cartStateService.cartHasPopulatedShippingAddress()).thenReturn(true);
-
-    // Act
-    boolean actualHasPopulatedShippingAddressResult =
-        onePageCheckoutProcessor.hasPopulatedShippingAddress(new NullOrderImpl());
-
-    // Assert
-    verify(cartStateService).cartHasPopulatedShippingAddress();
-    assertTrue(actualHasPopulatedShippingAddressResult);
-  }
-
-  /**
-   * Test {@link OnePageCheckoutProcessor#populateExpirationMonths()}.
-   *
-   * <p>Method under test: {@link OnePageCheckoutProcessor#populateExpirationMonths()}
-   */
-  @Test
-  @DisplayName("Test populateExpirationMonths()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List OnePageCheckoutProcessor.populateExpirationMonths()"})
   void testPopulateExpirationMonths() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange and Act
-    List<String> actualPopulateExpirationMonthsResult =
-        onePageCheckoutProcessor.populateExpirationMonths();
+    List<String> actualPopulateExpirationMonthsResult = (new OnePageCheckoutProcessor()).populateExpirationMonths();
 
     // Assert
     assertEquals(12, actualPopulateExpirationMonthsResult.size());
@@ -310,17 +82,13 @@ class OnePageCheckoutProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link OnePageCheckoutProcessor#populateExpirationYears()}.
-   *
-   * <p>Method under test: {@link OnePageCheckoutProcessor#populateExpirationYears()}
+   * Method under test: {@link OnePageCheckoutProcessor#populateExpirationYears()}
    */
   @Test
-  @DisplayName("Test populateExpirationYears()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List OnePageCheckoutProcessor.populateExpirationYears()"})
   void testPopulateExpirationYears() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertEquals(10, onePageCheckoutProcessor.populateExpirationYears().size());
+    assertEquals(10, (new OnePageCheckoutProcessor()).populateExpirationYears().size());
   }
 }

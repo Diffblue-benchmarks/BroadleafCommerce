@@ -22,33 +22,58 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {ListGridAction.class, String.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ListGridActionDiffblueTest {
-  @Autowired private ListGridAction listGridAction;
+  @Autowired
+  private ListGridAction listGridAction;
 
   /**
-   * Test {@link ListGridAction#ListGridAction(String)}.
-   *
-   * <p>Method under test: {@link ListGridAction#ListGridAction(String)}
+   * Method under test: {@link ListGridAction#withButtonClass(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ListGridAction.<init>(String)"})
+  public void testWithButtonClass() {
+    // Arrange
+    ListGridAction listGridAction2 = DefaultListGridActions.ADD;
+
+    // Act and Assert
+    assertSame(listGridAction2, listGridAction2.withButtonClass("Button Class"));
+  }
+
+  /**
+   * Method under test: {@link ListGridAction#withUrlPostfix(String)}
+   */
+  @Test
+  public void testWithUrlPostfix() {
+    // Arrange
+    ListGridAction listGridAction2 = DefaultListGridActions.ADD;
+
+    // Act and Assert
+    assertSame(listGridAction2, listGridAction2.withUrlPostfix("https://example.org/example"));
+  }
+
+  /**
+   * Method under test: {@link ListGridAction#withIconClass(String)}
+   */
+  @Test
+  public void testWithIconClass() {
+    // Arrange
+    ListGridAction listGridAction2 = DefaultListGridActions.ADD;
+
+    // Act and Assert
+    assertSame(listGridAction2, listGridAction2.withIconClass("Icon Class"));
+  }
+
+  /**
+   * Method under test: {@link ListGridAction#ListGridAction(String)}
+   */
+  @Test
   public void testNewListGridAction() {
     // Arrange and Act
     ListGridAction actualListGridAction = new ListGridAction("42");
@@ -72,252 +97,118 @@ public class ListGridActionDiffblueTest {
   }
 
   /**
-   * Test {@link ListGridAction#withButtonClass(String)}.
-   *
-   * <p>Method under test: {@link ListGridAction#withButtonClass(String)}
+   * Method under test: {@link ListGridAction#withRequiresNonEmptyGrid(Boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ListGridAction ListGridAction.withButtonClass(String)"})
-  public void testWithButtonClass() {
-    // Arrange and Act
-    ListGridAction actualWithButtonClassResult = listGridAction.withButtonClass("Button Class");
-
-    // Assert
-    assertEquals("Button Class", listGridAction.getButtonClass());
-    assertEquals("Button Class", listGridAction.buttonClass);
-    assertSame(listGridAction, actualWithButtonClassResult);
-  }
-
-  /**
-   * Test {@link ListGridAction#withUrlPostfix(String)}.
-   *
-   * <p>Method under test: {@link ListGridAction#withUrlPostfix(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ListGridAction ListGridAction.withUrlPostfix(String)"})
-  public void testWithUrlPostfix() {
-    // Arrange and Act
-    ListGridAction actualWithUrlPostfixResult =
-        listGridAction.withUrlPostfix("https://example.org/example");
-
-    // Assert
-    assertEquals("https://example.org/example", listGridAction.getUrlPostfix());
-    assertSame(listGridAction, actualWithUrlPostfixResult);
-  }
-
-  /**
-   * Test {@link ListGridAction#withIconClass(String)}.
-   *
-   * <p>Method under test: {@link ListGridAction#withIconClass(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ListGridAction ListGridAction.withIconClass(String)"})
-  public void testWithIconClass() {
-    // Arrange and Act
-    ListGridAction actualWithIconClassResult = listGridAction.withIconClass("Icon Class");
-
-    // Assert
-    assertEquals("Icon Class", listGridAction.getIconClass());
-    assertSame(listGridAction, actualWithIconClassResult);
-  }
-
-  /**
-   * Test {@link ListGridAction#withRequiresNonEmptyGrid(Boolean)}.
-   *
-   * <p>Method under test: {@link ListGridAction#withRequiresNonEmptyGrid(Boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ListGridAction ListGridAction.withRequiresNonEmptyGrid(Boolean)"})
   public void testWithRequiresNonEmptyGrid() {
     // Arrange
     ListGridAction listGridAction = DefaultListGridActions.ADD;
 
-    // Act
-    ListGridAction actualWithRequiresNonEmptyGridResult =
-        listGridAction.withRequiresNonEmptyGrid(true);
-
-    // Assert
-    assertSame(listGridAction, actualWithRequiresNonEmptyGridResult);
+    // Act and Assert
+    assertSame(listGridAction, listGridAction.withRequiresNonEmptyGrid(true));
   }
 
   /**
-   * Test {@link ListGridAction#withDisplayText(String)}.
-   *
-   * <p>Method under test: {@link ListGridAction#withDisplayText(String)}
+   * Method under test: {@link ListGridAction#withDisplayText(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ListGridAction ListGridAction.withDisplayText(String)"})
   public void testWithDisplayText() {
-    // Arrange and Act
-    ListGridAction actualWithDisplayTextResult = listGridAction.withDisplayText("Display Text");
+    // Arrange
+    ListGridAction listGridAction2 = DefaultListGridActions.ADD;
 
-    // Assert
-    assertEquals("Display Text", listGridAction.getDisplayText());
-    assertSame(listGridAction, actualWithDisplayTextResult);
+    // Act and Assert
+    assertSame(listGridAction2, listGridAction2.withDisplayText("Display Text"));
   }
 
   /**
-   * Test {@link ListGridAction#withForListGridReadOnly(Boolean)}.
-   *
-   * <p>Method under test: {@link ListGridAction#withForListGridReadOnly(Boolean)}
+   * Method under test: {@link ListGridAction#withForListGridReadOnly(Boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ListGridAction ListGridAction.withForListGridReadOnly(Boolean)"})
   public void testWithForListGridReadOnly() {
     // Arrange
     ListGridAction listGridAction = DefaultListGridActions.ADD;
 
-    // Act
-    ListGridAction actualWithForListGridReadOnlyResult =
-        listGridAction.withForListGridReadOnly(true);
-
-    // Assert
-    assertSame(listGridAction, actualWithForListGridReadOnlyResult);
+    // Act and Assert
+    assertSame(listGridAction, listGridAction.withForListGridReadOnly(true));
   }
 
   /**
-   * Test {@link ListGridAction#withActionUrlOverride(String)}.
-   *
-   * <p>Method under test: {@link ListGridAction#withActionUrlOverride(String)}
+   * Method under test: {@link ListGridAction#withActionUrlOverride(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ListGridAction ListGridAction.withActionUrlOverride(String)"})
   public void testWithActionUrlOverride() {
-    // Arrange and Act
-    ListGridAction actualWithActionUrlOverrideResult =
-        listGridAction.withActionUrlOverride("https://example.org/example");
+    // Arrange
+    ListGridAction listGridAction2 = DefaultListGridActions.ADD;
 
-    // Assert
-    assertEquals("https://example.org/example", listGridAction.getActionUrlOverride());
-    assertSame(listGridAction, actualWithActionUrlOverrideResult);
+    // Act and Assert
+    assertSame(listGridAction2, listGridAction2.withActionUrlOverride("https://example.org/example"));
   }
 
   /**
-   * Test {@link ListGridAction#withAllCapable(Boolean)}.
-   *
-   * <p>Method under test: {@link ListGridAction#withAllCapable(Boolean)}
+   * Method under test: {@link ListGridAction#withAllCapable(Boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ListGridAction ListGridAction.withAllCapable(Boolean)"})
   public void testWithAllCapable() {
     // Arrange
     ListGridAction listGridAction = DefaultListGridActions.ADD;
 
-    // Act
-    ListGridAction actualWithAllCapableResult = listGridAction.withAllCapable(true);
-
-    // Assert
-    assertSame(listGridAction, actualWithAllCapableResult);
+    // Act and Assert
+    assertSame(listGridAction, listGridAction.withAllCapable(true));
   }
 
   /**
-   * Test {@link ListGridAction#withSingleActionOnly(Boolean)}.
-   *
-   * <p>Method under test: {@link ListGridAction#withSingleActionOnly(Boolean)}
+   * Method under test: {@link ListGridAction#withSingleActionOnly(Boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ListGridAction ListGridAction.withSingleActionOnly(Boolean)"})
   public void testWithSingleActionOnly() {
     // Arrange
     ListGridAction listGridAction = DefaultListGridActions.ADD;
 
-    // Act
-    ListGridAction actualWithSingleActionOnlyResult = listGridAction.withSingleActionOnly(true);
-
-    // Assert
-    assertSame(listGridAction, actualWithSingleActionOnlyResult);
+    // Act and Assert
+    assertSame(listGridAction, listGridAction.withSingleActionOnly(true));
   }
 
   /**
-   * Test {@link ListGridAction#withActionTargetEntity(String)}.
-   *
-   * <p>Method under test: {@link ListGridAction#withActionTargetEntity(String)}
+   * Method under test: {@link ListGridAction#withActionTargetEntity(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ListGridAction ListGridAction.withActionTargetEntity(String)"})
   public void testWithActionTargetEntity() {
-    // Arrange and Act
-    ListGridAction actualWithActionTargetEntityResult =
-        listGridAction.withActionTargetEntity("Action Target Entity");
+    // Arrange
+    ListGridAction listGridAction2 = DefaultListGridActions.ADD;
 
-    // Assert
-    assertEquals("Action Target Entity", listGridAction.getActionTargetEntity());
-    assertSame(listGridAction, actualWithActionTargetEntityResult);
+    // Act and Assert
+    assertSame(listGridAction2, listGridAction2.withActionTargetEntity("Action Target Entity"));
   }
 
   /**
-   * Test {@link ListGridAction#withIsConfirmEnabled(Boolean)}.
-   *
-   * <p>Method under test: {@link ListGridAction#withIsConfirmEnabled(Boolean)}
+   * Method under test: {@link ListGridAction#withIsConfirmEnabled(Boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ListGridAction ListGridAction.withIsConfirmEnabled(Boolean)"})
   public void testWithIsConfirmEnabled() {
     // Arrange
     ListGridAction listGridAction = DefaultListGridActions.ADD;
 
-    // Act
-    ListGridAction actualWithIsConfirmEnabledResult = listGridAction.withIsConfirmEnabled(true);
-
-    // Assert
-    assertSame(listGridAction, actualWithIsConfirmEnabledResult);
+    // Act and Assert
+    assertSame(listGridAction, listGridAction.withIsConfirmEnabled(true));
   }
 
   /**
-   * Test {@link ListGridAction#withConfirmEnabledText(String)}.
-   *
-   * <p>Method under test: {@link ListGridAction#withConfirmEnabledText(String)}
+   * Method under test: {@link ListGridAction#withConfirmEnabledText(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ListGridAction ListGridAction.withConfirmEnabledText(String)"})
   public void testWithConfirmEnabledText() {
-    // Arrange and Act
-    ListGridAction actualWithConfirmEnabledTextResult =
-        listGridAction.withConfirmEnabledText("Confirm Enabled Text");
+    // Arrange
+    ListGridAction listGridAction2 = DefaultListGridActions.ADD;
 
-    // Assert
-    assertEquals("Confirm Enabled Text", listGridAction.getConfirmEnabledText());
-    assertSame(listGridAction, actualWithConfirmEnabledTextResult);
+    // Act and Assert
+    assertSame(listGridAction2, listGridAction2.withConfirmEnabledText("Confirm Enabled Text"));
   }
 
   /**
-   * Test {@link ListGridAction#getButtonClass()}.
-   *
-   * <ul>
-   *   <li>Then return {@code all-capable}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridAction#getButtonClass()}
+   * Method under test: {@link ListGridAction#getButtonClass()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ListGridAction.getButtonClass()"})
-  public void testGetButtonClass_thenReturnAllCapable() {
+  public void testGetButtonClass() {
     // Arrange
     ListGridAction listGridAction = new ListGridAction("42");
     listGridAction.setAllCapable(true);
@@ -327,10 +218,33 @@ public class ListGridActionDiffblueTest {
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Method under test: {@link ListGridAction#getIsConfirmEnabled()}
+   */
+  @Test
+  public void testGetIsConfirmEnabled() {
+    // Arrange
+    ListGridAction listGridAction = DefaultListGridActions.ADD;
+    listGridAction.setIsConfirmEnabled(null);
+
+    // Act and Assert
+    assertFalse(listGridAction.getIsConfirmEnabled());
+  }
+
+  /**
+   * Method under test: {@link ListGridAction#getIsConfirmEnabled()}
+   */
+  @Test
+  public void testGetIsConfirmEnabled2() {
+    // Arrange
+    ListGridAction listGridAction = DefaultListGridActions.ADD;
+    listGridAction.setIsConfirmEnabled(true);
+
+    // Act and Assert
+    assertTrue(listGridAction.getIsConfirmEnabled());
+  }
+
+  /**
+   * Methods under test:
    * <ul>
    *   <li>{@link ListGridAction#setActionTargetEntity(String)}
    *   <li>{@link ListGridAction#setActionUrlOverride(String)}
@@ -358,33 +272,6 @@ public class ListGridActionDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String ListGridAction.getActionId()",
-    "String ListGridAction.getActionTargetEntity()",
-    "String ListGridAction.getActionUrlOverride()",
-    "Boolean ListGridAction.getAllCapable()",
-    "String ListGridAction.getConfirmEnabledText()",
-    "String ListGridAction.getDisplayText()",
-    "Boolean ListGridAction.getForListGridReadOnly()",
-    "String ListGridAction.getIconClass()",
-    "Boolean ListGridAction.getRequiresNonEmptyGrid()",
-    "Boolean ListGridAction.getSingleActionOnly()",
-    "String ListGridAction.getUrlPostfix()",
-    "void ListGridAction.setActionTargetEntity(String)",
-    "void ListGridAction.setActionUrlOverride(String)",
-    "void ListGridAction.setAllCapable(Boolean)",
-    "void ListGridAction.setButtonClass(String)",
-    "void ListGridAction.setConfirmEnabledText(String)",
-    "void ListGridAction.setDisplayText(String)",
-    "void ListGridAction.setForListGridReadOnly(Boolean)",
-    "void ListGridAction.setIconClass(String)",
-    "void ListGridAction.setIsConfirmEnabled(Boolean)",
-    "void ListGridAction.setRequiresNonEmptyGrid(Boolean)",
-    "void ListGridAction.setSingleActionOnly(Boolean)",
-    "void ListGridAction.setUrlPostfix(String)"
-  })
   public void testGettersAndSetters() {
     // Arrange
     ListGridAction listGridAction = new ListGridAction("42");
@@ -413,7 +300,7 @@ public class ListGridActionDiffblueTest {
     Boolean actualRequiresNonEmptyGrid = listGridAction.getRequiresNonEmptyGrid();
     Boolean actualSingleActionOnly = listGridAction.getSingleActionOnly();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("42", actualActionId);
     assertEquals("Action Target Entity", actualActionTargetEntity);
     assertEquals("Confirm Enabled Text", actualConfirmEnabledText);
@@ -425,51 +312,5 @@ public class ListGridActionDiffblueTest {
     assertTrue(actualForListGridReadOnly);
     assertTrue(actualRequiresNonEmptyGrid);
     assertTrue(actualSingleActionOnly);
-  }
-
-  /**
-   * Test {@link ListGridAction#getIsConfirmEnabled()}.
-   *
-   * <ul>
-   *   <li>Given {@link DefaultListGridActions#ADD} IsConfirmEnabled is {@code null}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridAction#getIsConfirmEnabled()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ListGridAction.getIsConfirmEnabled()"})
-  public void testGetIsConfirmEnabled_givenAddIsConfirmEnabledIsNull_thenReturnFalse() {
-    // Arrange
-    ListGridAction listGridAction = DefaultListGridActions.ADD;
-    listGridAction.setIsConfirmEnabled(null);
-
-    // Act and Assert
-    assertFalse(listGridAction.getIsConfirmEnabled());
-  }
-
-  /**
-   * Test {@link ListGridAction#getIsConfirmEnabled()}.
-   *
-   * <ul>
-   *   <li>Given {@link DefaultListGridActions#ADD} IsConfirmEnabled is {@code true}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridAction#getIsConfirmEnabled()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ListGridAction.getIsConfirmEnabled()"})
-  public void testGetIsConfirmEnabled_givenAddIsConfirmEnabledIsTrue_thenReturnTrue() {
-    // Arrange
-    ListGridAction listGridAction = DefaultListGridActions.ADD;
-    listGridAction.setIsConfirmEnabled(true);
-
-    // Act and Assert
-    assertTrue(listGridAction.getIsConfirmEnabled());
   }
 }

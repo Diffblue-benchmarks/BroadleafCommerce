@@ -17,19 +17,23 @@
  */
 package org.broadleafcommerce.common.vendor.service.type;
 
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class ContainerSizeTypeDiffblueTest {
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Method under test: {@link ContainerSizeType#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+    // Arrange, Act and Assert
+    assertNotEquals(new ContainerSizeType(), BLCFieldUtils.NULL_FIELD);
+  }
+
+  /**
+   * Methods under test:
    * <ul>
    *   <li>{@link ContainerSizeType#ContainerSizeType()}
    *   <li>{@link ContainerSizeType#getFriendlyType()}
@@ -37,13 +41,6 @@ public class ContainerSizeTypeDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ContainerSizeType.<init>()",
-    "String ContainerSizeType.getFriendlyType()",
-    "String ContainerSizeType.getType()"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     ContainerSizeType actualContainerSizeType = new ContainerSizeType();

@@ -17,82 +17,53 @@
  */
 package org.broadleafcommerce.common.extensibility.context.merge;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
-import org.broadleafcommerce.common.extensibility.context.merge.AbstractMergeBeanPostProcessor.BeanPackage;
+import org.broadleafcommerce.common.extensibility.config.PropertyConfigurer;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.boot.web.reactive.context.AnnotationConfigReactiveWebApplicationContext;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.GenericApplicationContext;
-import org.springframework.core.io.ProtocolResolver;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-@ContextConfiguration(classes = {EarlyStageMergeBeanPostProcessor.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(SpringJUnit4ClassRunner.class)
 public class AbstractMergeBeanPostProcessorDiffblueTest {
-  @Autowired private AbstractMergeBeanPostProcessor abstractMergeBeanPostProcessor;
-
   /**
-   * Test BeanPackage getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
-   *   <li>{@link BeanPackage#setPlacement(Placement)}
-   *   <li>{@link BeanPackage#setPosition(int)}
-   *   <li>{@link BeanPackage#setSourceRef(String)}
-   *   <li>{@link BeanPackage#setStatusProvider(MergeBeanStatusProvider)}
-   *   <li>{@link BeanPackage#setTargetRef(String)}
-   *   <li>{@link BeanPackage#getPlacement()}
-   *   <li>{@link BeanPackage#getPosition()}
-   *   <li>{@link BeanPackage#getSourceRef()}
-   *   <li>{@link BeanPackage#getStatusProvider()}
-   *   <li>{@link BeanPackage#getTargetRef()}
+   *   <li>
+   * {@link AbstractMergeBeanPostProcessor.BeanPackage#setPlacement(Placement)}
+   *   <li>{@link AbstractMergeBeanPostProcessor.BeanPackage#setPosition(int)}
+   *   <li>{@link AbstractMergeBeanPostProcessor.BeanPackage#setSourceRef(String)}
+   *   <li>
+   * {@link AbstractMergeBeanPostProcessor.BeanPackage#setStatusProvider(MergeBeanStatusProvider)}
+   *   <li>{@link AbstractMergeBeanPostProcessor.BeanPackage#setTargetRef(String)}
+   *   <li>{@link AbstractMergeBeanPostProcessor.BeanPackage#getPlacement()}
+   *   <li>{@link AbstractMergeBeanPostProcessor.BeanPackage#getPosition()}
+   *   <li>{@link AbstractMergeBeanPostProcessor.BeanPackage#getSourceRef()}
+   *   <li>{@link AbstractMergeBeanPostProcessor.BeanPackage#getStatusProvider()}
+   *   <li>{@link AbstractMergeBeanPostProcessor.BeanPackage#getTargetRef()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Placement BeanPackage.getPlacement()",
-    "int BeanPackage.getPosition()",
-    "String BeanPackage.getSourceRef()",
-    "MergeBeanStatusProvider BeanPackage.getStatusProvider()",
-    "String BeanPackage.getTargetRef()",
-    "void BeanPackage.setPlacement(Placement)",
-    "void BeanPackage.setPosition(int)",
-    "void BeanPackage.setSourceRef(String)",
-    "void BeanPackage.setStatusProvider(MergeBeanStatusProvider)",
-    "void BeanPackage.setTargetRef(String)"
-  })
   public void testBeanPackageGettersAndSetters() {
     // Arrange
-    BeanPackage beanPackage = new BeanPackage();
+    AbstractMergeBeanPostProcessor.BeanPackage beanPackage = new AbstractMergeBeanPostProcessor.BeanPackage();
 
     // Act
     beanPackage.setPlacement(Placement.PREPEND);
@@ -106,7 +77,7 @@ public class AbstractMergeBeanPostProcessorDiffblueTest {
     String actualSourceRef = beanPackage.getSourceRef();
     MergeBeanStatusProvider actualStatusProvider = beanPackage.getStatusProvider();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("Source Ref", actualSourceRef);
     assertEquals("Target Ref", beanPackage.getTargetRef());
     assertEquals(1, actualPosition);
@@ -115,17 +86,13 @@ public class AbstractMergeBeanPostProcessorDiffblueTest {
   }
 
   /**
-   * Test BeanPackage new {@link BeanPackage} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link BeanPackage}
+   * Method under test: default or parameterless constructor of
+   * {@link AbstractMergeBeanPostProcessor.BeanPackage}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BeanPackage.<init>()"})
   public void testBeanPackageNewBeanPackage() {
     // Arrange and Act
-    BeanPackage actualBeanPackage = new BeanPackage();
+    AbstractMergeBeanPostProcessor.BeanPackage actualBeanPackage = new AbstractMergeBeanPostProcessor.BeanPackage();
 
     // Assert
     assertNull(actualBeanPackage.getSourceRef());
@@ -137,147 +104,147 @@ public class AbstractMergeBeanPostProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link AbstractMergeBeanPostProcessor#postProcessAfterInitialization(Object, String)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractMergeBeanPostProcessor#postProcessAfterInitialization(Object, String)}
+   * Method under test:
+   * {@link AbstractMergeBeanPostProcessor#setApplicationContext(ApplicationContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Object AbstractMergeBeanPostProcessor.postProcessAfterInitialization(Object, String)"
-  })
+  public void testSetApplicationContext() throws BeansException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor = new EarlyStageMergeBeanPostProcessor();
+
+    // Act
+    earlyStageMergeBeanPostProcessor.setApplicationContext(new AnnotationConfigReactiveWebApplicationContext());
+
+    // Assert
+    ApplicationContext applicationContext = earlyStageMergeBeanPostProcessor.applicationContext;
+    assertTrue(applicationContext instanceof AnnotationConfigReactiveWebApplicationContext);
+    assertEquals("", applicationContext.getApplicationName());
+    assertNull(applicationContext.getParentBeanFactory());
+    assertNull(applicationContext.getParent());
+    assertEquals(0L, applicationContext.getStartupDate());
+    assertEquals(6, applicationContext.getBeanDefinitionCount());
+    assertFalse(((AnnotationConfigReactiveWebApplicationContext) applicationContext).isActive());
+    assertFalse(((AnnotationConfigReactiveWebApplicationContext) applicationContext).isRunning());
+    assertArrayEquals(
+        new String[]{"org.springframework.context.annotation.internalConfigurationAnnotationProcessor",
+            "org.springframework.context.annotation.internalAutowiredAnnotationProcessor",
+            "org.springframework.context.annotation.internalCommonAnnotationProcessor",
+            "org.springframework.context.annotation.internalPersistenceAnnotationProcessor",
+            "org.springframework.context.event.internalEventListenerProcessor",
+            "org.springframework.context.event.internalEventListenerFactory"},
+        applicationContext.getBeanDefinitionNames());
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractMergeBeanPostProcessor#postProcessAfterInitialization(Object, String)}
+   */
+  @Test
   public void testPostProcessAfterInitialization() throws BeansException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     Object object = BLCFieldUtils.NULL_FIELD;
 
-    // Act
-    Object actualPostProcessAfterInitializationResult =
-        abstractMergeBeanPostProcessor.postProcessAfterInitialization(object, "Bean Name");
-
-    // Assert
-    assertSame(object, actualPostProcessAfterInitializationResult);
+    // Act and Assert
+    assertSame(object, (new EarlyStageMergeBeanPostProcessor()).postProcessAfterInitialization(object, "Bean Name"));
   }
 
   /**
-   * Test {@link AbstractMergeBeanPostProcessor#postProcessBeforeInitialization(Object, String)}.
-   *
-   * <ul>
-   *   <li>When {@code Bean Name}.
-   *   <li>Then return {@link BLCFieldUtils#NULL_FIELD}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AbstractMergeBeanPostProcessor#postProcessBeforeInitialization(Object, String)}
+   * Method under test:
+   * {@link AbstractMergeBeanPostProcessor#postProcessAfterInitialization(Object, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Object AbstractMergeBeanPostProcessor.postProcessBeforeInitialization(Object, String)"
-  })
-  public void testPostProcessBeforeInitialization_whenBeanName_thenReturnNull_field()
-      throws BeansException {
+  public void testPostProcessAfterInitialization2() throws BeansException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor = new EarlyStageMergeBeanPostProcessor();
+    earlyStageMergeBeanPostProcessor.setStatusProvider(mock(MergeBeanStatusProvider.class));
+    Object object = BLCFieldUtils.NULL_FIELD;
+
+    // Act and Assert
+    assertSame(object, earlyStageMergeBeanPostProcessor.postProcessAfterInitialization(object, "Bean Name"));
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractMergeBeanPostProcessor#postProcessBeforeInitialization(Object, String)}
+   */
+  @Test
+  public void testPostProcessBeforeInitialization() throws BeansException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     Object object = BLCFieldUtils.NULL_FIELD;
 
-    // Act
-    Object actualPostProcessBeforeInitializationResult =
-        abstractMergeBeanPostProcessor.postProcessBeforeInitialization(object, "Bean Name");
-
-    // Assert
-    assertSame(object, actualPostProcessBeforeInitializationResult);
+    // Act and Assert
+    assertSame(object, (new EarlyStageMergeBeanPostProcessor()).postProcessBeforeInitialization(object, "Bean Name"));
   }
 
   /**
-   * Test {@link AbstractMergeBeanPostProcessor#processPackage(BeanPackage, Object, String)} with
-   * {@code beanPackage}, {@code bean}, {@code beanName}.
-   *
-   * <ul>
-   *   <li>Given empty string.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractMergeBeanPostProcessor#processPackage(BeanPackage, Object,
-   * String)}
+   * Method under test:
+   * {@link AbstractMergeBeanPostProcessor#postProcessBeforeInitialization(Object, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Object AbstractMergeBeanPostProcessor.processPackage(BeanPackage, Object, String)"
-  })
-  public void testProcessPackageWithBeanPackageBeanBeanName_givenEmptyString() {
+  public void testPostProcessBeforeInitialization2() throws BeansException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    BeanPackage beanPackage = new BeanPackage();
-    beanPackage.setPlacement(Placement.PREPEND);
-    beanPackage.setPosition(1);
-    beanPackage.setSourceRef("");
-    beanPackage.setStatusProvider(mock(MergeBeanStatusProvider.class));
-    beanPackage.setTargetRef("Bean Name");
+    EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor = new EarlyStageMergeBeanPostProcessor();
+    earlyStageMergeBeanPostProcessor.setStatusProvider(mock(MergeBeanStatusProvider.class));
+    Object object = BLCFieldUtils.NULL_FIELD;
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            abstractMergeBeanPostProcessor.processPackage(
-                beanPackage, BLCFieldUtils.NULL_FIELD, "Bean Name"));
+    assertSame(object, earlyStageMergeBeanPostProcessor.postProcessBeforeInitialization(object, "Bean Name"));
   }
 
   /**
-   * Test {@link AbstractMergeBeanPostProcessor#processPackage(BeanPackage, Object, String)} with
-   * {@code beanPackage}, {@code bean}, {@code beanName}.
-   *
-   * <ul>
-   *   <li>Given {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractMergeBeanPostProcessor#processPackage(BeanPackage, Object,
-   * String)}
+   * Method under test:
+   * {@link AbstractMergeBeanPostProcessor#processPackage(AbstractMergeBeanPostProcessor.BeanPackage, Object, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Object AbstractMergeBeanPostProcessor.processPackage(BeanPackage, Object, String)"
-  })
-  public void testProcessPackageWithBeanPackageBeanBeanName_givenNull() {
+  public void testProcessPackage() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    BeanPackage beanPackage = new BeanPackage();
+    EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor = new EarlyStageMergeBeanPostProcessor();
+
+    AbstractMergeBeanPostProcessor.BeanPackage beanPackage = new AbstractMergeBeanPostProcessor.BeanPackage();
     beanPackage.setPlacement(Placement.PREPEND);
     beanPackage.setPosition(1);
-    beanPackage.setSourceRef(null);
+    beanPackage.setSourceRef("Source Ref");
     beanPackage.setStatusProvider(mock(MergeBeanStatusProvider.class));
-    beanPackage.setTargetRef("Bean Name");
+    beanPackage.setTargetRef("Target Ref");
+    Object object = BLCFieldUtils.NULL_FIELD;
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            abstractMergeBeanPostProcessor.processPackage(
-                beanPackage, BLCFieldUtils.NULL_FIELD, "Bean Name"));
+    assertSame(object, earlyStageMergeBeanPostProcessor.processPackage(beanPackage, object, "Bean Name"));
   }
 
   /**
-   * Test {@link AbstractMergeBeanPostProcessor#processPackage(BeanPackage, Object, String)} with
-   * {@code beanPackage}, {@code bean}, {@code beanName}.
-   *
-   * <ul>
-   *   <li>Then return {@link BLCFieldUtils#NULL_FIELD}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractMergeBeanPostProcessor#processPackage(BeanPackage, Object,
-   * String)}
+   * Method under test:
+   * {@link AbstractMergeBeanPostProcessor#processPackage(AbstractMergeBeanPostProcessor.BeanPackage, Object, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Object AbstractMergeBeanPostProcessor.processPackage(BeanPackage, Object, String)"
-  })
-  public void testProcessPackageWithBeanPackageBeanBeanName_thenReturnNull_field() {
+  public void testProcessPackage2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    BeanPackage beanPackage = new BeanPackage();
+    EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor = new EarlyStageMergeBeanPostProcessor();
+    AbstractMergeBeanPostProcessor.BeanPackage beanPackage = mock(AbstractMergeBeanPostProcessor.BeanPackage.class);
+    when(beanPackage.getPosition()).thenReturn(1);
+    when(beanPackage.getSourceRef()).thenReturn("Source Ref");
+    when(beanPackage.getTargetRef()).thenReturn("Target Ref");
+    when(beanPackage.getStatusProvider()).thenReturn(mock(MergeBeanStatusProvider.class));
+    when(beanPackage.getPlacement()).thenReturn(Placement.PREPEND);
+    doNothing().when(beanPackage).setPlacement(Mockito.<Placement>any());
+    doNothing().when(beanPackage).setPosition(anyInt());
+    doNothing().when(beanPackage).setSourceRef(Mockito.<String>any());
+    doNothing().when(beanPackage).setStatusProvider(Mockito.<MergeBeanStatusProvider>any());
+    doNothing().when(beanPackage).setTargetRef(Mockito.<String>any());
     beanPackage.setPlacement(Placement.PREPEND);
     beanPackage.setPosition(1);
     beanPackage.setSourceRef("Source Ref");
@@ -286,146 +253,76 @@ public class AbstractMergeBeanPostProcessorDiffblueTest {
     Object object = BLCFieldUtils.NULL_FIELD;
 
     // Act
-    Object actualProcessPackageResult =
-        abstractMergeBeanPostProcessor.processPackage(beanPackage, object, "Bean Name");
+    Object actualProcessPackageResult = earlyStageMergeBeanPostProcessor.processPackage(beanPackage, object,
+        "Bean Name");
 
     // Assert
+    verify(beanPackage).getPlacement();
+    verify(beanPackage).getPosition();
+    verify(beanPackage).getSourceRef();
+    verify(beanPackage).getStatusProvider();
+    verify(beanPackage).getTargetRef();
+    verify(beanPackage).setPlacement(eq(Placement.PREPEND));
+    verify(beanPackage).setPosition(eq(1));
+    verify(beanPackage).setSourceRef(eq("Source Ref"));
+    verify(beanPackage).setStatusProvider(isA(MergeBeanStatusProvider.class));
+    verify(beanPackage).setTargetRef(eq("Target Ref"));
     assertSame(object, actualProcessPackageResult);
   }
 
   /**
-   * Test {@link AbstractMergeBeanPostProcessor#addItemToSet(Object, Object, Placement, int)}.
-   *
-   * <ul>
-   *   <li>When {@code APPEND}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractMergeBeanPostProcessor#addItemToSet(Object, Object,
-   * Placement, int)}
+   * Method under test:
+   * {@link AbstractMergeBeanPostProcessor#addItemToSet(Object, Object, Placement, int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AbstractMergeBeanPostProcessor.addItemToSet(Object, Object, Placement, int)"
-  })
-  public void testAddItemToSet_whenAppend() throws IllegalAccessException, NoSuchFieldException {
+  public void testAddItemToSet() throws IllegalAccessException, NoSuchFieldException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor = new EarlyStageMergeBeanPostProcessor();
     HashSet<Object> objectSet = new HashSet<>();
 
     // Act
-    abstractMergeBeanPostProcessor.addItemToSet(
-        objectSet, BLCFieldUtils.NULL_FIELD, Placement.APPEND, 1);
+    earlyStageMergeBeanPostProcessor.addItemToSet(objectSet, BLCFieldUtils.NULL_FIELD, Placement.APPEND, 1);
 
     // Assert
-    ApplicationContext applicationContext =
-        ((EarlyStageMergeBeanPostProcessor) abstractMergeBeanPostProcessor).applicationContext;
-    Collection<ProtocolResolver> protocolResolvers =
-        ((GenericApplicationContext) applicationContext).getProtocolResolvers();
-    assertTrue(protocolResolvers instanceof Set);
-    assertTrue(abstractMergeBeanPostProcessor instanceof EarlyStageMergeBeanPostProcessor);
-    assertTrue(applicationContext instanceof GenericApplicationContext);
     assertEquals(1, objectSet.size());
-    assertTrue(protocolResolvers.isEmpty());
   }
 
   /**
-   * Test {@link AbstractMergeBeanPostProcessor#addItemToSet(Object, Object, Placement, int)}.
-   *
-   * <ul>
-   *   <li>When {@code PREPEND}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractMergeBeanPostProcessor#addItemToSet(Object, Object,
-   * Placement, int)}
+   * Method under test:
+   * {@link AbstractMergeBeanPostProcessor#addItemToSet(Object, Object, Placement, int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AbstractMergeBeanPostProcessor.addItemToSet(Object, Object, Placement, int)"
-  })
-  public void testAddItemToSet_whenPrepend() throws IllegalAccessException, NoSuchFieldException {
+  public void testAddItemToSet2() throws IllegalAccessException, NoSuchFieldException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor = new EarlyStageMergeBeanPostProcessor();
     HashSet<Object> objectSet = new HashSet<>();
 
     // Act
-    abstractMergeBeanPostProcessor.addItemToSet(
-        objectSet, BLCFieldUtils.NULL_FIELD, Placement.PREPEND, 1);
+    earlyStageMergeBeanPostProcessor.addItemToSet(objectSet, BLCFieldUtils.NULL_FIELD, Placement.PREPEND, 1);
 
     // Assert
-    ApplicationContext applicationContext =
-        ((EarlyStageMergeBeanPostProcessor) abstractMergeBeanPostProcessor).applicationContext;
-    Collection<ProtocolResolver> protocolResolvers =
-        ((GenericApplicationContext) applicationContext).getProtocolResolvers();
-    assertTrue(protocolResolvers instanceof Set);
-    assertTrue(abstractMergeBeanPostProcessor instanceof EarlyStageMergeBeanPostProcessor);
-    assertTrue(applicationContext instanceof GenericApplicationContext);
     assertEquals(1, objectSet.size());
-    assertTrue(protocolResolvers.isEmpty());
   }
 
   /**
-   * Test {@link AbstractMergeBeanPostProcessor#addItemToSet(Object, Object, Placement, int)}.
-   *
-   * <ul>
-   *   <li>When zero.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractMergeBeanPostProcessor#addItemToSet(Object, Object,
-   * Placement, int)}
+   * Method under test:
+   * {@link AbstractMergeBeanPostProcessor#addItemToList(Object, Object, Placement, int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AbstractMergeBeanPostProcessor.addItemToSet(Object, Object, Placement, int)"
-  })
-  public void testAddItemToSet_whenZero() throws IllegalAccessException, NoSuchFieldException {
+  public void testAddItemToList() throws IllegalAccessException, NoSuchFieldException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    HashSet<Object> objectSet = new HashSet<>();
-
-    // Act
-    abstractMergeBeanPostProcessor.addItemToSet(
-        objectSet, BLCFieldUtils.NULL_FIELD, Placement.SPECIFIC, 0);
-
-    // Assert
-    ApplicationContext applicationContext =
-        ((EarlyStageMergeBeanPostProcessor) abstractMergeBeanPostProcessor).applicationContext;
-    Collection<ProtocolResolver> protocolResolvers =
-        ((GenericApplicationContext) applicationContext).getProtocolResolvers();
-    assertTrue(protocolResolvers instanceof Set);
-    assertTrue(abstractMergeBeanPostProcessor instanceof EarlyStageMergeBeanPostProcessor);
-    assertTrue(applicationContext instanceof GenericApplicationContext);
-    assertEquals(1, objectSet.size());
-    assertTrue(protocolResolvers.isEmpty());
-  }
-
-  /**
-   * Test {@link AbstractMergeBeanPostProcessor#addItemToList(Object, Object, Placement, int)}.
-   *
-   * <ul>
-   *   <li>When {@code APPEND}.
-   *   <li>Then {@link ArrayList#ArrayList()} size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractMergeBeanPostProcessor#addItemToList(Object, Object,
-   * Placement, int)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AbstractMergeBeanPostProcessor.addItemToList(Object, Object, Placement, int)"
-  })
-  public void testAddItemToList_whenAppend_thenArrayListSizeIsOne()
-      throws IllegalAccessException, NoSuchFieldException {
-    // Arrange
+    EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor = new EarlyStageMergeBeanPostProcessor();
     ArrayList<Object> objectList = new ArrayList<>();
     Object object = BLCFieldUtils.NULL_FIELD;
 
     // Act
-    abstractMergeBeanPostProcessor.addItemToList(objectList, object, Placement.APPEND, 1);
+    earlyStageMergeBeanPostProcessor.addItemToList(objectList, object, Placement.APPEND, 1);
 
     // Assert
     assertEquals(1, objectList.size());
@@ -433,30 +330,20 @@ public class AbstractMergeBeanPostProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link AbstractMergeBeanPostProcessor#addItemToList(Object, Object, Placement, int)}.
-   *
-   * <ul>
-   *   <li>When {@code PREPEND}.
-   *   <li>Then {@link ArrayList#ArrayList()} size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractMergeBeanPostProcessor#addItemToList(Object, Object,
-   * Placement, int)}
+   * Method under test:
+   * {@link AbstractMergeBeanPostProcessor#addItemToList(Object, Object, Placement, int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AbstractMergeBeanPostProcessor.addItemToList(Object, Object, Placement, int)"
-  })
-  public void testAddItemToList_whenPrepend_thenArrayListSizeIsOne()
-      throws IllegalAccessException, NoSuchFieldException {
+  public void testAddItemToList2() throws IllegalAccessException, NoSuchFieldException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor = new EarlyStageMergeBeanPostProcessor();
     ArrayList<Object> objectList = new ArrayList<>();
     Object object = BLCFieldUtils.NULL_FIELD;
 
     // Act
-    abstractMergeBeanPostProcessor.addItemToList(objectList, object, Placement.PREPEND, 1);
+    earlyStageMergeBeanPostProcessor.addItemToList(objectList, object, Placement.PREPEND, 1);
 
     // Assert
     assertEquals(1, objectList.size());
@@ -464,310 +351,411 @@ public class AbstractMergeBeanPostProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link AbstractMergeBeanPostProcessor#addItemToList(Object, Object, Placement, int)}.
-   *
-   * <ul>
-   *   <li>When zero.
-   *   <li>Then {@link ArrayList#ArrayList()} size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractMergeBeanPostProcessor#addItemToList(Object, Object,
-   * Placement, int)}
+   * Method under test: {@link AbstractMergeBeanPostProcessor#getCollectionRef()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AbstractMergeBeanPostProcessor.addItemToList(Object, Object, Placement, int)"
-  })
-  public void testAddItemToList_whenZero_thenArrayListSizeIsOne()
-      throws IllegalAccessException, NoSuchFieldException {
-    // Arrange
-    ArrayList<Object> objectList = new ArrayList<>();
-    Object object = BLCFieldUtils.NULL_FIELD;
+  public void testGetCollectionRef() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Act
-    abstractMergeBeanPostProcessor.addItemToList(objectList, object, Placement.SPECIFIC, 0);
-
-    // Assert
-    assertEquals(1, objectList.size());
-    assertSame(object, objectList.get(0));
+    // Arrange, Act and Assert
+    assertNull((new EarlyStageMergeBeanPostProcessor()).getCollectionRef());
   }
 
   /**
-   * Test {@link AbstractMergeBeanPostProcessor#setCollectionRef(String)}.
-   *
-   * <p>Method under test: {@link AbstractMergeBeanPostProcessor#setCollectionRef(String)}
+   * Method under test: {@link AbstractMergeBeanPostProcessor#getCollectionRef()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AbstractMergeBeanPostProcessor.setCollectionRef(String)"})
+  public void testGetCollectionRef2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor = new EarlyStageMergeBeanPostProcessor();
+    earlyStageMergeBeanPostProcessor.setStatusProvider(mock(MergeBeanStatusProvider.class));
+
+    // Act and Assert
+    assertNull(earlyStageMergeBeanPostProcessor.getCollectionRef());
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractMergeBeanPostProcessor#setCollectionRef(String)}
+   */
+  @Test
   public void testSetCollectionRef() {
-    // Arrange and Act
-    abstractMergeBeanPostProcessor.setCollectionRef("Collection Ref");
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor = new EarlyStageMergeBeanPostProcessor();
+
+    // Act
+    earlyStageMergeBeanPostProcessor.setCollectionRef("Collection Ref");
 
     // Assert
-    assertTrue(abstractMergeBeanPostProcessor instanceof EarlyStageMergeBeanPostProcessor);
-    assertEquals("Collection Ref", abstractMergeBeanPostProcessor.getCollectionRef());
-    assertEquals("Collection Ref", abstractMergeBeanPostProcessor.getSourceRef());
-    assertEquals(
-        "Collection Ref",
-        ((EarlyStageMergeBeanPostProcessor) abstractMergeBeanPostProcessor)
-            .defaultBeanPackage.getSourceRef());
+    assertEquals("Collection Ref", earlyStageMergeBeanPostProcessor.getCollectionRef());
+    assertEquals("Collection Ref", earlyStageMergeBeanPostProcessor.getSourceRef());
+    assertEquals("Collection Ref", earlyStageMergeBeanPostProcessor.defaultBeanPackage.getSourceRef());
   }
 
   /**
-   * Test {@link AbstractMergeBeanPostProcessor#setSourceRef(String)}.
-   *
-   * <p>Method under test: {@link AbstractMergeBeanPostProcessor#setSourceRef(String)}
+   * Method under test:
+   * {@link AbstractMergeBeanPostProcessor#setCollectionRef(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AbstractMergeBeanPostProcessor.setSourceRef(String)"})
+  public void testSetCollectionRef2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor = new EarlyStageMergeBeanPostProcessor();
+    earlyStageMergeBeanPostProcessor.setStatusProvider(mock(MergeBeanStatusProvider.class));
+
+    // Act
+    earlyStageMergeBeanPostProcessor.setCollectionRef("Collection Ref");
+
+    // Assert
+    assertEquals("Collection Ref", earlyStageMergeBeanPostProcessor.getCollectionRef());
+    assertEquals("Collection Ref", earlyStageMergeBeanPostProcessor.getSourceRef());
+    assertEquals("Collection Ref", earlyStageMergeBeanPostProcessor.defaultBeanPackage.getSourceRef());
+  }
+
+  /**
+   * Method under test: {@link AbstractMergeBeanPostProcessor#getSourceRef()}
+   */
+  @Test
+  public void testGetSourceRef() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertNull((new EarlyStageMergeBeanPostProcessor()).getSourceRef());
+  }
+
+  /**
+   * Method under test: {@link AbstractMergeBeanPostProcessor#getSourceRef()}
+   */
+  @Test
+  public void testGetSourceRef2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor = new EarlyStageMergeBeanPostProcessor();
+    earlyStageMergeBeanPostProcessor.setStatusProvider(mock(MergeBeanStatusProvider.class));
+
+    // Act and Assert
+    assertNull(earlyStageMergeBeanPostProcessor.getSourceRef());
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractMergeBeanPostProcessor#setSourceRef(String)}
+   */
+  @Test
   public void testSetSourceRef() {
-    // Arrange and Act
-    abstractMergeBeanPostProcessor.setSourceRef("Source Ref");
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor = new EarlyStageMergeBeanPostProcessor();
+
+    // Act
+    earlyStageMergeBeanPostProcessor.setSourceRef("Source Ref");
 
     // Assert
-    assertTrue(abstractMergeBeanPostProcessor instanceof EarlyStageMergeBeanPostProcessor);
-    assertEquals("Source Ref", abstractMergeBeanPostProcessor.getCollectionRef());
-    assertEquals("Source Ref", abstractMergeBeanPostProcessor.getSourceRef());
-    assertEquals(
-        "Source Ref",
-        ((EarlyStageMergeBeanPostProcessor) abstractMergeBeanPostProcessor)
-            .defaultBeanPackage.getSourceRef());
+    assertEquals("Source Ref", earlyStageMergeBeanPostProcessor.getCollectionRef());
+    assertEquals("Source Ref", earlyStageMergeBeanPostProcessor.getSourceRef());
+    assertEquals("Source Ref", earlyStageMergeBeanPostProcessor.defaultBeanPackage.getSourceRef());
   }
 
   /**
-   * Test {@link AbstractMergeBeanPostProcessor#setTargetRef(String)}.
-   *
-   * <p>Method under test: {@link AbstractMergeBeanPostProcessor#setTargetRef(String)}
+   * Method under test:
+   * {@link AbstractMergeBeanPostProcessor#setSourceRef(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AbstractMergeBeanPostProcessor.setTargetRef(String)"})
+  public void testSetSourceRef2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor = new EarlyStageMergeBeanPostProcessor();
+    earlyStageMergeBeanPostProcessor.setStatusProvider(mock(MergeBeanStatusProvider.class));
+
+    // Act
+    earlyStageMergeBeanPostProcessor.setSourceRef("Source Ref");
+
+    // Assert
+    assertEquals("Source Ref", earlyStageMergeBeanPostProcessor.getCollectionRef());
+    assertEquals("Source Ref", earlyStageMergeBeanPostProcessor.getSourceRef());
+    assertEquals("Source Ref", earlyStageMergeBeanPostProcessor.defaultBeanPackage.getSourceRef());
+  }
+
+  /**
+   * Method under test: {@link AbstractMergeBeanPostProcessor#getTargetRef()}
+   */
+  @Test
+  public void testGetTargetRef() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertNull((new EarlyStageMergeBeanPostProcessor()).getTargetRef());
+  }
+
+  /**
+   * Method under test: {@link AbstractMergeBeanPostProcessor#getTargetRef()}
+   */
+  @Test
+  public void testGetTargetRef2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor = new EarlyStageMergeBeanPostProcessor();
+    earlyStageMergeBeanPostProcessor.setStatusProvider(mock(MergeBeanStatusProvider.class));
+
+    // Act and Assert
+    assertNull(earlyStageMergeBeanPostProcessor.getTargetRef());
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractMergeBeanPostProcessor#setTargetRef(String)}
+   */
+  @Test
   public void testSetTargetRef() {
-    // Arrange and Act
-    abstractMergeBeanPostProcessor.setTargetRef("Target Ref");
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor = new EarlyStageMergeBeanPostProcessor();
+
+    // Act
+    earlyStageMergeBeanPostProcessor.setTargetRef("Target Ref");
 
     // Assert
-    assertTrue(abstractMergeBeanPostProcessor instanceof EarlyStageMergeBeanPostProcessor);
-    assertEquals("Target Ref", abstractMergeBeanPostProcessor.getTargetRef());
-    assertEquals(
-        "Target Ref",
-        ((EarlyStageMergeBeanPostProcessor) abstractMergeBeanPostProcessor)
-            .defaultBeanPackage.getTargetRef());
+    assertEquals("Target Ref", earlyStageMergeBeanPostProcessor.getTargetRef());
+    assertEquals("Target Ref", earlyStageMergeBeanPostProcessor.defaultBeanPackage.getTargetRef());
   }
 
   /**
-   * Test {@link AbstractMergeBeanPostProcessor#getPlacement()}.
-   *
-   * <p>Method under test: {@link AbstractMergeBeanPostProcessor#getPlacement()}
+   * Method under test:
+   * {@link AbstractMergeBeanPostProcessor#setTargetRef(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Placement AbstractMergeBeanPostProcessor.getPlacement()"})
+  public void testSetTargetRef2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor = new EarlyStageMergeBeanPostProcessor();
+    earlyStageMergeBeanPostProcessor.setStatusProvider(mock(MergeBeanStatusProvider.class));
+
+    // Act
+    earlyStageMergeBeanPostProcessor.setTargetRef("Target Ref");
+
+    // Assert
+    assertEquals("Target Ref", earlyStageMergeBeanPostProcessor.getTargetRef());
+    assertEquals("Target Ref", earlyStageMergeBeanPostProcessor.defaultBeanPackage.getTargetRef());
+  }
+
+  /**
+   * Method under test: {@link AbstractMergeBeanPostProcessor#getPlacement()}
+   */
+  @Test
   public void testGetPlacement() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertEquals(Placement.APPEND, abstractMergeBeanPostProcessor.getPlacement());
+    assertEquals(Placement.APPEND, (new EarlyStageMergeBeanPostProcessor()).getPlacement());
   }
 
   /**
-   * Test {@link AbstractMergeBeanPostProcessor#setPlacement(Placement)}.
-   *
-   * <p>Method under test: {@link AbstractMergeBeanPostProcessor#setPlacement(Placement)}
+   * Method under test: {@link AbstractMergeBeanPostProcessor#getPlacement()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AbstractMergeBeanPostProcessor.setPlacement(Placement)"})
+  public void testGetPlacement2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor = new EarlyStageMergeBeanPostProcessor();
+    earlyStageMergeBeanPostProcessor.setStatusProvider(mock(MergeBeanStatusProvider.class));
+
+    // Act and Assert
+    assertEquals(Placement.APPEND, earlyStageMergeBeanPostProcessor.getPlacement());
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractMergeBeanPostProcessor#setPlacement(Placement)}
+   */
+  @Test
   public void testSetPlacement() {
-    // Arrange and Act
-    abstractMergeBeanPostProcessor.setPlacement(Placement.PREPEND);
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor = new EarlyStageMergeBeanPostProcessor();
+
+    // Act
+    earlyStageMergeBeanPostProcessor.setPlacement(Placement.PREPEND);
 
     // Assert
-    assertTrue(abstractMergeBeanPostProcessor instanceof EarlyStageMergeBeanPostProcessor);
-    assertEquals(Placement.PREPEND, abstractMergeBeanPostProcessor.getPlacement());
-    assertEquals(
-        Placement.PREPEND,
-        ((EarlyStageMergeBeanPostProcessor) abstractMergeBeanPostProcessor)
-            .defaultBeanPackage.getPlacement());
+    assertEquals(Placement.PREPEND, earlyStageMergeBeanPostProcessor.getPlacement());
+    assertEquals(Placement.PREPEND, earlyStageMergeBeanPostProcessor.defaultBeanPackage.getPlacement());
   }
 
   /**
-   * Test {@link AbstractMergeBeanPostProcessor#getPosition()}.
-   *
-   * <p>Method under test: {@link AbstractMergeBeanPostProcessor#getPosition()}
+   * Method under test:
+   * {@link AbstractMergeBeanPostProcessor#setPlacement(Placement)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int AbstractMergeBeanPostProcessor.getPosition()"})
+  public void testSetPlacement2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor = new EarlyStageMergeBeanPostProcessor();
+    earlyStageMergeBeanPostProcessor.setStatusProvider(mock(MergeBeanStatusProvider.class));
+
+    // Act
+    earlyStageMergeBeanPostProcessor.setPlacement(Placement.PREPEND);
+
+    // Assert
+    assertEquals(Placement.PREPEND, earlyStageMergeBeanPostProcessor.getPlacement());
+    assertEquals(Placement.PREPEND, earlyStageMergeBeanPostProcessor.defaultBeanPackage.getPlacement());
+  }
+
+  /**
+   * Method under test: {@link AbstractMergeBeanPostProcessor#getPosition()}
+   */
+  @Test
   public void testGetPosition() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertEquals(0, abstractMergeBeanPostProcessor.getPosition());
+    assertEquals(0, (new EarlyStageMergeBeanPostProcessor()).getPosition());
   }
 
   /**
-   * Test {@link AbstractMergeBeanPostProcessor#setPosition(int)}.
-   *
-   * <p>Method under test: {@link AbstractMergeBeanPostProcessor#setPosition(int)}
+   * Method under test: {@link AbstractMergeBeanPostProcessor#getPosition()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AbstractMergeBeanPostProcessor.setPosition(int)"})
+  public void testGetPosition2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor = new EarlyStageMergeBeanPostProcessor();
+    earlyStageMergeBeanPostProcessor.setStatusProvider(mock(MergeBeanStatusProvider.class));
+
+    // Act and Assert
+    assertEquals(0, earlyStageMergeBeanPostProcessor.getPosition());
+  }
+
+  /**
+   * Method under test: {@link AbstractMergeBeanPostProcessor#setPosition(int)}
+   */
+  @Test
   public void testSetPosition() {
-    // Arrange and Act
-    abstractMergeBeanPostProcessor.setPosition(1);
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor = new EarlyStageMergeBeanPostProcessor();
+
+    // Act
+    earlyStageMergeBeanPostProcessor.setPosition(1);
 
     // Assert
-    assertTrue(abstractMergeBeanPostProcessor instanceof EarlyStageMergeBeanPostProcessor);
-    assertEquals(1, abstractMergeBeanPostProcessor.getPosition());
-    assertEquals(
-        1,
-        ((EarlyStageMergeBeanPostProcessor) abstractMergeBeanPostProcessor)
-            .defaultBeanPackage.getPosition());
+    assertEquals(1, earlyStageMergeBeanPostProcessor.getPosition());
+    assertEquals(1, earlyStageMergeBeanPostProcessor.defaultBeanPackage.getPosition());
   }
 
   /**
-   * Test {@link AbstractMergeBeanPostProcessor#getStatusProvider()}.
-   *
-   * <p>Method under test: {@link AbstractMergeBeanPostProcessor#getStatusProvider()}
+   * Method under test: {@link AbstractMergeBeanPostProcessor#setPosition(int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"MergeBeanStatusProvider AbstractMergeBeanPostProcessor.getStatusProvider()"})
+  public void testSetPosition2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor = new EarlyStageMergeBeanPostProcessor();
+    earlyStageMergeBeanPostProcessor.setStatusProvider(mock(MergeBeanStatusProvider.class));
+
+    // Act
+    earlyStageMergeBeanPostProcessor.setPosition(1);
+
+    // Assert
+    assertEquals(1, earlyStageMergeBeanPostProcessor.getPosition());
+    assertEquals(1, earlyStageMergeBeanPostProcessor.defaultBeanPackage.getPosition());
+  }
+
+  /**
+   * Method under test: {@link AbstractMergeBeanPostProcessor#getStatusProvider()}
+   */
+  @Test
   public void testGetStatusProvider() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     MergeBeanStatusProvider statusProvider = mock(MergeBeanStatusProvider.class);
-    when(statusProvider.isProcessingEnabled(
-            Mockito.<Object>any(), Mockito.<String>any(), Mockito.<ApplicationContext>any()))
-        .thenReturn(true);
+    when(statusProvider.isProcessingEnabled(Mockito.<Object>any(), Mockito.<String>any(),
+        Mockito.<ApplicationContext>any())).thenReturn(true);
 
-    EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor =
-        new EarlyStageMergeBeanPostProcessor();
+    EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor = new EarlyStageMergeBeanPostProcessor();
     earlyStageMergeBeanPostProcessor.setStatusProvider(statusProvider);
 
     // Act
-    boolean actualIsProcessingEnabledResult =
-        earlyStageMergeBeanPostProcessor
-            .getStatusProvider()
-            .isProcessingEnabled(BLCFieldUtils.NULL_FIELD, "foo", mock(ApplicationContext.class));
+    MergeBeanStatusProvider actualStatusProvider = earlyStageMergeBeanPostProcessor.getStatusProvider();
+    AnnotationConfigApplicationContext annotationConfigApplicationContext = mock(
+        AnnotationConfigApplicationContext.class);
+    doNothing().when(annotationConfigApplicationContext)
+        .addBeanFactoryPostProcessor(Mockito.<BeanFactoryPostProcessor>any());
+    annotationConfigApplicationContext.addBeanFactoryPostProcessor(new PropertyConfigurer());
+    boolean actualIsProcessingEnabledResult = actualStatusProvider.isProcessingEnabled(BLCFieldUtils.NULL_FIELD, "foo",
+        annotationConfigApplicationContext);
 
     // Assert
-    verify(statusProvider)
-        .isProcessingEnabled(isA(Object.class), eq("foo"), isA(ApplicationContext.class));
-    assertNull(earlyStageMergeBeanPostProcessor.getCollectionRef());
-    assertNull(earlyStageMergeBeanPostProcessor.getSourceRef());
-    assertNull(earlyStageMergeBeanPostProcessor.getTargetRef());
-    BeanPackage beanPackage = earlyStageMergeBeanPostProcessor.defaultBeanPackage;
-    assertNull(beanPackage.getSourceRef());
-    assertNull(beanPackage.getTargetRef());
-    assertNull(earlyStageMergeBeanPostProcessor.applicationContext);
-    assertEquals(0, earlyStageMergeBeanPostProcessor.getPosition());
-    assertEquals(0, beanPackage.getPosition());
-    assertEquals(Placement.APPEND, earlyStageMergeBeanPostProcessor.getPlacement());
-    assertEquals(Placement.APPEND, beanPackage.getPlacement());
-    assertFalse(beanPackage.bySource);
+    verify(statusProvider).isProcessingEnabled(isA(Object.class), eq("foo"), isA(ApplicationContext.class));
+    verify(annotationConfigApplicationContext).addBeanFactoryPostProcessor(isA(BeanFactoryPostProcessor.class));
     assertTrue(actualIsProcessingEnabledResult);
-    assertEquals(Integer.MIN_VALUE, earlyStageMergeBeanPostProcessor.getOrder());
   }
 
   /**
-   * Test {@link AbstractMergeBeanPostProcessor#getStatusProvider()}.
-   *
-   * <p>Method under test: {@link AbstractMergeBeanPostProcessor#getStatusProvider()}
+   * Method under test: {@link AbstractMergeBeanPostProcessor#getStatusProvider()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"MergeBeanStatusProvider AbstractMergeBeanPostProcessor.getStatusProvider()"})
   public void testGetStatusProvider2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     MergeBeanStatusProvider statusProvider = mock(MergeBeanStatusProvider.class);
-    when(statusProvider.isProcessingEnabled(
-            Mockito.<Object>any(), Mockito.<String>any(), Mockito.<ApplicationContext>any()))
-        .thenReturn(false);
+    when(statusProvider.isProcessingEnabled(Mockito.<Object>any(), Mockito.<String>any(),
+        Mockito.<ApplicationContext>any())).thenReturn(false);
 
-    EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor =
-        new EarlyStageMergeBeanPostProcessor();
+    EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor = new EarlyStageMergeBeanPostProcessor();
     earlyStageMergeBeanPostProcessor.setStatusProvider(statusProvider);
 
     // Act
-    boolean actualIsProcessingEnabledResult =
-        earlyStageMergeBeanPostProcessor
-            .getStatusProvider()
-            .isProcessingEnabled(BLCFieldUtils.NULL_FIELD, "foo", mock(ApplicationContext.class));
+    MergeBeanStatusProvider actualStatusProvider = earlyStageMergeBeanPostProcessor.getStatusProvider();
+    AnnotationConfigApplicationContext annotationConfigApplicationContext = mock(
+        AnnotationConfigApplicationContext.class);
+    doNothing().when(annotationConfigApplicationContext)
+        .addBeanFactoryPostProcessor(Mockito.<BeanFactoryPostProcessor>any());
+    annotationConfigApplicationContext.addBeanFactoryPostProcessor(new PropertyConfigurer());
+    boolean actualIsProcessingEnabledResult = actualStatusProvider.isProcessingEnabled(BLCFieldUtils.NULL_FIELD, "foo",
+        annotationConfigApplicationContext);
 
     // Assert
-    verify(statusProvider)
-        .isProcessingEnabled(isA(Object.class), eq("foo"), isA(ApplicationContext.class));
-    assertNull(earlyStageMergeBeanPostProcessor.getCollectionRef());
-    assertNull(earlyStageMergeBeanPostProcessor.getSourceRef());
-    assertNull(earlyStageMergeBeanPostProcessor.getTargetRef());
-    BeanPackage beanPackage = earlyStageMergeBeanPostProcessor.defaultBeanPackage;
-    assertNull(beanPackage.getSourceRef());
-    assertNull(beanPackage.getTargetRef());
-    assertNull(earlyStageMergeBeanPostProcessor.applicationContext);
-    assertEquals(0, earlyStageMergeBeanPostProcessor.getPosition());
-    assertEquals(0, beanPackage.getPosition());
-    assertEquals(Placement.APPEND, earlyStageMergeBeanPostProcessor.getPlacement());
-    assertEquals(Placement.APPEND, beanPackage.getPlacement());
+    verify(statusProvider).isProcessingEnabled(isA(Object.class), eq("foo"), isA(ApplicationContext.class));
+    verify(annotationConfigApplicationContext).addBeanFactoryPostProcessor(isA(BeanFactoryPostProcessor.class));
     assertFalse(actualIsProcessingEnabledResult);
-    assertFalse(beanPackage.bySource);
-    assertEquals(Integer.MIN_VALUE, earlyStageMergeBeanPostProcessor.getOrder());
   }
 
   /**
-   * Test {@link AbstractMergeBeanPostProcessor#getStatusProvider()}.
-   *
-   * <ul>
-   *   <li>Given {@link AbstractMergeBeanPostProcessor}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractMergeBeanPostProcessor#getStatusProvider()}
+   * Method under test:
+   * {@link AbstractMergeBeanPostProcessor#setStatusProvider(MergeBeanStatusProvider)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"MergeBeanStatusProvider AbstractMergeBeanPostProcessor.getStatusProvider()"})
-  public void testGetStatusProvider_givenAbstractMergeBeanPostProcessor_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(abstractMergeBeanPostProcessor.getStatusProvider());
-  }
-
-  /**
-   * Test {@link AbstractMergeBeanPostProcessor#setStatusProvider(MergeBeanStatusProvider)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractMergeBeanPostProcessor#setStatusProvider(MergeBeanStatusProvider)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AbstractMergeBeanPostProcessor.setStatusProvider(MergeBeanStatusProvider)"
-  })
   public void testSetStatusProvider() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    EarlyStageMergeBeanPostProcessor earlyStageMergeBeanPostProcessor = new EarlyStageMergeBeanPostProcessor();
     MergeBeanStatusProvider statusProvider = mock(MergeBeanStatusProvider.class);
 
     // Act
-    abstractMergeBeanPostProcessor.setStatusProvider(statusProvider);
+    earlyStageMergeBeanPostProcessor.setStatusProvider(statusProvider);
 
     // Assert
-    assertTrue(abstractMergeBeanPostProcessor instanceof EarlyStageMergeBeanPostProcessor);
-    assertSame(statusProvider, abstractMergeBeanPostProcessor.getStatusProvider());
-    assertSame(
-        statusProvider,
-        ((EarlyStageMergeBeanPostProcessor) abstractMergeBeanPostProcessor)
-            .defaultBeanPackage.getStatusProvider());
+    assertSame(statusProvider, earlyStageMergeBeanPostProcessor.getStatusProvider());
+    assertSame(statusProvider, earlyStageMergeBeanPostProcessor.defaultBeanPackage.getStatusProvider());
   }
 }

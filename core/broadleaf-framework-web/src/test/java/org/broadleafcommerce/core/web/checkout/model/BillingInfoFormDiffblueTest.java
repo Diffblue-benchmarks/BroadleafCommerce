@@ -22,139 +22,29 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.profile.core.domain.Address;
 import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.broadleafcommerce.profile.core.domain.CustomerPayment;
 import org.broadleafcommerce.profile.core.domain.CustomerPaymentImpl;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
+import org.broadleafcommerce.profile.core.domain.Phone;
+import org.broadleafcommerce.profile.core.domain.PhoneImpl;
 import org.junit.jupiter.api.Test;
 
 class BillingInfoFormDiffblueTest {
   /**
-   * Test new {@link BillingInfoForm} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link BillingInfoForm}
+   * Method under test: {@link BillingInfoForm#getUseCustomerPayment()}
    */
   @Test
-  @DisplayName("Test new BillingInfoForm (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BillingInfoForm.<init>()"})
-  void testNewBillingInfoForm() {
-    // Arrange and Act
-    BillingInfoForm actualBillingInfoForm = new BillingInfoForm();
-
-    // Assert
-    assertTrue(actualBillingInfoForm.getAddress() instanceof AddressImpl);
-    assertNull(actualBillingInfoForm.getCustomerPaymentId());
-    assertNull(actualBillingInfoForm.getPaymentName());
-    assertNull(actualBillingInfoForm.getCustomerPayment());
-    assertFalse(actualBillingInfoForm.getUseCustomerPayment());
-    assertFalse(actualBillingInfoForm.isUseShippingAddress());
-    assertFalse(actualBillingInfoForm.useCustomerPayment);
-    assertTrue(actualBillingInfoForm.getSaveNewPayment());
-    assertTrue(actualBillingInfoForm.saveNewPayment);
-  }
-
-  /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link BillingInfoForm#setAddress(Address)}
-   *   <li>{@link BillingInfoForm#setCustomerPayment(CustomerPayment)}
-   *   <li>{@link BillingInfoForm#setCustomerPaymentId(Long)}
-   *   <li>{@link BillingInfoForm#setPaymentName(String)}
-   *   <li>{@link BillingInfoForm#setUseShippingAddress(boolean)}
-   *   <li>{@link BillingInfoForm#getAddress()}
-   *   <li>{@link BillingInfoForm#getCustomerPayment()}
-   *   <li>{@link BillingInfoForm#getCustomerPaymentId()}
-   *   <li>{@link BillingInfoForm#getPaymentName()}
-   *   <li>{@link BillingInfoForm#isUseShippingAddress()}
-   * </ul>
-   */
-  @Test
-  @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Address BillingInfoForm.getAddress()",
-    "CustomerPayment BillingInfoForm.getCustomerPayment()",
-    "Long BillingInfoForm.getCustomerPaymentId()",
-    "String BillingInfoForm.getPaymentName()",
-    "boolean BillingInfoForm.isUseShippingAddress()",
-    "void BillingInfoForm.setAddress(Address)",
-    "void BillingInfoForm.setCustomerPayment(CustomerPayment)",
-    "void BillingInfoForm.setCustomerPaymentId(Long)",
-    "void BillingInfoForm.setPaymentName(String)",
-    "void BillingInfoForm.setUseShippingAddress(boolean)"
-  })
-  void testGettersAndSetters() {
-    // Arrange
-    BillingInfoForm billingInfoForm = new BillingInfoForm();
-    AddressImpl address = new AddressImpl();
-
-    // Act
-    billingInfoForm.setAddress(address);
-    CustomerPaymentImpl customerPayment = new CustomerPaymentImpl();
-    billingInfoForm.setCustomerPayment(customerPayment);
-    billingInfoForm.setCustomerPaymentId(1L);
-    billingInfoForm.setPaymentName("Payment Name");
-    billingInfoForm.setUseShippingAddress(true);
-    Address actualAddress = billingInfoForm.getAddress();
-    CustomerPayment actualCustomerPayment = billingInfoForm.getCustomerPayment();
-    Long actualCustomerPaymentId = billingInfoForm.getCustomerPaymentId();
-    String actualPaymentName = billingInfoForm.getPaymentName();
-    boolean actualIsUseShippingAddressResult = billingInfoForm.isUseShippingAddress();
-
-    // Assert
-    assertEquals("Payment Name", actualPaymentName);
-    assertEquals(1L, actualCustomerPaymentId.longValue());
-    assertTrue(actualIsUseShippingAddressResult);
-    assertSame(address, actualAddress);
-    assertSame(customerPayment, actualCustomerPayment);
-  }
-
-  /**
-   * Test {@link BillingInfoForm#getUseCustomerPayment()}.
-   *
-   * <ul>
-   *   <li>Given {@link BillingInfoForm} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BillingInfoForm#getUseCustomerPayment()}
-   */
-  @Test
-  @DisplayName(
-      "Test getUseCustomerPayment(); given BillingInfoForm (default constructor); then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean BillingInfoForm.getUseCustomerPayment()"})
-  void testGetUseCustomerPayment_givenBillingInfoForm_thenReturnFalse() {
+  void testGetUseCustomerPayment() {
     // Arrange, Act and Assert
-    assertFalse(new BillingInfoForm().getUseCustomerPayment());
+    assertFalse((new BillingInfoForm()).getUseCustomerPayment());
   }
 
   /**
-   * Test {@link BillingInfoForm#getUseCustomerPayment()}.
-   *
-   * <ul>
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BillingInfoForm#getUseCustomerPayment()}
+   * Method under test: {@link BillingInfoForm#getUseCustomerPayment()}
    */
   @Test
-  @DisplayName("Test getUseCustomerPayment(); then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean BillingInfoForm.getUseCustomerPayment()"})
-  void testGetUseCustomerPayment_thenReturnTrue() {
+  void testGetUseCustomerPayment2() {
     // Arrange
     BillingInfoForm billingInfoForm = new BillingInfoForm();
     billingInfoForm.setAddress(new AddressImpl());
@@ -170,21 +60,10 @@ class BillingInfoFormDiffblueTest {
   }
 
   /**
-   * Test {@link BillingInfoForm#setUseCustomerPayment(Boolean)}.
-   *
-   * <ul>
-   *   <li>Then {@link BillingInfoForm} (default constructor) UseCustomerPayment.
-   * </ul>
-   *
-   * <p>Method under test: {@link BillingInfoForm#setUseCustomerPayment(Boolean)}
+   * Method under test: {@link BillingInfoForm#setUseCustomerPayment(Boolean)}
    */
   @Test
-  @DisplayName(
-      "Test setUseCustomerPayment(Boolean); then BillingInfoForm (default constructor) UseCustomerPayment")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BillingInfoForm.setUseCustomerPayment(Boolean)"})
-  void testSetUseCustomerPayment_thenBillingInfoFormUseCustomerPayment() {
+  void testSetUseCustomerPayment() {
     // Arrange
     BillingInfoForm billingInfoForm = new BillingInfoForm();
 
@@ -197,21 +76,10 @@ class BillingInfoFormDiffblueTest {
   }
 
   /**
-   * Test {@link BillingInfoForm#setUseCustomerPayment(Boolean)}.
-   *
-   * <ul>
-   *   <li>Then not {@link BillingInfoForm} (default constructor) UseCustomerPayment.
-   * </ul>
-   *
-   * <p>Method under test: {@link BillingInfoForm#setUseCustomerPayment(Boolean)}
+   * Method under test: {@link BillingInfoForm#setUseCustomerPayment(Boolean)}
    */
   @Test
-  @DisplayName(
-      "Test setUseCustomerPayment(Boolean); then not BillingInfoForm (default constructor) UseCustomerPayment")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BillingInfoForm.setUseCustomerPayment(Boolean)"})
-  void testSetUseCustomerPayment_thenNotBillingInfoFormUseCustomerPayment() {
+  void testSetUseCustomerPayment2() {
     // Arrange
     BillingInfoForm billingInfoForm = new BillingInfoForm();
     billingInfoForm.setAddress(new AddressImpl());
@@ -231,23 +99,19 @@ class BillingInfoFormDiffblueTest {
   }
 
   /**
-   * Test {@link BillingInfoForm#getSaveNewPayment()}.
-   *
-   * <ul>
-   *   <li>Given {@link BillingInfoForm} (default constructor) Address is {@link AddressImpl}
-   *       (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BillingInfoForm#getSaveNewPayment()}
+   * Method under test: {@link BillingInfoForm#getSaveNewPayment()}
    */
   @Test
-  @DisplayName(
-      "Test getSaveNewPayment(); given BillingInfoForm (default constructor) Address is AddressImpl (default constructor); then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean BillingInfoForm.getSaveNewPayment()"})
-  void testGetSaveNewPayment_givenBillingInfoFormAddressIsAddressImpl_thenReturnFalse() {
+  void testGetSaveNewPayment() {
+    // Arrange, Act and Assert
+    assertTrue((new BillingInfoForm()).getSaveNewPayment());
+  }
+
+  /**
+   * Method under test: {@link BillingInfoForm#getSaveNewPayment()}
+   */
+  @Test
+  void testGetSaveNewPayment2() {
     // Arrange
     BillingInfoForm billingInfoForm = new BillingInfoForm();
     billingInfoForm.setAddress(new AddressImpl());
@@ -263,70 +127,26 @@ class BillingInfoFormDiffblueTest {
   }
 
   /**
-   * Test {@link BillingInfoForm#getSaveNewPayment()}.
-   *
-   * <ul>
-   *   <li>Given {@link BillingInfoForm} (default constructor).
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BillingInfoForm#getSaveNewPayment()}
+   * Method under test: {@link BillingInfoForm#setSaveNewPayment(Boolean)}
    */
   @Test
-  @DisplayName(
-      "Test getSaveNewPayment(); given BillingInfoForm (default constructor); then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean BillingInfoForm.getSaveNewPayment()"})
-  void testGetSaveNewPayment_givenBillingInfoForm_thenReturnTrue() {
-    // Arrange, Act and Assert
-    assertTrue(new BillingInfoForm().getSaveNewPayment());
-  }
-
-  /**
-   * Test {@link BillingInfoForm#setSaveNewPayment(Boolean)}.
-   *
-   * <ul>
-   *   <li>Given {@link BillingInfoForm} (default constructor).
-   *   <li>Then {@link BillingInfoForm} (default constructor) SaveNewPayment.
-   * </ul>
-   *
-   * <p>Method under test: {@link BillingInfoForm#setSaveNewPayment(Boolean)}
-   */
-  @Test
-  @DisplayName(
-      "Test setSaveNewPayment(Boolean); given BillingInfoForm (default constructor); then BillingInfoForm (default constructor) SaveNewPayment")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BillingInfoForm.setSaveNewPayment(Boolean)"})
-  void testSetSaveNewPayment_givenBillingInfoForm_thenBillingInfoFormSaveNewPayment() {
+  void testSetSaveNewPayment() {
     // Arrange
     BillingInfoForm billingInfoForm = new BillingInfoForm();
 
     // Act
     billingInfoForm.setSaveNewPayment(true);
 
-    // Assert that nothing has changed
+    // Assert
     assertTrue(billingInfoForm.getSaveNewPayment());
     assertTrue(billingInfoForm.saveNewPayment);
   }
 
   /**
-   * Test {@link BillingInfoForm#setSaveNewPayment(Boolean)}.
-   *
-   * <ul>
-   *   <li>Then not {@link BillingInfoForm} (default constructor) SaveNewPayment.
-   * </ul>
-   *
-   * <p>Method under test: {@link BillingInfoForm#setSaveNewPayment(Boolean)}
+   * Method under test: {@link BillingInfoForm#setSaveNewPayment(Boolean)}
    */
   @Test
-  @DisplayName(
-      "Test setSaveNewPayment(Boolean); then not BillingInfoForm (default constructor) SaveNewPayment")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BillingInfoForm.setSaveNewPayment(Boolean)"})
-  void testSetSaveNewPayment_thenNotBillingInfoFormSaveNewPayment() {
+  void testSetSaveNewPayment2() {
     // Arrange
     BillingInfoForm billingInfoForm = new BillingInfoForm();
     billingInfoForm.setAddress(new AddressImpl());
@@ -343,5 +163,112 @@ class BillingInfoFormDiffblueTest {
     // Assert
     assertFalse(billingInfoForm.getSaveNewPayment());
     assertFalse(billingInfoForm.saveNewPayment);
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link BillingInfoForm#setAddress(Address)}
+   *   <li>{@link BillingInfoForm#setCustomerPayment(CustomerPayment)}
+   *   <li>{@link BillingInfoForm#setCustomerPaymentId(Long)}
+   *   <li>{@link BillingInfoForm#setPaymentName(String)}
+   *   <li>{@link BillingInfoForm#setUseShippingAddress(boolean)}
+   *   <li>{@link BillingInfoForm#getAddress()}
+   *   <li>{@link BillingInfoForm#getCustomerPayment()}
+   *   <li>{@link BillingInfoForm#getCustomerPaymentId()}
+   *   <li>{@link BillingInfoForm#getPaymentName()}
+   *   <li>{@link BillingInfoForm#isUseShippingAddress()}
+   * </ul>
+   */
+  @Test
+  void testGettersAndSetters() {
+    // Arrange
+    BillingInfoForm billingInfoForm = new BillingInfoForm();
+    AddressImpl address = new AddressImpl();
+
+    // Act
+    billingInfoForm.setAddress(address);
+    CustomerPaymentImpl customerPayment = new CustomerPaymentImpl();
+    billingInfoForm.setCustomerPayment(customerPayment);
+    billingInfoForm.setCustomerPaymentId(1L);
+    billingInfoForm.setPaymentName("Payment Name");
+    billingInfoForm.setUseShippingAddress(true);
+    Address actualAddress = billingInfoForm.getAddress();
+    CustomerPayment actualCustomerPayment = billingInfoForm.getCustomerPayment();
+    Long actualCustomerPaymentId = billingInfoForm.getCustomerPaymentId();
+    String actualPaymentName = billingInfoForm.getPaymentName();
+    boolean actualIsUseShippingAddressResult = billingInfoForm.isUseShippingAddress();
+
+    // Assert that nothing has changed
+    assertEquals("Payment Name", actualPaymentName);
+    assertEquals(1L, actualCustomerPaymentId.longValue());
+    assertTrue(actualIsUseShippingAddressResult);
+    assertSame(address, actualAddress);
+    assertSame(customerPayment, actualCustomerPayment);
+  }
+
+  /**
+   * Method under test: default or parameterless constructor of
+   * {@link BillingInfoForm}
+   */
+  @Test
+  void testNewBillingInfoForm() {
+    // Arrange and Act
+    BillingInfoForm actualBillingInfoForm = new BillingInfoForm();
+
+    // Assert
+    Address address = actualBillingInfoForm.getAddress();
+    assertTrue(address instanceof AddressImpl);
+    Phone phoneFax = address.getPhoneFax();
+    assertTrue(phoneFax instanceof PhoneImpl);
+    Phone phonePrimary = address.getPhonePrimary();
+    assertTrue(phonePrimary instanceof PhoneImpl);
+    Phone phoneSecondary = address.getPhoneSecondary();
+    assertTrue(phoneSecondary instanceof PhoneImpl);
+    assertNull(actualBillingInfoForm.getCustomerPaymentId());
+    assertNull(address.getId());
+    assertNull(phoneFax.getId());
+    assertNull(actualBillingInfoForm.getPaymentName());
+    assertNull(address.getAddressLine1());
+    assertNull(address.getAddressLine2());
+    assertNull(address.getAddressLine3());
+    assertNull(address.getCity());
+    assertNull(address.getCompanyName());
+    assertNull(address.getCounty());
+    assertNull(address.getEmailAddress());
+    assertNull(address.getFax());
+    assertNull(address.getFirstName());
+    assertNull(address.getFullName());
+    assertNull(address.getIsoCountrySubdivision());
+    assertNull(address.getLastName());
+    assertNull(address.getPostalCode());
+    assertNull(address.getPrimaryPhone());
+    assertNull(address.getSecondaryPhone());
+    assertNull(address.getStateProvinceRegion());
+    assertNull(address.getTokenizedAddress());
+    assertNull(address.getVerificationLevel());
+    assertNull(address.getZipFour());
+    assertNull(phoneFax.getCountryCode());
+    assertNull(phoneFax.getExtension());
+    assertNull(phoneFax.getPhoneNumber());
+    assertNull(address.getIsoCountryAlpha2());
+    assertNull(address.getCountry());
+    assertNull(actualBillingInfoForm.getCustomerPayment());
+    assertNull(address.getState());
+    assertFalse(actualBillingInfoForm.getUseCustomerPayment());
+    assertFalse(actualBillingInfoForm.isUseShippingAddress());
+    assertFalse(address.getStandardized());
+    assertFalse(address.isBusiness());
+    assertFalse(address.isDefault());
+    assertFalse(address.isMailing());
+    assertFalse(address.isStreet());
+    assertFalse(phoneFax.isDefault());
+    assertFalse(actualBillingInfoForm.useCustomerPayment);
+    assertTrue(actualBillingInfoForm.getSaveNewPayment());
+    assertTrue(address.isActive());
+    assertTrue(phoneFax.isActive());
+    assertTrue(actualBillingInfoForm.saveNewPayment);
+    assertEquals(phoneFax, phonePrimary);
+    assertEquals(phoneFax, phoneSecondary);
   }
 }

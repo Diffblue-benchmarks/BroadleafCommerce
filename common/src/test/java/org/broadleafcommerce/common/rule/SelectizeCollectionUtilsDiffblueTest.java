@@ -19,108 +19,29 @@ package org.broadleafcommerce.common.rule;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
-import java.io.Serializable;
+import bsh.util.NameCompletionTable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import org.apache.logging.log4j.spi.DefaultThreadContextStack;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
-import org.broadleafcommerce.common.value.ValueAssignable;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class SelectizeCollectionUtilsDiffblueTest {
   /**
-   * Test {@link SelectizeCollectionUtils#intersection(Object, Object)}.
-   *
-   * <ul>
-   *   <li>Given {@code foo}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@code foo}.
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
+   * Method under test:
+   * {@link SelectizeCollectionUtils#intersection(Object, Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Collection SelectizeCollectionUtils.intersection(Object, Object)"})
-  public void testIntersection_givenFoo_whenArrayListAddFoo_thenReturnEmpty() {
-    // Arrange
-    ArrayList<Object> objectList = new ArrayList<>();
-    objectList.add("foo");
-
-    // Act
-    Collection actualIntersectionResult =
-        SelectizeCollectionUtils.intersection(BLCFieldUtils.NULL_FIELD, objectList);
-
-    // Assert
-    assertTrue(actualIntersectionResult instanceof List);
-    assertTrue(actualIntersectionResult.isEmpty());
-  }
-
-  /**
-   * Test {@link SelectizeCollectionUtils#intersection(Object, Object)}.
-   *
-   * <ul>
-   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@link BLCFieldUtils#NULL_FIELD}.
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Collection SelectizeCollectionUtils.intersection(Object, Object)"})
-  public void testIntersection_givenNull_field_whenArrayListAddNull_field_thenReturnEmpty() {
-    // Arrange
-    ArrayList<Object> objectList = new ArrayList<>();
-    objectList.add(BLCFieldUtils.NULL_FIELD);
-    objectList.add(BLCFieldUtils.NULL_FIELD);
-
-    // Act
-    Collection actualIntersectionResult =
-        SelectizeCollectionUtils.intersection(objectList, BLCFieldUtils.NULL_FIELD);
-
-    // Assert
-    assertTrue(actualIntersectionResult instanceof List);
-    assertTrue(actualIntersectionResult.isEmpty());
-  }
-
-  /**
-   * Test {@link SelectizeCollectionUtils#intersection(Object, Object)}.
-   *
-   * <ul>
-   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@link BLCFieldUtils#NULL_FIELD}.
-   *   <li>Then return size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Collection SelectizeCollectionUtils.intersection(Object, Object)"})
-  public void testIntersection_givenNull_field_whenArrayListAddNull_field_thenReturnSizeIsOne() {
-    // Arrange
-    ArrayList<Object> objectList = new ArrayList<>();
-    objectList.add(BLCFieldUtils.NULL_FIELD);
-    objectList.add(BLCFieldUtils.NULL_FIELD);
-
-    ArrayList<Object> objectList2 = new ArrayList<>();
-    objectList2.add(BLCFieldUtils.NULL_FIELD);
-
-    // Act
-    Collection actualIntersectionResult =
-        SelectizeCollectionUtils.intersection(objectList, objectList2);
+  public void testIntersection() {
+    // Arrange and Act
+    Collection actualIntersectionResult = SelectizeCollectionUtils.intersection(BLCFieldUtils.NULL_FIELD,
+        BLCFieldUtils.NULL_FIELD);
 
     // Assert
     assertTrue(actualIntersectionResult instanceof List);
@@ -128,222 +49,179 @@ public class SelectizeCollectionUtilsDiffblueTest {
   }
 
   /**
-   * Test {@link SelectizeCollectionUtils#intersection(Object, Object)}.
-   *
-   * <ul>
-   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
+   * Method under test:
+   * {@link SelectizeCollectionUtils#intersection(Object, Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Collection SelectizeCollectionUtils.intersection(Object, Object)"})
-  public void testIntersection_givenNull_field_whenArrayList_thenReturnEmpty() {
+  public void testIntersection2() {
+    // Arrange and Act
+    Collection actualIntersectionResult = SelectizeCollectionUtils.intersection(new ArrayList<>(),
+        BLCFieldUtils.NULL_FIELD);
+
+    // Assert
+    assertTrue(actualIntersectionResult instanceof List);
+    assertTrue(actualIntersectionResult.isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link SelectizeCollectionUtils#intersection(Object, Object)}
+   */
+  @Test
+  public void testIntersection3() {
+    // Arrange and Act
+    Collection actualIntersectionResult = SelectizeCollectionUtils.intersection(null, BLCFieldUtils.NULL_FIELD);
+
+    // Assert
+    assertTrue(actualIntersectionResult instanceof List);
+    assertTrue(actualIntersectionResult.isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link SelectizeCollectionUtils#intersection(Object, Object)}
+   */
+  @Test
+  public void testIntersection4() {
+    // Arrange
+    NameCompletionTable nameCompletionTable = mock(NameCompletionTable.class);
+    when(nameCompletionTable.isEmpty()).thenReturn(true);
+
+    ArrayList<Object> objectList = new ArrayList<>();
+    when(nameCompletionTable.iterator()).thenReturn(objectList.iterator());
+
+    // Act
+    Collection actualIntersectionResult = SelectizeCollectionUtils.intersection(nameCompletionTable,
+        BLCFieldUtils.NULL_FIELD);
+
+    // Assert
+    verify(nameCompletionTable).isEmpty();
+    verify(nameCompletionTable, atLeast(1)).iterator();
+    assertTrue(actualIntersectionResult instanceof List);
+    assertTrue(actualIntersectionResult.isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link SelectizeCollectionUtils#intersection(Object, Object)}
+   */
+  @Test
+  public void testIntersection5() {
+    // Arrange
+    NameCompletionTable nameCompletionTable = mock(NameCompletionTable.class);
+    when(nameCompletionTable.isEmpty()).thenReturn(false);
+
+    ArrayList<Object> objectList = new ArrayList<>();
+    when(nameCompletionTable.iterator()).thenReturn(objectList.iterator());
+
+    // Act
+    Collection actualIntersectionResult = SelectizeCollectionUtils.intersection(nameCompletionTable,
+        BLCFieldUtils.NULL_FIELD);
+
+    // Assert
+    verify(nameCompletionTable).isEmpty();
+    verify(nameCompletionTable, atLeast(1)).iterator();
+    assertTrue(actualIntersectionResult instanceof List);
+    assertTrue(actualIntersectionResult.isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link SelectizeCollectionUtils#intersection(Object, Object)}
+   */
+  @Test
+  public void testIntersection6() {
+    // Arrange
+    NameCompletionTable nameCompletionTable = mock(NameCompletionTable.class);
+    when(nameCompletionTable.isEmpty()).thenReturn(true);
+
+    ArrayList<Object> objectList = new ArrayList<>();
+    when(nameCompletionTable.iterator()).thenReturn(objectList.iterator());
+
+    // Act
+    Collection actualIntersectionResult = SelectizeCollectionUtils.intersection(nameCompletionTable, new ArrayList<>());
+
+    // Assert
+    verify(nameCompletionTable).isEmpty();
+    verify(nameCompletionTable, atLeast(1)).iterator();
+    assertTrue(actualIntersectionResult instanceof List);
+    assertTrue(actualIntersectionResult.isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link SelectizeCollectionUtils#intersection(Object, Object)}
+   */
+  @Test
+  public void testIntersection7() {
+    // Arrange and Act
+    Collection actualIntersectionResult = SelectizeCollectionUtils.intersection(mock(NameCompletionTable.class), null);
+
+    // Assert
+    assertTrue(actualIntersectionResult instanceof List);
+    assertTrue(actualIntersectionResult.isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link SelectizeCollectionUtils#intersection(Object, Object)}
+   */
+  @Test
+  public void testIntersection8() {
     // Arrange
     ArrayList<Object> objectList = new ArrayList<>();
     objectList.add(BLCFieldUtils.NULL_FIELD);
     objectList.add(BLCFieldUtils.NULL_FIELD);
+    Iterator<Object> iteratorResult = objectList.iterator();
+    NameCompletionTable nameCompletionTable = mock(NameCompletionTable.class);
+    when(nameCompletionTable.isEmpty()).thenReturn(true);
+    when(nameCompletionTable.iterator()).thenReturn(iteratorResult);
+    DefaultThreadContextStack defaultThreadContextStack = mock(DefaultThreadContextStack.class);
+
+    ArrayList<String> stringList = new ArrayList<>();
+    when(defaultThreadContextStack.iterator()).thenReturn(stringList.iterator());
 
     // Act
-    Collection actualIntersectionResult =
-        SelectizeCollectionUtils.intersection(objectList, new ArrayList<>());
+    Collection actualIntersectionResult = SelectizeCollectionUtils.intersection(nameCompletionTable,
+        defaultThreadContextStack);
 
     // Assert
+    verify(nameCompletionTable).isEmpty();
+    verify(nameCompletionTable, atLeast(1)).iterator();
+    verify(defaultThreadContextStack, atLeast(1)).iterator();
     assertTrue(actualIntersectionResult instanceof List);
     assertTrue(actualIntersectionResult.isEmpty());
   }
 
   /**
-   * Test {@link SelectizeCollectionUtils#intersection(Object, Object)}.
-   *
-   * <ul>
-   *   <li>Given two.
-   *   <li>When {@link ArrayList#ArrayList()} add two.
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
+   * Method under test:
+   * {@link SelectizeCollectionUtils#intersection(Object, Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Collection SelectizeCollectionUtils.intersection(Object, Object)"})
-  public void testIntersection_givenTwo_whenArrayListAddTwo_thenReturnEmpty() {
+  public void testIntersection9() {
     // Arrange
     ArrayList<Object> objectList = new ArrayList<>();
-    objectList.add(mock(ValueAssignable.class));
+    objectList.add(BLCFieldUtils.NULL_FIELD);
+    objectList.add(BLCFieldUtils.NULL_FIELD);
+    Iterator<Object> iteratorResult = objectList.iterator();
+    NameCompletionTable nameCompletionTable = mock(NameCompletionTable.class);
+    when(nameCompletionTable.isEmpty()).thenReturn(false);
+    when(nameCompletionTable.iterator()).thenReturn(iteratorResult);
+    DefaultThreadContextStack defaultThreadContextStack = mock(DefaultThreadContextStack.class);
+    when(defaultThreadContextStack.isEmpty()).thenReturn(true);
 
-    ArrayList<Object> objectList2 = new ArrayList<>();
-    objectList2.add(2);
-
-    // Act
-    Collection actualIntersectionResult =
-        SelectizeCollectionUtils.intersection(objectList, objectList2);
-
-    // Assert
-    assertTrue(actualIntersectionResult instanceof List);
-    assertTrue(actualIntersectionResult.isEmpty());
-  }
-
-  /**
-   * Test {@link SelectizeCollectionUtils#intersection(Object, Object)}.
-   *
-   * <ul>
-   *   <li>Given {@link ValueAssignable}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@link ValueAssignable}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Collection SelectizeCollectionUtils.intersection(Object, Object)"})
-  public void testIntersection_givenValueAssignable_whenArrayListAddValueAssignable() {
-    // Arrange
-    ArrayList<Object> objectList = new ArrayList<>();
-    objectList.add(mock(ValueAssignable.class));
+    ArrayList<String> stringList = new ArrayList<>();
+    when(defaultThreadContextStack.iterator()).thenReturn(stringList.iterator());
 
     // Act
-    Collection actualIntersectionResult =
-        SelectizeCollectionUtils.intersection(objectList, BLCFieldUtils.NULL_FIELD);
+    Collection actualIntersectionResult = SelectizeCollectionUtils.intersection(nameCompletionTable,
+        defaultThreadContextStack);
 
     // Assert
-    assertTrue(actualIntersectionResult instanceof List);
-    assertTrue(actualIntersectionResult.isEmpty());
-  }
-
-  /**
-   * Test {@link SelectizeCollectionUtils#intersection(Object, Object)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link ValueAssignable#getValue()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Collection SelectizeCollectionUtils.intersection(Object, Object)"})
-  public void testIntersection_thenCallsGetValue() {
-    // Arrange
-    ValueAssignable<Serializable> valueAssignable = mock(ValueAssignable.class);
-    when(valueAssignable.getValue()).thenReturn(MvelHelper.BLC_RULE_MAP_PARAM);
-
-    ArrayList<Object> objectList = new ArrayList<>();
-    objectList.add(valueAssignable);
-
-    ArrayList<Object> objectList2 = new ArrayList<>();
-    objectList2.add("foo");
-
-    // Act
-    Collection actualIntersectionResult =
-        SelectizeCollectionUtils.intersection(objectList, objectList2);
-
-    // Assert
-    verify(valueAssignable).getValue();
-    assertTrue(actualIntersectionResult instanceof List);
-    assertTrue(actualIntersectionResult.isEmpty());
-  }
-
-  /**
-   * Test {@link SelectizeCollectionUtils#intersection(Object, Object)}.
-   *
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then return {@link ArrayList#ArrayList()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Collection SelectizeCollectionUtils.intersection(Object, Object)"})
-  public void testIntersection_whenArrayList_thenReturnArrayList() {
-    // Arrange
-    ArrayList<Object> objectList = new ArrayList<>();
-
-    // Act
-    Collection actualIntersectionResult =
-        SelectizeCollectionUtils.intersection(objectList, BLCFieldUtils.NULL_FIELD);
-
-    // Assert
-    assertEquals(objectList, actualIntersectionResult);
-  }
-
-  /**
-   * Test {@link SelectizeCollectionUtils#intersection(Object, Object)}.
-   *
-   * <ul>
-   *   <li>When {@link BLCFieldUtils#NULL_FIELD}.
-   *   <li>Then return size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Collection SelectizeCollectionUtils.intersection(Object, Object)"})
-  public void testIntersection_whenNull_field_thenReturnSizeIsOne() {
-    // Arrange and Act
-    Collection actualIntersectionResult =
-        SelectizeCollectionUtils.intersection(BLCFieldUtils.NULL_FIELD, BLCFieldUtils.NULL_FIELD);
-
-    // Assert
-    assertTrue(actualIntersectionResult instanceof List);
-    assertEquals(1, actualIntersectionResult.size());
-  }
-
-  /**
-   * Test {@link SelectizeCollectionUtils#intersection(Object, Object)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Collection SelectizeCollectionUtils.intersection(Object, Object)"})
-  public void testIntersection_whenNull_thenReturnEmpty() {
-    // Arrange and Act
-    Collection actualIntersectionResult = SelectizeCollectionUtils.intersection(null, null);
-
-    // Assert
-    assertTrue(actualIntersectionResult instanceof List);
-    assertTrue(actualIntersectionResult.isEmpty());
-  }
-
-  /**
-   * Test {@link SelectizeCollectionUtils#intersection(Object, Object)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Collection SelectizeCollectionUtils.intersection(Object, Object)"})
-  public void testIntersection_whenNull_thenReturnEmpty2() {
-    // Arrange and Act
-    Collection actualIntersectionResult =
-        SelectizeCollectionUtils.intersection(BLCFieldUtils.NULL_FIELD, null);
-
-    // Assert
+    verify(nameCompletionTable).isEmpty();
+    verify(nameCompletionTable, atLeast(1)).iterator();
+    verify(defaultThreadContextStack).isEmpty();
+    verify(defaultThreadContextStack, atLeast(1)).iterator();
     assertTrue(actualIntersectionResult instanceof List);
     assertTrue(actualIntersectionResult.isEmpty());
   }

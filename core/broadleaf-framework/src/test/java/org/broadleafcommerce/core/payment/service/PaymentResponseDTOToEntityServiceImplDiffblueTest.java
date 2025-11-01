@@ -20,436 +20,215 @@ package org.broadleafcommerce.core.payment.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.broadleafcommerce.common.i18n.domain.ISOCountryImpl;
-import org.broadleafcommerce.common.i18n.service.ISOService;
+import java.util.HashMap;
+import org.broadleafcommerce.common.payment.PaymentGatewayType;
+import org.broadleafcommerce.common.payment.PaymentType;
 import org.broadleafcommerce.common.payment.dto.AddressDTO;
+import org.broadleafcommerce.common.payment.dto.CreditCardDTO;
 import org.broadleafcommerce.common.payment.dto.PaymentResponseDTO;
+import org.broadleafcommerce.core.payment.domain.OrderPayment;
+import org.broadleafcommerce.core.payment.domain.OrderPaymentImpl;
 import org.broadleafcommerce.profile.core.domain.Address;
 import org.broadleafcommerce.profile.core.domain.AddressImpl;
-import org.broadleafcommerce.profile.core.domain.CountryImpl;
-import org.broadleafcommerce.profile.core.domain.CountrySubdivisionImpl;
-import org.broadleafcommerce.profile.core.domain.PhoneImpl;
-import org.broadleafcommerce.profile.core.domain.StateImpl;
-import org.broadleafcommerce.profile.core.service.AddressService;
-import org.broadleafcommerce.profile.core.service.CountryService;
-import org.broadleafcommerce.profile.core.service.CountrySubdivisionService;
-import org.broadleafcommerce.profile.core.service.PhoneService;
-import org.broadleafcommerce.profile.core.service.StateService;
+import org.broadleafcommerce.profile.core.domain.CustomerPayment;
+import org.broadleafcommerce.profile.core.domain.CustomerPaymentImpl;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
 public class PaymentResponseDTOToEntityServiceImplDiffblueTest {
-  @Mock private AddressService addressService;
-
-  @Mock private CountryService countryService;
-
-  @Mock private CountrySubdivisionService countrySubdivisionService;
-
-  @Mock private ISOService iSOService;
-
-  @InjectMocks private PaymentResponseDTOToEntityServiceImpl paymentResponseDTOToEntityServiceImpl;
-
-  @Mock private PhoneService phoneService;
-
-  @Mock private StateService stateService;
-
   /**
-   * Test {@link PaymentResponseDTOToEntityServiceImpl#populateAddressInfo(AddressDTO, Address)}.
-   *
-   * <p>Method under test: {@link
-   * PaymentResponseDTOToEntityServiceImpl#populateAddressInfo(AddressDTO, Address)}
+   * Method under test:
+   * {@link PaymentResponseDTOToEntityServiceImpl#populateBillingInfo(PaymentResponseDTO, OrderPayment, Address, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PaymentResponseDTOToEntityServiceImpl.populateAddressInfo(AddressDTO, Address)"
-  })
-  public void testPopulateAddressInfo() {
+  public void testPopulateBillingInfo() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    doNothing().when(addressService).populateAddressISOCountrySub(Mockito.<Address>any());
-    when(countrySubdivisionService.findSubdivisionByAbbreviation(Mockito.<String>any()))
-        .thenReturn(null);
-    AddressDTO<PaymentResponseDTO> dto = new AddressDTO<>();
+    PaymentResponseDTOToEntityServiceImpl paymentResponseDTOToEntityServiceImpl = new PaymentResponseDTOToEntityServiceImpl();
+    PaymentType paymentType = new PaymentType("Type", "Friendly Type");
+
+    PaymentResponseDTO responseDTO = new PaymentResponseDTO(paymentType,
+        new PaymentGatewayType("Type", "Friendly Type"));
+
+    OrderPaymentImpl payment = new OrderPaymentImpl();
+    AddressImpl tempBillingAddress = new AddressImpl();
 
     // Act
-    paymentResponseDTOToEntityServiceImpl.populateAddressInfo(dto, new AddressImpl());
+    paymentResponseDTOToEntityServiceImpl.populateBillingInfo(responseDTO, payment, tempBillingAddress, true);
+
+    // Assert
+    assertSame(tempBillingAddress, payment.getBillingAddress());
+  }
+
+  /**
+   * Method under test:
+   * {@link PaymentResponseDTOToEntityServiceImpl#populateBillingInfo(PaymentResponseDTO, OrderPayment, Address, boolean)}
+   */
+  @Test
+  public void testPopulateBillingInfo2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PaymentResponseDTOToEntityServiceImpl paymentResponseDTOToEntityServiceImpl = new PaymentResponseDTOToEntityServiceImpl();
+    PaymentType paymentType = mock(PaymentType.class);
+    PaymentResponseDTO responseDTO = new PaymentResponseDTO(paymentType,
+        new PaymentGatewayType("Type", "Friendly Type"));
+
+    OrderPaymentImpl payment = new OrderPaymentImpl();
+    AddressImpl tempBillingAddress = new AddressImpl();
+
+    // Act
+    paymentResponseDTOToEntityServiceImpl.populateBillingInfo(responseDTO, payment, tempBillingAddress, true);
+
+    // Assert
+    assertSame(tempBillingAddress, payment.getBillingAddress());
+  }
+
+  /**
+   * Method under test:
+   * {@link PaymentResponseDTOToEntityServiceImpl#populateBillingInfo(PaymentResponseDTO, OrderPayment, Address, boolean)}
+   */
+  @Test
+  public void testPopulateBillingInfo3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PaymentResponseDTOToEntityServiceImpl paymentResponseDTOToEntityServiceImpl = new PaymentResponseDTOToEntityServiceImpl();
+    PaymentResponseDTO responseDTO = mock(PaymentResponseDTO.class);
+    when(responseDTO.getBillTo()).thenReturn(new AddressDTO<>());
+    OrderPaymentImpl payment = new OrderPaymentImpl();
+    AddressImpl tempBillingAddress = new AddressImpl();
+
+    // Act
+    paymentResponseDTOToEntityServiceImpl.populateBillingInfo(responseDTO, payment, tempBillingAddress, true);
+
+    // Assert
+    verify(responseDTO, atLeast(1)).getBillTo();
+    assertSame(tempBillingAddress, payment.getBillingAddress());
+  }
+
+  /**
+   * Method under test:
+   * {@link PaymentResponseDTOToEntityServiceImpl#populateBillingInfo(PaymentResponseDTO, OrderPayment, Address, boolean)}
+   */
+  @Test
+  public void testPopulateBillingInfo4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PaymentResponseDTOToEntityServiceImpl paymentResponseDTOToEntityServiceImpl = new PaymentResponseDTOToEntityServiceImpl();
+    AddressDTO<PaymentResponseDTO> addressDTO = mock(AddressDTO.class);
+    when(addressDTO.addressPopulated()).thenReturn(true);
+    PaymentResponseDTO responseDTO = mock(PaymentResponseDTO.class);
+    when(responseDTO.getBillTo()).thenReturn(addressDTO);
+    OrderPaymentImpl payment = new OrderPaymentImpl();
+    AddressImpl tempBillingAddress = new AddressImpl();
+
+    // Act
+    paymentResponseDTOToEntityServiceImpl.populateBillingInfo(responseDTO, payment, tempBillingAddress, false);
+
+    // Assert
+    verify(addressDTO).addressPopulated();
+    verify(responseDTO, atLeast(1)).getBillTo();
+    assertSame(tempBillingAddress, payment.getBillingAddress());
+  }
+
+  /**
+   * Method under test:
+   * {@link PaymentResponseDTOToEntityServiceImpl#populateCustomerPaymentToken(PaymentResponseDTO, CustomerPayment)}
+   */
+  @Test
+  public void testPopulateCustomerPaymentToken() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PaymentResponseDTOToEntityServiceImpl paymentResponseDTOToEntityServiceImpl = new PaymentResponseDTOToEntityServiceImpl();
+    PaymentType paymentType = new PaymentType("Type", "Friendly Type");
+
+    PaymentResponseDTO responseDTO = new PaymentResponseDTO(paymentType,
+        new PaymentGatewayType("Type", "Friendly Type"));
+
+    CustomerPaymentImpl customerPayment = new CustomerPaymentImpl();
+
+    // Act
+    paymentResponseDTOToEntityServiceImpl.populateCustomerPaymentToken(responseDTO, customerPayment);
 
     // Assert that nothing has changed
-    verify(addressService).populateAddressISOCountrySub(isA(Address.class));
-    verify(countrySubdivisionService).findSubdivisionByAbbreviation(null);
+    assertNull(customerPayment.getPaymentToken());
   }
 
   /**
-   * Test {@link PaymentResponseDTOToEntityServiceImpl#populateAddressInfo(AddressDTO, Address)}.
-   *
-   * <ul>
-   *   <li>Given {@code 42 Main St}.
-   *   <li>Then {@link AddressImpl} (default constructor) EmailAddress is {@code 42 Main St}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * PaymentResponseDTOToEntityServiceImpl#populateAddressInfo(AddressDTO, Address)}
+   * Method under test:
+   * {@link PaymentResponseDTOToEntityServiceImpl#populateCustomerPaymentToken(PaymentResponseDTO, CustomerPayment)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PaymentResponseDTOToEntityServiceImpl.populateAddressInfo(AddressDTO, Address)"
-  })
-  public void testPopulateAddressInfo_given42MainSt_thenAddressImplEmailAddressIs42MainSt() {
-    // Arrange
-    doNothing().when(addressService).populateAddressISOCountrySub(Mockito.<Address>any());
-    CountryImpl countryImpl = new CountryImpl();
-    when(countryService.findCountryByAbbreviation(Mockito.<String>any())).thenReturn(countryImpl);
-    when(countrySubdivisionService.findSubdivisionByAbbreviation(Mockito.<String>any()))
-        .thenReturn(new CountrySubdivisionImpl());
-    ISOCountryImpl isoCountryImpl = new ISOCountryImpl();
-    when(iSOService.findISOCountryByAlpha2Code(Mockito.<String>any())).thenReturn(isoCountryImpl);
-    PhoneImpl phoneImpl = new PhoneImpl();
-    when(phoneService.create()).thenReturn(phoneImpl);
-    when(stateService.findStateByAbbreviation(Mockito.<String>any())).thenReturn(new StateImpl());
+  public void testPopulateCustomerPaymentToken2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    AddressDTO<PaymentResponseDTO> dto = new AddressDTO<>();
-    dto.addressEmail("42 Main St");
-    dto.addressPhone("+44 1865 4960636");
-    dto.addressCountryCode("17 High St");
-    dto.addressStateRegion("us-east-2");
-    AddressImpl address = new AddressImpl();
+    // Arrange
+    PaymentResponseDTOToEntityServiceImpl paymentResponseDTOToEntityServiceImpl = new PaymentResponseDTOToEntityServiceImpl();
+    PaymentType paymentType = mock(PaymentType.class);
+    PaymentResponseDTO responseDTO = new PaymentResponseDTO(paymentType,
+        new PaymentGatewayType("Type", "Friendly Type"));
+
+    CustomerPaymentImpl customerPayment = new CustomerPaymentImpl();
 
     // Act
-    paymentResponseDTOToEntityServiceImpl.populateAddressInfo(dto, address);
-
-    // Assert
-    verify(iSOService).findISOCountryByAlpha2Code("17 High St");
-    verify(addressService).populateAddressISOCountrySub(isA(Address.class));
-    verify(countryService).findCountryByAbbreviation("17 High St");
-    verify(countrySubdivisionService).findSubdivisionByAbbreviation("us-east-2");
-    verify(phoneService).create();
-    verify(stateService).findStateByAbbreviation("us-east-2");
-    assertEquals("42 Main St", address.getEmailAddress());
-    assertSame(isoCountryImpl, address.getIsoCountryAlpha2());
-    assertSame(countryImpl, address.getCountry());
-    assertSame(phoneImpl, address.getPhonePrimary());
-  }
-
-  /**
-   * Test {@link PaymentResponseDTOToEntityServiceImpl#populateAddressInfo(AddressDTO, Address)}.
-   *
-   * <ul>
-   *   <li>Given {@link CountryService} {@link CountryService#findCountryByAbbreviation(String)}
-   *       return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * PaymentResponseDTOToEntityServiceImpl#populateAddressInfo(AddressDTO, Address)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PaymentResponseDTOToEntityServiceImpl.populateAddressInfo(AddressDTO, Address)"
-  })
-  public void testPopulateAddressInfo_givenCountryServiceFindCountryByAbbreviationReturnNull() {
-    // Arrange
-    doNothing().when(addressService).populateAddressISOCountrySub(Mockito.<Address>any());
-    when(countryService.findCountryByAbbreviation(Mockito.<String>any())).thenReturn(null);
-    when(countrySubdivisionService.findSubdivisionByAbbreviation(Mockito.<String>any()))
-        .thenReturn(new CountrySubdivisionImpl());
-    ISOCountryImpl isoCountryImpl = new ISOCountryImpl();
-    when(iSOService.findISOCountryByAlpha2Code(Mockito.<String>any())).thenReturn(isoCountryImpl);
-    PhoneImpl phoneImpl = new PhoneImpl();
-    when(phoneService.create()).thenReturn(phoneImpl);
-    when(stateService.findStateByAbbreviation(Mockito.<String>any())).thenReturn(new StateImpl());
-
-    AddressDTO<PaymentResponseDTO> dto = new AddressDTO<>();
-    dto.addressPhone("+44 1865 4960636");
-    dto.addressCountryCode("17 High St");
-    dto.addressStateRegion("us-east-2");
-    AddressImpl address = new AddressImpl();
-
-    // Act
-    paymentResponseDTOToEntityServiceImpl.populateAddressInfo(dto, address);
-
-    // Assert
-    verify(iSOService).findISOCountryByAlpha2Code("17 High St");
-    verify(addressService).populateAddressISOCountrySub(isA(Address.class));
-    verify(countryService).findCountryByAbbreviation("17 High St");
-    verify(countrySubdivisionService).findSubdivisionByAbbreviation("us-east-2");
-    verify(phoneService).create();
-    verify(stateService).findStateByAbbreviation("us-east-2");
-    assertSame(isoCountryImpl, address.getIsoCountryAlpha2());
-    assertSame(phoneImpl, address.getPhonePrimary());
-  }
-
-  /**
-   * Test {@link PaymentResponseDTOToEntityServiceImpl#populateAddressInfo(AddressDTO, Address)}.
-   *
-   * <ul>
-   *   <li>Given {@link ISOService} {@link ISOService#findISOCountryByAlpha2Code(String)} return
-   *       {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * PaymentResponseDTOToEntityServiceImpl#populateAddressInfo(AddressDTO, Address)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PaymentResponseDTOToEntityServiceImpl.populateAddressInfo(AddressDTO, Address)"
-  })
-  public void testPopulateAddressInfo_givenISOServiceFindISOCountryByAlpha2CodeReturnNull() {
-    // Arrange
-    doNothing().when(addressService).populateAddressISOCountrySub(Mockito.<Address>any());
-    CountryImpl countryImpl = new CountryImpl();
-    when(countryService.findCountryByAbbreviation(Mockito.<String>any())).thenReturn(countryImpl);
-    when(countrySubdivisionService.findSubdivisionByAbbreviation(Mockito.<String>any()))
-        .thenReturn(new CountrySubdivisionImpl());
-    when(iSOService.findISOCountryByAlpha2Code(Mockito.<String>any())).thenReturn(null);
-    PhoneImpl phoneImpl = new PhoneImpl();
-    when(phoneService.create()).thenReturn(phoneImpl);
-    when(stateService.findStateByAbbreviation(Mockito.<String>any())).thenReturn(new StateImpl());
-
-    AddressDTO<PaymentResponseDTO> dto = new AddressDTO<>();
-    dto.addressPhone("+44 1865 4960636");
-    dto.addressCountryCode("17 High St");
-    dto.addressStateRegion("us-east-2");
-    AddressImpl address = new AddressImpl();
-
-    // Act
-    paymentResponseDTOToEntityServiceImpl.populateAddressInfo(dto, address);
-
-    // Assert
-    verify(iSOService).findISOCountryByAlpha2Code("17 High St");
-    verify(addressService).populateAddressISOCountrySub(isA(Address.class));
-    verify(countryService).findCountryByAbbreviation("17 High St");
-    verify(countrySubdivisionService).findSubdivisionByAbbreviation("us-east-2");
-    verify(phoneService).create();
-    verify(stateService).findStateByAbbreviation("us-east-2");
-    assertSame(countryImpl, address.getCountry());
-    assertSame(phoneImpl, address.getPhonePrimary());
-  }
-
-  /**
-   * Test {@link PaymentResponseDTOToEntityServiceImpl#populateAddressInfo(AddressDTO, Address)}.
-   *
-   * <ul>
-   *   <li>Then {@link AddressImpl} (default constructor) CompanyName is {@code 17 High St}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * PaymentResponseDTOToEntityServiceImpl#populateAddressInfo(AddressDTO, Address)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PaymentResponseDTOToEntityServiceImpl.populateAddressInfo(AddressDTO, Address)"
-  })
-  public void testPopulateAddressInfo_thenAddressImplCompanyNameIs17HighSt() {
-    // Arrange
-    doNothing().when(addressService).populateAddressISOCountrySub(Mockito.<Address>any());
-    when(countrySubdivisionService.findSubdivisionByAbbreviation(Mockito.<String>any()))
-        .thenReturn(new CountrySubdivisionImpl());
-    when(stateService.findStateByAbbreviation(Mockito.<String>any())).thenReturn(new StateImpl());
-
-    AddressDTO<PaymentResponseDTO> dto = new AddressDTO<>();
-    dto.addressCompanyName("17 High St");
-    dto.addressStateRegion("us-east-2");
-    AddressImpl address = new AddressImpl();
-
-    // Act
-    paymentResponseDTOToEntityServiceImpl.populateAddressInfo(dto, address);
-
-    // Assert
-    verify(addressService).populateAddressISOCountrySub(isA(Address.class));
-    verify(countrySubdivisionService).findSubdivisionByAbbreviation("us-east-2");
-    verify(stateService).findStateByAbbreviation("us-east-2");
-    assertEquals("17 High St", address.getCompanyName());
-    assertNull(address.getIsoCountryAlpha2());
-    assertNull(address.getCountry());
-    assertNull(address.getPhonePrimary());
-  }
-
-  /**
-   * Test {@link PaymentResponseDTOToEntityServiceImpl#populateAddressInfo(AddressDTO, Address)}.
-   *
-   * <ul>
-   *   <li>Then {@link AddressImpl} (default constructor) IsoCountryAlpha2 is {@link ISOCountryImpl}
-   *       (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * PaymentResponseDTOToEntityServiceImpl#populateAddressInfo(AddressDTO, Address)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PaymentResponseDTOToEntityServiceImpl.populateAddressInfo(AddressDTO, Address)"
-  })
-  public void testPopulateAddressInfo_thenAddressImplIsoCountryAlpha2IsISOCountryImpl() {
-    // Arrange
-    doNothing().when(addressService).populateAddressISOCountrySub(Mockito.<Address>any());
-    CountryImpl countryImpl = new CountryImpl();
-    when(countryService.findCountryByAbbreviation(Mockito.<String>any())).thenReturn(countryImpl);
-    when(countrySubdivisionService.findSubdivisionByAbbreviation(Mockito.<String>any()))
-        .thenReturn(new CountrySubdivisionImpl());
-    ISOCountryImpl isoCountryImpl = new ISOCountryImpl();
-    when(iSOService.findISOCountryByAlpha2Code(Mockito.<String>any())).thenReturn(isoCountryImpl);
-    when(stateService.findStateByAbbreviation(Mockito.<String>any())).thenReturn(new StateImpl());
-
-    AddressDTO<PaymentResponseDTO> dto = new AddressDTO<>();
-    dto.addressCountryCode("17 High St");
-    dto.addressStateRegion("us-east-2");
-    AddressImpl address = new AddressImpl();
-
-    // Act
-    paymentResponseDTOToEntityServiceImpl.populateAddressInfo(dto, address);
-
-    // Assert
-    verify(iSOService).findISOCountryByAlpha2Code("17 High St");
-    verify(addressService).populateAddressISOCountrySub(isA(Address.class));
-    verify(countryService).findCountryByAbbreviation("17 High St");
-    verify(countrySubdivisionService).findSubdivisionByAbbreviation("us-east-2");
-    verify(stateService).findStateByAbbreviation("us-east-2");
-    assertSame(isoCountryImpl, address.getIsoCountryAlpha2());
-    assertSame(countryImpl, address.getCountry());
-  }
-
-  /**
-   * Test {@link PaymentResponseDTOToEntityServiceImpl#populateAddressInfo(AddressDTO, Address)}.
-   *
-   * <ul>
-   *   <li>Then {@link AddressImpl} (default constructor) IsoCountryAlpha2 is {@link ISOCountryImpl}
-   *       (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * PaymentResponseDTOToEntityServiceImpl#populateAddressInfo(AddressDTO, Address)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PaymentResponseDTOToEntityServiceImpl.populateAddressInfo(AddressDTO, Address)"
-  })
-  public void testPopulateAddressInfo_thenAddressImplIsoCountryAlpha2IsISOCountryImpl2() {
-    // Arrange
-    doNothing().when(addressService).populateAddressISOCountrySub(Mockito.<Address>any());
-    CountryImpl countryImpl = new CountryImpl();
-    when(countryService.findCountryByAbbreviation(Mockito.<String>any())).thenReturn(countryImpl);
-    when(countrySubdivisionService.findSubdivisionByAbbreviation(Mockito.<String>any()))
-        .thenReturn(new CountrySubdivisionImpl());
-    ISOCountryImpl isoCountryImpl = new ISOCountryImpl();
-    when(iSOService.findISOCountryByAlpha2Code(Mockito.<String>any())).thenReturn(isoCountryImpl);
-    PhoneImpl phoneImpl = new PhoneImpl();
-    when(phoneService.create()).thenReturn(phoneImpl);
-    when(stateService.findStateByAbbreviation(Mockito.<String>any())).thenReturn(new StateImpl());
-
-    AddressDTO<PaymentResponseDTO> dto = new AddressDTO<>();
-    dto.addressPhone("+44 1865 4960636");
-    dto.addressCountryCode("17 High St");
-    dto.addressStateRegion("us-east-2");
-    AddressImpl address = new AddressImpl();
-
-    // Act
-    paymentResponseDTOToEntityServiceImpl.populateAddressInfo(dto, address);
-
-    // Assert
-    verify(iSOService).findISOCountryByAlpha2Code("17 High St");
-    verify(addressService).populateAddressISOCountrySub(isA(Address.class));
-    verify(countryService).findCountryByAbbreviation("17 High St");
-    verify(countrySubdivisionService).findSubdivisionByAbbreviation("us-east-2");
-    verify(phoneService).create();
-    verify(stateService).findStateByAbbreviation("us-east-2");
-    assertSame(isoCountryImpl, address.getIsoCountryAlpha2());
-    assertSame(countryImpl, address.getCountry());
-    assertSame(phoneImpl, address.getPhonePrimary());
-  }
-
-  /**
-   * Test {@link PaymentResponseDTOToEntityServiceImpl#populateAddressInfo(AddressDTO, Address)}.
-   *
-   * <ul>
-   *   <li>Then {@link AddressImpl} (default constructor) State is {@link StateImpl} (default
-   *       constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * PaymentResponseDTOToEntityServiceImpl#populateAddressInfo(AddressDTO, Address)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PaymentResponseDTOToEntityServiceImpl.populateAddressInfo(AddressDTO, Address)"
-  })
-  public void testPopulateAddressInfo_thenAddressImplStateIsStateImpl() {
-    // Arrange
-    doNothing().when(addressService).populateAddressISOCountrySub(Mockito.<Address>any());
-    when(countrySubdivisionService.findSubdivisionByAbbreviation(Mockito.<String>any()))
-        .thenReturn(new CountrySubdivisionImpl());
-    StateImpl stateImpl = new StateImpl();
-    when(stateService.findStateByAbbreviation(Mockito.<String>any())).thenReturn(stateImpl);
-
-    AddressDTO<PaymentResponseDTO> dto = new AddressDTO<>();
-    dto.addressStateRegion("us-east-2");
-    AddressImpl address = new AddressImpl();
-
-    // Act
-    paymentResponseDTOToEntityServiceImpl.populateAddressInfo(dto, address);
-
-    // Assert
-    verify(addressService).populateAddressISOCountrySub(isA(Address.class));
-    verify(countrySubdivisionService).findSubdivisionByAbbreviation("us-east-2");
-    verify(stateService).findStateByAbbreviation("us-east-2");
-    assertSame(stateImpl, address.getState());
-  }
-
-  /**
-   * Test {@link PaymentResponseDTOToEntityServiceImpl#populateAddressInfo(AddressDTO, Address)}.
-   *
-   * <ul>
-   *   <li>When {@link AddressDTO#AddressDTO()}.
-   *   <li>Then calls {@link AddressService#populateAddressISOCountrySub(Address)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * PaymentResponseDTOToEntityServiceImpl#populateAddressInfo(AddressDTO, Address)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PaymentResponseDTOToEntityServiceImpl.populateAddressInfo(AddressDTO, Address)"
-  })
-  public void testPopulateAddressInfo_whenAddressDTO_thenCallsPopulateAddressISOCountrySub() {
-    // Arrange
-    doNothing().when(addressService).populateAddressISOCountrySub(Mockito.<Address>any());
-    when(countrySubdivisionService.findSubdivisionByAbbreviation(Mockito.<String>any()))
-        .thenReturn(new CountrySubdivisionImpl());
-    AddressDTO<PaymentResponseDTO> dto = new AddressDTO<>();
-
-    // Act
-    paymentResponseDTOToEntityServiceImpl.populateAddressInfo(dto, new AddressImpl());
+    paymentResponseDTOToEntityServiceImpl.populateCustomerPaymentToken(responseDTO, customerPayment);
 
     // Assert that nothing has changed
-    verify(addressService).populateAddressISOCountrySub(isA(Address.class));
-    verify(countrySubdivisionService).findSubdivisionByAbbreviation(null);
+    assertNull(customerPayment.getPaymentToken());
+  }
+
+  /**
+   * Method under test:
+   * {@link PaymentResponseDTOToEntityServiceImpl#populateCustomerPaymentToken(PaymentResponseDTO, CustomerPayment)}
+   */
+  @Test
+  public void testPopulateCustomerPaymentToken3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PaymentResponseDTOToEntityServiceImpl paymentResponseDTOToEntityServiceImpl = new PaymentResponseDTOToEntityServiceImpl();
+    PaymentResponseDTO responseDTO = mock(PaymentResponseDTO.class);
+    when(responseDTO.getPaymentToken()).thenReturn("ABC123");
+    CustomerPaymentImpl customerPayment = new CustomerPaymentImpl();
+
+    // Act
+    paymentResponseDTOToEntityServiceImpl.populateCustomerPaymentToken(responseDTO, customerPayment);
+
+    // Assert
+    verify(responseDTO, atLeast(1)).getPaymentToken();
+    assertEquals("ABC123", customerPayment.getPaymentToken());
+  }
+
+  /**
+   * Method under test:
+   * {@link PaymentResponseDTOToEntityServiceImpl#populateCustomerPaymentToken(PaymentResponseDTO, CustomerPayment)}
+   */
+  @Test
+  public void testPopulateCustomerPaymentToken4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PaymentResponseDTOToEntityServiceImpl paymentResponseDTOToEntityServiceImpl = new PaymentResponseDTOToEntityServiceImpl();
+    PaymentResponseDTO responseDTO = mock(PaymentResponseDTO.class);
+    when(responseDTO.getPaymentToken()).thenReturn(null);
+    when(responseDTO.getResponseMap()).thenReturn(new HashMap<>());
+    when(responseDTO.getCreditCard()).thenReturn(new CreditCardDTO<>());
+    CustomerPaymentImpl customerPayment = new CustomerPaymentImpl();
+
+    // Act
+    paymentResponseDTOToEntityServiceImpl.populateCustomerPaymentToken(responseDTO, customerPayment);
+
+    // Assert
+    verify(responseDTO, atLeast(1)).getCreditCard();
+    verify(responseDTO).getPaymentToken();
+    verify(responseDTO).getResponseMap();
+    assertNull(customerPayment.getPaymentToken());
   }
 }

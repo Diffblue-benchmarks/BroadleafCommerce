@@ -22,79 +22,194 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
 import org.broadleafcommerce.cms.field.type.StorageType;
 import org.broadleafcommerce.common.copy.CreateResponse;
+import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
+import org.broadleafcommerce.common.service.GenericEntityService;
+import org.broadleafcommerce.common.site.domain.CatalogImpl;
+import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(SpringJUnit4ClassRunner.class)
 public class StaticAssetImplDiffblueTest {
-  @Autowired private StaticAssetImpl staticAssetImpl;
-
   /**
-   * Test {@link StaticAssetImpl#getTitle()}.
-   *
-   * <p>Method under test: {@link StaticAssetImpl#getTitle()}
+   * Method under test: {@link StaticAssetImpl#getTitle()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String StaticAssetImpl.getTitle()"})
   public void testGetTitle() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertNull(staticAssetImpl.getTitle());
+    assertNull((new StaticAssetImpl()).getTitle());
   }
 
   /**
-   * Test {@link StaticAssetImpl#getAltText()}.
-   *
-   * <p>Method under test: {@link StaticAssetImpl#getAltText()}
+   * Method under test: {@link StaticAssetImpl#getTitle()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String StaticAssetImpl.getAltText()"})
-  public void testGetAltText() {
-    // Arrange, Act and Assert
-    assertNull(staticAssetImpl.getAltText());
-  }
+  public void testGetTitle2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-  /**
-   * Test {@link StaticAssetImpl#setStorageType(StorageType)}.
-   *
-   * <ul>
-   *   <li>Then {@link StaticAssetImpl} StorageType FriendlyType is {@code Friendly Type}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetImpl#setStorageType(StorageType)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void StaticAssetImpl.setStorageType(StorageType)"})
-  public void testSetStorageType_thenStaticAssetImplStorageTypeFriendlyTypeIsFriendlyType() {
     // Arrange
+    StorageType storageType = mock(StorageType.class);
+    when(storageType.getType()).thenReturn("Type");
+
+    StaticAssetImpl staticAssetImpl = new StaticAssetImpl();
+    staticAssetImpl.setStorageType(storageType);
+
+    // Act
+    String actualTitle = staticAssetImpl.getTitle();
+
+    // Assert
+    verify(storageType).getType();
+    assertNull(actualTitle);
+  }
+
+  /**
+   * Method under test: {@link StaticAssetImpl#getAltText()}
+   */
+  @Test
+  public void testGetAltText() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertNull((new StaticAssetImpl()).getAltText());
+  }
+
+  /**
+   * Method under test: {@link StaticAssetImpl#getAltText()}
+   */
+  @Test
+  public void testGetAltText2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StorageType storageType = mock(StorageType.class);
+    when(storageType.getType()).thenReturn("Type");
+
+    StaticAssetImpl staticAssetImpl = new StaticAssetImpl();
+    staticAssetImpl.setStorageType(storageType);
+
+    // Act
+    String actualAltText = staticAssetImpl.getAltText();
+
+    // Assert
+    verify(storageType).getType();
+    assertNull(actualAltText);
+  }
+
+  /**
+   * Method under test: {@link StaticAssetImpl#getStorageType()}
+   */
+  @Test
+  public void testGetStorageType() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange and Act
+    StorageType actualStorageType = (new StaticAssetImpl()).getStorageType();
+
+    // Assert
+    assertSame(actualStorageType.DATABASE, actualStorageType);
+  }
+
+  /**
+   * Method under test: {@link StaticAssetImpl#getStorageType()}
+   */
+  @Test
+  public void testGetStorageType2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetImpl staticAssetImpl = new StaticAssetImpl();
+    staticAssetImpl.setAltText("Alt Text");
+    staticAssetImpl.setContentMessageValues(new HashMap<>());
+    staticAssetImpl.setFileExtension("File Extension");
+    staticAssetImpl.setFileSize(3L);
+    staticAssetImpl.setFullUrl("https://example.org/example");
+    staticAssetImpl.setId(1L);
+    staticAssetImpl.setMimeType("Mime Type");
+    staticAssetImpl.setName("Name");
+    staticAssetImpl.setStorageType(StorageType.DATABASE);
+    staticAssetImpl.setTitle("Dr");
+
+    // Act
+    StorageType actualStorageType = staticAssetImpl.getStorageType();
+
+    // Assert
+    assertSame(actualStorageType.DATABASE, actualStorageType);
+  }
+
+  /**
+   * Method under test: {@link StaticAssetImpl#getStorageType()}
+   */
+  @Test
+  public void testGetStorageType3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StorageType storageType = mock(StorageType.class);
+    when(storageType.getType()).thenReturn("Type");
+
+    StaticAssetImpl staticAssetImpl = new StaticAssetImpl();
+    staticAssetImpl.setAltText("Alt Text");
+    staticAssetImpl.setContentMessageValues(new HashMap<>());
+    staticAssetImpl.setFileExtension("File Extension");
+    staticAssetImpl.setFileSize(3L);
+    staticAssetImpl.setFullUrl("https://example.org/example");
+    staticAssetImpl.setId(1L);
+    staticAssetImpl.setMimeType("Mime Type");
+    staticAssetImpl.setName("Name");
+    staticAssetImpl.setStorageType(storageType);
+    staticAssetImpl.setTitle("Dr");
+
+    // Act
+    StorageType actualStorageType = staticAssetImpl.getStorageType();
+
+    // Assert
+    verify(storageType).getType();
+    assertEquals("Friendly Type", actualStorageType.getFriendlyType());
+    assertEquals("Type", actualStorageType.getType());
+  }
+
+  /**
+   * Method under test: {@link StaticAssetImpl#setStorageType(StorageType)}
+   */
+  @Test
+  public void testSetStorageType() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetImpl staticAssetImpl = new StaticAssetImpl();
+    StorageType storageType = StorageType.DATABASE;
+
+    // Act
+    staticAssetImpl.setStorageType(storageType);
+
+    // Assert
+    assertEquals("DATABASE", staticAssetImpl.storageType);
+    StorageType expectedStorageType = storageType.DATABASE;
+    assertSame(expectedStorageType, staticAssetImpl.getStorageType());
+  }
+
+  /**
+   * Method under test: {@link StaticAssetImpl#setStorageType(StorageType)}
+   */
+  @Test
+  public void testSetStorageType2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetImpl staticAssetImpl = new StaticAssetImpl();
     StorageType storageType = mock(StorageType.class);
     when(storageType.getType()).thenReturn("Type");
 
@@ -110,76 +225,71 @@ public class StaticAssetImplDiffblueTest {
   }
 
   /**
-   * Test {@link StaticAssetImpl#setStorageType(StorageType)}.
-   *
-   * <ul>
-   *   <li>When {@link StorageType#DATABASE}.
-   *   <li>Then {@link StaticAssetImpl} {@link StaticAssetImpl#storageType} is {@code DATABASE}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetImpl#setStorageType(StorageType)}
+   * Method under test:
+   * {@link StaticAssetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void StaticAssetImpl.setStorageType(StorageType)"})
-  public void testSetStorageType_whenDatabase_thenStaticAssetImplStorageTypeIsDatabase() {
-    // Arrange and Act
-    staticAssetImpl.setStorageType(StorageType.DATABASE);
-
-    // Assert
-    assertEquals("DATABASE", staticAssetImpl.storageType);
-    assertSame(StorageType.DATABASE, staticAssetImpl.getStorageType());
-  }
-
-  /**
-   * Test {@link StaticAssetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * StaticAssetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse StaticAssetImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(new ImageStaticAssetImpl(), true);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+    StaticAssetImpl staticAssetImpl = new StaticAssetImpl();
+    GenericEntityService genericEntityService = mock(GenericEntityService.class);
+    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
 
     // Act
-    CreateResponse<StaticAsset> actualCreateOrRetrieveCopyInstanceResult =
-        staticAssetImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<StaticAsset> actualCreateOrRetrieveCopyInstanceResult = staticAssetImpl
+        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+            genericEntityService, new MultiTenantCopierExtensionManager()));
 
     // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+    verify(genericEntityService).getCeilingImplClass(eq("org.broadleafcommerce.cms.file.domain.StaticAssetImpl"));
+    verify(genericEntityService).getIdentifier(isA(Object.class));
+    StaticAsset clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
+    assertTrue(clone instanceof StaticAssetImpl);
+    StorageType storageType = clone.getStorageType();
+    assertEquals("DATABASE", storageType.getType());
+    assertEquals("DATABASE", ((StaticAssetImpl) clone).storageType);
+    assertEquals("Database", storageType.getFriendlyType());
+    assertNull(clone.getFileSize());
+    assertNull(clone.getId());
+    assertNull(clone.getAltText());
+    assertNull(clone.getFileExtension());
+    assertNull(clone.getFullUrl());
+    assertNull(clone.getMimeType());
+    assertNull(clone.getName());
+    assertNull(clone.getTitle());
+    assertNull(((StaticAssetImpl) clone).getMainEntityName());
+    assertNull(((StaticAssetImpl) clone).altText);
+    assertNull(((StaticAssetImpl) clone).title);
+    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
+    assertTrue(clone.getContentMessageValues().isEmpty());
   }
 
   /**
-   * Test {@link StaticAssetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * StaticAssetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test:
+   * {@link StaticAssetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse StaticAssetImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
   public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    StaticAssetImpl staticAssetImpl = new StaticAssetImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(staticAssetImpl, false);
+    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<StaticAsset> actualCreateOrRetrieveCopyInstanceResult =
-        staticAssetImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<StaticAsset> actualCreateOrRetrieveCopyInstanceResult = staticAssetImpl
+        .createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -187,24 +297,15 @@ public class StaticAssetImplDiffblueTest {
   }
 
   /**
-   * Test {@link StaticAssetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <ul>
-   *   <li>Then return not AlreadyPopulated.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * StaticAssetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test:
+   * {@link StaticAssetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse StaticAssetImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance_thenReturnNotAlreadyPopulated()
-      throws CloneNotSupportedException {
+  public void testCreateOrRetrieveCopyInstance3() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    StaticAssetImpl staticAssetImpl = new StaticAssetImpl();
     ImageStaticAssetImpl imageStaticAssetImpl = mock(ImageStaticAssetImpl.class);
     doNothing().when(imageStaticAssetImpl).setAltText(Mockito.<String>any());
     doNothing().when(imageStaticAssetImpl).setFileExtension(Mockito.<String>any());
@@ -214,48 +315,129 @@ public class StaticAssetImplDiffblueTest {
     doNothing().when(imageStaticAssetImpl).setName(Mockito.<String>any());
     doNothing().when(imageStaticAssetImpl).setStorageType(Mockito.<StorageType>any());
     doNothing().when(imageStaticAssetImpl).setTitle(Mockito.<String>any());
-    CreateResponse<Object> createResponse = new CreateResponse<>(imageStaticAssetImpl, false);
-
+    CreateResponse<Object> createResponse = mock(CreateResponse.class);
+    when(createResponse.isAlreadyPopulated()).thenReturn(false);
+    when(createResponse.getClone()).thenReturn(imageStaticAssetImpl);
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<StaticAsset> actualCreateOrRetrieveCopyInstanceResult =
-        staticAssetImpl.createOrRetrieveCopyInstance(context);
+    staticAssetImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
-    verify(imageStaticAssetImpl).setAltText(null);
-    verify(imageStaticAssetImpl).setFileExtension(null);
+    verify(imageStaticAssetImpl).setAltText(isNull());
+    verify(imageStaticAssetImpl).setFileExtension(isNull());
     verify(imageStaticAssetImpl).setFileSize(isNull());
-    verify(imageStaticAssetImpl).setFullUrl(null);
-    verify(imageStaticAssetImpl).setMimeType(null);
-    verify(imageStaticAssetImpl).setName(null);
+    verify(imageStaticAssetImpl).setFullUrl(isNull());
+    verify(imageStaticAssetImpl).setMimeType(isNull());
+    verify(imageStaticAssetImpl).setName(isNull());
     verify(imageStaticAssetImpl).setStorageType(isA(StorageType.class));
-    verify(imageStaticAssetImpl).setTitle(null);
+    verify(imageStaticAssetImpl).setTitle(isNull());
+    verify(createResponse).getClone();
+    verify(createResponse).isAlreadyPopulated();
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
   }
 
   /**
-   * Test {@link StaticAssetImpl#getMainEntityName()}.
-   *
-   * <p>Method under test: {@link StaticAssetImpl#getMainEntityName()}
+   * Method under test:
+   * {@link StaticAssetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String StaticAssetImpl.getMainEntityName()"})
-  public void testGetMainEntityName() {
-    // Arrange, Act and Assert
-    assertNull(staticAssetImpl.getMainEntityName());
+  public void testCreateOrRetrieveCopyInstance4() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ImageStaticAssetImpl imageStaticAssetImpl = new ImageStaticAssetImpl();
+    imageStaticAssetImpl.setAltText("Alt Text");
+    imageStaticAssetImpl.setContentMessageValues(new HashMap<>());
+    imageStaticAssetImpl.setFileExtension("File Extension");
+    imageStaticAssetImpl.setFileSize(3L);
+    imageStaticAssetImpl.setFullUrl("https://example.org/example");
+    imageStaticAssetImpl.setHeight(1);
+    imageStaticAssetImpl.setId(1L);
+    imageStaticAssetImpl.setMimeType("Mime Type");
+    imageStaticAssetImpl.setName("Name");
+    imageStaticAssetImpl.setStorageType(StorageType.DATABASE);
+    imageStaticAssetImpl.setTitle("Dr");
+    imageStaticAssetImpl.setWidth(1);
+    ImageStaticAssetImpl imageStaticAssetImpl2 = mock(ImageStaticAssetImpl.class);
+    doNothing().when(imageStaticAssetImpl2).setAltText(Mockito.<String>any());
+    doNothing().when(imageStaticAssetImpl2).setFileExtension(Mockito.<String>any());
+    doNothing().when(imageStaticAssetImpl2).setFileSize(Mockito.<Long>any());
+    doNothing().when(imageStaticAssetImpl2).setFullUrl(Mockito.<String>any());
+    doNothing().when(imageStaticAssetImpl2).setMimeType(Mockito.<String>any());
+    doNothing().when(imageStaticAssetImpl2).setName(Mockito.<String>any());
+    doNothing().when(imageStaticAssetImpl2).setStorageType(Mockito.<StorageType>any());
+    doNothing().when(imageStaticAssetImpl2).setTitle(Mockito.<String>any());
+    CreateResponse<Object> createResponse = mock(CreateResponse.class);
+    when(createResponse.isAlreadyPopulated()).thenReturn(false);
+    when(createResponse.getClone()).thenReturn(imageStaticAssetImpl2);
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    imageStaticAssetImpl.createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(imageStaticAssetImpl2).setAltText(eq("Alt Text"));
+    verify(imageStaticAssetImpl2).setFileExtension(eq("File Extension"));
+    verify(imageStaticAssetImpl2).setFileSize(eq(3L));
+    verify(imageStaticAssetImpl2).setFullUrl(eq("https://example.org/example"));
+    verify(imageStaticAssetImpl2).setMimeType(eq("Mime Type"));
+    verify(imageStaticAssetImpl2).setName(eq("Name"));
+    verify(imageStaticAssetImpl2).setStorageType(isA(StorageType.class));
+    verify(imageStaticAssetImpl2).setTitle(eq("Dr"));
+    verify(createResponse).getClone();
+    verify(createResponse).isAlreadyPopulated();
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Method under test: {@link StaticAssetImpl#getMainEntityName()}
+   */
+  @Test
+  public void testGetMainEntityName() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertNull((new StaticAssetImpl()).getMainEntityName());
+  }
+
+  /**
+   * Method under test: {@link StaticAssetImpl#getMainEntityName()}
+   */
+  @Test
+  public void testGetMainEntityName2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StorageType storageType = mock(StorageType.class);
+    when(storageType.getType()).thenReturn("Type");
+
+    ImageStaticAssetImpl imageStaticAssetImpl = new ImageStaticAssetImpl();
+    imageStaticAssetImpl.setAltText("Alt Text");
+    imageStaticAssetImpl.setContentMessageValues(new HashMap<>());
+    imageStaticAssetImpl.setFileExtension("File Extension");
+    imageStaticAssetImpl.setFileSize(3L);
+    imageStaticAssetImpl.setFullUrl("https://example.org/example");
+    imageStaticAssetImpl.setHeight(1);
+    imageStaticAssetImpl.setId(1L);
+    imageStaticAssetImpl.setMimeType("Mime Type");
+    imageStaticAssetImpl.setName("Name");
+    imageStaticAssetImpl.setStorageType(storageType);
+    imageStaticAssetImpl.setTitle("Dr");
+    imageStaticAssetImpl.setWidth(1);
+
+    // Act
+    String actualMainEntityName = imageStaticAssetImpl.getMainEntityName();
+
+    // Assert
+    verify(storageType).getType();
+    assertEquals("Name", actualMainEntityName);
+  }
+
+  /**
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link StaticAssetImpl}
    *   <li>{@link StaticAssetImpl#setAltText(String)}
@@ -277,27 +459,6 @@ public class StaticAssetImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void StaticAssetImpl.<init>()",
-    "Map StaticAssetImpl.getContentMessageValues()",
-    "String StaticAssetImpl.getFileExtension()",
-    "Long StaticAssetImpl.getFileSize()",
-    "String StaticAssetImpl.getFullUrl()",
-    "Long StaticAssetImpl.getId()",
-    "String StaticAssetImpl.getMimeType()",
-    "String StaticAssetImpl.getName()",
-    "void StaticAssetImpl.setAltText(String)",
-    "void StaticAssetImpl.setContentMessageValues(Map)",
-    "void StaticAssetImpl.setFileExtension(String)",
-    "void StaticAssetImpl.setFileSize(Long)",
-    "void StaticAssetImpl.setFullUrl(String)",
-    "void StaticAssetImpl.setId(Long)",
-    "void StaticAssetImpl.setMimeType(String)",
-    "void StaticAssetImpl.setName(String)",
-    "void StaticAssetImpl.setTitle(String)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     StaticAssetImpl actualStaticAssetImpl = new StaticAssetImpl();
@@ -308,22 +469,21 @@ public class StaticAssetImplDiffblueTest {
     actualStaticAssetImpl.setFileSize(3L);
     actualStaticAssetImpl.setFullUrl("https://example.org/example");
     actualStaticAssetImpl.setId(1L);
-    actualStaticAssetImpl.setMimeType("text/plain");
+    actualStaticAssetImpl.setMimeType("Mime Type");
     actualStaticAssetImpl.setName("Name");
     actualStaticAssetImpl.setTitle("Dr");
-    Map<String, StaticAssetDescription> actualContentMessageValues =
-        actualStaticAssetImpl.getContentMessageValues();
+    Map<String, StaticAssetDescription> actualContentMessageValues = actualStaticAssetImpl.getContentMessageValues();
     String actualFileExtension = actualStaticAssetImpl.getFileExtension();
     Long actualFileSize = actualStaticAssetImpl.getFileSize();
     String actualFullUrl = actualStaticAssetImpl.getFullUrl();
     Long actualId = actualStaticAssetImpl.getId();
     String actualMimeType = actualStaticAssetImpl.getMimeType();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("File Extension", actualFileExtension);
+    assertEquals("Mime Type", actualMimeType);
     assertEquals("Name", actualStaticAssetImpl.getName());
     assertEquals("https://example.org/example", actualFullUrl);
-    assertEquals("text/plain", actualMimeType);
     assertEquals(1L, actualId.longValue());
     assertEquals(3L, actualFileSize.longValue());
     assertTrue(actualContentMessageValues.isEmpty());

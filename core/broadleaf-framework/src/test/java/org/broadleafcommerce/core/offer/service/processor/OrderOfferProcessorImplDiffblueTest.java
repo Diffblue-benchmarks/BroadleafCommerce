@@ -27,26 +27,22 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import org.broadleafcommerce.common.audit.Auditable;
-import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.core.offer.dao.OfferDao;
 import org.broadleafcommerce.core.offer.dao.OfferDaoImpl;
+import org.broadleafcommerce.core.offer.domain.Offer;
 import org.broadleafcommerce.core.offer.domain.OfferImpl;
-import org.broadleafcommerce.core.offer.domain.OrderAdjustment;
-import org.broadleafcommerce.core.offer.domain.OrderAdjustmentImpl;
 import org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustment;
 import org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustmentImpl;
 import org.broadleafcommerce.core.offer.service.OfferServiceUtilities;
@@ -63,11 +59,15 @@ import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderI
 import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderItemPriceDetail;
 import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderItemPriceDetailImpl;
 import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderItemPriceDetailWrapper;
+import org.broadleafcommerce.core.offer.service.type.OfferDiscountType;
+import org.broadleafcommerce.core.offer.service.type.OfferType;
 import org.broadleafcommerce.core.order.dao.OrderItemDao;
 import org.broadleafcommerce.core.order.dao.OrderItemDaoImpl;
 import org.broadleafcommerce.core.order.domain.BundleOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl;
+import org.broadleafcommerce.core.order.domain.FulfillmentGroupItem;
+import org.broadleafcommerce.core.order.domain.FulfillmentGroupItemImpl;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderImpl;
@@ -76,276 +76,135 @@ import org.broadleafcommerce.core.order.domain.OrderItemPriceDetailImpl;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(MockitoJUnitRunner.class)
 public class OrderOfferProcessorImplDiffblueTest {
-  @InjectMocks private OrderOfferProcessorImpl orderOfferProcessorImpl;
-
-  @Mock private PromotableItemFactory promotableItemFactory;
-
   /**
-   * Test {@link OrderOfferProcessorImpl#removeTrailingNotCombinableOrderOffers(List)}.
-   *
-   * <ul>
-   *   <li>Given {@code null}.
-   *   <li>Then return {@link ArrayList#ArrayList()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderOfferProcessorImpl#removeTrailingNotCombinableOrderOffers(List)}
+   * Method under test:
+   * {@link OrderOfferProcessorImpl#filterOrderLevelOffer(PromotableOrder, List, Offer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List OrderOfferProcessorImpl.removeTrailingNotCombinableOrderOffers(List)"})
-  public void testRemoveTrailingNotCombinableOrderOffers_givenNull_thenReturnArrayList() {
+  public void testFilterOrderLevelOffer() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    ArrayList<PromotableCandidateOrderOffer> candidateOffers = new ArrayList<>();
-    candidateOffers.add(null);
+    OrderOfferProcessorImpl orderOfferProcessorImpl = new OrderOfferProcessorImpl(new PromotableOfferUtilityImpl());
+    OrderImpl order = new OrderImpl();
+    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    ArrayList<PromotableCandidateOrderOffer> qualifiedOrderOffers = new ArrayList<>();
+    Offer offer = mock(Offer.class);
+    when(offer.getQualifyingItemSubTotal()).thenReturn(new Money(10.0d));
+    when(offer.getQualifyingItemCriteriaXref()).thenReturn(new HashSet<>());
+    when(offer.getType()).thenReturn(OfferType.FULFILLMENT_GROUP);
+    when(offer.getApplyDiscountToSalePrice()).thenReturn(true);
+    when(offer.getOfferMatchRulesXref()).thenReturn(new HashMap<>());
+    when(offer.getDiscountType()).thenReturn(OfferDiscountType.AMOUNT_OFF);
 
     // Act
-    List<PromotableCandidateOrderOffer> actualRemoveTrailingNotCombinableOrderOffersResult =
-        orderOfferProcessorImpl.removeTrailingNotCombinableOrderOffers(candidateOffers);
+    orderOfferProcessorImpl.filterOrderLevelOffer(promotableOrder, qualifiedOrderOffers, offer);
 
     // Assert
-    assertEquals(candidateOffers, actualRemoveTrailingNotCombinableOrderOffersResult);
+    verify(offer).getApplyDiscountToSalePrice();
+    verify(offer).getDiscountType();
+    verify(offer).getOfferMatchRulesXref();
+    verify(offer, atLeast(1)).getQualifyingItemCriteriaXref();
+    verify(offer).getQualifyingItemSubTotal();
+    verify(offer, atLeast(1)).getType();
   }
 
   /**
-   * Test {@link OrderOfferProcessorImpl#removeTrailingNotCombinableOrderOffers(List)}.
-   *
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderOfferProcessorImpl#removeTrailingNotCombinableOrderOffers(List)}
+   * Method under test:
+   * {@link OrderOfferProcessorImpl#filterOrderLevelOffer(PromotableOrder, List, Offer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List OrderOfferProcessorImpl.removeTrailingNotCombinableOrderOffers(List)"})
-  public void testRemoveTrailingNotCombinableOrderOffers_whenArrayList_thenReturnEmpty() {
-    // Arrange, Act and Assert
-    assertTrue(
-        orderOfferProcessorImpl
-            .removeTrailingNotCombinableOrderOffers(new ArrayList<>())
-            .isEmpty());
+  public void testFilterOrderLevelOffer2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    OrderOfferProcessorImpl orderOfferProcessorImpl = new OrderOfferProcessorImpl(new PromotableOfferUtilityImpl());
+    OrderImpl order = new OrderImpl();
+    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    ArrayList<PromotableCandidateOrderOffer> qualifiedOrderOffers = new ArrayList<>();
+    Offer offer = mock(Offer.class);
+    when(offer.getName()).thenReturn("Name");
+    when(offer.getDiscountType()).thenReturn(OfferDiscountType.FIX_PRICE);
+
+    // Act
+    orderOfferProcessorImpl.filterOrderLevelOffer(promotableOrder, qualifiedOrderOffers, offer);
+
+    // Assert
+    verify(offer).getDiscountType();
+    verify(offer).getName();
   }
 
   /**
-   * Test {@link OrderOfferProcessorImpl#applyAllOrderOffers(List, PromotableOrder)}.
-   *
-   * <p>Method under test: {@link OrderOfferProcessorImpl#applyAllOrderOffers(List,
-   * PromotableOrder)}
+   * Method under test:
+   * {@link OrderOfferProcessorImpl#removeTrailingNotCombinableOrderOffers(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void OrderOfferProcessorImpl.applyAllOrderOffers(List, PromotableOrder)"})
+  public void testRemoveTrailingNotCombinableOrderOffers() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    OrderOfferProcessorImpl orderOfferProcessorImpl = new OrderOfferProcessorImpl(new PromotableOfferUtilityImpl());
+
+    // Act and Assert
+    assertTrue(orderOfferProcessorImpl.removeTrailingNotCombinableOrderOffers(new ArrayList<>()).isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link OrderOfferProcessorImpl#removeTrailingNotCombinableOrderOffers(List)}
+   */
+  @Test
+  public void testRemoveTrailingNotCombinableOrderOffers2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    OrderOfferProcessorImpl orderOfferProcessorImpl = new OrderOfferProcessorImpl(
+        mock(PromotableOfferUtilityImpl.class));
+
+    // Act and Assert
+    assertTrue(orderOfferProcessorImpl.removeTrailingNotCombinableOrderOffers(new ArrayList<>()).isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link OrderOfferProcessorImpl#applyAllOrderOffers(List, PromotableOrder)}
+   */
+  @Test
   public void testApplyAllOrderOffers() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    OrderOfferProcessorImpl orderOfferProcessorImpl = new OrderOfferProcessorImpl(new PromotableOfferUtilityImpl());
     ArrayList<PromotableCandidateOrderOffer> orderOffers = new ArrayList<>();
-    PromotableOrderImpl promotableOrder =
-        new PromotableOrderImpl(new OrderImpl(), promotableItemFactory, true);
+    OrderImpl order = new OrderImpl();
+    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
 
     // Act
     orderOfferProcessorImpl.applyAllOrderOffers(orderOffers, promotableOrder);
 
     // Assert
-    assertTrue(promotableOrder.getOrder() instanceof OrderImpl);
+    assertSame(order, promotableOrder.getOrder());
   }
 
   /**
-   * Test {@link OrderOfferProcessorImpl#applyAllOrderOffers(List, PromotableOrder)}.
-   *
-   * <p>Method under test: {@link OrderOfferProcessorImpl#applyAllOrderOffers(List,
-   * PromotableOrder)}
+   * Method under test:
+   * {@link OrderOfferProcessorImpl#applyAllOrderOffers(List, PromotableOrder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void OrderOfferProcessorImpl.applyAllOrderOffers(List, PromotableOrder)"})
   public void testApplyAllOrderOffers2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    OrderOfferProcessorImpl orderOfferProcessorImpl = new OrderOfferProcessorImpl(new PromotableOfferUtilityImpl());
     ArrayList<PromotableCandidateOrderOffer> orderOffers = new ArrayList<>();
-
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    OrderImpl orderImpl = new OrderImpl();
-    orderImpl.setAdditionalOfferInformation(new HashMap<>());
-    orderImpl.setAuditable(auditable);
-    orderImpl.setCandidateOrderOffers(new ArrayList<>());
-    orderImpl.setCurrency(new BroadleafCurrencyImpl());
-    orderImpl.setCustomer(new CustomerImpl());
-    orderImpl.setEmailAddress("42 Main St");
-    orderImpl.setFulfillmentGroups(new ArrayList<>());
-    orderImpl.setId(1L);
-    orderImpl.setLocale(new LocaleImpl());
-    orderImpl.setName("NullOrder does not support any modification operations.");
-    orderImpl.setOrderAttributes(new HashMap<>());
-    orderImpl.setOrderItems(new ArrayList<>());
-    orderImpl.setOrderMessages(new ArrayList<>());
-    orderImpl.setOrderNumber("42");
-    orderImpl.setPayments(new ArrayList<>());
-    orderImpl.setStatus(OrderStatus.ARCHIVED);
-    orderImpl.setSubTotal(new Money());
-    orderImpl.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    orderImpl.setTaxOverride(true);
-    orderImpl.setTotal(new Money());
-    orderImpl.setTotalFulfillmentCharges(new Money());
-    orderImpl.setTotalTax(new Money());
-
-    PromotableOrder promotableOrder = mock(PromotableOrder.class);
-    when(promotableOrder.calculateSubtotalWithAdjustments()).thenReturn(null);
-    when(promotableOrder.getOrder()).thenReturn(orderImpl);
-
-    // Act
-    orderOfferProcessorImpl.applyAllOrderOffers(orderOffers, promotableOrder);
-
-    // Assert
-    verify(promotableOrder).calculateSubtotalWithAdjustments();
-    verify(promotableOrder).getOrder();
-  }
-
-  /**
-   * Test {@link OrderOfferProcessorImpl#applyAllOrderOffers(List, PromotableOrder)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link PromotableOrder#calculateSubtotalWithAdjustments()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderOfferProcessorImpl#applyAllOrderOffers(List,
-   * PromotableOrder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void OrderOfferProcessorImpl.applyAllOrderOffers(List, PromotableOrder)"})
-  public void testApplyAllOrderOffers_thenCallsCalculateSubtotalWithAdjustments() {
-    // Arrange
-    ArrayList<PromotableCandidateOrderOffer> orderOffers = new ArrayList<>();
-
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    OrderImpl orderImpl = new OrderImpl();
-    orderImpl.setAdditionalOfferInformation(new HashMap<>());
-    orderImpl.setAuditable(auditable);
-    orderImpl.setCandidateOrderOffers(new ArrayList<>());
-    orderImpl.setCurrency(new BroadleafCurrencyImpl());
-    orderImpl.setCustomer(new CustomerImpl());
-    orderImpl.setEmailAddress("42 Main St");
-    orderImpl.setFulfillmentGroups(new ArrayList<>());
-    orderImpl.setId(1L);
-    orderImpl.setLocale(new LocaleImpl());
-    orderImpl.setName("NullOrder does not support any modification operations.");
-    orderImpl.setOrderAttributes(new HashMap<>());
-    orderImpl.setOrderItems(new ArrayList<>());
-    orderImpl.setOrderMessages(new ArrayList<>());
-    orderImpl.setOrderNumber("42");
-    orderImpl.setPayments(new ArrayList<>());
-    orderImpl.setStatus(OrderStatus.ARCHIVED);
-    orderImpl.setSubTotal(new Money());
-    orderImpl.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    orderImpl.setTaxOverride(true);
-    orderImpl.setTotal(new Money());
-    orderImpl.setTotalFulfillmentCharges(new Money());
-    orderImpl.setTotalTax(new Money());
-
-    PromotableOrder promotableOrder = mock(PromotableOrder.class);
-    when(promotableOrder.calculateSubtotalWithAdjustments()).thenReturn(new Money());
-    when(promotableOrder.getOrder()).thenReturn(orderImpl);
-
-    // Act
-    orderOfferProcessorImpl.applyAllOrderOffers(orderOffers, promotableOrder);
-
-    // Assert
-    verify(promotableOrder).calculateSubtotalWithAdjustments();
-    verify(promotableOrder).getOrder();
-  }
-
-  /**
-   * Test {@link OrderOfferProcessorImpl#applyAllOrderOffers(List, PromotableOrder)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link BroadleafCurrency#getCurrencyCode()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderOfferProcessorImpl#applyAllOrderOffers(List,
-   * PromotableOrder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void OrderOfferProcessorImpl.applyAllOrderOffers(List, PromotableOrder)"})
-  public void testApplyAllOrderOffers_thenCallsGetCurrencyCode() {
-    // Arrange
-    ArrayList<PromotableCandidateOrderOffer> orderOffers = new ArrayList<>();
-
-    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
-    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
-
-    Order order = mock(Order.class);
-    when(order.getOrderAdjustments()).thenReturn(new ArrayList<>());
-    when(order.getOrderItems()).thenReturn(new ArrayList<>());
-    when(order.getCurrency()).thenReturn(broadleafCurrency);
-    doNothing().when(order).setSubTotal(Mockito.<Money>any());
-
-    // Act
-    orderOfferProcessorImpl.applyAllOrderOffers(
-        orderOffers, new PromotableOrderImpl(order, promotableItemFactory, true));
-
-    // Assert
-    verify(broadleafCurrency).getCurrencyCode();
-    verify(order).getCurrency();
-    verify(order, atLeast(1)).getOrderAdjustments();
-    verify(order).getOrderItems();
-    verify(order).setSubTotal(isA(Money.class));
-  }
-
-  /**
-   * Test {@link OrderOfferProcessorImpl#applyAllOrderOffers(List, PromotableOrder)}.
-   *
-   * <ul>
-   *   <li>When {@link Order} {@link Order#getCurrency()} return {@code null}.
-   *   <li>Then calls {@link Order#getCurrency()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderOfferProcessorImpl#applyAllOrderOffers(List,
-   * PromotableOrder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void OrderOfferProcessorImpl.applyAllOrderOffers(List, PromotableOrder)"})
-  public void testApplyAllOrderOffers_whenOrderGetCurrencyReturnNull_thenCallsGetCurrency() {
-    // Arrange
-    ArrayList<PromotableCandidateOrderOffer> orderOffers = new ArrayList<>();
-
     Order order = mock(Order.class);
     when(order.getOrderAdjustments()).thenReturn(new ArrayList<>());
     when(order.getOrderItems()).thenReturn(new ArrayList<>());
@@ -353,8 +212,8 @@ public class OrderOfferProcessorImplDiffblueTest {
     doNothing().when(order).setSubTotal(Mockito.<Money>any());
 
     // Act
-    orderOfferProcessorImpl.applyAllOrderOffers(
-        orderOffers, new PromotableOrderImpl(order, promotableItemFactory, true));
+    orderOfferProcessorImpl.applyAllOrderOffers(orderOffers,
+        new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true));
 
     // Assert
     verify(order).getCurrency();
@@ -364,19 +223,74 @@ public class OrderOfferProcessorImplDiffblueTest {
   }
 
   /**
-   * Test {@link OrderOfferProcessorImpl#compareAndAdjustOrderAndItemOffers(PromotableOrder)}.
-   *
-   * <p>Method under test: {@link
-   * OrderOfferProcessorImpl#compareAndAdjustOrderAndItemOffers(PromotableOrder)}
+   * Method under test:
+   * {@link OrderOfferProcessorImpl#applyAllOrderOffers(List, PromotableOrder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OrderOfferProcessorImpl.compareAndAdjustOrderAndItemOffers(PromotableOrder)"
-  })
-  public void testCompareAndAdjustOrderAndItemOffers() {
+  public void testApplyAllOrderOffers3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    OrderOfferProcessorImpl orderOfferProcessorImpl = new OrderOfferProcessorImpl(new PromotableOfferUtilityImpl());
+    ArrayList<PromotableCandidateOrderOffer> orderOffers = new ArrayList<>();
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
+    Order order = mock(Order.class);
+    when(order.getOrderAdjustments()).thenReturn(new ArrayList<>());
+    when(order.getOrderItems()).thenReturn(new ArrayList<>());
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
+    doNothing().when(order).setSubTotal(Mockito.<Money>any());
+
+    // Act
+    orderOfferProcessorImpl.applyAllOrderOffers(orderOffers,
+        new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true));
+
+    // Assert
+    verify(broadleafCurrencyImpl).getCurrencyCode();
+    verify(order).getCurrency();
+    verify(order, atLeast(1)).getOrderAdjustments();
+    verify(order).getOrderItems();
+    verify(order).setSubTotal(isA(Money.class));
+  }
+
+  /**
+   * Method under test:
+   * {@link OrderOfferProcessorImpl#compareAndAdjustOrderAndItemOffers(PromotableOrder)}
+   */
+  @Test
+  public void testCompareAndAdjustOrderAndItemOffers() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    OrderOfferProcessorImpl orderOfferProcessorImpl = new OrderOfferProcessorImpl(new PromotableOfferUtilityImpl());
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
+    Order order = mock(Order.class);
+    when(order.getOrderAdjustments()).thenReturn(new ArrayList<>());
+    when(order.getOrderItems()).thenReturn(new ArrayList<>());
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
+
+    // Act
+    orderOfferProcessorImpl.compareAndAdjustOrderAndItemOffers(
+        new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true));
+
+    // Assert
+    verify(broadleafCurrencyImpl, atLeast(1)).getCurrencyCode();
+    verify(order, atLeast(1)).getCurrency();
+    verify(order, atLeast(1)).getOrderAdjustments();
+    verify(order).getOrderItems();
+  }
+
+  /**
+   * Method under test:
+   * {@link OrderOfferProcessorImpl#compareAndAdjustOrderAndItemOffers(PromotableOrder)}
+   */
+  @Test
+  public void testCompareAndAdjustOrderAndItemOffers2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    OrderOfferProcessorImpl orderOfferProcessorImpl = new OrderOfferProcessorImpl(new PromotableOfferUtilityImpl());
     PromotableOrder promotableOrder = mock(PromotableOrder.class);
     doNothing().when(promotableOrder).removeAllCandidateItemOfferAdjustments();
     when(promotableOrder.calculateItemAdjustmentTotal()).thenReturn(new Money());
@@ -385,26 +299,22 @@ public class OrderOfferProcessorImplDiffblueTest {
     // Act
     orderOfferProcessorImpl.compareAndAdjustOrderAndItemOffers(promotableOrder);
 
-    // Assert
+    // Assert that nothing has changed
     verify(promotableOrder).calculateItemAdjustmentTotal();
     verify(promotableOrder).calculateOrderAdjustmentTotal();
     verify(promotableOrder).removeAllCandidateItemOfferAdjustments();
   }
 
   /**
-   * Test {@link OrderOfferProcessorImpl#compareAndAdjustOrderAndItemOffers(PromotableOrder)}.
-   *
-   * <p>Method under test: {@link
-   * OrderOfferProcessorImpl#compareAndAdjustOrderAndItemOffers(PromotableOrder)}
+   * Method under test:
+   * {@link OrderOfferProcessorImpl#compareAndAdjustOrderAndItemOffers(PromotableOrder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OrderOfferProcessorImpl.compareAndAdjustOrderAndItemOffers(PromotableOrder)"
-  })
-  public void testCompareAndAdjustOrderAndItemOffers2() {
+  public void testCompareAndAdjustOrderAndItemOffers3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    OrderOfferProcessorImpl orderOfferProcessorImpl = new OrderOfferProcessorImpl(new PromotableOfferUtilityImpl());
     PromotableOrder promotableOrder = mock(PromotableOrder.class);
     doNothing().when(promotableOrder).removeAllCandidateOrderOfferAdjustments();
     when(promotableOrder.calculateItemAdjustmentTotal()).thenReturn(new Money(10.0d));
@@ -413,72 +323,26 @@ public class OrderOfferProcessorImplDiffblueTest {
     // Act
     orderOfferProcessorImpl.compareAndAdjustOrderAndItemOffers(promotableOrder);
 
-    // Assert
+    // Assert that nothing has changed
     verify(promotableOrder).calculateItemAdjustmentTotal();
     verify(promotableOrder).calculateOrderAdjustmentTotal();
     verify(promotableOrder).removeAllCandidateOrderOfferAdjustments();
   }
 
   /**
-   * Test {@link OrderOfferProcessorImpl#compareAndAdjustOrderAndItemOffers(PromotableOrder)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link BroadleafCurrency#getCurrencyCode()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderOfferProcessorImpl#compareAndAdjustOrderAndItemOffers(PromotableOrder)}
+   * Method under test:
+   * {@link OrderOfferProcessorImpl#compareAndAdjustOrderAndItemOffers(PromotableOrder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OrderOfferProcessorImpl.compareAndAdjustOrderAndItemOffers(PromotableOrder)"
-  })
-  public void testCompareAndAdjustOrderAndItemOffers_thenCallsGetCurrencyCode() {
+  public void testCompareAndAdjustOrderAndItemOffers4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
-    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
-
-    Order order = mock(Order.class);
-    when(order.getOrderAdjustments()).thenReturn(new ArrayList<>());
-    when(order.getOrderItems()).thenReturn(new ArrayList<>());
-    when(order.getCurrency()).thenReturn(broadleafCurrency);
-
-    // Act
-    orderOfferProcessorImpl.compareAndAdjustOrderAndItemOffers(
-        new PromotableOrderImpl(order, promotableItemFactory, true));
-
-    // Assert
-    verify(broadleafCurrency, atLeast(1)).getCurrencyCode();
-    verify(order, atLeast(1)).getCurrency();
-    verify(order, atLeast(1)).getOrderAdjustments();
-    verify(order).getOrderItems();
-  }
-
-  /**
-   * Test {@link OrderOfferProcessorImpl#compareAndAdjustOrderAndItemOffers(PromotableOrder)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link Money#greaterThanOrEqual(Money)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderOfferProcessorImpl#compareAndAdjustOrderAndItemOffers(PromotableOrder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OrderOfferProcessorImpl.compareAndAdjustOrderAndItemOffers(PromotableOrder)"
-  })
-  public void testCompareAndAdjustOrderAndItemOffers_thenCallsGreaterThanOrEqual() {
-    // Arrange
+    OrderOfferProcessorImpl orderOfferProcessorImpl = new OrderOfferProcessorImpl(new PromotableOfferUtilityImpl());
     Money money = mock(Money.class);
-    when(money.greaterThanOrEqual(Mockito.<Money>any())).thenReturn(false);
-
+    when(money.greaterThanOrEqual(Mockito.<Money>any())).thenReturn(true);
     PromotableOrder promotableOrder = mock(PromotableOrder.class);
-    doNothing().when(promotableOrder).removeAllCandidateOrderOfferAdjustments();
+    doNothing().when(promotableOrder).removeAllCandidateItemOfferAdjustments();
     when(promotableOrder.calculateItemAdjustmentTotal()).thenReturn(new Money(10.0d));
     when(promotableOrder.calculateOrderAdjustmentTotal()).thenReturn(money);
 
@@ -489,76 +353,50 @@ public class OrderOfferProcessorImplDiffblueTest {
     verify(money).greaterThanOrEqual(isA(Money.class));
     verify(promotableOrder).calculateItemAdjustmentTotal();
     verify(promotableOrder).calculateOrderAdjustmentTotal();
-    verify(promotableOrder).removeAllCandidateOrderOfferAdjustments();
+    verify(promotableOrder).removeAllCandidateItemOfferAdjustments();
   }
 
   /**
-   * Test {@link OrderOfferProcessorImpl#synchronizeOrderAdjustments(PromotableOrder)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link Order#getOrderAdjustments()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderOfferProcessorImpl#synchronizeOrderAdjustments(PromotableOrder)}
+   * Method under test:
+   * {@link OrderOfferProcessorImpl#processMatchingDetails(OrderItemPriceDetail, PromotableOrderItemPriceDetail)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void OrderOfferProcessorImpl.synchronizeOrderAdjustments(PromotableOrder)"})
-  public void testSynchronizeOrderAdjustments_thenCallsGetOrderAdjustments() {
-    // Arrange
-    ArrayList<OrderAdjustment> orderAdjustmentList = new ArrayList<>();
-    orderAdjustmentList.add(new OrderAdjustmentImpl());
+  public void testProcessMatchingDetails() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    Order order = mock(Order.class);
-    when(order.getOrderAdjustments()).thenReturn(orderAdjustmentList);
+    // Arrange
+    OrderOfferProcessorImpl orderOfferProcessorImpl = new OrderOfferProcessorImpl(new PromotableOfferUtilityImpl());
+    orderOfferProcessorImpl.setOfferServiceUtilities(new OfferServiceUtilitiesImpl(new PromotableOfferUtilityImpl()));
+    OrderItemPriceDetailImpl itemDetail = new OrderItemPriceDetailImpl();
 
     // Act
-    orderOfferProcessorImpl.synchronizeOrderAdjustments(
-        new PromotableOrderImpl(order, promotableItemFactory, true));
+    orderOfferProcessorImpl.processMatchingDetails(itemDetail,
+        new PromotableOrderItemPriceDetailWrapper(new PromotableOrderItemPriceDetailImpl(
+            new PromotableOrderItemImpl(new BundleOrderItemImpl(), null, null, true), 1)));
 
     // Assert
-    verify(order, atLeast(1)).getOrderAdjustments();
+    assertEquals(1, itemDetail.getQuantity());
   }
 
   /**
-   * Test {@link OrderOfferProcessorImpl#processMatchingDetails(OrderItemPriceDetail,
-   * PromotableOrderItemPriceDetail)}.
-   *
-   * <ul>
-   *   <li>Given one.
-   *   <li>Then calls {@link OrderItemPriceDetailImpl#getOrderItemPriceDetailAdjustments()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderOfferProcessorImpl#processMatchingDetails(OrderItemPriceDetail,
-   * PromotableOrderItemPriceDetail)}
+   * Method under test:
+   * {@link OrderOfferProcessorImpl#processMatchingDetails(OrderItemPriceDetail, PromotableOrderItemPriceDetail)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OrderOfferProcessorImpl.processMatchingDetails(OrderItemPriceDetail, PromotableOrderItemPriceDetail)"
-  })
-  public void testProcessMatchingDetails_givenOne_thenCallsGetOrderItemPriceDetailAdjustments() {
-    // Arrange
-    OrderOfferProcessorImpl orderOfferProcessorImpl =
-        new OrderOfferProcessorImpl(new PromotableOfferUtilityImpl());
-    orderOfferProcessorImpl.setOfferServiceUtilities(
-        new OfferServiceUtilitiesImpl(new PromotableOfferUtilityImpl()));
+  public void testProcessMatchingDetails2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
+    // Arrange
+    OrderOfferProcessorImpl orderOfferProcessorImpl = new OrderOfferProcessorImpl(new PromotableOfferUtilityImpl());
+    orderOfferProcessorImpl.setOfferServiceUtilities(new OfferServiceUtilitiesImpl(new PromotableOfferUtilityImpl()));
     OrderItemPriceDetailImpl itemDetail = mock(OrderItemPriceDetailImpl.class);
     when(itemDetail.getQuantity()).thenReturn(1);
     when(itemDetail.getOrderItemPriceDetailAdjustments()).thenReturn(new ArrayList<>());
-    PromotableOrderItemImpl promotableOrderItem =
-        new PromotableOrderItemImpl(new BundleOrderItemImpl(), null, null, true);
 
     // Act
-    orderOfferProcessorImpl.processMatchingDetails(
-        itemDetail,
-        new PromotableOrderItemPriceDetailWrapper(
-            new PromotableOrderItemPriceDetailImpl(promotableOrderItem, 1)));
+    orderOfferProcessorImpl.processMatchingDetails(itemDetail,
+        new PromotableOrderItemPriceDetailWrapper(new PromotableOrderItemPriceDetailImpl(
+            new PromotableOrderItemImpl(new BundleOrderItemImpl(), null, null, true), 1)));
 
     // Assert
     verify(itemDetail).getOrderItemPriceDetailAdjustments();
@@ -566,62 +404,15 @@ public class OrderOfferProcessorImplDiffblueTest {
   }
 
   /**
-   * Test {@link OrderOfferProcessorImpl#processMatchingDetails(OrderItemPriceDetail,
-   * PromotableOrderItemPriceDetail)}.
-   *
-   * <ul>
-   *   <li>Then {@link OrderItemPriceDetailImpl} (default constructor) Quantity is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderOfferProcessorImpl#processMatchingDetails(OrderItemPriceDetail,
-   * PromotableOrderItemPriceDetail)}
+   * Method under test:
+   * {@link OrderOfferProcessorImpl#buildItemPriceDetailKey(OrderItemPriceDetail)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OrderOfferProcessorImpl.processMatchingDetails(OrderItemPriceDetail, PromotableOrderItemPriceDetail)"
-  })
-  public void testProcessMatchingDetails_thenOrderItemPriceDetailImplQuantityIsOne() {
+  public void testBuildItemPriceDetailKey() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    OrderOfferProcessorImpl orderOfferProcessorImpl =
-        new OrderOfferProcessorImpl(new PromotableOfferUtilityImpl());
-    orderOfferProcessorImpl.setOfferServiceUtilities(
-        new OfferServiceUtilitiesImpl(new PromotableOfferUtilityImpl()));
-    OrderItemPriceDetailImpl itemDetail = new OrderItemPriceDetailImpl();
-    PromotableOrderItemImpl promotableOrderItem =
-        new PromotableOrderItemImpl(new BundleOrderItemImpl(), null, null, true);
-
-    // Act
-    orderOfferProcessorImpl.processMatchingDetails(
-        itemDetail,
-        new PromotableOrderItemPriceDetailWrapper(
-            new PromotableOrderItemPriceDetailImpl(promotableOrderItem, 1)));
-
-    // Assert
-    assertEquals(1, itemDetail.getQuantity());
-  }
-
-  /**
-   * Test {@link OrderOfferProcessorImpl#buildItemPriceDetailKey(OrderItemPriceDetail)}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.
-   *   <li>Then calls {@link OrderItemPriceDetailImpl#getOrderItem()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderOfferProcessorImpl#buildItemPriceDetailKey(OrderItemPriceDetail)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.String OrderOfferProcessorImpl.buildItemPriceDetailKey(OrderItemPriceDetail)"
-  })
-  public void testBuildItemPriceDetailKey_givenArrayList_thenCallsGetOrderItem() {
-    // Arrange
+    OrderOfferProcessorImpl orderOfferProcessorImpl = new OrderOfferProcessorImpl(new PromotableOfferUtilityImpl());
     OrderItemPriceDetailImpl itemDetail = mock(OrderItemPriceDetailImpl.class);
     when(itemDetail.getUseSalePrice()).thenReturn(true);
     when(itemDetail.getOrderItemPriceDetailAdjustments()).thenReturn(new ArrayList<>());
@@ -637,25 +428,17 @@ public class OrderOfferProcessorImplDiffblueTest {
   }
 
   /**
-   * Test {@link OrderOfferProcessorImpl#buildItemPriceDetailKey(OrderItemPriceDetail)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link OrderItemPriceDetailAdjustmentImpl#getOffer()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderOfferProcessorImpl#buildItemPriceDetailKey(OrderItemPriceDetail)}
+   * Method under test:
+   * {@link OrderOfferProcessorImpl#buildItemPriceDetailKey(OrderItemPriceDetail)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.String OrderOfferProcessorImpl.buildItemPriceDetailKey(OrderItemPriceDetail)"
-  })
-  public void testBuildItemPriceDetailKey_thenCallsGetOffer() {
+  public void testBuildItemPriceDetailKey2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl =
-        mock(OrderItemPriceDetailAdjustmentImpl.class);
+    OrderOfferProcessorImpl orderOfferProcessorImpl = new OrderOfferProcessorImpl(new PromotableOfferUtilityImpl());
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = mock(
+        OrderItemPriceDetailAdjustmentImpl.class);
     when(orderItemPriceDetailAdjustmentImpl.getOffer()).thenReturn(new OfferImpl());
 
     ArrayList<OrderItemPriceDetailAdjustment> orderItemPriceDetailAdjustments = new ArrayList<>();
@@ -676,84 +459,16 @@ public class OrderOfferProcessorImplDiffblueTest {
   }
 
   /**
-   * Test {@link OrderOfferProcessorImpl#fgContainsFutureCreditAdjustment(FulfillmentGroup)}.
-   *
-   * <ul>
-   *   <li>Given {@link Money#Money()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderOfferProcessorImpl#fgContainsFutureCreditAdjustment(FulfillmentGroup)}
+   * Method under test:
+   * {@link OrderOfferProcessorImpl#fgContainsFutureCreditAdjustment(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean OrderOfferProcessorImpl.fgContainsFutureCreditAdjustment(FulfillmentGroup)"
-  })
-  public void testFgContainsFutureCreditAdjustment_givenMoney() {
+  public void testFgContainsFutureCreditAdjustment() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    FulfillmentGroupImpl fg = mock(FulfillmentGroupImpl.class);
-    when(fg.getFutureCreditFulfillmentGroupAdjustmentsValue()).thenReturn(new Money());
+    OrderOfferProcessorImpl orderOfferProcessorImpl = new OrderOfferProcessorImpl(new PromotableOfferUtilityImpl());
 
-    // Act
-    boolean actualFgContainsFutureCreditAdjustmentResult =
-        orderOfferProcessorImpl.fgContainsFutureCreditAdjustment(fg);
-
-    // Assert
-    verify(fg).getFutureCreditFulfillmentGroupAdjustmentsValue();
-    assertFalse(actualFgContainsFutureCreditAdjustmentResult);
-  }
-
-  /**
-   * Test {@link OrderOfferProcessorImpl#fgContainsFutureCreditAdjustment(FulfillmentGroup)}.
-   *
-   * <ul>
-   *   <li>Given {@link Money#Money(double)} with amount is ten.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderOfferProcessorImpl#fgContainsFutureCreditAdjustment(FulfillmentGroup)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean OrderOfferProcessorImpl.fgContainsFutureCreditAdjustment(FulfillmentGroup)"
-  })
-  public void testFgContainsFutureCreditAdjustment_givenMoneyWithAmountIsTen_thenReturnTrue() {
-    // Arrange
-    FulfillmentGroupImpl fg = mock(FulfillmentGroupImpl.class);
-    when(fg.getFutureCreditFulfillmentGroupAdjustmentsValue()).thenReturn(new Money(10.0d));
-
-    // Act
-    boolean actualFgContainsFutureCreditAdjustmentResult =
-        orderOfferProcessorImpl.fgContainsFutureCreditAdjustment(fg);
-
-    // Assert
-    verify(fg).getFutureCreditFulfillmentGroupAdjustmentsValue();
-    assertTrue(actualFgContainsFutureCreditAdjustmentResult);
-  }
-
-  /**
-   * Test {@link OrderOfferProcessorImpl#fgContainsFutureCreditAdjustment(FulfillmentGroup)}.
-   *
-   * <ul>
-   *   <li>Given {@link NullOrderImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderOfferProcessorImpl#fgContainsFutureCreditAdjustment(FulfillmentGroup)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean OrderOfferProcessorImpl.fgContainsFutureCreditAdjustment(FulfillmentGroup)"
-  })
-  public void testFgContainsFutureCreditAdjustment_givenNullOrderImpl() {
-    // Arrange
     FulfillmentGroupImpl fg = new FulfillmentGroupImpl();
     fg.setOrder(new NullOrderImpl());
 
@@ -762,161 +477,85 @@ public class OrderOfferProcessorImplDiffblueTest {
   }
 
   /**
-   * Test {@link OrderOfferProcessorImpl#fgContainsFutureCreditAdjustment(FulfillmentGroup)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link Money#compareTo(Money)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderOfferProcessorImpl#fgContainsFutureCreditAdjustment(FulfillmentGroup)}
+   * Method under test:
+   * {@link OrderOfferProcessorImpl#fgContainsFutureCreditAdjustment(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean OrderOfferProcessorImpl.fgContainsFutureCreditAdjustment(FulfillmentGroup)"
-  })
-  public void testFgContainsFutureCreditAdjustment_thenCallsCompareTo() {
-    // Arrange
-    Money money = mock(Money.class);
-    when(money.compareTo(Mockito.<Money>any())).thenReturn(0);
+  public void testFgContainsFutureCreditAdjustment2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
+    // Arrange
+    OrderOfferProcessorImpl orderOfferProcessorImpl = new OrderOfferProcessorImpl(new PromotableOfferUtilityImpl());
     FulfillmentGroupImpl fg = mock(FulfillmentGroupImpl.class);
-    when(fg.getFutureCreditFulfillmentGroupAdjustmentsValue()).thenReturn(money);
+    when(fg.getFutureCreditFulfillmentGroupAdjustmentsValue()).thenReturn(new Money());
 
     // Act
-    boolean actualFgContainsFutureCreditAdjustmentResult =
-        orderOfferProcessorImpl.fgContainsFutureCreditAdjustment(fg);
+    boolean actualFgContainsFutureCreditAdjustmentResult = orderOfferProcessorImpl.fgContainsFutureCreditAdjustment(fg);
 
     // Assert
-    verify(money).compareTo(isA(Money.class));
     verify(fg).getFutureCreditFulfillmentGroupAdjustmentsValue();
     assertFalse(actualFgContainsFutureCreditAdjustmentResult);
   }
 
   /**
-   * Test {@link OrderOfferProcessorImpl#fgContainsFutureCreditAdjustment(FulfillmentGroup)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link BroadleafCurrency#getCurrencyCode()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderOfferProcessorImpl#fgContainsFutureCreditAdjustment(FulfillmentGroup)}
+   * Method under test:
+   * {@link OrderOfferProcessorImpl#fgContainsFutureCreditAdjustment(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean OrderOfferProcessorImpl.fgContainsFutureCreditAdjustment(FulfillmentGroup)"
-  })
-  public void testFgContainsFutureCreditAdjustment_thenCallsGetCurrencyCode() {
+  public void testFgContainsFutureCreditAdjustment3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
-    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
-
-    Order order = mock(Order.class);
-    when(order.getCurrency()).thenReturn(broadleafCurrency);
-
-    FulfillmentGroupImpl fg = new FulfillmentGroupImpl();
-    fg.setOrder(order);
-
-    // Act
-    boolean actualFgContainsFutureCreditAdjustmentResult =
-        orderOfferProcessorImpl.fgContainsFutureCreditAdjustment(fg);
-
-    // Assert
-    verify(broadleafCurrency).getCurrencyCode();
-    verify(order).getCurrency();
-    assertFalse(actualFgContainsFutureCreditAdjustmentResult);
-  }
-
-  /**
-   * Test {@link OrderOfferProcessorImpl#syncFulfillmentPrice(FulfillmentGroup)}.
-   *
-   * <p>Method under test: {@link OrderOfferProcessorImpl#syncFulfillmentPrice(FulfillmentGroup)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void OrderOfferProcessorImpl.syncFulfillmentPrice(FulfillmentGroup)"})
-  public void testSyncFulfillmentPrice() {
-    // Arrange
+    OrderOfferProcessorImpl orderOfferProcessorImpl = new OrderOfferProcessorImpl(new PromotableOfferUtilityImpl());
     FulfillmentGroupImpl fg = mock(FulfillmentGroupImpl.class);
-    doNothing().when(fg).setFulfillmentPrice(Mockito.<Money>any());
-    when(fg.getFulfillmentGroupAdjustmentsValue()).thenReturn(new Money());
-    when(fg.getRetailFulfillmentPrice()).thenReturn(new Money());
-    doNothing().when(fg).setOrder(Mockito.<Order>any());
-    fg.setOrder(mock(Order.class));
+    when(fg.getFutureCreditFulfillmentGroupAdjustmentsValue()).thenReturn(new Money(10.0d));
 
     // Act
-    orderOfferProcessorImpl.syncFulfillmentPrice(fg);
+    boolean actualFgContainsFutureCreditAdjustmentResult = orderOfferProcessorImpl.fgContainsFutureCreditAdjustment(fg);
 
     // Assert
-    verify(fg).getFulfillmentGroupAdjustmentsValue();
-    verify(fg).getRetailFulfillmentPrice();
-    verify(fg).setFulfillmentPrice(isA(Money.class));
-    verify(fg).setOrder(isA(Order.class));
+    verify(fg).getFutureCreditFulfillmentGroupAdjustmentsValue();
+    assertTrue(actualFgContainsFutureCreditAdjustmentResult);
   }
 
   /**
-   * Test {@link OrderOfferProcessorImpl#syncFulfillmentPrice(FulfillmentGroup)}.
-   *
-   * <ul>
-   *   <li>Given {@link Money} {@link Money#subtract(Money)} return {@link Money#Money()}.
-   *   <li>Then calls {@link Money#subtract(Money)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderOfferProcessorImpl#syncFulfillmentPrice(FulfillmentGroup)}
+   * Method under test:
+   * {@link OrderOfferProcessorImpl#fgContainsFutureCreditAdjustment(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void OrderOfferProcessorImpl.syncFulfillmentPrice(FulfillmentGroup)"})
-  public void testSyncFulfillmentPrice_givenMoneySubtractReturnMoney_thenCallsSubtract() {
+  public void testFgContainsFutureCreditAdjustment4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    OrderOfferProcessorImpl orderOfferProcessorImpl = new OrderOfferProcessorImpl(new PromotableOfferUtilityImpl());
     Money money = mock(Money.class);
-    when(money.subtract(Mockito.<Money>any())).thenReturn(new Money());
-
+    when(money.compareTo(Mockito.<Money>any())).thenReturn(1);
     FulfillmentGroupImpl fg = mock(FulfillmentGroupImpl.class);
-    doNothing().when(fg).setFulfillmentPrice(Mockito.<Money>any());
-    when(fg.getFulfillmentGroupAdjustmentsValue()).thenReturn(mock(Money.class));
-    when(fg.getRetailFulfillmentPrice()).thenReturn(money);
-    doNothing().when(fg).setOrder(Mockito.<Order>any());
-    fg.setOrder(mock(Order.class));
+    when(fg.getFutureCreditFulfillmentGroupAdjustmentsValue()).thenReturn(money);
 
     // Act
-    orderOfferProcessorImpl.syncFulfillmentPrice(fg);
+    boolean actualFgContainsFutureCreditAdjustmentResult = orderOfferProcessorImpl.fgContainsFutureCreditAdjustment(fg);
 
     // Assert
-    verify(money).subtract(isA(Money.class));
-    verify(fg).getFulfillmentGroupAdjustmentsValue();
-    verify(fg).getRetailFulfillmentPrice();
-    verify(fg).setFulfillmentPrice(isA(Money.class));
-    verify(fg).setOrder(isA(Order.class));
+    verify(money).compareTo(isA(Money.class));
+    verify(fg).getFutureCreditFulfillmentGroupAdjustmentsValue();
+    assertTrue(actualFgContainsFutureCreditAdjustmentResult);
   }
 
   /**
-   * Test {@link OrderOfferProcessorImpl#syncFulfillmentPrice(FulfillmentGroup)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link BroadleafCurrency#getCurrencyCode()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderOfferProcessorImpl#syncFulfillmentPrice(FulfillmentGroup)}
+   * Method under test:
+   * {@link OrderOfferProcessorImpl#syncFulfillmentPrice(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void OrderOfferProcessorImpl.syncFulfillmentPrice(FulfillmentGroup)"})
-  public void testSyncFulfillmentPrice_thenCallsGetCurrencyCode() {
-    // Arrange
-    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
-    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
+  public void testSyncFulfillmentPrice() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
+    // Arrange
+    OrderOfferProcessorImpl orderOfferProcessorImpl = new OrderOfferProcessorImpl(new PromotableOfferUtilityImpl());
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
     Order order = mock(Order.class);
-    when(order.getCurrency()).thenReturn(broadleafCurrency);
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
 
     FulfillmentGroupImpl fg = new FulfillmentGroupImpl();
     fg.setRetailFulfillmentPrice(new Money());
@@ -926,37 +565,88 @@ public class OrderOfferProcessorImplDiffblueTest {
     orderOfferProcessorImpl.syncFulfillmentPrice(fg);
 
     // Assert
-    verify(broadleafCurrency, atLeast(1)).getCurrencyCode();
+    verify(broadleafCurrencyImpl, atLeast(1)).getCurrencyCode();
     verify(order, atLeast(1)).getCurrency();
   }
 
   /**
-   * Test {@link OrderOfferProcessorImpl#buildPromotableFulfillmentGroupMap(PromotableOrder)}.
-   *
-   * <ul>
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderOfferProcessorImpl#buildPromotableFulfillmentGroupMap(PromotableOrder)}
+   * Method under test:
+   * {@link OrderOfferProcessorImpl#syncFulfillmentPrice(FulfillmentGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map OrderOfferProcessorImpl.buildPromotableFulfillmentGroupMap(PromotableOrder)"
-  })
-  public void testBuildPromotableFulfillmentGroupMap_thenReturnEmpty() {
+  public void testSyncFulfillmentPrice2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    OrderOfferProcessorImpl orderOfferProcessorImpl =
-        new OrderOfferProcessorImpl(new PromotableOfferUtilityImpl());
+    OrderOfferProcessorImpl orderOfferProcessorImpl = new OrderOfferProcessorImpl(new PromotableOfferUtilityImpl());
+    FulfillmentGroupImpl fg = mock(FulfillmentGroupImpl.class);
+    doNothing().when(fg).setFulfillmentPrice(Mockito.<Money>any());
+    when(fg.getFulfillmentGroupAdjustmentsValue()).thenReturn(new Money());
+    when(fg.getRetailFulfillmentPrice()).thenReturn(new Money());
+    doNothing().when(fg).addFulfillmentGroupItem(Mockito.<FulfillmentGroupItem>any());
+    doNothing().when(fg).setOrder(Mockito.<Order>any());
+    fg.addFulfillmentGroupItem(new FulfillmentGroupItemImpl());
+    fg.setOrder(mock(Order.class));
+
+    // Act
+    orderOfferProcessorImpl.syncFulfillmentPrice(fg);
+
+    // Assert
+    verify(fg).addFulfillmentGroupItem(isA(FulfillmentGroupItem.class));
+    verify(fg).getFulfillmentGroupAdjustmentsValue();
+    verify(fg).getRetailFulfillmentPrice();
+    verify(fg).setFulfillmentPrice(isA(Money.class));
+    verify(fg).setOrder(isA(Order.class));
+  }
+
+  /**
+   * Method under test:
+   * {@link OrderOfferProcessorImpl#syncFulfillmentPrice(FulfillmentGroup)}
+   */
+  @Test
+  public void testSyncFulfillmentPrice3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    OrderOfferProcessorImpl orderOfferProcessorImpl = new OrderOfferProcessorImpl(new PromotableOfferUtilityImpl());
+    Money money = mock(Money.class);
+    when(money.subtract(Mockito.<Money>any())).thenReturn(new Money());
+    FulfillmentGroupImpl fg = mock(FulfillmentGroupImpl.class);
+    doNothing().when(fg).setFulfillmentPrice(Mockito.<Money>any());
+    when(fg.getFulfillmentGroupAdjustmentsValue()).thenReturn(mock(Money.class));
+    when(fg.getRetailFulfillmentPrice()).thenReturn(money);
+    doNothing().when(fg).addFulfillmentGroupItem(Mockito.<FulfillmentGroupItem>any());
+    doNothing().when(fg).setOrder(Mockito.<Order>any());
+    fg.addFulfillmentGroupItem(new FulfillmentGroupItemImpl());
+    fg.setOrder(mock(Order.class));
+
+    // Act
+    orderOfferProcessorImpl.syncFulfillmentPrice(fg);
+
+    // Assert
+    verify(money).subtract(isA(Money.class));
+    verify(fg).addFulfillmentGroupItem(isA(FulfillmentGroupItem.class));
+    verify(fg).getFulfillmentGroupAdjustmentsValue();
+    verify(fg).getRetailFulfillmentPrice();
+    verify(fg).setFulfillmentPrice(isA(Money.class));
+    verify(fg).setOrder(isA(Order.class));
+  }
+
+  /**
+   * Method under test:
+   * {@link OrderOfferProcessorImpl#buildPromotableFulfillmentGroupMap(PromotableOrder)}
+   */
+  @Test
+  public void testBuildPromotableFulfillmentGroupMap() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    OrderOfferProcessorImpl orderOfferProcessorImpl = new OrderOfferProcessorImpl(new PromotableOfferUtilityImpl());
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     OrderImpl order = new OrderImpl();
@@ -977,47 +667,35 @@ public class OrderOfferProcessorImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
-    PromotableOrderImpl order2 =
-        new PromotableOrderImpl(
-            order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
 
     // Act and Assert
-    assertTrue(orderOfferProcessorImpl.buildPromotableFulfillmentGroupMap(order2).isEmpty());
+    assertTrue(orderOfferProcessorImpl
+        .buildPromotableFulfillmentGroupMap(
+            new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true))
+        .isEmpty());
   }
 
   /**
-   * Test {@link OrderOfferProcessorImpl#buildPromotableFulfillmentGroupMap(PromotableOrder)}.
-   *
-   * <ul>
-   *   <li>Then return size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OrderOfferProcessorImpl#buildPromotableFulfillmentGroupMap(PromotableOrder)}
+   * Method under test:
+   * {@link OrderOfferProcessorImpl#buildPromotableFulfillmentGroupMap(PromotableOrder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map OrderOfferProcessorImpl.buildPromotableFulfillmentGroupMap(PromotableOrder)"
-  })
-  public void testBuildPromotableFulfillmentGroupMap_thenReturnSizeIsOne() {
+  public void testBuildPromotableFulfillmentGroupMap2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    OrderOfferProcessorImpl orderOfferProcessorImpl =
-        new OrderOfferProcessorImpl(new PromotableOfferUtilityImpl());
+    OrderOfferProcessorImpl orderOfferProcessorImpl = new OrderOfferProcessorImpl(new PromotableOfferUtilityImpl());
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     ArrayList<FulfillmentGroup> fulfillmentGroups = new ArrayList<>();
@@ -1042,79 +720,57 @@ public class OrderOfferProcessorImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
-    PromotableOrderImpl order2 =
-        new PromotableOrderImpl(
-            order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
 
     // Act
-    Map<Long, PromotableFulfillmentGroup> actualBuildPromotableFulfillmentGroupMapResult =
-        orderOfferProcessorImpl.buildPromotableFulfillmentGroupMap(order2);
+    Map<Long, PromotableFulfillmentGroup> actualBuildPromotableFulfillmentGroupMapResult = orderOfferProcessorImpl
+        .buildPromotableFulfillmentGroupMap(
+            new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true));
 
     // Assert
     assertEquals(1, actualBuildPromotableFulfillmentGroupMapResult.size());
     PromotableFulfillmentGroup getResult = actualBuildPromotableFulfillmentGroupMapResult.get(null);
     assertTrue(getResult instanceof PromotableFulfillmentGroupImpl);
-    FulfillmentGroup fulfillmentGroup = getResult.getFulfillmentGroup();
-    assertTrue(fulfillmentGroup instanceof FulfillmentGroupImpl);
     assertTrue(getResult.getCandidateFulfillmentGroupAdjustments().isEmpty());
     assertTrue(getResult.getDiscountableOrderItems().isEmpty());
-    assertTrue(
-        ((PromotableFulfillmentGroupImpl) getResult)
-            .candidateFulfillmentGroupAdjustments.isEmpty());
-    assertSame(fulfillmentGroupImpl, fulfillmentGroup);
+    assertTrue(((PromotableFulfillmentGroupImpl) getResult).candidateFulfillmentGroupAdjustments.isEmpty());
+    assertSame(fulfillmentGroupImpl, getResult.getFulfillmentGroup());
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link OrderOfferProcessorImpl#setOfferDao(OfferDao)}
-   *   <li>{@link OrderOfferProcessorImpl#setOfferServiceUtilities(OfferServiceUtilities)}
+   *   <li>
+   * {@link OrderOfferProcessorImpl#setOfferServiceUtilities(OfferServiceUtilities)}
    *   <li>{@link OrderOfferProcessorImpl#setOrderItemDao(OrderItemDao)}
-   *   <li>{@link OrderOfferProcessorImpl#setPromotableItemFactory(PromotableItemFactory)}
+   *   <li>
+   * {@link OrderOfferProcessorImpl#setPromotableItemFactory(PromotableItemFactory)}
    *   <li>{@link OrderOfferProcessorImpl#getOfferServiceUtilities()}
    *   <li>{@link OrderOfferProcessorImpl#getPromotableItemFactory()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "OfferServiceUtilities OrderOfferProcessorImpl.getOfferServiceUtilities()",
-    "PromotableItemFactory OrderOfferProcessorImpl.getPromotableItemFactory()",
-    "void OrderOfferProcessorImpl.setOfferDao(OfferDao)",
-    "void OrderOfferProcessorImpl.setOfferServiceUtilities(OfferServiceUtilities)",
-    "void OrderOfferProcessorImpl.setOrderItemDao(OrderItemDao)",
-    "void OrderOfferProcessorImpl.setPromotableItemFactory(PromotableItemFactory)"
-  })
   public void testGettersAndSetters() {
     // Arrange
-    OrderOfferProcessorImpl orderOfferProcessorImpl =
-        new OrderOfferProcessorImpl(new PromotableOfferUtilityImpl());
+    OrderOfferProcessorImpl orderOfferProcessorImpl = new OrderOfferProcessorImpl(new PromotableOfferUtilityImpl());
 
     // Act
     orderOfferProcessorImpl.setOfferDao(new OfferDaoImpl());
-    OfferServiceUtilitiesImpl offerServiceUtilities =
-        new OfferServiceUtilitiesImpl(new PromotableOfferUtilityImpl());
+    OfferServiceUtilitiesImpl offerServiceUtilities = new OfferServiceUtilitiesImpl(new PromotableOfferUtilityImpl());
     orderOfferProcessorImpl.setOfferServiceUtilities(offerServiceUtilities);
     orderOfferProcessorImpl.setOrderItemDao(new OrderItemDaoImpl());
-    PromotableItemFactoryImpl promotableItemFactory =
-        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl());
+    PromotableItemFactoryImpl promotableItemFactory = new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl());
     orderOfferProcessorImpl.setPromotableItemFactory(promotableItemFactory);
-    OfferServiceUtilities actualOfferServiceUtilities =
-        orderOfferProcessorImpl.getOfferServiceUtilities();
-    PromotableItemFactory actualPromotableItemFactory =
-        orderOfferProcessorImpl.getPromotableItemFactory();
+    OfferServiceUtilities actualOfferServiceUtilities = orderOfferProcessorImpl.getOfferServiceUtilities();
+    PromotableItemFactory actualPromotableItemFactory = orderOfferProcessorImpl.getPromotableItemFactory();
 
-    // Assert
+    // Assert that nothing has changed
     assertTrue(actualPromotableItemFactory instanceof PromotableItemFactoryImpl);
     assertSame(offerServiceUtilities, actualOfferServiceUtilities);
     assertSame(promotableItemFactory, actualPromotableItemFactory);

@@ -19,82 +19,55 @@ package org.broadleafcommerce.core.web.controller.account;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import org.broadleafcommerce.core.web.checkout.model.PaymentInfoForm;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
+import org.broadleafcommerce.core.web.security.XssRequestWrapper;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
 
 class BroadleafManageCustomerPaymentsControllerDiffblueTest {
   /**
-   * Test {@link BroadleafManageCustomerPaymentsController#viewCustomerPayments(HttpServletRequest,
-   * Model, PaymentInfoForm)}.
-   *
-   * <p>Method under test: {@link
-   * BroadleafManageCustomerPaymentsController#viewCustomerPayments(HttpServletRequest, Model,
-   * PaymentInfoForm)}
-   */
-  @Test
-  @DisplayName("Test viewCustomerPayments(HttpServletRequest, Model, PaymentInfoForm)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String BroadleafManageCustomerPaymentsController.viewCustomerPayments(HttpServletRequest, Model, PaymentInfoForm)"
-  })
-  void testViewCustomerPayments() {
-    // Arrange
-    BroadleafManageCustomerPaymentsController broadleafManageCustomerPaymentsController =
-        new BroadleafManageCustomerPaymentsController();
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
-    ConcurrentModel model = new ConcurrentModel();
-
-    // Act and Assert
-    assertThrows(
-        SecurityException.class,
-        () ->
-            broadleafManageCustomerPaymentsController.viewCustomerPayments(
-                request, model, new PaymentInfoForm()));
-  }
-
-  /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of {@link BroadleafManageCustomerPaymentsController}
-   *   <li>{@link BroadleafManageCustomerPaymentsController#getCustomerPaymentRedirect()}
-   *   <li>{@link BroadleafManageCustomerPaymentsController#getCustomerPaymentView()}
+   *   <li>default or parameterless constructor of
+   * {@link BroadleafManageCustomerPaymentsController}
+   *   <li>
+   * {@link BroadleafManageCustomerPaymentsController#getCustomerPaymentRedirect()}
+   *   <li>
+   * {@link BroadleafManageCustomerPaymentsController#getCustomerPaymentView()}
    * </ul>
    */
   @Test
-  @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void BroadleafManageCustomerPaymentsController.<init>()",
-    "String BroadleafManageCustomerPaymentsController.getCustomerPaymentRedirect()",
-    "String BroadleafManageCustomerPaymentsController.getCustomerPaymentView()"
-  })
   void testGettersAndSetters() {
     // Arrange and Act
-    BroadleafManageCustomerPaymentsController actualBroadleafManageCustomerPaymentsController =
-        new BroadleafManageCustomerPaymentsController();
-    String actualCustomerPaymentRedirect =
-        actualBroadleafManageCustomerPaymentsController.getCustomerPaymentRedirect();
+    BroadleafManageCustomerPaymentsController actualBroadleafManageCustomerPaymentsController = new BroadleafManageCustomerPaymentsController();
+    String actualCustomerPaymentRedirect = actualBroadleafManageCustomerPaymentsController.getCustomerPaymentRedirect();
 
     // Assert
-    assertEquals(
-        "account/manageCustomerPayments",
+    assertEquals("account/manageCustomerPayments",
         actualBroadleafManageCustomerPaymentsController.getCustomerPaymentView());
     assertEquals("redirect:/account/payments", actualCustomerPaymentRedirect);
+  }
+
+  /**
+   * Method under test:
+   * {@link BroadleafManageCustomerPaymentsController#viewCustomerPayments(HttpServletRequest, Model, PaymentInfoForm)}
+   */
+  @Test
+  void testViewCustomerPayments() {
+    // Arrange
+    BroadleafManageCustomerPaymentsController broadleafManageCustomerPaymentsController = new BroadleafManageCustomerPaymentsController();
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
+    ConcurrentModel model = new ConcurrentModel();
+
+    // Act and Assert
+    assertThrows(SecurityException.class,
+        () -> broadleafManageCustomerPaymentsController.viewCustomerPayments(request, model, new PaymentInfoForm()));
   }
 }

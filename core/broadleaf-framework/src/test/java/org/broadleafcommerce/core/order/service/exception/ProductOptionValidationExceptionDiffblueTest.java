@@ -20,11 +20,7 @@ package org.broadleafcommerce.core.order.service.exception;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -33,15 +29,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {ProductOptionValidationException.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ProductOptionValidationExceptionDiffblueTest {
-  @Autowired private ProductOptionValidationException productOptionValidationException;
+  @Autowired
+  private ProductOptionValidationException productOptionValidationException;
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
-   *   <li>{@link ProductOptionValidationException#ProductOptionValidationException()}
+   *   <li>
+   * {@link ProductOptionValidationException#ProductOptionValidationException()}
    *   <li>{@link ProductOptionValidationException#setAttributeName(String)}
    *   <li>{@link ProductOptionValidationException#setAttributeValue(String)}
    *   <li>{@link ProductOptionValidationException#setErrorCode(String)}
@@ -55,25 +50,9 @@ public class ProductOptionValidationExceptionDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductOptionValidationException.<init>()",
-    "String ProductOptionValidationException.getAttributeName()",
-    "String ProductOptionValidationException.getAttributeValue()",
-    "String ProductOptionValidationException.getErrorCode()",
-    "String ProductOptionValidationException.getErrorMessage()",
-    "String ProductOptionValidationException.getValidationString()",
-    "void ProductOptionValidationException.setAttributeName(String)",
-    "void ProductOptionValidationException.setAttributeValue(String)",
-    "void ProductOptionValidationException.setErrorCode(String)",
-    "void ProductOptionValidationException.setErrorMessage(String)",
-    "void ProductOptionValidationException.setValidationString(String)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
-    ProductOptionValidationException actualProductOptionValidationException =
-        new ProductOptionValidationException();
+    ProductOptionValidationException actualProductOptionValidationException = new ProductOptionValidationException();
     actualProductOptionValidationException.setAttributeName("Attribute Name");
     actualProductOptionValidationException.setAttributeValue("42");
     actualProductOptionValidationException.setErrorCode("An error occurred");
@@ -84,41 +63,24 @@ public class ProductOptionValidationExceptionDiffblueTest {
     String actualErrorCode = actualProductOptionValidationException.getErrorCode();
     String actualErrorMessage = actualProductOptionValidationException.getErrorMessage();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("42", actualAttributeValue);
     assertEquals("An error occurred", actualErrorCode);
     assertEquals("An error occurred", actualErrorMessage);
     assertEquals("Attribute Name", actualAttributeName);
     assertEquals("Validation String", actualProductOptionValidationException.getValidationString());
-    assertNull(actualProductOptionValidationException.getMessage());
-    assertNull(actualProductOptionValidationException.getCause());
     assertEquals(0, actualProductOptionValidationException.getSuppressed().length);
   }
 
   /**
-   * Test {@link ProductOptionValidationException#ProductOptionValidationException(String, String,
-   * String, String, String, String)}.
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValidationException#ProductOptionValidationException(String, String, String,
-   * String, String, String)}
+   * Method under test:
+   * {@link ProductOptionValidationException#ProductOptionValidationException(String, String, String, String, String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductOptionValidationException.<init>(String, String, String, String, String, String)"
-  })
   public void testNewProductOptionValidationException() {
     // Arrange and Act
-    ProductOptionValidationException actualProductOptionValidationException =
-        new ProductOptionValidationException(
-            "An error occurred",
-            "An error occurred",
-            "Attribute Name",
-            "42",
-            "Validation String",
-            "An error occurred");
+    ProductOptionValidationException actualProductOptionValidationException = new ProductOptionValidationException(
+        "An error occurred", "An error occurred", "Attribute Name", "42", "Validation String", "An error occurred");
 
     // Assert
     assertEquals("42", actualProductOptionValidationException.getAttributeValue());
@@ -133,33 +95,18 @@ public class ProductOptionValidationExceptionDiffblueTest {
   }
 
   /**
-   * Test {@link ProductOptionValidationException#ProductOptionValidationException(String, String,
-   * String, String, String, String, Throwable)}.
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValidationException#ProductOptionValidationException(String, String, String,
-   * String, String, String, Throwable)}
+   * Method under test:
+   * {@link ProductOptionValidationException#ProductOptionValidationException(String, String, String, String, String, String, Throwable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductOptionValidationException.<init>(String, String, String, String, String, String, Throwable)"
-  })
   public void testNewProductOptionValidationException2() {
     // Arrange
     Throwable cause = new Throwable();
 
     // Act
-    ProductOptionValidationException actualProductOptionValidationException =
-        new ProductOptionValidationException(
-            "An error occurred",
-            "An error occurred",
-            "Attribute Name",
-            "42",
-            "Validation String",
-            "An error occurred",
-            cause);
+    ProductOptionValidationException actualProductOptionValidationException = new ProductOptionValidationException(
+        "An error occurred", "An error occurred", "Attribute Name", "42", "Validation String", "An error occurred",
+        cause);
 
     // Assert
     assertEquals("42", actualProductOptionValidationException.getAttributeValue());

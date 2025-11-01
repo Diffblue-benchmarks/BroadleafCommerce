@@ -21,76 +21,24 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.broadleafcommerce.common.encryption.EncryptionModule;
 import org.broadleafcommerce.common.encryption.PassthroughEncryptionModule;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.mockito.Mockito;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class BankAccountPaymentImplDiffblueTest {
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>default or parameterless constructor of {@link BankAccountPaymentImpl}
-   *   <li>{@link BankAccountPaymentImpl#setEncryptionModule(EncryptionModule)}
-   *   <li>{@link BankAccountPaymentImpl#setId(Long)}
-   *   <li>{@link BankAccountPaymentImpl#setReferenceNumber(String)}
-   *   <li>{@link BankAccountPaymentImpl#getEncryptionModule()}
-   *   <li>{@link BankAccountPaymentImpl#getId()}
-   *   <li>{@link BankAccountPaymentImpl#getReferenceNumber()}
-   * </ul>
+   * Method under test: {@link BankAccountPaymentImpl#getAccountNumber()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void BankAccountPaymentImpl.<init>()",
-    "EncryptionModule BankAccountPaymentImpl.getEncryptionModule()",
-    "Long BankAccountPaymentImpl.getId()",
-    "String BankAccountPaymentImpl.getReferenceNumber()",
-    "void BankAccountPaymentImpl.setEncryptionModule(EncryptionModule)",
-    "void BankAccountPaymentImpl.setId(Long)",
-    "void BankAccountPaymentImpl.setReferenceNumber(String)"
-  })
-  public void testGettersAndSetters() {
-    // Arrange and Act
-    BankAccountPaymentImpl actualBankAccountPaymentImpl = new BankAccountPaymentImpl();
-    PassthroughEncryptionModule encryptionModule = new PassthroughEncryptionModule();
-    actualBankAccountPaymentImpl.setEncryptionModule(encryptionModule);
-    actualBankAccountPaymentImpl.setId(1L);
-    actualBankAccountPaymentImpl.setReferenceNumber("42");
-    EncryptionModule actualEncryptionModule = actualBankAccountPaymentImpl.getEncryptionModule();
-    Long actualId = actualBankAccountPaymentImpl.getId();
+  public void testGetAccountNumber() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Assert
-    assertTrue(actualEncryptionModule instanceof PassthroughEncryptionModule);
-    assertEquals("42", actualBankAccountPaymentImpl.getReferenceNumber());
-    assertEquals(1L, actualId.longValue());
-    assertSame(encryptionModule, actualEncryptionModule);
-  }
-
-  /**
-   * Test {@link BankAccountPaymentImpl#getAccountNumber()}.
-   *
-   * <ul>
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BankAccountPaymentImpl#getAccountNumber()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String BankAccountPaymentImpl.getAccountNumber()"})
-  public void testGetAccountNumber_thenReturnNull() {
     // Arrange
     BankAccountPaymentImpl bankAccountPaymentImpl = new BankAccountPaymentImpl();
     bankAccountPaymentImpl.setEncryptionModule(new PassthroughEncryptionModule());
@@ -100,19 +48,34 @@ public class BankAccountPaymentImplDiffblueTest {
   }
 
   /**
-   * Test {@link BankAccountPaymentImpl#setAccountNumber(String)}.
-   *
-   * <ul>
-   *   <li>Then {@link BankAccountPaymentImpl#BankAccountPaymentImpl()} AccountNumber is {@code 42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BankAccountPaymentImpl#setAccountNumber(String)}
+   * Method under test: {@link BankAccountPaymentImpl#getAccountNumber()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BankAccountPaymentImpl.setAccountNumber(String)"})
-  public void testSetAccountNumber_thenBankAccountPaymentImplAccountNumberIs42() {
+  public void testGetAccountNumber2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PassthroughEncryptionModule encryptionModule = mock(PassthroughEncryptionModule.class);
+    when(encryptionModule.decrypt(Mockito.<String>any())).thenReturn("Decrypt");
+
+    BankAccountPaymentImpl bankAccountPaymentImpl = new BankAccountPaymentImpl();
+    bankAccountPaymentImpl.setEncryptionModule(encryptionModule);
+
+    // Act
+    String actualAccountNumber = bankAccountPaymentImpl.getAccountNumber();
+
+    // Assert
+    verify(encryptionModule).decrypt(isNull());
+    assertEquals("Decrypt", actualAccountNumber);
+  }
+
+  /**
+   * Method under test: {@link BankAccountPaymentImpl#setAccountNumber(String)}
+   */
+  @Test
+  public void testSetAccountNumber() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     BankAccountPaymentImpl bankAccountPaymentImpl = new BankAccountPaymentImpl();
     bankAccountPaymentImpl.setEncryptionModule(new PassthroughEncryptionModule());
@@ -126,19 +89,35 @@ public class BankAccountPaymentImplDiffblueTest {
   }
 
   /**
-   * Test {@link BankAccountPaymentImpl#getRoutingNumber()}.
-   *
-   * <ul>
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BankAccountPaymentImpl#getRoutingNumber()}
+   * Method under test: {@link BankAccountPaymentImpl#setAccountNumber(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String BankAccountPaymentImpl.getRoutingNumber()"})
-  public void testGetRoutingNumber_thenReturnNull() {
+  public void testSetAccountNumber2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PassthroughEncryptionModule encryptionModule = mock(PassthroughEncryptionModule.class);
+    when(encryptionModule.encrypt(Mockito.<String>any())).thenReturn("Encrypt");
+
+    BankAccountPaymentImpl bankAccountPaymentImpl = new BankAccountPaymentImpl();
+    bankAccountPaymentImpl.setEncryptionModule(encryptionModule);
+
+    // Act
+    bankAccountPaymentImpl.setAccountNumber("42");
+
+    // Assert
+    verify(encryptionModule).encrypt(eq("42"));
+    assertEquals("Encrypt", bankAccountPaymentImpl.accountNumber);
+    assertNull(bankAccountPaymentImpl.getAccountNumber());
+  }
+
+  /**
+   * Method under test: {@link BankAccountPaymentImpl#getRoutingNumber()}
+   */
+  @Test
+  public void testGetRoutingNumber() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     BankAccountPaymentImpl bankAccountPaymentImpl = new BankAccountPaymentImpl();
     bankAccountPaymentImpl.setEncryptionModule(new PassthroughEncryptionModule());
@@ -148,19 +127,34 @@ public class BankAccountPaymentImplDiffblueTest {
   }
 
   /**
-   * Test {@link BankAccountPaymentImpl#setRoutingNumber(String)}.
-   *
-   * <ul>
-   *   <li>Then {@link BankAccountPaymentImpl#BankAccountPaymentImpl()} RoutingNumber is {@code 42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BankAccountPaymentImpl#setRoutingNumber(String)}
+   * Method under test: {@link BankAccountPaymentImpl#getRoutingNumber()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BankAccountPaymentImpl.setRoutingNumber(String)"})
-  public void testSetRoutingNumber_thenBankAccountPaymentImplRoutingNumberIs42() {
+  public void testGetRoutingNumber2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PassthroughEncryptionModule encryptionModule = mock(PassthroughEncryptionModule.class);
+    when(encryptionModule.decrypt(Mockito.<String>any())).thenReturn("Decrypt");
+
+    BankAccountPaymentImpl bankAccountPaymentImpl = new BankAccountPaymentImpl();
+    bankAccountPaymentImpl.setEncryptionModule(encryptionModule);
+
+    // Act
+    String actualRoutingNumber = bankAccountPaymentImpl.getRoutingNumber();
+
+    // Assert
+    verify(encryptionModule).decrypt(isNull());
+    assertEquals("Decrypt", actualRoutingNumber);
+  }
+
+  /**
+   * Method under test: {@link BankAccountPaymentImpl#setRoutingNumber(String)}
+   */
+  @Test
+  public void testSetRoutingNumber() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     BankAccountPaymentImpl bankAccountPaymentImpl = new BankAccountPaymentImpl();
     bankAccountPaymentImpl.setEncryptionModule(new PassthroughEncryptionModule());
@@ -171,5 +165,58 @@ public class BankAccountPaymentImplDiffblueTest {
     // Assert
     assertEquals("42", bankAccountPaymentImpl.getRoutingNumber());
     assertEquals("42", bankAccountPaymentImpl.routingNumber);
+  }
+
+  /**
+   * Method under test: {@link BankAccountPaymentImpl#setRoutingNumber(String)}
+   */
+  @Test
+  public void testSetRoutingNumber2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PassthroughEncryptionModule encryptionModule = mock(PassthroughEncryptionModule.class);
+    when(encryptionModule.encrypt(Mockito.<String>any())).thenReturn("Encrypt");
+
+    BankAccountPaymentImpl bankAccountPaymentImpl = new BankAccountPaymentImpl();
+    bankAccountPaymentImpl.setEncryptionModule(encryptionModule);
+
+    // Act
+    bankAccountPaymentImpl.setRoutingNumber("42");
+
+    // Assert
+    verify(encryptionModule).encrypt(eq("42"));
+    assertEquals("Encrypt", bankAccountPaymentImpl.routingNumber);
+    assertNull(bankAccountPaymentImpl.getRoutingNumber());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>default or parameterless constructor of {@link BankAccountPaymentImpl}
+   *   <li>{@link BankAccountPaymentImpl#setEncryptionModule(EncryptionModule)}
+   *   <li>{@link BankAccountPaymentImpl#setId(Long)}
+   *   <li>{@link BankAccountPaymentImpl#setReferenceNumber(String)}
+   *   <li>{@link BankAccountPaymentImpl#getEncryptionModule()}
+   *   <li>{@link BankAccountPaymentImpl#getId()}
+   *   <li>{@link BankAccountPaymentImpl#getReferenceNumber()}
+   * </ul>
+   */
+  @Test
+  public void testGettersAndSetters() {
+    // Arrange and Act
+    BankAccountPaymentImpl actualBankAccountPaymentImpl = new BankAccountPaymentImpl();
+    PassthroughEncryptionModule encryptionModule = new PassthroughEncryptionModule();
+    actualBankAccountPaymentImpl.setEncryptionModule(encryptionModule);
+    actualBankAccountPaymentImpl.setId(1L);
+    actualBankAccountPaymentImpl.setReferenceNumber("42");
+    EncryptionModule actualEncryptionModule = actualBankAccountPaymentImpl.getEncryptionModule();
+    Long actualId = actualBankAccountPaymentImpl.getId();
+
+    // Assert that nothing has changed
+    assertTrue(actualEncryptionModule instanceof PassthroughEncryptionModule);
+    assertEquals("42", actualBankAccountPaymentImpl.getReferenceNumber());
+    assertEquals(1L, actualId.longValue());
+    assertSame(encryptionModule, actualEncryptionModule);
   }
 }

@@ -19,22 +19,24 @@ package org.broadleafcommerce.common.vendor.service.exception;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.junit.Assert.assertSame;
+import java.io.IOException;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(classes = {PaymentException.class})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class PaymentExceptionDiffblueTest {
+  @Autowired
+  private PaymentException paymentException;
+
   /**
-   * Test {@link PaymentException#PaymentException()}.
-   *
-   * <p>Method under test: {@link PaymentException#PaymentException()}
+   * Method under test: {@link PaymentException#PaymentException()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PaymentException.<init>()"})
   public void testNewPaymentException() {
     // Arrange and Act
     PaymentException actualPaymentException = new PaymentException();
@@ -44,5 +46,142 @@ public class PaymentExceptionDiffblueTest {
     assertNull(actualPaymentException.getCause());
     assertNull(actualPaymentException.getRootCause());
     assertEquals(0, actualPaymentException.getSuppressed().length);
+  }
+
+  /**
+   * Method under test: {@link PaymentException#PaymentException(Throwable)}
+   */
+  @Test
+  public void testNewPaymentException2() {
+    // Arrange
+    Throwable cause = new Throwable();
+
+    // Act
+    PaymentException actualPaymentException = new PaymentException(cause);
+
+    // Assert
+    assertEquals("java.lang.Throwable", actualPaymentException.getLocalizedMessage());
+    assertEquals("java.lang.Throwable", actualPaymentException.getMessage());
+    assertNull(actualPaymentException.getRootCauseMessage());
+    assertEquals(0, actualPaymentException.getSuppressed().length);
+    assertSame(cause, actualPaymentException.getCause());
+    assertSame(cause, actualPaymentException.getRootCause());
+  }
+
+  /**
+   * Method under test: {@link PaymentException#PaymentException(Throwable)}
+   */
+  @Test
+  public void testNewPaymentException3() {
+    // Arrange and Act
+    PaymentException actualPaymentException = new PaymentException((Throwable) null);
+
+    // Assert
+    assertNull(actualPaymentException.getLocalizedMessage());
+    assertNull(actualPaymentException.getMessage());
+    assertNull(actualPaymentException.getRootCauseMessage());
+    assertNull(actualPaymentException.getCause());
+    assertNull(actualPaymentException.getRootCause());
+    assertEquals(0, actualPaymentException.getSuppressed().length);
+  }
+
+  /**
+   * Method under test: {@link PaymentException#PaymentException(Throwable)}
+   */
+  @Test
+  public void testNewPaymentException4() {
+    // Arrange
+    Throwable cause = new Throwable();
+    Throwable throwable = new Throwable();
+    cause.initCause(throwable);
+
+    // Act
+    PaymentException actualPaymentException = new PaymentException(cause);
+
+    // Assert
+    assertEquals("java.lang.Throwable", actualPaymentException.getLocalizedMessage());
+    assertEquals("java.lang.Throwable", actualPaymentException.getMessage());
+    assertNull(actualPaymentException.getRootCauseMessage());
+    assertEquals(0, actualPaymentException.getSuppressed().length);
+    assertSame(cause, actualPaymentException.getCause());
+    assertSame(throwable, actualPaymentException.getRootCause());
+  }
+
+  /**
+   * Method under test: {@link PaymentException#PaymentException(String)}
+   */
+  @Test
+  public void testNewPaymentException5() {
+    // Arrange and Act
+    PaymentException actualPaymentException = new PaymentException("An error occurred");
+
+    // Assert
+    assertEquals("An error occurred", actualPaymentException.getLocalizedMessage());
+    assertEquals("An error occurred", actualPaymentException.getMessage());
+    assertEquals("An error occurred", actualPaymentException.getRootCauseMessage());
+    assertNull(actualPaymentException.getCause());
+    assertEquals(0, actualPaymentException.getSuppressed().length);
+    assertSame(actualPaymentException, actualPaymentException.getRootCause());
+  }
+
+  /**
+   * Method under test:
+   * {@link PaymentException#PaymentException(String, Throwable)}
+   */
+  @Test
+  public void testNewPaymentException6() {
+    // Arrange
+    Throwable cause = new Throwable();
+
+    // Act
+    PaymentException actualPaymentException = new PaymentException("An error occurred", cause);
+
+    // Assert
+    assertEquals("An error occurred", actualPaymentException.getLocalizedMessage());
+    assertEquals("An error occurred", actualPaymentException.getMessage());
+    assertNull(actualPaymentException.getRootCauseMessage());
+    assertEquals(0, actualPaymentException.getSuppressed().length);
+    assertSame(cause, actualPaymentException.getCause());
+    assertSame(cause, actualPaymentException.getRootCause());
+  }
+
+  /**
+   * Method under test:
+   * {@link PaymentException#PaymentException(String, Throwable)}
+   */
+  @Test
+  public void testNewPaymentException7() {
+    // Arrange and Act
+    PaymentException actualPaymentException = new PaymentException("An error occurred", null);
+
+    // Assert
+    assertEquals("An error occurred", actualPaymentException.getLocalizedMessage());
+    assertEquals("An error occurred", actualPaymentException.getMessage());
+    assertEquals("An error occurred", actualPaymentException.getRootCauseMessage());
+    assertNull(actualPaymentException.getCause());
+    assertEquals(0, actualPaymentException.getSuppressed().length);
+    assertSame(actualPaymentException, actualPaymentException.getRootCause());
+  }
+
+  /**
+   * Method under test:
+   * {@link PaymentException#PaymentException(String, Throwable)}
+   */
+  @Test
+  public void testNewPaymentException8() {
+    // Arrange
+    Throwable throwable = new Throwable();
+    IOException cause = new IOException("foo", throwable);
+
+    // Act
+    PaymentException actualPaymentException = new PaymentException("An error occurred", cause);
+
+    // Assert
+    assertEquals("An error occurred", actualPaymentException.getLocalizedMessage());
+    assertEquals("An error occurred", actualPaymentException.getMessage());
+    assertNull(actualPaymentException.getRootCauseMessage());
+    assertEquals(0, actualPaymentException.getSuppressed().length);
+    assertSame(cause, actualPaymentException.getCause());
+    assertSame(throwable, actualPaymentException.getRootCause());
   }
 }

@@ -20,42 +20,29 @@ package org.broadleafcommerce.core.web.breadcrumbs;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 import org.broadleafcommerce.common.breadcrumbs.dto.BreadcrumbDTO;
 import org.broadleafcommerce.common.extension.ExtensionResultHolder;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
+import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 class AbstractBreadcrumbServiceExtensionHandlerDiffblueTest {
   /**
-   * Test {@link AbstractBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link AbstractBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map, ExtensionResultHolder)}
    */
   @Test
-  @DisplayName("Test modifyBreadcrumbList(String, Map, ExtensionResultHolder)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractBreadcrumbServiceExtensionHandler.modifyBreadcrumbList(String, Map, ExtensionResultHolder)"
-  })
   void testModifyBreadcrumbList() {
     // Arrange
-    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler =
-        new CategoryBreadcrumbServiceExtensionHandler();
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
     HashMap<String, String[]> params = new HashMap<>();
 
     ExtensionResultHolder<List<BreadcrumbDTO>> holder = new ExtensionResultHolder<>();
@@ -63,51 +50,53 @@ class AbstractBreadcrumbServiceExtensionHandlerDiffblueTest {
     holder.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.HANDLED_CONTINUE,
-        categoryBreadcrumbServiceExtensionHandler.modifyBreadcrumbList(
-            "https://example.org/example", params, holder));
+    assertEquals(ExtensionResultStatusType.HANDLED_CONTINUE,
+        categoryBreadcrumbServiceExtensionHandler.modifyBreadcrumbList("https://example.org/example", params, holder));
   }
 
   /**
-   * Test {@link AbstractBreadcrumbServiceExtensionHandler#getPriority()}.
-   *
-   * <ul>
-   *   <li>Given {@link CategoryBreadcrumbServiceExtensionHandler} (default constructor).
-   *   <li>Then return {@code 2000}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractBreadcrumbServiceExtensionHandler#getPriority()}
+   * Method under test:
+   * {@link AbstractBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map, ExtensionResultHolder)}
    */
   @Test
-  @DisplayName(
-      "Test getPriority(); given CategoryBreadcrumbServiceExtensionHandler (default constructor); then return '2000'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int AbstractBreadcrumbServiceExtensionHandler.getPriority()"})
-  void testGetPriority_givenCategoryBreadcrumbServiceExtensionHandler_thenReturn2000() {
-    // Arrange, Act and Assert
-    assertEquals(2000, new CategoryBreadcrumbServiceExtensionHandler().getPriority());
-  }
-
-  /**
-   * Test {@link AbstractBreadcrumbServiceExtensionHandler#getPriority()}.
-   *
-   * <ul>
-   *   <li>Then return one.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractBreadcrumbServiceExtensionHandler#getPriority()}
-   */
-  @Test
-  @DisplayName("Test getPriority(); then return one")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int AbstractBreadcrumbServiceExtensionHandler.getPriority()"})
-  void testGetPriority_thenReturnOne() {
+  void testModifyBreadcrumbList2() {
     // Arrange
-    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler =
-        new CategoryBreadcrumbServiceExtensionHandler();
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
+
+    HashMap<String, String[]> params = new HashMap<>();
+    params.computeIfPresent("ThreadLocalManager.notify.orphans", mock(BiFunction.class));
+
+    ExtensionResultHolder<List<BreadcrumbDTO>> holder = new ExtensionResultHolder<>();
+    holder.setResult(new ArrayList<>());
+    holder.setThrowable(new Throwable());
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.HANDLED_CONTINUE,
+        categoryBreadcrumbServiceExtensionHandler.modifyBreadcrumbList("https://example.org/example", params, holder));
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractBreadcrumbServiceExtensionHandler#getPriority()}
+   */
+  @Test
+  void testGetPriority() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertEquals(2000, (new CategoryBreadcrumbServiceExtensionHandler()).getPriority());
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractBreadcrumbServiceExtensionHandler#getPriority()}
+   */
+  @Test
+  void testGetPriority2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
     categoryBreadcrumbServiceExtensionHandler.setPriority(1);
 
     // Act and Assert
@@ -115,19 +104,40 @@ class AbstractBreadcrumbServiceExtensionHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link AbstractBreadcrumbServiceExtensionHandler#setPriority(Integer)}.
-   *
-   * <p>Method under test: {@link AbstractBreadcrumbServiceExtensionHandler#setPriority(Integer)}
+   * Method under test:
+   * {@link AbstractBreadcrumbServiceExtensionHandler#getPriority()}
    */
   @Test
-  @DisplayName("Test setPriority(Integer)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AbstractBreadcrumbServiceExtensionHandler.setPriority(Integer)"})
-  void testSetPriority() {
+  void testGetPriority3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler =
-        new CategoryBreadcrumbServiceExtensionHandler();
+    CategoryImpl category = mock(CategoryImpl.class);
+    when(category.getParentCategory()).thenReturn(new CategoryImpl());
+
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
+    ArrayList<BreadcrumbDTO> parentCrumbs = new ArrayList<>();
+    categoryBreadcrumbServiceExtensionHandler.addParentCrumbs(parentCrumbs, category, "https://example.org/example",
+        new HashMap<>());
+
+    // Act
+    int actualPriority = categoryBreadcrumbServiceExtensionHandler.getPriority();
+
+    // Assert
+    verify(category).getParentCategory();
+    assertEquals(2000, actualPriority);
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractBreadcrumbServiceExtensionHandler#setPriority(Integer)}
+   */
+  @Test
+  void testSetPriority() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
 
     // Act
     categoryBreadcrumbServiceExtensionHandler.setPriority(1);
@@ -138,292 +148,269 @@ class AbstractBreadcrumbServiceExtensionHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link AbstractBreadcrumbServiceExtensionHandler#buildLink(String, Map)}.
-   *
-   * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>Then return {@code https://example.org/example?foo=foo&42=foo}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractBreadcrumbServiceExtensionHandler#buildLink(String, Map)}
+   * Method under test:
+   * {@link AbstractBreadcrumbServiceExtensionHandler#setPriority(Integer)}
    */
   @Test
-  @DisplayName(
-      "Test buildLink(String, Map); given '42'; then return 'https://example.org/example?foo=foo&42=foo'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String AbstractBreadcrumbServiceExtensionHandler.buildLink(String, Map)"})
-  void testBuildLink_given42_thenReturnHttpsExampleOrgExampleFooFoo42Foo() {
+  void testSetPriority2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler =
-        new CategoryBreadcrumbServiceExtensionHandler();
+    CategoryImpl category = mock(CategoryImpl.class);
+    when(category.getParentCategory()).thenReturn(new CategoryImpl());
 
-    HashMap<String, String[]> params = new HashMap<>();
-    params.put("42", new String[] {"foo"});
-    params.put("foo", new String[] {"foo"});
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
+    ArrayList<BreadcrumbDTO> parentCrumbs = new ArrayList<>();
+    categoryBreadcrumbServiceExtensionHandler.addParentCrumbs(parentCrumbs, category, "https://example.org/example",
+        new HashMap<>());
 
-    // Act and Assert
-    assertEquals(
-        "https://example.org/example?foo=foo&42=foo",
-        categoryBreadcrumbServiceExtensionHandler.buildLink("https://example.org/example", params));
+    // Act
+    categoryBreadcrumbServiceExtensionHandler.setPriority(1);
+
+    // Assert
+    verify(category).getParentCategory();
+    assertEquals(1, categoryBreadcrumbServiceExtensionHandler.priority.intValue());
+    assertEquals(1, categoryBreadcrumbServiceExtensionHandler.getPriority());
   }
 
   /**
-   * Test {@link AbstractBreadcrumbServiceExtensionHandler#buildLink(String, Map)}.
-   *
-   * <ul>
-   *   <li>Given array of {@link String} with {@code null}.
-   *   <li>Then return {@code https://example.org/example?foo}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractBreadcrumbServiceExtensionHandler#buildLink(String, Map)}
+   * Method under test:
+   * {@link AbstractBreadcrumbServiceExtensionHandler#buildLink(String, Map)}
    */
   @Test
-  @DisplayName(
-      "Test buildLink(String, Map); given array of String with 'null'; then return 'https://example.org/example?foo'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String AbstractBreadcrumbServiceExtensionHandler.buildLink(String, Map)"})
-  void testBuildLink_givenArrayOfStringWithNull_thenReturnHttpsExampleOrgExampleFoo() {
-    // Arrange
-    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler =
-        new CategoryBreadcrumbServiceExtensionHandler();
+  void testBuildLink() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    HashMap<String, String[]> params = new HashMap<>();
-    params.put("foo", new String[] {null});
+    // Arrange
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
 
     // Act and Assert
-    assertEquals(
-        "https://example.org/example?foo",
-        categoryBreadcrumbServiceExtensionHandler.buildLink("https://example.org/example", params));
+    assertEquals("https://example.org/example",
+        categoryBreadcrumbServiceExtensionHandler.buildLink("https://example.org/example", new HashMap<>()));
   }
 
   /**
-   * Test {@link AbstractBreadcrumbServiceExtensionHandler#buildLink(String, Map)}.
-   *
-   * <ul>
-   *   <li>Given empty string.
-   *   <li>Then return {@code ?=foo}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractBreadcrumbServiceExtensionHandler#buildLink(String, Map)}
+   * Method under test:
+   * {@link AbstractBreadcrumbServiceExtensionHandler#buildLink(String, Map)}
    */
   @Test
-  @DisplayName("Test buildLink(String, Map); given empty string; then return '?=foo'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String AbstractBreadcrumbServiceExtensionHandler.buildLink(String, Map)"})
-  void testBuildLink_givenEmptyString_thenReturnFoo() {
-    // Arrange
-    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler =
-        new CategoryBreadcrumbServiceExtensionHandler();
+  void testBuildLink2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    HashMap<String, String[]> params = new HashMap<>();
-    params.put("", new String[] {"foo"});
-
-    // Act and Assert
-    assertEquals("?=foo", categoryBreadcrumbServiceExtensionHandler.buildLink("", params));
+    // Arrange, Act and Assert
+    assertEquals("https://example.org/example",
+        (new CategoryBreadcrumbServiceExtensionHandler()).buildLink("https://example.org/example", null));
   }
 
   /**
-   * Test {@link AbstractBreadcrumbServiceExtensionHandler#buildLink(String, Map)}.
-   *
-   * <ul>
-   *   <li>Given {@code foo}.
-   *   <li>When {@code Url}.
-   *   <li>Then return {@code Url?foo=foo}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractBreadcrumbServiceExtensionHandler#buildLink(String, Map)}
+   * Method under test:
+   * {@link AbstractBreadcrumbServiceExtensionHandler#buildLink(String, Map)}
    */
   @Test
-  @DisplayName("Test buildLink(String, Map); given 'foo'; when 'Url'; then return 'Url?foo=foo'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String AbstractBreadcrumbServiceExtensionHandler.buildLink(String, Map)"})
-  void testBuildLink_givenFoo_whenUrl_thenReturnUrlFooFoo() {
-    // Arrange
-    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler =
-        new CategoryBreadcrumbServiceExtensionHandler();
+  void testBuildLink3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    HashMap<String, String[]> params = new HashMap<>();
-    params.put("foo", new String[] {"foo"});
+    // Arrange
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
 
     // Act and Assert
-    assertEquals("Url?foo=foo", categoryBreadcrumbServiceExtensionHandler.buildLink("Url", params));
+    assertEquals("Url", categoryBreadcrumbServiceExtensionHandler.buildLink("Url", new HashMap<>()));
   }
 
   /**
-   * Test {@link AbstractBreadcrumbServiceExtensionHandler#buildLink(String, Map)}.
-   *
-   * <ul>
-   *   <li>Then return {@code https://example.org/example?foo=foo}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractBreadcrumbServiceExtensionHandler#buildLink(String, Map)}
+   * Method under test:
+   * {@link AbstractBreadcrumbServiceExtensionHandler#buildLink(String, Map)}
    */
   @Test
-  @DisplayName("Test buildLink(String, Map); then return 'https://example.org/example?foo=foo'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String AbstractBreadcrumbServiceExtensionHandler.buildLink(String, Map)"})
-  void testBuildLink_thenReturnHttpsExampleOrgExampleFooFoo() {
+  void testBuildLink4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler =
-        new CategoryBreadcrumbServiceExtensionHandler();
-
-    HashMap<String, String[]> params = new HashMap<>();
-    params.put("foo", new String[] {"foo"});
-
-    // Act and Assert
-    assertEquals(
-        "https://example.org/example?foo=foo",
-        categoryBreadcrumbServiceExtensionHandler.buildLink("https://example.org/example", params));
-  }
-
-  /**
-   * Test {@link AbstractBreadcrumbServiceExtensionHandler#buildLink(String, Map)}.
-   *
-   * <ul>
-   *   <li>When empty string.
-   *   <li>Then return empty string.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractBreadcrumbServiceExtensionHandler#buildLink(String, Map)}
-   */
-  @Test
-  @DisplayName("Test buildLink(String, Map); when empty string; then return empty string")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String AbstractBreadcrumbServiceExtensionHandler.buildLink(String, Map)"})
-  void testBuildLink_whenEmptyString_thenReturnEmptyString() {
-    // Arrange
-    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler =
-        new CategoryBreadcrumbServiceExtensionHandler();
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
 
     // Act and Assert
     assertEquals("", categoryBreadcrumbServiceExtensionHandler.buildLink("", new HashMap<>()));
   }
 
   /**
-   * Test {@link AbstractBreadcrumbServiceExtensionHandler#buildLink(String, Map)}.
-   *
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()}.
-   *   <li>Then return {@code https://example.org/example}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractBreadcrumbServiceExtensionHandler#buildLink(String, Map)}
+   * Method under test:
+   * {@link AbstractBreadcrumbServiceExtensionHandler#buildLink(String, Map)}
    */
   @Test
-  @DisplayName(
-      "Test buildLink(String, Map); when HashMap(); then return 'https://example.org/example'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String AbstractBreadcrumbServiceExtensionHandler.buildLink(String, Map)"})
-  void testBuildLink_whenHashMap_thenReturnHttpsExampleOrgExample() {
+  void testBuildLink5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler =
-        new CategoryBreadcrumbServiceExtensionHandler();
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
+
+    HashMap<String, String[]> params = new HashMap<>();
+    params.put("foo", new String[]{"foo"});
 
     // Act and Assert
-    assertEquals(
-        "https://example.org/example",
-        categoryBreadcrumbServiceExtensionHandler.buildLink(
-            "https://example.org/example", new HashMap<>()));
+    assertEquals("https://example.org/example?foo=foo",
+        categoryBreadcrumbServiceExtensionHandler.buildLink("https://example.org/example", params));
   }
 
   /**
-   * Test {@link AbstractBreadcrumbServiceExtensionHandler#buildLink(String, Map)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code https://example.org/example}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractBreadcrumbServiceExtensionHandler#buildLink(String, Map)}
+   * Method under test:
+   * {@link AbstractBreadcrumbServiceExtensionHandler#buildLink(String, Map)}
    */
   @Test
-  @DisplayName(
-      "Test buildLink(String, Map); when 'null'; then return 'https://example.org/example'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String AbstractBreadcrumbServiceExtensionHandler.buildLink(String, Map)"})
-  void testBuildLink_whenNull_thenReturnHttpsExampleOrgExample() {
-    // Arrange, Act and Assert
-    assertEquals(
-        "https://example.org/example",
-        new CategoryBreadcrumbServiceExtensionHandler()
-            .buildLink("https://example.org/example", null));
-  }
+  void testBuildLink6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-  /**
-   * Test {@link AbstractBreadcrumbServiceExtensionHandler#buildLink(String, Map)}.
-   *
-   * <ul>
-   *   <li>When {@code Url}.
-   *   <li>Then return {@code Url}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractBreadcrumbServiceExtensionHandler#buildLink(String, Map)}
-   */
-  @Test
-  @DisplayName("Test buildLink(String, Map); when 'Url'; then return 'Url'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String AbstractBreadcrumbServiceExtensionHandler.buildLink(String, Map)"})
-  void testBuildLink_whenUrl_thenReturnUrl() {
     // Arrange
-    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler =
-        new CategoryBreadcrumbServiceExtensionHandler();
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
+
+    HashMap<String, String[]> params = new HashMap<>();
+    params.put("42", new String[]{"foo"});
+    params.put("foo", new String[]{"foo"});
 
     // Act and Assert
-    assertEquals(
-        "Url", categoryBreadcrumbServiceExtensionHandler.buildLink("Url", new HashMap<>()));
+    assertEquals("https://example.org/example?foo=foo&42=foo",
+        categoryBreadcrumbServiceExtensionHandler.buildLink("https://example.org/example", params));
   }
 
   /**
-   * Test {@link AbstractBreadcrumbServiceExtensionHandler#isEnabled()}.
-   *
-   * <ul>
-   *   <li>Given {@link CategoryBreadcrumbServiceExtensionHandler} (default constructor).
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractBreadcrumbServiceExtensionHandler#isEnabled()}
+   * Method under test:
+   * {@link AbstractBreadcrumbServiceExtensionHandler#buildLink(String, Map)}
    */
   @Test
-  @DisplayName(
-      "Test isEnabled(); given CategoryBreadcrumbServiceExtensionHandler (default constructor); then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AbstractBreadcrumbServiceExtensionHandler.isEnabled()"})
-  void testIsEnabled_givenCategoryBreadcrumbServiceExtensionHandler_thenReturnTrue() {
-    // Arrange, Act and Assert
-    assertTrue(new CategoryBreadcrumbServiceExtensionHandler().isEnabled());
-  }
+  void testBuildLink7() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-  /**
-   * Test {@link AbstractBreadcrumbServiceExtensionHandler#isEnabled()}.
-   *
-   * <ul>
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractBreadcrumbServiceExtensionHandler#isEnabled()}
-   */
-  @Test
-  @DisplayName("Test isEnabled(); then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AbstractBreadcrumbServiceExtensionHandler.isEnabled()"})
-  void testIsEnabled_thenReturnFalse() {
     // Arrange
-    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler =
-        new CategoryBreadcrumbServiceExtensionHandler();
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
+
+    HashMap<String, String[]> params = new HashMap<>();
+    params.computeIfPresent("foo", mock(BiFunction.class));
+    params.put("foo", new String[]{"foo"});
+
+    // Act and Assert
+    assertEquals("https://example.org/example?foo=foo",
+        categoryBreadcrumbServiceExtensionHandler.buildLink("https://example.org/example", params));
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractBreadcrumbServiceExtensionHandler#buildLink(String, Map)}
+   */
+  @Test
+  void testBuildLink8() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
+
+    HashMap<String, String[]> params = new HashMap<>();
+    params.put("foo", new String[]{"foo"});
+
+    // Act and Assert
+    assertEquals("Url?foo=foo", categoryBreadcrumbServiceExtensionHandler.buildLink("Url", params));
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractBreadcrumbServiceExtensionHandler#buildLink(String, Map)}
+   */
+  @Test
+  void testBuildLink9() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
+
+    HashMap<String, String[]> params = new HashMap<>();
+    params.put("foo", new String[]{"foo"});
+
+    // Act and Assert
+    assertEquals("?foo=foo", categoryBreadcrumbServiceExtensionHandler.buildLink("", params));
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractBreadcrumbServiceExtensionHandler#isEnabled()}
+   */
+  @Test
+  void testIsEnabled() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertTrue((new CategoryBreadcrumbServiceExtensionHandler()).isEnabled());
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractBreadcrumbServiceExtensionHandler#isEnabled()}
+   */
+  @Test
+  void testIsEnabled2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CategoryImpl category = mock(CategoryImpl.class);
+    when(category.getParentCategory()).thenReturn(new CategoryImpl());
+
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
+    ArrayList<BreadcrumbDTO> parentCrumbs = new ArrayList<>();
+    categoryBreadcrumbServiceExtensionHandler.addParentCrumbs(parentCrumbs, category, "https://example.org/example",
+        new HashMap<>());
+
+    // Act
+    boolean actualIsEnabledResult = categoryBreadcrumbServiceExtensionHandler.isEnabled();
+
+    // Assert
+    verify(category).getParentCategory();
+    assertTrue(actualIsEnabledResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractBreadcrumbServiceExtensionHandler#isEnabled()}
+   */
+  @Test
+  void testIsEnabled3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CategoryImpl category = mock(CategoryImpl.class);
+    when(category.getParentCategory()).thenReturn(new CategoryImpl());
+
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
     categoryBreadcrumbServiceExtensionHandler.setEnabled(false);
+    ArrayList<BreadcrumbDTO> parentCrumbs = new ArrayList<>();
+    categoryBreadcrumbServiceExtensionHandler.addParentCrumbs(parentCrumbs, category, "https://example.org/example",
+        new HashMap<>());
 
-    // Act and Assert
-    assertFalse(categoryBreadcrumbServiceExtensionHandler.isEnabled());
+    // Act
+    boolean actualIsEnabledResult = categoryBreadcrumbServiceExtensionHandler.isEnabled();
+
+    // Assert
+    verify(category).getParentCategory();
+    assertFalse(actualIsEnabledResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractBreadcrumbServiceExtensionHandler#setEnabled(boolean)}
+   */
+  @Test
+  void testSetEnabled() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CategoryImpl category = mock(CategoryImpl.class);
+    when(category.getParentCategory()).thenReturn(new CategoryImpl());
+
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
+    ArrayList<BreadcrumbDTO> parentCrumbs = new ArrayList<>();
+    categoryBreadcrumbServiceExtensionHandler.addParentCrumbs(parentCrumbs, category, "https://example.org/example",
+        new HashMap<>());
+
+    // Act
+    categoryBreadcrumbServiceExtensionHandler.setEnabled(true);
+
+    // Assert
+    verify(category).getParentCategory();
   }
 }

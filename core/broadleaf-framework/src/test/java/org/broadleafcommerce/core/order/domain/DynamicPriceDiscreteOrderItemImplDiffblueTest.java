@@ -20,53 +20,27 @@ package org.broadleafcommerce.core.order.domain;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import org.broadleafcommerce.common.audit.Auditable;
+import org.broadleafcommerce.core.catalog.domain.Sku;
+import org.broadleafcommerce.core.offer.domain.CandidateItemOfferImpl;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(SpringJUnit4ClassRunner.class)
 public class DynamicPriceDiscreteOrderItemImplDiffblueTest {
-  @Autowired private DynamicPriceDiscreteOrderItemImpl dynamicPriceDiscreteOrderItemImpl;
-
   /**
-   * Test {@link DynamicPriceDiscreteOrderItemImpl#updateSaleAndRetailPrices()}.
-   *
-   * <p>Method under test: {@link DynamicPriceDiscreteOrderItemImpl#updateSaleAndRetailPrices()}
+   * Method under test: default or parameterless constructor of
+   * {@link DynamicPriceDiscreteOrderItemImpl}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean DynamicPriceDiscreteOrderItemImpl.updateSaleAndRetailPrices()"})
-  public void testUpdateSaleAndRetailPrices() {
-    // Arrange, Act and Assert
-    assertFalse(dynamicPriceDiscreteOrderItemImpl.updateSaleAndRetailPrices());
-  }
-
-  /**
-   * Test new {@link DynamicPriceDiscreteOrderItemImpl} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * DynamicPriceDiscreteOrderItemImpl}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void DynamicPriceDiscreteOrderItemImpl.<init>()"})
   public void testNewDynamicPriceDiscreteOrderItemImpl() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange and Act
-    DynamicPriceDiscreteOrderItemImpl actualDynamicPriceDiscreteOrderItemImpl =
-        new DynamicPriceDiscreteOrderItemImpl();
+    DynamicPriceDiscreteOrderItemImpl actualDynamicPriceDiscreteOrderItemImpl = new DynamicPriceDiscreteOrderItemImpl();
 
     // Assert
     assertNull(actualDynamicPriceDiscreteOrderItemImpl.discountsAllowed);
@@ -74,6 +48,9 @@ public class DynamicPriceDiscreteOrderItemImplDiffblueTest {
     assertNull(actualDynamicPriceDiscreteOrderItemImpl.itemTaxable);
     assertNull(actualDynamicPriceDiscreteOrderItemImpl.retailPriceOverride);
     assertNull(actualDynamicPriceDiscreteOrderItemImpl.salePriceOverride);
+    Auditable auditable = actualDynamicPriceDiscreteOrderItemImpl.getAuditable();
+    assertNull(auditable.getCreatedBy());
+    assertNull(auditable.getUpdatedBy());
     assertNull(actualDynamicPriceDiscreteOrderItemImpl.getId());
     assertNull(actualDynamicPriceDiscreteOrderItemImpl.orderItemType);
     assertNull(actualDynamicPriceDiscreteOrderItemImpl.baseRetailPrice);
@@ -82,6 +59,8 @@ public class DynamicPriceDiscreteOrderItemImplDiffblueTest {
     assertNull(actualDynamicPriceDiscreteOrderItemImpl.retailPrice);
     assertNull(actualDynamicPriceDiscreteOrderItemImpl.salePrice);
     assertNull(actualDynamicPriceDiscreteOrderItemImpl.totalTax);
+    assertNull(auditable.getDateCreated());
+    assertNull(auditable.getDateUpdated());
     assertNull(actualDynamicPriceDiscreteOrderItemImpl.getCartMessages());
     assertNull(actualDynamicPriceDiscreteOrderItemImpl.getBaseRetailPrice());
     assertNull(actualDynamicPriceDiscreteOrderItemImpl.getBaseSalePrice());
@@ -122,5 +101,57 @@ public class DynamicPriceDiscreteOrderItemImplDiffblueTest {
     assertTrue(actualDynamicPriceDiscreteOrderItemImpl.getProratedOrderItemAdjustments().isEmpty());
     assertTrue(actualDynamicPriceDiscreteOrderItemImpl.getAdditionalAttributes().isEmpty());
     assertTrue(actualDynamicPriceDiscreteOrderItemImpl.getOrderItemAttributes().isEmpty());
+  }
+
+  /**
+   * Method under test: {@link DynamicPriceDiscreteOrderItemImpl#setSku(Sku)}
+   */
+  @Test
+  public void testSetSku() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    DynamicPriceDiscreteOrderItemImpl dynamicPriceDiscreteOrderItemImpl = new DynamicPriceDiscreteOrderItemImpl();
+    Sku sku = mock(Sku.class);
+    when(sku.getName()).thenReturn("Name");
+
+    // Act
+    dynamicPriceDiscreteOrderItemImpl.setSku(sku);
+
+    // Assert
+    verify(sku).getName();
+    assertEquals("Name", dynamicPriceDiscreteOrderItemImpl.getName());
+    assertEquals("Name", dynamicPriceDiscreteOrderItemImpl.getMainEntityName());
+    assertFalse(dynamicPriceDiscreteOrderItemImpl.isSkuActive());
+    assertSame(sku, dynamicPriceDiscreteOrderItemImpl.getSku());
+    assertSame(sku, dynamicPriceDiscreteOrderItemImpl.deproxiedSku);
+  }
+
+  /**
+   * Method under test:
+   * {@link DynamicPriceDiscreteOrderItemImpl#updateSaleAndRetailPrices()}
+   */
+  @Test
+  public void testUpdateSaleAndRetailPrices() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertFalse((new DynamicPriceDiscreteOrderItemImpl()).updateSaleAndRetailPrices());
+  }
+
+  /**
+   * Method under test:
+   * {@link DynamicPriceDiscreteOrderItemImpl#updateSaleAndRetailPrices()}
+   */
+  @Test
+  public void testUpdateSaleAndRetailPrices2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    DynamicPriceDiscreteOrderItemImpl dynamicPriceDiscreteOrderItemImpl = new DynamicPriceDiscreteOrderItemImpl();
+    dynamicPriceDiscreteOrderItemImpl.addCandidateItemOffer(mock(CandidateItemOfferImpl.class));
+
+    // Act and Assert
+    assertFalse(dynamicPriceDiscreteOrderItemImpl.updateSaleAndRetailPrices());
   }
 }

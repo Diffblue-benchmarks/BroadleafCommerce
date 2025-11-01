@@ -18,75 +18,82 @@
 package org.broadleafcommerce.common.config;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import org.broadleafcommerce.common.resource.GeneratedResource;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.springframework.beans.factory.annotation.AnnotatedGenericBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.context.annotation.ScannedGenericBeanDefinition;
+import org.springframework.core.type.StandardAnnotationMetadata;
+import org.springframework.core.type.classreading.MetadataReader;
 
 public class BroadleafBeanNameGeneratorDiffblueTest {
   /**
-   * Test {@link BroadleafBeanNameGenerator#generateBeanName(BeanDefinition,
-   * BeanDefinitionRegistry)}.
-   *
-   * <ul>
-   *   <li>Given {@link BroadleafBeanNameGenerator#BROADLEAF_BEAN_PREFIX}.
-   *   <li>Then return {@link BroadleafBeanNameGenerator#BROADLEAF_BEAN_PREFIX}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BroadleafBeanNameGenerator#generateBeanName(BeanDefinition,
-   * BeanDefinitionRegistry)}
+   * Method under test:
+   * {@link BroadleafBeanNameGenerator#generateBeanName(BeanDefinition, BeanDefinitionRegistry)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.String BroadleafBeanNameGenerator.generateBeanName(BeanDefinition, BeanDefinitionRegistry)"
-  })
-  public void testGenerateBeanName_givenBroadleaf_bean_prefix_thenReturnBroadleaf_bean_prefix() {
+  public void testGenerateBeanName() {
     // Arrange
     BroadleafBeanNameGenerator broadleafBeanNameGenerator = new BroadleafBeanNameGenerator();
     Class<Object> beanClass = Object.class;
-
     AnnotatedGenericBeanDefinition definition = new AnnotatedGenericBeanDefinition(beanClass);
-    definition.setBeanClassName(BroadleafBeanNameGenerator.BROADLEAF_BEAN_PREFIX);
 
     // Act and Assert
-    assertEquals(
-        BroadleafBeanNameGenerator.BROADLEAF_BEAN_PREFIX,
-        broadleafBeanNameGenerator.generateBeanName(definition, new DefaultListableBeanFactory()));
+    assertEquals("blObject", broadleafBeanNameGenerator.generateBeanName(definition, new DefaultListableBeanFactory()));
   }
 
   /**
-   * Test {@link BroadleafBeanNameGenerator#generateBeanName(BeanDefinition,
-   * BeanDefinitionRegistry)}.
-   *
-   * <ul>
-   *   <li>Then return {@code blObject}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BroadleafBeanNameGenerator#generateBeanName(BeanDefinition,
-   * BeanDefinitionRegistry)}
+   * Method under test:
+   * {@link BroadleafBeanNameGenerator#generateBeanName(BeanDefinition, BeanDefinitionRegistry)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.String BroadleafBeanNameGenerator.generateBeanName(BeanDefinition, BeanDefinitionRegistry)"
-  })
-  public void testGenerateBeanName_thenReturnBlObject() {
+  public void testGenerateBeanName2() {
     // Arrange
     BroadleafBeanNameGenerator broadleafBeanNameGenerator = new BroadleafBeanNameGenerator();
-    Class<Object> beanClass = Object.class;
-    AnnotatedGenericBeanDefinition definition = new AnnotatedGenericBeanDefinition(beanClass);
+    MetadataReader metadataReader = mock(MetadataReader.class);
+    when(metadataReader.getResource()).thenReturn(new GeneratedResource());
+    Class<Object> introspectedClass = Object.class;
+    when(metadataReader.getAnnotationMetadata()).thenReturn(new StandardAnnotationMetadata(introspectedClass));
+    ScannedGenericBeanDefinition definition = new ScannedGenericBeanDefinition(metadataReader);
 
-    // Act and Assert
-    assertEquals(
-        "blObject",
-        broadleafBeanNameGenerator.generateBeanName(definition, new DefaultListableBeanFactory()));
+    // Act
+    String actualGenerateBeanNameResult = broadleafBeanNameGenerator.generateBeanName(definition,
+        new DefaultListableBeanFactory());
+
+    // Assert
+    verify(metadataReader).getAnnotationMetadata();
+    verify(metadataReader).getResource();
+    assertEquals("blObject", actualGenerateBeanNameResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link BroadleafBeanNameGenerator#generateBeanName(BeanDefinition, BeanDefinitionRegistry)}
+   */
+  @Test
+  public void testGenerateBeanName3() {
+    // Arrange
+    BroadleafBeanNameGenerator broadleafBeanNameGenerator = new BroadleafBeanNameGenerator();
+    MetadataReader metadataReader = mock(MetadataReader.class);
+    when(metadataReader.getResource()).thenReturn(new GeneratedResource());
+    Class<Object> introspectedClass = Object.class;
+    when(metadataReader.getAnnotationMetadata()).thenReturn(new StandardAnnotationMetadata(introspectedClass));
+
+    ScannedGenericBeanDefinition definition = new ScannedGenericBeanDefinition(metadataReader);
+    definition.setBeanClassName(BroadleafBeanNameGenerator.BROADLEAF_BEAN_PREFIX);
+
+    // Act
+    String actualGenerateBeanNameResult = broadleafBeanNameGenerator.generateBeanName(definition,
+        new DefaultListableBeanFactory());
+
+    // Assert
+    verify(metadataReader).getAnnotationMetadata();
+    verify(metadataReader).getResource();
+    assertEquals(BroadleafBeanNameGenerator.BROADLEAF_BEAN_PREFIX, actualGenerateBeanNameResult);
   }
 }

@@ -18,18 +18,11 @@
 package org.broadleafcommerce.core.web.checkout.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 class CreditCardInfoFormDiffblueTest {
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link CreditCardInfoForm}
    *   <li>{@link CreditCardInfoForm#setCreditCardCvvCode(String)}
@@ -49,26 +42,6 @@ class CreditCardInfoFormDiffblueTest {
    * </ul>
    */
   @Test
-  @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CreditCardInfoForm.<init>()",
-    "String CreditCardInfoForm.getCreditCardCvvCode()",
-    "String CreditCardInfoForm.getCreditCardExpMonth()",
-    "String CreditCardInfoForm.getCreditCardExpYear()",
-    "String CreditCardInfoForm.getCreditCardName()",
-    "String CreditCardInfoForm.getCreditCardNumber()",
-    "String CreditCardInfoForm.getPaymentMethod()",
-    "String CreditCardInfoForm.getSelectedCreditCardType()",
-    "void CreditCardInfoForm.setCreditCardCvvCode(String)",
-    "void CreditCardInfoForm.setCreditCardExpMonth(String)",
-    "void CreditCardInfoForm.setCreditCardExpYear(String)",
-    "void CreditCardInfoForm.setCreditCardName(String)",
-    "void CreditCardInfoForm.setCreditCardNumber(String)",
-    "void CreditCardInfoForm.setPaymentMethod(String)",
-    "void CreditCardInfoForm.setSelectedCreditCardType(String)"
-  })
   void testGettersAndSetters() {
     // Arrange and Act
     CreditCardInfoForm actualCreditCardInfoForm = new CreditCardInfoForm();
@@ -86,7 +59,7 @@ class CreditCardInfoFormDiffblueTest {
     String actualCreditCardNumber = actualCreditCardInfoForm.getCreditCardNumber();
     String actualPaymentMethod = actualCreditCardInfoForm.getPaymentMethod();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("42", actualCreditCardNumber);
     assertEquals("Credit Card Cvv Code", actualCreditCardCvvCode);
     assertEquals("Credit Card Exp Month", actualCreditCardExpMonth);

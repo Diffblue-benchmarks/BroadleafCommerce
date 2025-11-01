@@ -21,9 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -33,59 +31,26 @@ import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = {AfterStartDateValidator.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class ValidationConfigurationBasedPropertyValidatorDiffblueTest {
-  @Autowired
-  private ValidationConfigurationBasedPropertyValidator
-      validationConfigurationBasedPropertyValidator;
-
   /**
-   * Test {@link ValidationConfigurationBasedPropertyValidator#validate(Entity, Serializable, Map,
-   * Map, BasicFieldMetadata, String, String)}.
-   *
-   * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>When {@link HashMap#HashMap()} {@link AdminRegexValidator#REGEX_CONFIG_PROPERTY} is
-   *       {@code 42}.
-   *   <li>Then return not NotValid.
-   * </ul>
-   *
-   * <p>Method under test: {@link ValidationConfigurationBasedPropertyValidator#validate(Entity,
-   * Serializable, Map, Map, BasicFieldMetadata, String, String)}
+   * Method under test:
+   * {@link ValidationConfigurationBasedPropertyValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PropertyValidationResult ValidationConfigurationBasedPropertyValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"
-  })
-  public void testValidate_given42_whenHashMapRegex_config_propertyIs42_thenReturnNotNotValid() {
+  public void testValidate() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     AdminRegexValidator adminRegexValidator = new AdminRegexValidator();
     Entity entity = new Entity();
     SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
     HashMap<String, FieldMetadata> entityFieldMetadata = new HashMap<>();
-
     HashMap<String, String> validationConfiguration = new HashMap<>();
-    validationConfiguration.put(AdminRegexValidator.REGEX_CONFIG_PROPERTY, "42");
 
     // Act
-    PropertyValidationResult actualValidateResult =
-        adminRegexValidator.validate(
-            entity,
-            instance,
-            entityFieldMetadata,
-            validationConfiguration,
-            new BasicFieldMetadata(),
-            "Property Name",
-            "42");
+    PropertyValidationResult actualValidateResult = adminRegexValidator.validate(entity, instance, entityFieldMetadata,
+        validationConfiguration, new BasicFieldMetadata(), "Property Name", "42");
 
     // Assert
     List<String> errorMessages = actualValidateResult.getErrorMessages();
@@ -97,23 +62,41 @@ public class ValidationConfigurationBasedPropertyValidatorDiffblueTest {
   }
 
   /**
-   * Test {@link ValidationConfigurationBasedPropertyValidator#validate(Entity, Serializable, Map,
-   * Map, BasicFieldMetadata, String, String)}.
-   *
-   * <ul>
-   *   <li>Then return not Valid.
-   * </ul>
-   *
-   * <p>Method under test: {@link ValidationConfigurationBasedPropertyValidator#validate(Entity,
-   * Serializable, Map, Map, BasicFieldMetadata, String, String)}
+   * Method under test:
+   * {@link ValidationConfigurationBasedPropertyValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PropertyValidationResult ValidationConfigurationBasedPropertyValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"
-  })
-  public void testValidate_thenReturnNotValid() {
+  public void testValidate2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AdminRegexValidator adminRegexValidator = new AdminRegexValidator();
+    Entity entity = mock(Entity.class);
+    SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
+    HashMap<String, FieldMetadata> entityFieldMetadata = new HashMap<>();
+    HashMap<String, String> validationConfiguration = new HashMap<>();
+
+    // Act
+    PropertyValidationResult actualValidateResult = adminRegexValidator.validate(entity, instance, entityFieldMetadata,
+        validationConfiguration, new BasicFieldMetadata(), "Property Name", "42");
+
+    // Assert
+    List<String> errorMessages = actualValidateResult.getErrorMessages();
+    assertEquals(1, errorMessages.size());
+    assertNull(errorMessages.get(0));
+    assertNull(actualValidateResult.getErrorMessage());
+    assertFalse(actualValidateResult.isNotValid());
+    assertTrue(actualValidateResult.isValid());
+  }
+
+  /**
+   * Method under test:
+   * {@link ValidationConfigurationBasedPropertyValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}
+   */
+  @Test
+  public void testValidate3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     AdminRegexValidator adminRegexValidator = new AdminRegexValidator();
     Entity entity = new Entity();
@@ -121,19 +104,11 @@ public class ValidationConfigurationBasedPropertyValidatorDiffblueTest {
     HashMap<String, FieldMetadata> entityFieldMetadata = new HashMap<>();
 
     HashMap<String, String> validationConfiguration = new HashMap<>();
-    validationConfiguration.put(
-        AdminRegexValidator.REGEX_CONFIG_PROPERTY, AdminRegexValidator.REGEX_CONFIG_PROPERTY);
+    validationConfiguration.put(AdminRegexValidator.REGEX_CONFIG_PROPERTY, AdminRegexValidator.REGEX_CONFIG_PROPERTY);
 
     // Act
-    PropertyValidationResult actualValidateResult =
-        adminRegexValidator.validate(
-            entity,
-            instance,
-            entityFieldMetadata,
-            validationConfiguration,
-            new BasicFieldMetadata(),
-            "Property Name",
-            "42");
+    PropertyValidationResult actualValidateResult = adminRegexValidator.validate(entity, instance, entityFieldMetadata,
+        validationConfiguration, new BasicFieldMetadata(), "Property Name", "42");
 
     // Assert
     List<String> errorMessages = actualValidateResult.getErrorMessages();
@@ -145,122 +120,13 @@ public class ValidationConfigurationBasedPropertyValidatorDiffblueTest {
   }
 
   /**
-   * Test {@link ValidationConfigurationBasedPropertyValidator#validate(Entity, Serializable, Map,
-   * Map, BasicFieldMetadata, String, String)}.
-   *
-   * <ul>
-   *   <li>When {@code 42}.
-   *   <li>Then return not NotValid.
-   * </ul>
-   *
-   * <p>Method under test: {@link ValidationConfigurationBasedPropertyValidator#validate(Entity,
-   * Serializable, Map, Map, BasicFieldMetadata, String, String)}
+   * Method under test:
+   * {@link ValidationConfigurationBasedPropertyValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PropertyValidationResult ValidationConfigurationBasedPropertyValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"
-  })
-  public void testValidate_when42_thenReturnNotNotValid() {
-    // Arrange
-    AdminRegexValidator adminRegexValidator = new AdminRegexValidator();
-    Entity entity = new Entity();
-    SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
-    HashMap<String, FieldMetadata> entityFieldMetadata = new HashMap<>();
-    HashMap<String, String> validationConfiguration = new HashMap<>();
+  public void testValidate4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Act
-    PropertyValidationResult actualValidateResult =
-        adminRegexValidator.validate(
-            entity,
-            instance,
-            entityFieldMetadata,
-            validationConfiguration,
-            new BasicFieldMetadata(),
-            "Property Name",
-            "42");
-
-    // Assert
-    List<String> errorMessages = actualValidateResult.getErrorMessages();
-    assertEquals(1, errorMessages.size());
-    assertNull(errorMessages.get(0));
-    assertNull(actualValidateResult.getErrorMessage());
-    assertFalse(actualValidateResult.isNotValid());
-    assertTrue(actualValidateResult.isValid());
-  }
-
-  /**
-   * Test {@link ValidationConfigurationBasedPropertyValidator#validate(Entity, Serializable, Map,
-   * Map, BasicFieldMetadata, String, String)}.
-   *
-   * <ul>
-   *   <li>When {@link AdminRegexValidator#REGEX_CONFIG_PROPERTY}.
-   *   <li>Then return not NotValid.
-   * </ul>
-   *
-   * <p>Method under test: {@link ValidationConfigurationBasedPropertyValidator#validate(Entity,
-   * Serializable, Map, Map, BasicFieldMetadata, String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PropertyValidationResult ValidationConfigurationBasedPropertyValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"
-  })
-  public void testValidate_whenRegex_config_property_thenReturnNotNotValid() {
-    // Arrange
-    AdminRegexValidator adminRegexValidator = new AdminRegexValidator();
-    Entity entity = new Entity();
-    SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
-    HashMap<String, FieldMetadata> entityFieldMetadata = new HashMap<>();
-
-    HashMap<String, String> validationConfiguration = new HashMap<>();
-    validationConfiguration.put(
-        AdminRegexValidator.REGEX_CONFIG_PROPERTY, AdminRegexValidator.REGEX_CONFIG_PROPERTY);
-
-    // Act
-    PropertyValidationResult actualValidateResult =
-        adminRegexValidator.validate(
-            entity,
-            instance,
-            entityFieldMetadata,
-            validationConfiguration,
-            new BasicFieldMetadata(),
-            "Property Name",
-            AdminRegexValidator.REGEX_CONFIG_PROPERTY);
-
-    // Assert
-    List<String> errorMessages = actualValidateResult.getErrorMessages();
-    assertEquals(1, errorMessages.size());
-    assertNull(errorMessages.get(0));
-    assertNull(actualValidateResult.getErrorMessage());
-    assertFalse(actualValidateResult.isNotValid());
-    assertTrue(actualValidateResult.isValid());
-  }
-
-  /**
-   * Test {@link ValidationConfigurationBasedPropertyValidator#validateInternal(Entity,
-   * Serializable, Map, Map, BasicFieldMetadata, String, String)}.
-   *
-   * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>When {@link HashMap#HashMap()} {@link AdminRegexValidator#REGEX_CONFIG_PROPERTY} is
-   *       {@code 42}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ValidationConfigurationBasedPropertyValidator#validateInternal(Entity, Serializable, Map, Map,
-   * BasicFieldMetadata, String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ValidationConfigurationBasedPropertyValidator.validateInternal(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"
-  })
-  public void testValidateInternal_given42_whenHashMapRegex_config_propertyIs42_thenReturnTrue() {
     // Arrange
     AdminRegexValidator adminRegexValidator = new AdminRegexValidator();
     Entity entity = new Entity();
@@ -270,39 +136,77 @@ public class ValidationConfigurationBasedPropertyValidatorDiffblueTest {
     HashMap<String, String> validationConfiguration = new HashMap<>();
     validationConfiguration.put(AdminRegexValidator.REGEX_CONFIG_PROPERTY, "42");
 
-    // Act and Assert
-    assertTrue(
-        adminRegexValidator.validateInternal(
-            entity,
-            instance,
-            entityFieldMetadata,
-            validationConfiguration,
-            new BasicFieldMetadata(),
-            "Property Name",
-            "42"));
+    // Act
+    PropertyValidationResult actualValidateResult = adminRegexValidator.validate(entity, instance, entityFieldMetadata,
+        validationConfiguration, new BasicFieldMetadata(), "Property Name", "42");
+
+    // Assert
+    List<String> errorMessages = actualValidateResult.getErrorMessages();
+    assertEquals(1, errorMessages.size());
+    assertNull(errorMessages.get(0));
+    assertNull(actualValidateResult.getErrorMessage());
+    assertFalse(actualValidateResult.isNotValid());
+    assertTrue(actualValidateResult.isValid());
   }
 
   /**
-   * Test {@link ValidationConfigurationBasedPropertyValidator#validateInternal(Entity,
-   * Serializable, Map, Map, BasicFieldMetadata, String, String)}.
-   *
-   * <ul>
-   *   <li>Given {@link AdminRegexValidator} (default constructor).
-   *   <li>When {@code 42}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ValidationConfigurationBasedPropertyValidator#validateInternal(Entity, Serializable, Map, Map,
-   * BasicFieldMetadata, String, String)}
+   * Method under test:
+   * {@link ValidationConfigurationBasedPropertyValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ValidationConfigurationBasedPropertyValidator.validateInternal(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"
-  })
-  public void testValidateInternal_givenAdminRegexValidator_when42_thenReturnTrue() {
+  public void testValidate5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AdminRegexValidator adminRegexValidator = new AdminRegexValidator();
+    Entity entity = new Entity();
+    SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
+    HashMap<String, FieldMetadata> entityFieldMetadata = new HashMap<>();
+
+    HashMap<String, String> validationConfiguration = new HashMap<>();
+    validationConfiguration.put(AdminRegexValidator.REGEX_CONFIG_PROPERTY, AdminRegexValidator.REGEX_CONFIG_PROPERTY);
+
+    // Act
+    PropertyValidationResult actualValidateResult = adminRegexValidator.validate(entity, instance, entityFieldMetadata,
+        validationConfiguration, new BasicFieldMetadata(), "Property Name", AdminRegexValidator.REGEX_CONFIG_PROPERTY);
+
+    // Assert
+    List<String> errorMessages = actualValidateResult.getErrorMessages();
+    assertEquals(1, errorMessages.size());
+    assertNull(errorMessages.get(0));
+    assertNull(actualValidateResult.getErrorMessage());
+    assertFalse(actualValidateResult.isNotValid());
+    assertTrue(actualValidateResult.isValid());
+  }
+
+  /**
+   * Method under test:
+   * {@link ValidationConfigurationBasedPropertyValidator#validateInternal(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}
+   */
+  @Test
+  public void testValidateInternal() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AfterStartDateValidator afterStartDateValidator = new AfterStartDateValidator();
+    Entity entity = new Entity();
+    SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
+    HashMap<String, FieldMetadata> entityFieldMetadata = new HashMap<>();
+    HashMap<String, String> validationConfiguration = new HashMap<>();
+
+    // Act and Assert
+    assertFalse(afterStartDateValidator.validateInternal(entity, instance, entityFieldMetadata, validationConfiguration,
+        new BasicFieldMetadata(), "Property Name", "42"));
+  }
+
+  /**
+   * Method under test:
+   * {@link ValidationConfigurationBasedPropertyValidator#validateInternal(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}
+   */
+  @Test
+  public void testValidateInternal2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     AdminRegexValidator adminRegexValidator = new AdminRegexValidator();
     Entity entity = new Entity();
@@ -311,134 +215,27 @@ public class ValidationConfigurationBasedPropertyValidatorDiffblueTest {
     HashMap<String, String> validationConfiguration = new HashMap<>();
 
     // Act and Assert
-    assertTrue(
-        adminRegexValidator.validateInternal(
-            entity,
-            instance,
-            entityFieldMetadata,
-            validationConfiguration,
-            new BasicFieldMetadata(),
-            "Property Name",
-            "42"));
+    assertTrue(adminRegexValidator.validateInternal(entity, instance, entityFieldMetadata, validationConfiguration,
+        new BasicFieldMetadata(), "Property Name", "42"));
   }
 
   /**
-   * Test {@link ValidationConfigurationBasedPropertyValidator#validateInternal(Entity,
-   * Serializable, Map, Map, BasicFieldMetadata, String, String)}.
-   *
-   * <ul>
-   *   <li>Given {@link ValidationConfigurationBasedPropertyValidator}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ValidationConfigurationBasedPropertyValidator#validateInternal(Entity, Serializable, Map, Map,
-   * BasicFieldMetadata, String, String)}
+   * Method under test:
+   * {@link ValidationConfigurationBasedPropertyValidator#validateInternal(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ValidationConfigurationBasedPropertyValidator.validateInternal(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"
-  })
-  public void testValidateInternal_givenValidationConfigurationBasedPropertyValidator() {
+  public void testValidateInternal3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    Entity entity = new Entity();
+    AfterStartDateValidator afterStartDateValidator = new AfterStartDateValidator();
+    Entity entity = mock(Entity.class);
     SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
     HashMap<String, FieldMetadata> entityFieldMetadata = new HashMap<>();
     HashMap<String, String> validationConfiguration = new HashMap<>();
 
     // Act and Assert
-    assertFalse(
-        validationConfigurationBasedPropertyValidator.validateInternal(
-            entity,
-            instance,
-            entityFieldMetadata,
-            validationConfiguration,
-            new BasicFieldMetadata(),
-            "Property Name",
-            "42"));
-  }
-
-  /**
-   * Test {@link ValidationConfigurationBasedPropertyValidator#validateInternal(Entity,
-   * Serializable, Map, Map, BasicFieldMetadata, String, String)}.
-   *
-   * <ul>
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ValidationConfigurationBasedPropertyValidator#validateInternal(Entity, Serializable, Map, Map,
-   * BasicFieldMetadata, String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ValidationConfigurationBasedPropertyValidator.validateInternal(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"
-  })
-  public void testValidateInternal_thenReturnFalse() {
-    // Arrange
-    AdminRegexValidator adminRegexValidator = new AdminRegexValidator();
-    Entity entity = new Entity();
-    SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
-    HashMap<String, FieldMetadata> entityFieldMetadata = new HashMap<>();
-
-    HashMap<String, String> validationConfiguration = new HashMap<>();
-    validationConfiguration.put(
-        AdminRegexValidator.REGEX_CONFIG_PROPERTY, AdminRegexValidator.REGEX_CONFIG_PROPERTY);
-
-    // Act and Assert
-    assertFalse(
-        adminRegexValidator.validateInternal(
-            entity,
-            instance,
-            entityFieldMetadata,
-            validationConfiguration,
-            new BasicFieldMetadata(),
-            "Property Name",
-            "42"));
-  }
-
-  /**
-   * Test {@link ValidationConfigurationBasedPropertyValidator#validateInternal(Entity,
-   * Serializable, Map, Map, BasicFieldMetadata, String, String)}.
-   *
-   * <ul>
-   *   <li>When {@link AdminRegexValidator#REGEX_CONFIG_PROPERTY}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ValidationConfigurationBasedPropertyValidator#validateInternal(Entity, Serializable, Map, Map,
-   * BasicFieldMetadata, String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ValidationConfigurationBasedPropertyValidator.validateInternal(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"
-  })
-  public void testValidateInternal_whenRegex_config_property_thenReturnTrue() {
-    // Arrange
-    AdminRegexValidator adminRegexValidator = new AdminRegexValidator();
-    Entity entity = new Entity();
-    SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
-    HashMap<String, FieldMetadata> entityFieldMetadata = new HashMap<>();
-
-    HashMap<String, String> validationConfiguration = new HashMap<>();
-    validationConfiguration.put(
-        AdminRegexValidator.REGEX_CONFIG_PROPERTY, AdminRegexValidator.REGEX_CONFIG_PROPERTY);
-
-    // Act and Assert
-    assertTrue(
-        adminRegexValidator.validateInternal(
-            entity,
-            instance,
-            entityFieldMetadata,
-            validationConfiguration,
-            new BasicFieldMetadata(),
-            "Property Name",
-            AdminRegexValidator.REGEX_CONFIG_PROPERTY));
+    assertFalse(afterStartDateValidator.validateInternal(entity, instance, entityFieldMetadata, validationConfiguration,
+        new BasicFieldMetadata(), "Property Name", "42"));
   }
 }

@@ -21,9 +21,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,20 +37,16 @@ import org.hibernate.mapping.Property;
 import org.hibernate.type.BigDecimalType;
 import org.hibernate.type.Type;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class AddMetadataFromFieldTypeRequestDiffblueTest {
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
-   *   <li>{@link AddMetadataFromFieldTypeRequest#AddMetadataFromFieldTypeRequest(Field, Class,
-   *       ForeignKey, ForeignKey[], MergedPropertyType, List, String, String, String, Type,
-   *       boolean, int, Map, FieldMetadata, SupportedFieldType, Class, DynamicEntityDao)}
+   *   <li>
+   * {@link AddMetadataFromFieldTypeRequest#AddMetadataFromFieldTypeRequest(Field, Class, ForeignKey, ForeignKey[], MergedPropertyType, List, String, String, String, Type, boolean, int, Map, FieldMetadata, SupportedFieldType, Class, DynamicEntityDao)}
    *   <li>{@link AddMetadataFromFieldTypeRequest#getAdditionalForeignFields()}
-   *   <li>{@link AddMetadataFromFieldTypeRequest#getAdditionalForeignKeyIndexPosition()}
+   *   <li>
+   * {@link AddMetadataFromFieldTypeRequest#getAdditionalForeignKeyIndexPosition()}
    *   <li>{@link AddMetadataFromFieldTypeRequest#getComponentProperties()}
    *   <li>{@link AddMetadataFromFieldTypeRequest#getDynamicEntityDao()}
    *   <li>{@link AddMetadataFromFieldTypeRequest#getExplicitType()}
@@ -72,33 +65,11 @@ public class AddMetadataFromFieldTypeRequestDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AddMetadataFromFieldTypeRequest.<init>(Field, Class, ForeignKey, ForeignKey[], MergedPropertyType, List, String, String, String, Type, boolean, int, Map, FieldMetadata, SupportedFieldType, Class, DynamicEntityDao)",
-    "ForeignKey[] AddMetadataFromFieldTypeRequest.getAdditionalForeignFields()",
-    "int AddMetadataFromFieldTypeRequest.getAdditionalForeignKeyIndexPosition()",
-    "List AddMetadataFromFieldTypeRequest.getComponentProperties()",
-    "DynamicEntityDao AddMetadataFromFieldTypeRequest.getDynamicEntityDao()",
-    "SupportedFieldType AddMetadataFromFieldTypeRequest.getExplicitType()",
-    "ForeignKey AddMetadataFromFieldTypeRequest.getForeignField()",
-    "String AddMetadataFromFieldTypeRequest.getIdProperty()",
-    "MergedPropertyType AddMetadataFromFieldTypeRequest.getMergedPropertyType()",
-    "String AddMetadataFromFieldTypeRequest.getPrefix()",
-    "FieldMetadata AddMetadataFromFieldTypeRequest.getPresentationAttribute()",
-    "Map AddMetadataFromFieldTypeRequest.getPresentationAttributes()",
-    "Field AddMetadataFromFieldTypeRequest.getRequestedField()",
-    "String AddMetadataFromFieldTypeRequest.getRequestedPropertyName()",
-    "Class AddMetadataFromFieldTypeRequest.getReturnedClass()",
-    "Class AddMetadataFromFieldTypeRequest.getTargetClass()",
-    "Type AddMetadataFromFieldTypeRequest.getType()",
-    "boolean AddMetadataFromFieldTypeRequest.isPropertyForeignKey()"
-  })
   public void testGettersAndSetters() {
     // Arrange
     Class<Object> targetClass = Object.class;
     ForeignKey foreignField = new ForeignKey();
-    ForeignKey[] additionalForeignFields = new ForeignKey[] {new ForeignKey()};
+    ForeignKey[] additionalForeignFields = new ForeignKey[]{new ForeignKey()};
     ArrayList<Property> componentProperties = new ArrayList<>();
     BigDecimalType type = new BigDecimalType();
     HashMap<String, FieldMetadata> presentationAttributes = new HashMap<>();
@@ -107,51 +78,29 @@ public class AddMetadataFromFieldTypeRequestDiffblueTest {
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     // Act
-    AddMetadataFromFieldTypeRequest actualAddMetadataFromFieldTypeRequest =
-        new AddMetadataFromFieldTypeRequest(
-            null,
-            targetClass,
-            foreignField,
-            additionalForeignFields,
-            MergedPropertyType.PRIMARY,
-            componentProperties,
-            "Id Property",
-            "Prefix",
-            "Requested Property Name",
-            type,
-            true,
-            1,
-            presentationAttributes,
-            presentationAttribute,
-            SupportedFieldType.UNKNOWN,
-            returnedClass,
-            dynamicEntityDao);
-    ForeignKey[] actualAdditionalForeignFields =
-        actualAddMetadataFromFieldTypeRequest.getAdditionalForeignFields();
-    int actualAdditionalForeignKeyIndexPosition =
-        actualAddMetadataFromFieldTypeRequest.getAdditionalForeignKeyIndexPosition();
-    List<Property> actualComponentProperties =
-        actualAddMetadataFromFieldTypeRequest.getComponentProperties();
-    DynamicEntityDao actualDynamicEntityDao =
-        actualAddMetadataFromFieldTypeRequest.getDynamicEntityDao();
+    AddMetadataFromFieldTypeRequest actualAddMetadataFromFieldTypeRequest = new AddMetadataFromFieldTypeRequest(null,
+        targetClass, foreignField, additionalForeignFields, MergedPropertyType.PRIMARY, componentProperties,
+        "Id Property", "Prefix", "Requested Property Name", type, true, 1, presentationAttributes,
+        presentationAttribute, SupportedFieldType.UNKNOWN, returnedClass, dynamicEntityDao);
+    ForeignKey[] actualAdditionalForeignFields = actualAddMetadataFromFieldTypeRequest.getAdditionalForeignFields();
+    int actualAdditionalForeignKeyIndexPosition = actualAddMetadataFromFieldTypeRequest
+        .getAdditionalForeignKeyIndexPosition();
+    List<Property> actualComponentProperties = actualAddMetadataFromFieldTypeRequest.getComponentProperties();
+    DynamicEntityDao actualDynamicEntityDao = actualAddMetadataFromFieldTypeRequest.getDynamicEntityDao();
     SupportedFieldType actualExplicitType = actualAddMetadataFromFieldTypeRequest.getExplicitType();
     ForeignKey actualForeignField = actualAddMetadataFromFieldTypeRequest.getForeignField();
     String actualIdProperty = actualAddMetadataFromFieldTypeRequest.getIdProperty();
-    MergedPropertyType actualMergedPropertyType =
-        actualAddMetadataFromFieldTypeRequest.getMergedPropertyType();
+    MergedPropertyType actualMergedPropertyType = actualAddMetadataFromFieldTypeRequest.getMergedPropertyType();
     String actualPrefix = actualAddMetadataFromFieldTypeRequest.getPrefix();
-    FieldMetadata actualPresentationAttribute =
-        actualAddMetadataFromFieldTypeRequest.getPresentationAttribute();
-    Map<String, FieldMetadata> actualPresentationAttributes =
-        actualAddMetadataFromFieldTypeRequest.getPresentationAttributes();
+    FieldMetadata actualPresentationAttribute = actualAddMetadataFromFieldTypeRequest.getPresentationAttribute();
+    Map<String, FieldMetadata> actualPresentationAttributes = actualAddMetadataFromFieldTypeRequest
+        .getPresentationAttributes();
     Field actualRequestedField = actualAddMetadataFromFieldTypeRequest.getRequestedField();
-    String actualRequestedPropertyName =
-        actualAddMetadataFromFieldTypeRequest.getRequestedPropertyName();
+    String actualRequestedPropertyName = actualAddMetadataFromFieldTypeRequest.getRequestedPropertyName();
     Class<?> actualReturnedClass = actualAddMetadataFromFieldTypeRequest.getReturnedClass();
     Class<?> actualTargetClass = actualAddMetadataFromFieldTypeRequest.getTargetClass();
     Type actualType = actualAddMetadataFromFieldTypeRequest.getType();
-    boolean actualIsPropertyForeignKeyResult =
-        actualAddMetadataFromFieldTypeRequest.isPropertyForeignKey();
+    boolean actualIsPropertyForeignKeyResult = actualAddMetadataFromFieldTypeRequest.isPropertyForeignKey();
 
     // Assert
     assertEquals("Id Property", actualIdProperty);

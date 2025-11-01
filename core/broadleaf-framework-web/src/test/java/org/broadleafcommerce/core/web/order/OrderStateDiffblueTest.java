@@ -19,128 +19,118 @@ package org.broadleafcommerce.core.web.order;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@ExtendWith(MockitoExtension.class)
 class OrderStateDiffblueTest {
-  @InjectMocks private OrderState orderState;
-
   /**
-   * Test {@link OrderState#getOrder(Customer)}.
-   *
-   * <ul>
-   *   <li>When {@link CustomerImpl} (default constructor).
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderState#getOrder(Customer)}
+   * Method under test: {@link OrderState#getOrder(Customer)}
    */
   @Test
-  @DisplayName(
-      "Test getOrder(Customer); when CustomerImpl (default constructor); then return 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Order OrderState.getOrder(Customer)"})
-  void testGetOrder_whenCustomerImpl_thenReturnNull() {
-    // Arrange, Act and Assert
+  void testGetOrder() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    OrderState orderState = new OrderState();
+
+    // Act and Assert
     assertNull(orderState.getOrder(new CustomerImpl()));
   }
 
   /**
-   * Test {@link OrderState#setOrder(Customer, Order)}.
-   *
-   * <ul>
-   *   <li>When {@link CustomerImpl} (default constructor).
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderState#setOrder(Customer, Order)}
+   * Method under test: {@link OrderState#getOrder(Customer)}
    */
   @Test
-  @DisplayName(
-      "Test setOrder(Customer, Order); when CustomerImpl (default constructor); then return 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Order OrderState.setOrder(Customer, Order)"})
-  void testSetOrder_whenCustomerImpl_thenReturnNull() {
+  void testGetOrder2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    OrderState orderState = new OrderState();
+    CustomerImpl customer = mock(CustomerImpl.class);
+    when(customer.getId()).thenReturn(1L);
+
+    // Act
+    Order actualOrder = orderState.getOrder(customer);
+
+    // Assert
+    verify(customer).getId();
+    assertNull(actualOrder);
+  }
+
+  /**
+   * Method under test: {@link OrderState#setOrder(Customer, Order)}
+   */
+  @Test
+  void testSetOrder() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    OrderState orderState = new OrderState();
+    CustomerImpl customer = new CustomerImpl();
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act and Assert
+    assertSame(order, orderState.setOrder(customer, order));
+  }
+
+  /**
+   * Method under test: {@link OrderState#setOrder(Customer, Order)}
+   */
+  @Test
+  void testSetOrder2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
+    assertNull((new OrderState()).setOrder(null, null));
+  }
+
+  /**
+   * Method under test: {@link OrderState#setOrder(Customer, Order)}
+   */
+  @Test
+  void testSetOrder3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    OrderState orderState = new OrderState();
+
+    // Act and Assert
     assertNull(orderState.setOrder(new CustomerImpl(), null));
   }
 
   /**
-   * Test {@link OrderState#setOrder(Customer, Order)}.
-   *
-   * <ul>
-   *   <li>When {@link NullOrderImpl} (default constructor).
-   *   <li>Then return {@link NullOrderImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderState#setOrder(Customer, Order)}
+   * Method under test: {@link OrderState#setOrder(Customer, Order)}
    */
   @Test
-  @DisplayName(
-      "Test setOrder(Customer, Order); when NullOrderImpl (default constructor); then return NullOrderImpl (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Order OrderState.setOrder(Customer, Order)"})
-  void testSetOrder_whenNullOrderImpl_thenReturnNullOrderImpl() {
+  void testSetOrder4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    CustomerImpl customer = new CustomerImpl();
+    OrderState orderState = new OrderState();
+    CustomerImpl customer = mock(CustomerImpl.class);
+    when(customer.getId()).thenReturn(1L);
     NullOrderImpl order = new NullOrderImpl();
 
     // Act
     Order actualSetOrderResult = orderState.setOrder(customer, order);
 
     // Assert
+    verify(customer).getId();
     assertSame(order, actualSetOrderResult);
   }
 
   /**
-   * Test {@link OrderState#setOrder(Customer, Order)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderState#setOrder(Customer, Order)}
+   * Method under test: default or parameterless constructor of {@link OrderState}
    */
   @Test
-  @DisplayName("Test setOrder(Customer, Order); when 'null'; then return 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Order OrderState.setOrder(Customer, Order)"})
-  void testSetOrder_whenNull_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(orderState.setOrder(null, null));
-  }
-
-  /**
-   * Test new {@link OrderState} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link OrderState}
-   */
-  @Test
-  @DisplayName("Test new OrderState (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void OrderState.<init>()"})
   void testNewOrderState() {
     // Arrange, Act and Assert
-    assertNull(new OrderState().orderDao);
+    assertNull((new OrderState()).orderDao);
   }
 }

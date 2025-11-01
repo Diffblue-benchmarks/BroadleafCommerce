@@ -19,128 +19,63 @@ package org.broadleafcommerce.core.web.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
+import java.util.function.BiFunction;
 import org.junit.jupiter.api.Test;
 
 class ProcessorUtilsDiffblueTest {
   /**
-   * Test {@link ProcessorUtils#getUrl(String, Map)}.
-   *
-   * <ul>
-   *   <li>Given empty array of {@link String}.
-   *   <li>When {@link HashMap#HashMap()} {@code ?} is empty array of {@link String}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProcessorUtils#getUrl(String, Map)}
+   * Method under test: {@link ProcessorUtils#getUrl(String, Map)}
    */
   @Test
-  @DisplayName(
-      "Test getUrl(String, Map); given empty array of String; when HashMap() '?' is empty array of String")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ProcessorUtils.getUrl(String, Map)"})
-  void testGetUrl_givenEmptyArrayOfString_whenHashMapQuestionMarkIsEmptyArrayOfString() {
-    // Arrange
-    HashMap<String, String[]> parameters = new HashMap<>();
-    parameters.put("?", new String[] {});
-
-    // Act and Assert
-    assertEquals(
-        "https://example.org/example",
-        ProcessorUtils.getUrl("https://example.org/example", parameters));
-  }
-
-  /**
-   * Test {@link ProcessorUtils#getUrl(String, Map)}.
-   *
-   * <ul>
-   *   <li>Then return {@code https://example.org/example?%3F=%3F}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProcessorUtils#getUrl(String, Map)}
-   */
-  @Test
-  @DisplayName("Test getUrl(String, Map); then return 'https://example.org/example?%3F=%3F'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ProcessorUtils.getUrl(String, Map)"})
-  void testGetUrl_thenReturnHttpsExampleOrgExample3f3f() {
-    // Arrange
-    HashMap<String, String[]> parameters = new HashMap<>();
-    parameters.put("?", new String[] {"?"});
-
-    // Act and Assert
-    assertEquals(
-        "https://example.org/example?%3F=%3F",
-        ProcessorUtils.getUrl("https://example.org/example", parameters));
-  }
-
-  /**
-   * Test {@link ProcessorUtils#getUrl(String, Map)}.
-   *
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()}.
-   *   <li>Then return {@code https://example.org/example}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProcessorUtils#getUrl(String, Map)}
-   */
-  @Test
-  @DisplayName(
-      "Test getUrl(String, Map); when HashMap(); then return 'https://example.org/example'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ProcessorUtils.getUrl(String, Map)"})
-  void testGetUrl_whenHashMap_thenReturnHttpsExampleOrgExample() {
+  void testGetUrl() {
     // Arrange, Act and Assert
-    assertEquals(
-        "https://example.org/example",
-        ProcessorUtils.getUrl("https://example.org/example", new HashMap<>()));
-  }
-
-  /**
-   * Test {@link ProcessorUtils#getUrl(String, Map)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code https://example.org/example}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProcessorUtils#getUrl(String, Map)}
-   */
-  @Test
-  @DisplayName("Test getUrl(String, Map); when 'null'; then return 'https://example.org/example'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ProcessorUtils.getUrl(String, Map)"})
-  void testGetUrl_whenNull_thenReturnHttpsExampleOrgExample() {
-    // Arrange, Act and Assert
-    assertEquals(
-        "https://example.org/example", ProcessorUtils.getUrl("https://example.org/example", null));
-  }
-
-  /**
-   * Test {@link ProcessorUtils#getUrl(String, Map)}.
-   *
-   * <ul>
-   *   <li>When {@code ?}.
-   *   <li>Then throw {@link IllegalArgumentException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProcessorUtils#getUrl(String, Map)}
-   */
-  @Test
-  @DisplayName("Test getUrl(String, Map); when '?'; then throw IllegalArgumentException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ProcessorUtils.getUrl(String, Map)"})
-  void testGetUrl_whenQuestionMark_thenThrowIllegalArgumentException() {
-    // Arrange, Act and Assert
+    assertEquals("https://example.org/example", ProcessorUtils.getUrl("https://example.org/example", new HashMap<>()));
     assertThrows(IllegalArgumentException.class, () -> ProcessorUtils.getUrl("?", null));
+    assertEquals("https://example.org/example", ProcessorUtils.getUrl("https://example.org/example", null));
+  }
+
+  /**
+   * Method under test: {@link ProcessorUtils#getUrl(String, Map)}
+   */
+  @Test
+  void testGetUrl2() {
+    // Arrange
+    HashMap<String, String[]> parameters = new HashMap<>();
+    parameters.put("?", new String[]{"?"});
+
+    // Act and Assert
+    assertEquals("https://example.org/example?%3F=%3F",
+        ProcessorUtils.getUrl("https://example.org/example", parameters));
+  }
+
+  /**
+   * Method under test: {@link ProcessorUtils#getUrl(String, Map)}
+   */
+  @Test
+  void testGetUrl3() {
+    // Arrange
+    HashMap<String, String[]> parameters = new HashMap<>();
+    parameters.computeIfPresent("?", mock(BiFunction.class));
+    parameters.put("?", new String[]{"?"});
+
+    // Act and Assert
+    assertEquals("https://example.org/example?%3F=%3F",
+        ProcessorUtils.getUrl("https://example.org/example", parameters));
+  }
+
+  /**
+   * Method under test: {@link ProcessorUtils#getUrl(String, Map)}
+   */
+  @Test
+  void testGetUrl4() {
+    // Arrange
+    HashMap<String, String[]> parameters = new HashMap<>();
+    parameters.put("?", new String[]{});
+
+    // Act and Assert
+    assertEquals("https://example.org/example", ProcessorUtils.getUrl("https://example.org/example", parameters));
   }
 }

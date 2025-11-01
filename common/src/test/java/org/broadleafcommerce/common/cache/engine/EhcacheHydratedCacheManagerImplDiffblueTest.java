@@ -18,26 +18,17 @@
 package org.broadleafcommerce.common.cache.engine;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class EhcacheHydratedCacheManagerImplDiffblueTest {
   /**
-   * Test {@link EhcacheHydratedCacheManagerImpl#getHydratedCacheName()}.
-   *
-   * <p>Method under test: {@link EhcacheHydratedCacheManagerImpl#getHydratedCacheName()}
+   * Method under test:
+   * {@link EhcacheHydratedCacheManagerImpl#getHydratedCacheName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.lang.String EhcacheHydratedCacheManagerImpl.getHydratedCacheName()"})
   public void testGetHydratedCacheName() {
     // Arrange, Act and Assert
-    assertEquals(
-        EhcacheHydratedCacheManagerImpl.HYDRATED_CACHE_NAME,
-        new EhcacheHydratedCacheEventListener().getHydratedCacheName());
+    assertEquals(EhcacheHydratedCacheManagerImpl.HYDRATED_CACHE_NAME,
+        (new EhcacheHydratedCacheEventListener()).getHydratedCacheName());
   }
 }

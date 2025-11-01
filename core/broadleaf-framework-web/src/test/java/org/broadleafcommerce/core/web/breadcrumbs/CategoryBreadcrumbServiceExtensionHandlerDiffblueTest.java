@@ -21,93 +21,38 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.broadleafcommerce.common.breadcrumbs.dto.BreadcrumbDTO;
 import org.broadleafcommerce.common.breadcrumbs.dto.BreadcrumbDTOType;
-import org.broadleafcommerce.common.breadcrumbs.service.BreadcrumbServiceExtensionHandler;
-import org.broadleafcommerce.common.breadcrumbs.service.BreadcrumbServiceExtensionManager;
 import org.broadleafcommerce.common.extension.ExtensionResultHolder;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.common.web.BroadleafRequestContext;
 import org.broadleafcommerce.core.catalog.domain.Category;
 import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
 import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
-import org.broadleafcommerce.core.catalog.service.CatalogService;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@ExtendWith(MockitoExtension.class)
 class CategoryBreadcrumbServiceExtensionHandlerDiffblueTest {
-  @Mock private BreadcrumbServiceExtensionManager breadcrumbServiceExtensionManager;
-
-  @Mock private CatalogService catalogService;
-
-  @InjectMocks
-  private CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler;
-
   /**
-   * Test {@link CategoryBreadcrumbServiceExtensionHandler#init()}.
-   *
-   * <ul>
-   *   <li>Then calls {@link BreadcrumbServiceExtensionManager#registerHandler(ExtensionHandler)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CategoryBreadcrumbServiceExtensionHandler#init()}
+   * Method under test:
+   * {@link CategoryBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map, ExtensionResultHolder)}
    */
   @Test
-  @DisplayName("Test init(); then calls registerHandler(ExtensionHandler)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void CategoryBreadcrumbServiceExtensionHandler.init()"})
-  void testInit_thenCallsRegisterHandler() {
-    // Arrange
-    when(breadcrumbServiceExtensionManager.registerHandler(
-            Mockito.<BreadcrumbServiceExtensionHandler>any()))
-        .thenReturn(true);
-
-    // Act
-    categoryBreadcrumbServiceExtensionHandler.init();
-
-    // Assert
-    verify(breadcrumbServiceExtensionManager)
-        .registerHandler(isA(BreadcrumbServiceExtensionHandler.class));
-  }
-
-  /**
-   * Test {@link CategoryBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * CategoryBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @DisplayName("Test modifyBreadcrumbList(String, Map, ExtensionResultHolder)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType CategoryBreadcrumbServiceExtensionHandler.modifyBreadcrumbList(String, Map, ExtensionResultHolder)"
-  })
   void testModifyBreadcrumbList() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
     HashMap<String, String[]> params = new HashMap<>();
 
     ExtensionResultHolder<List<BreadcrumbDTO>> holder = new ExtensionResultHolder<>();
@@ -115,42 +60,94 @@ class CategoryBreadcrumbServiceExtensionHandlerDiffblueTest {
     holder.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.HANDLED_CONTINUE,
-        categoryBreadcrumbServiceExtensionHandler.modifyBreadcrumbList(
-            "https://example.org/example", params, holder));
+    assertEquals(ExtensionResultStatusType.HANDLED_CONTINUE,
+        categoryBreadcrumbServiceExtensionHandler.modifyBreadcrumbList("https://example.org/example", params, holder));
   }
 
   /**
-   * Test {@link CategoryBreadcrumbServiceExtensionHandler#buildCrumbForCategory(Category, String,
-   * Map)}.
-   *
-   * <ul>
-   *   <li>Given {@code Name}.
-   *   <li>Then return Text is {@code Name}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * CategoryBreadcrumbServiceExtensionHandler#buildCrumbForCategory(Category, String, Map)}
+   * Method under test:
+   * {@link CategoryBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map, ExtensionResultHolder)}
    */
   @Test
-  @DisplayName(
-      "Test buildCrumbForCategory(Category, String, Map); given 'Name'; then return Text is 'Name'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BreadcrumbDTO CategoryBreadcrumbServiceExtensionHandler.buildCrumbForCategory(Category, String, Map)"
-  })
-  void testBuildCrumbForCategory_givenName_thenReturnTextIsName() {
+  void testModifyBreadcrumbList2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
+    HashMap<String, String[]> params = new HashMap<>();
+    ExtensionResultHolder<List<BreadcrumbDTO>> holder = mock(ExtensionResultHolder.class);
+    when(holder.getContextMap()).thenReturn(new HashMap<>());
+    doNothing().when(holder).setResult(Mockito.<List<BreadcrumbDTO>>any());
+    doNothing().when(holder).setThrowable(Mockito.<Throwable>any());
+    holder.setResult(new ArrayList<>());
+    holder.setThrowable(new Throwable());
+
+    // Act
+    ExtensionResultStatusType actualModifyBreadcrumbListResult = categoryBreadcrumbServiceExtensionHandler
+        .modifyBreadcrumbList("https://example.org/example", params, holder);
+
+    // Assert
+    verify(holder).getContextMap();
+    verify(holder).setResult(isA(List.class));
+    verify(holder).setThrowable(isA(Throwable.class));
+    assertEquals(ExtensionResultStatusType.HANDLED_CONTINUE, actualModifyBreadcrumbListResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link CategoryBreadcrumbServiceExtensionHandler#buildCrumbForCategory(Category, String, Map)}
+   */
+  @Test
+  void testBuildCrumbForCategory() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
+    CategoryImpl category = new CategoryImpl();
+
+    // Act
+    BreadcrumbDTO actualBuildCrumbForCategoryResult = categoryBreadcrumbServiceExtensionHandler
+        .buildCrumbForCategory(category, "https://example.org/example", new HashMap<>());
+
+    // Assert
+    assertEquals("CATEGORY", actualBuildCrumbForCategoryResult.getType());
+    assertNull(actualBuildCrumbForCategoryResult.getLink());
+    assertNull(actualBuildCrumbForCategoryResult.getText());
+  }
+
+  /**
+   * Method under test:
+   * {@link CategoryBreadcrumbServiceExtensionHandler#buildCrumbForCategory(Category, String, Map)}
+   */
+  @Test
+  void testBuildCrumbForCategory2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
+
+    // Act and Assert
+    assertNull(categoryBreadcrumbServiceExtensionHandler.buildCrumbForCategory(null, "https://example.org/example",
+        new HashMap<>()));
+  }
+
+  /**
+   * Method under test:
+   * {@link CategoryBreadcrumbServiceExtensionHandler#buildCrumbForCategory(Category, String, Map)}
+   */
+  @Test
+  void testBuildCrumbForCategory3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
     Category category = mock(Category.class);
     when(category.getName()).thenReturn("Name");
     when(category.getUrl()).thenReturn("https://example.org/example");
 
     // Act
-    BreadcrumbDTO actualBuildCrumbForCategoryResult =
-        categoryBreadcrumbServiceExtensionHandler.buildCrumbForCategory(
-            category, "https://example.org/example", new HashMap<>());
+    BreadcrumbDTO actualBuildCrumbForCategoryResult = categoryBreadcrumbServiceExtensionHandler
+        .buildCrumbForCategory(category, "https://example.org/example", new HashMap<>());
 
     // Assert
     verify(category).getName();
@@ -161,96 +158,108 @@ class CategoryBreadcrumbServiceExtensionHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link CategoryBreadcrumbServiceExtensionHandler#buildCrumbForCategory(Category, String,
-   * Map)}.
-   *
-   * <ul>
-   *   <li>When {@link CategoryImpl} (default constructor).
-   *   <li>Then return Link is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * CategoryBreadcrumbServiceExtensionHandler#buildCrumbForCategory(Category, String, Map)}
+   * Method under test:
+   * {@link CategoryBreadcrumbServiceExtensionHandler#addParentCrumbs(List, Category, String, Map)}
    */
   @Test
-  @DisplayName(
-      "Test buildCrumbForCategory(Category, String, Map); when CategoryImpl (default constructor); then return Link is 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BreadcrumbDTO CategoryBreadcrumbServiceExtensionHandler.buildCrumbForCategory(Category, String, Map)"
-  })
-  void testBuildCrumbForCategory_whenCategoryImpl_thenReturnLinkIsNull() {
+  void testAddParentCrumbs() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
+    ArrayList<BreadcrumbDTO> parentCrumbs = new ArrayList<>();
     CategoryImpl category = new CategoryImpl();
 
     // Act
-    BreadcrumbDTO actualBuildCrumbForCategoryResult =
-        categoryBreadcrumbServiceExtensionHandler.buildCrumbForCategory(
-            category, "https://example.org/example", new HashMap<>());
+    categoryBreadcrumbServiceExtensionHandler.addParentCrumbs(parentCrumbs, category, "https://example.org/example",
+        new HashMap<>());
 
-    // Assert
-    assertEquals("CATEGORY", actualBuildCrumbForCategoryResult.getType());
-    assertNull(actualBuildCrumbForCategoryResult.getLink());
-    assertNull(actualBuildCrumbForCategoryResult.getText());
+    // Assert that nothing has changed
+    assertTrue(parentCrumbs.isEmpty());
   }
 
   /**
-   * Test {@link CategoryBreadcrumbServiceExtensionHandler#buildCrumbForCategory(Category, String,
-   * Map)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * CategoryBreadcrumbServiceExtensionHandler#buildCrumbForCategory(Category, String, Map)}
+   * Method under test:
+   * {@link CategoryBreadcrumbServiceExtensionHandler#addParentCrumbs(List, Category, String, Map)}
    */
   @Test
-  @DisplayName("Test buildCrumbForCategory(Category, String, Map); when 'null'; then return 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BreadcrumbDTO CategoryBreadcrumbServiceExtensionHandler.buildCrumbForCategory(Category, String, Map)"
-  })
-  void testBuildCrumbForCategory_whenNull_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(
-        categoryBreadcrumbServiceExtensionHandler.buildCrumbForCategory(
-            null, "https://example.org/example", new HashMap<>()));
-  }
+  void testAddParentCrumbs2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-  /**
-   * Test {@link CategoryBreadcrumbServiceExtensionHandler#addParentCrumbs(List, Category, String,
-   * Map)}.
-   *
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor).
-   *   <li>Then {@link ArrayList#ArrayList()} size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link CategoryBreadcrumbServiceExtensionHandler#addParentCrumbs(List,
-   * Category, String, Map)}
-   */
-  @Test
-  @DisplayName(
-      "Test addParentCrumbs(List, Category, String, Map); given CategoryImpl (default constructor); then ArrayList() size is one")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CategoryBreadcrumbServiceExtensionHandler.addParentCrumbs(List, Category, String, Map)"
-  })
-  void testAddParentCrumbs_givenCategoryImpl_thenArrayListSizeIsOne() {
     // Arrange
-    ArrayList<BreadcrumbDTO> parentCrumbs = new ArrayList<>();
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
 
+    BreadcrumbDTO breadcrumbDTO = new BreadcrumbDTO();
+    breadcrumbDTO.setLink("Link");
+    breadcrumbDTO.setText("Text");
+    breadcrumbDTO.setType(new BreadcrumbDTOType("Type", "Friendly Type"));
+
+    ArrayList<BreadcrumbDTO> parentCrumbs = new ArrayList<>();
+    parentCrumbs.add(breadcrumbDTO);
+    CategoryImpl category = new CategoryImpl();
+
+    // Act
+    categoryBreadcrumbServiceExtensionHandler.addParentCrumbs(parentCrumbs, category, "https://example.org/example",
+        new HashMap<>());
+
+    // Assert that nothing has changed
+    assertEquals(1, parentCrumbs.size());
+    assertSame(breadcrumbDTO, parentCrumbs.get(0));
+  }
+
+  /**
+   * Method under test:
+   * {@link CategoryBreadcrumbServiceExtensionHandler#addParentCrumbs(List, Category, String, Map)}
+   */
+  @Test
+  void testAddParentCrumbs3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
+
+    BreadcrumbDTO breadcrumbDTO = new BreadcrumbDTO();
+    breadcrumbDTO.setLink("Link");
+    breadcrumbDTO.setText("Text");
+    breadcrumbDTO.setType(new BreadcrumbDTOType("Type", "Friendly Type"));
+
+    BreadcrumbDTO breadcrumbDTO2 = new BreadcrumbDTO();
+    breadcrumbDTO2.setLink("42");
+    breadcrumbDTO2.setText("42");
+    breadcrumbDTO2.setType(new BreadcrumbDTOType("Type", "Friendly Type"));
+
+    ArrayList<BreadcrumbDTO> parentCrumbs = new ArrayList<>();
+    parentCrumbs.add(breadcrumbDTO2);
+    parentCrumbs.add(breadcrumbDTO);
+    CategoryImpl category = new CategoryImpl();
+
+    // Act
+    categoryBreadcrumbServiceExtensionHandler.addParentCrumbs(parentCrumbs, category, "https://example.org/example",
+        new HashMap<>());
+
+    // Assert that nothing has changed
+    assertEquals(2, parentCrumbs.size());
+    assertSame(breadcrumbDTO2, parentCrumbs.get(0));
+    assertSame(breadcrumbDTO, parentCrumbs.get(1));
+  }
+
+  /**
+   * Method under test:
+   * {@link CategoryBreadcrumbServiceExtensionHandler#addParentCrumbs(List, Category, String, Map)}
+   */
+  @Test
+  void testAddParentCrumbs4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
+    ArrayList<BreadcrumbDTO> parentCrumbs = new ArrayList<>();
     CategoryImpl category = mock(CategoryImpl.class);
     when(category.getParentCategory()).thenReturn(new CategoryImpl());
 
     // Act
-    categoryBreadcrumbServiceExtensionHandler.addParentCrumbs(
-        parentCrumbs, category, "https://example.org/example", new HashMap<>());
+    categoryBreadcrumbServiceExtensionHandler.addParentCrumbs(parentCrumbs, category, "https://example.org/example",
+        new HashMap<>());
 
     // Assert
     verify(category).getParentCategory();
@@ -262,81 +271,26 @@ class CategoryBreadcrumbServiceExtensionHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link CategoryBreadcrumbServiceExtensionHandler#addParentCrumbs(List, Category, String,
-   * Map)}.
-   *
-   * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} second is {@link BreadcrumbDTO} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link CategoryBreadcrumbServiceExtensionHandler#addParentCrumbs(List,
-   * Category, String, Map)}
+   * Method under test:
+   * {@link CategoryBreadcrumbServiceExtensionHandler#addParentCrumbs(List, Category, String, Map)}
    */
   @Test
-  @DisplayName(
-      "Test addParentCrumbs(List, Category, String, Map); then ArrayList() second is BreadcrumbDTO (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CategoryBreadcrumbServiceExtensionHandler.addParentCrumbs(List, Category, String, Map)"
-  })
-  void testAddParentCrumbs_thenArrayListSecondIsBreadcrumbDTO() {
+  void testAddParentCrumbs5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    BreadcrumbDTO breadcrumbDTO = new BreadcrumbDTO();
-    breadcrumbDTO.setLink("name");
-    breadcrumbDTO.setText("name");
-    breadcrumbDTO.setType(new BreadcrumbDTOType("name", "name"));
-
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
     ArrayList<BreadcrumbDTO> parentCrumbs = new ArrayList<>();
-    parentCrumbs.add(breadcrumbDTO);
-
-    CategoryImpl category = mock(CategoryImpl.class);
-    when(category.getParentCategory()).thenReturn(new CategoryImpl());
-
-    // Act
-    categoryBreadcrumbServiceExtensionHandler.addParentCrumbs(
-        parentCrumbs, category, "https://example.org/example", new HashMap<>());
-
-    // Assert
-    verify(category).getParentCategory();
-    assertEquals(2, parentCrumbs.size());
-    assertSame(breadcrumbDTO, parentCrumbs.get(1));
-  }
-
-  /**
-   * Test {@link CategoryBreadcrumbServiceExtensionHandler#addParentCrumbs(List, Category, String,
-   * Map)}.
-   *
-   * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} second Type is {@code CATEGORY}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CategoryBreadcrumbServiceExtensionHandler#addParentCrumbs(List,
-   * Category, String, Map)}
-   */
-  @Test
-  @DisplayName(
-      "Test addParentCrumbs(List, Category, String, Map); then ArrayList() second Type is 'CATEGORY'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CategoryBreadcrumbServiceExtensionHandler.addParentCrumbs(List, Category, String, Map)"
-  })
-  void testAddParentCrumbs_thenArrayListSecondTypeIsCategory() {
-    // Arrange
-    ArrayList<BreadcrumbDTO> parentCrumbs = new ArrayList<>();
-
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
     when(categoryImpl.getName()).thenReturn("Name");
     when(categoryImpl.getUrl()).thenReturn("https://example.org/example");
     when(categoryImpl.getParentCategory()).thenReturn(new CategoryImpl());
-
     CategoryImpl category = mock(CategoryImpl.class);
     when(category.getParentCategory()).thenReturn(categoryImpl);
 
     // Act
-    categoryBreadcrumbServiceExtensionHandler.addParentCrumbs(
-        parentCrumbs, category, "https://example.org/example", new HashMap<>());
+    categoryBreadcrumbServiceExtensionHandler.addParentCrumbs(parentCrumbs, category, "https://example.org/example",
+        new HashMap<>());
 
     // Assert
     verify(categoryImpl).getName();
@@ -344,95 +298,80 @@ class CategoryBreadcrumbServiceExtensionHandlerDiffblueTest {
     verify(categoryImpl).getParentCategory();
     verify(categoryImpl).getUrl();
     assertEquals(2, parentCrumbs.size());
-    BreadcrumbDTO getResult = parentCrumbs.get(1);
+    BreadcrumbDTO getResult = parentCrumbs.get(0);
     assertEquals("CATEGORY", getResult.getType());
-    assertEquals("Name", getResult.getText());
-    assertEquals("https://example.org/example", getResult.getLink());
+    BreadcrumbDTO getResult2 = parentCrumbs.get(1);
+    assertEquals("CATEGORY", getResult2.getType());
+    assertEquals("Name", getResult2.getText());
+    assertEquals("https://example.org/example", getResult2.getLink());
+    assertNull(getResult.getLink());
+    assertNull(getResult.getText());
   }
 
   /**
-   * Test {@link CategoryBreadcrumbServiceExtensionHandler#addParentCrumbs(List, Category, String,
-   * Map)}.
-   *
-   * <ul>
-   *   <li>When {@link CategoryImpl} (default constructor).
-   *   <li>Then {@link ArrayList#ArrayList()} Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link CategoryBreadcrumbServiceExtensionHandler#addParentCrumbs(List,
-   * Category, String, Map)}
+   * Method under test:
+   * {@link CategoryBreadcrumbServiceExtensionHandler#buildCategorySearchCrumb(Category, String, Map)}
    */
   @Test
-  @DisplayName(
-      "Test addParentCrumbs(List, Category, String, Map); when CategoryImpl (default constructor); then ArrayList() Empty")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CategoryBreadcrumbServiceExtensionHandler.addParentCrumbs(List, Category, String, Map)"
-  })
-  void testAddParentCrumbs_whenCategoryImpl_thenArrayListEmpty() {
-    // Arrange
-    ArrayList<BreadcrumbDTO> parentCrumbs = new ArrayList<>();
-    CategoryImpl category = new CategoryImpl();
-
-    // Act
-    categoryBreadcrumbServiceExtensionHandler.addParentCrumbs(
-        parentCrumbs, category, "https://example.org/example", new HashMap<>());
-
-    // Assert that nothing has changed
-    assertTrue(parentCrumbs.isEmpty());
-  }
-
-  /**
-   * Test {@link CategoryBreadcrumbServiceExtensionHandler#buildCategorySearchCrumb(Category,
-   * String, Map)}.
-   *
-   * <p>Method under test: {@link
-   * CategoryBreadcrumbServiceExtensionHandler#buildCategorySearchCrumb(Category, String, Map)}
-   */
-  @Test
-  @DisplayName("Test buildCategorySearchCrumb(Category, String, Map)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BreadcrumbDTO CategoryBreadcrumbServiceExtensionHandler.buildCategorySearchCrumb(Category, String, Map)"
-  })
   void testBuildCategorySearchCrumb() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
     CategoryImpl category = new CategoryImpl();
 
     // Act and Assert
-    assertNull(
-        categoryBreadcrumbServiceExtensionHandler.buildCategorySearchCrumb(
-            category, "https://example.org/example", new HashMap<>()));
+    assertNull(categoryBreadcrumbServiceExtensionHandler.buildCategorySearchCrumb(category,
+        "https://example.org/example", new HashMap<>()));
   }
 
   /**
-   * Test {@link CategoryBreadcrumbServiceExtensionHandler#getNameForCategoryLink(Category)}.
-   *
-   * <ul>
-   *   <li>Given {@code Name}.
-   *   <li>Then return {@code Name}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * CategoryBreadcrumbServiceExtensionHandler#getNameForCategoryLink(Category)}
+   * Method under test:
+   * {@link CategoryBreadcrumbServiceExtensionHandler#buildCategorySearchCrumb(Category, String, Map)}
    */
   @Test
-  @DisplayName("Test getNameForCategoryLink(Category); given 'Name'; then return 'Name'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String CategoryBreadcrumbServiceExtensionHandler.getNameForCategoryLink(Category)"
-  })
-  void testGetNameForCategoryLink_givenName_thenReturnName() {
+  void testBuildCategorySearchCrumb2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
+    CategoryImpl category = mock(CategoryImpl.class);
+
+    // Act and Assert
+    assertNull(categoryBreadcrumbServiceExtensionHandler.buildCategorySearchCrumb(category,
+        "https://example.org/example", new HashMap<>()));
+  }
+
+  /**
+   * Method under test:
+   * {@link CategoryBreadcrumbServiceExtensionHandler#getNameForCategoryLink(Category)}
+   */
+  @Test
+  void testGetNameForCategoryLink() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
+
+    // Act and Assert
+    assertNull(categoryBreadcrumbServiceExtensionHandler.getNameForCategoryLink(new CategoryImpl()));
+  }
+
+  /**
+   * Method under test:
+   * {@link CategoryBreadcrumbServiceExtensionHandler#getNameForCategoryLink(Category)}
+   */
+  @Test
+  void testGetNameForCategoryLink2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
     Category category = mock(Category.class);
     when(category.getName()).thenReturn("Name");
 
     // Act
-    String actualNameForCategoryLink =
-        categoryBreadcrumbServiceExtensionHandler.getNameForCategoryLink(category);
+    String actualNameForCategoryLink = categoryBreadcrumbServiceExtensionHandler.getNameForCategoryLink(category);
 
     // Assert
     verify(category).getName();
@@ -440,47 +379,15 @@ class CategoryBreadcrumbServiceExtensionHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link CategoryBreadcrumbServiceExtensionHandler#getNameForCategoryLink(Category)}.
-   *
-   * <ul>
-   *   <li>When {@link CategoryImpl} (default constructor).
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * CategoryBreadcrumbServiceExtensionHandler#getNameForCategoryLink(Category)}
+   * Method under test:
+   * {@link CategoryBreadcrumbServiceExtensionHandler#determineFirstCategory(String, Map, ExtensionResultHolder)}
    */
   @Test
-  @DisplayName(
-      "Test getNameForCategoryLink(Category); when CategoryImpl (default constructor); then return 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String CategoryBreadcrumbServiceExtensionHandler.getNameForCategoryLink(Category)"
-  })
-  void testGetNameForCategoryLink_whenCategoryImpl_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(
-        categoryBreadcrumbServiceExtensionHandler.getNameForCategoryLink(new CategoryImpl()));
-  }
-
-  /**
-   * Test {@link CategoryBreadcrumbServiceExtensionHandler#determineFirstCategory(String, Map,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * CategoryBreadcrumbServiceExtensionHandler#determineFirstCategory(String, Map,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @DisplayName("Test determineFirstCategory(String, Map, ExtensionResultHolder)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Category CategoryBreadcrumbServiceExtensionHandler.determineFirstCategory(String, Map, ExtensionResultHolder)"
-  })
   void testDetermineFirstCategory() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
     HashMap<String, String[]> params = new HashMap<>();
 
     ExtensionResultHolder<List<BreadcrumbDTO>> holder = new ExtensionResultHolder<>();
@@ -488,334 +395,228 @@ class CategoryBreadcrumbServiceExtensionHandlerDiffblueTest {
     holder.setThrowable(new Throwable());
 
     // Act and Assert
-    assertNull(
-        categoryBreadcrumbServiceExtensionHandler.determineFirstCategory(
-            "https://example.org/example", params, holder));
+    assertNull(categoryBreadcrumbServiceExtensionHandler.determineFirstCategory("https://example.org/example", params,
+        holder));
   }
 
   /**
-   * Test {@link
-   * CategoryBreadcrumbServiceExtensionHandler#getMatchingCategoryFromProduct(BroadleafRequestContext,
-   * String, Map)}.
-   *
-   * <p>Method under test: {@link
-   * CategoryBreadcrumbServiceExtensionHandler#getMatchingCategoryFromProduct(BroadleafRequestContext,
-   * String, Map)}
+   * Method under test:
+   * {@link CategoryBreadcrumbServiceExtensionHandler#determineFirstCategory(String, Map, ExtensionResultHolder)}
    */
   @Test
-  @DisplayName("Test getMatchingCategoryFromProduct(BroadleafRequestContext, String, Map)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Category CategoryBreadcrumbServiceExtensionHandler.getMatchingCategoryFromProduct(BroadleafRequestContext, String, Map)"
-  })
-  void testGetMatchingCategoryFromProduct() {
+  void testDetermineFirstCategory2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
+    HashMap<String, String[]> params = new HashMap<>();
+    ExtensionResultHolder<List<BreadcrumbDTO>> holder = mock(ExtensionResultHolder.class);
+    doNothing().when(holder).setResult(Mockito.<List<BreadcrumbDTO>>any());
+    doNothing().when(holder).setThrowable(Mockito.<Throwable>any());
+    holder.setResult(new ArrayList<>());
+    holder.setThrowable(new Throwable());
+
+    // Act
+    Category actualDetermineFirstCategoryResult = categoryBreadcrumbServiceExtensionHandler
+        .determineFirstCategory("https://example.org/example", params, holder);
+
+    // Assert
+    verify(holder).setResult(isA(List.class));
+    verify(holder).setThrowable(isA(Throwable.class));
+    assertNull(actualDetermineFirstCategoryResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link CategoryBreadcrumbServiceExtensionHandler#getMatchingCategoryFromProduct(BroadleafRequestContext, String, Map)}
+   */
+  @Test
+  void testGetMatchingCategoryFromProduct() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
+    BroadleafRequestContext brc = new BroadleafRequestContext();
+
+    // Act and Assert
+    assertNull(categoryBreadcrumbServiceExtensionHandler.getMatchingCategoryFromProduct(brc,
+        "https://example.org/example", new HashMap<>()));
+  }
+
+  /**
+   * Method under test:
+   * {@link CategoryBreadcrumbServiceExtensionHandler#getMatchingCategoryFromProduct(BroadleafRequestContext, String, Map)}
+   */
+  @Test
+  void testGetMatchingCategoryFromProduct2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
+
+    // Act and Assert
+    assertNull(categoryBreadcrumbServiceExtensionHandler.getMatchingCategoryFromProduct(null,
+        "https://example.org/example", new HashMap<>()));
+  }
+
+  /**
+   * Method under test:
+   * {@link CategoryBreadcrumbServiceExtensionHandler#getMatchingCategoryFromProduct(BroadleafRequestContext, String, Map)}
+   */
+  @Test
+  void testGetMatchingCategoryFromProduct3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
+    BroadleafRequestContext brc = mock(BroadleafRequestContext.class);
+    when(brc.getRequestAttribute(Mockito.<String>any())).thenReturn(null);
+
+    // Act
+    Category actualMatchingCategoryFromProduct = categoryBreadcrumbServiceExtensionHandler
+        .getMatchingCategoryFromProduct(brc, "https://example.org/example", new HashMap<>());
+
+    // Assert
+    verify(brc).getRequestAttribute(eq("currentProduct"));
+    assertNull(actualMatchingCategoryFromProduct);
+  }
+
+  /**
+   * Method under test:
+   * {@link CategoryBreadcrumbServiceExtensionHandler#getMatchingCategoryFromProduct(BroadleafRequestContext, String, Map)}
+   */
+  @Test
+  void testGetMatchingCategoryFromProduct4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
     ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
     when(productBundleImpl.getCategory()).thenReturn(new CategoryImpl());
-
     BroadleafRequestContext brc = mock(BroadleafRequestContext.class);
     when(brc.getRequestAttribute(Mockito.<String>any())).thenReturn(productBundleImpl);
 
     // Act
-    Category actualMatchingCategoryFromProduct =
-        categoryBreadcrumbServiceExtensionHandler.getMatchingCategoryFromProduct(
-            brc, "https://example.org/example", new HashMap<>());
+    Category actualMatchingCategoryFromProduct = categoryBreadcrumbServiceExtensionHandler
+        .getMatchingCategoryFromProduct(brc, "https://example.org/example", new HashMap<>());
 
     // Assert
-    verify(brc).getRequestAttribute("currentProduct");
+    verify(brc).getRequestAttribute(eq("currentProduct"));
     verify(productBundleImpl).getCategory();
     assertNull(actualMatchingCategoryFromProduct);
   }
 
   /**
-   * Test {@link
-   * CategoryBreadcrumbServiceExtensionHandler#getMatchingCategoryFromProduct(BroadleafRequestContext,
-   * String, Map)}.
-   *
-   * <p>Method under test: {@link
-   * CategoryBreadcrumbServiceExtensionHandler#getMatchingCategoryFromProduct(BroadleafRequestContext,
-   * String, Map)}
+   * Method under test:
+   * {@link CategoryBreadcrumbServiceExtensionHandler#getMatchingCategoryFromProduct(BroadleafRequestContext, String, Map)}
    */
   @Test
-  @DisplayName("Test getMatchingCategoryFromProduct(BroadleafRequestContext, String, Map)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Category CategoryBreadcrumbServiceExtensionHandler.getMatchingCategoryFromProduct(BroadleafRequestContext, String, Map)"
-  })
-  void testGetMatchingCategoryFromProduct2() {
+  void testGetMatchingCategoryFromProduct5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
     ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
-    when(productBundleImpl.getCategory()).thenReturn(mock(CategoryImpl.class));
-
+    when(productBundleImpl.getCategory()).thenReturn(null);
     BroadleafRequestContext brc = mock(BroadleafRequestContext.class);
     when(brc.getRequestAttribute(Mockito.<String>any())).thenReturn(productBundleImpl);
 
     // Act
-    Category actualMatchingCategoryFromProduct =
-        categoryBreadcrumbServiceExtensionHandler.getMatchingCategoryFromProduct(
-            brc, null, new HashMap<>());
+    Category actualMatchingCategoryFromProduct = categoryBreadcrumbServiceExtensionHandler
+        .getMatchingCategoryFromProduct(brc, "https://example.org/example", new HashMap<>());
 
     // Assert
-    verify(brc).getRequestAttribute("currentProduct");
+    verify(brc).getRequestAttribute(eq("currentProduct"));
     verify(productBundleImpl).getCategory();
     assertNull(actualMatchingCategoryFromProduct);
   }
 
   /**
-   * Test {@link
-   * CategoryBreadcrumbServiceExtensionHandler#getMatchingCategoryFromProduct(BroadleafRequestContext,
-   * String, Map)}.
-   *
-   * <ul>
-   *   <li>Given {@link ProductBundleImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * CategoryBreadcrumbServiceExtensionHandler#getMatchingCategoryFromProduct(BroadleafRequestContext,
-   * String, Map)}
+   * Method under test:
+   * {@link CategoryBreadcrumbServiceExtensionHandler#getMatchingCategoryFromProduct(BroadleafRequestContext, String, Map)}
    */
   @Test
-  @DisplayName(
-      "Test getMatchingCategoryFromProduct(BroadleafRequestContext, String, Map); given ProductBundleImpl (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Category CategoryBreadcrumbServiceExtensionHandler.getMatchingCategoryFromProduct(BroadleafRequestContext, String, Map)"
-  })
-  void testGetMatchingCategoryFromProduct_givenProductBundleImpl() {
+  void testGetMatchingCategoryFromProduct6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    BroadleafRequestContext brc = mock(BroadleafRequestContext.class);
-    when(brc.getRequestAttribute(Mockito.<String>any())).thenReturn(new ProductBundleImpl());
-
-    // Act
-    Category actualMatchingCategoryFromProduct =
-        categoryBreadcrumbServiceExtensionHandler.getMatchingCategoryFromProduct(
-            brc, "https://example.org/example", new HashMap<>());
-
-    // Assert
-    verify(brc).getRequestAttribute("currentProduct");
-    assertNull(actualMatchingCategoryFromProduct);
-  }
-
-  /**
-   * Test {@link
-   * CategoryBreadcrumbServiceExtensionHandler#getMatchingCategoryFromProduct(BroadleafRequestContext,
-   * String, Map)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link CategoryImpl#getUrl()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * CategoryBreadcrumbServiceExtensionHandler#getMatchingCategoryFromProduct(BroadleafRequestContext,
-   * String, Map)}
-   */
-  @Test
-  @DisplayName(
-      "Test getMatchingCategoryFromProduct(BroadleafRequestContext, String, Map); then calls getUrl()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Category CategoryBreadcrumbServiceExtensionHandler.getMatchingCategoryFromProduct(BroadleafRequestContext, String, Map)"
-  })
-  void testGetMatchingCategoryFromProduct_thenCallsGetUrl() {
-    // Arrange
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
     CategoryImpl categoryImpl = mock(CategoryImpl.class);
     when(categoryImpl.getUrl()).thenReturn("https://example.org/example");
-
     ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
     when(productBundleImpl.getCategory()).thenReturn(categoryImpl);
-
     BroadleafRequestContext brc = mock(BroadleafRequestContext.class);
     when(brc.getRequestAttribute(Mockito.<String>any())).thenReturn(productBundleImpl);
 
     // Act
-    categoryBreadcrumbServiceExtensionHandler.getMatchingCategoryFromProduct(
-        brc, "https://example.org/example", new HashMap<>());
+    categoryBreadcrumbServiceExtensionHandler.getMatchingCategoryFromProduct(brc, "https://example.org/example",
+        new HashMap<>());
 
     // Assert
-    verify(brc).getRequestAttribute("currentProduct");
+    verify(brc).getRequestAttribute(eq("currentProduct"));
     verify(categoryImpl).getUrl();
     verify(productBundleImpl).getCategory();
   }
 
   /**
-   * Test {@link
-   * CategoryBreadcrumbServiceExtensionHandler#getMatchingCategoryFromProduct(BroadleafRequestContext,
-   * String, Map)}.
-   *
-   * <ul>
-   *   <li>When {@link BroadleafRequestContext} (default constructor).
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * CategoryBreadcrumbServiceExtensionHandler#getMatchingCategoryFromProduct(BroadleafRequestContext,
-   * String, Map)}
+   * Method under test:
+   * {@link CategoryBreadcrumbServiceExtensionHandler#getMatchingCategoryFromProduct(BroadleafRequestContext, String, Map)}
    */
   @Test
-  @DisplayName(
-      "Test getMatchingCategoryFromProduct(BroadleafRequestContext, String, Map); when BroadleafRequestContext (default constructor); then return 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Category CategoryBreadcrumbServiceExtensionHandler.getMatchingCategoryFromProduct(BroadleafRequestContext, String, Map)"
-  })
-  void testGetMatchingCategoryFromProduct_whenBroadleafRequestContext_thenReturnNull() {
+  void testGetMatchingCategoryFromProduct7() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    BroadleafRequestContext brc = new BroadleafRequestContext();
-
-    // Act and Assert
-    assertNull(
-        categoryBreadcrumbServiceExtensionHandler.getMatchingCategoryFromProduct(
-            brc, "https://example.org/example", new HashMap<>()));
-  }
-
-  /**
-   * Test {@link
-   * CategoryBreadcrumbServiceExtensionHandler#getMatchingCategoryFromProduct(BroadleafRequestContext,
-   * String, Map)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * CategoryBreadcrumbServiceExtensionHandler#getMatchingCategoryFromProduct(BroadleafRequestContext,
-   * String, Map)}
-   */
-  @Test
-  @DisplayName(
-      "Test getMatchingCategoryFromProduct(BroadleafRequestContext, String, Map); when 'null'; then return 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Category CategoryBreadcrumbServiceExtensionHandler.getMatchingCategoryFromProduct(BroadleafRequestContext, String, Map)"
-  })
-  void testGetMatchingCategoryFromProduct_whenNull_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(
-        categoryBreadcrumbServiceExtensionHandler.getMatchingCategoryFromProduct(
-            null, null, new HashMap<>()));
-  }
-
-  /**
-   * Test {@link
-   * CategoryBreadcrumbServiceExtensionHandler#getCategoryFromCategoryAttribute(BroadleafRequestContext,
-   * String, Map)}.
-   *
-   * <ul>
-   *   <li>Given {@link CategoryImpl} (default constructor).
-   *   <li>Then return {@link CategoryImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * CategoryBreadcrumbServiceExtensionHandler#getCategoryFromCategoryAttribute(BroadleafRequestContext,
-   * String, Map)}
-   */
-  @Test
-  @DisplayName(
-      "Test getCategoryFromCategoryAttribute(BroadleafRequestContext, String, Map); given CategoryImpl (default constructor); then return CategoryImpl (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Category CategoryBreadcrumbServiceExtensionHandler.getCategoryFromCategoryAttribute(BroadleafRequestContext, String, Map)"
-  })
-  void testGetCategoryFromCategoryAttribute_givenCategoryImpl_thenReturnCategoryImpl() {
-    // Arrange
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
+    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
+    when(productBundleImpl.getCategory()).thenReturn(mock(CategoryImpl.class));
     BroadleafRequestContext brc = mock(BroadleafRequestContext.class);
-    CategoryImpl categoryImpl = new CategoryImpl();
-    when(brc.getRequestAttribute(Mockito.<String>any())).thenReturn(categoryImpl);
+    when(brc.getRequestAttribute(Mockito.<String>any())).thenReturn(productBundleImpl);
 
     // Act
-    Category actualCategoryFromCategoryAttribute =
-        categoryBreadcrumbServiceExtensionHandler.getCategoryFromCategoryAttribute(
-            brc, "https://example.org/example", new HashMap<>());
+    Category actualMatchingCategoryFromProduct = categoryBreadcrumbServiceExtensionHandler
+        .getMatchingCategoryFromProduct(brc, null, new HashMap<>());
 
     // Assert
-    verify(brc).getRequestAttribute("category");
-    assertSame(categoryImpl, actualCategoryFromCategoryAttribute);
+    verify(brc).getRequestAttribute(eq("currentProduct"));
+    verify(productBundleImpl).getCategory();
+    assertNull(actualMatchingCategoryFromProduct);
   }
 
   /**
-   * Test {@link
-   * CategoryBreadcrumbServiceExtensionHandler#getCategoryFromCategoryAttribute(BroadleafRequestContext,
-   * String, Map)}.
-   *
-   * <ul>
-   *   <li>When {@link BroadleafRequestContext} (default constructor).
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * CategoryBreadcrumbServiceExtensionHandler#getCategoryFromCategoryAttribute(BroadleafRequestContext,
-   * String, Map)}
+   * Method under test:
+   * {@link CategoryBreadcrumbServiceExtensionHandler#getDefaultPriority()}
    */
   @Test
-  @DisplayName(
-      "Test getCategoryFromCategoryAttribute(BroadleafRequestContext, String, Map); when BroadleafRequestContext (default constructor); then return 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Category CategoryBreadcrumbServiceExtensionHandler.getCategoryFromCategoryAttribute(BroadleafRequestContext, String, Map)"
-  })
-  void testGetCategoryFromCategoryAttribute_whenBroadleafRequestContext_thenReturnNull() {
-    // Arrange
-    BroadleafRequestContext brc = new BroadleafRequestContext();
-
-    // Act and Assert
-    assertNull(
-        categoryBreadcrumbServiceExtensionHandler.getCategoryFromCategoryAttribute(
-            brc, "https://example.org/example", new HashMap<>()));
-  }
-
-  /**
-   * Test {@link
-   * CategoryBreadcrumbServiceExtensionHandler#getCategoryFromUrl(BroadleafRequestContext, String,
-   * Map)}.
-   *
-   * <p>Method under test: {@link
-   * CategoryBreadcrumbServiceExtensionHandler#getCategoryFromUrl(BroadleafRequestContext, String,
-   * Map)}
-   */
-  @Test
-  @DisplayName("Test getCategoryFromUrl(BroadleafRequestContext, String, Map)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Category CategoryBreadcrumbServiceExtensionHandler.getCategoryFromUrl(BroadleafRequestContext, String, Map)"
-  })
-  void testGetCategoryFromUrl() {
-    // Arrange
-    CategoryImpl categoryImpl = new CategoryImpl();
-    when(catalogService.findCategoryByURI(Mockito.<String>any())).thenReturn(categoryImpl);
-    BroadleafRequestContext brc = new BroadleafRequestContext();
-
-    // Act
-    Category actualCategoryFromUrl =
-        categoryBreadcrumbServiceExtensionHandler.getCategoryFromUrl(
-            brc, "https://example.org/example", new HashMap<>());
-
-    // Assert
-    verify(catalogService).findCategoryByURI("https://example.org/example");
-    assertSame(categoryImpl, actualCategoryFromUrl);
-  }
-
-  /**
-   * Test {@link CategoryBreadcrumbServiceExtensionHandler#getDefaultPriority()}.
-   *
-   * <p>Method under test: {@link CategoryBreadcrumbServiceExtensionHandler#getDefaultPriority()}
-   */
-  @Test
-  @DisplayName("Test getDefaultPriority()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int CategoryBreadcrumbServiceExtensionHandler.getDefaultPriority()"})
   void testGetDefaultPriority() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertEquals(2000, categoryBreadcrumbServiceExtensionHandler.getDefaultPriority());
+    assertEquals(2000, (new CategoryBreadcrumbServiceExtensionHandler()).getDefaultPriority());
+  }
+
+  /**
+   * Method under test:
+   * {@link CategoryBreadcrumbServiceExtensionHandler#getDefaultPriority()}
+   */
+  @Test
+  void testGetDefaultPriority2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CategoryImpl category = mock(CategoryImpl.class);
+    when(category.getParentCategory()).thenReturn(new CategoryImpl());
+
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
+    ArrayList<BreadcrumbDTO> parentCrumbs = new ArrayList<>();
+    categoryBreadcrumbServiceExtensionHandler.addParentCrumbs(parentCrumbs, category, "https://example.org/example",
+        new HashMap<>());
+
+    // Act
+    int actualDefaultPriority = categoryBreadcrumbServiceExtensionHandler.getDefaultPriority();
+
+    // Assert
+    verify(category).getParentCategory();
+    assertEquals(2000, actualDefaultPriority);
   }
 }

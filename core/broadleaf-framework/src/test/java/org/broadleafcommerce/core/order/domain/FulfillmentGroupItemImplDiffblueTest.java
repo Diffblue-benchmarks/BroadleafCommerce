@@ -24,15 +24,13 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -43,13 +41,12 @@ import java.util.HashMap;
 import java.util.List;
 import org.broadleafcommerce.common.audit.Auditable;
 import org.broadleafcommerce.common.copy.CreateResponse;
-import org.broadleafcommerce.common.copy.DeferredOperation;
 import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
-import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
+import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.common.service.GenericEntityService;
+import org.broadleafcommerce.common.service.GenericEntityServiceImpl;
 import org.broadleafcommerce.common.site.domain.CatalogImpl;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.broadleafcommerce.core.order.service.type.FulfillmentGroupStatusType;
@@ -60,81 +57,21 @@ import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.broadleafcommerce.profile.core.domain.PhoneImpl;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = {FulfillmentGroupItemImpl.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(SpringJUnit4ClassRunner.class)
 public class FulfillmentGroupItemImplDiffblueTest {
-  @Autowired private FulfillmentGroupItemImpl fulfillmentGroupItemImpl;
-
   /**
-   * Test {@link FulfillmentGroupItemImpl#getRetailPrice()}.
-   *
-   * <ul>
-   *   <li>Given {@link BundleOrderItemImpl} (default constructor) Order is {@link
-   *       NullOrderFactoryImpl#NULL_ORDER}.
-   *   <li>Then return {@link Money#Money()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#getRetailPrice()}
+   * Method under test: {@link FulfillmentGroupItemImpl#getRetailPrice()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupItemImpl.getRetailPrice()"})
-  public void testGetRetailPrice_givenBundleOrderItemImplOrderIsNull_order_thenReturnMoney() {
-    // Arrange
-    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
-    orderItem.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+  public void testGetRetailPrice() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
-    fulfillmentGroupItemImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
-    fulfillmentGroupItemImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupItemImpl.setOrderItem(orderItem);
-    Money proratedOrderAdjustment = new Money();
-    fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(proratedOrderAdjustment);
-    fulfillmentGroupItemImpl.setQuantity(1);
-    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupItemImpl.setTotalItemAmount(new Money());
-    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(new Money());
-    fulfillmentGroupItemImpl.setTotalTax(new Money());
-
-    // Act and Assert
-    assertEquals(proratedOrderAdjustment, fulfillmentGroupItemImpl.getRetailPrice());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupItemImpl#getRetailPrice()}.
-   *
-   * <ul>
-   *   <li>Given {@link OrderItemImpl} (default constructor) Order is {@link
-   *       NullOrderFactoryImpl#NULL_ORDER}.
-   *   <li>Then return {@link Money#Money()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#getRetailPrice()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupItemImpl.getRetailPrice()"})
-  public void testGetRetailPrice_givenOrderItemImplOrderIsNull_order_thenReturnMoney() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
 
     OrderItemImpl orderItem = new OrderItemImpl();
@@ -155,11 +92,10 @@ public class FulfillmentGroupItemImplDiffblueTest {
     orderItem.setOrderItemType(OrderItemType.BASIC);
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
-    Money finalPrice = new Money();
-    orderItem.setPrice(finalPrice);
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
-    orderItem.setRetailPrice(new Money());
+    Money retailPrice = new Money();
+    orderItem.setRetailPrice(retailPrice);
     orderItem.setRetailPriceOverride(true);
     orderItem.setSalePrice(new Money());
     orderItem.setSalePriceOverride(true);
@@ -170,37 +106,150 @@ public class FulfillmentGroupItemImplDiffblueTest {
     fulfillmentGroupItemImpl.setOrderItem(orderItem);
 
     // Act and Assert
-    assertEquals(finalPrice, fulfillmentGroupItemImpl.getRetailPrice());
+    assertEquals(retailPrice, fulfillmentGroupItemImpl.getRetailPrice());
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#getRetailPrice()}.
-   *
-   * <ul>
-   *   <li>Then return Currency DisplayName is {@code British Pound}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#getRetailPrice()}
+   * Method under test: {@link FulfillmentGroupItemImpl#getRetailPrice()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupItemImpl.getRetailPrice()"})
-  public void testGetRetailPrice_thenReturnCurrencyDisplayNameIsBritishPound() {
+  public void testGetRetailPrice2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    Auditable auditable = new Auditable();
+    Auditable auditable = mock(Auditable.class);
+    doNothing().when(auditable).setCreatedBy(Mockito.<Long>any());
+    doNothing().when(auditable).setDateCreated(Mockito.<Date>any());
+    doNothing().when(auditable).setDateUpdated(Mockito.<Date>any());
+    doNothing().when(auditable).setUpdatedBy(Mockito.<Long>any());
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
 
-    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
-    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
+    OrderItemImpl orderItem = new OrderItemImpl();
+    orderItem.setAuditable(auditable);
+    orderItem.setCandidateItemOffers(new ArrayList<>());
+    orderItem.setCartMessages(new ArrayList<>());
+    orderItem.setChildOrderItems(new ArrayList<>());
+    orderItem.setDiscountingAllowed(true);
+    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItem.setHasValidationError(true);
+    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItem.setName("Name");
+    orderItem.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    orderItem.setOrderItemAdjustments(new ArrayList<>());
+    orderItem.setOrderItemAttributes(new HashMap<>());
+    orderItem.setOrderItemPriceDetails(new ArrayList<>());
+    orderItem.setOrderItemQualifiers(new ArrayList<>());
+    orderItem.setOrderItemType(OrderItemType.BASIC);
+    orderItem.setParentOrderItem(new BundleOrderItemImpl());
+    orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItem.setQuantity(1);
+    Money retailPrice = new Money();
+    orderItem.setRetailPrice(retailPrice);
+    orderItem.setRetailPriceOverride(true);
+    orderItem.setSalePrice(new Money());
+    orderItem.setSalePriceOverride(true);
+    orderItem.setTaxable(true);
+    orderItem.updateSaleAndRetailPrices();
 
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setOrderItem(orderItem);
+
+    // Act
+    Money actualRetailPrice = fulfillmentGroupItemImpl.getRetailPrice();
+
+    // Assert
+    verify(auditable).setCreatedBy(eq(1L));
+    verify(auditable).setDateCreated(isA(Date.class));
+    verify(auditable).setDateUpdated(isA(Date.class));
+    verify(auditable).setUpdatedBy(eq(1L));
+    assertEquals(retailPrice, actualRetailPrice);
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupItemImpl#getRetailPrice()}
+   */
+  @Test
+  public void testGetRetailPrice3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    Auditable auditable = mock(Auditable.class);
+    doNothing().when(auditable).setCreatedBy(Mockito.<Long>any());
+    doNothing().when(auditable).setDateCreated(Mockito.<Date>any());
+    doNothing().when(auditable).setDateUpdated(Mockito.<Date>any());
+    doNothing().when(auditable).setUpdatedBy(Mockito.<Long>any());
+    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
+
+    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
+    orderItem.setAuditable(auditable);
+    orderItem.setCandidateItemOffers(new ArrayList<>());
+    orderItem.setCartMessages(new ArrayList<>());
+    orderItem.setChildOrderItems(new ArrayList<>());
+    orderItem.setDiscountingAllowed(true);
+    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItem.setHasValidationError(true);
+    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItem.setName("Name");
+    orderItem.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    orderItem.setOrderItemAdjustments(new ArrayList<>());
+    orderItem.setOrderItemAttributes(new HashMap<>());
+    orderItem.setOrderItemPriceDetails(new ArrayList<>());
+    orderItem.setOrderItemQualifiers(new ArrayList<>());
+    orderItem.setOrderItemType(OrderItemType.BASIC);
+    orderItem.setParentOrderItem(new BundleOrderItemImpl());
+    orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItem.setQuantity(1);
+    Money retailPrice = new Money();
+    orderItem.setRetailPrice(retailPrice);
+    orderItem.setRetailPriceOverride(true);
+    orderItem.setSalePrice(new Money());
+    orderItem.setSalePriceOverride(true);
+    orderItem.setTaxable(true);
+    orderItem.updateSaleAndRetailPrices();
+
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setOrderItem(orderItem);
+
+    // Act
+    Money actualRetailPrice = fulfillmentGroupItemImpl.getRetailPrice();
+
+    // Assert
+    verify(auditable).setCreatedBy(eq(1L));
+    verify(auditable).setDateCreated(isA(Date.class));
+    verify(auditable).setDateUpdated(isA(Date.class));
+    verify(auditable).setUpdatedBy(eq(1L));
+    assertEquals(retailPrice, actualRetailPrice);
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupItemImpl#getRetailPrice()}
+   */
+  @Test
+  public void testGetRetailPrice4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    Auditable auditable = mock(Auditable.class);
+    doNothing().when(auditable).setCreatedBy(Mockito.<Long>any());
+    doNothing().when(auditable).setDateCreated(Mockito.<Date>any());
+    doNothing().when(auditable).setDateUpdated(Mockito.<Date>any());
+    doNothing().when(auditable).setUpdatedBy(Mockito.<Long>any());
+    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
     Order order = mock(Order.class);
-    when(order.getCurrency()).thenReturn(broadleafCurrency);
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
 
     OrderItemImpl orderItem = new OrderItemImpl();
     orderItem.setAuditable(auditable);
@@ -220,7 +269,6 @@ public class FulfillmentGroupItemImplDiffblueTest {
     orderItem.setOrderItemType(OrderItemType.BASIC);
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
-    orderItem.setPrice(new Money());
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
     orderItem.setRetailPrice(new Money());
@@ -237,48 +285,175 @@ public class FulfillmentGroupItemImplDiffblueTest {
     Money actualRetailPrice = fulfillmentGroupItemImpl.getRetailPrice();
 
     // Assert
-    verify(broadleafCurrency).getCurrencyCode();
+    verify(auditable).setCreatedBy(eq(1L));
+    verify(auditable).setDateCreated(isA(Date.class));
+    verify(auditable).setDateUpdated(isA(Date.class));
+    verify(auditable).setUpdatedBy(eq(1L));
+    verify(broadleafCurrencyImpl).getCurrencyCode();
     verify(order).getCurrency();
     Currency currency = actualRetailPrice.getCurrency();
     assertEquals("British Pound", currency.getDisplayName());
     assertEquals("GBP", currency.getCurrencyCode());
     assertEquals("GBP", currency.toString());
     assertEquals("£", currency.getSymbol());
+    assertEquals(2, currency.getDefaultFractionDigits());
     assertEquals(826, currency.getNumericCode());
-    Money actualAbsResult = actualRetailPrice.abs();
-    assertEquals(actualRetailPrice, actualAbsResult);
-    Money actualZeroResult = actualRetailPrice.zero();
-    assertEquals(actualRetailPrice, actualZeroResult);
+    BigDecimal expectedAmount = new BigDecimal("0.00");
+    BigDecimal amount = actualRetailPrice.getAmount();
+    assertEquals(expectedAmount, amount);
+    assertEquals(actualRetailPrice, actualRetailPrice.abs());
+    assertEquals(actualRetailPrice, actualRetailPrice.zero());
+    assertSame(orderItem.salePrice, amount);
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#getRetailPrice()}.
-   *
-   * <ul>
-   *   <li>Then return Currency DisplayName is {@code British Pound}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#getRetailPrice()}
+   * Method under test: {@link FulfillmentGroupItemImpl#getRetailPrice()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupItemImpl.getRetailPrice()"})
-  public void testGetRetailPrice_thenReturnCurrencyDisplayNameIsBritishPound2() {
-    // Arrange
-    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
-    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
+  public void testGetRetailPrice5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
+    // Arrange
+    Auditable auditable = mock(Auditable.class);
+    doNothing().when(auditable).setCreatedBy(Mockito.<Long>any());
+    doNothing().when(auditable).setDateCreated(Mockito.<Date>any());
+    doNothing().when(auditable).setDateUpdated(Mockito.<Date>any());
+    doNothing().when(auditable).setUpdatedBy(Mockito.<Long>any());
+    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
     Order order = mock(Order.class);
-    when(order.getCurrency()).thenReturn(broadleafCurrency);
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
 
     BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
+    orderItem.setAuditable(auditable);
+    orderItem.setCandidateItemOffers(new ArrayList<>());
+    orderItem.setCartMessages(new ArrayList<>());
+    orderItem.setChildOrderItems(new ArrayList<>());
+    orderItem.setDiscountingAllowed(true);
+    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItem.setHasValidationError(true);
+    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItem.setName("Name");
     orderItem.setOrder(order);
+    orderItem.setOrderItemAdjustments(new ArrayList<>());
+    orderItem.setOrderItemAttributes(new HashMap<>());
+    orderItem.setOrderItemPriceDetails(new ArrayList<>());
+    orderItem.setOrderItemQualifiers(new ArrayList<>());
+    orderItem.setOrderItemType(OrderItemType.BASIC);
+    orderItem.setParentOrderItem(new BundleOrderItemImpl());
+    orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItem.setQuantity(1);
+    orderItem.setRetailPrice(new Money());
+    orderItem.setRetailPriceOverride(true);
+    orderItem.setSalePrice(new Money());
+    orderItem.setSalePriceOverride(true);
+    orderItem.setTaxable(true);
+    orderItem.updateSaleAndRetailPrices();
 
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setOrderItem(orderItem);
+
+    // Act
+    Money actualRetailPrice = fulfillmentGroupItemImpl.getRetailPrice();
+
+    // Assert
+    verify(auditable).setCreatedBy(eq(1L));
+    verify(auditable).setDateCreated(isA(Date.class));
+    verify(auditable).setDateUpdated(isA(Date.class));
+    verify(auditable).setUpdatedBy(eq(1L));
+    verify(broadleafCurrencyImpl).getCurrencyCode();
+    verify(order).getCurrency();
+    Currency currency = actualRetailPrice.getCurrency();
+    assertEquals("British Pound", currency.getDisplayName());
+    assertEquals("GBP", currency.getCurrencyCode());
+    assertEquals("GBP", currency.toString());
+    assertEquals("£", currency.getSymbol());
+    assertEquals(2, currency.getDefaultFractionDigits());
+    assertEquals(826, currency.getNumericCode());
+    BigDecimal expectedAmount = new BigDecimal("0.00");
+    BigDecimal amount = actualRetailPrice.getAmount();
+    assertEquals(expectedAmount, amount);
+    assertEquals(actualRetailPrice, actualRetailPrice.abs());
+    assertEquals(actualRetailPrice, actualRetailPrice.zero());
+    assertSame(orderItem.salePrice, amount);
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupItemImpl#getRetailPrice()}
+   */
+  @Test
+  public void testGetRetailPrice6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    Auditable auditable = mock(Auditable.class);
+    doNothing().when(auditable).setCreatedBy(Mockito.<Long>any());
+    doNothing().when(auditable).setDateCreated(Mockito.<Date>any());
+    doNothing().when(auditable).setDateUpdated(Mockito.<Date>any());
+    doNothing().when(auditable).setUpdatedBy(Mockito.<Long>any());
+    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
+
+    OrderItemImpl orderItem = new OrderItemImpl();
+    orderItem.setAuditable(auditable);
+    orderItem.setCandidateItemOffers(new ArrayList<>());
+    orderItem.setCartMessages(new ArrayList<>());
+    orderItem.setChildOrderItems(new ArrayList<>());
+    orderItem.setDiscountingAllowed(true);
+    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItem.setHasValidationError(true);
+    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItem.setName("Name");
+    orderItem.setOrder(mock(Order.class));
+    orderItem.setOrderItemAdjustments(new ArrayList<>());
+    orderItem.setOrderItemAttributes(new HashMap<>());
+    orderItem.setOrderItemPriceDetails(new ArrayList<>());
+    orderItem.setOrderItemQualifiers(new ArrayList<>());
+    orderItem.setOrderItemType(OrderItemType.BASIC);
+    orderItem.setParentOrderItem(new BundleOrderItemImpl());
+    orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItem.setQuantity(1);
+    orderItem.setRetailPrice(null);
+    orderItem.setRetailPriceOverride(true);
+    orderItem.setSalePrice(new Money());
+    orderItem.setSalePriceOverride(true);
+    orderItem.setTaxable(true);
+    orderItem.updateSaleAndRetailPrices();
+
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setOrderItem(orderItem);
+
+    // Act
+    Money actualRetailPrice = fulfillmentGroupItemImpl.getRetailPrice();
+
+    // Assert
+    verify(auditable).setCreatedBy(eq(1L));
+    verify(auditable).setDateCreated(isA(Date.class));
+    verify(auditable).setDateUpdated(isA(Date.class));
+    verify(auditable).setUpdatedBy(eq(1L));
+    assertNull(actualRetailPrice);
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupItemImpl#getSalePrice()}
+   */
+  @Test
+  public void testGetSalePrice() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
     FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
     fulfillmentGroupItemImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
     fulfillmentGroupItemImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupItemImpl.setOrderItem(orderItem);
+    fulfillmentGroupItemImpl.setOrderItem(new BundleOrderItemImpl());
     fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(new Money());
     fulfillmentGroupItemImpl.setQuantity(1);
     fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
@@ -287,69 +462,46 @@ public class FulfillmentGroupItemImplDiffblueTest {
     fulfillmentGroupItemImpl.setTotalItemTaxableAmount(new Money());
     fulfillmentGroupItemImpl.setTotalTax(new Money());
 
-    // Act
-    Money actualRetailPrice = fulfillmentGroupItemImpl.getRetailPrice();
-
-    // Assert
-    verify(broadleafCurrency).getCurrencyCode();
-    verify(order).getCurrency();
-    Currency currency = actualRetailPrice.getCurrency();
-    assertEquals("British Pound", currency.getDisplayName());
-    assertEquals("GBP", currency.getCurrencyCode());
-    assertEquals("GBP", currency.toString());
-    assertEquals("£", currency.getSymbol());
-    assertEquals(826, currency.getNumericCode());
-    Money actualAbsResult = actualRetailPrice.abs();
-    assertEquals(actualRetailPrice, actualAbsResult);
-    Money actualZeroResult = actualRetailPrice.zero();
-    assertEquals(actualRetailPrice, actualZeroResult);
+    // Act and Assert
+    assertNull(fulfillmentGroupItemImpl.getSalePrice());
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#getRetailPrice()}.
-   *
-   * <ul>
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#getRetailPrice()}
+   * Method under test: {@link FulfillmentGroupItemImpl#getSalePrice()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupItemImpl.getRetailPrice()"})
-  public void testGetRetailPrice_thenReturnNull() {
+  public void testGetSalePrice2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
-    fulfillmentGroupItemImpl.setOrderItem(new DynamicPriceDiscreteOrderItemImpl());
+    fulfillmentGroupItemImpl.setFulfillmentGroup(mock(FulfillmentGroupImpl.class));
+    fulfillmentGroupItemImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupItemImpl.setOrderItem(new BundleOrderItemImpl());
+    fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(new Money());
+    fulfillmentGroupItemImpl.setQuantity(1);
+    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
+    fulfillmentGroupItemImpl.setTotalItemAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalTax(new Money());
 
     // Act and Assert
-    assertNull(fulfillmentGroupItemImpl.getRetailPrice());
+    assertNull(fulfillmentGroupItemImpl.getSalePrice());
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#getSalePrice()}.
-   *
-   * <ul>
-   *   <li>Given {@link OrderItemImpl} (default constructor) Order is {@link
-   *       NullOrderFactoryImpl#NULL_ORDER}.
-   *   <li>Then return {@link Money#Money()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#getSalePrice()}
+   * Method under test: {@link FulfillmentGroupItemImpl#getSalePrice()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupItemImpl.getSalePrice()"})
-  public void testGetSalePrice_givenOrderItemImplOrderIsNull_order_thenReturnMoney() {
+  public void testGetSalePrice3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
 
     OrderItemImpl orderItem = new OrderItemImpl();
@@ -370,11 +522,10 @@ public class FulfillmentGroupItemImplDiffblueTest {
     orderItem.setOrderItemType(OrderItemType.BASIC);
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
-    Money finalPrice = new Money();
-    orderItem.setPrice(finalPrice);
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
-    orderItem.setRetailPrice(new Money());
+    Money retailPrice = new Money();
+    orderItem.setRetailPrice(retailPrice);
     orderItem.setRetailPriceOverride(true);
     orderItem.setSalePrice(new Money());
     orderItem.setSalePriceOverride(true);
@@ -394,106 +545,26 @@ public class FulfillmentGroupItemImplDiffblueTest {
     fulfillmentGroupItemImpl.setTotalTax(new Money());
 
     // Act and Assert
-    assertEquals(finalPrice, fulfillmentGroupItemImpl.getSalePrice());
+    assertEquals(retailPrice, fulfillmentGroupItemImpl.getSalePrice());
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#getSalePrice()}.
-   *
-   * <ul>
-   *   <li>Given {@link OrderItemImpl} (default constructor) SalePrice is {@link
-   *       Money#Money(double)} with amount is ten.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#getSalePrice()}
+   * Method under test: {@link FulfillmentGroupItemImpl#getSalePrice()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupItemImpl.getSalePrice()"})
-  public void testGetSalePrice_givenOrderItemImplSalePriceIsMoneyWithAmountIsTen() {
+  public void testGetSalePrice4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-
-    OrderItemImpl orderItem = new OrderItemImpl();
-    orderItem.setAuditable(auditable);
-    orderItem.setCandidateItemOffers(new ArrayList<>());
-    orderItem.setCartMessages(new ArrayList<>());
-    orderItem.setChildOrderItems(new ArrayList<>());
-    orderItem.setDiscountingAllowed(true);
-    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
-    orderItem.setHasValidationError(true);
-    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
-    orderItem.setName("Name");
-    orderItem.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    orderItem.setOrderItemAdjustments(new ArrayList<>());
-    orderItem.setOrderItemAttributes(new HashMap<>());
-    orderItem.setOrderItemPriceDetails(new ArrayList<>());
-    orderItem.setOrderItemQualifiers(new ArrayList<>());
-    orderItem.setOrderItemType(OrderItemType.BASIC);
-    orderItem.setParentOrderItem(new BundleOrderItemImpl());
-    orderItem.setPersonalMessage(new PersonalMessageImpl());
-    Money finalPrice = new Money();
-    orderItem.setPrice(finalPrice);
-    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
-    orderItem.setQuantity(1);
-    orderItem.setRetailPrice(new Money());
-    orderItem.setRetailPriceOverride(true);
-    orderItem.setSalePrice(new Money(10.0d));
-    orderItem.setSalePriceOverride(true);
-    orderItem.setTaxable(true);
-    orderItem.updateSaleAndRetailPrices();
-
-    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
-    fulfillmentGroupItemImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
-    fulfillmentGroupItemImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupItemImpl.setOrderItem(orderItem);
-    fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(new Money());
-    fulfillmentGroupItemImpl.setQuantity(1);
-    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupItemImpl.setTotalItemAmount(new Money());
-    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(new Money());
-    fulfillmentGroupItemImpl.setTotalTax(new Money());
-
-    // Act and Assert
-    assertEquals(finalPrice, fulfillmentGroupItemImpl.getSalePrice());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupItemImpl#getSalePrice()}.
-   *
-   * <ul>
-   *   <li>Then return Currency DisplayName is {@code British Pound}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#getSalePrice()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupItemImpl.getSalePrice()"})
-  public void testGetSalePrice_thenReturnCurrencyDisplayNameIsBritishPound() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-
-    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
-    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
-
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
     Order order = mock(Order.class);
-    when(order.getCurrency()).thenReturn(broadleafCurrency);
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
 
     OrderItemImpl orderItem = new OrderItemImpl();
     orderItem.setAuditable(auditable);
@@ -513,7 +584,6 @@ public class FulfillmentGroupItemImplDiffblueTest {
     orderItem.setOrderItemType(OrderItemType.BASIC);
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
-    orderItem.setPrice(new Money());
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
     orderItem.setRetailPrice(new Money());
@@ -539,75 +609,40 @@ public class FulfillmentGroupItemImplDiffblueTest {
     Money actualSalePrice = fulfillmentGroupItemImpl.getSalePrice();
 
     // Assert
-    verify(broadleafCurrency, atLeast(1)).getCurrencyCode();
+    verify(broadleafCurrencyImpl, atLeast(1)).getCurrencyCode();
     verify(order, atLeast(1)).getCurrency();
     Currency currency = actualSalePrice.getCurrency();
     assertEquals("British Pound", currency.getDisplayName());
     assertEquals("GBP", currency.getCurrencyCode());
     assertEquals("GBP", currency.toString());
     assertEquals("£", currency.getSymbol());
+    assertEquals(2, currency.getDefaultFractionDigits());
     assertEquals(826, currency.getNumericCode());
-    Money actualAbsResult = actualSalePrice.abs();
-    assertEquals(actualSalePrice, actualAbsResult);
-    Money actualZeroResult = actualSalePrice.zero();
-    assertEquals(actualSalePrice, actualZeroResult);
+    BigDecimal expectedAmount = new BigDecimal("0.00");
+    BigDecimal amount = actualSalePrice.getAmount();
+    assertEquals(expectedAmount, amount);
+    assertEquals(actualSalePrice, actualSalePrice.abs());
+    assertEquals(actualSalePrice, actualSalePrice.zero());
+    assertSame(orderItem.salePrice, amount);
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#getSalePrice()}.
-   *
-   * <ul>
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#getSalePrice()}
+   * Method under test: {@link FulfillmentGroupItemImpl#getSalePrice()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupItemImpl.getSalePrice()"})
-  public void testGetSalePrice_thenReturnNull() {
-    // Arrange
-    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
-    fulfillmentGroupItemImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
-    fulfillmentGroupItemImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupItemImpl.setOrderItem(new BundleOrderItemImpl());
-    fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(new Money());
-    fulfillmentGroupItemImpl.setQuantity(1);
-    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupItemImpl.setTotalItemAmount(new Money());
-    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(new Money());
-    fulfillmentGroupItemImpl.setTotalTax(new Money());
+  public void testGetSalePrice5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Act and Assert
-    assertNull(fulfillmentGroupItemImpl.getSalePrice());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupItemImpl#getPrice()}.
-   *
-   * <ul>
-   *   <li>Given {@link OrderItemImpl} (default constructor) Order is {@link
-   *       NullOrderFactoryImpl#NULL_ORDER}.
-   *   <li>Then return {@link Money#Money()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#getPrice()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupItemImpl.getPrice()"})
-  public void testGetPrice_givenOrderItemImplOrderIsNull_order_thenReturnMoney() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
+    Order order = mock(Order.class);
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
 
     OrderItemImpl orderItem = new OrderItemImpl();
     orderItem.setAuditable(auditable);
@@ -619,7 +654,7 @@ public class FulfillmentGroupItemImplDiffblueTest {
     orderItem.setHasValidationError(true);
     orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
     orderItem.setName("Name");
-    orderItem.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    orderItem.setOrder(order);
     orderItem.setOrderItemAdjustments(new ArrayList<>());
     orderItem.setOrderItemAttributes(new HashMap<>());
     orderItem.setOrderItemPriceDetails(new ArrayList<>());
@@ -627,13 +662,11 @@ public class FulfillmentGroupItemImplDiffblueTest {
     orderItem.setOrderItemType(OrderItemType.BASIC);
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
-    Money finalPrice = new Money();
-    orderItem.setPrice(finalPrice);
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
     orderItem.setRetailPrice(new Money());
     orderItem.setRetailPriceOverride(true);
-    orderItem.setSalePrice(new Money());
+    orderItem.setSalePrice(new Money(10.0d));
     orderItem.setSalePriceOverride(true);
     orderItem.setTaxable(true);
     orderItem.updateSaleAndRetailPrices();
@@ -650,32 +683,87 @@ public class FulfillmentGroupItemImplDiffblueTest {
     fulfillmentGroupItemImpl.setTotalItemTaxableAmount(new Money());
     fulfillmentGroupItemImpl.setTotalTax(new Money());
 
-    // Act and Assert
-    assertEquals(finalPrice, fulfillmentGroupItemImpl.getPrice());
+    // Act
+    Money actualSalePrice = fulfillmentGroupItemImpl.getSalePrice();
+
+    // Assert
+    verify(broadleafCurrencyImpl, atLeast(1)).getCurrencyCode();
+    verify(order, atLeast(1)).getCurrency();
+    Currency currency = actualSalePrice.getCurrency();
+    assertEquals("British Pound", currency.getDisplayName());
+    assertEquals("GBP", currency.getCurrencyCode());
+    assertEquals("GBP", currency.toString());
+    assertEquals("£", currency.getSymbol());
+    assertEquals(2, currency.getDefaultFractionDigits());
+    assertEquals(826, currency.getNumericCode());
+    BigDecimal expectedAmount = new BigDecimal("0.00");
+    BigDecimal amount = actualSalePrice.getAmount();
+    assertEquals(expectedAmount, amount);
+    assertEquals(actualSalePrice, actualSalePrice.abs());
+    assertEquals(actualSalePrice, actualSalePrice.zero());
+    assertSame(orderItem.retailPrice, amount);
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#getPrice()}.
-   *
-   * <ul>
-   *   <li>Given {@link OrderItemImpl} (default constructor) Price is {@code null}.
-   *   <li>Then return {@link Money#Money()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#getPrice()}
+   * Method under test: {@link FulfillmentGroupItemImpl#getPrice()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupItemImpl.getPrice()"})
-  public void testGetPrice_givenOrderItemImplPriceIsNull_thenReturnMoney() {
+  public void testGetPrice() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
+    fulfillmentGroupItemImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupItemImpl.setOrderItem(new BundleOrderItemImpl());
+    fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(new Money());
+    fulfillmentGroupItemImpl.setQuantity(1);
+    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
+    fulfillmentGroupItemImpl.setTotalItemAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalTax(new Money());
+
+    // Act and Assert
+    assertNull(fulfillmentGroupItemImpl.getPrice());
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupItemImpl#getPrice()}
+   */
+  @Test
+  public void testGetPrice2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setFulfillmentGroup(mock(FulfillmentGroupImpl.class));
+    fulfillmentGroupItemImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupItemImpl.setOrderItem(new BundleOrderItemImpl());
+    fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(new Money());
+    fulfillmentGroupItemImpl.setQuantity(1);
+    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
+    fulfillmentGroupItemImpl.setTotalItemAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalTax(new Money());
+
+    // Act and Assert
+    assertNull(fulfillmentGroupItemImpl.getPrice());
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupItemImpl#getPrice()}
+   */
+  @Test
+  public void testGetPrice3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
 
     OrderItemImpl orderItem = new OrderItemImpl();
@@ -696,7 +784,6 @@ public class FulfillmentGroupItemImplDiffblueTest {
     orderItem.setOrderItemType(OrderItemType.BASIC);
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
-    orderItem.setPrice(null);
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
     Money retailPrice = new Money();
@@ -724,33 +811,22 @@ public class FulfillmentGroupItemImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#getPrice()}.
-   *
-   * <ul>
-   *   <li>Then return Currency DisplayName is {@code British Pound}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#getPrice()}
+   * Method under test: {@link FulfillmentGroupItemImpl#getPrice()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupItemImpl.getPrice()"})
-  public void testGetPrice_thenReturnCurrencyDisplayNameIsBritishPound() {
+  public void testGetPrice4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-
-    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
-    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
-
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
     Order order = mock(Order.class);
-    when(order.getCurrency()).thenReturn(broadleafCurrency);
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
 
     OrderItemImpl orderItem = new OrderItemImpl();
     orderItem.setAuditable(auditable);
@@ -770,7 +846,6 @@ public class FulfillmentGroupItemImplDiffblueTest {
     orderItem.setOrderItemType(OrderItemType.BASIC);
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
-    orderItem.setPrice(new Money());
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
     orderItem.setRetailPrice(new Money());
@@ -796,34 +871,488 @@ public class FulfillmentGroupItemImplDiffblueTest {
     Money actualPrice = fulfillmentGroupItemImpl.getPrice();
 
     // Assert
-    verify(broadleafCurrency, atLeast(1)).getCurrencyCode();
+    verify(broadleafCurrencyImpl, atLeast(1)).getCurrencyCode();
     verify(order, atLeast(1)).getCurrency();
     Currency currency = actualPrice.getCurrency();
     assertEquals("British Pound", currency.getDisplayName());
     assertEquals("GBP", currency.getCurrencyCode());
     assertEquals("GBP", currency.toString());
     assertEquals("£", currency.getSymbol());
+    assertEquals(2, currency.getDefaultFractionDigits());
     assertEquals(826, currency.getNumericCode());
-    Money actualAbsResult = actualPrice.abs();
-    assertEquals(actualPrice, actualAbsResult);
-    Money actualZeroResult = actualPrice.zero();
-    assertEquals(actualPrice, actualZeroResult);
+    BigDecimal expectedAmount = new BigDecimal("0.00");
+    BigDecimal amount = actualPrice.getAmount();
+    assertEquals(expectedAmount, amount);
+    assertEquals(actualPrice, actualPrice.abs());
+    assertEquals(actualPrice, actualPrice.zero());
+    assertSame(orderItem.salePrice, amount);
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#getPrice()}.
-   *
-   * <ul>
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#getPrice()}
+   * Method under test: {@link FulfillmentGroupItemImpl#getPrice()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupItemImpl.getPrice()"})
-  public void testGetPrice_thenReturnNull() {
+  public void testGetPrice5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
+    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
+    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
+    Order order = mock(Order.class);
+    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
+
+    OrderItemImpl orderItem = new OrderItemImpl();
+    orderItem.setAuditable(auditable);
+    orderItem.setCandidateItemOffers(new ArrayList<>());
+    orderItem.setCartMessages(new ArrayList<>());
+    orderItem.setChildOrderItems(new ArrayList<>());
+    orderItem.setDiscountingAllowed(true);
+    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItem.setHasValidationError(true);
+    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItem.setName("Name");
+    orderItem.setOrder(order);
+    orderItem.setOrderItemAdjustments(new ArrayList<>());
+    orderItem.setOrderItemAttributes(new HashMap<>());
+    orderItem.setOrderItemPriceDetails(new ArrayList<>());
+    orderItem.setOrderItemQualifiers(new ArrayList<>());
+    orderItem.setOrderItemType(OrderItemType.BASIC);
+    orderItem.setParentOrderItem(new BundleOrderItemImpl());
+    orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItem.setQuantity(1);
+    orderItem.setRetailPrice(new Money());
+    orderItem.setRetailPriceOverride(true);
+    orderItem.setSalePrice(new Money(10.0d));
+    orderItem.setSalePriceOverride(true);
+    orderItem.setTaxable(true);
+    orderItem.updateSaleAndRetailPrices();
+
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
+    fulfillmentGroupItemImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupItemImpl.setOrderItem(orderItem);
+    fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(new Money());
+    fulfillmentGroupItemImpl.setQuantity(1);
+    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
+    fulfillmentGroupItemImpl.setTotalItemAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalTax(new Money());
+
+    // Act
+    Money actualPrice = fulfillmentGroupItemImpl.getPrice();
+
+    // Assert
+    verify(broadleafCurrencyImpl, atLeast(1)).getCurrencyCode();
+    verify(order, atLeast(1)).getCurrency();
+    Currency currency = actualPrice.getCurrency();
+    assertEquals("British Pound", currency.getDisplayName());
+    assertEquals("GBP", currency.getCurrencyCode());
+    assertEquals("GBP", currency.toString());
+    assertEquals("£", currency.getSymbol());
+    assertEquals(2, currency.getDefaultFractionDigits());
+    assertEquals(826, currency.getNumericCode());
+    BigDecimal expectedAmount = new BigDecimal("0.00");
+    BigDecimal amount = actualPrice.getAmount();
+    assertEquals(expectedAmount, amount);
+    assertEquals(actualPrice, actualPrice.abs());
+    assertEquals(actualPrice, actualPrice.zero());
+    assertSame(orderItem.retailPrice, amount);
+  }
+
+  /**
+   * Method under test:
+   * {@link FulfillmentGroupItemImpl#convertToMoney(BigDecimal)}
+   */
+  @Test
+  public void testConvertToMoney() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable2);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(OrderItemQualifierImpl.serialVersionUID);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAdjustments(new ArrayList<>());
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
+    order.setTotalTax(new Money());
+    order.setCurrency(null);
+
+    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
+    orderItem.setAuditable(auditable);
+    orderItem.setBaseRetailPrice(new Money());
+    orderItem.setBaseSalePrice(new Money());
+    orderItem.setBundleOrderItemFeePrices(new ArrayList<>());
+    orderItem.setCandidateItemOffers(new ArrayList<>());
+    orderItem.setCartMessages(new ArrayList<>());
+    orderItem.setChildOrderItems(new ArrayList<>());
+    orderItem.setDiscountingAllowed(true);
+    orderItem.setDiscreteOrderItems(new ArrayList<>());
+    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItem.setHasValidationError(true);
+    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItem.setName("Name");
+    orderItem.setOrderItemAdjustments(new ArrayList<>());
+    orderItem.setOrderItemAttributes(new HashMap<>());
+    orderItem.setOrderItemPriceDetails(new ArrayList<>());
+    orderItem.setOrderItemQualifiers(new ArrayList<>());
+    orderItem.setOrderItemType(OrderItemType.BASIC);
+    orderItem.setParentOrderItem(new BundleOrderItemImpl());
+    orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItem.setQuantity(1);
+    orderItem.setRetailPrice(new Money());
+    orderItem.setRetailPriceOverride(true);
+    orderItem.setSalePrice(new Money());
+    orderItem.setSalePriceOverride(true);
+    orderItem.setTaxable(true);
+    orderItem.updateSaleAndRetailPrices();
+    orderItem.setOrder(order);
+
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
+    fulfillmentGroupItemImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(new Money());
+    fulfillmentGroupItemImpl.setQuantity(1);
+    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
+    fulfillmentGroupItemImpl.setTotalItemAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalTax(new Money());
+    fulfillmentGroupItemImpl.setOrderItem(orderItem);
+
+    // Act and Assert
+    assertNull(fulfillmentGroupItemImpl.convertToMoney(null));
+  }
+
+  /**
+   * Method under test:
+   * {@link FulfillmentGroupItemImpl#convertToMoney(BigDecimal)}
+   */
+  @Test
+  public void testConvertToMoney2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable2);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(OrderItemQualifierImpl.serialVersionUID);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAdjustments(new ArrayList<>());
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
+    order.setTotalTax(new Money());
+    order.setCurrency(null);
+
+    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
+    orderItem.setAuditable(auditable);
+    orderItem.setBaseRetailPrice(new Money());
+    orderItem.setBaseSalePrice(new Money());
+    orderItem.setBundleOrderItemFeePrices(new ArrayList<>());
+    orderItem.setCandidateItemOffers(new ArrayList<>());
+    orderItem.setCartMessages(new ArrayList<>());
+    orderItem.setChildOrderItems(new ArrayList<>());
+    orderItem.setDiscountingAllowed(true);
+    orderItem.setDiscreteOrderItems(new ArrayList<>());
+    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItem.setHasValidationError(true);
+    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItem.setName("Name");
+    orderItem.setOrderItemAdjustments(new ArrayList<>());
+    orderItem.setOrderItemAttributes(new HashMap<>());
+    orderItem.setOrderItemPriceDetails(new ArrayList<>());
+    orderItem.setOrderItemQualifiers(new ArrayList<>());
+    orderItem.setOrderItemType(OrderItemType.BASIC);
+    orderItem.setParentOrderItem(new BundleOrderItemImpl());
+    orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItem.setQuantity(1);
+    orderItem.setRetailPrice(new Money());
+    orderItem.setRetailPriceOverride(true);
+    orderItem.setSalePrice(new Money());
+    orderItem.setSalePriceOverride(true);
+    orderItem.setTaxable(true);
+    orderItem.updateSaleAndRetailPrices();
+    orderItem.setOrder(order);
+
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
+    fulfillmentGroupItemImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    Money proratedOrderAdjustment = new Money();
+    fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(proratedOrderAdjustment);
+    fulfillmentGroupItemImpl.setQuantity(1);
+    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
+    fulfillmentGroupItemImpl.setTotalItemAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalTax(new Money());
+    fulfillmentGroupItemImpl.setOrderItem(orderItem);
+
+    // Act
+    Money actualConvertToMoneyResult = fulfillmentGroupItemImpl.convertToMoney(new BigDecimal("2.3"));
+
+    // Assert
+    Currency currency = actualConvertToMoneyResult.getCurrency();
+    assertEquals("$", currency.getSymbol());
+    assertEquals("US Dollar", currency.getDisplayName());
+    assertEquals("USD", currency.getCurrencyCode());
+    assertEquals("USD", currency.toString());
+    assertEquals(2, currency.getDefaultFractionDigits());
+    assertEquals(840, currency.getNumericCode());
+    BigDecimal expectedAmount = new BigDecimal("2.30");
+    assertEquals(expectedAmount, actualConvertToMoneyResult.getAmount());
+    assertEquals(proratedOrderAdjustment, actualConvertToMoneyResult.zero());
+    assertEquals(actualConvertToMoneyResult, actualConvertToMoneyResult.abs());
+  }
+
+  /**
+   * Method under test:
+   * {@link FulfillmentGroupItemImpl#convertToMoney(BigDecimal)}
+   */
+  @Test
+  public void testConvertToMoney3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    BundleOrderItemImpl orderItem = mock(BundleOrderItemImpl.class);
+    when(orderItem.getOrder()).thenReturn(NullOrderFactoryImpl.NULL_ORDER);
+
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setOrderItem(orderItem);
+
+    // Act
+    Money actualConvertToMoneyResult = fulfillmentGroupItemImpl.convertToMoney(new BigDecimal("2.3"));
+
+    // Assert
+    verify(orderItem).getOrder();
+    Currency currency = actualConvertToMoneyResult.getCurrency();
+    assertEquals("$", currency.getSymbol());
+    assertEquals("US Dollar", currency.getDisplayName());
+    assertEquals("USD", currency.getCurrencyCode());
+    assertEquals("USD", currency.toString());
+    assertEquals(2, currency.getDefaultFractionDigits());
+    assertEquals(840, currency.getNumericCode());
+    BigDecimal expectedAmount = new BigDecimal("2.30");
+    assertEquals(expectedAmount, actualConvertToMoneyResult.getAmount());
+    assertEquals(actualConvertToMoneyResult, actualConvertToMoneyResult.abs());
+    Money expectedZeroResult = actualConvertToMoneyResult.ZERO;
+    assertEquals(expectedZeroResult, actualConvertToMoneyResult.zero());
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupItemImpl#getTotalItemAmount()}
+   */
+  @Test
+  public void testGetTotalItemAmount() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertNull((new FulfillmentGroupItemImpl()).getTotalItemAmount());
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupItemImpl#getTotalItemAmount()}
+   */
+  @Test
+  public void testGetTotalItemAmount2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable2);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(OrderItemQualifierImpl.serialVersionUID);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAdjustments(new ArrayList<>());
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
+    order.setTotalTax(new Money());
+    order.setCurrency(null);
+
+    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
+    orderItem.setAuditable(auditable);
+    orderItem.setBaseRetailPrice(new Money());
+    orderItem.setBaseSalePrice(new Money());
+    orderItem.setBundleOrderItemFeePrices(new ArrayList<>());
+    orderItem.setCandidateItemOffers(new ArrayList<>());
+    orderItem.setCartMessages(new ArrayList<>());
+    orderItem.setChildOrderItems(new ArrayList<>());
+    orderItem.setDiscountingAllowed(true);
+    orderItem.setDiscreteOrderItems(new ArrayList<>());
+    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItem.setHasValidationError(true);
+    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItem.setName("Name");
+    orderItem.setOrderItemAdjustments(new ArrayList<>());
+    orderItem.setOrderItemAttributes(new HashMap<>());
+    orderItem.setOrderItemPriceDetails(new ArrayList<>());
+    orderItem.setOrderItemQualifiers(new ArrayList<>());
+    orderItem.setOrderItemType(OrderItemType.BASIC);
+    orderItem.setParentOrderItem(new BundleOrderItemImpl());
+    orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItem.setQuantity(1);
+    orderItem.setRetailPrice(new Money());
+    orderItem.setRetailPriceOverride(true);
+    orderItem.setSalePrice(new Money());
+    orderItem.setSalePriceOverride(true);
+    orderItem.setTaxable(true);
+    orderItem.updateSaleAndRetailPrices();
+    orderItem.setOrder(order);
+
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
+    fulfillmentGroupItemImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    Money proratedOrderAdjustment = new Money();
+    fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(proratedOrderAdjustment);
+    fulfillmentGroupItemImpl.setQuantity(1);
+    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
+    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalTax(new Money());
+    fulfillmentGroupItemImpl.setTotalItemAmount(new Money());
+    fulfillmentGroupItemImpl.setOrderItem(orderItem);
+
+    // Act and Assert
+    assertEquals(proratedOrderAdjustment, fulfillmentGroupItemImpl.getTotalItemAmount());
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupItemImpl#getTotalItemAmount()}
+   */
+  @Test
+  public void testGetTotalItemAmount3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setTotalItemAmount(mock(Money.class));
+
+    // Act and Assert
+    assertNull(fulfillmentGroupItemImpl.getTotalItemAmount());
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupItemImpl#setTotalItemAmount(Money)}
+   */
+  @Test
+  public void testSetTotalItemAmount() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    Money amount = new Money();
+
+    // Act
+    fulfillmentGroupItemImpl.setTotalItemAmount(amount);
+
+    // Assert
+    BigDecimal expectedAmount = new BigDecimal("0.00");
+    BigDecimal amount2 = amount.getAmount();
+    assertEquals(expectedAmount, amount2);
+    assertEquals(new BigDecimal("0.00"), fulfillmentGroupItemImpl.totalItemAmount);
+    assertEquals(amount, amount.abs());
+    assertEquals(amount, amount.zero());
+    assertSame(fulfillmentGroupItemImpl.totalItemAmount, amount2);
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupItemImpl#setTotalItemAmount(Money)}
+   */
+  @Test
+  public void testSetTotalItemAmount2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
     fulfillmentGroupItemImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
@@ -837,376 +1366,63 @@ public class FulfillmentGroupItemImplDiffblueTest {
     fulfillmentGroupItemImpl.setTotalItemTaxableAmount(new Money());
     fulfillmentGroupItemImpl.setTotalTax(new Money());
 
-    // Act and Assert
-    assertNull(fulfillmentGroupItemImpl.getPrice());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupItemImpl#convertToMoney(BigDecimal)}.
-   *
-   * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.
-   *   <li>When {@code null}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#convertToMoney(BigDecimal)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupItemImpl.convertToMoney(BigDecimal)"})
-  public void testConvertToMoney_givenOrderImplCurrencyIsNull_whenNull_thenReturnNull() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-
-    Auditable auditable2 = new Auditable();
-    auditable2.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable2.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable2);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setFulfillmentGroups(new ArrayList<>());
-    order.setId(OrderItemQualifierImpl.serialVersionUID);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAdjustments(new ArrayList<>());
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalTax(new Money());
-    order.setCurrency(null);
-
-    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
-    orderItem.setAuditable(auditable);
-    orderItem.setBaseRetailPrice(new Money());
-    orderItem.setBaseSalePrice(new Money());
-    orderItem.setBundleOrderItemFeePrices(new ArrayList<>());
-    orderItem.setCandidateItemOffers(new ArrayList<>());
-    orderItem.setCartMessages(new ArrayList<>());
-    orderItem.setChildOrderItems(new ArrayList<>());
-    orderItem.setDiscountingAllowed(true);
-    orderItem.setDiscreteOrderItems(new ArrayList<>());
-    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
-    orderItem.setHasValidationError(true);
-    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
-    orderItem.setName("Name");
-    orderItem.setOrderItemAdjustments(new ArrayList<>());
-    orderItem.setOrderItemAttributes(new HashMap<>());
-    orderItem.setOrderItemPriceDetails(new ArrayList<>());
-    orderItem.setOrderItemQualifiers(new ArrayList<>());
-    orderItem.setOrderItemType(OrderItemType.BASIC);
-    orderItem.setParentOrderItem(new BundleOrderItemImpl());
-    orderItem.setPersonalMessage(new PersonalMessageImpl());
-    orderItem.setPrice(new Money());
-    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
-    orderItem.setQuantity(1);
-    orderItem.setRetailPrice(new Money());
-    orderItem.setRetailPriceOverride(true);
-    orderItem.setSalePrice(new Money());
-    orderItem.setSalePriceOverride(true);
-    orderItem.setTaxable(true);
-    orderItem.updateSaleAndRetailPrices();
-    orderItem.setOrder(order);
-    fulfillmentGroupItemImpl.setOrderItem(orderItem);
-
-    // Act and Assert
-    assertNull(fulfillmentGroupItemImpl.convertToMoney(null));
-  }
-
-  /**
-   * Test {@link FulfillmentGroupItemImpl#convertToMoney(BigDecimal)}.
-   *
-   * <ul>
-   *   <li>Then return Currency DisplayName is {@code British Pound}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#convertToMoney(BigDecimal)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupItemImpl.convertToMoney(BigDecimal)"})
-  public void testConvertToMoney_thenReturnCurrencyDisplayNameIsBritishPound() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-
-    Auditable auditable2 = new Auditable();
-    auditable2.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable2.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable2);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setFulfillmentGroups(new ArrayList<>());
-    order.setId(OrderItemQualifierImpl.serialVersionUID);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAdjustments(new ArrayList<>());
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalTax(new Money());
-    order.setCurrency(currency);
-
-    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
-    orderItem.setAuditable(auditable);
-    orderItem.setBaseRetailPrice(new Money());
-    orderItem.setBaseSalePrice(new Money());
-    orderItem.setBundleOrderItemFeePrices(new ArrayList<>());
-    orderItem.setCandidateItemOffers(new ArrayList<>());
-    orderItem.setCartMessages(new ArrayList<>());
-    orderItem.setChildOrderItems(new ArrayList<>());
-    orderItem.setDiscountingAllowed(true);
-    orderItem.setDiscreteOrderItems(new ArrayList<>());
-    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
-    orderItem.setHasValidationError(true);
-    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
-    orderItem.setName("Name");
-    orderItem.setOrderItemAdjustments(new ArrayList<>());
-    orderItem.setOrderItemAttributes(new HashMap<>());
-    orderItem.setOrderItemPriceDetails(new ArrayList<>());
-    orderItem.setOrderItemQualifiers(new ArrayList<>());
-    orderItem.setOrderItemType(OrderItemType.BASIC);
-    orderItem.setParentOrderItem(new BundleOrderItemImpl());
-    orderItem.setPersonalMessage(new PersonalMessageImpl());
-    orderItem.setPrice(new Money());
-    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
-    orderItem.setQuantity(1);
-    orderItem.setRetailPrice(new Money());
-    orderItem.setRetailPriceOverride(true);
-    orderItem.setSalePrice(new Money());
-    orderItem.setSalePriceOverride(true);
-    orderItem.setTaxable(true);
-    orderItem.updateSaleAndRetailPrices();
-    orderItem.setOrder(order);
-    fulfillmentGroupItemImpl.setOrderItem(orderItem);
-
     // Act
-    Money actualConvertToMoneyResult =
-        fulfillmentGroupItemImpl.convertToMoney(new BigDecimal("2.3"));
+    fulfillmentGroupItemImpl.setTotalItemAmount(null);
 
     // Assert
-    verify(currency).getCurrencyCode();
-    Currency currency2 = actualConvertToMoneyResult.getCurrency();
-    assertEquals("British Pound", currency2.getDisplayName());
-    assertEquals("GBP", currency2.getCurrencyCode());
-    assertEquals("GBP", currency2.toString());
-    assertEquals("£", currency2.getSymbol());
-    assertEquals(826, currency2.getNumericCode());
-    Money zeroResult = actualConvertToMoneyResult.zero();
-    Money zeroResult2 = zeroResult.zero();
-    Money zeroResult3 = actualConvertToMoneyResult.abs().zero();
-    assertEquals(zeroResult2, zeroResult3.abs());
-    assertEquals(zeroResult2, zeroResult3.zero());
-    assertEquals(zeroResult2, zeroResult2);
-    Money actualAbsResult = zeroResult.abs();
-    assertEquals(zeroResult, actualAbsResult);
-  }
-
-  /**
-   * Test {@link FulfillmentGroupItemImpl#convertToMoney(BigDecimal)}.
-   *
-   * <ul>
-   *   <li>Then return Currency Symbol is {@code $}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#convertToMoney(BigDecimal)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupItemImpl.convertToMoney(BigDecimal)"})
-  public void testConvertToMoney_thenReturnCurrencySymbolIsDollarSign() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-
-    Auditable auditable2 = new Auditable();
-    auditable2.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable2.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable2);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setFulfillmentGroups(new ArrayList<>());
-    order.setId(OrderItemQualifierImpl.serialVersionUID);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAdjustments(new ArrayList<>());
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalTax(new Money());
-    order.setCurrency(null);
-
-    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
-    orderItem.setAuditable(auditable);
-    Money baseRetailPrice = new Money();
-    orderItem.setBaseRetailPrice(baseRetailPrice);
-    orderItem.setBaseSalePrice(new Money());
-    orderItem.setBundleOrderItemFeePrices(new ArrayList<>());
-    orderItem.setCandidateItemOffers(new ArrayList<>());
-    orderItem.setCartMessages(new ArrayList<>());
-    orderItem.setChildOrderItems(new ArrayList<>());
-    orderItem.setDiscountingAllowed(true);
-    orderItem.setDiscreteOrderItems(new ArrayList<>());
-    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
-    orderItem.setHasValidationError(true);
-    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
-    orderItem.setName("Name");
-    orderItem.setOrderItemAdjustments(new ArrayList<>());
-    orderItem.setOrderItemAttributes(new HashMap<>());
-    orderItem.setOrderItemPriceDetails(new ArrayList<>());
-    orderItem.setOrderItemQualifiers(new ArrayList<>());
-    orderItem.setOrderItemType(OrderItemType.BASIC);
-    orderItem.setParentOrderItem(new BundleOrderItemImpl());
-    orderItem.setPersonalMessage(new PersonalMessageImpl());
-    orderItem.setPrice(new Money());
-    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
-    orderItem.setQuantity(1);
-    orderItem.setRetailPrice(new Money());
-    orderItem.setRetailPriceOverride(true);
-    orderItem.setSalePrice(new Money());
-    orderItem.setSalePriceOverride(true);
-    orderItem.setTaxable(true);
-    orderItem.updateSaleAndRetailPrices();
-    orderItem.setOrder(order);
-    fulfillmentGroupItemImpl.setOrderItem(orderItem);
-
-    // Act
-    Money actualConvertToMoneyResult =
-        fulfillmentGroupItemImpl.convertToMoney(new BigDecimal("2.3"));
-
-    // Assert
-    Currency currency = actualConvertToMoneyResult.getCurrency();
-    assertEquals("$", currency.getSymbol());
-    assertEquals("US Dollar", currency.getDisplayName());
-    assertEquals("USD", currency.getCurrencyCode());
-    assertEquals("USD", currency.toString());
-    assertEquals(840, currency.getNumericCode());
-    assertEquals(baseRetailPrice, actualConvertToMoneyResult.abs().zero());
-    assertEquals(baseRetailPrice, actualConvertToMoneyResult.zero());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupItemImpl#getTotalItemAmount()}.
-   *
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupItemImpl}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#getTotalItemAmount()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupItemImpl.getTotalItemAmount()"})
-  public void testGetTotalItemAmount_givenFulfillmentGroupItemImpl_thenReturnNull() {
-    // Arrange, Act and Assert
+    assertNull(fulfillmentGroupItemImpl.totalItemAmount);
     assertNull(fulfillmentGroupItemImpl.getTotalItemAmount());
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#getTotalItemAmount()}.
-   *
-   * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.
-   *   <li>Then return {@link Money#Money()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#getTotalItemAmount()}
+   * Method under test: {@link FulfillmentGroupItemImpl#setTotalItemAmount(Money)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupItemImpl.getTotalItemAmount()"})
-  public void testGetTotalItemAmount_givenOrderImplCurrencyIsNull_thenReturnMoney() {
+  public void testSetTotalItemAmount3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+
+    // Act
+    fulfillmentGroupItemImpl.setTotalItemAmount(mock(Money.class));
+
+    // Assert
+    assertNull(fulfillmentGroupItemImpl.totalItemAmount);
+    assertNull(fulfillmentGroupItemImpl.getTotalItemAmount());
+  }
+
+  /**
+   * Method under test:
+   * {@link FulfillmentGroupItemImpl#getProratedOrderAdjustmentAmount()}
+   */
+  @Test
+  public void testGetProratedOrderAdjustmentAmount() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertNull((new FulfillmentGroupItemImpl()).getProratedOrderAdjustmentAmount());
+  }
+
+  /**
+   * Method under test:
+   * {@link FulfillmentGroupItemImpl#getProratedOrderAdjustmentAmount()}
+   */
+  @Test
+  public void testGetProratedOrderAdjustmentAmount2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
 
     Auditable auditable2 = new Auditable();
     auditable2.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable2.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable2.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
 
     OrderImpl order = new OrderImpl();
@@ -1227,11 +1443,11 @@ public class FulfillmentGroupItemImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
 
@@ -1256,7 +1472,6 @@ public class FulfillmentGroupItemImplDiffblueTest {
     orderItem.setOrderItemType(OrderItemType.BASIC);
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
-    orderItem.setPrice(new Money());
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
     orderItem.setRetailPrice(new Money());
@@ -1266,522 +1481,144 @@ public class FulfillmentGroupItemImplDiffblueTest {
     orderItem.setTaxable(true);
     orderItem.updateSaleAndRetailPrices();
     orderItem.setOrder(order);
+
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
+    fulfillmentGroupItemImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupItemImpl.setQuantity(1);
+    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
     Money amount = new Money();
     fulfillmentGroupItemImpl.setTotalItemAmount(amount);
-    fulfillmentGroupItemImpl.setOrderItem(orderItem);
-
-    // Act and Assert
-    assertEquals(amount, fulfillmentGroupItemImpl.getTotalItemAmount());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupItemImpl#getTotalItemAmount()}.
-   *
-   * <ul>
-   *   <li>Then return Currency DisplayName is {@code British Pound}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#getTotalItemAmount()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupItemImpl.getTotalItemAmount()"})
-  public void testGetTotalItemAmount_thenReturnCurrencyDisplayNameIsBritishPound() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-
-    Auditable auditable2 = new Auditable();
-    auditable2.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable2.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable2);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setFulfillmentGroups(new ArrayList<>());
-    order.setId(OrderItemQualifierImpl.serialVersionUID);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAdjustments(new ArrayList<>());
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalTax(new Money());
-    order.setCurrency(currency);
-
-    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
-    orderItem.setAuditable(auditable);
-    orderItem.setBaseRetailPrice(new Money());
-    orderItem.setBaseSalePrice(new Money());
-    orderItem.setBundleOrderItemFeePrices(new ArrayList<>());
-    orderItem.setCandidateItemOffers(new ArrayList<>());
-    orderItem.setCartMessages(new ArrayList<>());
-    orderItem.setChildOrderItems(new ArrayList<>());
-    orderItem.setDiscountingAllowed(true);
-    orderItem.setDiscreteOrderItems(new ArrayList<>());
-    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
-    orderItem.setHasValidationError(true);
-    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
-    orderItem.setName("Name");
-    orderItem.setOrderItemAdjustments(new ArrayList<>());
-    orderItem.setOrderItemAttributes(new HashMap<>());
-    orderItem.setOrderItemPriceDetails(new ArrayList<>());
-    orderItem.setOrderItemQualifiers(new ArrayList<>());
-    orderItem.setOrderItemType(OrderItemType.BASIC);
-    orderItem.setParentOrderItem(new BundleOrderItemImpl());
-    orderItem.setPersonalMessage(new PersonalMessageImpl());
-    orderItem.setPrice(new Money());
-    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
-    orderItem.setQuantity(1);
-    orderItem.setRetailPrice(new Money());
-    orderItem.setRetailPriceOverride(true);
-    orderItem.setSalePrice(new Money());
-    orderItem.setSalePriceOverride(true);
-    orderItem.setTaxable(true);
-    orderItem.updateSaleAndRetailPrices();
-    orderItem.setOrder(order);
-    fulfillmentGroupItemImpl.setTotalItemAmount(new Money());
-    fulfillmentGroupItemImpl.setOrderItem(orderItem);
-
-    // Act
-    Money actualTotalItemAmount = fulfillmentGroupItemImpl.getTotalItemAmount();
-
-    // Assert
-    verify(currency).getCurrencyCode();
-    Currency currency2 = actualTotalItemAmount.getCurrency();
-    assertEquals("British Pound", currency2.getDisplayName());
-    assertEquals("GBP", currency2.getCurrencyCode());
-    assertEquals("GBP", currency2.toString());
-    assertEquals("£", currency2.getSymbol());
-    assertEquals(826, currency2.getNumericCode());
-    Money actualAbsResult = actualTotalItemAmount.abs();
-    assertEquals(actualTotalItemAmount, actualAbsResult);
-    Money actualZeroResult = actualTotalItemAmount.zero();
-    assertEquals(actualTotalItemAmount, actualZeroResult);
-  }
-
-  /**
-   * Test {@link FulfillmentGroupItemImpl#setTotalItemAmount(Money)}.
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#setTotalItemAmount(Money)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupItemImpl.setTotalItemAmount(Money)"})
-  public void testSetTotalItemAmount() {
-    // Arrange
-    Money amount = new Money();
-
-    // Act
-    fulfillmentGroupItemImpl.setTotalItemAmount(amount);
-
-    // Assert
-    assertEquals(new BigDecimal("0.00"), fulfillmentGroupItemImpl.totalItemAmount);
-    BigDecimal bigDecimal = fulfillmentGroupItemImpl.totalItemAmount;
-    Money absResult = amount.abs();
-    assertSame(bigDecimal, absResult.getAmount());
-    Money absResult2 = absResult.abs();
-    assertSame(bigDecimal, absResult2.getAmount());
-    assertSame(bigDecimal, absResult2.abs().getAmount());
-    Money zeroResult = amount.zero();
-    Money absResult3 = zeroResult.abs();
-    assertSame(bigDecimal, absResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money zeroResult2 = absResult.zero();
-    assertSame(bigDecimal, zeroResult2.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    assertSame(bigDecimal, zeroResult3.abs().getAmount());
-    assertSame(bigDecimal, zeroResult.getAmount());
-    assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, absResult2.zero().getAmount());
-    assertSame(bigDecimal, absResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult2.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.zero().getAmount());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupItemImpl#setTotalItemAmount(Money)}.
-   *
-   * <ul>
-   *   <li>Then {@link FulfillmentGroupItemImpl} {@link FulfillmentGroupItemImpl#totalItemAmount} is
-   *       {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#setTotalItemAmount(Money)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupItemImpl.setTotalItemAmount(Money)"})
-  public void testSetTotalItemAmount_thenFulfillmentGroupItemImplTotalItemAmountIsNull() {
-    // Arrange and Act
-    fulfillmentGroupItemImpl.setTotalItemAmount(null);
-
-    // Assert that nothing has changed
-    assertNull(fulfillmentGroupItemImpl.totalItemAmount);
-  }
-
-  /**
-   * Test {@link FulfillmentGroupItemImpl#getProratedOrderAdjustmentAmount()}.
-   *
-   * <ul>
-   *   <li>Then return Currency DisplayName is {@code British Pound}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#getProratedOrderAdjustmentAmount()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupItemImpl.getProratedOrderAdjustmentAmount()"})
-  public void testGetProratedOrderAdjustmentAmount_thenReturnCurrencyDisplayNameIsBritishPound() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-
-    Auditable auditable2 = new Auditable();
-    auditable2.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable2.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable2);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setFulfillmentGroups(new ArrayList<>());
-    order.setId(OrderItemQualifierImpl.serialVersionUID);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAdjustments(new ArrayList<>());
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalTax(new Money());
-    order.setCurrency(currency);
-
-    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
-    orderItem.setAuditable(auditable);
-    orderItem.setBaseRetailPrice(new Money());
-    orderItem.setBaseSalePrice(new Money());
-    orderItem.setBundleOrderItemFeePrices(new ArrayList<>());
-    orderItem.setCandidateItemOffers(new ArrayList<>());
-    orderItem.setCartMessages(new ArrayList<>());
-    orderItem.setChildOrderItems(new ArrayList<>());
-    orderItem.setDiscountingAllowed(true);
-    orderItem.setDiscreteOrderItems(new ArrayList<>());
-    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
-    orderItem.setHasValidationError(true);
-    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
-    orderItem.setName("Name");
-    orderItem.setOrderItemAdjustments(new ArrayList<>());
-    orderItem.setOrderItemAttributes(new HashMap<>());
-    orderItem.setOrderItemPriceDetails(new ArrayList<>());
-    orderItem.setOrderItemQualifiers(new ArrayList<>());
-    orderItem.setOrderItemType(OrderItemType.BASIC);
-    orderItem.setParentOrderItem(new BundleOrderItemImpl());
-    orderItem.setPersonalMessage(new PersonalMessageImpl());
-    orderItem.setPrice(new Money());
-    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
-    orderItem.setQuantity(1);
-    orderItem.setRetailPrice(new Money());
-    orderItem.setRetailPriceOverride(true);
-    orderItem.setSalePrice(new Money());
-    orderItem.setSalePriceOverride(true);
-    orderItem.setTaxable(true);
-    orderItem.updateSaleAndRetailPrices();
-    orderItem.setOrder(order);
+    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalTax(new Money());
     fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(new Money());
     fulfillmentGroupItemImpl.setOrderItem(orderItem);
 
-    // Act
-    Money actualProratedOrderAdjustmentAmount =
-        fulfillmentGroupItemImpl.getProratedOrderAdjustmentAmount();
-
-    // Assert
-    verify(currency).getCurrencyCode();
-    Currency currency2 = actualProratedOrderAdjustmentAmount.getCurrency();
-    assertEquals("British Pound", currency2.getDisplayName());
-    assertEquals("GBP", currency2.getCurrencyCode());
-    assertEquals("GBP", currency2.toString());
-    assertEquals("£", currency2.getSymbol());
-    assertEquals(826, currency2.getNumericCode());
-    Money actualAbsResult = actualProratedOrderAdjustmentAmount.abs();
-    assertEquals(actualProratedOrderAdjustmentAmount, actualAbsResult);
-    Money actualZeroResult = actualProratedOrderAdjustmentAmount.zero();
-    assertEquals(actualProratedOrderAdjustmentAmount, actualZeroResult);
+    // Act and Assert
+    assertEquals(amount, fulfillmentGroupItemImpl.getProratedOrderAdjustmentAmount());
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#getProratedOrderAdjustmentAmount()}.
-   *
-   * <ul>
-   *   <li>Then return {@link Money#Money()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#getProratedOrderAdjustmentAmount()}
+   * Method under test:
+   * {@link FulfillmentGroupItemImpl#getProratedOrderAdjustmentAmount()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupItemImpl.getProratedOrderAdjustmentAmount()"})
-  public void testGetProratedOrderAdjustmentAmount_thenReturnMoney() {
+  public void testGetProratedOrderAdjustmentAmount3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-
-    Auditable auditable2 = new Auditable();
-    auditable2.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable2.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable2);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setFulfillmentGroups(new ArrayList<>());
-    order.setId(OrderItemQualifierImpl.serialVersionUID);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAdjustments(new ArrayList<>());
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalTax(new Money());
-    order.setCurrency(null);
-
-    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
-    orderItem.setAuditable(auditable);
-    orderItem.setBaseRetailPrice(new Money());
-    orderItem.setBaseSalePrice(new Money());
-    orderItem.setBundleOrderItemFeePrices(new ArrayList<>());
-    orderItem.setCandidateItemOffers(new ArrayList<>());
-    orderItem.setCartMessages(new ArrayList<>());
-    orderItem.setChildOrderItems(new ArrayList<>());
-    orderItem.setDiscountingAllowed(true);
-    orderItem.setDiscreteOrderItems(new ArrayList<>());
-    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
-    orderItem.setHasValidationError(true);
-    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
-    orderItem.setName("Name");
-    orderItem.setOrderItemAdjustments(new ArrayList<>());
-    orderItem.setOrderItemAttributes(new HashMap<>());
-    orderItem.setOrderItemPriceDetails(new ArrayList<>());
-    orderItem.setOrderItemQualifiers(new ArrayList<>());
-    orderItem.setOrderItemType(OrderItemType.BASIC);
-    orderItem.setParentOrderItem(new BundleOrderItemImpl());
-    orderItem.setPersonalMessage(new PersonalMessageImpl());
-    orderItem.setPrice(new Money());
-    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
-    orderItem.setQuantity(1);
-    orderItem.setRetailPrice(new Money());
-    orderItem.setRetailPriceOverride(true);
-    orderItem.setSalePrice(new Money());
-    orderItem.setSalePriceOverride(true);
-    orderItem.setTaxable(true);
-    orderItem.updateSaleAndRetailPrices();
-    orderItem.setOrder(order);
-    Money proratedOrderAdjustment = new Money();
-    fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(proratedOrderAdjustment);
-    fulfillmentGroupItemImpl.setOrderItem(orderItem);
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(mock(Money.class));
 
     // Act and Assert
-    assertEquals(
-        proratedOrderAdjustment, fulfillmentGroupItemImpl.getProratedOrderAdjustmentAmount());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupItemImpl#getProratedOrderAdjustmentAmount()}.
-   *
-   * <ul>
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#getProratedOrderAdjustmentAmount()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupItemImpl.getProratedOrderAdjustmentAmount()"})
-  public void testGetProratedOrderAdjustmentAmount_thenReturnNull() {
-    // Arrange, Act and Assert
     assertNull(fulfillmentGroupItemImpl.getProratedOrderAdjustmentAmount());
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#setProratedOrderAdjustmentAmount(Money)}.
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#setProratedOrderAdjustmentAmount(Money)}
+   * Method under test:
+   * {@link FulfillmentGroupItemImpl#setProratedOrderAdjustmentAmount(Money)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(Money)"})
   public void testSetProratedOrderAdjustmentAmount() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
     Money proratedOrderAdjustment = new Money();
 
     // Act
     fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(proratedOrderAdjustment);
 
     // Assert
+    BigDecimal expectedAmount = new BigDecimal("0.00");
+    BigDecimal amount = proratedOrderAdjustment.getAmount();
+    assertEquals(expectedAmount, amount);
     assertEquals(new BigDecimal("0.00"), fulfillmentGroupItemImpl.proratedOrderAdjustment);
-    BigDecimal bigDecimal = fulfillmentGroupItemImpl.proratedOrderAdjustment;
-    Money absResult = proratedOrderAdjustment.abs();
-    assertSame(bigDecimal, absResult.getAmount());
-    Money absResult2 = absResult.abs();
-    assertSame(bigDecimal, absResult2.getAmount());
-    assertSame(bigDecimal, absResult2.abs().getAmount());
-    Money zeroResult = proratedOrderAdjustment.zero();
-    Money absResult3 = zeroResult.abs();
-    assertSame(bigDecimal, absResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money zeroResult2 = absResult.zero();
-    assertSame(bigDecimal, zeroResult2.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    assertSame(bigDecimal, zeroResult3.abs().getAmount());
-    assertSame(bigDecimal, zeroResult.getAmount());
-    assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, absResult2.zero().getAmount());
-    assertSame(bigDecimal, absResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult2.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.zero().getAmount());
+    assertEquals(proratedOrderAdjustment, proratedOrderAdjustment.abs());
+    assertEquals(proratedOrderAdjustment, proratedOrderAdjustment.zero());
+    assertSame(fulfillmentGroupItemImpl.proratedOrderAdjustment, amount);
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#setProratedOrderAdjustmentAmount(Money)}.
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#setProratedOrderAdjustmentAmount(Money)}
+   * Method under test:
+   * {@link FulfillmentGroupItemImpl#setProratedOrderAdjustmentAmount(Money)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(Money)"})
   public void testSetProratedOrderAdjustmentAmount2() {
-    // Arrange and Act
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
+    fulfillmentGroupItemImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupItemImpl.setOrderItem(new BundleOrderItemImpl());
+    fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(new Money());
+    fulfillmentGroupItemImpl.setQuantity(1);
+    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
+    fulfillmentGroupItemImpl.setTotalItemAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalTax(new Money());
+
+    // Act
     fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(null);
 
-    // Assert that nothing has changed
+    // Assert
     assertNull(fulfillmentGroupItemImpl.proratedOrderAdjustment);
+    assertNull(fulfillmentGroupItemImpl.getProratedOrderAdjustmentAmount());
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#getTotalItemTaxableAmount()}.
-   *
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupItemImpl}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#getTotalItemTaxableAmount()}
+   * Method under test:
+   * {@link FulfillmentGroupItemImpl#setProratedOrderAdjustmentAmount(Money)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupItemImpl.getTotalItemTaxableAmount()"})
-  public void testGetTotalItemTaxableAmount_givenFulfillmentGroupItemImpl_thenReturnNull() {
+  public void testSetProratedOrderAdjustmentAmount3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+
+    // Act
+    fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(mock(Money.class));
+
+    // Assert
+    assertNull(fulfillmentGroupItemImpl.proratedOrderAdjustment);
+    assertNull(fulfillmentGroupItemImpl.getProratedOrderAdjustmentAmount());
+  }
+
+  /**
+   * Method under test:
+   * {@link FulfillmentGroupItemImpl#getTotalItemTaxableAmount()}
+   */
+  @Test
+  public void testGetTotalItemTaxableAmount() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertNull(fulfillmentGroupItemImpl.getTotalItemTaxableAmount());
+    assertNull((new FulfillmentGroupItemImpl()).getTotalItemTaxableAmount());
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#getTotalItemTaxableAmount()}.
-   *
-   * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.
-   *   <li>Then return {@link Money#Money()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#getTotalItemTaxableAmount()}
+   * Method under test:
+   * {@link FulfillmentGroupItemImpl#getTotalItemTaxableAmount()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupItemImpl.getTotalItemTaxableAmount()"})
-  public void testGetTotalItemTaxableAmount_givenOrderImplCurrencyIsNull_thenReturnMoney() {
+  public void testGetTotalItemTaxableAmount2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
 
     Auditable auditable2 = new Auditable();
     auditable2.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable2.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable2.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
 
     OrderImpl order = new OrderImpl();
@@ -1802,11 +1639,11 @@ public class FulfillmentGroupItemImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
 
@@ -1831,7 +1668,6 @@ public class FulfillmentGroupItemImplDiffblueTest {
     orderItem.setOrderItemType(OrderItemType.BASIC);
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
-    orderItem.setPrice(new Money());
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
     orderItem.setRetailPrice(new Money());
@@ -1841,231 +1677,195 @@ public class FulfillmentGroupItemImplDiffblueTest {
     orderItem.setTaxable(true);
     orderItem.updateSaleAndRetailPrices();
     orderItem.setOrder(order);
-    Money taxableAmount = new Money();
-    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(taxableAmount);
-    fulfillmentGroupItemImpl.setOrderItem(orderItem);
 
-    // Act and Assert
-    assertEquals(taxableAmount, fulfillmentGroupItemImpl.getTotalItemTaxableAmount());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupItemImpl#getTotalItemTaxableAmount()}.
-   *
-   * <ul>
-   *   <li>Then return Currency DisplayName is {@code British Pound}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#getTotalItemTaxableAmount()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupItemImpl.getTotalItemTaxableAmount()"})
-  public void testGetTotalItemTaxableAmount_thenReturnCurrencyDisplayNameIsBritishPound() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-
-    Auditable auditable2 = new Auditable();
-    auditable2.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable2.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable2);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setFulfillmentGroups(new ArrayList<>());
-    order.setId(OrderItemQualifierImpl.serialVersionUID);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAdjustments(new ArrayList<>());
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalTax(new Money());
-    order.setCurrency(currency);
-
-    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
-    orderItem.setAuditable(auditable);
-    orderItem.setBaseRetailPrice(new Money());
-    orderItem.setBaseSalePrice(new Money());
-    orderItem.setBundleOrderItemFeePrices(new ArrayList<>());
-    orderItem.setCandidateItemOffers(new ArrayList<>());
-    orderItem.setCartMessages(new ArrayList<>());
-    orderItem.setChildOrderItems(new ArrayList<>());
-    orderItem.setDiscountingAllowed(true);
-    orderItem.setDiscreteOrderItems(new ArrayList<>());
-    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
-    orderItem.setHasValidationError(true);
-    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
-    orderItem.setName("Name");
-    orderItem.setOrderItemAdjustments(new ArrayList<>());
-    orderItem.setOrderItemAttributes(new HashMap<>());
-    orderItem.setOrderItemPriceDetails(new ArrayList<>());
-    orderItem.setOrderItemQualifiers(new ArrayList<>());
-    orderItem.setOrderItemType(OrderItemType.BASIC);
-    orderItem.setParentOrderItem(new BundleOrderItemImpl());
-    orderItem.setPersonalMessage(new PersonalMessageImpl());
-    orderItem.setPrice(new Money());
-    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
-    orderItem.setQuantity(1);
-    orderItem.setRetailPrice(new Money());
-    orderItem.setRetailPriceOverride(true);
-    orderItem.setSalePrice(new Money());
-    orderItem.setSalePriceOverride(true);
-    orderItem.setTaxable(true);
-    orderItem.updateSaleAndRetailPrices();
-    orderItem.setOrder(order);
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
+    fulfillmentGroupItemImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    Money proratedOrderAdjustment = new Money();
+    fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(proratedOrderAdjustment);
+    fulfillmentGroupItemImpl.setQuantity(1);
+    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
+    fulfillmentGroupItemImpl.setTotalItemAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalTax(new Money());
     fulfillmentGroupItemImpl.setTotalItemTaxableAmount(new Money());
     fulfillmentGroupItemImpl.setOrderItem(orderItem);
 
-    // Act
-    Money actualTotalItemTaxableAmount = fulfillmentGroupItemImpl.getTotalItemTaxableAmount();
-
-    // Assert
-    verify(currency).getCurrencyCode();
-    Currency currency2 = actualTotalItemTaxableAmount.getCurrency();
-    assertEquals("British Pound", currency2.getDisplayName());
-    assertEquals("GBP", currency2.getCurrencyCode());
-    assertEquals("GBP", currency2.toString());
-    assertEquals("£", currency2.getSymbol());
-    assertEquals(826, currency2.getNumericCode());
-    Money actualAbsResult = actualTotalItemTaxableAmount.abs();
-    assertEquals(actualTotalItemTaxableAmount, actualAbsResult);
-    Money actualZeroResult = actualTotalItemTaxableAmount.zero();
-    assertEquals(actualTotalItemTaxableAmount, actualZeroResult);
+    // Act and Assert
+    assertEquals(proratedOrderAdjustment, fulfillmentGroupItemImpl.getTotalItemTaxableAmount());
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#setTotalItemTaxableAmount(Money)}.
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#setTotalItemTaxableAmount(Money)}
+   * Method under test:
+   * {@link FulfillmentGroupItemImpl#getTotalItemTaxableAmount()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupItemImpl.setTotalItemTaxableAmount(Money)"})
-  public void testSetTotalItemTaxableAmount() {
+  public void testGetTotalItemTaxableAmount3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(mock(Money.class));
+
+    // Act and Assert
+    assertNull(fulfillmentGroupItemImpl.getTotalItemTaxableAmount());
+  }
+
+  /**
+   * Method under test:
+   * {@link FulfillmentGroupItemImpl#setTotalItemTaxableAmount(Money)}
+   */
+  @Test
+  public void testSetTotalItemTaxableAmount() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
     Money taxableAmount = new Money();
 
     // Act
     fulfillmentGroupItemImpl.setTotalItemTaxableAmount(taxableAmount);
 
     // Assert
+    BigDecimal expectedAmount = new BigDecimal("0.00");
+    BigDecimal amount = taxableAmount.getAmount();
+    assertEquals(expectedAmount, amount);
     assertEquals(new BigDecimal("0.00"), fulfillmentGroupItemImpl.totalItemTaxableAmount);
-    BigDecimal bigDecimal = fulfillmentGroupItemImpl.totalItemTaxableAmount;
-    Money absResult = taxableAmount.abs();
-    assertSame(bigDecimal, absResult.getAmount());
-    Money absResult2 = absResult.abs();
-    assertSame(bigDecimal, absResult2.getAmount());
-    assertSame(bigDecimal, absResult2.abs().getAmount());
-    Money zeroResult = taxableAmount.zero();
-    Money absResult3 = zeroResult.abs();
-    assertSame(bigDecimal, absResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money zeroResult2 = absResult.zero();
-    assertSame(bigDecimal, zeroResult2.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    assertSame(bigDecimal, zeroResult3.abs().getAmount());
-    assertSame(bigDecimal, zeroResult.getAmount());
-    assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, absResult2.zero().getAmount());
-    assertSame(bigDecimal, absResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult2.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.zero().getAmount());
+    assertEquals(taxableAmount, taxableAmount.abs());
+    assertEquals(taxableAmount, taxableAmount.zero());
+    assertSame(fulfillmentGroupItemImpl.totalItemTaxableAmount, amount);
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#setTotalItemTaxableAmount(Money)}.
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#setTotalItemTaxableAmount(Money)}
+   * Method under test:
+   * {@link FulfillmentGroupItemImpl#setTotalItemTaxableAmount(Money)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupItemImpl.setTotalItemTaxableAmount(Money)"})
   public void testSetTotalItemTaxableAmount2() {
-    // Arrange and Act
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
+    fulfillmentGroupItemImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupItemImpl.setOrderItem(new BundleOrderItemImpl());
+    fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(new Money());
+    fulfillmentGroupItemImpl.setQuantity(1);
+    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
+    fulfillmentGroupItemImpl.setTotalItemAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalTax(new Money());
+
+    // Act
     fulfillmentGroupItemImpl.setTotalItemTaxableAmount(null);
 
-    // Assert that nothing has changed
+    // Assert
     assertNull(fulfillmentGroupItemImpl.totalItemTaxableAmount);
+    assertNull(fulfillmentGroupItemImpl.getTotalItemTaxableAmount());
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#getStatus()}.
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#getStatus()}
+   * Method under test:
+   * {@link FulfillmentGroupItemImpl#setTotalItemTaxableAmount(Money)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FulfillmentGroupStatusType FulfillmentGroupItemImpl.getStatus()"})
+  public void testSetTotalItemTaxableAmount3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+
+    // Act
+    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(mock(Money.class));
+
+    // Assert
+    assertNull(fulfillmentGroupItemImpl.totalItemTaxableAmount);
+    assertNull(fulfillmentGroupItemImpl.getTotalItemTaxableAmount());
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupItemImpl#getStatus()}
+   */
+  @Test
   public void testGetStatus() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
+    assertNull((new FulfillmentGroupItemImpl()).getStatus());
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupItemImpl#getStatus()}
+   */
+  @Test
+  public void testGetStatus2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setFulfillmentGroup(mock(FulfillmentGroupImpl.class));
+
+    // Act and Assert
     assertNull(fulfillmentGroupItemImpl.getStatus());
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#setStatus(FulfillmentGroupStatusType)}.
-   *
-   * <ul>
-   *   <li>When {@link FulfillmentGroupStatusType#CANCELLED}.
-   *   <li>Then {@link FulfillmentGroupItemImpl} Status is {@link
-   *       FulfillmentGroupStatusType#CANCELLED}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#setStatus(FulfillmentGroupStatusType)}
+   * Method under test:
+   * {@link FulfillmentGroupItemImpl#setStatus(FulfillmentGroupStatusType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType)"})
-  public void testSetStatus_whenCancelled_thenFulfillmentGroupItemImplStatusIsCancelled() {
-    // Arrange and Act
-    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
+  public void testSetStatus() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    FulfillmentGroupStatusType status = FulfillmentGroupStatusType.CANCELLED;
+
+    // Act
+    fulfillmentGroupItemImpl.setStatus(status);
 
     // Assert
-    assertSame(FulfillmentGroupStatusType.CANCELLED, fulfillmentGroupItemImpl.getStatus());
+    FulfillmentGroupStatusType expectedStatus = status.CANCELLED;
+    assertSame(expectedStatus, fulfillmentGroupItemImpl.getStatus());
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#removeAssociations()}.
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#removeAssociations()}
+   * Method under test: {@link FulfillmentGroupItemImpl#removeAssociations()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupItemImpl.removeAssociations()"})
   public void testRemoveAssociations() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+
+    // Act
+    fulfillmentGroupItemImpl.removeAssociations();
+
+    // Assert
+    assertNull(fulfillmentGroupItemImpl.getFulfillmentGroup());
+    assertNull(fulfillmentGroupItemImpl.getOrderItem());
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupItemImpl#removeAssociations()}
+   */
+  @Test
+  public void testRemoveAssociations2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupItemImpl.setOrderItem(new BundleOrderItemImpl());
+    fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(new Money());
+    fulfillmentGroupItemImpl.setQuantity(1);
+    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
+    fulfillmentGroupItemImpl.setTotalItemAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalTax(new Money());
     fulfillmentGroupItemImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
 
     // Act
@@ -2073,93 +1873,77 @@ public class FulfillmentGroupItemImplDiffblueTest {
 
     // Assert
     assertNull(fulfillmentGroupItemImpl.getFulfillmentGroup());
+    assertNull(fulfillmentGroupItemImpl.getOrderItem());
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#removeAssociations()}.
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#removeAssociations()}
+   * Method under test: {@link FulfillmentGroupItemImpl#removeAssociations()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupItemImpl.removeAssociations()"})
-  public void testRemoveAssociations2() {
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.addFulfillmentGroupItem(new FulfillmentGroupItemImpl());
-    fulfillmentGroupItemImpl.setFulfillmentGroup(fulfillmentGroup);
-
-    // Act
-    fulfillmentGroupItemImpl.removeAssociations();
-
-    // Assert
-    assertNull(fulfillmentGroupItemImpl.getFulfillmentGroup());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupItemImpl#removeAssociations()}.
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#removeAssociations()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupItemImpl.removeAssociations()"})
   public void testRemoveAssociations3() {
-    // Arrange
-    FulfillmentGroupItemImpl fulfillmentGroupItem = new FulfillmentGroupItemImpl();
-    fulfillmentGroupItem.setOrderItem(new BundleOrderItemImpl());
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.addFulfillmentGroupItem(fulfillmentGroupItem);
-    fulfillmentGroupItemImpl.setFulfillmentGroup(fulfillmentGroup);
+    // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupItemImpl.setOrderItem(mock(BundleOrderItemImpl.class));
+    fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(new Money());
+    fulfillmentGroupItemImpl.setQuantity(1);
+    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
+    fulfillmentGroupItemImpl.setTotalItemAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalTax(new Money());
+    fulfillmentGroupItemImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
 
     // Act
     fulfillmentGroupItemImpl.removeAssociations();
 
     // Assert
     assertNull(fulfillmentGroupItemImpl.getFulfillmentGroup());
+    assertNull(fulfillmentGroupItemImpl.getOrderItem());
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#removeAssociations()}.
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#removeAssociations()}
+   * Method under test: {@link FulfillmentGroupItemImpl#removeAssociations()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupItemImpl.removeAssociations()"})
   public void testRemoveAssociations4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.addFulfillmentGroupItem(mock(FulfillmentGroupItem.class));
+    FulfillmentGroupImpl fulfillmentGroup = mock(FulfillmentGroupImpl.class);
+    when(fulfillmentGroup.getFulfillmentGroupItems()).thenThrow(new RuntimeException("foo"));
+
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupItemImpl.setOrderItem(new BundleOrderItemImpl());
+    fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(new Money());
+    fulfillmentGroupItemImpl.setQuantity(1);
+    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
+    fulfillmentGroupItemImpl.setTotalItemAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalTax(new Money());
     fulfillmentGroupItemImpl.setFulfillmentGroup(fulfillmentGroup);
 
-    // Act
-    fulfillmentGroupItemImpl.removeAssociations();
-
-    // Assert
-    assertNull(fulfillmentGroupItemImpl.getFulfillmentGroup());
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> fulfillmentGroupItemImpl.removeAssociations());
+    verify(fulfillmentGroup).getFulfillmentGroupItems();
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#removeAssociations()}.
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#removeAssociations()}
+   * Method under test: {@link FulfillmentGroupItemImpl#removeAssociations()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupItemImpl.removeAssociations()"})
   public void testRemoveAssociations5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
     fulfillmentGroup.addFulfillmentGroupItem(new FulfillmentGroupItemImpl());
 
     FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
-    fulfillmentGroupItemImpl.setOrderItem(new BundleOrderItemImpl());
     fulfillmentGroupItemImpl.setFulfillmentGroup(fulfillmentGroup);
 
     // Act
@@ -2171,79 +1955,17 @@ public class FulfillmentGroupItemImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#removeAssociations()}.
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#removeAssociations()}
+   * Method under test: {@link FulfillmentGroupItemImpl#removeAssociations()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupItemImpl.removeAssociations()"})
   public void testRemoveAssociations6() {
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.addFulfillmentGroupItem(new FulfillmentGroupItemImpl());
-    fulfillmentGroup.addFulfillmentGroupItem(new FulfillmentGroupItemImpl());
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
-    fulfillmentGroupItemImpl.setOrderItem(new BundleOrderItemImpl());
-    fulfillmentGroupItemImpl.setFulfillmentGroup(fulfillmentGroup);
-
-    // Act
-    fulfillmentGroupItemImpl.removeAssociations();
-
-    // Assert
-    assertNull(fulfillmentGroupItemImpl.getFulfillmentGroup());
-    assertNull(fulfillmentGroupItemImpl.getOrderItem());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupItemImpl#removeAssociations()}.
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#removeAssociations()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupItemImpl.removeAssociations()"})
-  public void testRemoveAssociations7() {
-    // Arrange
-    FulfillmentGroupItemImpl fulfillmentGroupItem = new FulfillmentGroupItemImpl();
-    fulfillmentGroupItem.setOrderItem(new BundleOrderItemImpl());
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.addFulfillmentGroupItem(fulfillmentGroupItem);
-
-    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
-    fulfillmentGroupItemImpl.setOrderItem(new BundleOrderItemImpl());
-    fulfillmentGroupItemImpl.setFulfillmentGroup(fulfillmentGroup);
-
-    // Act
-    fulfillmentGroupItemImpl.removeAssociations();
-
-    // Assert
-    assertNull(fulfillmentGroupItemImpl.getFulfillmentGroup());
-    assertNull(fulfillmentGroupItemImpl.getOrderItem());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupItemImpl#removeAssociations()}.
-   *
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupImpl} (default constructor) addFulfillmentGroupItem {@code
-   *       null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#removeAssociations()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupItemImpl.removeAssociations()"})
-  public void testRemoveAssociations_givenFulfillmentGroupImplAddFulfillmentGroupItemNull() {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
     fulfillmentGroup.addFulfillmentGroupItem(null);
+
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
     fulfillmentGroupItemImpl.setFulfillmentGroup(fulfillmentGroup);
 
     // Act
@@ -2251,44 +1973,38 @@ public class FulfillmentGroupItemImplDiffblueTest {
 
     // Assert
     assertNull(fulfillmentGroupItemImpl.getFulfillmentGroup());
+    assertNull(fulfillmentGroupItemImpl.getOrderItem());
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#removeAssociations()}.
-   *
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupItemImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#removeAssociations()}
+   * Method under test: {@link FulfillmentGroupItemImpl#removeAssociations()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupItemImpl.removeAssociations()"})
-  public void testRemoveAssociations_givenFulfillmentGroupItemImpl() {
-    // Arrange and Act
+  public void testRemoveAssociations7() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    fulfillmentGroup.addFulfillmentGroupItem(mock(FulfillmentGroupItem.class));
+
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setFulfillmentGroup(fulfillmentGroup);
+
+    // Act
     fulfillmentGroupItemImpl.removeAssociations();
 
-    // Assert that nothing has changed
+    // Assert
     assertNull(fulfillmentGroupItemImpl.getFulfillmentGroup());
+    assertNull(fulfillmentGroupItemImpl.getOrderItem());
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#removeAssociations()}.
-   *
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupItemImpl} (default constructor) Id is {@link
-   *       OrderItemQualifierImpl#serialVersionUID}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#removeAssociations()}
+   * Method under test: {@link FulfillmentGroupItemImpl#removeAssociations()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupItemImpl.removeAssociations()"})
-  public void testRemoveAssociations_givenFulfillmentGroupItemImplIdIsSerialVersionUID() {
+  public void testRemoveAssociations8() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
     fulfillmentGroup.addFulfillmentGroupItem(new FulfillmentGroupItemImpl());
@@ -2306,20 +2022,110 @@ public class FulfillmentGroupItemImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#removeAssociations()}.
-   *
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupItemImpl} (default constructor) Id is {@link
-   *       OrderItemQualifierImpl#serialVersionUID}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#removeAssociations()}
+   * Method under test: {@link FulfillmentGroupItemImpl#removeAssociations()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupItemImpl.removeAssociations()"})
-  public void testRemoveAssociations_givenFulfillmentGroupItemImplIdIsSerialVersionUID2() {
+  public void testRemoveAssociations9() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    fulfillmentGroup.addFulfillmentGroupItem(new FulfillmentGroupItemImpl());
+
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setOrderItem(new BundleOrderItemImpl());
+    fulfillmentGroupItemImpl.setFulfillmentGroup(fulfillmentGroup);
+
+    // Act
+    fulfillmentGroupItemImpl.removeAssociations();
+
+    // Assert
+    assertNull(fulfillmentGroupItemImpl.getFulfillmentGroup());
+    assertNull(fulfillmentGroupItemImpl.getOrderItem());
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupItemImpl#removeAssociations()}
+   */
+  @Test
+  public void testRemoveAssociations10() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItem = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItem.setOrderItem(new BundleOrderItemImpl());
+
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    fulfillmentGroup.addFulfillmentGroupItem(fulfillmentGroupItem);
+
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setFulfillmentGroup(fulfillmentGroup);
+
+    // Act
+    fulfillmentGroupItemImpl.removeAssociations();
+
+    // Assert
+    assertNull(fulfillmentGroupItemImpl.getFulfillmentGroup());
+    assertNull(fulfillmentGroupItemImpl.getOrderItem());
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupItemImpl#removeAssociations()}
+   */
+  @Test
+  public void testRemoveAssociations11() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    fulfillmentGroup.addFulfillmentGroupItem(new FulfillmentGroupItemImpl());
+    fulfillmentGroup.addFulfillmentGroupItem(new FulfillmentGroupItemImpl());
+
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setOrderItem(new BundleOrderItemImpl());
+    fulfillmentGroupItemImpl.setFulfillmentGroup(fulfillmentGroup);
+
+    // Act
+    fulfillmentGroupItemImpl.removeAssociations();
+
+    // Assert
+    assertNull(fulfillmentGroupItemImpl.getFulfillmentGroup());
+    assertNull(fulfillmentGroupItemImpl.getOrderItem());
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupItemImpl#removeAssociations()}
+   */
+  @Test
+  public void testRemoveAssociations12() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItem = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItem.setOrderItem(new BundleOrderItemImpl());
+
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    fulfillmentGroup.addFulfillmentGroupItem(fulfillmentGroupItem);
+
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setOrderItem(new BundleOrderItemImpl());
+    fulfillmentGroupItemImpl.setFulfillmentGroup(fulfillmentGroup);
+
+    // Act
+    fulfillmentGroupItemImpl.removeAssociations();
+
+    // Assert
+    assertNull(fulfillmentGroupItemImpl.getFulfillmentGroup());
+    assertNull(fulfillmentGroupItemImpl.getOrderItem());
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupItemImpl#removeAssociations()}
+   */
+  @Test
+  public void testRemoveAssociations13() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     FulfillmentGroupItemImpl fulfillmentGroupItem = new FulfillmentGroupItemImpl();
     fulfillmentGroupItem.setId(OrderItemQualifierImpl.serialVersionUID);
@@ -2340,70 +2146,28 @@ public class FulfillmentGroupItemImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#removeAssociations()}.
-   *
-   * <ul>
-   *   <li>Then throw {@link RuntimeException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#removeAssociations()}
+   * Method under test: {@link FulfillmentGroupItemImpl#getTotalTax()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupItemImpl.removeAssociations()"})
-  public void testRemoveAssociations_thenThrowRuntimeException() {
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroup = mock(FulfillmentGroupImpl.class);
-    when(fulfillmentGroup.getFulfillmentGroupItems()).thenThrow(new RuntimeException());
-    fulfillmentGroupItemImpl.setFulfillmentGroup(fulfillmentGroup);
+  public void testGetTotalTax() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Act and Assert
-    assertThrows(RuntimeException.class, () -> fulfillmentGroupItemImpl.removeAssociations());
-    verify(fulfillmentGroup).getFulfillmentGroupItems();
-  }
-
-  /**
-   * Test {@link FulfillmentGroupItemImpl#getTotalTax()}.
-   *
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupItemImpl}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#getTotalTax()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupItemImpl.getTotalTax()"})
-  public void testGetTotalTax_givenFulfillmentGroupItemImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(fulfillmentGroupItemImpl.getTotalTax());
+    assertNull((new FulfillmentGroupItemImpl()).getTotalTax());
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#getTotalTax()}.
-   *
-   * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.
-   *   <li>Then return {@link Money#Money()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#getTotalTax()}
+   * Method under test: {@link FulfillmentGroupItemImpl#getTotalTax()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupItemImpl.getTotalTax()"})
-  public void testGetTotalTax_givenOrderImplCurrencyIsNull_thenReturnMoney() {
+  public void testGetTotalTax2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
 
     OrderImpl order = new OrderImpl();
@@ -2424,11 +2188,11 @@ public class FulfillmentGroupItemImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
 
@@ -2450,10 +2214,13 @@ public class FulfillmentGroupItemImplDiffblueTest {
     fulfillmentGroup.setPrimary(true);
     fulfillmentGroup.setReferenceNumber("42");
     fulfillmentGroup.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroup.setRetailShippingPrice(new Money());
     fulfillmentGroup.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroup.setSaleShippingPrice(new Money());
     fulfillmentGroup.setSequence(1);
     fulfillmentGroup.setService("Service");
     fulfillmentGroup.setShippingOverride(true);
+    fulfillmentGroup.setShippingPrice(new Money());
     fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
     fulfillmentGroup.setTaxes(new ArrayList<>());
     fulfillmentGroup.setTotal(new Money());
@@ -2463,200 +2230,116 @@ public class FulfillmentGroupItemImplDiffblueTest {
     fulfillmentGroup.setTotalTax(new Money());
     fulfillmentGroup.setType(FulfillmentType.DIGITAL);
     fulfillmentGroup.setOrder(order);
-    Money totalTax = new Money();
-    fulfillmentGroupItemImpl.setTotalTax(totalTax);
-    fulfillmentGroupItemImpl.setFulfillmentGroup(fulfillmentGroup);
 
-    // Act and Assert
-    assertEquals(totalTax, fulfillmentGroupItemImpl.getTotalTax());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupItemImpl#getTotalTax()}.
-   *
-   * <ul>
-   *   <li>Then return Currency DisplayName is {@code British Pound}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#getTotalTax()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupItemImpl.getTotalTax()"})
-  public void testGetTotalTax_thenReturnCurrencyDisplayNameIsBritishPound() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setFulfillmentGroups(new ArrayList<>());
-    order.setId(OrderItemQualifierImpl.serialVersionUID);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAdjustments(new ArrayList<>());
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalTax(new Money());
-    order.setCurrency(currency);
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.setAddress(new AddressImpl());
-    fulfillmentGroup.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroup.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroup.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroup.setFulfillmentPrice(new Money());
-    fulfillmentGroup.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroup.setIsShippingPriceTaxable(true);
-    fulfillmentGroup.setMerchandiseTotal(new Money());
-    fulfillmentGroup.setMethod("Fulfillment Method");
-    fulfillmentGroup.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroup.setPhone(new PhoneImpl());
-    fulfillmentGroup.setPrimary(true);
-    fulfillmentGroup.setReferenceNumber("42");
-    fulfillmentGroup.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroup.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroup.setSequence(1);
-    fulfillmentGroup.setService("Service");
-    fulfillmentGroup.setShippingOverride(true);
-    fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroup.setTaxes(new ArrayList<>());
-    fulfillmentGroup.setTotal(new Money());
-    fulfillmentGroup.setTotalFeeTax(new Money());
-    fulfillmentGroup.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroup.setTotalItemTax(new Money());
-    fulfillmentGroup.setTotalTax(new Money());
-    fulfillmentGroup.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroup.setOrder(order);
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupItemImpl.setOrderItem(new BundleOrderItemImpl());
+    Money proratedOrderAdjustment = new Money();
+    fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(proratedOrderAdjustment);
+    fulfillmentGroupItemImpl.setQuantity(1);
+    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
+    fulfillmentGroupItemImpl.setTotalItemAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(new Money());
     fulfillmentGroupItemImpl.setTotalTax(new Money());
     fulfillmentGroupItemImpl.setFulfillmentGroup(fulfillmentGroup);
 
-    // Act
-    Money actualTotalTax = fulfillmentGroupItemImpl.getTotalTax();
-
-    // Assert
-    verify(currency).getCurrencyCode();
-    Currency currency2 = actualTotalTax.getCurrency();
-    assertEquals("British Pound", currency2.getDisplayName());
-    assertEquals("GBP", currency2.getCurrencyCode());
-    assertEquals("GBP", currency2.toString());
-    assertEquals("£", currency2.getSymbol());
-    assertEquals(826, currency2.getNumericCode());
-    Money actualAbsResult = actualTotalTax.abs();
-    assertEquals(actualTotalTax, actualAbsResult);
-    Money actualZeroResult = actualTotalTax.zero();
-    assertEquals(actualTotalTax, actualZeroResult);
+    // Act and Assert
+    assertEquals(proratedOrderAdjustment, fulfillmentGroupItemImpl.getTotalTax());
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#setTotalTax(Money)}.
-   *
-   * <ul>
-   *   <li>Then {@link FulfillmentGroupItemImpl} {@link FulfillmentGroupItemImpl#totalTax} is {@link
-   *       BigDecimal#BigDecimal(String)} with {@code 0.00}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#setTotalTax(Money)}
+   * Method under test: {@link FulfillmentGroupItemImpl#getTotalTax()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupItemImpl.setTotalTax(Money)"})
-  public void testSetTotalTax_thenFulfillmentGroupItemImplTotalTaxIsBigDecimalWith000() {
+  public void testGetTotalTax3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setTotalTax(mock(Money.class));
+
+    // Act and Assert
+    assertNull(fulfillmentGroupItemImpl.getTotalTax());
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupItemImpl#setTotalTax(Money)}
+   */
+  @Test
+  public void testSetTotalTax() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
     Money totalTax = new Money();
 
     // Act
     fulfillmentGroupItemImpl.setTotalTax(totalTax);
 
     // Assert
+    BigDecimal expectedAmount = new BigDecimal("0.00");
+    BigDecimal amount = totalTax.getAmount();
+    assertEquals(expectedAmount, amount);
     assertEquals(new BigDecimal("0.00"), fulfillmentGroupItemImpl.totalTax);
-    BigDecimal bigDecimal = fulfillmentGroupItemImpl.totalTax;
-    Money absResult = totalTax.abs();
-    assertSame(bigDecimal, absResult.getAmount());
-    Money absResult2 = absResult.abs();
-    assertSame(bigDecimal, absResult2.getAmount());
-    assertSame(bigDecimal, absResult2.abs().getAmount());
-    Money zeroResult = totalTax.zero();
-    Money absResult3 = zeroResult.abs();
-    assertSame(bigDecimal, absResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money zeroResult2 = absResult.zero();
-    assertSame(bigDecimal, zeroResult2.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    assertSame(bigDecimal, zeroResult3.abs().getAmount());
-    assertSame(bigDecimal, zeroResult.getAmount());
-    assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, absResult2.zero().getAmount());
-    assertSame(bigDecimal, absResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult2.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.zero().getAmount());
+    assertEquals(totalTax, totalTax.abs());
+    assertEquals(totalTax, totalTax.zero());
+    assertSame(fulfillmentGroupItemImpl.totalTax, amount);
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#setTotalTax(Money)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then {@link FulfillmentGroupItemImpl} {@link FulfillmentGroupItemImpl#totalTax} is {@code
-   *       null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#setTotalTax(Money)}
+   * Method under test: {@link FulfillmentGroupItemImpl#setTotalTax(Money)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupItemImpl.setTotalTax(Money)"})
-  public void testSetTotalTax_whenNull_thenFulfillmentGroupItemImplTotalTaxIsNull() {
-    // Arrange and Act
+  public void testSetTotalTax2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
+    fulfillmentGroupItemImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupItemImpl.setOrderItem(new BundleOrderItemImpl());
+    fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(new Money());
+    fulfillmentGroupItemImpl.setQuantity(1);
+    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
+    fulfillmentGroupItemImpl.setTotalItemAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalTax(new Money());
+
+    // Act
     fulfillmentGroupItemImpl.setTotalTax(null);
 
-    // Assert that nothing has changed
+    // Assert
     assertNull(fulfillmentGroupItemImpl.totalTax);
+    assertNull(fulfillmentGroupItemImpl.getTotalTax());
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#getCurrencyCode()}.
-   *
-   * <ul>
-   *   <li>Then return {@code GBP}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#getCurrencyCode()}
+   * Method under test: {@link FulfillmentGroupItemImpl#setTotalTax(Money)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String FulfillmentGroupItemImpl.getCurrencyCode()"})
-  public void testGetCurrencyCode_thenReturnGbp() {
+  public void testSetTotalTax3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+
+    // Act
+    fulfillmentGroupItemImpl.setTotalTax(mock(Money.class));
+
+    // Assert
+    assertNull(fulfillmentGroupItemImpl.totalTax);
+    assertNull(fulfillmentGroupItemImpl.getTotalTax());
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupItemImpl#getCurrencyCode()}
+   */
+  @Test
+  public void testGetCurrencyCode() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     FulfillmentGroupImpl fulfillmentGroup = mock(FulfillmentGroupImpl.class);
     when(fulfillmentGroup.getCurrencyCode()).thenReturn("GBP");
@@ -2673,140 +2356,23 @@ public class FulfillmentGroupItemImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#clone()}.
-   *
-   * <ul>
-   *   <li>Given {@link BroadleafCurrency} {@link BroadleafCurrency#getCurrencyCode()} return {@code
-   *       GBP}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#clone()}
+   * Method under test: {@link FulfillmentGroupItemImpl#clone()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FulfillmentGroupItem FulfillmentGroupItemImpl.clone()"})
-  public void testClone_givenBroadleafCurrencyGetCurrencyCodeReturnGbp() {
+  public void testClone() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
 
     Auditable auditable2 = new Auditable();
     auditable2.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable2.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable2);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setFulfillmentGroups(new ArrayList<>());
-    order.setId(OrderItemQualifierImpl.serialVersionUID);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAdjustments(new ArrayList<>());
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalTax(new Money());
-    order.setCurrency(currency);
-
-    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
-    orderItem.setAuditable(auditable);
-    orderItem.setBaseRetailPrice(new Money());
-    orderItem.setBaseSalePrice(new Money());
-    orderItem.setBundleOrderItemFeePrices(new ArrayList<>());
-    orderItem.setCandidateItemOffers(new ArrayList<>());
-    orderItem.setCartMessages(new ArrayList<>());
-    orderItem.setChildOrderItems(new ArrayList<>());
-    orderItem.setDiscountingAllowed(true);
-    orderItem.setDiscreteOrderItems(new ArrayList<>());
-    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
-    orderItem.setHasValidationError(true);
-    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
-    orderItem.setName("Name");
-    orderItem.setOrderItemAdjustments(new ArrayList<>());
-    orderItem.setOrderItemAttributes(new HashMap<>());
-    orderItem.setOrderItemPriceDetails(new ArrayList<>());
-    orderItem.setOrderItemQualifiers(new ArrayList<>());
-    orderItem.setOrderItemType(OrderItemType.BASIC);
-    orderItem.setParentOrderItem(new BundleOrderItemImpl());
-    orderItem.setPersonalMessage(new PersonalMessageImpl());
-    orderItem.setPrice(new Money());
-    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
-    orderItem.setQuantity(1);
-    orderItem.setRetailPrice(new Money());
-    orderItem.setRetailPriceOverride(true);
-    orderItem.setSalePrice(new Money());
-    orderItem.setSalePriceOverride(true);
-    orderItem.setTaxable(true);
-    orderItem.updateSaleAndRetailPrices();
-    orderItem.setOrder(order);
-    fulfillmentGroupItemImpl.setTotalItemAmount(null);
-    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(new Money());
-    fulfillmentGroupItemImpl.setOrderItem(orderItem);
-
-    // Act
-    FulfillmentGroupItem actualCloneResult = fulfillmentGroupItemImpl.clone();
-
-    // Assert
-    verify(currency).getCurrencyCode();
-    assertTrue(actualCloneResult.getOrderItem() instanceof BundleOrderItemImpl);
-    assertTrue(actualCloneResult instanceof FulfillmentGroupItemImpl);
-  }
-
-  /**
-   * Test {@link FulfillmentGroupItemImpl#clone()}.
-   *
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupItemImpl} (default constructor) FulfillmentGroup is {@link
-   *       FulfillmentGroupImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#clone()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FulfillmentGroupItem FulfillmentGroupItemImpl.clone()"})
-  public void testClone_givenFulfillmentGroupItemImplFulfillmentGroupIsFulfillmentGroupImpl() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-
-    Auditable auditable2 = new Auditable();
-    auditable2.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable2.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable2.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
 
     OrderImpl order = new OrderImpl();
@@ -2827,11 +2393,11 @@ public class FulfillmentGroupItemImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
 
@@ -2856,7 +2422,6 @@ public class FulfillmentGroupItemImplDiffblueTest {
     orderItem.setOrderItemType(OrderItemType.BASIC);
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
-    orderItem.setPrice(new Money());
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
     orderItem.setRetailPrice(new Money());
@@ -2876,57 +2441,35 @@ public class FulfillmentGroupItemImplDiffblueTest {
     fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
     fulfillmentGroupItemImpl.setTotalTax(new Money());
     fulfillmentGroupItemImpl.setTotalItemAmount(null);
-    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(null);
     fulfillmentGroupItemImpl.setOrderItem(orderItem);
+    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(null);
 
     // Act
     FulfillmentGroupItem actualCloneResult = fulfillmentGroupItemImpl.clone();
 
     // Assert
-    OrderItem orderItem2 = actualCloneResult.getOrderItem();
-    assertTrue(orderItem2 instanceof BundleOrderItemImpl);
     assertTrue(actualCloneResult instanceof FulfillmentGroupItemImpl);
-    assertTrue(orderItem2.getOrder() instanceof OrderImpl);
-    BigDecimal amount = actualCloneResult.getPrice().getAmount();
-    assertEquals(new BigDecimal("0.00"), amount);
-    assertSame(amount, actualCloneResult.getRetailPrice().getAmount());
-    assertSame(amount, ((BundleOrderItemImpl) orderItem2).baseRetailPrice);
-    assertSame(amount, ((BundleOrderItemImpl) orderItem2).baseSalePrice);
-    assertSame(amount, ((BundleOrderItemImpl) orderItem2).price);
-    assertSame(amount, ((BundleOrderItemImpl) orderItem2).retailPrice);
-    assertSame(amount, ((BundleOrderItemImpl) orderItem2).salePrice);
+    assertEquals(fulfillmentGroupItemImpl, actualCloneResult);
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#clone()}.
-   *
-   * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.
-   *   <li>Then return TotalItemTaxableAmount is {@link Money#Money()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#clone()}
+   * Method under test: {@link FulfillmentGroupItemImpl#clone()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FulfillmentGroupItem FulfillmentGroupItemImpl.clone()"})
-  public void testClone_givenOrderImplCurrencyIsNull_thenReturnTotalItemTaxableAmountIsMoney() {
+  public void testClone2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
 
     Auditable auditable2 = new Auditable();
     auditable2.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable2.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable2.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
 
     OrderImpl order = new OrderImpl();
@@ -2947,11 +2490,11 @@ public class FulfillmentGroupItemImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
 
@@ -2976,7 +2519,6 @@ public class FulfillmentGroupItemImplDiffblueTest {
     orderItem.setOrderItemType(OrderItemType.BASIC);
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
-    orderItem.setPrice(new Money());
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
     orderItem.setRetailPrice(new Money());
@@ -2986,253 +2528,103 @@ public class FulfillmentGroupItemImplDiffblueTest {
     orderItem.setTaxable(true);
     orderItem.updateSaleAndRetailPrices();
     orderItem.setOrder(order);
+
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
+    fulfillmentGroupItemImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(new Money());
+    fulfillmentGroupItemImpl.setQuantity(1);
+    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
+    fulfillmentGroupItemImpl.setTotalTax(new Money());
     fulfillmentGroupItemImpl.setTotalItemAmount(null);
-    Money taxableAmount = new Money();
-    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(taxableAmount);
     fulfillmentGroupItemImpl.setOrderItem(orderItem);
-
-    // Act
-    FulfillmentGroupItem actualCloneResult = fulfillmentGroupItemImpl.clone();
-
-    // Assert
-    assertTrue(actualCloneResult instanceof FulfillmentGroupItemImpl);
-    assertEquals(taxableAmount, actualCloneResult.getTotalItemTaxableAmount());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupItemImpl#clone()}.
-   *
-   * <ul>
-   *   <li>Then return {@link FulfillmentGroupItemImpl#totalItemTaxableAmount} is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#clone()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FulfillmentGroupItem FulfillmentGroupItemImpl.clone()"})
-  public void testClone_thenReturnTotalItemTaxableAmountIsNull() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-
-    Auditable auditable2 = new Auditable();
-    auditable2.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable2.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable2);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setFulfillmentGroups(new ArrayList<>());
-    order.setId(OrderItemQualifierImpl.serialVersionUID);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAdjustments(new ArrayList<>());
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalTax(new Money());
-    order.setCurrency(null);
-
-    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
-    orderItem.setAuditable(auditable);
-    orderItem.setBaseRetailPrice(new Money());
-    orderItem.setBaseSalePrice(new Money());
-    orderItem.setBundleOrderItemFeePrices(new ArrayList<>());
-    orderItem.setCandidateItemOffers(new ArrayList<>());
-    orderItem.setCartMessages(new ArrayList<>());
-    orderItem.setChildOrderItems(new ArrayList<>());
-    orderItem.setDiscountingAllowed(true);
-    orderItem.setDiscreteOrderItems(new ArrayList<>());
-    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
-    orderItem.setHasValidationError(true);
-    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
-    orderItem.setName("Name");
-    orderItem.setOrderItemAdjustments(new ArrayList<>());
-    orderItem.setOrderItemAttributes(new HashMap<>());
-    orderItem.setOrderItemPriceDetails(new ArrayList<>());
-    orderItem.setOrderItemQualifiers(new ArrayList<>());
-    orderItem.setOrderItemType(OrderItemType.BASIC);
-    orderItem.setParentOrderItem(new BundleOrderItemImpl());
-    orderItem.setPersonalMessage(new PersonalMessageImpl());
-    orderItem.setPrice(new Money());
-    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
-    orderItem.setQuantity(1);
-    orderItem.setRetailPrice(new Money());
-    orderItem.setRetailPriceOverride(true);
-    orderItem.setSalePrice(new Money());
-    orderItem.setSalePriceOverride(true);
-    orderItem.setTaxable(true);
-    orderItem.updateSaleAndRetailPrices();
-    orderItem.setOrder(order);
-    fulfillmentGroupItemImpl.setTotalItemAmount(null);
-    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(null);
-    fulfillmentGroupItemImpl.setOrderItem(orderItem);
-
-    // Act
-    FulfillmentGroupItem actualCloneResult = fulfillmentGroupItemImpl.clone();
-
-    // Assert
-    OrderItem orderItem2 = actualCloneResult.getOrderItem();
-    assertTrue(orderItem2 instanceof BundleOrderItemImpl);
-    assertTrue(actualCloneResult instanceof FulfillmentGroupItemImpl);
-    assertTrue(orderItem2.getOrder() instanceof OrderImpl);
-    assertNull(((FulfillmentGroupItemImpl) actualCloneResult).totalItemTaxableAmount);
-    assertNull(actualCloneResult.getTotalItemTaxableAmount());
-    BigDecimal amount = actualCloneResult.getPrice().getAmount();
-    assertEquals(new BigDecimal("0.00"), amount);
-    assertSame(amount, actualCloneResult.getRetailPrice().getAmount());
-    assertSame(amount, ((BundleOrderItemImpl) orderItem2).baseRetailPrice);
-    assertSame(amount, ((BundleOrderItemImpl) orderItem2).baseSalePrice);
-    assertSame(amount, ((BundleOrderItemImpl) orderItem2).price);
-    assertSame(amount, ((BundleOrderItemImpl) orderItem2).retailPrice);
-    assertSame(amount, ((BundleOrderItemImpl) orderItem2).salePrice);
-  }
-
-  /**
-   * Test {@link FulfillmentGroupItemImpl#clone()}.
-   *
-   * <ul>
-   *   <li>Then throw {@link RuntimeException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#clone()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FulfillmentGroupItem FulfillmentGroupItemImpl.clone()"})
-  public void testClone_thenThrowRuntimeException() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-
-    Auditable auditable2 = new Auditable();
-    auditable2.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable2.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenThrow(new RuntimeException());
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable2);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setFulfillmentGroups(new ArrayList<>());
-    order.setId(OrderItemQualifierImpl.serialVersionUID);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAdjustments(new ArrayList<>());
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalTax(new Money());
-    order.setCurrency(currency);
-
-    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
-    orderItem.setAuditable(auditable);
-    orderItem.setBaseRetailPrice(new Money());
-    orderItem.setBaseSalePrice(new Money());
-    orderItem.setBundleOrderItemFeePrices(new ArrayList<>());
-    orderItem.setCandidateItemOffers(new ArrayList<>());
-    orderItem.setCartMessages(new ArrayList<>());
-    orderItem.setChildOrderItems(new ArrayList<>());
-    orderItem.setDiscountingAllowed(true);
-    orderItem.setDiscreteOrderItems(new ArrayList<>());
-    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
-    orderItem.setHasValidationError(true);
-    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
-    orderItem.setName("Name");
-    orderItem.setOrderItemAdjustments(new ArrayList<>());
-    orderItem.setOrderItemAttributes(new HashMap<>());
-    orderItem.setOrderItemPriceDetails(new ArrayList<>());
-    orderItem.setOrderItemQualifiers(new ArrayList<>());
-    orderItem.setOrderItemType(OrderItemType.BASIC);
-    orderItem.setParentOrderItem(new BundleOrderItemImpl());
-    orderItem.setPersonalMessage(new PersonalMessageImpl());
-    orderItem.setPrice(new Money());
-    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
-    orderItem.setQuantity(1);
-    orderItem.setRetailPrice(new Money());
-    orderItem.setRetailPriceOverride(true);
-    orderItem.setSalePrice(new Money());
-    orderItem.setSalePriceOverride(true);
-    orderItem.setTaxable(true);
-    orderItem.updateSaleAndRetailPrices();
-    orderItem.setOrder(order);
-    fulfillmentGroupItemImpl.setTotalItemAmount(null);
     fulfillmentGroupItemImpl.setTotalItemTaxableAmount(new Money());
+
+    // Act
+    FulfillmentGroupItem actualCloneResult = fulfillmentGroupItemImpl.clone();
+
+    // Assert
+    assertTrue(actualCloneResult instanceof FulfillmentGroupItemImpl);
+    assertEquals(fulfillmentGroupItemImpl, actualCloneResult);
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupItemImpl#clone()}
+   */
+  @Test
+  public void testClone3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setOrderItem(new BundleOrderItemImpl());
+
+    // Act
+    FulfillmentGroupItem actualCloneResult = fulfillmentGroupItemImpl.clone();
+
+    // Assert
+    assertTrue(actualCloneResult instanceof FulfillmentGroupItemImpl);
+    assertEquals(fulfillmentGroupItemImpl, actualCloneResult);
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupItemImpl#clone()}
+   */
+  @Test
+  public void testClone4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setOrderItem(mock(OrderItem.class));
+
+    // Act
+    FulfillmentGroupItem actualCloneResult = fulfillmentGroupItemImpl.clone();
+
+    // Assert
+    assertTrue(actualCloneResult instanceof FulfillmentGroupItemImpl);
+    assertEquals(fulfillmentGroupItemImpl, actualCloneResult);
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupItemImpl#clone()}
+   */
+  @Test
+  public void testClone5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    OrderItem orderItem = mock(OrderItem.class);
+    when(orderItem.getOrder()).thenThrow(new RuntimeException("clone"));
+
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setTotalItemAmount(new Money(10.0d));
     fulfillmentGroupItemImpl.setOrderItem(orderItem);
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> fulfillmentGroupItemImpl.clone());
-    verify(currency).getCurrencyCode();
+    verify(orderItem).getOrder();
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * FulfillmentGroupItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test:
+   * {@link FulfillmentGroupItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse FulfillmentGroupItemImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse =
-        new CreateResponse<>(new FulfillmentGroupItemImpl(), true);
+    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<FulfillmentGroupItem> actualCreateOrRetrieveCopyInstanceResult =
-        fulfillmentGroupItemImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<FulfillmentGroupItem> actualCreateOrRetrieveCopyInstanceResult = fulfillmentGroupItemImpl
+        .createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -3240,56 +2632,67 @@ public class FulfillmentGroupItemImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#cloneTaxDetails(MultiTenantCopyContext,
-   * FulfillmentGroupItem)}.
-   *
-   * <ul>
-   *   <li>Given {@link DeferredOperation}.
-   *   <li>Then calls {@link MultiTenantCopyContext#addDeferredOperation(DeferredOperation)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#cloneTaxDetails(MultiTenantCopyContext,
-   * FulfillmentGroupItem)}
+   * Method under test:
+   * {@link FulfillmentGroupItemImpl#cloneTaxDetails(MultiTenantCopyContext, FulfillmentGroupItem)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void FulfillmentGroupItemImpl.cloneTaxDetails(MultiTenantCopyContext, FulfillmentGroupItem)"
-  })
-  public void testCloneTaxDetails_givenDeferredOperation_thenCallsAddDeferredOperation()
-      throws CloneNotSupportedException {
+  public void testCloneTaxDetails() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    doNothing().when(context).addDeferredOperation(Mockito.<DeferredOperation>any());
-    context.addDeferredOperation(mock(DeferredOperation.class));
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
+    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
+    MultiTenantCopyContext context = new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+        genericEntityService, new MultiTenantCopierExtensionManager());
+
+    FulfillmentGroupItemImpl cloned = new FulfillmentGroupItemImpl();
 
     // Act
-    fulfillmentGroupItemImpl.cloneTaxDetails(context, new FulfillmentGroupItemImpl());
+    fulfillmentGroupItemImpl.cloneTaxDetails(context, cloned);
 
-    // Assert
-    verify(context).addDeferredOperation(isA(DeferredOperation.class));
+    // Assert that nothing has changed
+    assertEquals(fulfillmentGroupItemImpl, cloned);
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#cloneTaxDetails(MultiTenantCopyContext,
-   * FulfillmentGroupItem)}.
-   *
-   * <ul>
-   *   <li>Then {@link FulfillmentGroupItemImpl} (default constructor) Taxes size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#cloneTaxDetails(MultiTenantCopyContext,
-   * FulfillmentGroupItem)}
+   * Method under test:
+   * {@link FulfillmentGroupItemImpl#cloneTaxDetails(MultiTenantCopyContext, FulfillmentGroupItem)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void FulfillmentGroupItemImpl.cloneTaxDetails(MultiTenantCopyContext, FulfillmentGroupItem)"
-  })
-  public void testCloneTaxDetails_thenFulfillmentGroupItemImplTaxesSizeIsOne()
-      throws CloneNotSupportedException {
+  public void testCloneTaxDetails2() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    CatalogImpl fromCatalog = mock(CatalogImpl.class);
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
+    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
+    MultiTenantCopyContext context = new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+        genericEntityService, new MultiTenantCopierExtensionManager());
+
+    FulfillmentGroupItemImpl cloned = new FulfillmentGroupItemImpl();
+
+    // Act
+    fulfillmentGroupItemImpl.cloneTaxDetails(context, cloned);
+
+    // Assert that nothing has changed
+    assertEquals(fulfillmentGroupItemImpl, cloned);
+  }
+
+  /**
+   * Method under test:
+   * {@link FulfillmentGroupItemImpl#cloneTaxDetails(MultiTenantCopyContext, FulfillmentGroupItem)}
+   */
+  @Test
+  public void testCloneTaxDetails3() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     TaxDetailImpl taxDetailImpl = mock(TaxDetailImpl.class);
     TaxDetailImpl taxDetailImpl2 = new TaxDetailImpl();
@@ -3314,16 +2717,10 @@ public class FulfillmentGroupItemImplDiffblueTest {
     CatalogImpl toCatalog = new CatalogImpl();
     SiteImpl fromSite = new SiteImpl();
     SiteImpl toSite = new SiteImpl();
-    GenericEntityService genericEntityService = mock(GenericEntityService.class);
+    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
+    MultiTenantCopyContext context = new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+        genericEntityService, new MultiTenantCopierExtensionManager());
 
-    MultiTenantCopyContext context =
-        new MultiTenantCopyContext(
-            fromCatalog,
-            toCatalog,
-            fromSite,
-            toSite,
-            genericEntityService,
-            new MultiTenantCopierExtensionManager());
     FulfillmentGroupItemImpl cloned = new FulfillmentGroupItemImpl();
 
     // Act
@@ -3337,16 +2734,36 @@ public class FulfillmentGroupItemImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#getHasProratedOrderAdjustments()}.
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#getHasProratedOrderAdjustments()}
+   * Method under test:
+   * {@link FulfillmentGroupItemImpl#getHasProratedOrderAdjustments()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean FulfillmentGroupItemImpl.getHasProratedOrderAdjustments()"})
   public void testGetHasProratedOrderAdjustments() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertFalse((new FulfillmentGroupItemImpl()).getHasProratedOrderAdjustments());
+  }
+
+  /**
+   * Method under test:
+   * {@link FulfillmentGroupItemImpl#getHasProratedOrderAdjustments()}
+   */
+  @Test
+  public void testGetHasProratedOrderAdjustments2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
+    fulfillmentGroupItemImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupItemImpl.setOrderItem(new BundleOrderItemImpl());
+    fulfillmentGroupItemImpl.setQuantity(1);
+    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
+    fulfillmentGroupItemImpl.setTotalItemAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalTax(new Money());
     fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(new Money());
 
     // Act and Assert
@@ -3354,39 +2771,49 @@ public class FulfillmentGroupItemImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#getHasProratedOrderAdjustments()}.
-   *
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupItemImpl}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#getHasProratedOrderAdjustments()}
+   * Method under test:
+   * {@link FulfillmentGroupItemImpl#getHasProratedOrderAdjustments()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean FulfillmentGroupItemImpl.getHasProratedOrderAdjustments()"})
-  public void testGetHasProratedOrderAdjustments_givenFulfillmentGroupItemImpl_thenReturnFalse() {
-    // Arrange, Act and Assert
+  public void testGetHasProratedOrderAdjustments3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setFulfillmentGroup(mock(FulfillmentGroupImpl.class));
+    fulfillmentGroupItemImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupItemImpl.setOrderItem(new BundleOrderItemImpl());
+    fulfillmentGroupItemImpl.setQuantity(1);
+    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
+    fulfillmentGroupItemImpl.setTotalItemAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalTax(new Money());
+    fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(new Money());
+
+    // Act and Assert
     assertFalse(fulfillmentGroupItemImpl.getHasProratedOrderAdjustments());
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#getHasProratedOrderAdjustments()}.
-   *
-   * <ul>
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#getHasProratedOrderAdjustments()}
+   * Method under test:
+   * {@link FulfillmentGroupItemImpl#getHasProratedOrderAdjustments()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean FulfillmentGroupItemImpl.getHasProratedOrderAdjustments()"})
-  public void testGetHasProratedOrderAdjustments_thenReturnTrue() {
+  public void testGetHasProratedOrderAdjustments4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
+    fulfillmentGroupItemImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupItemImpl.setOrderItem(new BundleOrderItemImpl());
+    fulfillmentGroupItemImpl.setQuantity(1);
+    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
+    fulfillmentGroupItemImpl.setTotalItemAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalTax(new Money());
     fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(new Money(10.0d));
 
     // Act and Assert
@@ -3394,28 +2821,13 @@ public class FulfillmentGroupItemImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#equals(Object)}, and {@link
-   * FulfillmentGroupItemImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link FulfillmentGroupItemImpl#equals(Object)}
    *   <li>{@link FulfillmentGroupItemImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupItemImpl.equals(Object)",
-    "int FulfillmentGroupItemImpl.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
@@ -3444,33 +2856,59 @@ public class FulfillmentGroupItemImplDiffblueTest {
 
     // Act and Assert
     assertEquals(fulfillmentGroupItemImpl, fulfillmentGroupItemImpl2);
-    assertEquals(fulfillmentGroupItemImpl.hashCode(), fulfillmentGroupItemImpl2.hashCode());
+    int expectedHashCodeResult = fulfillmentGroupItemImpl.hashCode();
+    assertEquals(expectedHashCodeResult, fulfillmentGroupItemImpl2.hashCode());
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#equals(Object)}, and {@link
-   * FulfillmentGroupItemImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link FulfillmentGroupItemImpl#equals(Object)}
    *   <li>{@link FulfillmentGroupItemImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupItemImpl.equals(Object)",
-    "int FulfillmentGroupItemImpl.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
+    // Arrange
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl.setFulfillmentGroup(mock(FulfillmentGroup.class));
+    fulfillmentGroupItemImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupItemImpl.setOrderItem(new BundleOrderItemImpl());
+    fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(new Money());
+    fulfillmentGroupItemImpl.setQuantity(1);
+    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
+    fulfillmentGroupItemImpl.setTotalItemAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(new Money());
+    fulfillmentGroupItemImpl.setTotalTax(new Money());
+
+    FulfillmentGroupItemImpl fulfillmentGroupItemImpl2 = new FulfillmentGroupItemImpl();
+    fulfillmentGroupItemImpl2.setFulfillmentGroup(new FulfillmentGroupImpl());
+    fulfillmentGroupItemImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupItemImpl2.setOrderItem(new BundleOrderItemImpl());
+    fulfillmentGroupItemImpl2.setProratedOrderAdjustmentAmount(new Money());
+    fulfillmentGroupItemImpl2.setQuantity(1);
+    fulfillmentGroupItemImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
+    fulfillmentGroupItemImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupItemImpl2.setTotalItemAmount(new Money());
+    fulfillmentGroupItemImpl2.setTotalItemTaxableAmount(new Money());
+    fulfillmentGroupItemImpl2.setTotalTax(new Money());
+
+    // Act and Assert
+    assertEquals(fulfillmentGroupItemImpl, fulfillmentGroupItemImpl2);
+    int expectedHashCodeResult = fulfillmentGroupItemImpl.hashCode();
+    assertEquals(expectedHashCodeResult, fulfillmentGroupItemImpl2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link FulfillmentGroupItemImpl#equals(Object)}
+   *   <li>{@link FulfillmentGroupItemImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
     fulfillmentGroupItemImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
@@ -3498,33 +2936,19 @@ public class FulfillmentGroupItemImplDiffblueTest {
 
     // Act and Assert
     assertEquals(fulfillmentGroupItemImpl, fulfillmentGroupItemImpl2);
-    assertEquals(fulfillmentGroupItemImpl.hashCode(), fulfillmentGroupItemImpl2.hashCode());
+    int expectedHashCodeResult = fulfillmentGroupItemImpl.hashCode();
+    assertEquals(expectedHashCodeResult, fulfillmentGroupItemImpl2.hashCode());
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#equals(Object)}, and {@link
-   * FulfillmentGroupItemImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link FulfillmentGroupItemImpl#equals(Object)}
    *   <li>{@link FulfillmentGroupItemImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupItemImpl.equals(Object)",
-    "int FulfillmentGroupItemImpl.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
     FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
     fulfillmentGroupItemImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
@@ -3552,86 +2976,18 @@ public class FulfillmentGroupItemImplDiffblueTest {
 
     // Act and Assert
     assertEquals(fulfillmentGroupItemImpl, fulfillmentGroupItemImpl2);
-    assertEquals(fulfillmentGroupItemImpl.hashCode(), fulfillmentGroupItemImpl2.hashCode());
+    int expectedHashCodeResult = fulfillmentGroupItemImpl.hashCode();
+    assertEquals(expectedHashCodeResult, fulfillmentGroupItemImpl2.hashCode());
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#equals(Object)}, and {@link
-   * FulfillmentGroupItemImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link FulfillmentGroupItemImpl#equals(Object)}
    *   <li>{@link FulfillmentGroupItemImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupItemImpl.equals(Object)",
-    "int FulfillmentGroupItemImpl.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
-    // Arrange
-    FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
-    fulfillmentGroupItemImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
-    fulfillmentGroupItemImpl.setId(null);
-    fulfillmentGroupItemImpl.setOrderItem(null);
-    fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(new Money());
-    fulfillmentGroupItemImpl.setQuantity(1);
-    fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupItemImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupItemImpl.setTotalItemAmount(new Money());
-    fulfillmentGroupItemImpl.setTotalItemTaxableAmount(new Money());
-    fulfillmentGroupItemImpl.setTotalTax(new Money());
-
-    FulfillmentGroupItemImpl fulfillmentGroupItemImpl2 = new FulfillmentGroupItemImpl();
-    fulfillmentGroupItemImpl2.setFulfillmentGroup(new FulfillmentGroupImpl());
-    fulfillmentGroupItemImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupItemImpl2.setOrderItem(null);
-    fulfillmentGroupItemImpl2.setProratedOrderAdjustmentAmount(new Money());
-    fulfillmentGroupItemImpl2.setQuantity(1);
-    fulfillmentGroupItemImpl2.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroupItemImpl2.setTaxes(new ArrayList<>());
-    fulfillmentGroupItemImpl2.setTotalItemAmount(new Money());
-    fulfillmentGroupItemImpl2.setTotalItemTaxableAmount(new Money());
-    fulfillmentGroupItemImpl2.setTotalTax(new Money());
-
-    // Act and Assert
-    assertEquals(fulfillmentGroupItemImpl, fulfillmentGroupItemImpl2);
-    assertEquals(fulfillmentGroupItemImpl.hashCode(), fulfillmentGroupItemImpl2.hashCode());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupItemImpl#equals(Object)}, and {@link
-   * FulfillmentGroupItemImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link FulfillmentGroupItemImpl#equals(Object)}
-   *   <li>{@link FulfillmentGroupItemImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupItemImpl.equals(Object)",
-    "int FulfillmentGroupItemImpl.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
@@ -3653,22 +3009,9 @@ public class FulfillmentGroupItemImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#equals(Object)}
+   * Method under test: {@link FulfillmentGroupItemImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupItemImpl.equals(Object)",
-    "int FulfillmentGroupItemImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
@@ -3700,28 +3043,48 @@ public class FulfillmentGroupItemImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#equals(Object)}
+   * Method under test: {@link FulfillmentGroupItemImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupItemImpl.equals(Object)",
-    "int FulfillmentGroupItemImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
+
+    OrderItemImpl orderItem = new OrderItemImpl();
+    orderItem.setAuditable(auditable);
+    orderItem.setCandidateItemOffers(new ArrayList<>());
+    orderItem.setCartMessages(new ArrayList<>());
+    orderItem.setChildOrderItems(new ArrayList<>());
+    orderItem.setDiscountingAllowed(true);
+    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItem.setHasValidationError(true);
+    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItem.setName("Name");
+    orderItem.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    orderItem.setOrderItemAdjustments(new ArrayList<>());
+    orderItem.setOrderItemAttributes(new HashMap<>());
+    orderItem.setOrderItemPriceDetails(new ArrayList<>());
+    orderItem.setOrderItemQualifiers(new ArrayList<>());
+    orderItem.setOrderItemType(OrderItemType.BASIC);
+    orderItem.setParentOrderItem(new BundleOrderItemImpl());
+    orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItem.setQuantity(1);
+    orderItem.setRetailPrice(new Money());
+    orderItem.setRetailPriceOverride(true);
+    orderItem.setSalePrice(new Money());
+    orderItem.setSalePriceOverride(true);
+    orderItem.setTaxable(true);
+    orderItem.updateSaleAndRetailPrices();
+
     FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
     fulfillmentGroupItemImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
     fulfillmentGroupItemImpl.setId(null);
-    fulfillmentGroupItemImpl.setOrderItem(new DiscreteOrderItemImpl());
+    fulfillmentGroupItemImpl.setOrderItem(orderItem);
     fulfillmentGroupItemImpl.setProratedOrderAdjustmentAmount(new Money());
     fulfillmentGroupItemImpl.setQuantity(1);
     fulfillmentGroupItemImpl.setStatus(FulfillmentGroupStatusType.CANCELLED);
@@ -3747,22 +3110,9 @@ public class FulfillmentGroupItemImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#equals(Object)}
+   * Method under test: {@link FulfillmentGroupItemImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupItemImpl.equals(Object)",
-    "int FulfillmentGroupItemImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
@@ -3794,22 +3144,9 @@ public class FulfillmentGroupItemImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#equals(Object)}
+   * Method under test: {@link FulfillmentGroupItemImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupItemImpl.equals(Object)",
-    "int FulfillmentGroupItemImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
@@ -3829,22 +3166,9 @@ public class FulfillmentGroupItemImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupItemImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupItemImpl#equals(Object)}
+   * Method under test: {@link FulfillmentGroupItemImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupItemImpl.equals(Object)",
-    "int FulfillmentGroupItemImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     FulfillmentGroupItemImpl fulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
@@ -3864,10 +3188,7 @@ public class FulfillmentGroupItemImplDiffblueTest {
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link FulfillmentGroupItemImpl}
    *   <li>{@link FulfillmentGroupItemImpl#setFulfillmentGroup(FulfillmentGroup)}
@@ -3883,21 +3204,6 @@ public class FulfillmentGroupItemImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void FulfillmentGroupItemImpl.<init>()",
-    "FulfillmentGroup FulfillmentGroupItemImpl.getFulfillmentGroup()",
-    "Long FulfillmentGroupItemImpl.getId()",
-    "OrderItem FulfillmentGroupItemImpl.getOrderItem()",
-    "int FulfillmentGroupItemImpl.getQuantity()",
-    "List FulfillmentGroupItemImpl.getTaxes()",
-    "void FulfillmentGroupItemImpl.setFulfillmentGroup(FulfillmentGroup)",
-    "void FulfillmentGroupItemImpl.setId(Long)",
-    "void FulfillmentGroupItemImpl.setOrderItem(OrderItem)",
-    "void FulfillmentGroupItemImpl.setQuantity(int)",
-    "void FulfillmentGroupItemImpl.setTaxes(List)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     FulfillmentGroupItemImpl actualFulfillmentGroupItemImpl = new FulfillmentGroupItemImpl();
@@ -3915,7 +3221,7 @@ public class FulfillmentGroupItemImplDiffblueTest {
     int actualQuantity = actualFulfillmentGroupItemImpl.getQuantity();
     List<TaxDetail> actualTaxes = actualFulfillmentGroupItemImpl.getTaxes();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals(1, actualQuantity);
     assertTrue(actualTaxes.isEmpty());
     assertEquals(OrderItemQualifierImpl.serialVersionUID, actualId.longValue());

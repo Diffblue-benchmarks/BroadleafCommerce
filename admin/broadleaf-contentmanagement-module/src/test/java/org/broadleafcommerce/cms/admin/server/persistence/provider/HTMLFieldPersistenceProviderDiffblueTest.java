@@ -18,38 +18,154 @@
 package org.broadleafcommerce.cms.admin.server.persistence.provider;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.junit.Assert.assertFalse;
+import static org.mockito.Mockito.mock;
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import org.broadleafcommerce.common.persistence.EntityConfiguration;
+import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
+import org.broadleafcommerce.openadmin.dto.Entity;
+import org.broadleafcommerce.openadmin.dto.Property;
+import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceException;
+import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceManagerImpl;
+import org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule;
+import org.broadleafcommerce.openadmin.server.service.persistence.module.FieldManager;
+import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.ExtractValueRequest;
+import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.PopulateValueRequest;
+import org.broadleafcommerce.openadmin.server.service.type.MetadataProviderResponse;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class HTMLFieldPersistenceProviderDiffblueTest {
   /**
-   * Test {@link HTMLFieldPersistenceProvider#getOrder()}.
-   *
-   * <p>Method under test: {@link HTMLFieldPersistenceProvider#getOrder()}
+   * Method under test:
+   * {@link HTMLFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest, Serializable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int HTMLFieldPersistenceProvider.getOrder()"})
-  public void testGetOrder() {
-    // Arrange, Act and Assert
-    assertEquals(60000, new HTMLFieldPersistenceProvider().getOrder());
+  public void testCanHandlePersistence() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    HTMLFieldPersistenceProvider htmlFieldPersistenceProvider = new HTMLFieldPersistenceProvider();
+    FieldManager fieldManager = new FieldManager(mock(EntityConfiguration.class), null);
+
+    Property property = new Property();
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    Class<Object> returnType = Object.class;
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
+        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
+
+    // Act and Assert
+    assertFalse(
+        htmlFieldPersistenceProvider.canHandlePersistence(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd")));
   }
 
   /**
-   * Test {@link HTMLFieldPersistenceProvider#getOrder()}.
-   *
-   * <p>Method under test: {@link HTMLFieldPersistenceProvider#getOrder()}
+   * Method under test:
+   * {@link HTMLFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int HTMLFieldPersistenceProvider.getOrder()"})
-  public void testGetOrder2() {
+  public void testCanHandleExtraction() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    HTMLFieldPersistenceProvider htmlFieldPersistenceProvider = new HTMLFieldPersistenceProvider();
+    ArrayList<Property> props = new ArrayList<>();
+    FieldManager fieldManager = new FieldManager(mock(EntityConfiguration.class), null);
+
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
+    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
+        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
+        new String[]{"Custom Criteria"});
+
+    // Act and Assert
+    assertFalse(htmlFieldPersistenceProvider.canHandleExtraction(extractValueRequest, new Property()));
+  }
+
+  /**
+   * Method under test:
+   * {@link HTMLFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}
+   */
+  @Test
+  public void testPopulateValue() throws PersistenceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    HTMLFieldPersistenceProvider htmlFieldPersistenceProvider = new HTMLFieldPersistenceProvider();
+    FieldManager fieldManager = new FieldManager(mock(EntityConfiguration.class), null);
+
+    Property property = new Property();
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    Class<Object> returnType = Object.class;
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
+        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
+
+    // Act and Assert
+    assertEquals(MetadataProviderResponse.NOT_HANDLED,
+        htmlFieldPersistenceProvider.populateValue(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd")));
+  }
+
+  /**
+   * Method under test:
+   * {@link HTMLFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}
+   */
+  @Test
+  public void testExtractValue() throws PersistenceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    HTMLFieldPersistenceProvider htmlFieldPersistenceProvider = new HTMLFieldPersistenceProvider();
+    ArrayList<Property> props = new ArrayList<>();
+    FieldManager fieldManager = new FieldManager(mock(EntityConfiguration.class), null);
+
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
+    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
+        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
+        new String[]{"Custom Criteria"});
+
+    // Act and Assert
+    assertEquals(MetadataProviderResponse.NOT_HANDLED,
+        htmlFieldPersistenceProvider.extractValue(extractValueRequest, new Property()));
+  }
+
+  /**
+   * Method under test:
+   * {@link HTMLFieldPersistenceProvider#fixAssetPathsForStorage(String)}
+   */
+  @Test
+  public void testFixAssetPathsForStorage() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertEquals(60000, new HTMLFieldPersistenceProvider().getOrder());
+    assertEquals("Val", (new HTMLFieldPersistenceProvider()).fixAssetPathsForStorage("Val"));
+  }
+
+  /**
+   * Method under test:
+   * {@link HTMLFieldPersistenceProvider#fixAssetPathsForDisplay(String)}
+   */
+  @Test
+  public void testFixAssetPathsForDisplay() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertEquals("Val", (new HTMLFieldPersistenceProvider()).fixAssetPathsForDisplay("Val"));
+  }
+
+  /**
+   * Method under test: {@link HTMLFieldPersistenceProvider#getOrder()}
+   */
+  @Test
+  public void testGetOrder() {
+    // Arrange, Act and Assert
+    assertEquals(60000, (new HTMLFieldPersistenceProvider()).getOrder());
   }
 }

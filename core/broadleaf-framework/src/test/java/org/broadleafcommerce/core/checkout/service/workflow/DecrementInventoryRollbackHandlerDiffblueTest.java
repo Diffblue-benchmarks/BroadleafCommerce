@@ -19,174 +19,128 @@ package org.broadleafcommerce.core.checkout.service.workflow;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import java.util.HashMap;
 import java.util.Map;
 import org.broadleafcommerce.core.workflow.Activity;
 import org.broadleafcommerce.core.workflow.DefaultProcessContextImpl;
 import org.broadleafcommerce.core.workflow.ProcessContext;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
 public class DecrementInventoryRollbackHandlerDiffblueTest {
-  @InjectMocks private DecrementInventoryRollbackHandler decrementInventoryRollbackHandler;
-
   /**
-   * Test {@link DecrementInventoryRollbackHandler#shouldExecute(Activity, ProcessContext, Map)}.
-   *
-   * <p>Method under test: {@link DecrementInventoryRollbackHandler#shouldExecute(Activity,
-   * ProcessContext, Map)}
+   * Method under test:
+   * {@link DecrementInventoryRollbackHandler#shouldExecute(Activity, ProcessContext, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean DecrementInventoryRollbackHandler.shouldExecute(Activity, ProcessContext, Map)"
-  })
   public void testShouldExecute() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    DecrementInventoryRollbackHandler decrementInventoryRollbackHandler = new DecrementInventoryRollbackHandler();
     CommitTaxActivity activity = new CommitTaxActivity(new CommitTaxRollbackHandler());
     DefaultProcessContextImpl<CheckoutSeed> processContext = new DefaultProcessContextImpl<>();
 
-    HashMap<String, Object> stateConfiguration = new HashMap<>();
-    stateConfiguration.put(
-        DecrementInventoryRollbackHandler.ROLLBACK_BLC_INVENTORY_DECREMENTED, null);
-    stateConfiguration.put(
-        DecrementInventoryRollbackHandler.ROLLBACK_BLC_INVENTORY_INCREMENTED,
-        "State Configuration");
-    stateConfiguration.put(DecrementInventoryRollbackHandler.EXTENDED_ROLLBACK_STATE, null);
-
     // Act and Assert
-    assertTrue(
-        decrementInventoryRollbackHandler.shouldExecute(
-            activity, processContext, stateConfiguration));
+    assertFalse(decrementInventoryRollbackHandler.shouldExecute(activity, processContext, new HashMap<>()));
   }
 
   /**
-   * Test {@link DecrementInventoryRollbackHandler#shouldExecute(Activity, ProcessContext, Map)}.
-   *
-   * <p>Method under test: {@link DecrementInventoryRollbackHandler#shouldExecute(Activity,
-   * ProcessContext, Map)}
+   * Method under test:
+   * {@link DecrementInventoryRollbackHandler#shouldExecute(Activity, ProcessContext, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean DecrementInventoryRollbackHandler.shouldExecute(Activity, ProcessContext, Map)"
-  })
   public void testShouldExecute2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    DecrementInventoryRollbackHandler decrementInventoryRollbackHandler = new DecrementInventoryRollbackHandler();
+    CommitTaxActivity activity = new CommitTaxActivity(new CommitTaxRollbackHandler());
+
+    // Act and Assert
+    assertFalse(decrementInventoryRollbackHandler.shouldExecute(activity, new DefaultProcessContextImpl<>(), null));
+  }
+
+  /**
+   * Method under test:
+   * {@link DecrementInventoryRollbackHandler#shouldExecute(Activity, ProcessContext, Map)}
+   */
+  @Test
+  public void testShouldExecute3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    DecrementInventoryRollbackHandler decrementInventoryRollbackHandler = new DecrementInventoryRollbackHandler();
     CommitTaxActivity activity = new CommitTaxActivity(new CommitTaxRollbackHandler());
     DefaultProcessContextImpl<CheckoutSeed> processContext = new DefaultProcessContextImpl<>();
 
     HashMap<String, Object> stateConfiguration = new HashMap<>();
-    stateConfiguration.put(
-        DecrementInventoryRollbackHandler.ROLLBACK_BLC_INVENTORY_DECREMENTED,
-        "State Configuration");
-    stateConfiguration.put(
-        DecrementInventoryRollbackHandler.ROLLBACK_BLC_INVENTORY_INCREMENTED, null);
+    stateConfiguration.put(DecrementInventoryRollbackHandler.ROLLBACK_BLC_INVENTORY_DECREMENTED, null);
+    stateConfiguration.put(DecrementInventoryRollbackHandler.ROLLBACK_BLC_INVENTORY_INCREMENTED, null);
+    stateConfiguration.put(DecrementInventoryRollbackHandler.EXTENDED_ROLLBACK_STATE, "State Configuration");
+
+    // Act and Assert
+    assertTrue(decrementInventoryRollbackHandler.shouldExecute(activity, processContext, stateConfiguration));
+  }
+
+  /**
+   * Method under test:
+   * {@link DecrementInventoryRollbackHandler#shouldExecute(Activity, ProcessContext, Map)}
+   */
+  @Test
+  public void testShouldExecute4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    DecrementInventoryRollbackHandler decrementInventoryRollbackHandler = new DecrementInventoryRollbackHandler();
+    CommitTaxActivity activity = new CommitTaxActivity(new CommitTaxRollbackHandler());
+    DefaultProcessContextImpl<CheckoutSeed> processContext = new DefaultProcessContextImpl<>();
+
+    HashMap<String, Object> stateConfiguration = new HashMap<>();
+    stateConfiguration.put(DecrementInventoryRollbackHandler.ROLLBACK_BLC_INVENTORY_DECREMENTED, null);
+    stateConfiguration.put(DecrementInventoryRollbackHandler.ROLLBACK_BLC_INVENTORY_INCREMENTED, "State Configuration");
     stateConfiguration.put(DecrementInventoryRollbackHandler.EXTENDED_ROLLBACK_STATE, null);
 
     // Act and Assert
-    assertTrue(
-        decrementInventoryRollbackHandler.shouldExecute(
-            activity, processContext, stateConfiguration));
+    assertTrue(decrementInventoryRollbackHandler.shouldExecute(activity, processContext, stateConfiguration));
   }
 
   /**
-   * Test {@link DecrementInventoryRollbackHandler#shouldExecute(Activity, ProcessContext, Map)}.
-   *
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()} {@link
-   *       DecrementInventoryRollbackHandler#EXTENDED_ROLLBACK_STATE} is {@code State
-   *       Configuration}.
-   * </ul>
-   *
-   * <p>Method under test: {@link DecrementInventoryRollbackHandler#shouldExecute(Activity,
-   * ProcessContext, Map)}
+   * Method under test:
+   * {@link DecrementInventoryRollbackHandler#shouldExecute(Activity, ProcessContext, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean DecrementInventoryRollbackHandler.shouldExecute(Activity, ProcessContext, Map)"
-  })
-  public void testShouldExecute_whenHashMapExtended_rollback_stateIsStateConfiguration() {
+  public void testShouldExecute5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    DecrementInventoryRollbackHandler decrementInventoryRollbackHandler = new DecrementInventoryRollbackHandler();
     CommitTaxActivity activity = new CommitTaxActivity(new CommitTaxRollbackHandler());
     DefaultProcessContextImpl<CheckoutSeed> processContext = new DefaultProcessContextImpl<>();
 
     HashMap<String, Object> stateConfiguration = new HashMap<>();
-    stateConfiguration.put(
-        DecrementInventoryRollbackHandler.ROLLBACK_BLC_INVENTORY_DECREMENTED, null);
-    stateConfiguration.put(
-        DecrementInventoryRollbackHandler.ROLLBACK_BLC_INVENTORY_INCREMENTED, null);
-    stateConfiguration.put(
-        DecrementInventoryRollbackHandler.EXTENDED_ROLLBACK_STATE, "State Configuration");
+    stateConfiguration.put(DecrementInventoryRollbackHandler.ROLLBACK_BLC_INVENTORY_DECREMENTED, "State Configuration");
+    stateConfiguration.put(DecrementInventoryRollbackHandler.ROLLBACK_BLC_INVENTORY_INCREMENTED, null);
+    stateConfiguration.put(DecrementInventoryRollbackHandler.EXTENDED_ROLLBACK_STATE, null);
 
     // Act and Assert
-    assertTrue(
-        decrementInventoryRollbackHandler.shouldExecute(
-            activity, processContext, stateConfiguration));
+    assertTrue(decrementInventoryRollbackHandler.shouldExecute(activity, processContext, stateConfiguration));
   }
 
   /**
-   * Test {@link DecrementInventoryRollbackHandler#shouldExecute(Activity, ProcessContext, Map)}.
-   *
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link DecrementInventoryRollbackHandler#shouldExecute(Activity,
-   * ProcessContext, Map)}
+   * Method under test:
+   * {@link DecrementInventoryRollbackHandler#shouldExecute(Activity, ProcessContext, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean DecrementInventoryRollbackHandler.shouldExecute(Activity, ProcessContext, Map)"
-  })
-  public void testShouldExecute_whenHashMap_thenReturnFalse() {
+  public void testShouldExecute6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    CommitTaxActivity activity = new CommitTaxActivity(new CommitTaxRollbackHandler());
+    DecrementInventoryRollbackHandler decrementInventoryRollbackHandler = new DecrementInventoryRollbackHandler();
+    CommitTaxActivity activity = new CommitTaxActivity(mock(CommitTaxRollbackHandler.class));
     DefaultProcessContextImpl<CheckoutSeed> processContext = new DefaultProcessContextImpl<>();
 
     // Act and Assert
-    assertFalse(
-        decrementInventoryRollbackHandler.shouldExecute(activity, processContext, new HashMap<>()));
-  }
-
-  /**
-   * Test {@link DecrementInventoryRollbackHandler#shouldExecute(Activity, ProcessContext, Map)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link DecrementInventoryRollbackHandler#shouldExecute(Activity,
-   * ProcessContext, Map)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean DecrementInventoryRollbackHandler.shouldExecute(Activity, ProcessContext, Map)"
-  })
-  public void testShouldExecute_whenNull_thenReturnFalse() {
-    // Arrange
-    CommitTaxActivity activity = new CommitTaxActivity(new CommitTaxRollbackHandler());
-
-    // Act and Assert
-    assertFalse(
-        decrementInventoryRollbackHandler.shouldExecute(
-            activity, new DefaultProcessContextImpl<>(), null));
+    assertFalse(decrementInventoryRollbackHandler.shouldExecute(activity, processContext, new HashMap<>()));
   }
 }

@@ -27,21 +27,16 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import org.broadleafcommerce.common.audit.Auditable;
 import org.broadleafcommerce.common.copy.CreateResponse;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
-import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.core.order.service.type.FulfillmentGroupStatusType;
@@ -51,62 +46,32 @@ import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.broadleafcommerce.profile.core.domain.PhoneImpl;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(SpringJUnit4ClassRunner.class)
 public class FulfillmentGroupFeeImplDiffblueTest {
-  @Autowired private FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl;
-
   /**
-   * Test {@link FulfillmentGroupFeeImpl#getAmount()}.
-   *
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupFeeImpl}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupFeeImpl#getAmount()}
+   * Method under test: {@link FulfillmentGroupFeeImpl#getAmount()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupFeeImpl.getAmount()"})
-  public void testGetAmount_givenFulfillmentGroupFeeImpl_thenReturnNull() {
+  public void testGetAmount() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertNull(fulfillmentGroupFeeImpl.getAmount());
+    assertNull((new FulfillmentGroupFeeImpl()).getAmount());
   }
 
   /**
-   * Test {@link FulfillmentGroupFeeImpl#getAmount()}.
-   *
-   * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.
-   *   <li>Then return {@link Money#Money()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupFeeImpl#getAmount()}
+   * Method under test: {@link FulfillmentGroupFeeImpl#getAmount()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupFeeImpl.getAmount()"})
-  public void testGetAmount_givenOrderImplCurrencyIsNull_thenReturnMoney() {
+  public void testGetAmount2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
 
     OrderImpl order = new OrderImpl();
@@ -127,11 +92,11 @@ public class FulfillmentGroupFeeImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
 
@@ -153,10 +118,13 @@ public class FulfillmentGroupFeeImplDiffblueTest {
     fulfillmentGroup.setPrimary(true);
     fulfillmentGroup.setReferenceNumber("42");
     fulfillmentGroup.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroup.setRetailShippingPrice(new Money());
     fulfillmentGroup.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroup.setSaleShippingPrice(new Money());
     fulfillmentGroup.setSequence(1);
     fulfillmentGroup.setService("Service");
     fulfillmentGroup.setShippingOverride(true);
+    fulfillmentGroup.setShippingPrice(new Money());
     fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
     fulfillmentGroup.setTaxes(new ArrayList<>());
     fulfillmentGroup.setTotal(new Money());
@@ -166,203 +134,122 @@ public class FulfillmentGroupFeeImplDiffblueTest {
     fulfillmentGroup.setTotalTax(new Money());
     fulfillmentGroup.setType(FulfillmentType.DIGITAL);
     fulfillmentGroup.setOrder(order);
-    Money amount = new Money();
-    fulfillmentGroupFeeImpl.setAmount(amount);
-    fulfillmentGroupFeeImpl.setFulfillmentGroup(fulfillmentGroup);
 
-    // Act and Assert
-    assertEquals(amount, fulfillmentGroupFeeImpl.getAmount());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupFeeImpl#getAmount()}.
-   *
-   * <ul>
-   *   <li>Then return Currency DisplayName is {@code British Pound}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupFeeImpl#getAmount()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupFeeImpl.getAmount()"})
-  public void testGetAmount_thenReturnCurrencyDisplayNameIsBritishPound() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setFulfillmentGroups(new ArrayList<>());
-    order.setId(OrderItemQualifierImpl.serialVersionUID);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAdjustments(new ArrayList<>());
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalTax(new Money());
-    order.setCurrency(currency);
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.setAddress(new AddressImpl());
-    fulfillmentGroup.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroup.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroup.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroup.setFulfillmentPrice(new Money());
-    fulfillmentGroup.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroup.setIsShippingPriceTaxable(true);
-    fulfillmentGroup.setMerchandiseTotal(new Money());
-    fulfillmentGroup.setMethod("Fulfillment Method");
-    fulfillmentGroup.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroup.setPhone(new PhoneImpl());
-    fulfillmentGroup.setPrimary(true);
-    fulfillmentGroup.setReferenceNumber("42");
-    fulfillmentGroup.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroup.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroup.setSequence(1);
-    fulfillmentGroup.setService("Service");
-    fulfillmentGroup.setShippingOverride(true);
-    fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroup.setTaxes(new ArrayList<>());
-    fulfillmentGroup.setTotal(new Money());
-    fulfillmentGroup.setTotalFeeTax(new Money());
-    fulfillmentGroup.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroup.setTotalItemTax(new Money());
-    fulfillmentGroup.setTotalTax(new Money());
-    fulfillmentGroup.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroup.setOrder(order);
+    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
+    fulfillmentGroupFeeImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupFeeImpl.setName("Name");
+    fulfillmentGroupFeeImpl.setReportingCode("Reporting Code");
+    fulfillmentGroupFeeImpl.setTaxable(true);
+    fulfillmentGroupFeeImpl.setTaxes(new ArrayList<>());
+    Money totalTax = new Money();
+    fulfillmentGroupFeeImpl.setTotalTax(totalTax);
     fulfillmentGroupFeeImpl.setAmount(new Money());
     fulfillmentGroupFeeImpl.setFulfillmentGroup(fulfillmentGroup);
 
-    // Act
-    Money actualAmount = fulfillmentGroupFeeImpl.getAmount();
-
-    // Assert
-    verify(currency).getCurrencyCode();
-    Currency currency2 = actualAmount.getCurrency();
-    assertEquals("British Pound", currency2.getDisplayName());
-    assertEquals("GBP", currency2.getCurrencyCode());
-    assertEquals("GBP", currency2.toString());
-    assertEquals("£", currency2.getSymbol());
-    assertEquals(826, currency2.getNumericCode());
-    Money actualAbsResult = actualAmount.abs();
-    assertEquals(actualAmount, actualAbsResult);
-    Money actualZeroResult = actualAmount.zero();
-    assertEquals(actualAmount, actualZeroResult);
+    // Act and Assert
+    assertEquals(totalTax, fulfillmentGroupFeeImpl.getAmount());
   }
 
   /**
-   * Test {@link FulfillmentGroupFeeImpl#setAmount(Money)}.
-   *
-   * <ul>
-   *   <li>When {@link Money#Money()}.
-   *   <li>Then {@link FulfillmentGroupFeeImpl} {@link FulfillmentGroupFeeImpl#amount} is {@link
-   *       BigDecimal#BigDecimal(String)} with {@code 0.00}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupFeeImpl#setAmount(Money)}
+   * Method under test: {@link FulfillmentGroupFeeImpl#getAmount()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupFeeImpl.setAmount(Money)"})
-  public void testSetAmount_whenMoney_thenFulfillmentGroupFeeImplAmountIsBigDecimalWith000() {
+  public void testGetAmount3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
+    fulfillmentGroupFeeImpl.setAmount(mock(Money.class));
+
+    // Act and Assert
+    assertNull(fulfillmentGroupFeeImpl.getAmount());
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupFeeImpl#setAmount(Money)}
+   */
+  @Test
+  public void testSetAmount() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
     Money amount = new Money();
 
     // Act
     fulfillmentGroupFeeImpl.setAmount(amount);
 
     // Assert
+    BigDecimal expectedAmount = new BigDecimal("0.00");
+    BigDecimal amount2 = amount.getAmount();
+    assertEquals(expectedAmount, amount2);
     assertEquals(new BigDecimal("0.00"), fulfillmentGroupFeeImpl.amount);
-    BigDecimal bigDecimal = fulfillmentGroupFeeImpl.amount;
-    Money absResult = amount.abs();
-    assertSame(bigDecimal, absResult.getAmount());
-    Money absResult2 = absResult.abs();
-    assertSame(bigDecimal, absResult2.getAmount());
-    assertSame(bigDecimal, absResult2.abs().getAmount());
-    Money zeroResult = amount.zero();
-    Money absResult3 = zeroResult.abs();
-    assertSame(bigDecimal, absResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money zeroResult2 = absResult.zero();
-    assertSame(bigDecimal, zeroResult2.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    assertSame(bigDecimal, zeroResult3.abs().getAmount());
-    assertSame(bigDecimal, zeroResult.getAmount());
-    assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, absResult2.zero().getAmount());
-    assertSame(bigDecimal, absResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult2.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.zero().getAmount());
+    assertEquals(amount, amount.abs());
+    assertEquals(amount, amount.zero());
+    assertSame(fulfillmentGroupFeeImpl.amount, amount2);
   }
 
   /**
-   * Test {@link FulfillmentGroupFeeImpl#setAmount(Money)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then {@link FulfillmentGroupFeeImpl} {@link FulfillmentGroupFeeImpl#amount} is {@code
-   *       null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupFeeImpl#setAmount(Money)}
+   * Method under test: {@link FulfillmentGroupFeeImpl#setAmount(Money)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupFeeImpl.setAmount(Money)"})
-  public void testSetAmount_whenNull_thenFulfillmentGroupFeeImplAmountIsNull() {
-    // Arrange and Act
+  public void testSetAmount2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
+
+    // Act
     fulfillmentGroupFeeImpl.setAmount(null);
 
-    // Assert that nothing has changed
+    // Assert
     assertNull(fulfillmentGroupFeeImpl.amount);
   }
 
   /**
-   * Test {@link FulfillmentGroupFeeImpl#isTaxable()}.
-   *
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupFeeImpl} Taxable is {@code null}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupFeeImpl#isTaxable()}
+   * Method under test: {@link FulfillmentGroupFeeImpl#setAmount(Money)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean FulfillmentGroupFeeImpl.isTaxable()"})
-  public void testIsTaxable_givenFulfillmentGroupFeeImplTaxableIsNull_thenReturnTrue() {
+  public void testSetAmount3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
+
+    // Act
+    fulfillmentGroupFeeImpl.setAmount(mock(Money.class));
+
+    // Assert
+    assertNull(fulfillmentGroupFeeImpl.amount);
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupFeeImpl#isTaxable()}
+   */
+  @Test
+  public void testIsTaxable() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertFalse((new FulfillmentGroupFeeImpl()).isTaxable());
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupFeeImpl#isTaxable()}
+   */
+  @Test
+  public void testIsTaxable2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
+    fulfillmentGroupFeeImpl.setAmount(new Money());
+    fulfillmentGroupFeeImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
+    fulfillmentGroupFeeImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupFeeImpl.setName("Name");
+    fulfillmentGroupFeeImpl.setReportingCode("Reporting Code");
+    fulfillmentGroupFeeImpl.setTaxes(new ArrayList<>());
+    fulfillmentGroupFeeImpl.setTotalTax(new Money());
     fulfillmentGroupFeeImpl.setTaxable(null);
 
     // Act and Assert
@@ -370,65 +257,50 @@ public class FulfillmentGroupFeeImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupFeeImpl#isTaxable()}.
-   *
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupFeeImpl}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupFeeImpl#isTaxable()}
+   * Method under test: {@link FulfillmentGroupFeeImpl#isTaxable()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean FulfillmentGroupFeeImpl.isTaxable()"})
-  public void testIsTaxable_givenFulfillmentGroupFeeImpl_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(fulfillmentGroupFeeImpl.isTaxable());
+  public void testIsTaxable3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
+    fulfillmentGroupFeeImpl.setAmount(mock(Money.class));
+    fulfillmentGroupFeeImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
+    fulfillmentGroupFeeImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupFeeImpl.setName("Name");
+    fulfillmentGroupFeeImpl.setReportingCode("Reporting Code");
+    fulfillmentGroupFeeImpl.setTaxes(new ArrayList<>());
+    fulfillmentGroupFeeImpl.setTotalTax(new Money());
+    fulfillmentGroupFeeImpl.setTaxable(null);
+
+    // Act and Assert
+    assertTrue(fulfillmentGroupFeeImpl.isTaxable());
   }
 
   /**
-   * Test {@link FulfillmentGroupFeeImpl#getTotalTax()}.
-   *
-   * <ul>
-   *   <li>Given {@link FulfillmentGroupFeeImpl}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupFeeImpl#getTotalTax()}
+   * Method under test: {@link FulfillmentGroupFeeImpl#getTotalTax()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupFeeImpl.getTotalTax()"})
-  public void testGetTotalTax_givenFulfillmentGroupFeeImpl_thenReturnNull() {
+  public void testGetTotalTax() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertNull(fulfillmentGroupFeeImpl.getTotalTax());
+    assertNull((new FulfillmentGroupFeeImpl()).getTotalTax());
   }
 
   /**
-   * Test {@link FulfillmentGroupFeeImpl#getTotalTax()}.
-   *
-   * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.
-   *   <li>Then return {@link Money#Money()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupFeeImpl#getTotalTax()}
+   * Method under test: {@link FulfillmentGroupFeeImpl#getTotalTax()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupFeeImpl.getTotalTax()"})
-  public void testGetTotalTax_givenOrderImplCurrencyIsNull_thenReturnMoney() {
+  public void testGetTotalTax2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
 
     OrderImpl order = new OrderImpl();
@@ -449,11 +321,11 @@ public class FulfillmentGroupFeeImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
 
@@ -475,10 +347,13 @@ public class FulfillmentGroupFeeImplDiffblueTest {
     fulfillmentGroup.setPrimary(true);
     fulfillmentGroup.setReferenceNumber("42");
     fulfillmentGroup.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroup.setRetailShippingPrice(new Money());
     fulfillmentGroup.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroup.setSaleShippingPrice(new Money());
     fulfillmentGroup.setSequence(1);
     fulfillmentGroup.setService("Service");
     fulfillmentGroup.setShippingOverride(true);
+    fulfillmentGroup.setShippingPrice(new Money());
     fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
     fulfillmentGroup.setTaxes(new ArrayList<>());
     fulfillmentGroup.setTotal(new Money());
@@ -488,201 +363,112 @@ public class FulfillmentGroupFeeImplDiffblueTest {
     fulfillmentGroup.setTotalTax(new Money());
     fulfillmentGroup.setType(FulfillmentType.DIGITAL);
     fulfillmentGroup.setOrder(order);
-    Money totalTax = new Money();
-    fulfillmentGroupFeeImpl.setTotalTax(totalTax);
-    fulfillmentGroupFeeImpl.setFulfillmentGroup(fulfillmentGroup);
 
-    // Act and Assert
-    assertEquals(totalTax, fulfillmentGroupFeeImpl.getTotalTax());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupFeeImpl#getTotalTax()}.
-   *
-   * <ul>
-   *   <li>Then return Currency DisplayName is {@code British Pound}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupFeeImpl#getTotalTax()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupFeeImpl.getTotalTax()"})
-  public void testGetTotalTax_thenReturnCurrencyDisplayNameIsBritishPound() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setFulfillmentGroups(new ArrayList<>());
-    order.setId(OrderItemQualifierImpl.serialVersionUID);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAdjustments(new ArrayList<>());
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalTax(new Money());
-    order.setCurrency(currency);
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.setAddress(new AddressImpl());
-    fulfillmentGroup.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroup.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroup.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroup.setFulfillmentPrice(new Money());
-    fulfillmentGroup.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroup.setIsShippingPriceTaxable(true);
-    fulfillmentGroup.setMerchandiseTotal(new Money());
-    fulfillmentGroup.setMethod("Fulfillment Method");
-    fulfillmentGroup.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroup.setPhone(new PhoneImpl());
-    fulfillmentGroup.setPrimary(true);
-    fulfillmentGroup.setReferenceNumber("42");
-    fulfillmentGroup.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroup.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroup.setSequence(1);
-    fulfillmentGroup.setService("Service");
-    fulfillmentGroup.setShippingOverride(true);
-    fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroup.setTaxes(new ArrayList<>());
-    fulfillmentGroup.setTotal(new Money());
-    fulfillmentGroup.setTotalFeeTax(new Money());
-    fulfillmentGroup.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroup.setTotalItemTax(new Money());
-    fulfillmentGroup.setTotalTax(new Money());
-    fulfillmentGroup.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroup.setOrder(order);
+    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
+    Money amount = new Money();
+    fulfillmentGroupFeeImpl.setAmount(amount);
+    fulfillmentGroupFeeImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupFeeImpl.setName("Name");
+    fulfillmentGroupFeeImpl.setReportingCode("Reporting Code");
+    fulfillmentGroupFeeImpl.setTaxable(true);
+    fulfillmentGroupFeeImpl.setTaxes(new ArrayList<>());
     fulfillmentGroupFeeImpl.setTotalTax(new Money());
     fulfillmentGroupFeeImpl.setFulfillmentGroup(fulfillmentGroup);
 
-    // Act
-    Money actualTotalTax = fulfillmentGroupFeeImpl.getTotalTax();
-
-    // Assert
-    verify(currency).getCurrencyCode();
-    Currency currency2 = actualTotalTax.getCurrency();
-    assertEquals("British Pound", currency2.getDisplayName());
-    assertEquals("GBP", currency2.getCurrencyCode());
-    assertEquals("GBP", currency2.toString());
-    assertEquals("£", currency2.getSymbol());
-    assertEquals(826, currency2.getNumericCode());
-    Money actualAbsResult = actualTotalTax.abs();
-    assertEquals(actualTotalTax, actualAbsResult);
-    Money actualZeroResult = actualTotalTax.zero();
-    assertEquals(actualTotalTax, actualZeroResult);
+    // Act and Assert
+    assertEquals(amount, fulfillmentGroupFeeImpl.getTotalTax());
   }
 
   /**
-   * Test {@link FulfillmentGroupFeeImpl#setTotalTax(Money)}.
-   *
-   * <ul>
-   *   <li>When {@link Money#Money()}.
-   *   <li>Then {@link FulfillmentGroupFeeImpl} {@link FulfillmentGroupFeeImpl#totalTax} is {@link
-   *       BigDecimal#BigDecimal(String)} with {@code 0.00}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupFeeImpl#setTotalTax(Money)}
+   * Method under test: {@link FulfillmentGroupFeeImpl#getTotalTax()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupFeeImpl.setTotalTax(Money)"})
-  public void testSetTotalTax_whenMoney_thenFulfillmentGroupFeeImplTotalTaxIsBigDecimalWith000() {
+  public void testGetTotalTax3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
+    fulfillmentGroupFeeImpl.setTotalTax(mock(Money.class));
+
+    // Act and Assert
+    assertNull(fulfillmentGroupFeeImpl.getTotalTax());
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupFeeImpl#setTotalTax(Money)}
+   */
+  @Test
+  public void testSetTotalTax() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
     Money totalTax = new Money();
 
     // Act
     fulfillmentGroupFeeImpl.setTotalTax(totalTax);
 
     // Assert
+    BigDecimal expectedAmount = new BigDecimal("0.00");
+    BigDecimal amount = totalTax.getAmount();
+    assertEquals(expectedAmount, amount);
     assertEquals(new BigDecimal("0.00"), fulfillmentGroupFeeImpl.totalTax);
-    BigDecimal bigDecimal = fulfillmentGroupFeeImpl.totalTax;
-    Money absResult = totalTax.abs();
-    assertSame(bigDecimal, absResult.getAmount());
-    Money absResult2 = absResult.abs();
-    assertSame(bigDecimal, absResult2.getAmount());
-    assertSame(bigDecimal, absResult2.abs().getAmount());
-    Money zeroResult = totalTax.zero();
-    Money absResult3 = zeroResult.abs();
-    assertSame(bigDecimal, absResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money zeroResult2 = absResult.zero();
-    assertSame(bigDecimal, zeroResult2.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    assertSame(bigDecimal, zeroResult3.abs().getAmount());
-    assertSame(bigDecimal, zeroResult.getAmount());
-    assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, absResult2.zero().getAmount());
-    assertSame(bigDecimal, absResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult2.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.zero().getAmount());
+    assertEquals(totalTax, totalTax.abs());
+    assertEquals(totalTax, totalTax.zero());
+    assertSame(fulfillmentGroupFeeImpl.totalTax, amount);
   }
 
   /**
-   * Test {@link FulfillmentGroupFeeImpl#setTotalTax(Money)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then {@link FulfillmentGroupFeeImpl} {@link FulfillmentGroupFeeImpl#totalTax} is {@code
-   *       null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupFeeImpl#setTotalTax(Money)}
+   * Method under test: {@link FulfillmentGroupFeeImpl#setTotalTax(Money)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupFeeImpl.setTotalTax(Money)"})
-  public void testSetTotalTax_whenNull_thenFulfillmentGroupFeeImplTotalTaxIsNull() {
-    // Arrange and Act
+  public void testSetTotalTax2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
+    fulfillmentGroupFeeImpl.setAmount(new Money());
+    fulfillmentGroupFeeImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
+    fulfillmentGroupFeeImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupFeeImpl.setName("Name");
+    fulfillmentGroupFeeImpl.setReportingCode("Reporting Code");
+    fulfillmentGroupFeeImpl.setTaxable(true);
+    fulfillmentGroupFeeImpl.setTaxes(new ArrayList<>());
+    fulfillmentGroupFeeImpl.setTotalTax(new Money());
+
+    // Act
     fulfillmentGroupFeeImpl.setTotalTax(null);
 
-    // Assert that nothing has changed
+    // Assert
     assertNull(fulfillmentGroupFeeImpl.totalTax);
+    assertNull(fulfillmentGroupFeeImpl.getTotalTax());
   }
 
   /**
-   * Test {@link FulfillmentGroupFeeImpl#getCurrencyCode()}.
-   *
-   * <ul>
-   *   <li>Then return {@code GBP}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupFeeImpl#getCurrencyCode()}
+   * Method under test: {@link FulfillmentGroupFeeImpl#setTotalTax(Money)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String FulfillmentGroupFeeImpl.getCurrencyCode()"})
-  public void testGetCurrencyCode_thenReturnGbp() {
+  public void testSetTotalTax3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
+
+    // Act
+    fulfillmentGroupFeeImpl.setTotalTax(mock(Money.class));
+
+    // Assert
+    assertNull(fulfillmentGroupFeeImpl.totalTax);
+    assertNull(fulfillmentGroupFeeImpl.getTotalTax());
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupFeeImpl#getCurrencyCode()}
+   */
+  @Test
+  public void testGetCurrencyCode() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     FulfillmentGroupImpl fulfillmentGroup = mock(FulfillmentGroupImpl.class);
     when(fulfillmentGroup.getCurrencyCode()).thenReturn("GBP");
@@ -699,27 +485,23 @@ public class FulfillmentGroupFeeImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupFeeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * FulfillmentGroupFeeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test:
+   * {@link FulfillmentGroupFeeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse FulfillmentGroupFeeImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse =
-        new CreateResponse<>(new FulfillmentGroupFeeImpl(), true);
+    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<FulfillmentGroupFee> actualCreateOrRetrieveCopyInstanceResult =
-        fulfillmentGroupFeeImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<FulfillmentGroupFee> actualCreateOrRetrieveCopyInstanceResult = fulfillmentGroupFeeImpl
+        .createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -727,28 +509,13 @@ public class FulfillmentGroupFeeImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupFeeImpl#equals(Object)}, and {@link
-   * FulfillmentGroupFeeImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link FulfillmentGroupFeeImpl#equals(Object)}
    *   <li>{@link FulfillmentGroupFeeImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupFeeImpl.equals(Object)",
-    "int FulfillmentGroupFeeImpl.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
@@ -773,32 +540,18 @@ public class FulfillmentGroupFeeImplDiffblueTest {
 
     // Act and Assert
     assertEquals(fulfillmentGroupFeeImpl, fulfillmentGroupFeeImpl2);
-    assertEquals(fulfillmentGroupFeeImpl.hashCode(), fulfillmentGroupFeeImpl2.hashCode());
+    int expectedHashCodeResult = fulfillmentGroupFeeImpl.hashCode();
+    assertEquals(expectedHashCodeResult, fulfillmentGroupFeeImpl2.hashCode());
   }
 
   /**
-   * Test {@link FulfillmentGroupFeeImpl#equals(Object)}, and {@link
-   * FulfillmentGroupFeeImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link FulfillmentGroupFeeImpl#equals(Object)}
    *   <li>{@link FulfillmentGroupFeeImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupFeeImpl.equals(Object)",
-    "int FulfillmentGroupFeeImpl.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
@@ -823,32 +576,18 @@ public class FulfillmentGroupFeeImplDiffblueTest {
 
     // Act and Assert
     assertEquals(fulfillmentGroupFeeImpl, fulfillmentGroupFeeImpl2);
-    assertEquals(fulfillmentGroupFeeImpl.hashCode(), fulfillmentGroupFeeImpl2.hashCode());
+    int expectedHashCodeResult = fulfillmentGroupFeeImpl.hashCode();
+    assertEquals(expectedHashCodeResult, fulfillmentGroupFeeImpl2.hashCode());
   }
 
   /**
-   * Test {@link FulfillmentGroupFeeImpl#equals(Object)}, and {@link
-   * FulfillmentGroupFeeImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link FulfillmentGroupFeeImpl#equals(Object)}
    *   <li>{@link FulfillmentGroupFeeImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupFeeImpl.equals(Object)",
-    "int FulfillmentGroupFeeImpl.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
@@ -873,182 +612,18 @@ public class FulfillmentGroupFeeImplDiffblueTest {
 
     // Act and Assert
     assertEquals(fulfillmentGroupFeeImpl, fulfillmentGroupFeeImpl2);
-    assertEquals(fulfillmentGroupFeeImpl.hashCode(), fulfillmentGroupFeeImpl2.hashCode());
+    int expectedHashCodeResult = fulfillmentGroupFeeImpl.hashCode();
+    assertEquals(expectedHashCodeResult, fulfillmentGroupFeeImpl2.hashCode());
   }
 
   /**
-   * Test {@link FulfillmentGroupFeeImpl#equals(Object)}, and {@link
-   * FulfillmentGroupFeeImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link FulfillmentGroupFeeImpl#equals(Object)}
    *   <li>{@link FulfillmentGroupFeeImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupFeeImpl.equals(Object)",
-    "int FulfillmentGroupFeeImpl.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
-    // Arrange
-    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
-    fulfillmentGroupFeeImpl.setAmount(new Money());
-    fulfillmentGroupFeeImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
-    fulfillmentGroupFeeImpl.setId(null);
-    fulfillmentGroupFeeImpl.setName("Name");
-    fulfillmentGroupFeeImpl.setReportingCode("Reporting Code");
-    fulfillmentGroupFeeImpl.setTaxable(true);
-    fulfillmentGroupFeeImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupFeeImpl.setTotalTax(new Money());
-
-    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl2 = new FulfillmentGroupFeeImpl();
-    fulfillmentGroupFeeImpl2.setAmount(new Money());
-    fulfillmentGroupFeeImpl2.setFulfillmentGroup(new FulfillmentGroupImpl());
-    fulfillmentGroupFeeImpl2.setId(null);
-    fulfillmentGroupFeeImpl2.setName("Name");
-    fulfillmentGroupFeeImpl2.setReportingCode("Reporting Code");
-    fulfillmentGroupFeeImpl2.setTaxable(true);
-    fulfillmentGroupFeeImpl2.setTaxes(new ArrayList<>());
-    fulfillmentGroupFeeImpl2.setTotalTax(new Money());
-
-    // Act and Assert
-    assertEquals(fulfillmentGroupFeeImpl, fulfillmentGroupFeeImpl2);
-    assertEquals(fulfillmentGroupFeeImpl.hashCode(), fulfillmentGroupFeeImpl2.hashCode());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupFeeImpl#equals(Object)}, and {@link
-   * FulfillmentGroupFeeImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link FulfillmentGroupFeeImpl#equals(Object)}
-   *   <li>{@link FulfillmentGroupFeeImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupFeeImpl.equals(Object)",
-    "int FulfillmentGroupFeeImpl.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
-    // Arrange
-    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
-    fulfillmentGroupFeeImpl.setAmount(new Money());
-    fulfillmentGroupFeeImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
-    fulfillmentGroupFeeImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupFeeImpl.setName(null);
-    fulfillmentGroupFeeImpl.setReportingCode("Reporting Code");
-    fulfillmentGroupFeeImpl.setTaxable(true);
-    fulfillmentGroupFeeImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupFeeImpl.setTotalTax(new Money());
-
-    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl2 = new FulfillmentGroupFeeImpl();
-    fulfillmentGroupFeeImpl2.setAmount(new Money());
-    fulfillmentGroupFeeImpl2.setFulfillmentGroup(new FulfillmentGroupImpl());
-    fulfillmentGroupFeeImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupFeeImpl2.setName(null);
-    fulfillmentGroupFeeImpl2.setReportingCode("Reporting Code");
-    fulfillmentGroupFeeImpl2.setTaxable(true);
-    fulfillmentGroupFeeImpl2.setTaxes(new ArrayList<>());
-    fulfillmentGroupFeeImpl2.setTotalTax(new Money());
-
-    // Act and Assert
-    assertEquals(fulfillmentGroupFeeImpl, fulfillmentGroupFeeImpl2);
-    assertEquals(fulfillmentGroupFeeImpl.hashCode(), fulfillmentGroupFeeImpl2.hashCode());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupFeeImpl#equals(Object)}, and {@link
-   * FulfillmentGroupFeeImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link FulfillmentGroupFeeImpl#equals(Object)}
-   *   <li>{@link FulfillmentGroupFeeImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupFeeImpl.equals(Object)",
-    "int FulfillmentGroupFeeImpl.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual6() {
-    // Arrange
-    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
-    fulfillmentGroupFeeImpl.setAmount(new Money());
-    fulfillmentGroupFeeImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
-    fulfillmentGroupFeeImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupFeeImpl.setName("Name");
-    fulfillmentGroupFeeImpl.setReportingCode(null);
-    fulfillmentGroupFeeImpl.setTaxable(true);
-    fulfillmentGroupFeeImpl.setTaxes(new ArrayList<>());
-    fulfillmentGroupFeeImpl.setTotalTax(new Money());
-
-    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl2 = new FulfillmentGroupFeeImpl();
-    fulfillmentGroupFeeImpl2.setAmount(new Money());
-    fulfillmentGroupFeeImpl2.setFulfillmentGroup(new FulfillmentGroupImpl());
-    fulfillmentGroupFeeImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
-    fulfillmentGroupFeeImpl2.setName("Name");
-    fulfillmentGroupFeeImpl2.setReportingCode(null);
-    fulfillmentGroupFeeImpl2.setTaxable(true);
-    fulfillmentGroupFeeImpl2.setTaxes(new ArrayList<>());
-    fulfillmentGroupFeeImpl2.setTotalTax(new Money());
-
-    // Act and Assert
-    assertEquals(fulfillmentGroupFeeImpl, fulfillmentGroupFeeImpl2);
-    assertEquals(fulfillmentGroupFeeImpl.hashCode(), fulfillmentGroupFeeImpl2.hashCode());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupFeeImpl#equals(Object)}, and {@link
-   * FulfillmentGroupFeeImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link FulfillmentGroupFeeImpl#equals(Object)}
-   *   <li>{@link FulfillmentGroupFeeImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupFeeImpl.equals(Object)",
-    "int FulfillmentGroupFeeImpl.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
@@ -1068,22 +643,9 @@ public class FulfillmentGroupFeeImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupFeeImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupFeeImpl#equals(Object)}
+   * Method under test: {@link FulfillmentGroupFeeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupFeeImpl.equals(Object)",
-    "int FulfillmentGroupFeeImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
@@ -1111,22 +673,9 @@ public class FulfillmentGroupFeeImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupFeeImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupFeeImpl#equals(Object)}
+   * Method under test: {@link FulfillmentGroupFeeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupFeeImpl.equals(Object)",
-    "int FulfillmentGroupFeeImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
@@ -1154,23 +703,40 @@ public class FulfillmentGroupFeeImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupFeeImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupFeeImpl#equals(Object)}
+   * Method under test: {@link FulfillmentGroupFeeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupFeeImpl.equals(Object)",
-    "int FulfillmentGroupFeeImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
+    // Arrange
+    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
+    fulfillmentGroupFeeImpl.setAmount(mock(Money.class));
+    fulfillmentGroupFeeImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
+    fulfillmentGroupFeeImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupFeeImpl.setName("Name");
+    fulfillmentGroupFeeImpl.setReportingCode("Reporting Code");
+    fulfillmentGroupFeeImpl.setTaxable(true);
+    fulfillmentGroupFeeImpl.setTaxes(new ArrayList<>());
+    fulfillmentGroupFeeImpl.setTotalTax(new Money());
+
+    FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl2 = new FulfillmentGroupFeeImpl();
+    fulfillmentGroupFeeImpl2.setAmount(new Money());
+    fulfillmentGroupFeeImpl2.setFulfillmentGroup(new FulfillmentGroupImpl());
+    fulfillmentGroupFeeImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    fulfillmentGroupFeeImpl2.setName("Name");
+    fulfillmentGroupFeeImpl2.setReportingCode("Reporting Code");
+    fulfillmentGroupFeeImpl2.setTaxable(true);
+    fulfillmentGroupFeeImpl2.setTaxes(new ArrayList<>());
+    fulfillmentGroupFeeImpl2.setTotalTax(new Money());
+
+    // Act and Assert
+    assertNotEquals(fulfillmentGroupFeeImpl, fulfillmentGroupFeeImpl2);
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupFeeImpl#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
     fulfillmentGroupFeeImpl.setAmount(new Money());
@@ -1197,23 +763,10 @@ public class FulfillmentGroupFeeImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupFeeImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupFeeImpl#equals(Object)}
+   * Method under test: {@link FulfillmentGroupFeeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupFeeImpl.equals(Object)",
-    "int FulfillmentGroupFeeImpl.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
     fulfillmentGroupFeeImpl.setAmount(new Money());
@@ -1240,23 +793,10 @@ public class FulfillmentGroupFeeImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupFeeImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupFeeImpl#equals(Object)}
+   * Method under test: {@link FulfillmentGroupFeeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupFeeImpl.equals(Object)",
-    "int FulfillmentGroupFeeImpl.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
     fulfillmentGroupFeeImpl.setAmount(new Money());
@@ -1283,23 +823,10 @@ public class FulfillmentGroupFeeImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupFeeImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupFeeImpl#equals(Object)}
+   * Method under test: {@link FulfillmentGroupFeeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupFeeImpl.equals(Object)",
-    "int FulfillmentGroupFeeImpl.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
     FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
     fulfillmentGroupFeeImpl.setAmount(new Money());
@@ -1326,23 +853,10 @@ public class FulfillmentGroupFeeImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupFeeImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupFeeImpl#equals(Object)}
+   * Method under test: {@link FulfillmentGroupFeeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupFeeImpl.equals(Object)",
-    "int FulfillmentGroupFeeImpl.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
     // Arrange
     FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
     fulfillmentGroupFeeImpl.setAmount(new Money());
@@ -1369,23 +883,10 @@ public class FulfillmentGroupFeeImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupFeeImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupFeeImpl#equals(Object)}
+   * Method under test: {@link FulfillmentGroupFeeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupFeeImpl.equals(Object)",
-    "int FulfillmentGroupFeeImpl.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
     // Arrange
     FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
     fulfillmentGroupFeeImpl.setAmount(new Money());
@@ -1412,23 +913,10 @@ public class FulfillmentGroupFeeImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupFeeImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupFeeImpl#equals(Object)}
+   * Method under test: {@link FulfillmentGroupFeeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupFeeImpl.equals(Object)",
-    "int FulfillmentGroupFeeImpl.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual10() {
     // Arrange
     FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
     fulfillmentGroupFeeImpl.setAmount(new Money());
@@ -1455,23 +943,10 @@ public class FulfillmentGroupFeeImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupFeeImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupFeeImpl#equals(Object)}
+   * Method under test: {@link FulfillmentGroupFeeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupFeeImpl.equals(Object)",
-    "int FulfillmentGroupFeeImpl.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual10() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual11() {
     // Arrange
     FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
     fulfillmentGroupFeeImpl.setAmount(new Money());
@@ -1498,22 +973,9 @@ public class FulfillmentGroupFeeImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupFeeImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupFeeImpl#equals(Object)}
+   * Method under test: {@link FulfillmentGroupFeeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupFeeImpl.equals(Object)",
-    "int FulfillmentGroupFeeImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
@@ -1531,22 +993,9 @@ public class FulfillmentGroupFeeImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupFeeImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupFeeImpl#equals(Object)}
+   * Method under test: {@link FulfillmentGroupFeeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupFeeImpl.equals(Object)",
-    "int FulfillmentGroupFeeImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     FulfillmentGroupFeeImpl fulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
@@ -1564,10 +1013,7 @@ public class FulfillmentGroupFeeImplDiffblueTest {
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link FulfillmentGroupFeeImpl}
    *   <li>{@link FulfillmentGroupFeeImpl#setFulfillmentGroup(FulfillmentGroup)}
@@ -1584,22 +1030,6 @@ public class FulfillmentGroupFeeImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void FulfillmentGroupFeeImpl.<init>()",
-    "FulfillmentGroup FulfillmentGroupFeeImpl.getFulfillmentGroup()",
-    "Long FulfillmentGroupFeeImpl.getId()",
-    "String FulfillmentGroupFeeImpl.getName()",
-    "String FulfillmentGroupFeeImpl.getReportingCode()",
-    "List FulfillmentGroupFeeImpl.getTaxes()",
-    "void FulfillmentGroupFeeImpl.setFulfillmentGroup(FulfillmentGroup)",
-    "void FulfillmentGroupFeeImpl.setId(Long)",
-    "void FulfillmentGroupFeeImpl.setName(String)",
-    "void FulfillmentGroupFeeImpl.setReportingCode(String)",
-    "void FulfillmentGroupFeeImpl.setTaxable(Boolean)",
-    "void FulfillmentGroupFeeImpl.setTaxes(List)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     FulfillmentGroupFeeImpl actualFulfillmentGroupFeeImpl = new FulfillmentGroupFeeImpl();
@@ -1617,7 +1047,7 @@ public class FulfillmentGroupFeeImplDiffblueTest {
     String actualReportingCode = actualFulfillmentGroupFeeImpl.getReportingCode();
     List<TaxDetail> actualTaxes = actualFulfillmentGroupFeeImpl.getTaxes();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("Name", actualName);
     assertEquals("Reporting Code", actualReportingCode);
     assertTrue(actualTaxes.isEmpty());

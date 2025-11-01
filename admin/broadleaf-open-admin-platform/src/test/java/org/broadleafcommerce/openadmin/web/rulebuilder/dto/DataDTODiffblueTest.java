@@ -21,33 +21,18 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class DataDTODiffblueTest {
   /**
-   * Test {@link DataDTO#equals(Object)}, and {@link DataDTO#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link DataDTO#equals(Object)}
    *   <li>{@link DataDTO#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean DataDTO.equals(Object)", "int DataDTO.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     DataDTO dataDTO = new DataDTO();
@@ -72,28 +57,18 @@ public class DataDTODiffblueTest {
 
     // Act and Assert
     assertEquals(dataDTO, dataDTO2);
-    assertEquals(dataDTO.hashCode(), dataDTO2.hashCode());
+    int expectedHashCodeResult = dataDTO.hashCode();
+    assertEquals(expectedHashCodeResult, dataDTO2.hashCode());
   }
 
   /**
-   * Test {@link DataDTO#equals(Object)}, and {@link DataDTO#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link DataDTO#equals(Object)}
    *   <li>{@link DataDTO#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean DataDTO.equals(Object)", "int DataDTO.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     DataDTO dataDTO = new DataDTO();
@@ -113,23 +88,34 @@ public class DataDTODiffblueTest {
   }
 
   /**
-   * Test {@link DataDTO#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link DataDTO#equals(Object)}
+   * Method under test: {@link DataDTO#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean DataDTO.equals(Object)", "int DataDTO.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
+    ExpressionDTO expressionDTO = new ExpressionDTO();
+    expressionDTO.setCondition("Condition");
+    expressionDTO.setContainedPk(1L);
+    expressionDTO.setCreatedFromSubGroup(true);
+    expressionDTO.setId("42");
+    expressionDTO.setOperator("Operator");
+    expressionDTO.setPk(1L);
+    expressionDTO.setPreviousContainedPk(1L);
+    expressionDTO.setPreviousPk(1L);
+    expressionDTO.setQuantity(1);
+    expressionDTO.setRules(new ArrayList<>());
+    expressionDTO.setValue("42");
+    expressionDTO.setCondition("Condition");
+    expressionDTO.setContainedPk(1L);
+    expressionDTO.setCreatedFromSubGroup(true);
+    expressionDTO.setPk(1L);
+    expressionDTO.setPreviousContainedPk(1L);
+    expressionDTO.setPreviousPk(1L);
+    expressionDTO.setQuantity(1);
+    expressionDTO.setRules(new ArrayList<>());
+
     DataDTO dataDTO = new DataDTO();
-    dataDTO.setCondition(null);
+    dataDTO.setCondition("Condition");
     dataDTO.setContainedPk(1L);
     dataDTO.setCreatedFromSubGroup(true);
     dataDTO.setPk(1L);
@@ -138,34 +124,14 @@ public class DataDTODiffblueTest {
     dataDTO.setQuantity(1);
     dataDTO.setRules(new ArrayList<>());
 
-    DataDTO dataDTO2 = new DataDTO();
-    dataDTO2.setCondition("Condition");
-    dataDTO2.setContainedPk(1L);
-    dataDTO2.setCreatedFromSubGroup(true);
-    dataDTO2.setPk(1L);
-    dataDTO2.setPreviousContainedPk(1L);
-    dataDTO2.setPreviousPk(1L);
-    dataDTO2.setQuantity(1);
-    dataDTO2.setRules(new ArrayList<>());
-
     // Act and Assert
-    assertNotEquals(dataDTO, dataDTO2);
+    assertNotEquals(expressionDTO, dataDTO);
   }
 
   /**
-   * Test {@link DataDTO#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link DataDTO#equals(Object)}
+   * Method under test: {@link DataDTO#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean DataDTO.equals(Object)", "int DataDTO.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     DataDTO dataDTO = new DataDTO();
@@ -183,19 +149,9 @@ public class DataDTODiffblueTest {
   }
 
   /**
-   * Test {@link DataDTO#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link DataDTO#equals(Object)}
+   * Method under test: {@link DataDTO#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean DataDTO.equals(Object)", "int DataDTO.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     DataDTO dataDTO = new DataDTO();
@@ -213,10 +169,7 @@ public class DataDTODiffblueTest {
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link DataDTO}
    *   <li>{@link DataDTO#setCondition(String)}
@@ -238,27 +191,6 @@ public class DataDTODiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void DataDTO.<init>()",
-    "String DataDTO.getCondition()",
-    "Long DataDTO.getContainedPk()",
-    "Long DataDTO.getPk()",
-    "Long DataDTO.getPreviousContainedPk()",
-    "Long DataDTO.getPreviousPk()",
-    "Integer DataDTO.getQuantity()",
-    "ArrayList DataDTO.getRules()",
-    "boolean DataDTO.isCreatedFromSubGroup()",
-    "void DataDTO.setCondition(String)",
-    "void DataDTO.setContainedPk(Long)",
-    "void DataDTO.setCreatedFromSubGroup(boolean)",
-    "void DataDTO.setPk(Long)",
-    "void DataDTO.setPreviousContainedPk(Long)",
-    "void DataDTO.setPreviousPk(Long)",
-    "void DataDTO.setQuantity(Integer)",
-    "void DataDTO.setRules(ArrayList)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     DataDTO actualDataDTO = new DataDTO();
@@ -280,7 +212,7 @@ public class DataDTODiffblueTest {
     ArrayList<DataDTO> actualRules = actualDataDTO.getRules();
     boolean actualIsCreatedFromSubGroupResult = actualDataDTO.isCreatedFromSubGroup();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("Condition", actualCondition);
     assertEquals(1, actualQuantity.intValue());
     assertEquals(1L, actualContainedPk.longValue());

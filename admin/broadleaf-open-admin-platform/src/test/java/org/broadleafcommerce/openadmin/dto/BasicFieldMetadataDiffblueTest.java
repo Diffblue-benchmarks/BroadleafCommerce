@@ -28,9 +28,6 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,25 +38,23 @@ import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
 import org.broadleafcommerce.openadmin.dto.visitor.MetadataVisitor;
 import org.broadleafcommerce.openadmin.dto.visitor.MetadataVisitorAdapter;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 
 public class BasicFieldMetadataDiffblueTest {
   /**
-   * Test {@link BasicFieldMetadata#getRequired()}.
-   *
-   * <ul>
-   *   <li>Given {@link BasicFieldMetadata} (default constructor) Required is {@code true}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#getRequired()}
+   * Method under test: {@link BasicFieldMetadata#getRequired()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean BasicFieldMetadata.getRequired()"})
-  public void testGetRequired_givenBasicFieldMetadataRequiredIsTrue_thenReturnTrue() {
+  public void testGetRequired() {
+    // Arrange, Act and Assert
+    assertFalse((new BasicFieldMetadata()).getRequired());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#getRequired()}
+   */
+  @Test
+  public void testGetRequired2() {
     // Arrange
     BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
     basicFieldMetadata.setRequired(true);
@@ -69,57 +64,19 @@ public class BasicFieldMetadataDiffblueTest {
   }
 
   /**
-   * Test {@link BasicFieldMetadata#getRequired()}.
-   *
-   * <ul>
-   *   <li>Given {@link BasicFieldMetadata} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#getRequired()}
+   * Method under test: {@link BasicFieldMetadata#getForeignKeyCollection()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean BasicFieldMetadata.getRequired()"})
-  public void testGetRequired_givenBasicFieldMetadata_thenReturnFalse() {
+  public void testGetForeignKeyCollection() {
     // Arrange, Act and Assert
-    assertFalse(new BasicFieldMetadata().getRequired());
+    assertFalse((new BasicFieldMetadata()).getForeignKeyCollection());
   }
 
   /**
-   * Test {@link BasicFieldMetadata#getForeignKeyCollection()}.
-   *
-   * <ul>
-   *   <li>Given {@link BasicFieldMetadata} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#getForeignKeyCollection()}
+   * Method under test: {@link BasicFieldMetadata#getForeignKeyCollection()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean BasicFieldMetadata.getForeignKeyCollection()"})
-  public void testGetForeignKeyCollection_givenBasicFieldMetadata_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(new BasicFieldMetadata().getForeignKeyCollection());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#getForeignKeyCollection()}.
-   *
-   * <ul>
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#getForeignKeyCollection()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean BasicFieldMetadata.getForeignKeyCollection()"})
-  public void testGetForeignKeyCollection_thenReturnTrue() {
+  public void testGetForeignKeyCollection2() {
     // Arrange
     BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
     basicFieldMetadata.setForeignKeyCollection(true);
@@ -129,10 +86,2054 @@ public class BasicFieldMetadataDiffblueTest {
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Method under test: {@link BasicFieldMetadata#getAllowNoValueEnumOption()}
+   */
+  @Test
+  public void testGetAllowNoValueEnumOption() {
+    // Arrange, Act and Assert
+    assertTrue((new BasicFieldMetadata()).getAllowNoValueEnumOption());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#getAllowNoValueEnumOption()}
+   */
+  @Test
+  public void testGetAllowNoValueEnumOption2() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setAllowNoValueEnumOption(null);
+    basicFieldMetadata.setRequiredOverride(null);
+    basicFieldMetadata.setRequired(null);
+    basicFieldMetadata.setDefaultValue("foo");
+
+    // Act and Assert
+    assertFalse(basicFieldMetadata.getAllowNoValueEnumOption());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#getAllowNoValueEnumOption()}
+   */
+  @Test
+  public void testGetAllowNoValueEnumOption3() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setAllowNoValueEnumOption(null);
+    basicFieldMetadata.setRequiredOverride(null);
+    basicFieldMetadata.setRequired(true);
+    basicFieldMetadata.setDefaultValue(null);
+
+    // Act and Assert
+    assertFalse(basicFieldMetadata.getAllowNoValueEnumOption());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#getAllowNoValueEnumOption()}
+   */
+  @Test
+  public void testGetAllowNoValueEnumOption4() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setAllowNoValueEnumOption(null);
+    basicFieldMetadata.setRequiredOverride(true);
+    basicFieldMetadata.setRequired(null);
+    basicFieldMetadata.setDefaultValue(null);
+
+    // Act and Assert
+    assertFalse(basicFieldMetadata.getAllowNoValueEnumOption());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#getAllowNoValueEnumOption()}
+   */
+  @Test
+  public void testGetAllowNoValueEnumOption5() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setAllowNoValueEnumOption(true);
+    basicFieldMetadata.setRequiredOverride(null);
+    basicFieldMetadata.setRequired(null);
+    basicFieldMetadata.setDefaultValue(null);
+
+    // Act and Assert
+    assertTrue(basicFieldMetadata.getAllowNoValueEnumOption());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#getAllowNoValueEnumOption()}
+   */
+  @Test
+  public void testGetAllowNoValueEnumOption6() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setAllowNoValueEnumOption(false);
+    basicFieldMetadata.setRequiredOverride(null);
+    basicFieldMetadata.setRequired(null);
+    basicFieldMetadata.setDefaultValue("foo");
+
+    // Act and Assert
+    assertFalse(basicFieldMetadata.getAllowNoValueEnumOption());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#getAllowNoValueEnumOption()}
+   */
+  @Test
+  public void testGetAllowNoValueEnumOption7() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setAllowNoValueEnumOption(null);
+    basicFieldMetadata.setRequiredOverride(null);
+    basicFieldMetadata.setRequired(null);
+    basicFieldMetadata.setDefaultValue("");
+
+    // Act and Assert
+    assertTrue(basicFieldMetadata.getAllowNoValueEnumOption());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#getAllowNoValueEnumOption()}
+   */
+  @Test
+  public void testGetAllowNoValueEnumOption8() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setAllowNoValueEnumOption(null);
+    basicFieldMetadata.setRequiredOverride(false);
+    basicFieldMetadata.setRequired(null);
+    basicFieldMetadata.setDefaultValue("");
+
+    // Act and Assert
+    assertTrue(basicFieldMetadata.getAllowNoValueEnumOption());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#cloneFieldMetadata()}
+   */
+  @Test
+  public void testCloneFieldMetadata() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    // Act
+    FieldMetadata actualCloneFieldMetadataResult = basicFieldMetadata.cloneFieldMetadata();
+
+    // Assert
+    assertTrue(actualCloneFieldMetadataResult instanceof BasicFieldMetadata);
+    assertEquals(basicFieldMetadata, actualCloneFieldMetadataResult);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#cloneFieldMetadata()}
+   */
+  @Test
+  public void testCloneFieldMetadata2() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setEnumerationValues(null);
+    basicFieldMetadata.setOptionFilterParams(new String[][]{new String[]{"foo"}});
+
+    // Act
+    FieldMetadata actualCloneFieldMetadataResult = basicFieldMetadata.cloneFieldMetadata();
+
+    // Assert
+    assertTrue(actualCloneFieldMetadataResult instanceof BasicFieldMetadata);
+    assertEquals(basicFieldMetadata, actualCloneFieldMetadataResult);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#cloneFieldMetadata()}
+   */
+  @Test
+  public void testCloneFieldMetadata3() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setEnumerationValues(new String[][]{new String[]{"foo"}});
+    basicFieldMetadata.setOptionFilterParams(null);
+
+    // Act
+    FieldMetadata actualCloneFieldMetadataResult = basicFieldMetadata.cloneFieldMetadata();
+
+    // Assert
+    assertTrue(actualCloneFieldMetadataResult instanceof BasicFieldMetadata);
+    assertEquals(basicFieldMetadata, actualCloneFieldMetadataResult);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#cloneFieldMetadata()}
+   */
+  @Test
+  public void testCloneFieldMetadata4() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setAvailableToTypes(new String[]{"Available To Types"});
+
+    // Act
+    FieldMetadata actualCloneFieldMetadataResult = basicFieldMetadata.cloneFieldMetadata();
+
+    // Assert
+    assertTrue(actualCloneFieldMetadataResult instanceof BasicFieldMetadata);
+    assertEquals(basicFieldMetadata, actualCloneFieldMetadataResult);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#accept(MetadataVisitor)}
+   */
+  @Test
+  public void testAccept() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    MetadataVisitorAdapter visitor = mock(MetadataVisitorAdapter.class);
+    doNothing().when(visitor).visit(Mockito.<BasicFieldMetadata>any());
+
+    // Act
+    basicFieldMetadata.accept(visitor);
+
+    // Assert
+    verify(visitor).visit(isA(BasicFieldMetadata.class));
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link BasicFieldMetadata#equals(Object)}
+   *   <li>{@link BasicFieldMetadata#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+
+    // Act and Assert
+    assertEquals(basicFieldMetadata, basicFieldMetadata2);
+    int expectedHashCodeResult = basicFieldMetadata.hashCode();
+    assertEquals(expectedHashCodeResult, basicFieldMetadata2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link BasicFieldMetadata#equals(Object)}
+   *   <li>{@link BasicFieldMetadata#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setLength(3);
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setLength(3);
+
+    // Act and Assert
+    assertEquals(basicFieldMetadata, basicFieldMetadata2);
+    int expectedHashCodeResult = basicFieldMetadata.hashCode();
+    assertEquals(expectedHashCodeResult, basicFieldMetadata2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link BasicFieldMetadata#equals(Object)}
+   *   <li>{@link BasicFieldMetadata#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setRequired(true);
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setRequired(true);
+
+    // Act and Assert
+    assertEquals(basicFieldMetadata, basicFieldMetadata2);
+    int expectedHashCodeResult = basicFieldMetadata.hashCode();
+    assertEquals(expectedHashCodeResult, basicFieldMetadata2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link BasicFieldMetadata#equals(Object)}
+   *   <li>{@link BasicFieldMetadata#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setScale(1);
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setScale(1);
+
+    // Act and Assert
+    assertEquals(basicFieldMetadata, basicFieldMetadata2);
+    int expectedHashCodeResult = basicFieldMetadata.hashCode();
+    assertEquals(expectedHashCodeResult, basicFieldMetadata2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link BasicFieldMetadata#equals(Object)}
+   *   <li>{@link BasicFieldMetadata#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setPrecision(1);
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setPrecision(1);
+
+    // Act and Assert
+    assertEquals(basicFieldMetadata, basicFieldMetadata2);
+    int expectedHashCodeResult = basicFieldMetadata.hashCode();
+    assertEquals(expectedHashCodeResult, basicFieldMetadata2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link BasicFieldMetadata#equals(Object)}
+   *   <li>{@link BasicFieldMetadata#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual6() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setUnique(true);
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setUnique(true);
+
+    // Act and Assert
+    assertEquals(basicFieldMetadata, basicFieldMetadata2);
+    int expectedHashCodeResult = basicFieldMetadata.hashCode();
+    assertEquals(expectedHashCodeResult, basicFieldMetadata2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link BasicFieldMetadata#equals(Object)}
+   *   <li>{@link BasicFieldMetadata#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual7() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setMutable(true);
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setMutable(true);
+
+    // Act and Assert
+    assertEquals(basicFieldMetadata, basicFieldMetadata2);
+    int expectedHashCodeResult = basicFieldMetadata.hashCode();
+    assertEquals(expectedHashCodeResult, basicFieldMetadata2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link BasicFieldMetadata#equals(Object)}
+   *   <li>{@link BasicFieldMetadata#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual8() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setForeignKeyProperty("Foreign Key Property");
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setForeignKeyProperty("Foreign Key Property");
+
+    // Act and Assert
+    assertEquals(basicFieldMetadata, basicFieldMetadata2);
+    int expectedHashCodeResult = basicFieldMetadata.hashCode();
+    assertEquals(expectedHashCodeResult, basicFieldMetadata2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link BasicFieldMetadata#equals(Object)}
+   *   <li>{@link BasicFieldMetadata#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual9() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setForeignKeyClass("Foreign Key Class");
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setForeignKeyClass("Foreign Key Class");
+
+    // Act and Assert
+    assertEquals(basicFieldMetadata, basicFieldMetadata2);
+    int expectedHashCodeResult = basicFieldMetadata.hashCode();
+    assertEquals(expectedHashCodeResult, basicFieldMetadata2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link BasicFieldMetadata#equals(Object)}
+   *   <li>{@link BasicFieldMetadata#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual10() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setForeignKeyCollection(true);
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setForeignKeyCollection(true);
+
+    // Act and Assert
+    assertEquals(basicFieldMetadata, basicFieldMetadata2);
+    int expectedHashCodeResult = basicFieldMetadata.hashCode();
+    assertEquals(expectedHashCodeResult, basicFieldMetadata2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link BasicFieldMetadata#equals(Object)}
+   *   <li>{@link BasicFieldMetadata#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual11() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setForeignKeyDisplayValueProperty("42");
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setForeignKeyDisplayValueProperty("42");
+
+    // Act and Assert
+    assertEquals(basicFieldMetadata, basicFieldMetadata2);
+    int expectedHashCodeResult = basicFieldMetadata.hashCode();
+    assertEquals(expectedHashCodeResult, basicFieldMetadata2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link BasicFieldMetadata#equals(Object)}
+   *   <li>{@link BasicFieldMetadata#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual12() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setEnumerationClass("Enumeration Class");
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setEnumerationClass("Enumeration Class");
+
+    // Act and Assert
+    assertEquals(basicFieldMetadata, basicFieldMetadata2);
+    int expectedHashCodeResult = basicFieldMetadata.hashCode();
+    assertEquals(expectedHashCodeResult, basicFieldMetadata2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link BasicFieldMetadata#equals(Object)}
+   *   <li>{@link BasicFieldMetadata#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual13() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setDerived(true);
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setDerived(true);
+
+    // Act and Assert
+    assertEquals(basicFieldMetadata, basicFieldMetadata2);
+    int expectedHashCodeResult = basicFieldMetadata.hashCode();
+    assertEquals(expectedHashCodeResult, basicFieldMetadata2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link BasicFieldMetadata#equals(Object)}
+   *   <li>{@link BasicFieldMetadata#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual14() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setName("Name");
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setName("Name");
+
+    // Act and Assert
+    assertEquals(basicFieldMetadata, basicFieldMetadata2);
+    int expectedHashCodeResult = basicFieldMetadata.hashCode();
+    assertEquals(expectedHashCodeResult, basicFieldMetadata2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link BasicFieldMetadata#equals(Object)}
+   *   <li>{@link BasicFieldMetadata#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual15() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setLargeEntry(true);
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setLargeEntry(true);
+
+    // Act and Assert
+    assertEquals(basicFieldMetadata, basicFieldMetadata2);
+    int expectedHashCodeResult = basicFieldMetadata.hashCode();
+    assertEquals(expectedHashCodeResult, basicFieldMetadata2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link BasicFieldMetadata#equals(Object)}
+   *   <li>{@link BasicFieldMetadata#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual16() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setProminent(true);
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setProminent(true);
+
+    // Act and Assert
+    assertEquals(basicFieldMetadata, basicFieldMetadata2);
+    int expectedHashCodeResult = basicFieldMetadata.hashCode();
+    assertEquals(expectedHashCodeResult, basicFieldMetadata2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link BasicFieldMetadata#equals(Object)}
+   *   <li>{@link BasicFieldMetadata#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual17() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setColumnWidth("Column Width");
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setColumnWidth("Column Width");
+
+    // Act and Assert
+    assertEquals(basicFieldMetadata, basicFieldMetadata2);
+    int expectedHashCodeResult = basicFieldMetadata.hashCode();
+    assertEquals(expectedHashCodeResult, basicFieldMetadata2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link BasicFieldMetadata#equals(Object)}
+   *   <li>{@link BasicFieldMetadata#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual18() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setBroadleafEnumeration("Broadleaf Enumeration");
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setBroadleafEnumeration("Broadleaf Enumeration");
+
+    // Act and Assert
+    assertEquals(basicFieldMetadata, basicFieldMetadata2);
+    int expectedHashCodeResult = basicFieldMetadata.hashCode();
+    assertEquals(expectedHashCodeResult, basicFieldMetadata2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link BasicFieldMetadata#equals(Object)}
+   *   <li>{@link BasicFieldMetadata#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual19() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setHideEnumerationIfEmpty(true);
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setHideEnumerationIfEmpty(true);
+
+    // Act and Assert
+    assertEquals(basicFieldMetadata, basicFieldMetadata2);
+    int expectedHashCodeResult = basicFieldMetadata.hashCode();
+    assertEquals(expectedHashCodeResult, basicFieldMetadata2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link BasicFieldMetadata#equals(Object)}
+   *   <li>{@link BasicFieldMetadata#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    // Act and Assert
+    assertEquals(basicFieldMetadata, basicFieldMetadata);
+    int expectedHashCodeResult = basicFieldMetadata.hashCode();
+    assertEquals(expectedHashCodeResult, basicFieldMetadata.hashCode());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+    // Arrange, Act and Assert
+    assertNotEquals(new BasicFieldMetadata(), 1);
+    assertNotEquals(new BasicFieldMetadata(), mock(AdornedTargetCollectionMetadata.class));
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setFieldType(SupportedFieldType.UNKNOWN);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setSecondaryType(SupportedFieldType.UNKNOWN);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setLength(3);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setRequired(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setScale(1);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setPrecision(1);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setUnique(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setMutable(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual10() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setForeignKeyProperty("Foreign Key Property");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual11() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setForeignKeyClass("Foreign Key Class");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual12() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setForeignKeyCollection(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual13() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setMergedPropertyType(MergedPropertyType.PRIMARY);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual14() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setForeignKeyDisplayValueProperty("42");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual15() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setEnumerationClass("Enumeration Class");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual16() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setDerived(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual17() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setName("Name");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual18() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setExplicitFieldType(SupportedFieldType.UNKNOWN);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual19() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setDisplayType(RuleBuilderDisplayType.NORMAL);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual20() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setLargeEntry(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual21() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setProminent(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual22() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setColumnWidth("Column Width");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual23() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setBroadleafEnumeration("Broadleaf Enumeration");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual24() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setHideEnumerationIfEmpty(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual25() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setFieldComponentRenderer(SupportedFieldType.UNKNOWN);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual26() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setGridFieldComponentRenderer(SupportedFieldType.UNKNOWN);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual27() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setFieldComponentRendererTemplate("Field Component Renderer Template");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual28() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setGridFieldComponentRendererTemplate("Grid Field Component Renderer Template");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual29() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setReadOnly(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual30() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setGridOrder(1);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual31() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setRequiredOverride(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual32() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setGroupCollapsed(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual33() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setTooltip("127.0.0.1");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual34() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setHelpText("Help Text");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual35() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setHint("Hint");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual36() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setVisibility(VisibilityEnum.HIDDEN_ALL);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual37() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setLookupDisplayProperty("Lookup Display Property");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual38() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setForcePopulateChildProperties(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual39() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setEnableTypeaheadLookup(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual40() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setOptionCanEditValues(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual41() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setOptionHideIfEmpty(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual42() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setOptionDisplayFieldName("Option Display Field Name");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual43() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setOptionListEntity("Option List Entity");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual44() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setOptionValueFieldName("42");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual45() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setRuleIdentifier("42");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual46() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setMapFieldValueClass("42");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual47() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setSearchable(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual48() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setManyToField("Many To Field");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual49() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setToOneTargetProperty("To One Target Property");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual50() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setToOneParentProperty("To One Parent Property");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual51() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setMapKeyValueProperty("42");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual52() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setLookupType(LookupType.STANDARD);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual53() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setCanLinkToExternalEntity(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual54() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setAvailableToTypes(new String[]{"Available To Types"});
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual55() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setLength(3);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual56() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setRequired(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual57() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setScale(1);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual58() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setPrecision(1);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual59() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setUnique(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual60() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setMutable(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual61() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setForeignKeyProperty("Foreign Key Property");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual62() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setForeignKeyClass("Foreign Key Class");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual63() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setForeignKeyCollection(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual64() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setForeignKeyDisplayValueProperty("42");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual65() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setEnumerationClass("Enumeration Class");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual66() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setDerived(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual67() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setName("Name");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual68() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setLargeEntry(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual69() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setProminent(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual70() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setColumnWidth("Column Width");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual71() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setBroadleafEnumeration("Broadleaf Enumeration");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual72() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setHideEnumerationIfEmpty(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual73() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setFieldComponentRenderer(SupportedFieldType.UNKNOWN);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual74() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setGridFieldComponentRenderer(SupportedFieldType.UNKNOWN);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual75() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setFieldComponentRendererTemplate("Field Component Renderer Template");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual76() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setGridFieldComponentRendererTemplate("Grid Field Component Renderer Template");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual77() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setReadOnly(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual78() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setGridOrder(1);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual79() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setRequiredOverride(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual80() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setGroupCollapsed(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual81() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setTooltip("127.0.0.1");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual82() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setHelpText("Help Text");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual83() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setHint("Hint");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual84() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setLookupDisplayProperty("Lookup Display Property");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual85() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setForcePopulateChildProperties(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual86() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setEnableTypeaheadLookup(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual87() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setOptionCanEditValues(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual88() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setOptionHideIfEmpty(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual89() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setOptionDisplayFieldName("Option Display Field Name");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual90() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setOptionListEntity("Option List Entity");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual91() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setOptionValueFieldName("42");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual92() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setRuleIdentifier("42");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual93() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setMapFieldValueClass("42");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual94() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setSearchable(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual95() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setManyToField("Many To Field");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual96() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setToOneTargetProperty("To One Target Property");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual97() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setToOneParentProperty("To One Parent Property");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual98() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setMapKeyValueProperty("42");
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual99() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setLookupType(LookupType.STANDARD);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual100() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+
+    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
+    basicFieldMetadata2.setCanLinkToExternalEntity(true);
+
+    // Act and Assert
+    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
+    // Arrange, Act and Assert
+    assertNotEquals(new BasicFieldMetadata(), null);
+  }
+
+  /**
+   * Method under test: {@link BasicFieldMetadata#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+    // Arrange, Act and Assert
+    assertNotEquals(new BasicFieldMetadata(), "Different type to BasicFieldMetadata");
+  }
+
+  /**
+   * Methods under test:
    * <ul>
    *   <li>{@link BasicFieldMetadata#setAllowNoValueEnumOption(Boolean)}
    *   <li>{@link BasicFieldMetadata#setAssociatedFieldName(String)}
@@ -155,7 +2156,8 @@ public class BasicFieldMetadataDiffblueTest {
    *   <li>{@link BasicFieldMetadata#setForeignKeyCollection(Boolean)}
    *   <li>{@link BasicFieldMetadata#setForeignKeyDisplayValueProperty(String)}
    *   <li>{@link BasicFieldMetadata#setForeignKeyProperty(String)}
-   *   <li>{@link BasicFieldMetadata#setGridFieldComponentRenderer(SupportedFieldType)}
+   *   <li>
+   * {@link BasicFieldMetadata#setGridFieldComponentRenderer(SupportedFieldType)}
    *   <li>{@link BasicFieldMetadata#setGridFieldComponentRendererTemplate(String)}
    *   <li>{@link BasicFieldMetadata#setGridOrder(Integer)}
    *   <li>{@link BasicFieldMetadata#setGroupCollapsed(Boolean)}
@@ -260,133 +2262,6 @@ public class BasicFieldMetadataDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String BasicFieldMetadata.getAssociatedFieldName()",
-    "String BasicFieldMetadata.getBroadleafEnumeration()",
-    "Boolean BasicFieldMetadata.getCanLinkToExternalEntity()",
-    "String BasicFieldMetadata.getColumnWidth()",
-    "String[] BasicFieldMetadata.getCustomCriteria()",
-    "String BasicFieldMetadata.getDefaultValue()",
-    "RuleBuilderDisplayType BasicFieldMetadata.getDisplayType()",
-    "Boolean BasicFieldMetadata.getEnableTypeaheadLookup()",
-    "String BasicFieldMetadata.getEnumerationClass()",
-    "String[][] BasicFieldMetadata.getEnumerationValues()",
-    "SupportedFieldType BasicFieldMetadata.getExplicitFieldType()",
-    "SupportedFieldType BasicFieldMetadata.getFieldComponentRenderer()",
-    "String BasicFieldMetadata.getFieldComponentRendererTemplate()",
-    "SupportedFieldType BasicFieldMetadata.getFieldType()",
-    "Boolean BasicFieldMetadata.getForcePopulateChildProperties()",
-    "String BasicFieldMetadata.getForeignKeyClass()",
-    "String BasicFieldMetadata.getForeignKeyDisplayValueProperty()",
-    "String BasicFieldMetadata.getForeignKeyProperty()",
-    "SupportedFieldType BasicFieldMetadata.getGridFieldComponentRenderer()",
-    "String BasicFieldMetadata.getGridFieldComponentRendererTemplate()",
-    "Integer BasicFieldMetadata.getGridOrder()",
-    "Boolean BasicFieldMetadata.getGroupCollapsed()",
-    "String BasicFieldMetadata.getHelpText()",
-    "Boolean BasicFieldMetadata.getHideEnumerationIfEmpty()",
-    "String BasicFieldMetadata.getHint()",
-    "Boolean BasicFieldMetadata.getIsDerived()",
-    "Boolean BasicFieldMetadata.getIsFilter()",
-    "Integer BasicFieldMetadata.getLength()",
-    "String BasicFieldMetadata.getLookupDisplayProperty()",
-    "LookupType BasicFieldMetadata.getLookupType()",
-    "String BasicFieldMetadata.getManyToField()",
-    "String BasicFieldMetadata.getMapFieldValueClass()",
-    "String BasicFieldMetadata.getMapKeyValueProperty()",
-    "MergedPropertyType BasicFieldMetadata.getMergedPropertyType()",
-    "Boolean BasicFieldMetadata.getMutable()",
-    "String BasicFieldMetadata.getName()",
-    "Boolean BasicFieldMetadata.getOptionCanEditValues()",
-    "String BasicFieldMetadata.getOptionDisplayFieldName()",
-    "String[][] BasicFieldMetadata.getOptionFilterParams()",
-    "Boolean BasicFieldMetadata.getOptionHideIfEmpty()",
-    "String BasicFieldMetadata.getOptionListEntity()",
-    "String BasicFieldMetadata.getOptionValueFieldName()",
-    "Integer BasicFieldMetadata.getPrecision()",
-    "Boolean BasicFieldMetadata.getReadOnly()",
-    "Boolean BasicFieldMetadata.getRequiredOverride()",
-    "String BasicFieldMetadata.getRuleIdentifier()",
-    "Integer BasicFieldMetadata.getScale()",
-    "Boolean BasicFieldMetadata.getSearchable()",
-    "SupportedFieldType BasicFieldMetadata.getSecondaryType()",
-    "Boolean BasicFieldMetadata.getToOneLookupCreatedViaAnnotation()",
-    "String BasicFieldMetadata.getToOneParentProperty()",
-    "String BasicFieldMetadata.getToOneTargetProperty()",
-    "String BasicFieldMetadata.getTooltip()",
-    "Boolean BasicFieldMetadata.getTranslatable()",
-    "Boolean BasicFieldMetadata.getUnique()",
-    "Boolean BasicFieldMetadata.getUseServerSideInspectionCache()",
-    "Map BasicFieldMetadata.getValidationConfigurations()",
-    "VisibilityEnum BasicFieldMetadata.getVisibility()",
-    "Boolean BasicFieldMetadata.isLargeEntry()",
-    "Boolean BasicFieldMetadata.isProminent()",
-    "void BasicFieldMetadata.setAllowNoValueEnumOption(Boolean)",
-    "void BasicFieldMetadata.setAssociatedFieldName(String)",
-    "void BasicFieldMetadata.setBroadleafEnumeration(String)",
-    "void BasicFieldMetadata.setCanLinkToExternalEntity(Boolean)",
-    "void BasicFieldMetadata.setColumnWidth(String)",
-    "void BasicFieldMetadata.setCustomCriteria(String[])",
-    "void BasicFieldMetadata.setDefaultValue(String)",
-    "void BasicFieldMetadata.setDerived(Boolean)",
-    "void BasicFieldMetadata.setDisplayType(RuleBuilderDisplayType)",
-    "void BasicFieldMetadata.setEnableTypeaheadLookup(Boolean)",
-    "void BasicFieldMetadata.setEnumerationClass(String)",
-    "void BasicFieldMetadata.setEnumerationValues(String[][])",
-    "void BasicFieldMetadata.setExplicitFieldType(SupportedFieldType)",
-    "void BasicFieldMetadata.setFieldComponentRenderer(SupportedFieldType)",
-    "void BasicFieldMetadata.setFieldComponentRendererTemplate(String)",
-    "void BasicFieldMetadata.setFieldType(SupportedFieldType)",
-    "void BasicFieldMetadata.setForcePopulateChildProperties(Boolean)",
-    "void BasicFieldMetadata.setForeignKeyClass(String)",
-    "void BasicFieldMetadata.setForeignKeyCollection(Boolean)",
-    "void BasicFieldMetadata.setForeignKeyDisplayValueProperty(String)",
-    "void BasicFieldMetadata.setForeignKeyProperty(String)",
-    "void BasicFieldMetadata.setGridFieldComponentRenderer(SupportedFieldType)",
-    "void BasicFieldMetadata.setGridFieldComponentRendererTemplate(String)",
-    "void BasicFieldMetadata.setGridOrder(Integer)",
-    "void BasicFieldMetadata.setGroupCollapsed(Boolean)",
-    "void BasicFieldMetadata.setHelpText(String)",
-    "void BasicFieldMetadata.setHideEnumerationIfEmpty(Boolean)",
-    "void BasicFieldMetadata.setHint(String)",
-    "void BasicFieldMetadata.setIsFilter(Boolean)",
-    "void BasicFieldMetadata.setLargeEntry(Boolean)",
-    "void BasicFieldMetadata.setLength(Integer)",
-    "void BasicFieldMetadata.setLookupDisplayProperty(String)",
-    "void BasicFieldMetadata.setLookupType(LookupType)",
-    "void BasicFieldMetadata.setManyToField(String)",
-    "void BasicFieldMetadata.setMapFieldValueClass(String)",
-    "void BasicFieldMetadata.setMapKeyValueProperty(String)",
-    "void BasicFieldMetadata.setMergedPropertyType(MergedPropertyType)",
-    "void BasicFieldMetadata.setMutable(Boolean)",
-    "void BasicFieldMetadata.setName(String)",
-    "void BasicFieldMetadata.setOptionCanEditValues(Boolean)",
-    "void BasicFieldMetadata.setOptionDisplayFieldName(String)",
-    "void BasicFieldMetadata.setOptionFilterParams(String[][])",
-    "void BasicFieldMetadata.setOptionHideIfEmpty(Boolean)",
-    "void BasicFieldMetadata.setOptionListEntity(String)",
-    "void BasicFieldMetadata.setOptionValueFieldName(String)",
-    "void BasicFieldMetadata.setPrecision(Integer)",
-    "void BasicFieldMetadata.setProminent(Boolean)",
-    "void BasicFieldMetadata.setReadOnly(Boolean)",
-    "void BasicFieldMetadata.setRequired(Boolean)",
-    "void BasicFieldMetadata.setRequiredOverride(Boolean)",
-    "void BasicFieldMetadata.setRuleIdentifier(String)",
-    "void BasicFieldMetadata.setScale(Integer)",
-    "void BasicFieldMetadata.setSearchable(Boolean)",
-    "void BasicFieldMetadata.setSecondaryType(SupportedFieldType)",
-    "void BasicFieldMetadata.setToOneLookupCreatedViaAnnotation(Boolean)",
-    "void BasicFieldMetadata.setToOneParentProperty(String)",
-    "void BasicFieldMetadata.setToOneTargetProperty(String)",
-    "void BasicFieldMetadata.setTooltip(String)",
-    "void BasicFieldMetadata.setTranslatable(Boolean)",
-    "void BasicFieldMetadata.setUnique(Boolean)",
-    "void BasicFieldMetadata.setUseServerSideInspectionCache(Boolean)",
-    "void BasicFieldMetadata.setValidationConfigurations(Map)",
-    "void BasicFieldMetadata.setVisibility(VisibilityEnum)"
-  })
   public void testGettersAndSetters() {
     // Arrange
     BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
@@ -397,14 +2272,14 @@ public class BasicFieldMetadataDiffblueTest {
     basicFieldMetadata.setBroadleafEnumeration("Broadleaf Enumeration");
     basicFieldMetadata.setCanLinkToExternalEntity(true);
     basicFieldMetadata.setColumnWidth("Column Width");
-    String[] customCriteria = new String[] {"Custom Criteria"};
+    String[] customCriteria = new String[]{"Custom Criteria"};
     basicFieldMetadata.setCustomCriteria(customCriteria);
     basicFieldMetadata.setDefaultValue("42");
     basicFieldMetadata.setDerived(true);
     basicFieldMetadata.setDisplayType(RuleBuilderDisplayType.NORMAL);
     basicFieldMetadata.setEnableTypeaheadLookup(true);
     basicFieldMetadata.setEnumerationClass("Enumeration Class");
-    String[][] enumerationValues = new String[][] {new String[] {"42"}};
+    String[][] enumerationValues = new String[][]{new String[]{"42"}};
     basicFieldMetadata.setEnumerationValues(enumerationValues);
     basicFieldMetadata.setExplicitFieldType(SupportedFieldType.UNKNOWN);
     basicFieldMetadata.setFieldComponentRenderer(SupportedFieldType.UNKNOWN);
@@ -416,8 +2291,7 @@ public class BasicFieldMetadataDiffblueTest {
     basicFieldMetadata.setForeignKeyDisplayValueProperty("42");
     basicFieldMetadata.setForeignKeyProperty("Foreign Key Property");
     basicFieldMetadata.setGridFieldComponentRenderer(SupportedFieldType.UNKNOWN);
-    basicFieldMetadata.setGridFieldComponentRendererTemplate(
-        "Grid Field Component Renderer Template");
+    basicFieldMetadata.setGridFieldComponentRendererTemplate("Grid Field Component Renderer Template");
     basicFieldMetadata.setGridOrder(1);
     basicFieldMetadata.setGroupCollapsed(true);
     basicFieldMetadata.setHelpText("Help Text");
@@ -436,7 +2310,7 @@ public class BasicFieldMetadataDiffblueTest {
     basicFieldMetadata.setName("Name");
     basicFieldMetadata.setOptionCanEditValues(true);
     basicFieldMetadata.setOptionDisplayFieldName("Option Display Field Name");
-    String[][] optionFilterParams = new String[][] {new String[] {"Option Filter Params"}};
+    String[][] optionFilterParams = new String[][]{new String[]{"Option Filter Params"}};
     basicFieldMetadata.setOptionFilterParams(optionFilterParams);
     basicFieldMetadata.setOptionHideIfEmpty(true);
     basicFieldMetadata.setOptionListEntity("Option List Entity");
@@ -471,21 +2345,15 @@ public class BasicFieldMetadataDiffblueTest {
     String actualEnumerationClass = basicFieldMetadata.getEnumerationClass();
     String[][] actualEnumerationValues = basicFieldMetadata.getEnumerationValues();
     SupportedFieldType actualExplicitFieldType = basicFieldMetadata.getExplicitFieldType();
-    SupportedFieldType actualFieldComponentRenderer =
-        basicFieldMetadata.getFieldComponentRenderer();
-    String actualFieldComponentRendererTemplate =
-        basicFieldMetadata.getFieldComponentRendererTemplate();
+    SupportedFieldType actualFieldComponentRenderer = basicFieldMetadata.getFieldComponentRenderer();
+    String actualFieldComponentRendererTemplate = basicFieldMetadata.getFieldComponentRendererTemplate();
     SupportedFieldType actualFieldType = basicFieldMetadata.getFieldType();
-    Boolean actualForcePopulateChildProperties =
-        basicFieldMetadata.getForcePopulateChildProperties();
+    Boolean actualForcePopulateChildProperties = basicFieldMetadata.getForcePopulateChildProperties();
     String actualForeignKeyClass = basicFieldMetadata.getForeignKeyClass();
-    String actualForeignKeyDisplayValueProperty =
-        basicFieldMetadata.getForeignKeyDisplayValueProperty();
+    String actualForeignKeyDisplayValueProperty = basicFieldMetadata.getForeignKeyDisplayValueProperty();
     String actualForeignKeyProperty = basicFieldMetadata.getForeignKeyProperty();
-    SupportedFieldType actualGridFieldComponentRenderer =
-        basicFieldMetadata.getGridFieldComponentRenderer();
-    String actualGridFieldComponentRendererTemplate =
-        basicFieldMetadata.getGridFieldComponentRendererTemplate();
+    SupportedFieldType actualGridFieldComponentRenderer = basicFieldMetadata.getGridFieldComponentRenderer();
+    String actualGridFieldComponentRendererTemplate = basicFieldMetadata.getGridFieldComponentRendererTemplate();
     Integer actualGridOrder = basicFieldMetadata.getGridOrder();
     Boolean actualGroupCollapsed = basicFieldMetadata.getGroupCollapsed();
     String actualHelpText = basicFieldMetadata.getHelpText();
@@ -515,22 +2383,20 @@ public class BasicFieldMetadataDiffblueTest {
     Integer actualScale = basicFieldMetadata.getScale();
     Boolean actualSearchable = basicFieldMetadata.getSearchable();
     SupportedFieldType actualSecondaryType = basicFieldMetadata.getSecondaryType();
-    Boolean actualToOneLookupCreatedViaAnnotation =
-        basicFieldMetadata.getToOneLookupCreatedViaAnnotation();
+    Boolean actualToOneLookupCreatedViaAnnotation = basicFieldMetadata.getToOneLookupCreatedViaAnnotation();
     String actualToOneParentProperty = basicFieldMetadata.getToOneParentProperty();
     String actualToOneTargetProperty = basicFieldMetadata.getToOneTargetProperty();
     basicFieldMetadata.getTooltip();
     Boolean actualTranslatable = basicFieldMetadata.getTranslatable();
     Boolean actualUnique = basicFieldMetadata.getUnique();
-    Boolean actualUseServerSideInspectionCache =
-        basicFieldMetadata.getUseServerSideInspectionCache();
-    Map<String, List<Map<String, String>>> actualValidationConfigurations =
-        basicFieldMetadata.getValidationConfigurations();
+    Boolean actualUseServerSideInspectionCache = basicFieldMetadata.getUseServerSideInspectionCache();
+    Map<String, List<Map<String, String>>> actualValidationConfigurations = basicFieldMetadata
+        .getValidationConfigurations();
     VisibilityEnum actualVisibility = basicFieldMetadata.getVisibility();
     Boolean actualIsLargeEntryResult = basicFieldMetadata.isLargeEntry();
     Boolean actualIsProminentResult = basicFieldMetadata.isProminent();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("42", actualDefaultValue);
     assertEquals("42", actualForeignKeyDisplayValueProperty);
     assertEquals("42", actualMapFieldValueClass);
@@ -544,8 +2410,7 @@ public class BasicFieldMetadataDiffblueTest {
     assertEquals("Field Component Renderer Template", actualFieldComponentRendererTemplate);
     assertEquals("Foreign Key Class", actualForeignKeyClass);
     assertEquals("Foreign Key Property", actualForeignKeyProperty);
-    assertEquals(
-        "Grid Field Component Renderer Template", actualGridFieldComponentRendererTemplate);
+    assertEquals("Grid Field Component Renderer Template", actualGridFieldComponentRendererTemplate);
     assertEquals("Help Text", actualHelpText);
     assertEquals("Hint", actualHint);
     assertEquals("Lookup Display Property", actualLookupDisplayProperty);
@@ -594,3987 +2459,25 @@ public class BasicFieldMetadataDiffblueTest {
     assertSame(customCriteria, actualCustomCriteria);
     assertSame(enumerationValues, actualEnumerationValues);
     assertSame(optionFilterParams, actualOptionFilterParams);
-    assertArrayEquals(new String[] {"42"}, actualEnumerationValues[0]);
-    assertArrayEquals(new String[] {"Custom Criteria"}, actualCustomCriteria);
-    assertArrayEquals(new String[] {"Option Filter Params"}, actualOptionFilterParams[0]);
+    assertArrayEquals(new String[]{"42"}, actualEnumerationValues[0]);
+    assertArrayEquals(new String[]{"Custom Criteria"}, actualCustomCriteria);
+    assertArrayEquals(new String[]{"Option Filter Params"}, actualOptionFilterParams[0]);
   }
 
   /**
-   * Test {@link BasicFieldMetadata#getAllowNoValueEnumOption()}.
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#getAllowNoValueEnumOption()}
+   * Method under test: default or parameterless constructor of
+   * {@link BasicFieldMetadata}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean BasicFieldMetadata.getAllowNoValueEnumOption()"})
-  public void testGetAllowNoValueEnumOption() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setAllowNoValueEnumOption(true);
-    basicFieldMetadata.setDefaultValue("");
-    basicFieldMetadata.setRequiredOverride(null);
-    basicFieldMetadata.setRequired(null);
-
-    // Act and Assert
-    assertTrue(basicFieldMetadata.getAllowNoValueEnumOption());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#getAllowNoValueEnumOption()}.
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#getAllowNoValueEnumOption()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean BasicFieldMetadata.getAllowNoValueEnumOption()"})
-  public void testGetAllowNoValueEnumOption2() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setAllowNoValueEnumOption(false);
-    basicFieldMetadata.setDefaultValue("");
-    basicFieldMetadata.setRequiredOverride(null);
-    basicFieldMetadata.setRequired(null);
-
-    // Act and Assert
-    assertTrue(basicFieldMetadata.getAllowNoValueEnumOption());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#getAllowNoValueEnumOption()}.
-   *
-   * <ul>
-   *   <li>Given {@link BasicFieldMetadata} (default constructor) DefaultValue is {@code foo}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#getAllowNoValueEnumOption()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean BasicFieldMetadata.getAllowNoValueEnumOption()"})
-  public void testGetAllowNoValueEnumOption_givenBasicFieldMetadataDefaultValueIsFoo() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setAllowNoValueEnumOption(null);
-    basicFieldMetadata.setDefaultValue("foo");
-    basicFieldMetadata.setRequiredOverride(null);
-    basicFieldMetadata.setRequired(null);
-
-    // Act and Assert
-    assertFalse(basicFieldMetadata.getAllowNoValueEnumOption());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#getAllowNoValueEnumOption()}.
-   *
-   * <ul>
-   *   <li>Given {@link BasicFieldMetadata} (default constructor) Required is {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#getAllowNoValueEnumOption()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean BasicFieldMetadata.getAllowNoValueEnumOption()"})
-  public void testGetAllowNoValueEnumOption_givenBasicFieldMetadataRequiredIsTrue() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setAllowNoValueEnumOption(null);
-    basicFieldMetadata.setDefaultValue("");
-    basicFieldMetadata.setRequiredOverride(null);
-    basicFieldMetadata.setRequired(true);
-
-    // Act and Assert
-    assertFalse(basicFieldMetadata.getAllowNoValueEnumOption());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#getAllowNoValueEnumOption()}.
-   *
-   * <ul>
-   *   <li>Given {@link BasicFieldMetadata} (default constructor) RequiredOverride is {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#getAllowNoValueEnumOption()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean BasicFieldMetadata.getAllowNoValueEnumOption()"})
-  public void testGetAllowNoValueEnumOption_givenBasicFieldMetadataRequiredOverrideIsFalse() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setAllowNoValueEnumOption(null);
-    basicFieldMetadata.setDefaultValue("");
-    basicFieldMetadata.setRequiredOverride(false);
-    basicFieldMetadata.setRequired(null);
-
-    // Act and Assert
-    assertTrue(basicFieldMetadata.getAllowNoValueEnumOption());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#getAllowNoValueEnumOption()}.
-   *
-   * <ul>
-   *   <li>Given {@link BasicFieldMetadata} (default constructor) RequiredOverride is {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#getAllowNoValueEnumOption()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean BasicFieldMetadata.getAllowNoValueEnumOption()"})
-  public void testGetAllowNoValueEnumOption_givenBasicFieldMetadataRequiredOverrideIsTrue() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setAllowNoValueEnumOption(null);
-    basicFieldMetadata.setDefaultValue("");
-    basicFieldMetadata.setRequiredOverride(true);
-    basicFieldMetadata.setRequired(null);
-
-    // Act and Assert
-    assertFalse(basicFieldMetadata.getAllowNoValueEnumOption());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#getAllowNoValueEnumOption()}.
-   *
-   * <ul>
-   *   <li>Given {@link BasicFieldMetadata} (default constructor).
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#getAllowNoValueEnumOption()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean BasicFieldMetadata.getAllowNoValueEnumOption()"})
-  public void testGetAllowNoValueEnumOption_givenBasicFieldMetadata_thenReturnTrue() {
-    // Arrange, Act and Assert
-    assertTrue(new BasicFieldMetadata().getAllowNoValueEnumOption());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#getAllowNoValueEnumOption()}.
-   *
-   * <ul>
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#getAllowNoValueEnumOption()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean BasicFieldMetadata.getAllowNoValueEnumOption()"})
-  public void testGetAllowNoValueEnumOption_thenReturnTrue() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setAllowNoValueEnumOption(null);
-    basicFieldMetadata.setDefaultValue("");
-    basicFieldMetadata.setRequiredOverride(null);
-    basicFieldMetadata.setRequired(null);
-
-    // Act and Assert
-    assertTrue(basicFieldMetadata.getAllowNoValueEnumOption());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#cloneFieldMetadata()}.
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#cloneFieldMetadata()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FieldMetadata BasicFieldMetadata.cloneFieldMetadata()"})
-  public void testCloneFieldMetadata() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setEnumerationValues(null);
-    basicFieldMetadata.setOptionFilterParams(new String[][] {new String[] {"foo"}});
-
-    // Act
-    FieldMetadata actualCloneFieldMetadataResult = basicFieldMetadata.cloneFieldMetadata();
-
-    // Assert
-    assertTrue(actualCloneFieldMetadataResult instanceof BasicFieldMetadata);
-    assertNull(actualCloneFieldMetadataResult.getAvailableToTypes());
-    assertNull(((BasicFieldMetadata) actualCloneFieldMetadataResult).getEnumerationValues());
-    String[][] optionFilterParams =
-        ((BasicFieldMetadata) actualCloneFieldMetadataResult).getOptionFilterParams();
-    assertEquals(1, optionFilterParams.length);
-    assertArrayEquals(new String[] {"foo"}, optionFilterParams[0]);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#cloneFieldMetadata()}.
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#cloneFieldMetadata()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FieldMetadata BasicFieldMetadata.cloneFieldMetadata()"})
-  public void testCloneFieldMetadata2() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setEnumerationValues(new String[][] {new String[] {"foo"}});
-    basicFieldMetadata.setOptionFilterParams(null);
-
-    // Act
-    FieldMetadata actualCloneFieldMetadataResult = basicFieldMetadata.cloneFieldMetadata();
-
-    // Assert
-    assertTrue(actualCloneFieldMetadataResult instanceof BasicFieldMetadata);
-    assertNull(actualCloneFieldMetadataResult.getAvailableToTypes());
-    assertNull(((BasicFieldMetadata) actualCloneFieldMetadataResult).getOptionFilterParams());
-    String[][] enumerationValues =
-        ((BasicFieldMetadata) actualCloneFieldMetadataResult).getEnumerationValues();
-    assertEquals(1, enumerationValues.length);
-    assertArrayEquals(new String[] {"foo"}, enumerationValues[0]);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#cloneFieldMetadata()}.
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#cloneFieldMetadata()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FieldMetadata BasicFieldMetadata.cloneFieldMetadata()"})
-  public void testCloneFieldMetadata3() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setAvailableToTypes(new String[] {"Available To Types"});
-
-    // Act
-    FieldMetadata actualCloneFieldMetadataResult = basicFieldMetadata.cloneFieldMetadata();
-
-    // Assert
-    assertTrue(actualCloneFieldMetadataResult instanceof BasicFieldMetadata);
-    assertNull(((BasicFieldMetadata) actualCloneFieldMetadataResult).getEnumerationValues());
-    assertNull(((BasicFieldMetadata) actualCloneFieldMetadataResult).getOptionFilterParams());
-    assertArrayEquals(
-        new String[] {"Available To Types"}, actualCloneFieldMetadataResult.getAvailableToTypes());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#cloneFieldMetadata()}.
-   *
-   * <ul>
-   *   <li>Given {@link BasicFieldMetadata} (default constructor).
-   *   <li>Then return {@link BasicFieldMetadata} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#cloneFieldMetadata()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FieldMetadata BasicFieldMetadata.cloneFieldMetadata()"})
-  public void testCloneFieldMetadata_givenBasicFieldMetadata_thenReturnBasicFieldMetadata() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    // Act
-    FieldMetadata actualCloneFieldMetadataResult = basicFieldMetadata.cloneFieldMetadata();
-
-    // Assert
-    assertTrue(actualCloneFieldMetadataResult instanceof BasicFieldMetadata);
-    assertEquals(basicFieldMetadata, actualCloneFieldMetadataResult);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#accept(MetadataVisitor)}.
-   *
-   * <ul>
-   *   <li>When {@link MetadataVisitorAdapter} {@link
-   *       MetadataVisitorAdapter#visit(BasicFieldMetadata)} does nothing.
-   *   <li>Then calls {@link MetadataVisitorAdapter#visit(BasicFieldMetadata)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#accept(MetadataVisitor)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BasicFieldMetadata.accept(MetadataVisitor)"})
-  public void testAccept_whenMetadataVisitorAdapterVisitDoesNothing_thenCallsVisit() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    MetadataVisitorAdapter visitor = mock(MetadataVisitorAdapter.class);
-    doNothing().when(visitor).visit(Mockito.<BasicFieldMetadata>any());
-
-    // Act
-    basicFieldMetadata.accept(visitor);
-
-    // Assert
-    verify(visitor).visit(isA(BasicFieldMetadata.class));
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}, and {@link BasicFieldMetadata#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link BasicFieldMetadata#equals(Object)}
-   *   <li>{@link BasicFieldMetadata#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-
-    // Act and Assert
-    assertEquals(basicFieldMetadata, basicFieldMetadata2);
-    assertEquals(basicFieldMetadata.hashCode(), basicFieldMetadata2.hashCode());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}, and {@link BasicFieldMetadata#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link BasicFieldMetadata#equals(Object)}
-   *   <li>{@link BasicFieldMetadata#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setLength(3);
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setLength(3);
-
-    // Act and Assert
-    assertEquals(basicFieldMetadata, basicFieldMetadata2);
-    assertEquals(basicFieldMetadata.hashCode(), basicFieldMetadata2.hashCode());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}, and {@link BasicFieldMetadata#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link BasicFieldMetadata#equals(Object)}
-   *   <li>{@link BasicFieldMetadata#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setRequired(true);
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setRequired(true);
-
-    // Act and Assert
-    assertEquals(basicFieldMetadata, basicFieldMetadata2);
-    assertEquals(basicFieldMetadata.hashCode(), basicFieldMetadata2.hashCode());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}, and {@link BasicFieldMetadata#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link BasicFieldMetadata#equals(Object)}
-   *   <li>{@link BasicFieldMetadata#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setScale(1);
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setScale(1);
-
-    // Act and Assert
-    assertEquals(basicFieldMetadata, basicFieldMetadata2);
-    assertEquals(basicFieldMetadata.hashCode(), basicFieldMetadata2.hashCode());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}, and {@link BasicFieldMetadata#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link BasicFieldMetadata#equals(Object)}
-   *   <li>{@link BasicFieldMetadata#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setPrecision(1);
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setPrecision(1);
-
-    // Act and Assert
-    assertEquals(basicFieldMetadata, basicFieldMetadata2);
-    assertEquals(basicFieldMetadata.hashCode(), basicFieldMetadata2.hashCode());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}, and {@link BasicFieldMetadata#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link BasicFieldMetadata#equals(Object)}
-   *   <li>{@link BasicFieldMetadata#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual6() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setUnique(true);
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setUnique(true);
-
-    // Act and Assert
-    assertEquals(basicFieldMetadata, basicFieldMetadata2);
-    assertEquals(basicFieldMetadata.hashCode(), basicFieldMetadata2.hashCode());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}, and {@link BasicFieldMetadata#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link BasicFieldMetadata#equals(Object)}
-   *   <li>{@link BasicFieldMetadata#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual7() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setMutable(true);
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setMutable(true);
-
-    // Act and Assert
-    assertEquals(basicFieldMetadata, basicFieldMetadata2);
-    assertEquals(basicFieldMetadata.hashCode(), basicFieldMetadata2.hashCode());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}, and {@link BasicFieldMetadata#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link BasicFieldMetadata#equals(Object)}
-   *   <li>{@link BasicFieldMetadata#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual8() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setForeignKeyProperty("Foreign Key Property");
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setForeignKeyProperty("Foreign Key Property");
-
-    // Act and Assert
-    assertEquals(basicFieldMetadata, basicFieldMetadata2);
-    assertEquals(basicFieldMetadata.hashCode(), basicFieldMetadata2.hashCode());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}, and {@link BasicFieldMetadata#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link BasicFieldMetadata#equals(Object)}
-   *   <li>{@link BasicFieldMetadata#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual9() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setForeignKeyClass("Foreign Key Class");
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setForeignKeyClass("Foreign Key Class");
-
-    // Act and Assert
-    assertEquals(basicFieldMetadata, basicFieldMetadata2);
-    assertEquals(basicFieldMetadata.hashCode(), basicFieldMetadata2.hashCode());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}, and {@link BasicFieldMetadata#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link BasicFieldMetadata#equals(Object)}
-   *   <li>{@link BasicFieldMetadata#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual10() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setForeignKeyCollection(true);
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setForeignKeyCollection(true);
-
-    // Act and Assert
-    assertEquals(basicFieldMetadata, basicFieldMetadata2);
-    assertEquals(basicFieldMetadata.hashCode(), basicFieldMetadata2.hashCode());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}, and {@link BasicFieldMetadata#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link BasicFieldMetadata#equals(Object)}
-   *   <li>{@link BasicFieldMetadata#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual11() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setForeignKeyDisplayValueProperty("42");
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setForeignKeyDisplayValueProperty("42");
-
-    // Act and Assert
-    assertEquals(basicFieldMetadata, basicFieldMetadata2);
-    assertEquals(basicFieldMetadata.hashCode(), basicFieldMetadata2.hashCode());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}, and {@link BasicFieldMetadata#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link BasicFieldMetadata#equals(Object)}
-   *   <li>{@link BasicFieldMetadata#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual12() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setEnumerationClass("Enumeration Class");
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setEnumerationClass("Enumeration Class");
-
-    // Act and Assert
-    assertEquals(basicFieldMetadata, basicFieldMetadata2);
-    assertEquals(basicFieldMetadata.hashCode(), basicFieldMetadata2.hashCode());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}, and {@link BasicFieldMetadata#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link BasicFieldMetadata#equals(Object)}
-   *   <li>{@link BasicFieldMetadata#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual13() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setDerived(true);
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setDerived(true);
-
-    // Act and Assert
-    assertEquals(basicFieldMetadata, basicFieldMetadata2);
-    assertEquals(basicFieldMetadata.hashCode(), basicFieldMetadata2.hashCode());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}, and {@link BasicFieldMetadata#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link BasicFieldMetadata#equals(Object)}
-   *   <li>{@link BasicFieldMetadata#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual14() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setName("Name");
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setName("Name");
-
-    // Act and Assert
-    assertEquals(basicFieldMetadata, basicFieldMetadata2);
-    assertEquals(basicFieldMetadata.hashCode(), basicFieldMetadata2.hashCode());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}, and {@link BasicFieldMetadata#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link BasicFieldMetadata#equals(Object)}
-   *   <li>{@link BasicFieldMetadata#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual15() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setLargeEntry(true);
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setLargeEntry(true);
-
-    // Act and Assert
-    assertEquals(basicFieldMetadata, basicFieldMetadata2);
-    assertEquals(basicFieldMetadata.hashCode(), basicFieldMetadata2.hashCode());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}, and {@link BasicFieldMetadata#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link BasicFieldMetadata#equals(Object)}
-   *   <li>{@link BasicFieldMetadata#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual16() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setProminent(true);
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setProminent(true);
-
-    // Act and Assert
-    assertEquals(basicFieldMetadata, basicFieldMetadata2);
-    assertEquals(basicFieldMetadata.hashCode(), basicFieldMetadata2.hashCode());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}, and {@link BasicFieldMetadata#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link BasicFieldMetadata#equals(Object)}
-   *   <li>{@link BasicFieldMetadata#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual17() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setColumnWidth("Column Width");
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setColumnWidth("Column Width");
-
-    // Act and Assert
-    assertEquals(basicFieldMetadata, basicFieldMetadata2);
-    assertEquals(basicFieldMetadata.hashCode(), basicFieldMetadata2.hashCode());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}, and {@link BasicFieldMetadata#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link BasicFieldMetadata#equals(Object)}
-   *   <li>{@link BasicFieldMetadata#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual18() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setBroadleafEnumeration("Broadleaf Enumeration");
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setBroadleafEnumeration("Broadleaf Enumeration");
-
-    // Act and Assert
-    assertEquals(basicFieldMetadata, basicFieldMetadata2);
-    assertEquals(basicFieldMetadata.hashCode(), basicFieldMetadata2.hashCode());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}, and {@link BasicFieldMetadata#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link BasicFieldMetadata#equals(Object)}
-   *   <li>{@link BasicFieldMetadata#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual19() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setHideEnumerationIfEmpty(true);
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setHideEnumerationIfEmpty(true);
-
-    // Act and Assert
-    assertEquals(basicFieldMetadata, basicFieldMetadata2);
-    assertEquals(basicFieldMetadata.hashCode(), basicFieldMetadata2.hashCode());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}, and {@link BasicFieldMetadata#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link BasicFieldMetadata#equals(Object)}
-   *   <li>{@link BasicFieldMetadata#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual20() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setFieldComponentRenderer(SupportedFieldType.UNKNOWN);
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setFieldComponentRenderer(SupportedFieldType.UNKNOWN);
-
-    // Act and Assert
-    assertEquals(basicFieldMetadata, basicFieldMetadata2);
-    assertEquals(basicFieldMetadata.hashCode(), basicFieldMetadata2.hashCode());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}, and {@link BasicFieldMetadata#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link BasicFieldMetadata#equals(Object)}
-   *   <li>{@link BasicFieldMetadata#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual21() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setGridFieldComponentRenderer(SupportedFieldType.UNKNOWN);
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setGridFieldComponentRenderer(SupportedFieldType.UNKNOWN);
-
-    // Act and Assert
-    assertEquals(basicFieldMetadata, basicFieldMetadata2);
-    assertEquals(basicFieldMetadata.hashCode(), basicFieldMetadata2.hashCode());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}, and {@link BasicFieldMetadata#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link BasicFieldMetadata#equals(Object)}
-   *   <li>{@link BasicFieldMetadata#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual22() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setFieldComponentRendererTemplate("Field Component Renderer Template");
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setFieldComponentRendererTemplate("Field Component Renderer Template");
-
-    // Act and Assert
-    assertEquals(basicFieldMetadata, basicFieldMetadata2);
-    assertEquals(basicFieldMetadata.hashCode(), basicFieldMetadata2.hashCode());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}, and {@link BasicFieldMetadata#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link BasicFieldMetadata#equals(Object)}
-   *   <li>{@link BasicFieldMetadata#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual23() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setGridFieldComponentRendererTemplate(
-        "Grid Field Component Renderer Template");
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setGridFieldComponentRendererTemplate(
-        "Grid Field Component Renderer Template");
-
-    // Act and Assert
-    assertEquals(basicFieldMetadata, basicFieldMetadata2);
-    assertEquals(basicFieldMetadata.hashCode(), basicFieldMetadata2.hashCode());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}, and {@link BasicFieldMetadata#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link BasicFieldMetadata#equals(Object)}
-   *   <li>{@link BasicFieldMetadata#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual24() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setReadOnly(true);
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setReadOnly(true);
-
-    // Act and Assert
-    assertEquals(basicFieldMetadata, basicFieldMetadata2);
-    assertEquals(basicFieldMetadata.hashCode(), basicFieldMetadata2.hashCode());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}, and {@link BasicFieldMetadata#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link BasicFieldMetadata#equals(Object)}
-   *   <li>{@link BasicFieldMetadata#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual25() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setGridOrder(1);
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setGridOrder(1);
-
-    // Act and Assert
-    assertEquals(basicFieldMetadata, basicFieldMetadata2);
-    assertEquals(basicFieldMetadata.hashCode(), basicFieldMetadata2.hashCode());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}, and {@link BasicFieldMetadata#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link BasicFieldMetadata#equals(Object)}
-   *   <li>{@link BasicFieldMetadata#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    // Act and Assert
-    assertEquals(basicFieldMetadata, basicFieldMetadata);
-    int expectedHashCodeResult = basicFieldMetadata.hashCode();
-    assertEquals(expectedHashCodeResult, basicFieldMetadata.hashCode());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
-    // Arrange, Act and Assert
-    assertNotEquals(new BasicFieldMetadata(), 1);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setFieldType(SupportedFieldType.UNKNOWN);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setSecondaryType(SupportedFieldType.UNKNOWN);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setLength(3);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setRequired(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setScale(1);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setPrecision(1);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setUnique(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setMutable(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual10() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setForeignKeyProperty("Foreign Key Property");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual11() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setForeignKeyClass("Foreign Key Class");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual12() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setForeignKeyCollection(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual13() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setMergedPropertyType(MergedPropertyType.PRIMARY);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual14() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setForeignKeyDisplayValueProperty("42");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual15() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setEnumerationClass("Enumeration Class");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual16() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setDerived(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual17() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setName("Name");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual18() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setExplicitFieldType(SupportedFieldType.UNKNOWN);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual19() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setDisplayType(RuleBuilderDisplayType.NORMAL);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual20() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setLargeEntry(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual21() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setProminent(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual22() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setColumnWidth("Column Width");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual23() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setBroadleafEnumeration("Broadleaf Enumeration");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual24() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setHideEnumerationIfEmpty(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual25() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setFieldComponentRenderer(SupportedFieldType.UNKNOWN);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual26() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setGridFieldComponentRenderer(SupportedFieldType.UNKNOWN);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual27() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setFieldComponentRendererTemplate("Field Component Renderer Template");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual28() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setGridFieldComponentRendererTemplate(
-        "Grid Field Component Renderer Template");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual29() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setReadOnly(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual30() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setGridOrder(1);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual31() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setRequiredOverride(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual32() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setGroupCollapsed(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual33() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setTooltip("127.0.0.1");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual34() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setHelpText("Help Text");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual35() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setHint("Hint");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual36() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setVisibility(VisibilityEnum.HIDDEN_ALL);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual37() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setLookupDisplayProperty("Lookup Display Property");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual38() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setForcePopulateChildProperties(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual39() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setEnableTypeaheadLookup(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual40() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setOptionCanEditValues(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual41() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setOptionHideIfEmpty(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual42() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setOptionDisplayFieldName("Option Display Field Name");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual43() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setOptionListEntity("Option List Entity");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual44() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setOptionValueFieldName("42");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual45() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setRuleIdentifier("42");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual46() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setMapFieldValueClass("42");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual47() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setSearchable(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual48() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setManyToField("Many To Field");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual49() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setToOneTargetProperty("To One Target Property");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual50() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setToOneParentProperty("To One Parent Property");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual51() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setMapKeyValueProperty("42");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual52() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setLookupType(LookupType.STANDARD);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual53() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setCanLinkToExternalEntity(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual54() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-    basicFieldMetadata.setAvailableToTypes(new String[] {"Available To Types"});
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, new BasicFieldMetadata());
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual55() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setLength(3);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual56() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setRequired(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual57() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setScale(1);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual58() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setPrecision(1);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual59() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setUnique(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual60() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setMutable(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual61() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setForeignKeyProperty("Foreign Key Property");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual62() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setForeignKeyClass("Foreign Key Class");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual63() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setForeignKeyCollection(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual64() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setForeignKeyDisplayValueProperty("42");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual65() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setEnumerationClass("Enumeration Class");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual66() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setDerived(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual67() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setName("Name");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual68() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setLargeEntry(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual69() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setProminent(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual70() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setColumnWidth("Column Width");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual71() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setBroadleafEnumeration("Broadleaf Enumeration");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual72() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setHideEnumerationIfEmpty(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual73() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setFieldComponentRenderer(SupportedFieldType.UNKNOWN);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual74() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setGridFieldComponentRenderer(SupportedFieldType.UNKNOWN);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual75() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setFieldComponentRendererTemplate("Field Component Renderer Template");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual76() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setGridFieldComponentRendererTemplate(
-        "Grid Field Component Renderer Template");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual77() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setReadOnly(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual78() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setGridOrder(1);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual79() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setRequiredOverride(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual80() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setGroupCollapsed(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual81() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setTooltip("127.0.0.1");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual82() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setHelpText("Help Text");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual83() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setHint("Hint");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual84() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setLookupDisplayProperty("Lookup Display Property");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual85() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setForcePopulateChildProperties(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual86() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setEnableTypeaheadLookup(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual87() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setOptionCanEditValues(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual88() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setOptionHideIfEmpty(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual89() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setOptionDisplayFieldName("Option Display Field Name");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual90() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setOptionListEntity("Option List Entity");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual91() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setOptionValueFieldName("42");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual92() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setRuleIdentifier("42");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual93() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setMapFieldValueClass("42");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual94() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setSearchable(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual95() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setManyToField("Many To Field");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual96() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setToOneTargetProperty("To One Target Property");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual97() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setToOneParentProperty("To One Parent Property");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual98() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setMapKeyValueProperty("42");
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual99() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setLookupType(LookupType.STANDARD);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual100() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
-
-    BasicFieldMetadata basicFieldMetadata2 = new BasicFieldMetadata();
-    basicFieldMetadata2.setCanLinkToExternalEntity(true);
-
-    // Act and Assert
-    assertNotEquals(basicFieldMetadata, basicFieldMetadata2);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
-    // Arrange, Act and Assert
-    assertNotEquals(new BasicFieldMetadata(), null);
-  }
-
-  /**
-   * Test {@link BasicFieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicFieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean BasicFieldMetadata.equals(Object)",
-    "int BasicFieldMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
-    // Arrange, Act and Assert
-    assertNotEquals(new BasicFieldMetadata(), "Different type to BasicFieldMetadata");
-  }
-
-  /**
-   * Test new {@link BasicFieldMetadata} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link BasicFieldMetadata}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BasicFieldMetadata.<init>()"})
   public void testNewBasicFieldMetadata() {
     // Arrange and Act
     BasicFieldMetadata actualBasicFieldMetadata = new BasicFieldMetadata();
 
     // Assert
+    assertNull(actualBasicFieldMetadata.getCustomCriteria());
+    assertNull(actualBasicFieldMetadata.getAvailableToTypes());
+    assertNull(actualBasicFieldMetadata.getEnumerationValues());
+    assertNull(actualBasicFieldMetadata.getOptionFilterParams());
     assertNull(actualBasicFieldMetadata.getCanLinkToExternalEntity());
     assertNull(actualBasicFieldMetadata.getEnableTypeaheadLookup());
     assertNull(actualBasicFieldMetadata.getForcePopulateChildProperties());
@@ -4644,10 +2547,6 @@ public class BasicFieldMetadataDiffblueTest {
     assertNull(actualBasicFieldMetadata.getShowIfProperty());
     assertNull(actualBasicFieldMetadata.getTab());
     assertNull(actualBasicFieldMetadata.getTargetClass());
-    assertNull(actualBasicFieldMetadata.getCustomCriteria());
-    assertNull(actualBasicFieldMetadata.getAvailableToTypes());
-    assertNull(actualBasicFieldMetadata.getEnumerationValues());
-    assertNull(actualBasicFieldMetadata.getOptionFilterParams());
     assertNull(actualBasicFieldMetadata.getShowIfFieldEquals());
     assertNull(actualBasicFieldMetadata.getLookupType());
     assertNull(actualBasicFieldMetadata.getDisplayType());

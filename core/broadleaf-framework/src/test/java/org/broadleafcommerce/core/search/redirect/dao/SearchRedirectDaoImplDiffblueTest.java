@@ -18,30 +18,34 @@
 package org.broadleafcommerce.core.search.redirect.dao;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.junit.Assert.assertSame;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class SearchRedirectDaoImplDiffblueTest {
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Method under test:
+   * {@link SearchRedirectDaoImpl#getCurrentDateAfterFactoringInDateResolution()}
+   */
+  @Test
+  public void testGetCurrentDateAfterFactoringInDateResolution() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SearchRedirectDaoImpl searchRedirectDaoImpl = new SearchRedirectDaoImpl();
+    searchRedirectDaoImpl.setCurrentDateResolution(1L);
+
+    // Act and Assert
+    assertSame(searchRedirectDaoImpl.cachedDate, searchRedirectDaoImpl.getCurrentDateAfterFactoringInDateResolution());
+  }
+
+  /**
+   * Methods under test:
    * <ul>
    *   <li>{@link SearchRedirectDaoImpl#setCurrentDateResolution(Long)}
    *   <li>{@link SearchRedirectDaoImpl#getCurrentDateResolution()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Long SearchRedirectDaoImpl.getCurrentDateResolution()",
-    "void SearchRedirectDaoImpl.setCurrentDateResolution(Long)"
-  })
   public void testGettersAndSetters() {
     // Arrange
     SearchRedirectDaoImpl searchRedirectDaoImpl = new SearchRedirectDaoImpl();
@@ -49,7 +53,7 @@ public class SearchRedirectDaoImplDiffblueTest {
     // Act
     searchRedirectDaoImpl.setCurrentDateResolution(1L);
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals(1L, searchRedirectDaoImpl.getCurrentDateResolution().longValue());
   }
 }

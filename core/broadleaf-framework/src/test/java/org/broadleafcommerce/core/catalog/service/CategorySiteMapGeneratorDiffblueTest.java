@@ -23,752 +23,164 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import org.broadleafcommerce.common.file.domain.FileWorkArea;
-import org.broadleafcommerce.common.media.domain.MediaDto;
 import org.broadleafcommerce.common.sitemap.domain.CustomUrlSiteMapGeneratorConfigurationImpl;
 import org.broadleafcommerce.common.sitemap.domain.SiteMapConfigurationImpl;
 import org.broadleafcommerce.common.sitemap.domain.SiteMapGeneratorConfiguration;
-import org.broadleafcommerce.common.sitemap.domain.SiteMapGeneratorConfigurationImpl;
 import org.broadleafcommerce.common.sitemap.service.SiteMapBuilder;
 import org.broadleafcommerce.common.sitemap.service.type.SiteMapChangeFreqType;
 import org.broadleafcommerce.common.sitemap.service.type.SiteMapGeneratorType;
 import org.broadleafcommerce.common.sitemap.service.type.SiteMapPriorityType;
-import org.broadleafcommerce.common.sitemap.wrapper.SiteMapImageWrapper;
-import org.broadleafcommerce.common.sitemap.wrapper.SiteMapURLWrapper;
 import org.broadleafcommerce.core.catalog.dao.CategoryDao;
 import org.broadleafcommerce.core.catalog.dao.CategoryDaoImpl;
 import org.broadleafcommerce.core.catalog.domain.Category;
 import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
-import org.broadleafcommerce.core.catalog.domain.CategoryMediaXref;
-import org.broadleafcommerce.core.catalog.domain.CategoryMediaXrefImpl;
 import org.broadleafcommerce.core.catalog.domain.CategoryProductXref;
 import org.broadleafcommerce.core.catalog.domain.CategoryProductXrefImpl;
 import org.broadleafcommerce.core.catalog.domain.CategorySiteMapGeneratorConfiguration;
 import org.broadleafcommerce.core.catalog.domain.CategorySiteMapGeneratorConfigurationImpl;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.core.env.Environment;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.core.env.StandardEnvironment;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(MockitoJUnitRunner.class)
 public class CategorySiteMapGeneratorDiffblueTest {
-  @InjectMocks private CategorySiteMapGenerator categorySiteMapGenerator;
-
-  @Mock private Environment environment;
-
   /**
-   * Test {@link
-   * CategorySiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * CategorySiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}
+   * Method under test:
+   * {@link CategorySiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CategorySiteMapGenerator.canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)"
-  })
-  public void testCanHandleSiteMapConfiguration_givenArrayList() {
+  public void testCanHandleSiteMapConfiguration() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    CustomUrlSiteMapGeneratorConfigurationImpl siteMapGeneratorConfiguration =
-        new CustomUrlSiteMapGeneratorConfigurationImpl();
-    siteMapGeneratorConfiguration.setCustomURLEntries(new ArrayList<>());
-    siteMapGeneratorConfiguration.setDisabled(true);
-    siteMapGeneratorConfiguration.setId(1L);
-    siteMapGeneratorConfiguration.setSiteMapChangeFreq(
-        new SiteMapChangeFreqType("Type", "Friendly Type"));
-    siteMapGeneratorConfiguration.setSiteMapConfiguration(new SiteMapConfigurationImpl());
-    siteMapGeneratorConfiguration.setSiteMapGeneratorType(
-        new SiteMapGeneratorType("Type", "Friendly Type"));
-    siteMapGeneratorConfiguration.setSiteMapPriority(
-        new SiteMapPriorityType("Type", "Friendly Type"));
+    CategorySiteMapGenerator categorySiteMapGenerator = new CategorySiteMapGenerator(
+        new StandardReactiveWebEnvironment());
 
     // Act and Assert
     assertFalse(
-        categorySiteMapGenerator.canHandleSiteMapConfiguration(siteMapGeneratorConfiguration));
+        categorySiteMapGenerator.canHandleSiteMapConfiguration(new CategorySiteMapGeneratorConfigurationImpl()));
   }
 
   /**
-   * Test {@link
-   * CategorySiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}.
-   *
-   * <ul>
-   *   <li>Given {@link SiteMapGeneratorType#CATEGORY}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * CategorySiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}
+   * Method under test:
+   * {@link CategorySiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CategorySiteMapGenerator.canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)"
-  })
-  public void testCanHandleSiteMapConfiguration_givenCategory_thenReturnTrue() {
+  public void testCanHandleSiteMapConfiguration2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    SiteMapGeneratorConfiguration siteMapGeneratorConfiguration =
-        mock(SiteMapGeneratorConfiguration.class);
-    when(siteMapGeneratorConfiguration.getSiteMapGeneratorType())
-        .thenReturn(SiteMapGeneratorType.CATEGORY);
+    CategorySiteMapGenerator categorySiteMapGenerator = new CategorySiteMapGenerator(mock(StandardEnvironment.class));
 
-    // Act
-    boolean actualCanHandleSiteMapConfigurationResult =
-        categorySiteMapGenerator.canHandleSiteMapConfiguration(siteMapGeneratorConfiguration);
-
-    // Assert
-    verify(siteMapGeneratorConfiguration).getSiteMapGeneratorType();
-    assertTrue(actualCanHandleSiteMapConfigurationResult);
-  }
-
-  /**
-   * Test {@link
-   * CategorySiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}.
-   *
-   * <ul>
-   *   <li>When {@link SiteMapGeneratorConfigurationImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * CategorySiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CategorySiteMapGenerator.canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)"
-  })
-  public void testCanHandleSiteMapConfiguration_whenSiteMapGeneratorConfigurationImpl() {
-    // Arrange, Act and Assert
+    // Act and Assert
     assertFalse(
-        categorySiteMapGenerator.canHandleSiteMapConfiguration(
-            new SiteMapGeneratorConfigurationImpl()));
+        categorySiteMapGenerator.canHandleSiteMapConfiguration(new CategorySiteMapGeneratorConfigurationImpl()));
   }
 
   /**
-   * Test {@link CategorySiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration,
-   * SiteMapBuilder)}.
-   *
-   * <p>Method under test: {@link
-   * CategorySiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
+   * Method under test:
+   * {@link CategorySiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CategorySiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"
-  })
-  public void testAddSiteMapEntries() {
+  public void testCanHandleSiteMapConfiguration3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.getActiveProductXrefs()).thenReturn(new ArrayList<>());
-    when(categoryImpl.getCategoryMediaXref()).thenReturn(new HashMap<>());
-    when(categoryImpl.getUrl()).thenReturn("https://example.org/example");
+    CategorySiteMapGenerator categorySiteMapGenerator = new CategorySiteMapGenerator(
+        new StandardReactiveWebEnvironment());
 
-    ArrayList<Category> categoryList = new ArrayList<>();
-    categoryList.add(categoryImpl);
+    CustomUrlSiteMapGeneratorConfigurationImpl siteMapGeneratorConfiguration = new CustomUrlSiteMapGeneratorConfigurationImpl();
+    siteMapGeneratorConfiguration.setCustomURLEntries(new ArrayList<>());
+    siteMapGeneratorConfiguration.setDisabled(true);
+    siteMapGeneratorConfiguration.setId(1L);
+    siteMapGeneratorConfiguration.setSiteMapChangeFreq(new SiteMapChangeFreqType("Type", "Friendly Type"));
+    siteMapGeneratorConfiguration.setSiteMapConfiguration(new SiteMapConfigurationImpl());
+    siteMapGeneratorConfiguration.setSiteMapGeneratorType(new SiteMapGeneratorType("Type", "Friendly Type"));
+    siteMapGeneratorConfiguration.setSiteMapPriority(new SiteMapPriorityType("Type", "Friendly Type"));
 
-    CategoryDaoImpl categoryDao = mock(CategoryDaoImpl.class);
-    when(categoryDao.readActiveSubCategoriesByCategory(Mockito.<Category>any(), anyInt(), anyInt()))
-        .thenReturn(categoryList);
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
-
-    CategorySiteMapGenerator categorySiteMapGenerator =
-        new CategorySiteMapGenerator(new StandardReactiveWebEnvironment());
-    categorySiteMapGenerator.setCategoryDao(categoryDao);
-
-    CategorySiteMapGeneratorConfigurationImpl smgc =
-        new CategorySiteMapGeneratorConfigurationImpl();
-    smgc.setDisabled(true);
-    smgc.setEndingDepth(2);
-    smgc.setId(1L);
-    smgc.setRootCategory(new CategoryImpl());
-    smgc.setSiteMapChangeFreq(new SiteMapChangeFreqType("Type", "Friendly Type"));
-    smgc.setSiteMapConfiguration(new SiteMapConfigurationImpl());
-    smgc.setSiteMapGeneratorType(new SiteMapGeneratorType("Type", "Friendly Type"));
-    smgc.setSiteMapPriority(new SiteMapPriorityType("Type", "Friendly Type"));
-    smgc.setStartingDepth(2);
-
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(new SiteMapConfigurationImpl(), fileWorkArea, "/", true);
-
-    // Act
-    categorySiteMapGenerator.addSiteMapEntries(smgc, siteMapBuilder);
-
-    // Assert
-    verify(categoryDao, atLeast(1))
-        .readActiveSubCategoriesByCategory(Mockito.<Category>any(), eq(0), eq(0));
-    verify(categoryDao).readCategoryById(isNull());
-    verify(categoryImpl).getActiveProductXrefs();
-    verify(categoryImpl).getCategoryMediaXref();
-    verify(categoryImpl, atLeast(1)).getUrl();
+    // Act and Assert
+    assertFalse(categorySiteMapGenerator.canHandleSiteMapConfiguration(siteMapGeneratorConfiguration));
   }
 
   /**
-   * Test {@link CategorySiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration,
-   * SiteMapBuilder)}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link CategoryImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * CategorySiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
+   * Method under test:
+   * {@link CategorySiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CategorySiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"
-  })
-  public void testAddSiteMapEntries_givenArrayListAddCategoryImpl() {
+  public void testCanHandleSiteMapConfiguration4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    ArrayList<Category> categoryList = new ArrayList<>();
-    categoryList.add(new CategoryImpl());
+    CategorySiteMapGenerator categorySiteMapGenerator = new CategorySiteMapGenerator(
+        new StandardReactiveWebEnvironment());
 
-    CategoryDaoImpl categoryDao = mock(CategoryDaoImpl.class);
-    when(categoryDao.readActiveSubCategoriesByCategory(Mockito.<Category>any(), anyInt(), anyInt()))
-        .thenReturn(categoryList);
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
+    CustomUrlSiteMapGeneratorConfigurationImpl siteMapGeneratorConfiguration = new CustomUrlSiteMapGeneratorConfigurationImpl();
+    siteMapGeneratorConfiguration.setCustomURLEntries(new ArrayList<>());
+    siteMapGeneratorConfiguration.setDisabled(true);
+    siteMapGeneratorConfiguration.setId(1L);
+    siteMapGeneratorConfiguration.setSiteMapChangeFreq(new SiteMapChangeFreqType("Type", "Friendly Type"));
+    siteMapGeneratorConfiguration.setSiteMapConfiguration(new SiteMapConfigurationImpl());
+    siteMapGeneratorConfiguration.setSiteMapGeneratorType(new SiteMapGeneratorType("CATEGORY", "Friendly Type"));
+    siteMapGeneratorConfiguration.setSiteMapPriority(new SiteMapPriorityType("Type", "Friendly Type"));
 
-    CategorySiteMapGenerator categorySiteMapGenerator =
-        new CategorySiteMapGenerator(new StandardReactiveWebEnvironment());
-    categorySiteMapGenerator.setCategoryDao(categoryDao);
-
-    CategorySiteMapGeneratorConfigurationImpl smgc =
-        new CategorySiteMapGeneratorConfigurationImpl();
-    smgc.setDisabled(true);
-    smgc.setEndingDepth(2);
-    smgc.setId(1L);
-    smgc.setRootCategory(new CategoryImpl());
-    smgc.setSiteMapChangeFreq(new SiteMapChangeFreqType("Type", "Friendly Type"));
-    smgc.setSiteMapConfiguration(new SiteMapConfigurationImpl());
-    smgc.setSiteMapGeneratorType(new SiteMapGeneratorType("Type", "Friendly Type"));
-    smgc.setSiteMapPriority(new SiteMapPriorityType("Type", "Friendly Type"));
-    smgc.setStartingDepth(2);
-
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(
-            new SiteMapConfigurationImpl(), fileWorkArea, "https://example.org/example", true);
-
-    // Act
-    categorySiteMapGenerator.addSiteMapEntries(smgc, siteMapBuilder);
-
-    // Assert
-    verify(categoryDao).readActiveSubCategoriesByCategory(isA(Category.class), eq(0), eq(0));
-    verify(categoryDao).readCategoryById(isNull());
+    // Act and Assert
+    assertTrue(categorySiteMapGenerator.canHandleSiteMapConfiguration(siteMapGeneratorConfiguration));
   }
 
   /**
-   * Test {@link CategorySiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration,
-   * SiteMapBuilder)}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link CategoryProductXrefImpl} (default
-   *       constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * CategorySiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
+   * Method under test:
+   * {@link CategorySiteMapGenerator#constructSiteMapURLs(CategorySiteMapGeneratorConfiguration, SiteMapBuilder, Category)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CategorySiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"
-  })
-  public void testAddSiteMapEntries_givenArrayListAddCategoryProductXrefImpl() {
-    // Arrange
-    ArrayList<CategoryProductXref> categoryProductXrefList = new ArrayList<>();
-    categoryProductXrefList.add(new CategoryProductXrefImpl());
-
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.getActiveProductXrefs()).thenReturn(categoryProductXrefList);
-    when(categoryImpl.getCategoryMediaXref()).thenReturn(new HashMap<>());
-    when(categoryImpl.getUrl()).thenReturn("https://example.org/example");
-
-    ArrayList<Category> categoryList = new ArrayList<>();
-    categoryList.add(categoryImpl);
-
-    CategoryDaoImpl categoryDao = mock(CategoryDaoImpl.class);
-    when(categoryDao.readActiveSubCategoriesByCategory(Mockito.<Category>any(), anyInt(), anyInt()))
-        .thenReturn(categoryList);
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
-
-    CategorySiteMapGenerator categorySiteMapGenerator =
-        new CategorySiteMapGenerator(new StandardReactiveWebEnvironment());
-    categorySiteMapGenerator.setCategoryDao(categoryDao);
-
-    CategorySiteMapGeneratorConfigurationImpl smgc =
-        new CategorySiteMapGeneratorConfigurationImpl();
-    smgc.setDisabled(true);
-    smgc.setEndingDepth(2);
-    smgc.setId(1L);
-    smgc.setRootCategory(new CategoryImpl());
-    smgc.setSiteMapChangeFreq(new SiteMapChangeFreqType("Type", "Friendly Type"));
-    smgc.setSiteMapConfiguration(new SiteMapConfigurationImpl());
-    smgc.setSiteMapGeneratorType(new SiteMapGeneratorType("Type", "Friendly Type"));
-    smgc.setSiteMapPriority(new SiteMapPriorityType("Type", "Friendly Type"));
-    smgc.setStartingDepth(2);
-
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(
-            new SiteMapConfigurationImpl(), fileWorkArea, "https://example.org/example", true);
-
-    // Act
-    categorySiteMapGenerator.addSiteMapEntries(smgc, siteMapBuilder);
-
-    // Assert
-    verify(categoryDao, atLeast(1))
-        .readActiveSubCategoriesByCategory(Mockito.<Category>any(), eq(0), eq(0));
-    verify(categoryDao).readCategoryById(isNull());
-    verify(categoryImpl).getActiveProductXrefs();
-    verify(categoryImpl).getCategoryMediaXref();
-    verify(categoryImpl, atLeast(1)).getUrl();
-  }
-
-  /**
-   * Test {@link CategorySiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration,
-   * SiteMapBuilder)}.
-   *
-   * <ul>
-   *   <li>Given {@link CategoryImpl} {@link CategoryImpl#getUrl()} return empty string.
-   *   <li>Then calls {@link CategoryImpl#getId()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * CategorySiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CategorySiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"
-  })
-  public void testAddSiteMapEntries_givenCategoryImplGetUrlReturnEmptyString_thenCallsGetId() {
-    // Arrange
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.getId()).thenReturn(1L);
-    when(categoryImpl.getUrl()).thenReturn("");
-
-    ArrayList<Category> categoryList = new ArrayList<>();
-    categoryList.add(categoryImpl);
-
-    CategoryDaoImpl categoryDao = mock(CategoryDaoImpl.class);
-    when(categoryDao.readActiveSubCategoriesByCategory(Mockito.<Category>any(), anyInt(), anyInt()))
-        .thenReturn(categoryList);
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
-
-    CategorySiteMapGenerator categorySiteMapGenerator =
-        new CategorySiteMapGenerator(new StandardReactiveWebEnvironment());
-    categorySiteMapGenerator.setCategoryDao(categoryDao);
-
-    CategorySiteMapGeneratorConfigurationImpl smgc =
-        new CategorySiteMapGeneratorConfigurationImpl();
-    smgc.setDisabled(true);
-    smgc.setEndingDepth(2);
-    smgc.setId(1L);
-    smgc.setRootCategory(new CategoryImpl());
-    smgc.setSiteMapChangeFreq(new SiteMapChangeFreqType("Type", "Friendly Type"));
-    smgc.setSiteMapConfiguration(new SiteMapConfigurationImpl());
-    smgc.setSiteMapGeneratorType(new SiteMapGeneratorType("Type", "Friendly Type"));
-    smgc.setSiteMapPriority(new SiteMapPriorityType("Type", "Friendly Type"));
-    smgc.setStartingDepth(2);
-
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(
-            new SiteMapConfigurationImpl(), fileWorkArea, "https://example.org/example", true);
-
-    // Act
-    categorySiteMapGenerator.addSiteMapEntries(smgc, siteMapBuilder);
-
-    // Assert
-    verify(categoryDao).readActiveSubCategoriesByCategory(isA(Category.class), eq(0), eq(0));
-    verify(categoryDao).readCategoryById(isNull());
-    verify(categoryImpl).getId();
-    verify(categoryImpl).getUrl();
-  }
-
-  /**
-   * Test {@link CategorySiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration,
-   * SiteMapBuilder)}.
-   *
-   * <ul>
-   *   <li>Given {@link CategoryImpl} {@link CategoryImpl#getUrl()} return {@code /}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * CategorySiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CategorySiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"
-  })
-  public void testAddSiteMapEntries_givenCategoryImplGetUrlReturnSlash() {
-    // Arrange
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.getActiveProductXrefs()).thenReturn(new ArrayList<>());
-    when(categoryImpl.getCategoryMediaXref()).thenReturn(new HashMap<>());
-    when(categoryImpl.getUrl()).thenReturn("/");
-
-    ArrayList<Category> categoryList = new ArrayList<>();
-    categoryList.add(categoryImpl);
-
-    CategoryDaoImpl categoryDao = mock(CategoryDaoImpl.class);
-    when(categoryDao.readActiveSubCategoriesByCategory(Mockito.<Category>any(), anyInt(), anyInt()))
-        .thenReturn(categoryList);
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
-
-    CategorySiteMapGenerator categorySiteMapGenerator =
-        new CategorySiteMapGenerator(new StandardReactiveWebEnvironment());
-    categorySiteMapGenerator.setCategoryDao(categoryDao);
-
-    CategorySiteMapGeneratorConfigurationImpl smgc =
-        new CategorySiteMapGeneratorConfigurationImpl();
-    smgc.setDisabled(true);
-    smgc.setEndingDepth(2);
-    smgc.setId(1L);
-    smgc.setRootCategory(new CategoryImpl());
-    smgc.setSiteMapChangeFreq(new SiteMapChangeFreqType("Type", "Friendly Type"));
-    smgc.setSiteMapConfiguration(new SiteMapConfigurationImpl());
-    smgc.setSiteMapGeneratorType(new SiteMapGeneratorType("Type", "Friendly Type"));
-    smgc.setSiteMapPriority(new SiteMapPriorityType("Type", "Friendly Type"));
-    smgc.setStartingDepth(2);
-
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(
-            new SiteMapConfigurationImpl(), fileWorkArea, "https://example.org/example", true);
-
-    // Act
-    categorySiteMapGenerator.addSiteMapEntries(smgc, siteMapBuilder);
-
-    // Assert
-    verify(categoryDao, atLeast(1))
-        .readActiveSubCategoriesByCategory(Mockito.<Category>any(), eq(0), eq(0));
-    verify(categoryDao).readCategoryById(isNull());
-    verify(categoryImpl).getActiveProductXrefs();
-    verify(categoryImpl).getCategoryMediaXref();
-    verify(categoryImpl, atLeast(1)).getUrl();
-  }
-
-  /**
-   * Test {@link CategorySiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration,
-   * SiteMapBuilder)}.
-   *
-   * <ul>
-   *   <li>Given minus one.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * CategorySiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CategorySiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"
-  })
-  public void testAddSiteMapEntries_givenMinusOne() {
-    // Arrange
-    CategoryDaoImpl categoryDao = mock(CategoryDaoImpl.class);
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
-
-    CategorySiteMapGenerator categorySiteMapGenerator =
-        new CategorySiteMapGenerator(new StandardReactiveWebEnvironment());
-    categorySiteMapGenerator.setCategoryDao(categoryDao);
-
-    CategorySiteMapGeneratorConfigurationImpl smgc =
-        new CategorySiteMapGeneratorConfigurationImpl();
-    smgc.setDisabled(true);
-    smgc.setEndingDepth(-1);
-    smgc.setId(1L);
-    smgc.setRootCategory(new CategoryImpl());
-    smgc.setSiteMapChangeFreq(new SiteMapChangeFreqType("Type", "Friendly Type"));
-    smgc.setSiteMapConfiguration(new SiteMapConfigurationImpl());
-    smgc.setSiteMapGeneratorType(new SiteMapGeneratorType("Type", "Friendly Type"));
-    smgc.setSiteMapPriority(new SiteMapPriorityType("Type", "Friendly Type"));
-    smgc.setStartingDepth(2);
-
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(
-            new SiteMapConfigurationImpl(), fileWorkArea, "https://example.org/example", true);
-
-    // Act
-    categorySiteMapGenerator.addSiteMapEntries(smgc, siteMapBuilder);
-
-    // Assert
-    verify(categoryDao).readCategoryById(isNull());
-  }
-
-  /**
-   * Test {@link CategorySiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration,
-   * SiteMapBuilder)}.
-   *
-   * <ul>
-   *   <li>Given {@link SiteMapChangeFreqType#SiteMapChangeFreqType()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * CategorySiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CategorySiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"
-  })
-  public void testAddSiteMapEntries_givenSiteMapChangeFreqType() {
-    // Arrange
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.getActiveProductXrefs()).thenReturn(new ArrayList<>());
-    when(categoryImpl.getCategoryMediaXref()).thenReturn(new HashMap<>());
-    when(categoryImpl.getUrl()).thenReturn("https://example.org/example");
-
-    ArrayList<Category> categoryList = new ArrayList<>();
-    categoryList.add(categoryImpl);
-
-    CategoryDaoImpl categoryDao = mock(CategoryDaoImpl.class);
-    when(categoryDao.readActiveSubCategoriesByCategory(Mockito.<Category>any(), anyInt(), anyInt()))
-        .thenReturn(categoryList);
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
-
-    CategorySiteMapGenerator categorySiteMapGenerator =
-        new CategorySiteMapGenerator(new StandardReactiveWebEnvironment());
-    categorySiteMapGenerator.setCategoryDao(categoryDao);
-
-    CategorySiteMapGeneratorConfigurationImpl smgc =
-        new CategorySiteMapGeneratorConfigurationImpl();
-    smgc.setDisabled(true);
-    smgc.setEndingDepth(2);
-    smgc.setId(1L);
-    smgc.setRootCategory(new CategoryImpl());
-    smgc.setSiteMapChangeFreq(new SiteMapChangeFreqType());
-    smgc.setSiteMapConfiguration(new SiteMapConfigurationImpl());
-    smgc.setSiteMapGeneratorType(new SiteMapGeneratorType("Type", "Friendly Type"));
-    smgc.setSiteMapPriority(new SiteMapPriorityType("Type", "Friendly Type"));
-    smgc.setStartingDepth(2);
-
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(
-            new SiteMapConfigurationImpl(), fileWorkArea, "https://example.org/example", true);
-
-    // Act
-    categorySiteMapGenerator.addSiteMapEntries(smgc, siteMapBuilder);
-
-    // Assert
-    verify(categoryDao, atLeast(1))
-        .readActiveSubCategoriesByCategory(Mockito.<Category>any(), eq(0), eq(0));
-    verify(categoryDao).readCategoryById(isNull());
-    verify(categoryImpl).getActiveProductXrefs();
-    verify(categoryImpl).getCategoryMediaXref();
-    verify(categoryImpl, atLeast(1)).getUrl();
-  }
-
-  /**
-   * Test {@link CategorySiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration,
-   * SiteMapBuilder)}.
-   *
-   * <ul>
-   *   <li>Given {@link SiteMapPriorityType#SiteMapPriorityType()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * CategorySiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CategorySiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"
-  })
-  public void testAddSiteMapEntries_givenSiteMapPriorityType() {
-    // Arrange
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.getActiveProductXrefs()).thenReturn(new ArrayList<>());
-    when(categoryImpl.getCategoryMediaXref()).thenReturn(new HashMap<>());
-    when(categoryImpl.getUrl()).thenReturn("https://example.org/example");
-
-    ArrayList<Category> categoryList = new ArrayList<>();
-    categoryList.add(categoryImpl);
-
-    CategoryDaoImpl categoryDao = mock(CategoryDaoImpl.class);
-    when(categoryDao.readActiveSubCategoriesByCategory(Mockito.<Category>any(), anyInt(), anyInt()))
-        .thenReturn(categoryList);
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
-
-    CategorySiteMapGenerator categorySiteMapGenerator =
-        new CategorySiteMapGenerator(new StandardReactiveWebEnvironment());
-    categorySiteMapGenerator.setCategoryDao(categoryDao);
-
-    CategorySiteMapGeneratorConfigurationImpl smgc =
-        new CategorySiteMapGeneratorConfigurationImpl();
-    smgc.setDisabled(true);
-    smgc.setEndingDepth(2);
-    smgc.setId(1L);
-    smgc.setRootCategory(new CategoryImpl());
-    smgc.setSiteMapChangeFreq(new SiteMapChangeFreqType("Type", "Friendly Type"));
-    smgc.setSiteMapConfiguration(new SiteMapConfigurationImpl());
-    smgc.setSiteMapGeneratorType(new SiteMapGeneratorType("Type", "Friendly Type"));
-    smgc.setSiteMapPriority(new SiteMapPriorityType());
-    smgc.setStartingDepth(2);
-
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(
-            new SiteMapConfigurationImpl(), fileWorkArea, "https://example.org/example", true);
-
-    // Act
-    categorySiteMapGenerator.addSiteMapEntries(smgc, siteMapBuilder);
-
-    // Assert
-    verify(categoryDao, atLeast(1))
-        .readActiveSubCategoriesByCategory(Mockito.<Category>any(), eq(0), eq(0));
-    verify(categoryDao).readCategoryById(isNull());
-    verify(categoryImpl).getActiveProductXrefs();
-    verify(categoryImpl).getCategoryMediaXref();
-    verify(categoryImpl, atLeast(1)).getUrl();
-  }
-
-  /**
-   * Test {@link CategorySiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration,
-   * SiteMapBuilder)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link CategoryImpl#getActiveProductXrefs()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * CategorySiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CategorySiteMapGenerator.addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)"
-  })
-  public void testAddSiteMapEntries_thenCallsGetActiveProductXrefs() {
-    // Arrange
-    CategoryImpl categoryImpl = mock(CategoryImpl.class);
-    when(categoryImpl.getActiveProductXrefs()).thenReturn(new ArrayList<>());
-    when(categoryImpl.getCategoryMediaXref()).thenReturn(new HashMap<>());
-    when(categoryImpl.getUrl()).thenReturn("https://example.org/example");
-
-    ArrayList<Category> categoryList = new ArrayList<>();
-    categoryList.add(categoryImpl);
-
-    CategoryDaoImpl categoryDao = mock(CategoryDaoImpl.class);
-    when(categoryDao.readActiveSubCategoriesByCategory(Mockito.<Category>any(), anyInt(), anyInt()))
-        .thenReturn(categoryList);
-    when(categoryDao.readCategoryById(Mockito.<Long>any())).thenReturn(new CategoryImpl());
-
-    CategorySiteMapGenerator categorySiteMapGenerator =
-        new CategorySiteMapGenerator(new StandardReactiveWebEnvironment());
-    categorySiteMapGenerator.setCategoryDao(categoryDao);
-
-    CategorySiteMapGeneratorConfigurationImpl smgc =
-        new CategorySiteMapGeneratorConfigurationImpl();
-    smgc.setDisabled(true);
-    smgc.setEndingDepth(2);
-    smgc.setId(1L);
-    smgc.setRootCategory(new CategoryImpl());
-    smgc.setSiteMapChangeFreq(new SiteMapChangeFreqType("Type", "Friendly Type"));
-    smgc.setSiteMapConfiguration(new SiteMapConfigurationImpl());
-    smgc.setSiteMapGeneratorType(new SiteMapGeneratorType("Type", "Friendly Type"));
-    smgc.setSiteMapPriority(new SiteMapPriorityType("Type", "Friendly Type"));
-    smgc.setStartingDepth(2);
-
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(
-            new SiteMapConfigurationImpl(), fileWorkArea, "https://example.org/example", true);
-
-    // Act
-    categorySiteMapGenerator.addSiteMapEntries(smgc, siteMapBuilder);
-
-    // Assert
-    verify(categoryDao, atLeast(1))
-        .readActiveSubCategoriesByCategory(Mockito.<Category>any(), eq(0), eq(0));
-    verify(categoryDao).readCategoryById(isNull());
-    verify(categoryImpl).getActiveProductXrefs();
-    verify(categoryImpl).getCategoryMediaXref();
-    verify(categoryImpl, atLeast(1)).getUrl();
-  }
-
-  /**
-   * Test {@link
-   * CategorySiteMapGenerator#constructSiteMapURLs(CategorySiteMapGeneratorConfiguration,
-   * SiteMapBuilder, Category)}.
-   *
-   * <p>Method under test: {@link
-   * CategorySiteMapGenerator#constructSiteMapURLs(CategorySiteMapGeneratorConfiguration,
-   * SiteMapBuilder, Category)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CategorySiteMapGenerator.constructSiteMapURLs(CategorySiteMapGeneratorConfiguration, SiteMapBuilder, Category)"
-  })
   public void testConstructSiteMapURLs() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<String>any()))
-        .thenReturn("Property");
+    CategorySiteMapGenerator categorySiteMapGenerator = new CategorySiteMapGenerator(
+        new StandardReactiveWebEnvironment());
+    CategorySiteMapGeneratorConfigurationImpl categorySMGC = new CategorySiteMapGeneratorConfigurationImpl();
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+    SiteMapBuilder siteMapBuilder = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example",
+        true);
 
-    CategorySiteMapGeneratorConfiguration categorySMGC =
-        mock(CategorySiteMapGeneratorConfiguration.class);
-    when(categorySMGC.getSiteMapChangeFreq())
-        .thenReturn(new SiteMapChangeFreqType("Type", "Friendly Type"));
-    when(categorySMGC.getSiteMapPriority())
-        .thenReturn(new SiteMapPriorityType("Type", "Friendly Type"));
+    CategoryImpl category = mock(CategoryImpl.class);
+    when(category.getCategoryMediaXref()).thenReturn(new HashMap<>());
+    when(category.getUrl()).thenReturn("https://example.org/example");
+    when(category.getActiveProductXrefs()).thenReturn(new ArrayList<>());
 
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(new SiteMapConfigurationImpl(), fileWorkArea, "/", true);
+    // Act
+    categorySiteMapGenerator.constructSiteMapURLs(categorySMGC, siteMapBuilder, category);
+
+    // Assert
+    verify(category).getActiveProductXrefs();
+    verify(category).getCategoryMediaXref();
+    verify(category).getUrl();
+  }
+
+  /**
+   * Method under test:
+   * {@link CategorySiteMapGenerator#constructSiteMapURLs(CategorySiteMapGeneratorConfiguration, SiteMapBuilder, Category)}
+   */
+  @Test
+  public void testConstructSiteMapURLs2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CategorySiteMapGenerator categorySiteMapGenerator = new CategorySiteMapGenerator(
+        new StandardReactiveWebEnvironment());
+    CategorySiteMapGeneratorConfiguration categorySMGC = mock(CategorySiteMapGeneratorConfiguration.class);
+    when(categorySMGC.getSiteMapChangeFreq()).thenReturn(new SiteMapChangeFreqType("Type", "Friendly Type"));
+    when(categorySMGC.getSiteMapPriority()).thenReturn(new SiteMapPriorityType("Type", "Friendly Type"));
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+    SiteMapBuilder siteMapBuilder = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example",
+        true);
 
     CategoryImpl category = mock(CategoryImpl.class);
     when(category.getCategoryMediaXref()).thenReturn(new HashMap<>());
@@ -784,55 +196,27 @@ public class CategorySiteMapGeneratorDiffblueTest {
     verify(category).getActiveProductXrefs();
     verify(category).getCategoryMediaXref();
     verify(category).getUrl();
-    verify(environment).getProperty("seo.category.pagination.param", "page");
   }
 
   /**
-   * Test {@link
-   * CategorySiteMapGenerator#constructSiteMapURLs(CategorySiteMapGeneratorConfiguration,
-   * SiteMapBuilder, Category)}.
-   *
-   * <ul>
-   *   <li>Given {@link CategoryMediaXrefImpl#CategoryMediaXrefImpl()} Url is {@code
-   *       https://example.org/example}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * CategorySiteMapGenerator#constructSiteMapURLs(CategorySiteMapGeneratorConfiguration,
-   * SiteMapBuilder, Category)}
+   * Method under test:
+   * {@link CategorySiteMapGenerator#constructSiteMapURLs(CategorySiteMapGeneratorConfiguration, SiteMapBuilder, Category)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CategorySiteMapGenerator.constructSiteMapURLs(CategorySiteMapGeneratorConfiguration, SiteMapBuilder, Category)"
-  })
-  public void testConstructSiteMapURLs_givenCategoryMediaXrefImplUrlIsHttpsExampleOrgExample() {
+  public void testConstructSiteMapURLs3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    CategorySiteMapGenerator categorySiteMapGenerator =
-        new CategorySiteMapGenerator(new StandardReactiveWebEnvironment());
-
-    CategorySiteMapGeneratorConfiguration categorySMGC =
-        mock(CategorySiteMapGeneratorConfiguration.class);
-    when(categorySMGC.getSiteMapChangeFreq())
-        .thenReturn(new SiteMapChangeFreqType("Type", "Friendly Type"));
-    when(categorySMGC.getSiteMapPriority())
-        .thenReturn(new SiteMapPriorityType("Type", "Friendly Type"));
-
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(
-            new SiteMapConfigurationImpl(), fileWorkArea, "https://example.org/example", true);
-
-    CategoryMediaXrefImpl categoryMediaXrefImpl = new CategoryMediaXrefImpl();
-    categoryMediaXrefImpl.setUrl("https://example.org/example");
-
-    HashMap<String, CategoryMediaXref> stringCategoryMediaXrefMap = new HashMap<>();
-    stringCategoryMediaXrefMap.put("/", categoryMediaXrefImpl);
+    CategorySiteMapGenerator categorySiteMapGenerator = new CategorySiteMapGenerator(
+        new StandardReactiveWebEnvironment());
+    CategorySiteMapGeneratorConfiguration categorySMGC = mock(CategorySiteMapGeneratorConfiguration.class);
+    when(categorySMGC.getSiteMapChangeFreq()).thenReturn(new SiteMapChangeFreqType("Type", "Friendly Type"));
+    when(categorySMGC.getSiteMapPriority()).thenReturn(new SiteMapPriorityType("Type", "Friendly Type"));
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+    SiteMapBuilder siteMapBuilder = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "/", true);
 
     CategoryImpl category = mock(CategoryImpl.class);
-    when(category.getCategoryMediaXref()).thenReturn(stringCategoryMediaXrefMap);
+    when(category.getCategoryMediaXref()).thenReturn(new HashMap<>());
     when(category.getUrl()).thenReturn("https://example.org/example");
     when(category.getActiveProductXrefs()).thenReturn(new ArrayList<>());
 
@@ -848,40 +232,22 @@ public class CategorySiteMapGeneratorDiffblueTest {
   }
 
   /**
-   * Test {@link
-   * CategorySiteMapGenerator#constructSiteMapURLs(CategorySiteMapGeneratorConfiguration,
-   * SiteMapBuilder, Category)}.
-   *
-   * <ul>
-   *   <li>Given {@code /}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * CategorySiteMapGenerator#constructSiteMapURLs(CategorySiteMapGeneratorConfiguration,
-   * SiteMapBuilder, Category)}
+   * Method under test:
+   * {@link CategorySiteMapGenerator#constructSiteMapURLs(CategorySiteMapGeneratorConfiguration, SiteMapBuilder, Category)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CategorySiteMapGenerator.constructSiteMapURLs(CategorySiteMapGeneratorConfiguration, SiteMapBuilder, Category)"
-  })
-  public void testConstructSiteMapURLs_givenSlash() {
+  public void testConstructSiteMapURLs4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    CategorySiteMapGenerator categorySiteMapGenerator =
-        new CategorySiteMapGenerator(new StandardReactiveWebEnvironment());
-
-    CategorySiteMapGeneratorConfiguration categorySMGC =
-        mock(CategorySiteMapGeneratorConfiguration.class);
-    when(categorySMGC.getSiteMapChangeFreq())
-        .thenReturn(new SiteMapChangeFreqType("Type", "Friendly Type"));
-    when(categorySMGC.getSiteMapPriority())
-        .thenReturn(new SiteMapPriorityType("Type", "Friendly Type"));
-
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(new SiteMapConfigurationImpl(), fileWorkArea, "/", true);
+    CategorySiteMapGenerator categorySiteMapGenerator = new CategorySiteMapGenerator(
+        new StandardReactiveWebEnvironment());
+    CategorySiteMapGeneratorConfiguration categorySMGC = mock(CategorySiteMapGeneratorConfiguration.class);
+    when(categorySMGC.getSiteMapChangeFreq()).thenReturn(new SiteMapChangeFreqType("Type", "Friendly Type"));
+    when(categorySMGC.getSiteMapPriority()).thenReturn(new SiteMapPriorityType("Type", "Friendly Type"));
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+    SiteMapBuilder siteMapBuilder = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example",
+        true);
 
     CategoryImpl category = mock(CategoryImpl.class);
     when(category.getCategoryMediaXref()).thenReturn(new HashMap<>());
@@ -900,156 +266,25 @@ public class CategorySiteMapGeneratorDiffblueTest {
   }
 
   /**
-   * Test {@link
-   * CategorySiteMapGenerator#constructSiteMapURLs(CategorySiteMapGeneratorConfiguration,
-   * SiteMapBuilder, Category)}.
-   *
-   * <ul>
-   *   <li>Given {@code /}.
-   *   <li>When {@link CategoryImpl} {@link CategoryImpl#getUrl()} return {@code /}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * CategorySiteMapGenerator#constructSiteMapURLs(CategorySiteMapGeneratorConfiguration,
-   * SiteMapBuilder, Category)}
+   * Method under test:
+   * {@link CategorySiteMapGenerator#constructSiteMapURLs(CategorySiteMapGeneratorConfiguration, SiteMapBuilder, Category)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CategorySiteMapGenerator.constructSiteMapURLs(CategorySiteMapGeneratorConfiguration, SiteMapBuilder, Category)"
-  })
-  public void testConstructSiteMapURLs_givenSlash_whenCategoryImplGetUrlReturnSlash() {
+  public void testConstructSiteMapURLs5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    CategorySiteMapGenerator categorySiteMapGenerator =
-        new CategorySiteMapGenerator(new StandardReactiveWebEnvironment());
-
-    CategorySiteMapGeneratorConfiguration categorySMGC =
-        mock(CategorySiteMapGeneratorConfiguration.class);
-    when(categorySMGC.getSiteMapChangeFreq())
-        .thenReturn(new SiteMapChangeFreqType("Type", "Friendly Type"));
-    when(categorySMGC.getSiteMapPriority())
-        .thenReturn(new SiteMapPriorityType("Type", "Friendly Type"));
-
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(
-            new SiteMapConfigurationImpl(), fileWorkArea, "https://example.org/example", true);
-
-    CategoryImpl category = mock(CategoryImpl.class);
-    when(category.getCategoryMediaXref()).thenReturn(new HashMap<>());
-    when(category.getUrl()).thenReturn("/");
-    when(category.getActiveProductXrefs()).thenReturn(new ArrayList<>());
-
-    // Act
-    categorySiteMapGenerator.constructSiteMapURLs(categorySMGC, siteMapBuilder, category);
-
-    // Assert
-    verify(categorySMGC).getSiteMapChangeFreq();
-    verify(categorySMGC).getSiteMapPriority();
-    verify(category).getActiveProductXrefs();
-    verify(category).getCategoryMediaXref();
-    verify(category).getUrl();
-  }
-
-  /**
-   * Test {@link
-   * CategorySiteMapGenerator#constructSiteMapURLs(CategorySiteMapGeneratorConfiguration,
-   * SiteMapBuilder, Category)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link Environment#getProperty(String, String)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * CategorySiteMapGenerator#constructSiteMapURLs(CategorySiteMapGeneratorConfiguration,
-   * SiteMapBuilder, Category)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CategorySiteMapGenerator.constructSiteMapURLs(CategorySiteMapGeneratorConfiguration, SiteMapBuilder, Category)"
-  })
-  public void testConstructSiteMapURLs_thenCallsGetProperty() {
-    // Arrange
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<String>any()))
-        .thenReturn("Property");
-
-    CategorySiteMapGeneratorConfiguration categorySMGC =
-        mock(CategorySiteMapGeneratorConfiguration.class);
-    when(categorySMGC.getSiteMapChangeFreq())
-        .thenReturn(new SiteMapChangeFreqType("Type", "Friendly Type"));
-    when(categorySMGC.getSiteMapPriority())
-        .thenReturn(new SiteMapPriorityType("Type", "Friendly Type"));
-
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(
-            new SiteMapConfigurationImpl(), fileWorkArea, "https://example.org/example", true);
-
-    CategoryImpl category = mock(CategoryImpl.class);
-    when(category.getCategoryMediaXref()).thenReturn(new HashMap<>());
-    when(category.getUrl()).thenReturn("https://example.org/example");
-    when(category.getActiveProductXrefs()).thenReturn(new ArrayList<>());
-
-    // Act
-    categorySiteMapGenerator.constructSiteMapURLs(categorySMGC, siteMapBuilder, category);
-
-    // Assert
-    verify(categorySMGC).getSiteMapChangeFreq();
-    verify(categorySMGC).getSiteMapPriority();
-    verify(category).getActiveProductXrefs();
-    verify(category).getCategoryMediaXref();
-    verify(category).getUrl();
-    verify(environment).getProperty("seo.category.pagination.param", "page");
-  }
-
-  /**
-   * Test {@link
-   * CategorySiteMapGenerator#constructSiteMapURLs(CategorySiteMapGeneratorConfiguration,
-   * SiteMapBuilder, Category)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link Environment#getProperty(String, Class, Object)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * CategorySiteMapGenerator#constructSiteMapURLs(CategorySiteMapGeneratorConfiguration,
-   * SiteMapBuilder, Category)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CategorySiteMapGenerator.constructSiteMapURLs(CategorySiteMapGeneratorConfiguration, SiteMapBuilder, Category)"
-  })
-  public void testConstructSiteMapURLs_thenCallsGetProperty2() {
-    // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
-        .thenReturn(1);
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<String>any()))
-        .thenReturn("Property");
-
-    CategorySiteMapGeneratorConfiguration categorySMGC =
-        mock(CategorySiteMapGeneratorConfiguration.class);
-    when(categorySMGC.getSiteMapChangeFreq())
-        .thenReturn(new SiteMapChangeFreqType("Type", "Friendly Type"));
-    when(categorySMGC.getSiteMapPriority())
-        .thenReturn(new SiteMapPriorityType("Type", "Friendly Type"));
-
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(
-            new SiteMapConfigurationImpl(), fileWorkArea, "https://example.org/example", true);
+    CategorySiteMapGenerator categorySiteMapGenerator = new CategorySiteMapGenerator(
+        new StandardReactiveWebEnvironment());
+    CategorySiteMapGeneratorConfiguration categorySMGC = mock(CategorySiteMapGeneratorConfiguration.class);
+    when(categorySMGC.getSiteMapChangeFreq()).thenReturn(new SiteMapChangeFreqType("Type", "Friendly Type"));
+    when(categorySMGC.getSiteMapPriority()).thenReturn(new SiteMapPriorityType("Type", "Friendly Type"));
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+    SiteMapBuilder siteMapBuilder = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example",
+        true);
 
     ArrayList<CategoryProductXref> categoryProductXrefList = new ArrayList<>();
     categoryProductXrefList.add(new CategoryProductXrefImpl());
-
     CategoryImpl category = mock(CategoryImpl.class);
     when(category.getCategoryMediaXref()).thenReturn(new HashMap<>());
     when(category.getUrl()).thenReturn("https://example.org/example");
@@ -1064,628 +299,355 @@ public class CategorySiteMapGeneratorDiffblueTest {
     verify(category).getActiveProductXrefs();
     verify(category).getCategoryMediaXref();
     verify(category).getUrl();
-    verify(environment).getProperty("seo.category.pagination.param", "page");
-    verify(environment).getProperty(eq("web.defaultPageSize"), isA(Class.class), isA(Object.class));
   }
 
   /**
-   * Test {@link
-   * CategorySiteMapGenerator#constructSiteMapURLs(CategorySiteMapGeneratorConfiguration,
-   * SiteMapBuilder, Category)}.
-   *
-   * <ul>
-   *   <li>When {@link CategorySiteMapGeneratorConfigurationImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * CategorySiteMapGenerator#constructSiteMapURLs(CategorySiteMapGeneratorConfiguration,
-   * SiteMapBuilder, Category)}
+   * Method under test:
+   * {@link CategorySiteMapGenerator#constructSiteMapURLs(CategorySiteMapGeneratorConfiguration, SiteMapBuilder, Category)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CategorySiteMapGenerator.constructSiteMapURLs(CategorySiteMapGeneratorConfiguration, SiteMapBuilder, Category)"
-  })
-  public void testConstructSiteMapURLs_whenCategorySiteMapGeneratorConfigurationImpl() {
-    // Arrange
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<String>any()))
-        .thenReturn("Property");
-    CategorySiteMapGeneratorConfigurationImpl categorySMGC =
-        new CategorySiteMapGeneratorConfigurationImpl();
+  public void testConstructSiteMapURLs6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(
-            new SiteMapConfigurationImpl(), fileWorkArea, "https://example.org/example", true);
+    // Arrange
+    CategorySiteMapGenerator categorySiteMapGenerator = new CategorySiteMapGenerator(
+        new StandardReactiveWebEnvironment());
+    CategorySiteMapGeneratorConfiguration categorySMGC = mock(CategorySiteMapGeneratorConfiguration.class);
+    when(categorySMGC.getSiteMapChangeFreq()).thenReturn(new SiteMapChangeFreqType("Type", "Friendly Type"));
+    when(categorySMGC.getSiteMapPriority()).thenReturn(new SiteMapPriorityType("Type", "Friendly Type"));
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+    SiteMapBuilder siteMapBuilder = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "/", true);
 
     CategoryImpl category = mock(CategoryImpl.class);
     when(category.getCategoryMediaXref()).thenReturn(new HashMap<>());
-    when(category.getUrl()).thenReturn("https://example.org/example");
+    when(category.getUrl()).thenReturn("/");
     when(category.getActiveProductXrefs()).thenReturn(new ArrayList<>());
 
     // Act
     categorySiteMapGenerator.constructSiteMapURLs(categorySMGC, siteMapBuilder, category);
 
     // Assert
+    verify(categorySMGC).getSiteMapChangeFreq();
+    verify(categorySMGC).getSiteMapPriority();
     verify(category).getActiveProductXrefs();
     verify(category).getCategoryMediaXref();
     verify(category).getUrl();
-    verify(environment).getProperty("seo.category.pagination.param", "page");
   }
 
   /**
-   * Test {@link CategorySiteMapGenerator#constructImageURLs(SiteMapBuilder, SiteMapURLWrapper,
-   * Category)}.
-   *
-   * <p>Method under test: {@link CategorySiteMapGenerator#constructImageURLs(SiteMapBuilder,
-   * SiteMapURLWrapper, Category)}
+   * Method under test:
+   * {@link CategorySiteMapGenerator#getPageCountForCategory(Category)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CategorySiteMapGenerator.constructImageURLs(SiteMapBuilder, SiteMapURLWrapper, Category)"
-  })
-  public void testConstructImageURLs() {
+  public void testGetPageCountForCategory() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(
-            new SiteMapConfigurationImpl(), fileWorkArea, "https://example.org/example", true);
-    SiteMapURLWrapper siteMapUrl = new SiteMapURLWrapper();
+    CategorySiteMapGenerator categorySiteMapGenerator = new CategorySiteMapGenerator(
+        new StandardReactiveWebEnvironment());
 
-    MediaDto mediaDto = new MediaDto();
-    mediaDto.setUrl("/");
+    // Act and Assert
+    assertEquals(1, categorySiteMapGenerator.getPageCountForCategory(new CategoryImpl()).intValue());
+  }
 
-    CategoryMediaXref categoryMediaXref = mock(CategoryMediaXref.class);
-    when(categoryMediaXref.getMedia()).thenReturn(mediaDto);
+  /**
+   * Method under test:
+   * {@link CategorySiteMapGenerator#getPageCountForCategory(Category)}
+   */
+  @Test
+  public void testGetPageCountForCategory2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    HashMap<String, CategoryMediaXref> categoryMediaXref2 = new HashMap<>();
-    categoryMediaXref2.put("foo", categoryMediaXref);
+    // Arrange
+    CategorySiteMapGenerator categorySiteMapGenerator = new CategorySiteMapGenerator(mock(StandardEnvironment.class));
 
-    CategoryImpl category = new CategoryImpl();
-    category.setCategoryMediaXref(categoryMediaXref2);
+    // Act and Assert
+    assertEquals(1, categorySiteMapGenerator.getPageCountForCategory(new CategoryImpl()).intValue());
+  }
+
+  /**
+   * Method under test:
+   * {@link CategorySiteMapGenerator#generateUrl(SiteMapBuilder, Category, int)}
+   */
+  @Test
+  public void testGenerateUrl() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CategorySiteMapGenerator categorySiteMapGenerator = new CategorySiteMapGenerator(
+        new StandardReactiveWebEnvironment());
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+    SiteMapBuilder siteMapBuilder = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example",
+        true);
+
+    CategoryImpl category = mock(CategoryImpl.class);
+    when(category.getUrl()).thenReturn("https://example.org/example");
 
     // Act
-    categorySiteMapGenerator.constructImageURLs(siteMapBuilder, siteMapUrl, category);
+    String actualGenerateUrlResult = categorySiteMapGenerator.generateUrl(siteMapBuilder, category, 10);
 
     // Assert
-    verify(categoryMediaXref).getMedia();
-    List<SiteMapImageWrapper> siteMapImageWrappers = siteMapUrl.getSiteMapImageWrappers();
-    assertEquals(1, siteMapImageWrappers.size());
-    assertEquals("https://example.org/example/", siteMapImageWrappers.get(0).getLoc());
+    verify(category).getUrl();
+    assertEquals("https://example.org/example/https://example.org/example?page=10", actualGenerateUrlResult);
   }
 
   /**
-   * Test {@link CategorySiteMapGenerator#constructImageURLs(SiteMapBuilder, SiteMapURLWrapper,
-   * Category)}.
-   *
-   * <p>Method under test: {@link CategorySiteMapGenerator#constructImageURLs(SiteMapBuilder,
-   * SiteMapURLWrapper, Category)}
+   * Method under test:
+   * {@link CategorySiteMapGenerator#generateUrl(SiteMapBuilder, Category, int)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CategorySiteMapGenerator.constructImageURLs(SiteMapBuilder, SiteMapURLWrapper, Category)"
-  })
-  public void testConstructImageURLs2() {
+  public void testGenerateUrl2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(
-            new SiteMapConfigurationImpl(), fileWorkArea, "https://example.org/example", true);
-    SiteMapURLWrapper siteMapUrl = new SiteMapURLWrapper();
+    Environment env = mock(Environment.class);
+    when(env.getProperty(Mockito.<String>any(), Mockito.<String>any())).thenReturn("Property");
+    CategorySiteMapGenerator categorySiteMapGenerator = new CategorySiteMapGenerator(env);
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+    SiteMapBuilder siteMapBuilder = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "Base Url", true);
 
-    MediaDto mediaDto = mock(MediaDto.class);
-    when(mediaDto.getUrl()).thenReturn("https://example.org/example");
-    doNothing().when(mediaDto).setUrl(Mockito.<String>any());
-    mediaDto.setUrl("/");
-
-    CategoryMediaXref categoryMediaXref = mock(CategoryMediaXref.class);
-    when(categoryMediaXref.getMedia()).thenReturn(mediaDto);
-
-    HashMap<String, CategoryMediaXref> categoryMediaXref2 = new HashMap<>();
-    categoryMediaXref2.put("foo", categoryMediaXref);
-
-    CategoryImpl category = new CategoryImpl();
-    category.setCategoryMediaXref(categoryMediaXref2);
+    CategoryImpl category = mock(CategoryImpl.class);
+    when(category.getUrl()).thenReturn("https://example.org/example");
 
     // Act
-    categorySiteMapGenerator.constructImageURLs(siteMapBuilder, siteMapUrl, category);
+    String actualGenerateUrlResult = categorySiteMapGenerator.generateUrl(siteMapBuilder, category, 10);
 
     // Assert
-    verify(mediaDto).getUrl();
-    verify(mediaDto).setUrl("/");
-    verify(categoryMediaXref).getMedia();
-    List<SiteMapImageWrapper> siteMapImageWrappers = siteMapUrl.getSiteMapImageWrappers();
-    assertEquals(1, siteMapImageWrappers.size());
-    assertEquals(
-        "https://example.org/example/https://example.org/example",
-        siteMapImageWrappers.get(0).getLoc());
+    verify(category).getUrl();
+    verify(env).getProperty(eq("seo.category.pagination.param"), eq("page"));
+    assertEquals("Base Url/https://example.org/example", actualGenerateUrlResult);
   }
 
   /**
-   * Test {@link CategorySiteMapGenerator#constructImageURLs(SiteMapBuilder, SiteMapURLWrapper,
-   * Category)}.
-   *
-   * <p>Method under test: {@link CategorySiteMapGenerator#constructImageURLs(SiteMapBuilder,
-   * SiteMapURLWrapper, Category)}
+   * Method under test:
+   * {@link CategorySiteMapGenerator#generateUrl(SiteMapBuilder, Category, int)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CategorySiteMapGenerator.constructImageURLs(SiteMapBuilder, SiteMapURLWrapper, Category)"
-  })
-  public void testConstructImageURLs3() {
+  public void testGenerateUrl3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(new SiteMapConfigurationImpl(), fileWorkArea, "/", true);
-    SiteMapURLWrapper siteMapUrl = new SiteMapURLWrapper();
+    Environment env = mock(Environment.class);
+    when(env.getProperty(Mockito.<String>any(), Mockito.<String>any())).thenReturn("Property");
+    CategorySiteMapGenerator categorySiteMapGenerator = new CategorySiteMapGenerator(env);
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+    SiteMapBuilder siteMapBuilder = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "42", true);
 
-    MediaDto mediaDto = mock(MediaDto.class);
-    when(mediaDto.getUrl()).thenReturn("https://example.org/example");
-    doNothing().when(mediaDto).setUrl(Mockito.<String>any());
-    mediaDto.setUrl("/");
-
-    CategoryMediaXref categoryMediaXref = mock(CategoryMediaXref.class);
-    when(categoryMediaXref.getMedia()).thenReturn(mediaDto);
-
-    HashMap<String, CategoryMediaXref> categoryMediaXref2 = new HashMap<>();
-    categoryMediaXref2.put("foo", categoryMediaXref);
-
-    CategoryImpl category = new CategoryImpl();
-    category.setCategoryMediaXref(categoryMediaXref2);
+    CategoryImpl category = mock(CategoryImpl.class);
+    when(category.getUrl()).thenReturn("https://example.org/example");
 
     // Act
-    categorySiteMapGenerator.constructImageURLs(siteMapBuilder, siteMapUrl, category);
+    String actualGenerateUrlResult = categorySiteMapGenerator.generateUrl(siteMapBuilder, category, 10);
 
     // Assert
-    verify(mediaDto).getUrl();
-    verify(mediaDto).setUrl("/");
-    verify(categoryMediaXref).getMedia();
-    List<SiteMapImageWrapper> siteMapImageWrappers = siteMapUrl.getSiteMapImageWrappers();
-    assertEquals(1, siteMapImageWrappers.size());
-    assertEquals("/https://example.org/example", siteMapImageWrappers.get(0).getLoc());
+    verify(category).getUrl();
+    verify(env).getProperty(eq("seo.category.pagination.param"), eq("page"));
+    assertEquals("42/https://example.org/example?Property=10", actualGenerateUrlResult);
   }
 
   /**
-   * Test {@link CategorySiteMapGenerator#constructImageURLs(SiteMapBuilder, SiteMapURLWrapper,
-   * Category)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link SiteMapURLWrapper#addImage(SiteMapImageWrapper)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CategorySiteMapGenerator#constructImageURLs(SiteMapBuilder,
-   * SiteMapURLWrapper, Category)}
+   * Method under test:
+   * {@link CategorySiteMapGenerator#generateUrl(SiteMapBuilder, Category, int)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CategorySiteMapGenerator.constructImageURLs(SiteMapBuilder, SiteMapURLWrapper, Category)"
-  })
-  public void testConstructImageURLs_thenCallsAddImage() {
+  public void testGenerateUrl4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(
-            new SiteMapConfigurationImpl(), fileWorkArea, "https://example.org/example", true);
+    Environment env = mock(Environment.class);
+    when(env.getProperty(Mockito.<String>any(), Mockito.<String>any())).thenReturn("Property");
+    CategorySiteMapGenerator categorySiteMapGenerator = new CategorySiteMapGenerator(env);
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+    SiteMapBuilder siteMapBuilder = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example",
+        true);
 
-    SiteMapURLWrapper siteMapUrl = mock(SiteMapURLWrapper.class);
-    doNothing().when(siteMapUrl).addImage(Mockito.<SiteMapImageWrapper>any());
-
-    MediaDto mediaDto = mock(MediaDto.class);
-    when(mediaDto.getUrl()).thenReturn("https://example.org/example");
-    doNothing().when(mediaDto).setUrl(Mockito.<String>any());
-    mediaDto.setUrl("/");
-
-    CategoryMediaXref categoryMediaXref = mock(CategoryMediaXref.class);
-    when(categoryMediaXref.getMedia()).thenReturn(mediaDto);
-
-    HashMap<String, CategoryMediaXref> categoryMediaXref2 = new HashMap<>();
-    categoryMediaXref2.put("foo", categoryMediaXref);
-
-    CategoryImpl category = new CategoryImpl();
-    category.setCategoryMediaXref(categoryMediaXref2);
+    CategoryImpl category = mock(CategoryImpl.class);
+    when(category.getUrl()).thenReturn("/");
 
     // Act
-    categorySiteMapGenerator.constructImageURLs(siteMapBuilder, siteMapUrl, category);
+    String actualGenerateUrlResult = categorySiteMapGenerator.generateUrl(siteMapBuilder, category, 10);
 
     // Assert
-    verify(mediaDto).getUrl();
-    verify(mediaDto).setUrl("/");
-    verify(siteMapUrl).addImage(isA(SiteMapImageWrapper.class));
-    verify(categoryMediaXref).getMedia();
+    verify(category).getUrl();
+    verify(env).getProperty(eq("seo.category.pagination.param"), eq("page"));
+    assertEquals("https://example.org/example/?Property=10", actualGenerateUrlResult);
   }
 
   /**
-   * Test {@link CategorySiteMapGenerator#constructImageURLs(SiteMapBuilder, SiteMapURLWrapper,
-   * Category)}.
-   *
-   * <ul>
-   *   <li>Then {@link SiteMapURLWrapper} (default constructor) SiteMapImageWrappers Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link CategorySiteMapGenerator#constructImageURLs(SiteMapBuilder,
-   * SiteMapURLWrapper, Category)}
+   * Method under test:
+   * {@link CategorySiteMapGenerator#generateUrl(SiteMapBuilder, Category, int)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CategorySiteMapGenerator.constructImageURLs(SiteMapBuilder, SiteMapURLWrapper, Category)"
-  })
-  public void testConstructImageURLs_thenSiteMapURLWrapperSiteMapImageWrappersEmpty() {
+  public void testGenerateUrl5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(
-            new SiteMapConfigurationImpl(), fileWorkArea, "https://example.org/example", true);
-    SiteMapURLWrapper siteMapUrl = new SiteMapURLWrapper();
+    Environment env = mock(Environment.class);
+    when(env.getProperty(Mockito.<String>any(), Mockito.<String>any())).thenReturn("Property");
+    CategorySiteMapGenerator categorySiteMapGenerator = new CategorySiteMapGenerator(env);
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+    SiteMapBuilder siteMapBuilder = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example",
+        true);
+
+    CategoryImpl category = mock(CategoryImpl.class);
+    when(category.getUrl()).thenReturn("https://example.org/example");
 
     // Act
-    categorySiteMapGenerator.constructImageURLs(siteMapBuilder, siteMapUrl, new CategoryImpl());
-
-    // Assert that nothing has changed
-    assertTrue(siteMapUrl.getSiteMapImageWrappers().isEmpty());
-  }
-
-  /**
-   * Test {@link CategorySiteMapGenerator#constructImageURLs(SiteMapBuilder, SiteMapURLWrapper,
-   * Category)}.
-   *
-   * <ul>
-   *   <li>Then {@link SiteMapURLWrapper} (default constructor) SiteMapImageWrappers first Loc is
-   *       {@code /}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CategorySiteMapGenerator#constructImageURLs(SiteMapBuilder,
-   * SiteMapURLWrapper, Category)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CategorySiteMapGenerator.constructImageURLs(SiteMapBuilder, SiteMapURLWrapper, Category)"
-  })
-  public void testConstructImageURLs_thenSiteMapURLWrapperSiteMapImageWrappersFirstLocIsSlash() {
-    // Arrange
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(new SiteMapConfigurationImpl(), fileWorkArea, "/", true);
-    SiteMapURLWrapper siteMapUrl = new SiteMapURLWrapper();
-
-    MediaDto mediaDto = new MediaDto();
-    mediaDto.setUrl("/");
-
-    CategoryMediaXref categoryMediaXref = mock(CategoryMediaXref.class);
-    when(categoryMediaXref.getMedia()).thenReturn(mediaDto);
-
-    HashMap<String, CategoryMediaXref> categoryMediaXref2 = new HashMap<>();
-    categoryMediaXref2.put("foo", categoryMediaXref);
-
-    CategoryImpl category = new CategoryImpl();
-    category.setCategoryMediaXref(categoryMediaXref2);
-
-    // Act
-    categorySiteMapGenerator.constructImageURLs(siteMapBuilder, siteMapUrl, category);
+    String actualGenerateUrlResult = categorySiteMapGenerator.generateUrl(siteMapBuilder, category, 1);
 
     // Assert
-    verify(categoryMediaXref).getMedia();
-    List<SiteMapImageWrapper> siteMapImageWrappers = siteMapUrl.getSiteMapImageWrappers();
-    assertEquals(1, siteMapImageWrappers.size());
-    assertEquals("/", siteMapImageWrappers.get(0).getLoc());
+    verify(category).getUrl();
+    verify(env).getProperty(eq("seo.category.pagination.param"), eq("page"));
+    assertEquals("https://example.org/example/https://example.org/example", actualGenerateUrlResult);
   }
 
   /**
-   * Test {@link CategorySiteMapGenerator#getPageCountForCategory(Category)}.
-   *
-   * <ul>
-   *   <li>When {@link CategoryImpl} (default constructor).
-   *   <li>Then return intValue is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link CategorySiteMapGenerator#getPageCountForCategory(Category)}
+   * Method under test:
+   * {@link CategorySiteMapGenerator#generateUrl(SiteMapBuilder, Category, int)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Integer CategorySiteMapGenerator.getPageCountForCategory(Category)"
-  })
-  public void testGetPageCountForCategory_whenCategoryImpl_thenReturnIntValueIsOne() {
-    // Arrange, Act and Assert
-    assertEquals(
-        1, categorySiteMapGenerator.getPageCountForCategory(new CategoryImpl()).intValue());
-  }
+  public void testGenerateUrl6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-  /**
-   * Test {@link CategorySiteMapGenerator#generateUrl(SiteMapBuilder, Category, int)}.
-   *
-   * <ul>
-   *   <li>Given {@code ?}.
-   *   <li>When {@link CategoryImpl} {@link CategoryImpl#getUrl()} return {@code ?}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CategorySiteMapGenerator#generateUrl(SiteMapBuilder, Category,
-   * int)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String CategorySiteMapGenerator.generateUrl(SiteMapBuilder, Category, int)"})
-  public void testGenerateUrl_givenQuestionMark_whenCategoryImplGetUrlReturnQuestionMark() {
     // Arrange
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<String>any()))
-        .thenReturn("Property");
-
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(
-            new SiteMapConfigurationImpl(), fileWorkArea, "https://example.org/example", true);
+    Environment env = mock(Environment.class);
+    when(env.getProperty(Mockito.<String>any(), Mockito.<String>any())).thenReturn("Property");
+    CategorySiteMapGenerator categorySiteMapGenerator = new CategorySiteMapGenerator(env);
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+    SiteMapBuilder siteMapBuilder = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example",
+        true);
 
     CategoryImpl category = mock(CategoryImpl.class);
     when(category.getUrl()).thenReturn("?");
 
     // Act
-    String actualGenerateUrlResult =
-        categorySiteMapGenerator.generateUrl(siteMapBuilder, category, 10);
+    String actualGenerateUrlResult = categorySiteMapGenerator.generateUrl(siteMapBuilder, category, 10);
 
     // Assert
     verify(category).getUrl();
-    verify(environment).getProperty("seo.category.pagination.param", "page");
+    verify(env).getProperty(eq("seo.category.pagination.param"), eq("page"));
     assertEquals("https://example.org/example/?Property=10", actualGenerateUrlResult);
   }
 
   /**
-   * Test {@link CategorySiteMapGenerator#generateUrl(SiteMapBuilder, Category, int)}.
-   *
-   * <ul>
-   *   <li>Given {@code /}.
-   *   <li>Then return {@code https://example.org/example/?Property=10}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CategorySiteMapGenerator#generateUrl(SiteMapBuilder, Category,
-   * int)}
+   * Method under test:
+   * {@link CategorySiteMapGenerator#generateUrl(SiteMapBuilder, Category, int)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String CategorySiteMapGenerator.generateUrl(SiteMapBuilder, Category, int)"})
-  public void testGenerateUrl_givenSlash_thenReturnHttpsExampleOrgExampleProperty10() {
-    // Arrange
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<String>any()))
-        .thenReturn("Property");
+  public void testGenerateUrl7() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(
-            new SiteMapConfigurationImpl(), fileWorkArea, "https://example.org/example", true);
+    // Arrange
+    Environment env = mock(Environment.class);
+    when(env.getProperty(Mockito.<String>any(), Mockito.<String>any())).thenReturn("Property");
+    CategorySiteMapGenerator categorySiteMapGenerator = new CategorySiteMapGenerator(env);
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+    SiteMapBuilder siteMapBuilder = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "/", true);
 
     CategoryImpl category = mock(CategoryImpl.class);
     when(category.getUrl()).thenReturn("/");
 
     // Act
-    String actualGenerateUrlResult =
-        categorySiteMapGenerator.generateUrl(siteMapBuilder, category, 10);
+    String actualGenerateUrlResult = categorySiteMapGenerator.generateUrl(siteMapBuilder, category, 10);
 
     // Assert
     verify(category).getUrl();
-    verify(environment).getProperty("seo.category.pagination.param", "page");
-    assertEquals("https://example.org/example/?Property=10", actualGenerateUrlResult);
-  }
-
-  /**
-   * Test {@link CategorySiteMapGenerator#generateUrl(SiteMapBuilder, Category, int)}.
-   *
-   * <ul>
-   *   <li>Given {@code /}.
-   *   <li>Then return {@code /?Property=10}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CategorySiteMapGenerator#generateUrl(SiteMapBuilder, Category,
-   * int)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String CategorySiteMapGenerator.generateUrl(SiteMapBuilder, Category, int)"})
-  public void testGenerateUrl_givenSlash_thenReturnProperty10() {
-    // Arrange
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<String>any()))
-        .thenReturn("Property");
-
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(new SiteMapConfigurationImpl(), fileWorkArea, "/", true);
-
-    CategoryImpl category = mock(CategoryImpl.class);
-    when(category.getUrl()).thenReturn("/");
-
-    // Act
-    String actualGenerateUrlResult =
-        categorySiteMapGenerator.generateUrl(siteMapBuilder, category, 10);
-
-    // Assert
-    verify(category).getUrl();
-    verify(environment).getProperty("seo.category.pagination.param", "page");
+    verify(env).getProperty(eq("seo.category.pagination.param"), eq("page"));
     assertEquals("/?Property=10", actualGenerateUrlResult);
   }
 
   /**
-   * Test {@link CategorySiteMapGenerator#generateUrl(SiteMapBuilder, Category, int)}.
-   *
-   * <ul>
-   *   <li>Then return {@code Base Url/https://example.org/example}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CategorySiteMapGenerator#generateUrl(SiteMapBuilder, Category,
-   * int)}
+   * Method under test:
+   * {@link CategorySiteMapGenerator#generateUrl(SiteMapBuilder, Category, int)}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String CategorySiteMapGenerator.generateUrl(SiteMapBuilder, Category, int)"})
-  public void testGenerateUrl_thenReturnBaseUrlHttpsExampleOrgExample() {
-    // Arrange
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<String>any()))
-        .thenReturn("Property");
+  public void testGenerateUrl8() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(new SiteMapConfigurationImpl(), fileWorkArea, "Base Url", true);
+    // Arrange
+    Environment env = mock(Environment.class);
+    when(env.getProperty(Mockito.<String>any(), Mockito.<String>any())).thenReturn("Property");
+    CategorySiteMapGenerator categorySiteMapGenerator = new CategorySiteMapGenerator(env);
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+    SiteMapBuilder siteMapBuilder = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "/", true);
 
     CategoryImpl category = mock(CategoryImpl.class);
     when(category.getUrl()).thenReturn("https://example.org/example");
 
     // Act
-    String actualGenerateUrlResult =
-        categorySiteMapGenerator.generateUrl(siteMapBuilder, category, 10);
+    String actualGenerateUrlResult = categorySiteMapGenerator.generateUrl(siteMapBuilder, category, 1);
 
     // Assert
     verify(category).getUrl();
-    verify(environment).getProperty("seo.category.pagination.param", "page");
-    assertEquals("Base Url/https://example.org/example", actualGenerateUrlResult);
+    verify(env).getProperty(eq("seo.category.pagination.param"), eq("page"));
+    assertEquals("/https://example.org/example", actualGenerateUrlResult);
   }
 
   /**
-   * Test {@link CategorySiteMapGenerator#generateUrl(SiteMapBuilder, Category, int)}.
-   *
-   * <ul>
-   *   <li>Then return {@code https://example.org/example/https://example.org/example?Property=10}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CategorySiteMapGenerator#generateUrl(SiteMapBuilder, Category,
-   * int)}
+   * Method under test: {@link CategorySiteMapGenerator#getDefaultPageSize()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String CategorySiteMapGenerator.generateUrl(SiteMapBuilder, Category, int)"})
-  public void testGenerateUrl_thenReturnHttpsExampleOrgExampleHttpsExampleOrgExampleProperty10() {
-    // Arrange
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<String>any()))
-        .thenReturn("Property");
+  public void testGetDefaultPageSize() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(
-            new SiteMapConfigurationImpl(), fileWorkArea, "https://example.org/example", true);
-
-    CategoryImpl category = mock(CategoryImpl.class);
-    when(category.getUrl()).thenReturn("https://example.org/example");
-
-    // Act
-    String actualGenerateUrlResult =
-        categorySiteMapGenerator.generateUrl(siteMapBuilder, category, 10);
-
-    // Assert
-    verify(category).getUrl();
-    verify(environment).getProperty("seo.category.pagination.param", "page");
-    assertEquals(
-        "https://example.org/example/https://example.org/example?Property=10",
-        actualGenerateUrlResult);
+    // Arrange, Act and Assert
+    assertEquals(40, (new CategorySiteMapGenerator(new StandardReactiveWebEnvironment())).getDefaultPageSize());
   }
 
   /**
-   * Test {@link CategorySiteMapGenerator#generateUrl(SiteMapBuilder, Category, int)}.
-   *
-   * <ul>
-   *   <li>Then return {@code /https://example.org/example?Property=10}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CategorySiteMapGenerator#generateUrl(SiteMapBuilder, Category,
-   * int)}
+   * Method under test: {@link CategorySiteMapGenerator#getDefaultPageSize()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String CategorySiteMapGenerator.generateUrl(SiteMapBuilder, Category, int)"})
-  public void testGenerateUrl_thenReturnHttpsExampleOrgExampleProperty10() {
+  public void testGetDefaultPageSize2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<String>any()))
-        .thenReturn("Property");
-
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(new SiteMapConfigurationImpl(), fileWorkArea, "/", true);
-
-    CategoryImpl category = mock(CategoryImpl.class);
-    when(category.getUrl()).thenReturn("https://example.org/example");
+    Environment env = mock(Environment.class);
+    when(env.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any())).thenReturn(40);
 
     // Act
-    String actualGenerateUrlResult =
-        categorySiteMapGenerator.generateUrl(siteMapBuilder, category, 10);
+    int actualDefaultPageSize = (new CategorySiteMapGenerator(env)).getDefaultPageSize();
 
     // Assert
-    verify(category).getUrl();
-    verify(environment).getProperty("seo.category.pagination.param", "page");
-    assertEquals("/https://example.org/example?Property=10", actualGenerateUrlResult);
+    verify(env).getProperty(eq("web.defaultPageSize"), isA(Class.class), isA(Object.class));
+    assertEquals(40, actualDefaultPageSize);
   }
 
   /**
-   * Test {@link CategorySiteMapGenerator#generateUrl(SiteMapBuilder, Category, int)}.
-   *
-   * <ul>
-   *   <li>When one.
-   *   <li>Then return {@code https://example.org/example/https://example.org/example}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CategorySiteMapGenerator#generateUrl(SiteMapBuilder, Category,
-   * int)}
+   * Method under test:
+   * {@link CategorySiteMapGenerator#getCategoryPaginationParam()}
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String CategorySiteMapGenerator.generateUrl(SiteMapBuilder, Category, int)"})
-  public void testGenerateUrl_whenOne_thenReturnHttpsExampleOrgExampleHttpsExampleOrgExample() {
-    // Arrange
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<String>any()))
-        .thenReturn("Property");
+  public void testGetCategoryPaginationParam() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    FileWorkArea fileWorkArea = new FileWorkArea();
-    fileWorkArea.setFilePathLocation("/directory/foo.txt");
-    SiteMapBuilder siteMapBuilder =
-        new SiteMapBuilder(
-            new SiteMapConfigurationImpl(), fileWorkArea, "https://example.org/example", true);
-
-    CategoryImpl category = mock(CategoryImpl.class);
-    when(category.getUrl()).thenReturn("https://example.org/example");
-
-    // Act
-    String actualGenerateUrlResult =
-        categorySiteMapGenerator.generateUrl(siteMapBuilder, category, 1);
-
-    // Assert
-    verify(category).getUrl();
-    verify(environment).getProperty("seo.category.pagination.param", "page");
-    assertEquals(
-        "https://example.org/example/https://example.org/example", actualGenerateUrlResult);
+    // Arrange, Act and Assert
+    assertEquals("page",
+        (new CategorySiteMapGenerator(new StandardReactiveWebEnvironment())).getCategoryPaginationParam());
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Method under test:
+   * {@link CategorySiteMapGenerator#getCategoryPaginationParam()}
+   */
+  @Test
+  public void testGetCategoryPaginationParam2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StandardEnvironment env = mock(StandardEnvironment.class);
+    when(env.getProperty(Mockito.<String>any(), Mockito.<String>any())).thenReturn("Property");
+
+    // Act
+    String actualCategoryPaginationParam = (new CategorySiteMapGenerator(env)).getCategoryPaginationParam();
+
+    // Assert
+    verify(env).getProperty(eq("seo.category.pagination.param"), eq("page"));
+    assertEquals("Property", actualCategoryPaginationParam);
+  }
+
+  /**
+   * Methods under test:
    * <ul>
    *   <li>{@link CategorySiteMapGenerator#setCategoryDao(CategoryDao)}
    *   <li>{@link CategorySiteMapGenerator#setRowLimit(int)}
@@ -1694,18 +656,10 @@ public class CategorySiteMapGeneratorDiffblueTest {
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CategoryDao CategorySiteMapGenerator.getCategoryDao()",
-    "int CategorySiteMapGenerator.getRowLimit()",
-    "void CategorySiteMapGenerator.setCategoryDao(CategoryDao)",
-    "void CategorySiteMapGenerator.setRowLimit(int)"
-  })
   public void testGettersAndSetters() {
     // Arrange
-    CategorySiteMapGenerator categorySiteMapGenerator =
-        new CategorySiteMapGenerator(new StandardReactiveWebEnvironment());
+    CategorySiteMapGenerator categorySiteMapGenerator = new CategorySiteMapGenerator(
+        new StandardReactiveWebEnvironment());
     CategoryDaoImpl categoryDao = new CategoryDaoImpl();
 
     // Act
@@ -1713,54 +667,9 @@ public class CategorySiteMapGeneratorDiffblueTest {
     categorySiteMapGenerator.setRowLimit(1);
     CategoryDao actualCategoryDao = categorySiteMapGenerator.getCategoryDao();
 
-    // Assert
+    // Assert that nothing has changed
     assertTrue(actualCategoryDao instanceof CategoryDaoImpl);
     assertEquals(1, categorySiteMapGenerator.getRowLimit());
     assertSame(categoryDao, actualCategoryDao);
-  }
-
-  /**
-   * Test {@link CategorySiteMapGenerator#getDefaultPageSize()}.
-   *
-   * <p>Method under test: {@link CategorySiteMapGenerator#getDefaultPageSize()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int CategorySiteMapGenerator.getDefaultPageSize()"})
-  public void testGetDefaultPageSize() {
-    // Arrange
-    when(environment.getProperty(
-            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
-        .thenReturn(40);
-
-    // Act
-    int actualDefaultPageSize = categorySiteMapGenerator.getDefaultPageSize();
-
-    // Assert
-    verify(environment).getProperty(eq("web.defaultPageSize"), isA(Class.class), isA(Object.class));
-    assertEquals(40, actualDefaultPageSize);
-  }
-
-  /**
-   * Test {@link CategorySiteMapGenerator#getCategoryPaginationParam()}.
-   *
-   * <p>Method under test: {@link CategorySiteMapGenerator#getCategoryPaginationParam()}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String CategorySiteMapGenerator.getCategoryPaginationParam()"})
-  public void testGetCategoryPaginationParam() {
-    // Arrange
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<String>any()))
-        .thenReturn("Property");
-
-    // Act
-    String actualCategoryPaginationParam = categorySiteMapGenerator.getCategoryPaginationParam();
-
-    // Assert
-    verify(environment).getProperty("seo.category.pagination.param", "page");
-    assertEquals("Property", actualCategoryPaginationParam);
   }
 }

@@ -21,18 +21,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
-import org.broadleafcommerce.core.catalog.dao.ProductOptionDao;
 import org.broadleafcommerce.core.catalog.domain.ProductOption;
 import org.broadleafcommerce.core.catalog.domain.ProductOptionImpl;
 import org.broadleafcommerce.core.catalog.service.type.ProductOptionType;
@@ -44,89 +38,28 @@ import org.broadleafcommerce.core.order.service.exception.RequiredAttributeNotPr
 import org.broadleafcommerce.core.workflow.ActivityMessages;
 import org.broadleafcommerce.core.workflow.DefaultProcessContextImpl;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = {ProductOptionValidationServiceImpl.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class ProductOptionValidationServiceImplDiffblueTest {
-  @MockBean private ProductOptionDao productOptionDao;
-
-  @Autowired private ProductOptionValidationServiceImpl productOptionValidationServiceImpl;
-
   /**
-   * Test {@link ProductOptionValidationServiceImpl#validate(ProductOption, String)}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.
-   *   <li>When {@code not empty}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionValidationServiceImpl#validate(ProductOption,
-   * String)}
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#validate(ProductOption, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ProductOptionValidationServiceImpl.validate(ProductOption, String)"})
-  public void testValidate_givenArrayList_whenNotEmpty_thenReturnTrue() {
-    // Arrange
-    ProductOptionImpl productOption = new ProductOptionImpl();
-    productOption.setAllowedValues(new ArrayList<>());
-    productOption.setAttributeName("Attribute Name");
-    productOption.setDisplayOrder(1);
-    productOption.setErrorCode("An error occurred");
-    productOption.setErrorMessage("An error occurred");
-    productOption.setId(1L);
-    productOption.setLabel("Label");
-    productOption.setName("Name");
-    productOption.setProductOptionValidationStrategyType(
-        ProductOptionValidationStrategyType.ADD_ITEM);
-    productOption.setProductOptionValidationType(ProductOptionValidationType.REGEX);
-    productOption.setProductXrefs(new ArrayList<>());
-    productOption.setRequired(true);
-    productOption.setType(ProductOptionType.BOOLEAN);
-    productOption.setUseInSkuGeneration(true);
-    productOption.setValidationString("not empty");
+  public void testValidate() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Act and Assert
-    assertTrue(productOptionValidationServiceImpl.validate(productOption, "not empty"));
-  }
-
-  /**
-   * Test {@link ProductOptionValidationServiceImpl#validate(ProductOption, String)}.
-   *
-   * <ul>
-   *   <li>Given {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionValidationServiceImpl#validate(ProductOption,
-   * String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ProductOptionValidationServiceImpl.validate(ProductOption, String)"})
-  public void testValidate_givenFalse() {
     // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
     ProductOptionImpl productOption = mock(ProductOptionImpl.class);
     when(productOption.getErrorCode()).thenReturn("An error occurred");
     when(productOption.getErrorMessage()).thenReturn("An error occurred");
-    when(productOption.getRequired()).thenReturn(false);
+    when(productOption.getRequired()).thenReturn(true);
     when(productOption.getAttributeName()).thenReturn("Attribute Name");
     when(productOption.getValidationString()).thenReturn("Validation String");
-    when(productOption.getProductOptionValidationType())
-        .thenReturn(ProductOptionValidationType.REGEX);
+    when(productOption.getProductOptionValidationType()).thenReturn(ProductOptionValidationType.REGEX);
 
     // Act and Assert
-    assertThrows(
-        ProductOptionValidationException.class,
+    assertThrows(ProductOptionValidationException.class,
         () -> productOptionValidationServiceImpl.validate(productOption, "42"));
     verify(productOption).getAttributeName();
     verify(productOption).getErrorCode();
@@ -137,29 +70,210 @@ public class ProductOptionValidationServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link ProductOptionValidationServiceImpl#validate(ProductOption, String)}.
-   *
-   * <ul>
-   *   <li>Given {@code false}.
-   *   <li>When {@link ProductOptionImpl} {@link ProductOptionImpl#getRequired()} return {@code
-   *       false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionValidationServiceImpl#validate(ProductOption,
-   * String)}
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#validate(ProductOption, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ProductOptionValidationServiceImpl.validate(ProductOption, String)"})
-  public void testValidate_givenFalse_whenProductOptionImplGetRequiredReturnFalse() {
+  public void testValidate2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
+    ProductOptionImpl productOption = mock(ProductOptionImpl.class);
+    when(productOption.getErrorCode()).thenReturn("An error occurred");
+    when(productOption.getErrorMessage()).thenReturn(null);
+    when(productOption.getRequired()).thenReturn(true);
+    when(productOption.getAttributeName()).thenReturn("Attribute Name");
+    when(productOption.getValidationString()).thenReturn("Validation String");
+    when(productOption.getProductOptionValidationType()).thenReturn(ProductOptionValidationType.REGEX);
+
+    // Act and Assert
+    assertThrows(ProductOptionValidationException.class,
+        () -> productOptionValidationServiceImpl.validate(productOption, "42"));
+    verify(productOption).getAttributeName();
+    verify(productOption).getErrorCode();
+    verify(productOption).getErrorMessage();
+    verify(productOption).getProductOptionValidationType();
+    verify(productOption, atLeast(1)).getRequired();
+    verify(productOption, atLeast(1)).getValidationString();
+  }
+
+  /**
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#validate(ProductOption, String)}
+   */
+  @Test
+  public void testValidate3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
+    ProductOptionImpl productOption = mock(ProductOptionImpl.class);
+    when(productOption.getErrorCode()).thenReturn("An error occurred");
+    when(productOption.getErrorMessage()).thenReturn("");
+    when(productOption.getRequired()).thenReturn(true);
+    when(productOption.getAttributeName()).thenReturn("Attribute Name");
+    when(productOption.getValidationString()).thenReturn("Validation String");
+    when(productOption.getProductOptionValidationType()).thenReturn(ProductOptionValidationType.REGEX);
+
+    // Act and Assert
+    assertThrows(ProductOptionValidationException.class,
+        () -> productOptionValidationServiceImpl.validate(productOption, "42"));
+    verify(productOption).getAttributeName();
+    verify(productOption).getErrorCode();
+    verify(productOption).getErrorMessage();
+    verify(productOption).getProductOptionValidationType();
+    verify(productOption, atLeast(1)).getRequired();
+    verify(productOption, atLeast(1)).getValidationString();
+  }
+
+  /**
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#validate(ProductOption, String)}
+   */
+  @Test
+  public void testValidate4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
+    ProductOptionImpl productOption = mock(ProductOptionImpl.class);
+    when(productOption.getErrorCode()).thenReturn("An error occurred");
+    when(productOption.getErrorMessage()).thenReturn("An error occurred");
+    when(productOption.getRequired()).thenReturn(false);
+    when(productOption.getAttributeName()).thenReturn("Attribute Name");
+    when(productOption.getValidationString()).thenReturn("Validation String");
+    when(productOption.getProductOptionValidationType()).thenReturn(ProductOptionValidationType.REGEX);
+
+    // Act and Assert
+    assertThrows(ProductOptionValidationException.class,
+        () -> productOptionValidationServiceImpl.validate(productOption, "42"));
+    verify(productOption).getAttributeName();
+    verify(productOption).getErrorCode();
+    verify(productOption).getErrorMessage();
+    verify(productOption).getProductOptionValidationType();
+    verify(productOption, atLeast(1)).getRequired();
+    verify(productOption, atLeast(1)).getValidationString();
+  }
+
+  /**
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#validate(ProductOption, String)}
+   */
+  @Test
+  public void testValidate5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
+    ProductOptionImpl productOption = mock(ProductOptionImpl.class);
+    when(productOption.getRequired()).thenReturn(true);
+    when(productOption.getAttributeName()).thenReturn("Attribute Name");
+    when(productOption.getValidationString()).thenReturn(null);
+    when(productOption.getProductOptionValidationType()).thenReturn(ProductOptionValidationType.REGEX);
+
+    // Act
+    Boolean actualValidateResult = productOptionValidationServiceImpl.validate(productOption, "42");
+
+    // Assert
+    verify(productOption).getAttributeName();
+    verify(productOption).getProductOptionValidationType();
+    verify(productOption, atLeast(1)).getRequired();
+    verify(productOption, atLeast(1)).getValidationString();
+    assertTrue(actualValidateResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#validate(ProductOption, String)}
+   */
+  @Test
+  public void testValidate6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
+    ProductOptionImpl productOption = mock(ProductOptionImpl.class);
+    when(productOption.getRequired()).thenReturn(true);
+    when(productOption.getAttributeName()).thenReturn("Attribute Name");
+    when(productOption.getValidationString()).thenReturn("42");
+    when(productOption.getProductOptionValidationType()).thenReturn(ProductOptionValidationType.REGEX);
+
+    // Act
+    Boolean actualValidateResult = productOptionValidationServiceImpl.validate(productOption, "42");
+
+    // Assert
+    verify(productOption).getAttributeName();
+    verify(productOption).getProductOptionValidationType();
+    verify(productOption, atLeast(1)).getRequired();
+    verify(productOption, atLeast(1)).getValidationString();
+    assertTrue(actualValidateResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#validate(ProductOption, String)}
+   */
+  @Test
+  public void testValidate7() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
+    ProductOptionImpl productOption = mock(ProductOptionImpl.class);
+    when(productOption.getRequired()).thenReturn(true);
+    when(productOption.getAttributeName()).thenReturn("Attribute Name");
+    when(productOption.getValidationString()).thenReturn("Validation String");
+    when(productOption.getProductOptionValidationType())
+        .thenReturn(new ProductOptionValidationType("Type", "Friendly Type"));
+
+    // Act
+    Boolean actualValidateResult = productOptionValidationServiceImpl.validate(productOption, "42");
+
+    // Assert
+    verify(productOption).getAttributeName();
+    verify(productOption).getProductOptionValidationType();
+    verify(productOption, atLeast(1)).getRequired();
+    verify(productOption, atLeast(1)).getValidationString();
+    assertTrue(actualValidateResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#validate(ProductOption, String)}
+   */
+  @Test
+  public void testValidate8() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
+    ProductOptionImpl productOption = mock(ProductOptionImpl.class);
+    when(productOption.getRequired()).thenReturn(true);
+    when(productOption.getAttributeName()).thenReturn("Attribute Name");
+
+    // Act and Assert
+    assertThrows(RequiredAttributeNotProvidedException.class,
+        () -> productOptionValidationServiceImpl.validate(productOption, null));
+    verify(productOption).getAttributeName();
+    verify(productOption).getRequired();
+  }
+
+  /**
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#validate(ProductOption, String)}
+   */
+  @Test
+  public void testValidate9() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
     ProductOptionImpl productOption = mock(ProductOptionImpl.class);
     when(productOption.getRequired()).thenReturn(false);
     when(productOption.getAttributeName()).thenReturn("Attribute Name");
     when(productOption.getValidationString()).thenReturn("Validation String");
-    when(productOption.getProductOptionValidationType())
-        .thenReturn(ProductOptionValidationType.REGEX);
+    when(productOption.getProductOptionValidationType()).thenReturn(ProductOptionValidationType.REGEX);
 
     // Act
     Boolean actualValidateResult = productOptionValidationServiceImpl.validate(productOption, null);
@@ -173,260 +287,43 @@ public class ProductOptionValidationServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link ProductOptionValidationServiceImpl#validate(ProductOption, String)}.
-   *
-   * <ul>
-   *   <li>Given {@link ProductOptionValidationServiceImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionValidationServiceImpl#validate(ProductOption,
-   * String)}
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#isRequiredAttributeNotProvided(ProductOption, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ProductOptionValidationServiceImpl.validate(ProductOption, String)"})
-  public void testValidate_givenProductOptionValidationServiceImpl() {
+  public void testIsRequiredAttributeNotProvided() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    ProductOptionValidationServiceImpl productOptionValidationServiceImpl =
-        new ProductOptionValidationServiceImpl();
-
-    ProductOptionImpl productOption = new ProductOptionImpl();
-    productOption.setAllowedValues(new ArrayList<>());
-    productOption.setAttributeName(null);
-    productOption.setDisplayOrder(1);
-    productOption.setErrorCode("An error occurred");
-    productOption.setErrorMessage("An error occurred");
-    productOption.setId(1L);
-    productOption.setLabel("Label");
-    productOption.setName("Name");
-    productOption.setProductOptionValidationStrategyType(
-        ProductOptionValidationStrategyType.ADD_ITEM);
-    productOption.setProductOptionValidationType(ProductOptionValidationType.REGEX);
-    productOption.setProductXrefs(new ArrayList<>());
-    productOption.setRequired(true);
-    productOption.setType(ProductOptionType.BOOLEAN);
-    productOption.setUseInSkuGeneration(true);
-    productOption.setValidationString("not empty");
-
-    // Act and Assert
-    assertThrows(
-        RequiredAttributeNotProvidedException.class,
-        () -> productOptionValidationServiceImpl.validate(productOption, ""));
-  }
-
-  /**
-   * Test {@link ProductOptionValidationServiceImpl#validate(ProductOption, String)}.
-   *
-   * <ul>
-   *   <li>Given {@link ProductOptionValidationType#ProductOptionValidationType(String, String)}
-   *       with {@code Type} and {@code Friendly Type}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionValidationServiceImpl#validate(ProductOption,
-   * String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ProductOptionValidationServiceImpl.validate(ProductOption, String)"})
-  public void testValidate_givenProductOptionValidationTypeWithTypeAndFriendlyType() {
-    // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
     ProductOptionImpl productOption = mock(ProductOptionImpl.class);
     when(productOption.getRequired()).thenReturn(true);
-    when(productOption.getAttributeName()).thenReturn("Attribute Name");
-    when(productOption.getValidationString()).thenReturn("Validation String");
-    when(productOption.getProductOptionValidationType())
-        .thenReturn(new ProductOptionValidationType("Type", "Friendly Type"));
 
     // Act
-    Boolean actualValidateResult = productOptionValidationServiceImpl.validate(productOption, "42");
+    boolean actualIsRequiredAttributeNotProvidedResult = productOptionValidationServiceImpl
+        .isRequiredAttributeNotProvided(productOption, "42");
 
     // Assert
-    verify(productOption).getAttributeName();
-    verify(productOption).getProductOptionValidationType();
-    verify(productOption, atLeast(1)).getRequired();
-    verify(productOption, atLeast(1)).getValidationString();
-    assertTrue(actualValidateResult);
+    verify(productOption).getRequired();
+    assertFalse(actualIsRequiredAttributeNotProvidedResult);
   }
 
   /**
-   * Test {@link ProductOptionValidationServiceImpl#validate(ProductOption, String)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link RequiredAttributeNotProvidedException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionValidationServiceImpl#validate(ProductOption,
-   * String)}
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#isRequiredAttributeNotProvided(ProductOption, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ProductOptionValidationServiceImpl.validate(ProductOption, String)"})
-  public void testValidate_thenThrowRequiredAttributeNotProvidedException() {
+  public void testIsRequiredAttributeNotProvided2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    ProductOptionImpl productOption = new ProductOptionImpl();
-    productOption.setAllowedValues(new ArrayList<>());
-    productOption.setAttributeName("Attribute Name");
-    productOption.setDisplayOrder(1);
-    productOption.setErrorCode("An error occurred");
-    productOption.setErrorMessage("An error occurred");
-    productOption.setId(1L);
-    productOption.setLabel("Label");
-    productOption.setName("Name");
-    productOption.setProductOptionValidationStrategyType(
-        ProductOptionValidationStrategyType.ADD_ITEM);
-    productOption.setProductOptionValidationType(ProductOptionValidationType.REGEX);
-    productOption.setProductXrefs(new ArrayList<>());
-    productOption.setRequired(true);
-    productOption.setType(ProductOptionType.BOOLEAN);
-    productOption.setUseInSkuGeneration(true);
-    productOption.setValidationString("not empty");
-
-    // Act and Assert
-    assertThrows(
-        RequiredAttributeNotProvidedException.class,
-        () -> productOptionValidationServiceImpl.validate(productOption, ""));
-  }
-
-  /**
-   * Test {@link ProductOptionValidationServiceImpl#validate(ProductOption, String)}.
-   *
-   * <ul>
-   *   <li>When {@link ProductOptionImpl} {@link ProductOptionImpl#getErrorMessage()} return {@code
-   *       An error occurred}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionValidationServiceImpl#validate(ProductOption,
-   * String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ProductOptionValidationServiceImpl.validate(ProductOption, String)"})
-  public void testValidate_whenProductOptionImplGetErrorMessageReturnAnErrorOccurred() {
-    // Arrange
-    ProductOptionImpl productOption = mock(ProductOptionImpl.class);
-    when(productOption.getErrorCode()).thenReturn("An error occurred");
-    when(productOption.getErrorMessage()).thenReturn("An error occurred");
-    when(productOption.getRequired()).thenReturn(true);
-    when(productOption.getAttributeName()).thenReturn("Attribute Name");
-    when(productOption.getValidationString()).thenReturn("Validation String");
-    when(productOption.getProductOptionValidationType())
-        .thenReturn(ProductOptionValidationType.REGEX);
-
-    // Act and Assert
-    assertThrows(
-        ProductOptionValidationException.class,
-        () -> productOptionValidationServiceImpl.validate(productOption, "42"));
-    verify(productOption).getAttributeName();
-    verify(productOption).getErrorCode();
-    verify(productOption).getErrorMessage();
-    verify(productOption).getProductOptionValidationType();
-    verify(productOption, atLeast(1)).getRequired();
-    verify(productOption, atLeast(1)).getValidationString();
-  }
-
-  /**
-   * Test {@link ProductOptionValidationServiceImpl#validate(ProductOption, String)}.
-   *
-   * <ul>
-   *   <li>When {@link ProductOptionImpl} {@link ProductOptionImpl#getErrorMessage()} return {@code
-   *       null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionValidationServiceImpl#validate(ProductOption,
-   * String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ProductOptionValidationServiceImpl.validate(ProductOption, String)"})
-  public void testValidate_whenProductOptionImplGetErrorMessageReturnNull() {
-    // Arrange
-    ProductOptionImpl productOption = mock(ProductOptionImpl.class);
-    when(productOption.getErrorCode()).thenReturn("An error occurred");
-    when(productOption.getErrorMessage()).thenReturn(null);
-    when(productOption.getRequired()).thenReturn(true);
-    when(productOption.getAttributeName()).thenReturn("Attribute Name");
-    when(productOption.getValidationString()).thenReturn("Validation String");
-    when(productOption.getProductOptionValidationType())
-        .thenReturn(ProductOptionValidationType.REGEX);
-
-    // Act and Assert
-    assertThrows(
-        ProductOptionValidationException.class,
-        () -> productOptionValidationServiceImpl.validate(productOption, "42"));
-    verify(productOption).getAttributeName();
-    verify(productOption).getErrorCode();
-    verify(productOption).getErrorMessage();
-    verify(productOption).getProductOptionValidationType();
-    verify(productOption, atLeast(1)).getRequired();
-    verify(productOption, atLeast(1)).getValidationString();
-  }
-
-  /**
-   * Test {@link ProductOptionValidationServiceImpl#validate(ProductOption, String)}.
-   *
-   * <ul>
-   *   <li>When {@link ProductOptionImpl} {@link ProductOptionImpl#getValidationString()} return
-   *       {@code null}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionValidationServiceImpl#validate(ProductOption,
-   * String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ProductOptionValidationServiceImpl.validate(ProductOption, String)"})
-  public void testValidate_whenProductOptionImplGetValidationStringReturnNull_thenReturnTrue() {
-    // Arrange
-    ProductOptionImpl productOption = mock(ProductOptionImpl.class);
-    when(productOption.getRequired()).thenReturn(true);
-    when(productOption.getAttributeName()).thenReturn("Attribute Name");
-    when(productOption.getValidationString()).thenReturn(null);
-    when(productOption.getProductOptionValidationType())
-        .thenReturn(ProductOptionValidationType.REGEX);
-
-    // Act
-    Boolean actualValidateResult = productOptionValidationServiceImpl.validate(productOption, "42");
-
-    // Assert
-    verify(productOption).getAttributeName();
-    verify(productOption).getProductOptionValidationType();
-    verify(productOption, atLeast(1)).getRequired();
-    verify(productOption, atLeast(1)).getValidationString();
-    assertTrue(actualValidateResult);
-  }
-
-  /**
-   * Test {@link ProductOptionValidationServiceImpl#isRequiredAttributeNotProvided(ProductOption,
-   * String)}.
-   *
-   * <ul>
-   *   <li>Given {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValidationServiceImpl#isRequiredAttributeNotProvided(ProductOption, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductOptionValidationServiceImpl.isRequiredAttributeNotProvided(ProductOption, String)"
-  })
-  public void testIsRequiredAttributeNotProvided_givenFalse() {
-    // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
     ProductOptionImpl productOption = mock(ProductOptionImpl.class);
     when(productOption.getRequired()).thenReturn(false);
 
     // Act
-    boolean actualIsRequiredAttributeNotProvidedResult =
-        productOptionValidationServiceImpl.isRequiredAttributeNotProvided(productOption, "42");
+    boolean actualIsRequiredAttributeNotProvidedResult = productOptionValidationServiceImpl
+        .isRequiredAttributeNotProvided(productOption, "42");
 
     // Assert
     verify(productOption).getRequired();
@@ -434,64 +331,21 @@ public class ProductOptionValidationServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link ProductOptionValidationServiceImpl#isRequiredAttributeNotProvided(ProductOption,
-   * String)}.
-   *
-   * <ul>
-   *   <li>Given {@code true}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValidationServiceImpl#isRequiredAttributeNotProvided(ProductOption, String)}
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#isRequiredAttributeNotProvided(ProductOption, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductOptionValidationServiceImpl.isRequiredAttributeNotProvided(ProductOption, String)"
-  })
-  public void testIsRequiredAttributeNotProvided_givenTrue_thenReturnFalse() {
+  public void testIsRequiredAttributeNotProvided3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
     ProductOptionImpl productOption = mock(ProductOptionImpl.class);
     when(productOption.getRequired()).thenReturn(true);
 
     // Act
-    boolean actualIsRequiredAttributeNotProvidedResult =
-        productOptionValidationServiceImpl.isRequiredAttributeNotProvided(productOption, "42");
-
-    // Assert
-    verify(productOption).getRequired();
-    assertFalse(actualIsRequiredAttributeNotProvidedResult);
-  }
-
-  /**
-   * Test {@link ProductOptionValidationServiceImpl#isRequiredAttributeNotProvided(ProductOption,
-   * String)}.
-   *
-   * <ul>
-   *   <li>Given {@code true}.
-   *   <li>When empty string.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValidationServiceImpl#isRequiredAttributeNotProvided(ProductOption, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductOptionValidationServiceImpl.isRequiredAttributeNotProvided(ProductOption, String)"
-  })
-  public void testIsRequiredAttributeNotProvided_givenTrue_whenEmptyString_thenReturnTrue() {
-    // Arrange
-    ProductOptionImpl productOption = mock(ProductOptionImpl.class);
-    when(productOption.getRequired()).thenReturn(true);
-
-    // Act
-    boolean actualIsRequiredAttributeNotProvidedResult =
-        productOptionValidationServiceImpl.isRequiredAttributeNotProvided(productOption, "");
+    boolean actualIsRequiredAttributeNotProvidedResult = productOptionValidationServiceImpl
+        .isRequiredAttributeNotProvided(productOption, "");
 
     // Assert
     verify(productOption).getRequired();
@@ -499,23 +353,16 @@ public class ProductOptionValidationServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link ProductOptionValidationServiceImpl#requiresValidation(ProductOption, String)}.
-   *
-   * <ul>
-   *   <li>Given empty string.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValidationServiceImpl#requiresValidation(ProductOption, String)}
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#requiresValidation(ProductOption, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductOptionValidationServiceImpl.requiresValidation(ProductOption, String)"
-  })
-  public void testRequiresValidation_givenEmptyString() {
+  public void testRequiresValidation() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
+
     ProductOptionImpl productOption = new ProductOptionImpl();
     productOption.setAllowedValues(new ArrayList<>());
     productOption.setAttributeName("Attribute Name");
@@ -525,48 +372,99 @@ public class ProductOptionValidationServiceImplDiffblueTest {
     productOption.setId(1L);
     productOption.setLabel("Label");
     productOption.setName("Name");
-    productOption.setProductOptionValidationStrategyType(
-        ProductOptionValidationStrategyType.ADD_ITEM);
+    productOption.setProductOptionValidationStrategyType(ProductOptionValidationStrategyType.ADD_ITEM);
     productOption.setProductOptionValidationType(ProductOptionValidationType.REGEX);
     productOption.setProductXrefs(new ArrayList<>());
     productOption.setRequired(true);
     productOption.setType(ProductOptionType.BOOLEAN);
     productOption.setUseInSkuGeneration(true);
-    productOption.setValidationString("");
+    productOption.setValidationString(null);
 
     // Act and Assert
-    assertFalse(productOptionValidationServiceImpl.requiresValidation(productOption, "not empty"));
+    assertFalse(productOptionValidationServiceImpl.requiresValidation(productOption, null));
   }
 
   /**
-   * Test {@link ProductOptionValidationServiceImpl#requiresValidation(ProductOption, String)}.
-   *
-   * <ul>
-   *   <li>Given {@code false}.
-   *   <li>When {@link ProductOptionImpl} {@link ProductOptionImpl#getRequired()} return {@code
-   *       false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValidationServiceImpl#requiresValidation(ProductOption, String)}
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#requiresValidation(ProductOption, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductOptionValidationServiceImpl.requiresValidation(ProductOption, String)"
-  })
-  public void testRequiresValidation_givenFalse_whenProductOptionImplGetRequiredReturnFalse() {
+  public void testRequiresValidation2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
+
+    ProductOptionImpl productOption = new ProductOptionImpl();
+    productOption.setAllowedValues(new ArrayList<>());
+    productOption.setAttributeName("Attribute Name");
+    productOption.setDisplayOrder(1);
+    productOption.setErrorCode("An error occurred");
+    productOption.setErrorMessage("An error occurred");
+    productOption.setId(1L);
+    productOption.setLabel("Label");
+    productOption.setName("Name");
+    productOption.setProductOptionValidationStrategyType(ProductOptionValidationStrategyType.ADD_ITEM);
+    productOption.setProductOptionValidationType(ProductOptionValidationType.REGEX);
+    productOption.setProductXrefs(new ArrayList<>());
+    productOption.setRequired(true);
+    productOption.setType(ProductOptionType.BOOLEAN);
+    productOption.setUseInSkuGeneration(true);
+    productOption.setValidationString(null);
+
+    // Act and Assert
+    assertFalse(productOptionValidationServiceImpl.requiresValidation(productOption, "42"));
+  }
+
+  /**
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#requiresValidation(ProductOption, String)}
+   */
+  @Test
+  public void testRequiresValidation3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
+
+    ProductOptionImpl productOption = new ProductOptionImpl();
+    productOption.setAllowedValues(new ArrayList<>());
+    productOption.setAttributeName("Attribute Name");
+    productOption.setDisplayOrder(1);
+    productOption.setErrorCode("An error occurred");
+    productOption.setErrorMessage("An error occurred");
+    productOption.setId(1L);
+    productOption.setLabel("Label");
+    productOption.setName("Name");
+    productOption.setProductOptionValidationStrategyType(ProductOptionValidationStrategyType.ADD_ITEM);
+    productOption.setProductOptionValidationType(ProductOptionValidationType.REGEX);
+    productOption.setProductXrefs(new ArrayList<>());
+    productOption.setRequired(true);
+    productOption.setType(ProductOptionType.BOOLEAN);
+    productOption.setUseInSkuGeneration(true);
+    productOption.setValidationString("Product Option");
+
+    // Act and Assert
+    assertTrue(productOptionValidationServiceImpl.requiresValidation(productOption, null));
+  }
+
+  /**
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#requiresValidation(ProductOption, String)}
+   */
+  @Test
+  public void testRequiresValidation4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
     ProductOptionImpl productOption = mock(ProductOptionImpl.class);
-    when(productOption.getRequired()).thenReturn(false);
+    when(productOption.getRequired()).thenReturn(true);
     when(productOption.getValidationString()).thenReturn("Validation String");
-    when(productOption.getProductOptionValidationType())
-        .thenReturn(ProductOptionValidationType.REGEX);
+    when(productOption.getProductOptionValidationType()).thenReturn(ProductOptionValidationType.REGEX);
 
     // Act
-    boolean actualRequiresValidationResult =
-        productOptionValidationServiceImpl.requiresValidation(productOption, "42");
+    boolean actualRequiresValidationResult = productOptionValidationServiceImpl.requiresValidation(productOption, "42");
 
     // Assert
     verify(productOption).getProductOptionValidationType();
@@ -576,34 +474,47 @@ public class ProductOptionValidationServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link ProductOptionValidationServiceImpl#requiresValidation(ProductOption, String)}.
-   *
-   * <ul>
-   *   <li>Given {@code false}.
-   *   <li>When {@link ProductOptionImpl} {@link ProductOptionImpl#getRequired()} return {@code
-   *       false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValidationServiceImpl#requiresValidation(ProductOption, String)}
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#requiresValidation(ProductOption, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductOptionValidationServiceImpl.requiresValidation(ProductOption, String)"
-  })
-  public void testRequiresValidation_givenFalse_whenProductOptionImplGetRequiredReturnFalse2() {
+  public void testRequiresValidation5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
     ProductOptionImpl productOption = mock(ProductOptionImpl.class);
     when(productOption.getRequired()).thenReturn(false);
     when(productOption.getValidationString()).thenReturn("Validation String");
-    when(productOption.getProductOptionValidationType())
-        .thenReturn(ProductOptionValidationType.REGEX);
+    when(productOption.getProductOptionValidationType()).thenReturn(ProductOptionValidationType.REGEX);
 
     // Act
-    boolean actualRequiresValidationResult =
-        productOptionValidationServiceImpl.requiresValidation(productOption, "");
+    boolean actualRequiresValidationResult = productOptionValidationServiceImpl.requiresValidation(productOption, "42");
+
+    // Assert
+    verify(productOption).getProductOptionValidationType();
+    verify(productOption).getRequired();
+    verify(productOption).getValidationString();
+    assertTrue(actualRequiresValidationResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#requiresValidation(ProductOption, String)}
+   */
+  @Test
+  public void testRequiresValidation6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
+    ProductOptionImpl productOption = mock(ProductOptionImpl.class);
+    when(productOption.getRequired()).thenReturn(true);
+    when(productOption.getValidationString()).thenReturn("");
+    when(productOption.getProductOptionValidationType()).thenReturn(ProductOptionValidationType.REGEX);
+
+    // Act
+    boolean actualRequiresValidationResult = productOptionValidationServiceImpl.requiresValidation(productOption, "42");
 
     // Assert
     verify(productOption).getProductOptionValidationType();
@@ -613,150 +524,15 @@ public class ProductOptionValidationServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link ProductOptionValidationServiceImpl#requiresValidation(ProductOption, String)}.
-   *
-   * <ul>
-   *   <li>Given {@code not empty}.
-   *   <li>When empty string.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValidationServiceImpl#requiresValidation(ProductOption, String)}
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#requiresValidation(ProductOption, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductOptionValidationServiceImpl.requiresValidation(ProductOption, String)"
-  })
-  public void testRequiresValidation_givenNotEmpty_whenEmptyString_thenReturnTrue() {
+  public void testRequiresValidation7() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    ProductOptionImpl productOption = new ProductOptionImpl();
-    productOption.setAllowedValues(new ArrayList<>());
-    productOption.setAttributeName("Attribute Name");
-    productOption.setDisplayOrder(1);
-    productOption.setErrorCode("An error occurred");
-    productOption.setErrorMessage("An error occurred");
-    productOption.setId(1L);
-    productOption.setLabel("Label");
-    productOption.setName("Name");
-    productOption.setProductOptionValidationStrategyType(
-        ProductOptionValidationStrategyType.ADD_ITEM);
-    productOption.setProductOptionValidationType(ProductOptionValidationType.REGEX);
-    productOption.setProductXrefs(new ArrayList<>());
-    productOption.setRequired(true);
-    productOption.setType(ProductOptionType.BOOLEAN);
-    productOption.setUseInSkuGeneration(true);
-    productOption.setValidationString("not empty");
-
-    // Act and Assert
-    assertTrue(productOptionValidationServiceImpl.requiresValidation(productOption, ""));
-  }
-
-  /**
-   * Test {@link ProductOptionValidationServiceImpl#requiresValidation(ProductOption, String)}.
-   *
-   * <ul>
-   *   <li>Given {@code not empty}.
-   *   <li>When {@code not empty}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValidationServiceImpl#requiresValidation(ProductOption, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductOptionValidationServiceImpl.requiresValidation(ProductOption, String)"
-  })
-  public void testRequiresValidation_givenNotEmpty_whenNotEmpty_thenReturnTrue() {
-    // Arrange
-    ProductOptionImpl productOption = new ProductOptionImpl();
-    productOption.setAllowedValues(new ArrayList<>());
-    productOption.setAttributeName("Attribute Name");
-    productOption.setDisplayOrder(1);
-    productOption.setErrorCode("An error occurred");
-    productOption.setErrorMessage("An error occurred");
-    productOption.setId(1L);
-    productOption.setLabel("Label");
-    productOption.setName("Name");
-    productOption.setProductOptionValidationStrategyType(
-        ProductOptionValidationStrategyType.ADD_ITEM);
-    productOption.setProductOptionValidationType(ProductOptionValidationType.REGEX);
-    productOption.setProductXrefs(new ArrayList<>());
-    productOption.setRequired(true);
-    productOption.setType(ProductOptionType.BOOLEAN);
-    productOption.setUseInSkuGeneration(true);
-    productOption.setValidationString("not empty");
-
-    // Act and Assert
-    assertTrue(productOptionValidationServiceImpl.requiresValidation(productOption, "not empty"));
-  }
-
-  /**
-   * Test {@link ProductOptionValidationServiceImpl#requiresValidation(ProductOption, String)}.
-   *
-   * <ul>
-   *   <li>Given {@code not empty}.
-   *   <li>When {@code null}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValidationServiceImpl#requiresValidation(ProductOption, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductOptionValidationServiceImpl.requiresValidation(ProductOption, String)"
-  })
-  public void testRequiresValidation_givenNotEmpty_whenNull_thenReturnTrue() {
-    // Arrange
-    ProductOptionImpl productOption = new ProductOptionImpl();
-    productOption.setAllowedValues(new ArrayList<>());
-    productOption.setAttributeName("Attribute Name");
-    productOption.setDisplayOrder(1);
-    productOption.setErrorCode("An error occurred");
-    productOption.setErrorMessage("An error occurred");
-    productOption.setId(1L);
-    productOption.setLabel("Label");
-    productOption.setName("Name");
-    productOption.setProductOptionValidationStrategyType(
-        ProductOptionValidationStrategyType.ADD_ITEM);
-    productOption.setProductOptionValidationType(ProductOptionValidationType.REGEX);
-    productOption.setProductXrefs(new ArrayList<>());
-    productOption.setRequired(true);
-    productOption.setType(ProductOptionType.BOOLEAN);
-    productOption.setUseInSkuGeneration(true);
-    productOption.setValidationString("not empty");
-
-    // Act and Assert
-    assertTrue(productOptionValidationServiceImpl.requiresValidation(productOption, null));
-  }
-
-  /**
-   * Test {@link ProductOptionValidationServiceImpl#requiresValidation(ProductOption, String)}.
-   *
-   * <ul>
-   *   <li>Given {@link ProductOptionValidationType#ProductOptionValidationType(String, String)}
-   *       with {@code Type} and {@code Friendly Type}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValidationServiceImpl#requiresValidation(ProductOption, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductOptionValidationServiceImpl.requiresValidation(ProductOption, String)"
-  })
-  public void testRequiresValidation_givenProductOptionValidationTypeWithTypeAndFriendlyType() {
-    // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
     ProductOptionImpl productOption = mock(ProductOptionImpl.class);
     when(productOption.getRequired()).thenReturn(true);
     when(productOption.getValidationString()).thenReturn("Validation String");
@@ -764,8 +540,7 @@ public class ProductOptionValidationServiceImplDiffblueTest {
         .thenReturn(new ProductOptionValidationType("Type", "Friendly Type"));
 
     // Act
-    boolean actualRequiresValidationResult =
-        productOptionValidationServiceImpl.requiresValidation(productOption, "42");
+    boolean actualRequiresValidationResult = productOptionValidationServiceImpl.requiresValidation(productOption, "42");
 
     // Assert
     verify(productOption).getProductOptionValidationType();
@@ -775,383 +550,277 @@ public class ProductOptionValidationServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link ProductOptionValidationServiceImpl#validateRegex(String, String)}.
-   *
-   * <ul>
-   *   <li>When {@code .*}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionValidationServiceImpl#validateRegex(String, String)}
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#requiresValidation(ProductOption, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ProductOptionValidationServiceImpl.validateRegex(String, String)"})
-  public void testValidateRegex_whenDotAsterisk_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(productOptionValidationServiceImpl.validateRegex(".*", null));
-  }
+  public void testRequiresValidation8() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-  /**
-   * Test {@link ProductOptionValidationServiceImpl#validateRegex(String, String)}.
-   *
-   * <ul>
-   *   <li>When {@code .*}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionValidationServiceImpl#validateRegex(String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ProductOptionValidationServiceImpl.validateRegex(String, String)"})
-  public void testValidateRegex_whenDotAsterisk_thenReturnTrue() {
-    // Arrange, Act and Assert
-    assertTrue(productOptionValidationServiceImpl.validateRegex(".*", "42"));
-  }
-
-  /**
-   * Test {@link ProductOptionValidationServiceImpl#validateRegex(String, String)}.
-   *
-   * <ul>
-   *   <li>When {@code Regex}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionValidationServiceImpl#validateRegex(String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ProductOptionValidationServiceImpl.validateRegex(String, String)"})
-  public void testValidateRegex_whenRegex_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(productOptionValidationServiceImpl.validateRegex("Regex", "42"));
-  }
-
-  /**
-   * Test {@link
-   * ProductOptionValidationServiceImpl#hasProductOptionValidationStrategy(ProductOption)}.
-   *
-   * <ul>
-   *   <li>Given {@link ProductOptionValidationStrategyType#ADD_ITEM}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValidationServiceImpl#hasProductOptionValidationStrategy(ProductOption)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductOptionValidationServiceImpl.hasProductOptionValidationStrategy(ProductOption)"
-  })
-  public void testHasProductOptionValidationStrategy_givenAdd_item_thenReturnTrue() {
     // Arrange
-    ProductOptionImpl productOption = new ProductOptionImpl();
-    productOption.setProductOptionValidationStrategyType(
-        ProductOptionValidationStrategyType.ADD_ITEM);
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
+    ProductOptionImpl productOption = mock(ProductOptionImpl.class);
+    when(productOption.getRequired()).thenReturn(false);
+    when(productOption.getValidationString()).thenReturn("Validation String");
+    when(productOption.getProductOptionValidationType()).thenReturn(ProductOptionValidationType.REGEX);
+
+    // Act
+    boolean actualRequiresValidationResult = productOptionValidationServiceImpl.requiresValidation(productOption, "");
+
+    // Assert
+    verify(productOption).getProductOptionValidationType();
+    verify(productOption).getRequired();
+    verify(productOption).getValidationString();
+    assertFalse(actualRequiresValidationResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#validateRegex(String, String)}
+   */
+  @Test
+  public void testValidateRegex() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertTrue((new ProductOptionValidationServiceImpl()).validateRegex(".*", "42"));
+    assertFalse((new ProductOptionValidationServiceImpl()).validateRegex(".*", null));
+    assertFalse((new ProductOptionValidationServiceImpl()).validateRegex("Regex", "42"));
+  }
+
+  /**
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#hasProductOptionValidationStrategy(ProductOption)}
+   */
+  @Test
+  public void testHasProductOptionValidationStrategy() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
 
     // Act and Assert
-    assertTrue(
-        productOptionValidationServiceImpl.hasProductOptionValidationStrategy(productOption));
+    assertFalse(productOptionValidationServiceImpl.hasProductOptionValidationStrategy(new ProductOptionImpl()));
   }
 
   /**
-   * Test {@link
-   * ProductOptionValidationServiceImpl#hasProductOptionValidationStrategy(ProductOption)}.
-   *
-   * <ul>
-   *   <li>When {@link ProductOptionImpl} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValidationServiceImpl#hasProductOptionValidationStrategy(ProductOption)}
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#hasProductOptionValidationStrategy(ProductOption)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductOptionValidationServiceImpl.hasProductOptionValidationStrategy(ProductOption)"
-  })
-  public void testHasProductOptionValidationStrategy_whenProductOptionImpl_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(
-        productOptionValidationServiceImpl.hasProductOptionValidationStrategy(
-            new ProductOptionImpl()));
-  }
+  public void testHasProductOptionValidationStrategy2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-  /**
-   * Test {@link ProductOptionValidationServiceImpl#isSubmitType(ProductOption)}.
-   *
-   * <ul>
-   *   <li>Given {@link ProductOptionValidationStrategyType#ADD_ITEM}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionValidationServiceImpl#isSubmitType(ProductOption)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ProductOptionValidationServiceImpl.isSubmitType(ProductOption)"})
-  public void testIsSubmitType_givenAdd_item() {
     // Arrange
-    ProductOptionImpl productOption = new ProductOptionImpl();
-    productOption.setProductOptionValidationStrategyType(
-        ProductOptionValidationStrategyType.ADD_ITEM);
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
+    ProductOption productOption = mock(ProductOption.class);
+    when(productOption.getProductOptionValidationStrategyType())
+        .thenReturn(ProductOptionValidationStrategyType.ADD_ITEM);
+
+    // Act
+    boolean actualHasProductOptionValidationStrategyResult = productOptionValidationServiceImpl
+        .hasProductOptionValidationStrategy(productOption);
+
+    // Assert
+    verify(productOption).getProductOptionValidationStrategyType();
+    assertTrue(actualHasProductOptionValidationStrategyResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#isSubmitType(ProductOption)}
+   */
+  @Test
+  public void testIsSubmitType() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
 
     // Act and Assert
-    assertFalse(productOptionValidationServiceImpl.isSubmitType(productOption));
-  }
-
-  /**
-   * Test {@link ProductOptionValidationServiceImpl#isSubmitType(ProductOption)}.
-   *
-   * <ul>
-   *   <li>Given {@link ProductOptionValidationStrategyType#SUBMIT_ORDER}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionValidationServiceImpl#isSubmitType(ProductOption)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ProductOptionValidationServiceImpl.isSubmitType(ProductOption)"})
-  public void testIsSubmitType_givenSubmit_order_thenReturnTrue() {
-    // Arrange
-    ProductOptionImpl productOption = new ProductOptionImpl();
-    productOption.setProductOptionValidationStrategyType(
-        ProductOptionValidationStrategyType.SUBMIT_ORDER);
-
-    // Act and Assert
-    assertTrue(productOptionValidationServiceImpl.isSubmitType(productOption));
-  }
-
-  /**
-   * Test {@link ProductOptionValidationServiceImpl#isSubmitType(ProductOption)}.
-   *
-   * <ul>
-   *   <li>When {@link ProductOptionImpl} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionValidationServiceImpl#isSubmitType(ProductOption)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ProductOptionValidationServiceImpl.isSubmitType(ProductOption)"})
-  public void testIsSubmitType_whenProductOptionImpl_thenReturnFalse() {
-    // Arrange, Act and Assert
     assertFalse(productOptionValidationServiceImpl.isSubmitType(new ProductOptionImpl()));
   }
 
   /**
-   * Test {@link ProductOptionValidationServiceImpl#isAddOrNoneType(ProductOption)}.
-   *
-   * <ul>
-   *   <li>Given {@link ProductOptionValidationStrategyType#ADD_ITEM}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionValidationServiceImpl#isAddOrNoneType(ProductOption)}
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#isSubmitType(ProductOption)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ProductOptionValidationServiceImpl.isAddOrNoneType(ProductOption)"})
-  public void testIsAddOrNoneType_givenAdd_item_thenReturnTrue() {
-    // Arrange
-    ProductOptionImpl productOption = new ProductOptionImpl();
-    productOption.setProductOptionValidationStrategyType(
-        ProductOptionValidationStrategyType.ADD_ITEM);
+  public void testIsSubmitType2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Act and Assert
-    assertTrue(productOptionValidationServiceImpl.isAddOrNoneType(productOption));
+    // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
+    ProductOption productOption = mock(ProductOption.class);
+    when(productOption.getProductOptionValidationStrategyType())
+        .thenReturn(ProductOptionValidationStrategyType.ADD_ITEM);
+
+    // Act
+    boolean actualIsSubmitTypeResult = productOptionValidationServiceImpl.isSubmitType(productOption);
+
+    // Assert
+    verify(productOption, atLeast(1)).getProductOptionValidationStrategyType();
+    assertFalse(actualIsSubmitTypeResult);
   }
 
   /**
-   * Test {@link ProductOptionValidationServiceImpl#isAddOrNoneType(ProductOption)}.
-   *
-   * <ul>
-   *   <li>Given {@link ProductOptionValidationStrategyType#SUBMIT_ORDER}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionValidationServiceImpl#isAddOrNoneType(ProductOption)}
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#isSubmitType(ProductOption)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ProductOptionValidationServiceImpl.isAddOrNoneType(ProductOption)"})
-  public void testIsAddOrNoneType_givenSubmit_order() {
-    // Arrange
-    ProductOptionImpl productOption = new ProductOptionImpl();
-    productOption.setProductOptionValidationStrategyType(
-        ProductOptionValidationStrategyType.SUBMIT_ORDER);
+  public void testIsSubmitType3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Act and Assert
-    assertFalse(productOptionValidationServiceImpl.isAddOrNoneType(productOption));
+    // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
+    ProductOption productOption = mock(ProductOption.class);
+    when(productOption.getProductOptionValidationStrategyType())
+        .thenReturn(ProductOptionValidationStrategyType.SUBMIT_ORDER);
+
+    // Act
+    boolean actualIsSubmitTypeResult = productOptionValidationServiceImpl.isSubmitType(productOption);
+
+    // Assert
+    verify(productOption, atLeast(1)).getProductOptionValidationStrategyType();
+    assertTrue(actualIsSubmitTypeResult);
   }
 
   /**
-   * Test {@link ProductOptionValidationServiceImpl#isAddOrNoneType(ProductOption)}.
-   *
-   * <ul>
-   *   <li>When {@link ProductOptionImpl} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionValidationServiceImpl#isAddOrNoneType(ProductOption)}
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#isSubmitType(ProductOption)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ProductOptionValidationServiceImpl.isAddOrNoneType(ProductOption)"})
-  public void testIsAddOrNoneType_whenProductOptionImpl_thenReturnFalse() {
-    // Arrange, Act and Assert
+  public void testIsSubmitType4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
+    ProductOptionValidationStrategyType productOptionValidationStrategyType = mock(
+        ProductOptionValidationStrategyType.class);
+    when(productOptionValidationStrategyType.getRank())
+        .thenThrow(new RequiredAttributeNotProvidedException("Attribute Name"));
+    ProductOption productOption = mock(ProductOption.class);
+    when(productOption.getProductOptionValidationStrategyType()).thenReturn(productOptionValidationStrategyType);
+
+    // Act and Assert
+    assertThrows(RequiredAttributeNotProvidedException.class,
+        () -> productOptionValidationServiceImpl.isSubmitType(productOption));
+    verify(productOption, atLeast(1)).getProductOptionValidationStrategyType();
+    verify(productOptionValidationStrategyType).getRank();
+  }
+
+  /**
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#isAddOrNoneType(ProductOption)}
+   */
+  @Test
+  public void testIsAddOrNoneType() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
+
+    // Act and Assert
     assertFalse(productOptionValidationServiceImpl.isAddOrNoneType(new ProductOptionImpl()));
   }
 
   /**
-   * Test {@link ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String,
-   * ActivityMessages)}.
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String,
-   * ActivityMessages)}
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#isAddOrNoneType(ProductOption)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductOptionValidationServiceImpl.validateWithoutException(ProductOption, String, ActivityMessages)"
-  })
+  public void testIsAddOrNoneType2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
+    ProductOption productOption = mock(ProductOption.class);
+    when(productOption.getProductOptionValidationStrategyType())
+        .thenReturn(ProductOptionValidationStrategyType.ADD_ITEM);
+
+    // Act
+    boolean actualIsAddOrNoneTypeResult = productOptionValidationServiceImpl.isAddOrNoneType(productOption);
+
+    // Assert
+    verify(productOption, atLeast(1)).getProductOptionValidationStrategyType();
+    assertTrue(actualIsAddOrNoneTypeResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#isAddOrNoneType(ProductOption)}
+   */
+  @Test
+  public void testIsAddOrNoneType3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
+    ProductOption productOption = mock(ProductOption.class);
+    when(productOption.getProductOptionValidationStrategyType())
+        .thenReturn(ProductOptionValidationStrategyType.SUBMIT_ORDER);
+
+    // Act
+    boolean actualIsAddOrNoneTypeResult = productOptionValidationServiceImpl.isAddOrNoneType(productOption);
+
+    // Assert
+    verify(productOption, atLeast(1)).getProductOptionValidationStrategyType();
+    assertFalse(actualIsAddOrNoneTypeResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#isAddOrNoneType(ProductOption)}
+   */
+  @Test
+  public void testIsAddOrNoneType4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
+    ProductOptionValidationStrategyType productOptionValidationStrategyType = mock(
+        ProductOptionValidationStrategyType.class);
+    when(productOptionValidationStrategyType.getRank())
+        .thenThrow(new RequiredAttributeNotProvidedException("Attribute Name"));
+    ProductOption productOption = mock(ProductOption.class);
+    when(productOption.getProductOptionValidationStrategyType()).thenReturn(productOptionValidationStrategyType);
+
+    // Act and Assert
+    assertThrows(RequiredAttributeNotProvidedException.class,
+        () -> productOptionValidationServiceImpl.isAddOrNoneType(productOption));
+    verify(productOption, atLeast(1)).getProductOptionValidationStrategyType();
+    verify(productOptionValidationStrategyType).getRank();
+  }
+
+  /**
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String, ActivityMessages)}
+   */
+  @Test
   public void testValidateWithoutException() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    ProductOptionImpl productOption = new ProductOptionImpl();
-    productOption.setAllowedValues(new ArrayList<>());
-    productOption.setAttributeName("Attribute Name");
-    productOption.setDisplayOrder(1);
-    productOption.setErrorCode("An error occurred");
-    productOption.setErrorMessage("An error occurred");
-    productOption.setId(1L);
-    productOption.setLabel("Label");
-    productOption.setName("Name");
-    productOption.setProductOptionValidationStrategyType(
-        ProductOptionValidationStrategyType.ADD_ITEM);
-    productOption.setProductOptionValidationType(ProductOptionValidationType.REGEX);
-    productOption.setProductXrefs(new ArrayList<>());
-    productOption.setRequired(true);
-    productOption.setType(ProductOptionType.BOOLEAN);
-    productOption.setUseInSkuGeneration(true);
-    productOption.setValidationString("not empty");
-    DefaultProcessContextImpl<Object> messages = new DefaultProcessContextImpl<>();
-
-    // Act
-    productOptionValidationServiceImpl.validateWithoutException(productOption, "", messages);
-
-    // Assert
-    List<ActivityMessageDTO> activityMessages = messages.getActivityMessages();
-    assertEquals(1, activityMessages.size());
-    ActivityMessageDTO getResult = activityMessages.get(0);
-    assertEquals("PRODUCT_OPTION", getResult.getType());
-    assertEquals("REQUIRED_ATTRIBUTE", getResult.getErrorCode());
-    assertEquals("Required attribute, Attribute Name, not provided", getResult.getMessage());
-    assertEquals(1, getResult.getPriority().intValue());
-  }
-
-  /**
-   * Test {@link ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String,
-   * ActivityMessages)}.
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String,
-   * ActivityMessages)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductOptionValidationServiceImpl.validateWithoutException(ProductOption, String, ActivityMessages)"
-  })
-  public void testValidateWithoutException2() {
-    // Arrange
-    ProductOptionImpl productOption = new ProductOptionImpl();
-    productOption.setAllowedValues(new ArrayList<>());
-    productOption.setAttributeName("Attribute Name");
-    productOption.setDisplayOrder(1);
-    productOption.setErrorCode("An error occurred");
-    productOption.setErrorMessage("An error occurred");
-    productOption.setId(1L);
-    productOption.setLabel("Label");
-    productOption.setName("Name");
-    productOption.setProductOptionValidationStrategyType(
-        ProductOptionValidationStrategyType.ADD_ITEM);
-    productOption.setProductOptionValidationType(ProductOptionValidationType.REGEX);
-    productOption.setProductXrefs(new ArrayList<>());
-    productOption.setRequired(true);
-    productOption.setType(ProductOptionType.BOOLEAN);
-    productOption.setUseInSkuGeneration(true);
-    productOption.setValidationString("not empty");
-    DefaultProcessContextImpl<Object> messages = new DefaultProcessContextImpl<>();
-
-    // Act
-    productOptionValidationServiceImpl.validateWithoutException(productOption, null, messages);
-
-    // Assert
-    List<ActivityMessageDTO> activityMessages = messages.getActivityMessages();
-    assertEquals(1, activityMessages.size());
-    ActivityMessageDTO getResult = activityMessages.get(0);
-    assertEquals("PRODUCT_OPTION", getResult.getType());
-    assertEquals("REQUIRED_ATTRIBUTE", getResult.getErrorCode());
-    assertEquals("Required attribute, Attribute Name, not provided", getResult.getMessage());
-    assertEquals(1, getResult.getPriority().intValue());
-  }
-
-  /**
-   * Test {@link ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String,
-   * ActivityMessages)}.
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String,
-   * ActivityMessages)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductOptionValidationServiceImpl.validateWithoutException(ProductOption, String, ActivityMessages)"
-  })
-  public void testValidateWithoutException3() {
-    // Arrange
-    ProductOptionImpl productOption = new ProductOptionImpl();
-    productOption.setAllowedValues(new ArrayList<>());
-    productOption.setAttributeName("Attribute Name");
-    productOption.setDisplayOrder(1);
-    productOption.setErrorCode("An error occurred");
-    productOption.setErrorMessage("An error occurred");
-    productOption.setId(1L);
-    productOption.setLabel("Label");
-    productOption.setName("Name");
-    productOption.setProductOptionValidationStrategyType(
-        ProductOptionValidationStrategyType.ADD_ITEM);
-    productOption.setProductOptionValidationType(ProductOptionValidationType.REGEX);
-    productOption.setProductXrefs(new ArrayList<>());
-    productOption.setRequired(true);
-    productOption.setType(ProductOptionType.BOOLEAN);
-    productOption.setUseInSkuGeneration(true);
-    productOption.setValidationString("not empty");
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
+    ProductOptionImpl productOption = mock(ProductOptionImpl.class);
+    when(productOption.getErrorCode()).thenReturn("An error occurred");
+    when(productOption.getErrorMessage()).thenReturn("An error occurred");
+    when(productOption.getRequired()).thenReturn(true);
+    when(productOption.getAttributeName()).thenReturn("Attribute Name");
+    when(productOption.getValidationString()).thenReturn("Validation String");
+    when(productOption.getProductOptionValidationType()).thenReturn(ProductOptionValidationType.REGEX);
     DefaultProcessContextImpl<Object> messages = new DefaultProcessContextImpl<>();
 
     // Act
     productOptionValidationServiceImpl.validateWithoutException(productOption, "42", messages);
 
     // Assert
+    verify(productOption).getAttributeName();
+    verify(productOption, atLeast(1)).getErrorCode();
+    verify(productOption).getErrorMessage();
+    verify(productOption).getProductOptionValidationType();
+    verify(productOption, atLeast(1)).getRequired();
+    verify(productOption, atLeast(1)).getValidationString();
     List<ActivityMessageDTO> activityMessages = messages.getActivityMessages();
     assertEquals(1, activityMessages.size());
     ActivityMessageDTO getResult = activityMessages.get(0);
@@ -1162,64 +831,22 @@ public class ProductOptionValidationServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String,
-   * ActivityMessages)}.
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String,
-   * ActivityMessages)}
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String, ActivityMessages)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductOptionValidationServiceImpl.validateWithoutException(ProductOption, String, ActivityMessages)"
-  })
-  public void testValidateWithoutException4() {
+  public void testValidateWithoutException2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
     ProductOptionImpl productOption = mock(ProductOptionImpl.class);
-    when(productOption.getAttributeName())
-        .thenThrow(new RequiredAttributeNotProvidedException("Attribute Name"));
-    DefaultProcessContextImpl<Object> messages = new DefaultProcessContextImpl<>();
-
-    // Act
-    productOptionValidationServiceImpl.validateWithoutException(productOption, "42", messages);
-
-    // Assert
-    verify(productOption).getAttributeName();
-    List<ActivityMessageDTO> activityMessages = messages.getActivityMessages();
-    assertEquals(1, activityMessages.size());
-    ActivityMessageDTO getResult = activityMessages.get(0);
-    assertEquals("PRODUCT_OPTION", getResult.getType());
-    assertEquals("REQUIRED_ATTRIBUTE", getResult.getErrorCode());
-    assertEquals("The attribute Attribute Name was not provided", getResult.getMessage());
-    assertEquals(1, getResult.getPriority().intValue());
-  }
-
-  /**
-   * Test {@link ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String,
-   * ActivityMessages)}.
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String,
-   * ActivityMessages)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductOptionValidationServiceImpl.validateWithoutException(ProductOption, String, ActivityMessages)"
-  })
-  public void testValidateWithoutException5() {
-    // Arrange
-    ProductOptionImpl productOption = mock(ProductOptionImpl.class);
-    when(productOption.getErrorMessage())
-        .thenThrow(new RequiredAttributeNotProvidedException("Value ["));
+    when(productOption.getErrorCode()).thenReturn("An error occurred");
+    when(productOption.getErrorMessage()).thenReturn(null);
     when(productOption.getRequired()).thenReturn(true);
     when(productOption.getAttributeName()).thenReturn("Attribute Name");
     when(productOption.getValidationString()).thenReturn("Validation String");
-    when(productOption.getProductOptionValidationType())
-        .thenReturn(ProductOptionValidationType.REGEX);
+    when(productOption.getProductOptionValidationType()).thenReturn(ProductOptionValidationType.REGEX);
     DefaultProcessContextImpl<Object> messages = new DefaultProcessContextImpl<>();
 
     // Act
@@ -1227,6 +854,7 @@ public class ProductOptionValidationServiceImplDiffblueTest {
 
     // Assert
     verify(productOption).getAttributeName();
+    verify(productOption, atLeast(1)).getErrorCode();
     verify(productOption).getErrorMessage();
     verify(productOption).getProductOptionValidationType();
     verify(productOption, atLeast(1)).getRequired();
@@ -1234,36 +862,29 @@ public class ProductOptionValidationServiceImplDiffblueTest {
     List<ActivityMessageDTO> activityMessages = messages.getActivityMessages();
     assertEquals(1, activityMessages.size());
     ActivityMessageDTO getResult = activityMessages.get(0);
+    assertEquals("An error occurred", getResult.getErrorCode());
     assertEquals("PRODUCT_OPTION", getResult.getType());
-    assertEquals("REQUIRED_ATTRIBUTE", getResult.getErrorCode());
-    assertEquals("The attribute Value [ was not provided", getResult.getMessage());
+    assertEquals("Value [42] does not match regex string [Validation String]", getResult.getMessage());
     assertEquals(1, getResult.getPriority().intValue());
   }
 
   /**
-   * Test {@link ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String,
-   * ActivityMessages)}.
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String,
-   * ActivityMessages)}
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String, ActivityMessages)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductOptionValidationServiceImpl.validateWithoutException(ProductOption, String, ActivityMessages)"
-  })
-  public void testValidateWithoutException6() {
+  public void testValidateWithoutException3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
     ProductOptionImpl productOption = mock(ProductOptionImpl.class);
     when(productOption.getErrorCode()).thenReturn("An error occurred");
     when(productOption.getErrorMessage()).thenReturn("");
     when(productOption.getRequired()).thenReturn(true);
     when(productOption.getAttributeName()).thenReturn("Attribute Name");
     when(productOption.getValidationString()).thenReturn("Validation String");
-    when(productOption.getProductOptionValidationType())
-        .thenReturn(ProductOptionValidationType.REGEX);
+    when(productOption.getProductOptionValidationType()).thenReturn(ProductOptionValidationType.REGEX);
     DefaultProcessContextImpl<Object> messages = new DefaultProcessContextImpl<>();
 
     // Act
@@ -1281,35 +902,27 @@ public class ProductOptionValidationServiceImplDiffblueTest {
     ActivityMessageDTO getResult = activityMessages.get(0);
     assertEquals("An error occurred", getResult.getErrorCode());
     assertEquals("PRODUCT_OPTION", getResult.getType());
-    assertEquals(
-        "Value [42] does not match regex string [Validation String]", getResult.getMessage());
+    assertEquals("Value [42] does not match regex string [Validation String]", getResult.getMessage());
     assertEquals(1, getResult.getPriority().intValue());
   }
 
   /**
-   * Test {@link ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String,
-   * ActivityMessages)}.
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String,
-   * ActivityMessages)}
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String, ActivityMessages)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductOptionValidationServiceImpl.validateWithoutException(ProductOption, String, ActivityMessages)"
-  })
-  public void testValidateWithoutException7() {
+  public void testValidateWithoutException4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
     ProductOptionImpl productOption = mock(ProductOptionImpl.class);
     when(productOption.getErrorCode()).thenReturn("An error occurred");
     when(productOption.getErrorMessage()).thenReturn("An error occurred");
     when(productOption.getRequired()).thenReturn(false);
     when(productOption.getAttributeName()).thenReturn("Attribute Name");
     when(productOption.getValidationString()).thenReturn("Validation String");
-    when(productOption.getProductOptionValidationType())
-        .thenReturn(ProductOptionValidationType.REGEX);
+    when(productOption.getProductOptionValidationType()).thenReturn(ProductOptionValidationType.REGEX);
     DefaultProcessContextImpl<Object> messages = new DefaultProcessContextImpl<>();
 
     // Act
@@ -1332,33 +945,26 @@ public class ProductOptionValidationServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String,
-   * ActivityMessages)}.
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String,
-   * ActivityMessages)}
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String, ActivityMessages)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductOptionValidationServiceImpl.validateWithoutException(ProductOption, String, ActivityMessages)"
-  })
-  public void testValidateWithoutException8() {
+  public void testValidateWithoutException5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
     ProductOptionImpl productOption = mock(ProductOptionImpl.class);
     when(productOption.getRequired()).thenReturn(true);
     when(productOption.getAttributeName()).thenReturn("Attribute Name");
-    when(productOption.getValidationString()).thenReturn("");
-    when(productOption.getProductOptionValidationType())
-        .thenReturn(ProductOptionValidationType.REGEX);
+    when(productOption.getValidationString()).thenReturn(null);
+    when(productOption.getProductOptionValidationType()).thenReturn(ProductOptionValidationType.REGEX);
     DefaultProcessContextImpl<Object> messages = new DefaultProcessContextImpl<>();
 
     // Act
     productOptionValidationServiceImpl.validateWithoutException(productOption, "42", messages);
 
-    // Assert that nothing has changed
+    // Assert
     verify(productOption).getAttributeName();
     verify(productOption).getProductOptionValidationType();
     verify(productOption, atLeast(1)).getRequired();
@@ -1367,21 +973,43 @@ public class ProductOptionValidationServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String,
-   * ActivityMessages)}.
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String,
-   * ActivityMessages)}
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String, ActivityMessages)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductOptionValidationServiceImpl.validateWithoutException(ProductOption, String, ActivityMessages)"
-  })
-  public void testValidateWithoutException9() {
+  public void testValidateWithoutException6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
+    ProductOptionImpl productOption = mock(ProductOptionImpl.class);
+    when(productOption.getRequired()).thenReturn(true);
+    when(productOption.getAttributeName()).thenReturn("Attribute Name");
+    when(productOption.getValidationString()).thenReturn("42");
+    when(productOption.getProductOptionValidationType()).thenReturn(ProductOptionValidationType.REGEX);
+    DefaultProcessContextImpl<Object> messages = new DefaultProcessContextImpl<>();
+
+    // Act
+    productOptionValidationServiceImpl.validateWithoutException(productOption, "42", messages);
+
+    // Assert
+    verify(productOption).getAttributeName();
+    verify(productOption).getProductOptionValidationType();
+    verify(productOption, atLeast(1)).getRequired();
+    verify(productOption, atLeast(1)).getValidationString();
+    assertTrue(messages.getActivityMessages().isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String, ActivityMessages)}
+   */
+  @Test
+  public void testValidateWithoutException7() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
     ProductOptionImpl productOption = mock(ProductOptionImpl.class);
     when(productOption.getRequired()).thenReturn(true);
     when(productOption.getAttributeName()).thenReturn("Attribute Name");
@@ -1393,7 +1021,7 @@ public class ProductOptionValidationServiceImplDiffblueTest {
     // Act
     productOptionValidationServiceImpl.validateWithoutException(productOption, "42", messages);
 
-    // Assert that nothing has changed
+    // Assert
     verify(productOption).getAttributeName();
     verify(productOption).getProductOptionValidationType();
     verify(productOption, atLeast(1)).getRequired();
@@ -1402,296 +1030,64 @@ public class ProductOptionValidationServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String,
-   * ActivityMessages)}.
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String,
-   * ActivityMessages)}
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String, ActivityMessages)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductOptionValidationServiceImpl.validateWithoutException(ProductOption, String, ActivityMessages)"
-  })
-  public void testValidateWithoutException10() {
+  public void testValidateWithoutException8() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    ProductOptionValidationServiceImpl productOptionValidationServiceImpl =
-        new ProductOptionValidationServiceImpl();
-
-    ProductOptionImpl productOption = new ProductOptionImpl();
-    productOption.setAllowedValues(new ArrayList<>());
-    productOption.setAttributeName(null);
-    productOption.setDisplayOrder(1);
-    productOption.setErrorCode("An error occurred");
-    productOption.setErrorMessage("An error occurred");
-    productOption.setId(1L);
-    productOption.setLabel("Label");
-    productOption.setName("Name");
-    productOption.setProductOptionValidationStrategyType(
-        ProductOptionValidationStrategyType.ADD_ITEM);
-    productOption.setProductOptionValidationType(ProductOptionValidationType.REGEX);
-    productOption.setProductXrefs(new ArrayList<>());
-    productOption.setRequired(true);
-    productOption.setType(ProductOptionType.BOOLEAN);
-    productOption.setUseInSkuGeneration(true);
-    productOption.setValidationString("not empty");
-    DefaultProcessContextImpl<Object> messages = new DefaultProcessContextImpl<>();
-
-    // Act
-    productOptionValidationServiceImpl.validateWithoutException(productOption, "", messages);
-
-    // Assert
-    List<ActivityMessageDTO> activityMessages = messages.getActivityMessages();
-    assertEquals(1, activityMessages.size());
-    ActivityMessageDTO getResult = activityMessages.get(0);
-    assertEquals("PRODUCT_OPTION", getResult.getType());
-    assertEquals("REQUIRED_ATTRIBUTE", getResult.getErrorCode());
-    assertEquals("Required attribute, NULL, not provided", getResult.getMessage());
-    assertEquals(1, getResult.getPriority().intValue());
-  }
-
-  /**
-   * Test {@link ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String,
-   * ActivityMessages)}.
-   *
-   * <ul>
-   *   <li>Given {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String,
-   * ActivityMessages)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductOptionValidationServiceImpl.validateWithoutException(ProductOption, String, ActivityMessages)"
-  })
-  public void testValidateWithoutException_givenFalse() {
-    // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
     ProductOptionImpl productOption = mock(ProductOptionImpl.class);
-    when(productOption.getRequired()).thenReturn(false);
+    when(productOption.getRequired()).thenReturn(true);
     when(productOption.getAttributeName()).thenReturn("Attribute Name");
-    when(productOption.getValidationString()).thenReturn("Validation String");
-    when(productOption.getProductOptionValidationType())
-        .thenReturn(ProductOptionValidationType.REGEX);
     DefaultProcessContextImpl<Object> messages = new DefaultProcessContextImpl<>();
 
     // Act
     productOptionValidationServiceImpl.validateWithoutException(productOption, null, messages);
 
-    // Assert that nothing has changed
+    // Assert
     verify(productOption).getAttributeName();
+    verify(productOption).getRequired();
+    List<ActivityMessageDTO> activityMessages = messages.getActivityMessages();
+    assertEquals(1, activityMessages.size());
+    ActivityMessageDTO getResult = activityMessages.get(0);
+    assertEquals("PRODUCT_OPTION", getResult.getType());
+    assertEquals("REQUIRED_ATTRIBUTE", getResult.getErrorCode());
+    assertEquals("Required attribute, Attribute Name, not provided", getResult.getMessage());
+    assertEquals(1, getResult.getPriority().intValue());
+  }
+
+  /**
+   * Method under test:
+   * {@link ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String, ActivityMessages)}
+   */
+  @Test
+  public void testValidateWithoutException9() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductOptionValidationServiceImpl productOptionValidationServiceImpl = new ProductOptionValidationServiceImpl();
+    ProductOptionImpl productOption = mock(ProductOptionImpl.class);
+    when(productOption.getErrorCode()).thenReturn("An error occurred");
+    when(productOption.getErrorMessage()).thenReturn("An error occurred");
+    when(productOption.getRequired()).thenReturn(true);
+    when(productOption.getAttributeName()).thenReturn("Attribute Name");
+    when(productOption.getValidationString()).thenReturn("Validation String");
+    when(productOption.getProductOptionValidationType()).thenReturn(ProductOptionValidationType.REGEX);
+    ActivityMessages messages = mock(ActivityMessages.class);
+    when(messages.getActivityMessages()).thenThrow(new RequiredAttributeNotProvidedException("Attribute Name"));
+
+    // Act and Assert
+    assertThrows(RequiredAttributeNotProvidedException.class,
+        () -> productOptionValidationServiceImpl.validateWithoutException(productOption, "42", messages));
+    verify(productOption).getAttributeName();
+    verify(productOption, atLeast(1)).getErrorCode();
+    verify(productOption).getErrorMessage();
     verify(productOption).getProductOptionValidationType();
     verify(productOption, atLeast(1)).getRequired();
     verify(productOption, atLeast(1)).getValidationString();
-    assertTrue(messages.getActivityMessages().isEmpty());
-  }
-
-  /**
-   * Test {@link ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String,
-   * ActivityMessages)}.
-   *
-   * <ul>
-   *   <li>When {@code not empty}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValidationServiceImpl#validateWithoutException(ProductOption, String,
-   * ActivityMessages)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ProductOptionValidationServiceImpl.validateWithoutException(ProductOption, String, ActivityMessages)"
-  })
-  public void testValidateWithoutException_whenNotEmpty() {
-    // Arrange
-    ProductOptionImpl productOption = new ProductOptionImpl();
-    productOption.setAllowedValues(new ArrayList<>());
-    productOption.setAttributeName("Attribute Name");
-    productOption.setDisplayOrder(1);
-    productOption.setErrorCode("An error occurred");
-    productOption.setErrorMessage("An error occurred");
-    productOption.setId(1L);
-    productOption.setLabel("Label");
-    productOption.setName("Name");
-    productOption.setProductOptionValidationStrategyType(
-        ProductOptionValidationStrategyType.ADD_ITEM);
-    productOption.setProductOptionValidationType(ProductOptionValidationType.REGEX);
-    productOption.setProductXrefs(new ArrayList<>());
-    productOption.setRequired(true);
-    productOption.setType(ProductOptionType.BOOLEAN);
-    productOption.setUseInSkuGeneration(true);
-    productOption.setValidationString("not empty");
-    DefaultProcessContextImpl<Object> messages = new DefaultProcessContextImpl<>();
-
-    // Act
-    productOptionValidationServiceImpl.validateWithoutException(
-        productOption, "not empty", messages);
-
-    // Assert that nothing has changed
-    assertTrue(messages.getActivityMessages().isEmpty());
-  }
-
-  /**
-   * Test {@link ProductOptionValidationServiceImpl#findSkuIdsForProductOptionValues(Long, String,
-   * String, List)}.
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValidationServiceImpl#findSkuIdsForProductOptionValues(Long, String, String,
-   * List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List ProductOptionValidationServiceImpl.findSkuIdsForProductOptionValues(Long, String, String, List)"
-  })
-  public void testFindSkuIdsForProductOptionValues() {
-    // Arrange
-    when(productOptionDao.readSkuIdsForProductOptionValues(
-            Mockito.<Long>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<List<Long>>any()))
-        .thenThrow(new RequiredAttributeNotProvidedException("Attribute Name"));
-
-    // Act and Assert
-    assertThrows(
-        RequiredAttributeNotProvidedException.class,
-        () ->
-            productOptionValidationServiceImpl.findSkuIdsForProductOptionValues(
-                1L, "Attribute Name", "42", new ArrayList<>()));
-    verify(productOptionDao)
-        .readSkuIdsForProductOptionValues(eq(1L), eq("Attribute Name"), eq("42"), isA(List.class));
-  }
-
-  /**
-   * Test {@link ProductOptionValidationServiceImpl#findSkuIdsForProductOptionValues(Long, String,
-   * String, List)}.
-   *
-   * <ul>
-   *   <li>Given one.
-   *   <li>When {@link ArrayList#ArrayList()} add one.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValidationServiceImpl#findSkuIdsForProductOptionValues(Long, String, String,
-   * List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List ProductOptionValidationServiceImpl.findSkuIdsForProductOptionValues(Long, String, String, List)"
-  })
-  public void testFindSkuIdsForProductOptionValues_givenOne_whenArrayListAddOne() {
-    // Arrange
-    when(productOptionDao.readSkuIdsForProductOptionValues(
-            Mockito.<Long>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<List<Long>>any()))
-        .thenReturn(new ArrayList<>());
-
-    ArrayList<Long> possibleSkuIds = new ArrayList<>();
-    possibleSkuIds.add(1L);
-
-    // Act
-    List<Long> actualFindSkuIdsForProductOptionValuesResult =
-        productOptionValidationServiceImpl.findSkuIdsForProductOptionValues(
-            1L, "Attribute Name", "42", possibleSkuIds);
-
-    // Assert
-    verify(productOptionDao)
-        .readSkuIdsForProductOptionValues(eq(1L), eq("Attribute Name"), eq("42"), isA(List.class));
-    assertTrue(actualFindSkuIdsForProductOptionValuesResult.isEmpty());
-  }
-
-  /**
-   * Test {@link ProductOptionValidationServiceImpl#findSkuIdsForProductOptionValues(Long, String,
-   * String, List)}.
-   *
-   * <ul>
-   *   <li>Given zero.
-   *   <li>When {@link ArrayList#ArrayList()} add zero.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValidationServiceImpl#findSkuIdsForProductOptionValues(Long, String, String,
-   * List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List ProductOptionValidationServiceImpl.findSkuIdsForProductOptionValues(Long, String, String, List)"
-  })
-  public void testFindSkuIdsForProductOptionValues_givenZero_whenArrayListAddZero() {
-    // Arrange
-    when(productOptionDao.readSkuIdsForProductOptionValues(
-            Mockito.<Long>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<List<Long>>any()))
-        .thenReturn(new ArrayList<>());
-
-    ArrayList<Long> possibleSkuIds = new ArrayList<>();
-    possibleSkuIds.add(0L);
-    possibleSkuIds.add(1L);
-
-    // Act
-    List<Long> actualFindSkuIdsForProductOptionValuesResult =
-        productOptionValidationServiceImpl.findSkuIdsForProductOptionValues(
-            1L, "Attribute Name", "42", possibleSkuIds);
-
-    // Assert
-    verify(productOptionDao)
-        .readSkuIdsForProductOptionValues(eq(1L), eq("Attribute Name"), eq("42"), isA(List.class));
-    assertTrue(actualFindSkuIdsForProductOptionValuesResult.isEmpty());
-  }
-
-  /**
-   * Test {@link ProductOptionValidationServiceImpl#findSkuIdsForProductOptionValues(Long, String,
-   * String, List)}.
-   *
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ProductOptionValidationServiceImpl#findSkuIdsForProductOptionValues(Long, String, String,
-   * List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List ProductOptionValidationServiceImpl.findSkuIdsForProductOptionValues(Long, String, String, List)"
-  })
-  public void testFindSkuIdsForProductOptionValues_whenArrayList_thenReturnEmpty() {
-    // Arrange
-    when(productOptionDao.readSkuIdsForProductOptionValues(
-            Mockito.<Long>any(),
-            Mockito.<String>any(),
-            Mockito.<String>any(),
-            Mockito.<List<Long>>any()))
-        .thenReturn(new ArrayList<>());
-
-    // Act
-    List<Long> actualFindSkuIdsForProductOptionValuesResult =
-        productOptionValidationServiceImpl.findSkuIdsForProductOptionValues(
-            1L, "Attribute Name", "42", new ArrayList<>());
-
-    // Assert
-    verify(productOptionDao)
-        .readSkuIdsForProductOptionValues(eq(1L), eq("Attribute Name"), eq("42"), isA(List.class));
-    assertTrue(actualFindSkuIdsForProductOptionValuesResult.isEmpty());
+    verify(messages).getActivityMessages();
   }
 }

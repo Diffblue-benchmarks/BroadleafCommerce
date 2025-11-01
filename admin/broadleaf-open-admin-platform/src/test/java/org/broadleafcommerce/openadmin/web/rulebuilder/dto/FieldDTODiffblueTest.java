@@ -18,18 +18,11 @@
 package org.broadleafcommerce.openadmin.web.rulebuilder.dto;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class FieldDTODiffblueTest {
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link FieldDTO}
    *   <li>{@link FieldDTO#setId(String)}
@@ -49,25 +42,6 @@ public class FieldDTODiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void FieldDTO.<init>()",
-    "String FieldDTO.getId()",
-    "String FieldDTO.getInput()",
-    "String FieldDTO.getLabel()",
-    "String FieldDTO.getOperators()",
-    "String FieldDTO.getSelectizeSectionKey()",
-    "String FieldDTO.getType()",
-    "String FieldDTO.getValues()",
-    "void FieldDTO.setId(String)",
-    "void FieldDTO.setInput(String)",
-    "void FieldDTO.setLabel(String)",
-    "void FieldDTO.setOperators(String)",
-    "void FieldDTO.setSelectizeSectionKey(String)",
-    "void FieldDTO.setType(String)",
-    "void FieldDTO.setValues(String)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     FieldDTO actualFieldDTO = new FieldDTO();
@@ -85,7 +59,7 @@ public class FieldDTODiffblueTest {
     String actualSelectizeSectionKey = actualFieldDTO.getSelectizeSectionKey();
     String actualType = actualFieldDTO.getType();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("42", actualId);
     assertEquals("42", actualFieldDTO.getValues());
     assertEquals("Input", actualInput);

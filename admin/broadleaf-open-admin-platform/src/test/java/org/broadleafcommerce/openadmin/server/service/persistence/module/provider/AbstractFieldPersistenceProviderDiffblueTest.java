@@ -19,75 +19,120 @@ package org.broadleafcommerce.openadmin.server.service.persistence.module.provid
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.extension.BasicFieldPersistenceProviderExtensionManager;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import java.util.ArrayList;
+import java.util.HashMap;
+import org.broadleafcommerce.common.persistence.EntityConfiguration;
+import org.broadleafcommerce.common.presentation.client.PersistencePerspectiveItemType;
+import org.broadleafcommerce.openadmin.dto.AdornedTargetList;
+import org.broadleafcommerce.openadmin.dto.CriteriaTransferObject;
+import org.broadleafcommerce.openadmin.dto.FieldMetadata;
+import org.broadleafcommerce.openadmin.dto.PersistencePerspective;
+import org.broadleafcommerce.openadmin.dto.PersistencePerspectiveItem;
+import org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule;
+import org.broadleafcommerce.openadmin.server.service.persistence.module.FieldManager;
+import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.RestrictionFactory;
+import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.AddSearchMappingRequest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.Mockito;
 
-@ContextConfiguration(classes = {BasicFieldPersistenceProvider.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class AbstractFieldPersistenceProviderDiffblueTest {
-  @Autowired private AbstractFieldPersistenceProvider abstractFieldPersistenceProvider;
-
-  @MockBean(name = "blBasicFieldPersistenceProviderExtensionManager")
-  private BasicFieldPersistenceProviderExtensionManager
-      basicFieldPersistenceProviderExtensionManager;
-
   /**
-   * Test {@link AbstractFieldPersistenceProvider#alwaysRun()}.
-   *
-   * <p>Method under test: {@link AbstractFieldPersistenceProvider#alwaysRun()}
+   * Method under test: {@link AbstractFieldPersistenceProvider#alwaysRun()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AbstractFieldPersistenceProvider.alwaysRun()"})
   public void testAlwaysRun() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertFalse(abstractFieldPersistenceProvider.alwaysRun());
+    assertFalse((new BasicFieldPersistenceProvider()).alwaysRun());
   }
 
   /**
-   * Test {@link AbstractFieldPersistenceProvider#canHandlePopulateNull()}.
-   *
-   * <ul>
-   *   <li>Given {@link MapFieldPersistenceProvider} (default constructor).
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractFieldPersistenceProvider#canHandlePopulateNull()}
+   * Method under test: {@link AbstractFieldPersistenceProvider#alwaysRun()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AbstractFieldPersistenceProvider.canHandlePopulateNull()"})
-  public void testCanHandlePopulateNull_givenMapFieldPersistenceProvider_thenReturnTrue() {
-    // Arrange, Act and Assert
-    assertTrue(new MapFieldPersistenceProvider().canHandlePopulateNull());
+  public void testAlwaysRun2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
+    doNothing().when(persistencePerspective)
+        .addPersistencePerspectiveItem(Mockito.<PersistencePerspectiveItemType>any(),
+            Mockito.<PersistencePerspectiveItem>any());
+    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.FOREIGNKEY,
+        new AdornedTargetList());
+    CriteriaTransferObject requestedCto = new CriteriaTransferObject();
+    HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+    AddSearchMappingRequest addSearchMappingRequest = new AddSearchMappingRequest(persistencePerspective, requestedCto,
+        "Dr Jane Doe", mergedProperties, "Property Name", fieldManager, dataFormatProvider,
+        new AdornedTargetListPersistenceModule(), mock(RestrictionFactory.class));
+
+    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
+    basicFieldPersistenceProvider.addSearchMapping(addSearchMappingRequest, new ArrayList<>());
+
+    // Act
+    boolean actualAlwaysRunResult = basicFieldPersistenceProvider.alwaysRun();
+
+    // Assert
+    verify(persistencePerspective).addPersistencePerspectiveItem(eq(PersistencePerspectiveItemType.FOREIGNKEY),
+        isA(PersistencePerspectiveItem.class));
+    assertFalse(actualAlwaysRunResult);
   }
 
   /**
-   * Test {@link AbstractFieldPersistenceProvider#canHandlePopulateNull()}.
-   *
-   * <ul>
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractFieldPersistenceProvider#canHandlePopulateNull()}
+   * Method under test:
+   * {@link AbstractFieldPersistenceProvider#canHandlePopulateNull()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AbstractFieldPersistenceProvider.canHandlePopulateNull()"})
-  public void testCanHandlePopulateNull_thenReturnFalse() {
+  public void testCanHandlePopulateNull() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertFalse(abstractFieldPersistenceProvider.canHandlePopulateNull());
+    assertFalse((new BasicFieldPersistenceProvider()).canHandlePopulateNull());
+    assertTrue((new MapFieldPersistenceProvider()).canHandlePopulateNull());
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractFieldPersistenceProvider#canHandlePopulateNull()}
+   */
+  @Test
+  public void testCanHandlePopulateNull2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
+    doNothing().when(persistencePerspective)
+        .addPersistencePerspectiveItem(Mockito.<PersistencePerspectiveItemType>any(),
+            Mockito.<PersistencePerspectiveItem>any());
+    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.FOREIGNKEY,
+        new AdornedTargetList());
+    CriteriaTransferObject requestedCto = new CriteriaTransferObject();
+    HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+    AddSearchMappingRequest addSearchMappingRequest = new AddSearchMappingRequest(persistencePerspective, requestedCto,
+        "Dr Jane Doe", mergedProperties, "Property Name", fieldManager, dataFormatProvider,
+        new AdornedTargetListPersistenceModule(), mock(RestrictionFactory.class));
+
+    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
+    basicFieldPersistenceProvider.addSearchMapping(addSearchMappingRequest, new ArrayList<>());
+
+    // Act
+    boolean actualCanHandlePopulateNullResult = basicFieldPersistenceProvider.canHandlePopulateNull();
+
+    // Assert
+    verify(persistencePerspective).addPersistencePerspectiveItem(eq(PersistencePerspectiveItemType.FOREIGNKEY),
+        isA(PersistencePerspectiveItem.class));
+    assertFalse(actualCanHandlePopulateNullResult);
   }
 }

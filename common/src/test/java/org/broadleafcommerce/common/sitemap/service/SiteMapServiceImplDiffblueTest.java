@@ -21,15 +21,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,110 +33,36 @@ import org.broadleafcommerce.common.config.domain.ModuleConfiguration;
 import org.broadleafcommerce.common.config.service.ModuleConfigurationService;
 import org.broadleafcommerce.common.config.service.ModuleConfigurationServiceImpl;
 import org.broadleafcommerce.common.config.service.type.ModuleConfigurationType;
-import org.broadleafcommerce.common.file.service.BroadleafFileService;
+import org.broadleafcommerce.common.file.domain.FileWorkArea;
 import org.broadleafcommerce.common.sitemap.domain.CustomUrlSiteMapGeneratorConfigurationImpl;
 import org.broadleafcommerce.common.sitemap.domain.SiteMapConfiguration;
 import org.broadleafcommerce.common.sitemap.domain.SiteMapConfigurationImpl;
 import org.broadleafcommerce.common.sitemap.domain.SiteMapGeneratorConfiguration;
 import org.broadleafcommerce.common.sitemap.exception.SiteMapException;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(MockitoJUnitRunner.class)
 public class SiteMapServiceImplDiffblueTest {
-  @Mock private BroadleafFileService broadleafFileService;
-
-  @Mock private ModuleConfigurationService moduleConfigurationService;
-
-  @InjectMocks private SiteMapServiceImpl siteMapServiceImpl;
-
   /**
-   * Test {@link SiteMapServiceImpl#generateSiteMap()}.
-   *
-   * <p>Method under test: {@link SiteMapServiceImpl#generateSiteMap()}
+   * Method under test: {@link SiteMapServiceImpl#generateSiteMap()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"SiteMapGenerationResponse SiteMapServiceImpl.generateSiteMap()"})
   public void testGenerateSiteMap() throws IOException, SiteMapException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    when(moduleConfigurationService.findActiveConfigurationsByType(
-            Mockito.<ModuleConfigurationType>any()))
-        .thenThrow(new SiteMapException("An error occurred"));
-
-    // Act and Assert
-    assertThrows(SiteMapException.class, () -> siteMapServiceImpl.generateSiteMap());
-    verify(moduleConfigurationService)
-        .findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
-  }
-
-  /**
-   * Test {@link SiteMapServiceImpl#generateSiteMap()}.
-   *
-   * <ul>
-   *   <li>Then calls {@link BroadleafFileService#initializeWorkArea()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteMapServiceImpl#generateSiteMap()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"SiteMapGenerationResponse SiteMapServiceImpl.generateSiteMap()"})
-  public void testGenerateSiteMap_thenCallsInitializeWorkArea()
-      throws IOException, SiteMapException {
-    // Arrange
-    when(broadleafFileService.initializeWorkArea())
-        .thenThrow(new SiteMapException("An error occurred"));
-
-    ArrayList<ModuleConfiguration> moduleConfigurationList = new ArrayList<>();
-    moduleConfigurationList.add(new SiteMapConfigurationImpl());
-    when(moduleConfigurationService.findActiveConfigurationsByType(
-            Mockito.<ModuleConfigurationType>any()))
-        .thenReturn(moduleConfigurationList);
-
-    // Act and Assert
-    assertThrows(SiteMapException.class, () -> siteMapServiceImpl.generateSiteMap());
-    verify(moduleConfigurationService)
-        .findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
-    verify(broadleafFileService).initializeWorkArea();
-  }
-
-  /**
-   * Test {@link SiteMapServiceImpl#generateSiteMap()}.
-   *
-   * <ul>
-   *   <li>Then return ErrorCode is {@code No SiteMap Configuration Found}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteMapServiceImpl#generateSiteMap()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"SiteMapGenerationResponse SiteMapServiceImpl.generateSiteMap()"})
-  public void testGenerateSiteMap_thenReturnErrorCodeIsNoSiteMapConfigurationFound()
-      throws IOException, SiteMapException {
-    // Arrange
-    when(moduleConfigurationService.findActiveConfigurationsByType(
-            Mockito.<ModuleConfigurationType>any()))
+    ModuleConfigurationServiceImpl moduleConfigurationService = mock(ModuleConfigurationServiceImpl.class);
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
         .thenReturn(new ArrayList<>());
+
+    SiteMapServiceImpl siteMapServiceImpl = new SiteMapServiceImpl();
+    siteMapServiceImpl.setModuleConfigurationService(moduleConfigurationService);
 
     // Act
     SiteMapGenerationResponse actualGenerateSiteMapResult = siteMapServiceImpl.generateSiteMap();
 
     // Assert
-    verify(moduleConfigurationService)
-        .findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
     assertEquals("No SiteMap Configuration Found", actualGenerateSiteMapResult.getErrorCode());
     assertEquals("sitemap.xml", actualGenerateSiteMapResult.getSitemapIndexFileName());
     assertTrue(actualGenerateSiteMapResult.getSiteMapFilePaths().isEmpty());
@@ -148,215 +70,368 @@ public class SiteMapServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link SiteMapServiceImpl#findActiveSiteMapConfiguration()}.
-   *
-   * <ul>
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteMapServiceImpl#findActiveSiteMapConfiguration()}
+   * Method under test:
+   * {@link SiteMapServiceImpl#findActiveSiteMapConfiguration()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"SiteMapConfiguration SiteMapServiceImpl.findActiveSiteMapConfiguration()"})
-  public void testFindActiveSiteMapConfiguration_thenReturnNull() {
+  public void testFindActiveSiteMapConfiguration() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    when(moduleConfigurationService.findActiveConfigurationsByType(
-            Mockito.<ModuleConfigurationType>any()))
+    ModuleConfigurationServiceImpl moduleConfigurationService = mock(ModuleConfigurationServiceImpl.class);
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
         .thenReturn(new ArrayList<>());
 
+    SiteMapServiceImpl siteMapServiceImpl = new SiteMapServiceImpl();
+    siteMapServiceImpl.setModuleConfigurationService(moduleConfigurationService);
+
     // Act
-    SiteMapConfiguration actualFindActiveSiteMapConfigurationResult =
-        siteMapServiceImpl.findActiveSiteMapConfiguration();
+    SiteMapConfiguration actualFindActiveSiteMapConfigurationResult = siteMapServiceImpl
+        .findActiveSiteMapConfiguration();
 
     // Assert
-    verify(moduleConfigurationService)
-        .findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
     assertNull(actualFindActiveSiteMapConfigurationResult);
   }
 
   /**
-   * Test {@link SiteMapServiceImpl#findActiveSiteMapConfiguration()}.
-   *
-   * <ul>
-   *   <li>Then return {@link SiteMapConfigurationImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteMapServiceImpl#findActiveSiteMapConfiguration()}
+   * Method under test:
+   * {@link SiteMapServiceImpl#findActiveSiteMapConfiguration()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"SiteMapConfiguration SiteMapServiceImpl.findActiveSiteMapConfiguration()"})
-  public void testFindActiveSiteMapConfiguration_thenReturnSiteMapConfigurationImpl() {
+  public void testFindActiveSiteMapConfiguration2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     ArrayList<ModuleConfiguration> moduleConfigurationList = new ArrayList<>();
     SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
     moduleConfigurationList.add(siteMapConfigurationImpl);
-    when(moduleConfigurationService.findActiveConfigurationsByType(
-            Mockito.<ModuleConfigurationType>any()))
+    ModuleConfigurationServiceImpl moduleConfigurationService = mock(ModuleConfigurationServiceImpl.class);
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
         .thenReturn(moduleConfigurationList);
 
+    SiteMapServiceImpl siteMapServiceImpl = new SiteMapServiceImpl();
+    siteMapServiceImpl.setModuleConfigurationService(moduleConfigurationService);
+
     // Act
-    SiteMapConfiguration actualFindActiveSiteMapConfigurationResult =
-        siteMapServiceImpl.findActiveSiteMapConfiguration();
+    SiteMapConfiguration actualFindActiveSiteMapConfigurationResult = siteMapServiceImpl
+        .findActiveSiteMapConfiguration();
 
     // Assert
-    verify(moduleConfigurationService)
-        .findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
     assertSame(siteMapConfigurationImpl, actualFindActiveSiteMapConfigurationResult);
   }
 
   /**
-   * Test {@link SiteMapServiceImpl#findActiveSiteMapConfiguration()}.
-   *
-   * <ul>
-   *   <li>Then throw {@link SiteMapException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteMapServiceImpl#findActiveSiteMapConfiguration()}
+   * Method under test:
+   * {@link SiteMapServiceImpl#findActiveSiteMapConfiguration()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"SiteMapConfiguration SiteMapServiceImpl.findActiveSiteMapConfiguration()"})
-  public void testFindActiveSiteMapConfiguration_thenThrowSiteMapException() {
-    // Arrange
-    when(moduleConfigurationService.findActiveConfigurationsByType(
-            Mockito.<ModuleConfigurationType>any()))
-        .thenThrow(new SiteMapException("An error occurred"));
+  public void testFindActiveSiteMapConfiguration3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Act and Assert
-    assertThrows(SiteMapException.class, () -> siteMapServiceImpl.findActiveSiteMapConfiguration());
-    verify(moduleConfigurationService)
-        .findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl = mock(SiteMapConfigurationImpl.class);
+    when(siteMapConfigurationImpl.getIsDefault()).thenReturn(true);
+
+    ArrayList<ModuleConfiguration> moduleConfigurationList = new ArrayList<>();
+    moduleConfigurationList.add(siteMapConfigurationImpl);
+    ModuleConfigurationServiceImpl moduleConfigurationService = mock(ModuleConfigurationServiceImpl.class);
+    when(moduleConfigurationService.findActiveConfigurationsByType(Mockito.<ModuleConfigurationType>any()))
+        .thenReturn(moduleConfigurationList);
+
+    SiteMapServiceImpl siteMapServiceImpl = new SiteMapServiceImpl();
+    siteMapServiceImpl.setModuleConfigurationService(moduleConfigurationService);
+
+    // Act
+    siteMapServiceImpl.findActiveSiteMapConfiguration();
+
+    // Assert
+    verify(siteMapConfigurationImpl).getIsDefault();
+    verify(moduleConfigurationService).findActiveConfigurationsByType(isA(ModuleConfigurationType.class));
   }
 
   /**
-   * Test {@link SiteMapServiceImpl#selectSiteMapGenerator(SiteMapGeneratorConfiguration)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link
-   *       CustomUrlSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SiteMapServiceImpl#selectSiteMapGenerator(SiteMapGeneratorConfiguration)}
+   * Method under test:
+   * {@link SiteMapServiceImpl#selectSiteMapGenerator(SiteMapGeneratorConfiguration)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "SiteMapGenerator SiteMapServiceImpl.selectSiteMapGenerator(SiteMapGeneratorConfiguration)"
-  })
-  public void testSelectSiteMapGenerator_thenCallsCanHandleSiteMapConfiguration() {
+  public void testSelectSiteMapGenerator() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteMapServiceImpl siteMapServiceImpl = new SiteMapServiceImpl();
+
+    // Act and Assert
+    assertNull(siteMapServiceImpl.selectSiteMapGenerator(new CustomUrlSiteMapGeneratorConfigurationImpl()));
+  }
+
+  /**
+   * Method under test:
+   * {@link SiteMapServiceImpl#selectSiteMapGenerator(SiteMapGeneratorConfiguration)}
+   */
+  @Test
+  public void testSelectSiteMapGenerator2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ArrayList<SiteMapGenerator> siteMapGenerators = new ArrayList<>();
+    siteMapGenerators.add(new CustomUrlSiteMapGenerator());
+
+    SiteMapServiceImpl siteMapServiceImpl = new SiteMapServiceImpl();
+    siteMapServiceImpl.setSiteMapGenerators(siteMapGenerators);
+
+    // Act and Assert
+    assertNull(siteMapServiceImpl.selectSiteMapGenerator(new CustomUrlSiteMapGeneratorConfigurationImpl()));
+  }
+
+  /**
+   * Method under test:
+   * {@link SiteMapServiceImpl#selectSiteMapGenerator(SiteMapGeneratorConfiguration)}
+   */
+  @Test
+  public void testSelectSiteMapGenerator3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertNull(
+        (new SiteMapServiceImpl()).selectSiteMapGenerator(mock(CustomUrlSiteMapGeneratorConfigurationImpl.class)));
+  }
+
+  /**
+   * Method under test:
+   * {@link SiteMapServiceImpl#selectSiteMapGenerator(SiteMapGeneratorConfiguration)}
+   */
+  @Test
+  public void testSelectSiteMapGenerator4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     CustomUrlSiteMapGenerator customUrlSiteMapGenerator = mock(CustomUrlSiteMapGenerator.class);
-    when(customUrlSiteMapGenerator.canHandleSiteMapConfiguration(
-            Mockito.<SiteMapGeneratorConfiguration>any()))
+    when(customUrlSiteMapGenerator.canHandleSiteMapConfiguration(Mockito.<SiteMapGeneratorConfiguration>any()))
         .thenReturn(true);
 
     ArrayList<SiteMapGenerator> siteMapGenerators = new ArrayList<>();
     siteMapGenerators.add(customUrlSiteMapGenerator);
+
+    SiteMapServiceImpl siteMapServiceImpl = new SiteMapServiceImpl();
     siteMapServiceImpl.setSiteMapGenerators(siteMapGenerators);
 
     // Act
     siteMapServiceImpl.selectSiteMapGenerator(new CustomUrlSiteMapGeneratorConfigurationImpl());
 
     // Assert
-    verify(customUrlSiteMapGenerator)
-        .canHandleSiteMapConfiguration(isA(SiteMapGeneratorConfiguration.class));
+    verify(customUrlSiteMapGenerator).canHandleSiteMapConfiguration(isA(SiteMapGeneratorConfiguration.class));
   }
 
   /**
-   * Test {@link SiteMapServiceImpl#selectSiteMapGenerator(SiteMapGeneratorConfiguration)}.
-   *
-   * <ul>
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SiteMapServiceImpl#selectSiteMapGenerator(SiteMapGeneratorConfiguration)}
+   * Method under test:
+   * {@link SiteMapServiceImpl#gzipAndDeleteFiles(FileWorkArea, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "SiteMapGenerator SiteMapServiceImpl.selectSiteMapGenerator(SiteMapGeneratorConfiguration)"
-  })
-  public void testSelectSiteMapGenerator_thenReturnNull() {
-    // Arrange
-    ArrayList<SiteMapGenerator> siteMapGenerators = new ArrayList<>();
-    siteMapGenerators.add(new CustomUrlSiteMapGenerator());
-    siteMapServiceImpl.setSiteMapGenerators(siteMapGenerators);
+  public void testGzipAndDeleteFiles() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Act and Assert
-    assertNull(
-        siteMapServiceImpl.selectSiteMapGenerator(
-            new CustomUrlSiteMapGeneratorConfigurationImpl()));
-  }
-
-  /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link SiteMapServiceImpl#setGzipSiteMapFiles(Boolean)}
-   *   <li>{@link SiteMapServiceImpl#setModuleConfigurationService(ModuleConfigurationService)}
-   *   <li>{@link SiteMapServiceImpl#setSiteMapGenerators(List)}
-   *   <li>{@link SiteMapServiceImpl#getModuleConfigurationService()}
-   *   <li>{@link SiteMapServiceImpl#getSiteMapGenerators()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ModuleConfigurationService SiteMapServiceImpl.getModuleConfigurationService()",
-    "List SiteMapServiceImpl.getSiteMapGenerators()",
-    "void SiteMapServiceImpl.setGzipSiteMapFiles(Boolean)",
-    "void SiteMapServiceImpl.setModuleConfigurationService(ModuleConfigurationService)",
-    "void SiteMapServiceImpl.setSiteMapGenerators(List)"
-  })
-  public void testGettersAndSetters() {
     // Arrange
     SiteMapServiceImpl siteMapServiceImpl = new SiteMapServiceImpl();
+    FileWorkArea fileWorkArea = mock(FileWorkArea.class);
+    when(fileWorkArea.getFilePathLocation()).thenReturn("/directory/foo.txt");
+
+    ArrayList<String> fileNames = new ArrayList<>();
+    fileNames.add("foo");
 
     // Act
-    siteMapServiceImpl.setGzipSiteMapFiles(true);
-    ModuleConfigurationServiceImpl moduleConfigurationService =
-        new ModuleConfigurationServiceImpl();
-    siteMapServiceImpl.setModuleConfigurationService(moduleConfigurationService);
-    ArrayList<SiteMapGenerator> siteMapGenerators = new ArrayList<>();
-    siteMapServiceImpl.setSiteMapGenerators(siteMapGenerators);
-    ModuleConfigurationService actualModuleConfigurationService =
-        siteMapServiceImpl.getModuleConfigurationService();
-    List<SiteMapGenerator> actualSiteMapGenerators = siteMapServiceImpl.getSiteMapGenerators();
+    siteMapServiceImpl.gzipAndDeleteFiles(fileWorkArea, fileNames);
 
     // Assert
-    assertTrue(actualModuleConfigurationService instanceof ModuleConfigurationServiceImpl);
-    assertTrue(actualSiteMapGenerators.isEmpty());
-    assertSame(siteMapGenerators, actualSiteMapGenerators);
-    assertSame(moduleConfigurationService, actualModuleConfigurationService);
+    verify(fileWorkArea).getFilePathLocation();
   }
 
   /**
-   * Test {@link SiteMapServiceImpl#getGzipSiteMapFiles()}.
-   *
-   * <ul>
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteMapServiceImpl#getGzipSiteMapFiles()}
+   * Method under test:
+   * {@link SiteMapServiceImpl#gzipAndDeleteFiles(FileWorkArea, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SiteMapServiceImpl.getGzipSiteMapFiles()"})
-  public void testGetGzipSiteMapFiles_thenReturnFalse() {
+  public void testGzipAndDeleteFiles2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    SiteMapServiceImpl siteMapServiceImpl = new SiteMapServiceImpl();
+    FileWorkArea fileWorkArea = mock(FileWorkArea.class);
+    when(fileWorkArea.getFilePathLocation()).thenReturn("Error writing zip file.");
+
+    ArrayList<String> fileNames = new ArrayList<>();
+    fileNames.add("foo");
+
+    // Act
+    siteMapServiceImpl.gzipAndDeleteFiles(fileWorkArea, fileNames);
+
+    // Assert
+    verify(fileWorkArea).getFilePathLocation();
+  }
+
+  /**
+   * Method under test:
+   * {@link SiteMapServiceImpl#gzipAndDeleteFiles(FileWorkArea, List)}
+   */
+  @Test
+  public void testGzipAndDeleteFiles3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteMapServiceImpl siteMapServiceImpl = new SiteMapServiceImpl();
+    FileWorkArea fileWorkArea = mock(FileWorkArea.class);
+    when(fileWorkArea.getFilePathLocation()).thenReturn("/directory/foo.txt");
+
+    ArrayList<String> fileNames = new ArrayList<>();
+    fileNames.add("");
+
+    // Act
+    siteMapServiceImpl.gzipAndDeleteFiles(fileWorkArea, fileNames);
+
+    // Assert
+    verify(fileWorkArea).getFilePathLocation();
+  }
+
+  /**
+   * Method under test:
+   * {@link SiteMapServiceImpl#gzipAndDeleteFiles(FileWorkArea, List)}
+   */
+  @Test
+  public void testGzipAndDeleteFiles4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteMapServiceImpl siteMapServiceImpl = new SiteMapServiceImpl();
+    FileWorkArea fileWorkArea = mock(FileWorkArea.class);
+    when(fileWorkArea.getFilePathLocation()).thenReturn("");
+
+    ArrayList<String> fileNames = new ArrayList<>();
+    fileNames.add("");
+
+    // Act
+    siteMapServiceImpl.gzipAndDeleteFiles(fileWorkArea, fileNames);
+
+    // Assert
+    verify(fileWorkArea).getFilePathLocation();
+  }
+
+  /**
+   * Method under test:
+   * {@link SiteMapServiceImpl#gzipAndDeleteFiles(FileWorkArea, List, boolean)}
+   */
+  @Test
+  public void testGzipAndDeleteFiles5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteMapServiceImpl siteMapServiceImpl = new SiteMapServiceImpl();
+    FileWorkArea fileWorkArea = mock(FileWorkArea.class);
+    when(fileWorkArea.getFilePathLocation()).thenReturn("/directory/foo.txt");
+
+    ArrayList<String> fileNames = new ArrayList<>();
+    fileNames.add("foo");
+
+    // Act
+    siteMapServiceImpl.gzipAndDeleteFiles(fileWorkArea, fileNames, true);
+
+    // Assert
+    verify(fileWorkArea).getFilePathLocation();
+  }
+
+  /**
+   * Method under test:
+   * {@link SiteMapServiceImpl#gzipAndDeleteFiles(FileWorkArea, List, boolean)}
+   */
+  @Test
+  public void testGzipAndDeleteFiles6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteMapServiceImpl siteMapServiceImpl = new SiteMapServiceImpl();
+    FileWorkArea fileWorkArea = mock(FileWorkArea.class);
+    when(fileWorkArea.getFilePathLocation()).thenReturn("Error writing zip file.");
+
+    ArrayList<String> fileNames = new ArrayList<>();
+    fileNames.add("foo");
+
+    // Act
+    siteMapServiceImpl.gzipAndDeleteFiles(fileWorkArea, fileNames, true);
+
+    // Assert
+    verify(fileWorkArea).getFilePathLocation();
+  }
+
+  /**
+   * Method under test:
+   * {@link SiteMapServiceImpl#gzipAndDeleteFiles(FileWorkArea, List, boolean)}
+   */
+  @Test
+  public void testGzipAndDeleteFiles7() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteMapServiceImpl siteMapServiceImpl = new SiteMapServiceImpl();
+    FileWorkArea fileWorkArea = mock(FileWorkArea.class);
+    when(fileWorkArea.getFilePathLocation()).thenReturn("/directory/foo.txt");
+
+    ArrayList<String> fileNames = new ArrayList<>();
+    fileNames.add("");
+
+    // Act
+    siteMapServiceImpl.gzipAndDeleteFiles(fileWorkArea, fileNames, true);
+
+    // Assert
+    verify(fileWorkArea).getFilePathLocation();
+  }
+
+  /**
+   * Method under test:
+   * {@link SiteMapServiceImpl#gzipAndDeleteFiles(FileWorkArea, List, boolean)}
+   */
+  @Test
+  public void testGzipAndDeleteFiles8() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteMapServiceImpl siteMapServiceImpl = new SiteMapServiceImpl();
+    FileWorkArea fileWorkArea = mock(FileWorkArea.class);
+    when(fileWorkArea.getFilePathLocation()).thenReturn("");
+
+    ArrayList<String> fileNames = new ArrayList<>();
+    fileNames.add("");
+
+    // Act
+    siteMapServiceImpl.gzipAndDeleteFiles(fileWorkArea, fileNames, true);
+
+    // Assert
+    verify(fileWorkArea).getFilePathLocation();
+  }
+
+  /**
+   * Method under test: {@link SiteMapServiceImpl#getGzipSiteMapFiles()}
+   */
+  @Test
+  public void testGetGzipSiteMapFiles() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteMapServiceImpl siteMapServiceImpl = new SiteMapServiceImpl();
+    siteMapServiceImpl.setGzipSiteMapFiles(true);
+
+    // Act and Assert
+    assertTrue(siteMapServiceImpl.getGzipSiteMapFiles());
+  }
+
+  /**
+   * Method under test: {@link SiteMapServiceImpl#getGzipSiteMapFiles()}
+   */
+  @Test
+  public void testGetGzipSiteMapFiles2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteMapServiceImpl siteMapServiceImpl = new SiteMapServiceImpl();
     siteMapServiceImpl.setGzipSiteMapFiles(false);
 
     // Act and Assert
@@ -364,23 +439,34 @@ public class SiteMapServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link SiteMapServiceImpl#getGzipSiteMapFiles()}.
-   *
+   * Methods under test:
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>{@link SiteMapServiceImpl#setGzipSiteMapFiles(Boolean)}
+   *   <li>
+   * {@link SiteMapServiceImpl#setModuleConfigurationService(ModuleConfigurationService)}
+   *   <li>{@link SiteMapServiceImpl#setSiteMapGenerators(List)}
+   *   <li>{@link SiteMapServiceImpl#getModuleConfigurationService()}
+   *   <li>{@link SiteMapServiceImpl#getSiteMapGenerators()}
    * </ul>
-   *
-   * <p>Method under test: {@link SiteMapServiceImpl#getGzipSiteMapFiles()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SiteMapServiceImpl.getGzipSiteMapFiles()"})
-  public void testGetGzipSiteMapFiles_thenReturnTrue() {
+  public void testGettersAndSetters() {
     // Arrange
-    siteMapServiceImpl.setGzipSiteMapFiles(true);
+    SiteMapServiceImpl siteMapServiceImpl = new SiteMapServiceImpl();
 
-    // Act and Assert
-    assertTrue(siteMapServiceImpl.getGzipSiteMapFiles());
+    // Act
+    siteMapServiceImpl.setGzipSiteMapFiles(true);
+    ModuleConfigurationServiceImpl moduleConfigurationService = new ModuleConfigurationServiceImpl();
+    siteMapServiceImpl.setModuleConfigurationService(moduleConfigurationService);
+    ArrayList<SiteMapGenerator> siteMapGenerators = new ArrayList<>();
+    siteMapServiceImpl.setSiteMapGenerators(siteMapGenerators);
+    ModuleConfigurationService actualModuleConfigurationService = siteMapServiceImpl.getModuleConfigurationService();
+    List<SiteMapGenerator> actualSiteMapGenerators = siteMapServiceImpl.getSiteMapGenerators();
+
+    // Assert that nothing has changed
+    assertTrue(actualModuleConfigurationService instanceof ModuleConfigurationServiceImpl);
+    assertTrue(actualSiteMapGenerators.isEmpty());
+    assertSame(siteMapGenerators, actualSiteMapGenerators);
+    assertSame(moduleConfigurationService, actualModuleConfigurationService);
   }
 }

@@ -18,171 +18,191 @@
 package org.broadleafcommerce.openadmin.web.service;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.web.form.component.ListGrid;
-import org.broadleafcommerce.openadmin.web.form.component.ListGridRecord;
 import org.broadleafcommerce.openadmin.web.form.entity.EntityForm;
 import org.broadleafcommerce.openadmin.web.service.extension.TranslationsFormBuilderExtensionHandler;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = {TranslationsFormBuilderExtensionHandler.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class AbstractFormBuilderExtensionHandlerDiffblueTest {
-  @Autowired private AbstractFormBuilderExtensionHandler abstractFormBuilderExtensionHandler;
-
-  @MockBean(name = "blFormBuilderExtensionManager")
-  private FormBuilderExtensionManager formBuilderExtensionManager;
-
   /**
-   * Test {@link AbstractFormBuilderExtensionHandler#modifyUnpopulatedEntityForm(EntityForm)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractFormBuilderExtensionHandler#modifyUnpopulatedEntityForm(EntityForm)}
+   * Method under test:
+   * {@link AbstractFormBuilderExtensionHandler#modifyUnpopulatedEntityForm(EntityForm)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractFormBuilderExtensionHandler.modifyUnpopulatedEntityForm(EntityForm)"
-  })
   public void testModifyUnpopulatedEntityForm() {
-    // Arrange, Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        abstractFormBuilderExtensionHandler.modifyUnpopulatedEntityForm(new EntityForm()));
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    TranslationsFormBuilderExtensionHandler translationsFormBuilderExtensionHandler = new TranslationsFormBuilderExtensionHandler();
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        translationsFormBuilderExtensionHandler.modifyUnpopulatedEntityForm(new EntityForm()));
   }
 
   /**
-   * Test {@link AbstractFormBuilderExtensionHandler#modifyPopulatedEntityForm(EntityForm, Entity)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractFormBuilderExtensionHandler#modifyPopulatedEntityForm(EntityForm, Entity)}
+   * Method under test:
+   * {@link AbstractFormBuilderExtensionHandler#modifyUnpopulatedEntityForm(EntityForm)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractFormBuilderExtensionHandler.modifyPopulatedEntityForm(EntityForm, Entity)"
-  })
+  public void testModifyUnpopulatedEntityForm2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        (new TranslationsFormBuilderExtensionHandler()).modifyUnpopulatedEntityForm(mock(EntityForm.class)));
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractFormBuilderExtensionHandler#modifyPopulatedEntityForm(EntityForm, Entity)}
+   */
+  @Test
   public void testModifyPopulatedEntityForm() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    TranslationsFormBuilderExtensionHandler translationsFormBuilderExtensionHandler = new TranslationsFormBuilderExtensionHandler();
     EntityForm ef = new EntityForm();
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        abstractFormBuilderExtensionHandler.modifyPopulatedEntityForm(ef, new Entity()));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        translationsFormBuilderExtensionHandler.modifyPopulatedEntityForm(ef, new Entity()));
   }
 
   /**
-   * Test {@link AbstractFormBuilderExtensionHandler#modifyDetailEntityForm(EntityForm)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractFormBuilderExtensionHandler#modifyDetailEntityForm(EntityForm)}
+   * Method under test:
+   * {@link AbstractFormBuilderExtensionHandler#modifyPopulatedEntityForm(EntityForm, Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractFormBuilderExtensionHandler.modifyDetailEntityForm(EntityForm)"
-  })
-  public void testModifyDetailEntityForm() {
-    // Arrange, Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        abstractFormBuilderExtensionHandler.modifyDetailEntityForm(new EntityForm()));
-  }
+  public void testModifyPopulatedEntityForm2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-  /**
-   * Test {@link AbstractFormBuilderExtensionHandler#modifyListGridRecord(String, ListGridRecord,
-   * Entity)}.
-   *
-   * <p>Method under test: {@link AbstractFormBuilderExtensionHandler#modifyListGridRecord(String,
-   * ListGridRecord, Entity)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractFormBuilderExtensionHandler.modifyListGridRecord(String, ListGridRecord, Entity)"
-  })
-  public void testModifyListGridRecord() {
     // Arrange
-    TranslationsFormBuilderExtensionHandler translationsFormBuilderExtensionHandler =
-        new TranslationsFormBuilderExtensionHandler();
-    ListGridRecord resultRecord = new ListGridRecord();
+    TranslationsFormBuilderExtensionHandler translationsFormBuilderExtensionHandler = new TranslationsFormBuilderExtensionHandler();
+    EntityForm ef = mock(EntityForm.class);
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        translationsFormBuilderExtensionHandler.modifyListGridRecord(
-            "Class Name", resultRecord, new Entity()));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        translationsFormBuilderExtensionHandler.modifyPopulatedEntityForm(ef, new Entity()));
   }
 
   /**
-   * Test {@link AbstractFormBuilderExtensionHandler#addAdditionalFormActions(EntityForm)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractFormBuilderExtensionHandler#addAdditionalFormActions(EntityForm)}
+   * Method under test:
+   * {@link AbstractFormBuilderExtensionHandler#modifyDetailEntityForm(EntityForm)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractFormBuilderExtensionHandler.addAdditionalFormActions(EntityForm)"
-  })
+  public void testModifyDetailEntityForm() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    TranslationsFormBuilderExtensionHandler translationsFormBuilderExtensionHandler = new TranslationsFormBuilderExtensionHandler();
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        translationsFormBuilderExtensionHandler.modifyDetailEntityForm(new EntityForm()));
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractFormBuilderExtensionHandler#modifyDetailEntityForm(EntityForm)}
+   */
+  @Test
+  public void testModifyDetailEntityForm2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        (new TranslationsFormBuilderExtensionHandler()).modifyDetailEntityForm(mock(EntityForm.class)));
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractFormBuilderExtensionHandler#addAdditionalFormActions(EntityForm)}
+   */
+  @Test
   public void testAddAdditionalFormActions() {
-    // Arrange, Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        abstractFormBuilderExtensionHandler.addAdditionalFormActions(new EntityForm()));
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    TranslationsFormBuilderExtensionHandler translationsFormBuilderExtensionHandler = new TranslationsFormBuilderExtensionHandler();
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        translationsFormBuilderExtensionHandler.addAdditionalFormActions(new EntityForm()));
   }
 
   /**
-   * Test {@link AbstractFormBuilderExtensionHandler#modifyListGrid(String, ListGrid)}.
-   *
-   * <p>Method under test: {@link AbstractFormBuilderExtensionHandler#modifyListGrid(String,
-   * ListGrid)}
+   * Method under test:
+   * {@link AbstractFormBuilderExtensionHandler#addAdditionalFormActions(EntityForm)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractFormBuilderExtensionHandler.modifyListGrid(String, ListGrid)"
-  })
+  public void testAddAdditionalFormActions2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        (new TranslationsFormBuilderExtensionHandler()).addAdditionalFormActions(mock(EntityForm.class)));
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractFormBuilderExtensionHandler#modifyListGrid(String, ListGrid)}
+   */
+  @Test
   public void testModifyListGrid() {
-    // Arrange, Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        abstractFormBuilderExtensionHandler.modifyListGrid("Class Name", new ListGrid()));
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    TranslationsFormBuilderExtensionHandler translationsFormBuilderExtensionHandler = new TranslationsFormBuilderExtensionHandler();
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        translationsFormBuilderExtensionHandler.modifyListGrid("Class Name", new ListGrid()));
   }
 
   /**
-   * Test {@link AbstractFormBuilderExtensionHandler#addAdditionalAdornedFormActions(EntityForm)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractFormBuilderExtensionHandler#addAdditionalAdornedFormActions(EntityForm)}
+   * Method under test:
+   * {@link AbstractFormBuilderExtensionHandler#modifyListGrid(String, ListGrid)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractFormBuilderExtensionHandler.addAdditionalAdornedFormActions(EntityForm)"
-  })
-  public void testAddAdditionalAdornedFormActions() {
+  public void testModifyListGrid2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        abstractFormBuilderExtensionHandler.addAdditionalAdornedFormActions(new EntityForm()));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        (new TranslationsFormBuilderExtensionHandler()).modifyListGrid("Class Name", mock(ListGrid.class)));
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractFormBuilderExtensionHandler#addAdditionalAdornedFormActions(EntityForm)}
+   */
+  @Test
+  public void testAddAdditionalAdornedFormActions() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    TranslationsFormBuilderExtensionHandler translationsFormBuilderExtensionHandler = new TranslationsFormBuilderExtensionHandler();
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        translationsFormBuilderExtensionHandler.addAdditionalAdornedFormActions(new EntityForm()));
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractFormBuilderExtensionHandler#addAdditionalAdornedFormActions(EntityForm)}
+   */
+  @Test
+  public void testAddAdditionalAdornedFormActions2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        (new TranslationsFormBuilderExtensionHandler()).addAdditionalAdornedFormActions(mock(EntityForm.class)));
   }
 }

@@ -22,108 +22,92 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import org.broadleafcommerce.common.extension.ItemStatus;
 import org.broadleafcommerce.common.extension.StandardCacheItem;
 import org.broadleafcommerce.common.i18n.domain.Translation;
 import org.broadleafcommerce.common.i18n.domain.TranslationImpl;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.Mockito;
 
-@RunWith(MockitoJUnitRunner.class)
 public class ThresholdCacheTranslationOverrideStrategyDiffblueTest {
-  @InjectMocks
-  private ThresholdCacheTranslationOverrideStrategy thresholdCacheTranslationOverrideStrategy;
-
   /**
-   * Test {@link ThresholdCacheTranslationOverrideStrategy#validateTemplateProcessing(String,
-   * String)}.
-   *
-   * <ul>
-   *   <li>When {@code Standard Cache Key}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ThresholdCacheTranslationOverrideStrategy#validateTemplateProcessing(String, String)}
+   * Method under test:
+   * {@link ThresholdCacheTranslationOverrideStrategy#validateTemplateProcessing(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ThresholdCacheTranslationOverrideStrategy.validateTemplateProcessing(String, String)"
-  })
-  public void testValidateTemplateProcessing_whenStandardCacheKey_thenReturnTrue() {
+  public void testValidateTemplateProcessing() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertTrue(
-        thresholdCacheTranslationOverrideStrategy.validateTemplateProcessing(
-            "Standard Cache Key", "Template Cache Key"));
+    assertTrue((new ThresholdCacheTranslationOverrideStrategy()).validateTemplateProcessing("Standard Cache Key",
+        "Template Cache Key"));
+    assertFalse((new ThresholdCacheTranslationOverrideStrategy()).validateTemplateProcessing("Template Cache Key",
+        "Template Cache Key"));
   }
 
   /**
-   * Test {@link ThresholdCacheTranslationOverrideStrategy#validateTemplateProcessing(String,
-   * String)}.
-   *
-   * <ul>
-   *   <li>When {@code Template Cache Key}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ThresholdCacheTranslationOverrideStrategy#validateTemplateProcessing(String, String)}
+   * Method under test:
+   * {@link ThresholdCacheTranslationOverrideStrategy#getOrder()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ThresholdCacheTranslationOverrideStrategy.validateTemplateProcessing(String, String)"
-  })
-  public void testValidateTemplateProcessing_whenTemplateCacheKey_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(
-        thresholdCacheTranslationOverrideStrategy.validateTemplateProcessing(
-            "Template Cache Key", "Template Cache Key"));
-  }
-
-  /**
-   * Test {@link ThresholdCacheTranslationOverrideStrategy#getOrder()}.
-   *
-   * <p>Method under test: {@link ThresholdCacheTranslationOverrideStrategy#getOrder()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int ThresholdCacheTranslationOverrideStrategy.getOrder()"})
   public void testGetOrder() {
     // Arrange, Act and Assert
-    assertEquals(0, new ThresholdCacheTranslationOverrideStrategy().getOrder());
+    assertEquals(0, (new ThresholdCacheTranslationOverrideStrategy()).getOrder());
   }
 
   /**
-   * Test {@link ThresholdCacheTranslationOverrideStrategy#buildSingleItemResponse(LocalePair,
-   * Translation)}.
-   *
-   * <ul>
-   *   <li>Then {@link LocalePair} (default constructor) SpecificItem CacheItem is empty string.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ThresholdCacheTranslationOverrideStrategy#buildSingleItemResponse(LocalePair, Translation)}
+   * Method under test:
+   * {@link ThresholdCacheTranslationOverrideStrategy#buildSingleItemResponse(LocalePair, Translation)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ThresholdCacheTranslationOverrideStrategy.buildSingleItemResponse(LocalePair, Translation)"
-  })
-  public void testBuildSingleItemResponse_thenLocalePairSpecificItemCacheItemIsEmptyString() {
+  public void testBuildSingleItemResponse() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    ThresholdCacheTranslationOverrideStrategy thresholdCacheTranslationOverrideStrategy = new ThresholdCacheTranslationOverrideStrategy();
+
+    StandardCacheItem generalItem = new StandardCacheItem();
+    generalItem.setCacheItem(BLCFieldUtils.NULL_FIELD);
+    generalItem.setItemStatus(ItemStatus.DELETED);
+    generalItem.setKey("Key");
+
+    StandardCacheItem specificItem = new StandardCacheItem();
+    specificItem.setCacheItem(BLCFieldUtils.NULL_FIELD);
+    specificItem.setItemStatus(ItemStatus.DELETED);
+    specificItem.setKey("Key");
+
+    LocalePair response = new LocalePair();
+    response.setGeneralItem(generalItem);
+    response.setSpecificItem(specificItem);
+    TranslationImpl translation = new TranslationImpl();
+
+    // Act
+    thresholdCacheTranslationOverrideStrategy.buildSingleItemResponse(response, translation);
+
+    // Assert
+    StandardCacheItem specificItem2 = response.getSpecificItem();
+    assertNull(specificItem2.getKey());
+    assertEquals(ItemStatus.NORMAL, specificItem2.getItemStatus());
+    assertSame(translation, specificItem2.getCacheItem());
+  }
+
+  /**
+   * Method under test:
+   * {@link ThresholdCacheTranslationOverrideStrategy#buildSingleItemResponse(LocalePair, Translation)}
+   */
+  @Test
+  public void testBuildSingleItemResponse2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ThresholdCacheTranslationOverrideStrategy thresholdCacheTranslationOverrideStrategy = new ThresholdCacheTranslationOverrideStrategy();
+
     StandardCacheItem generalItem = new StandardCacheItem();
     generalItem.setCacheItem(BLCFieldUtils.NULL_FIELD);
     generalItem.setItemStatus(ItemStatus.DELETED);
@@ -149,25 +133,16 @@ public class ThresholdCacheTranslationOverrideStrategyDiffblueTest {
   }
 
   /**
-   * Test {@link ThresholdCacheTranslationOverrideStrategy#buildSingleItemResponse(LocalePair,
-   * Translation)}.
-   *
-   * <ul>
-   *   <li>Then {@link LocalePair} (default constructor) SpecificItem CacheItem is {@link
-   *       TranslationImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * ThresholdCacheTranslationOverrideStrategy#buildSingleItemResponse(LocalePair, Translation)}
+   * Method under test:
+   * {@link ThresholdCacheTranslationOverrideStrategy#buildSingleItemResponse(LocalePair, Translation)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ThresholdCacheTranslationOverrideStrategy.buildSingleItemResponse(LocalePair, Translation)"
-  })
-  public void testBuildSingleItemResponse_thenLocalePairSpecificItemCacheItemIsTranslationImpl() {
+  public void testBuildSingleItemResponse3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    ThresholdCacheTranslationOverrideStrategy thresholdCacheTranslationOverrideStrategy = new ThresholdCacheTranslationOverrideStrategy();
+
     StandardCacheItem generalItem = new StandardCacheItem();
     generalItem.setCacheItem(BLCFieldUtils.NULL_FIELD);
     generalItem.setItemStatus(ItemStatus.DELETED);
@@ -177,16 +152,17 @@ public class ThresholdCacheTranslationOverrideStrategyDiffblueTest {
     specificItem.setCacheItem(BLCFieldUtils.NULL_FIELD);
     specificItem.setItemStatus(ItemStatus.DELETED);
     specificItem.setKey("Key");
-
-    LocalePair response = new LocalePair();
+    LocalePair response = mock(LocalePair.class);
+    doNothing().when(response).setGeneralItem(Mockito.<StandardCacheItem>any());
+    doNothing().when(response).setSpecificItem(Mockito.<StandardCacheItem>any());
     response.setGeneralItem(generalItem);
     response.setSpecificItem(specificItem);
-    TranslationImpl translation = new TranslationImpl();
 
     // Act
-    thresholdCacheTranslationOverrideStrategy.buildSingleItemResponse(response, translation);
+    thresholdCacheTranslationOverrideStrategy.buildSingleItemResponse(response, new TranslationImpl());
 
     // Assert
-    assertSame(translation, response.getSpecificItem().getCacheItem());
+    verify(response).setGeneralItem(isA(StandardCacheItem.class));
+    verify(response, atLeast(1)).setSpecificItem(Mockito.<StandardCacheItem>any());
   }
 }

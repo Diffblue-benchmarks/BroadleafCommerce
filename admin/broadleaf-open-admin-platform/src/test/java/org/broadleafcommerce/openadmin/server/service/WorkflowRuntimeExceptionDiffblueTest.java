@@ -20,35 +20,32 @@ package org.broadleafcommerce.openadmin.server.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class WorkflowRuntimeExceptionDiffblueTest {
   /**
-   * Test {@link WorkflowRuntimeException#WorkflowRuntimeException(String)}.
-   *
-   * <ul>
-   *   <li>Then return Message is {@code An error occurred}.
-   * </ul>
-   *
-   * <p>Method under test: {@link WorkflowRuntimeException#WorkflowRuntimeException(String)}
+   * Method under test:
+   * {@link WorkflowRuntimeException#WorkflowRuntimeException()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void WorkflowRuntimeException.<init>()",
-    "void WorkflowRuntimeException.<init>(String)",
-    "void WorkflowRuntimeException.<init>(String, Throwable)",
-    "void WorkflowRuntimeException.<init>(Throwable)"
-  })
-  public void testNewWorkflowRuntimeException_thenReturnMessageIsAnErrorOccurred() {
+  public void testNewWorkflowRuntimeException() {
     // Arrange and Act
-    WorkflowRuntimeException actualWorkflowRuntimeException =
-        new WorkflowRuntimeException("An error occurred");
+    WorkflowRuntimeException actualWorkflowRuntimeException = new WorkflowRuntimeException();
+
+    // Assert
+    assertNull(actualWorkflowRuntimeException.getMessage());
+    assertNull(actualWorkflowRuntimeException.getCause());
+    assertEquals(0, actualWorkflowRuntimeException.getSuppressed().length);
+  }
+
+  /**
+   * Method under test:
+   * {@link WorkflowRuntimeException#WorkflowRuntimeException(String)}
+   */
+  @Test
+  public void testNewWorkflowRuntimeException2() {
+    // Arrange and Act
+    WorkflowRuntimeException actualWorkflowRuntimeException = new WorkflowRuntimeException("An error occurred");
 
     // Assert
     assertEquals("An error occurred", actualWorkflowRuntimeException.getMessage());
@@ -57,31 +54,16 @@ public class WorkflowRuntimeExceptionDiffblueTest {
   }
 
   /**
-   * Test {@link WorkflowRuntimeException#WorkflowRuntimeException(String, Throwable)}.
-   *
-   * <ul>
-   *   <li>Then return Message is {@code An error occurred}.
-   * </ul>
-   *
-   * <p>Method under test: {@link WorkflowRuntimeException#WorkflowRuntimeException(String,
-   * Throwable)}
+   * Method under test:
+   * {@link WorkflowRuntimeException#WorkflowRuntimeException(String, Throwable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void WorkflowRuntimeException.<init>()",
-    "void WorkflowRuntimeException.<init>(String)",
-    "void WorkflowRuntimeException.<init>(String, Throwable)",
-    "void WorkflowRuntimeException.<init>(Throwable)"
-  })
-  public void testNewWorkflowRuntimeException_thenReturnMessageIsAnErrorOccurred2() {
+  public void testNewWorkflowRuntimeException3() {
     // Arrange
     Throwable cause = new Throwable();
 
     // Act
-    WorkflowRuntimeException actualWorkflowRuntimeException =
-        new WorkflowRuntimeException("An error occurred", cause);
+    WorkflowRuntimeException actualWorkflowRuntimeException = new WorkflowRuntimeException("An error occurred", cause);
 
     // Assert
     assertEquals("An error occurred", actualWorkflowRuntimeException.getMessage());
@@ -90,24 +72,11 @@ public class WorkflowRuntimeExceptionDiffblueTest {
   }
 
   /**
-   * Test {@link WorkflowRuntimeException#WorkflowRuntimeException(Throwable)}.
-   *
-   * <ul>
-   *   <li>Then return Message is {@code Throwable}.
-   * </ul>
-   *
-   * <p>Method under test: {@link WorkflowRuntimeException#WorkflowRuntimeException(Throwable)}
+   * Method under test:
+   * {@link WorkflowRuntimeException#WorkflowRuntimeException(Throwable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void WorkflowRuntimeException.<init>()",
-    "void WorkflowRuntimeException.<init>(String)",
-    "void WorkflowRuntimeException.<init>(String, Throwable)",
-    "void WorkflowRuntimeException.<init>(Throwable)"
-  })
-  public void testNewWorkflowRuntimeException_thenReturnMessageIsJavaLangThrowable() {
+  public void testNewWorkflowRuntimeException4() {
     // Arrange
     Throwable cause = new Throwable();
 
@@ -118,33 +87,5 @@ public class WorkflowRuntimeExceptionDiffblueTest {
     assertEquals("java.lang.Throwable", actualWorkflowRuntimeException.getMessage());
     assertEquals(0, actualWorkflowRuntimeException.getSuppressed().length);
     assertSame(cause, actualWorkflowRuntimeException.getCause());
-  }
-
-  /**
-   * Test {@link WorkflowRuntimeException#WorkflowRuntimeException()}.
-   *
-   * <ul>
-   *   <li>Then return Message is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link WorkflowRuntimeException#WorkflowRuntimeException()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void WorkflowRuntimeException.<init>()",
-    "void WorkflowRuntimeException.<init>(String)",
-    "void WorkflowRuntimeException.<init>(String, Throwable)",
-    "void WorkflowRuntimeException.<init>(Throwable)"
-  })
-  public void testNewWorkflowRuntimeException_thenReturnMessageIsNull() {
-    // Arrange and Act
-    WorkflowRuntimeException actualWorkflowRuntimeException = new WorkflowRuntimeException();
-
-    // Assert
-    assertNull(actualWorkflowRuntimeException.getMessage());
-    assertNull(actualWorkflowRuntimeException.getCause());
-    assertEquals(0, actualWorkflowRuntimeException.getSuppressed().length);
   }
 }

@@ -21,43 +21,43 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
+import org.broadleafcommerce.core.workflow.state.RollbackHandler;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class PassThroughActivityDiffblueTest {
   /**
-   * Test {@link PassThroughActivity#execute(ProcessContext)}.
-   *
-   * <p>Method under test: {@link PassThroughActivity#execute(ProcessContext)}
+   * Method under test: {@link PassThroughActivity#execute(ProcessContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ProcessContext PassThroughActivity.execute(ProcessContext)"})
   public void testExecute() throws Exception {
     // Arrange
     PassThroughActivity passThroughActivity = new PassThroughActivity();
     DefaultProcessContextImpl<?> context = new DefaultProcessContextImpl<>();
 
-    // Act
-    ProcessContext<?> actualExecuteResult = passThroughActivity.execute(context);
-
-    // Assert
-    assertSame(context, actualExecuteResult);
+    // Act and Assert
+    assertSame(context, passThroughActivity.execute(context));
   }
 
   /**
-   * Test new {@link PassThroughActivity} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link PassThroughActivity}
+   * Method under test: {@link PassThroughActivity#execute(ProcessContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PassThroughActivity.<init>()"})
+  public void testExecute2() throws Exception {
+    // Arrange
+    PassThroughActivity passThroughActivity = new PassThroughActivity();
+    passThroughActivity.setRollbackHandler(mock(RollbackHandler.class));
+    DefaultProcessContextImpl<?> context = new DefaultProcessContextImpl<>();
+
+    // Act and Assert
+    assertSame(context, passThroughActivity.execute(context));
+  }
+
+  /**
+   * Method under test: default or parameterless constructor of
+   * {@link PassThroughActivity}
+   */
+  @Test
   public void testNewPassThroughActivity() {
     // Arrange and Act
     PassThroughActivity actualPassThroughActivity = new PassThroughActivity();

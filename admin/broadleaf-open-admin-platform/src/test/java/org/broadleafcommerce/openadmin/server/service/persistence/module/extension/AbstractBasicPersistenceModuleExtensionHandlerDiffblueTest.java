@@ -19,9 +19,7 @@ package org.broadleafcommerce.openadmin.server.service.persistence.module.extens
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -30,30 +28,21 @@ import org.broadleafcommerce.common.extension.ExtensionResultHolder;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
 import org.broadleafcommerce.openadmin.dto.PersistencePackage;
+import org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.BasicPersistenceModule;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class AbstractBasicPersistenceModuleExtensionHandlerDiffblueTest {
   /**
-   * Test {@link
-   * AbstractBasicPersistenceModuleExtensionHandler#rebalanceForUpdate(BasicPersistenceModule,
-   * PersistencePackage, Serializable, Map, Object, ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractBasicPersistenceModuleExtensionHandler#rebalanceForUpdate(BasicPersistenceModule,
-   * PersistencePackage, Serializable, Map, Object, ExtensionResultHolder)}
+   * Method under test:
+   * {@link AbstractBasicPersistenceModuleExtensionHandler#rebalanceForUpdate(BasicPersistenceModule, PersistencePackage, Serializable, Map, Object, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractBasicPersistenceModuleExtensionHandler.rebalanceForUpdate(BasicPersistenceModule, PersistencePackage, Serializable, Map, Object, ExtensionResultHolder)"
-  })
   public void testRebalanceForUpdate() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    AbstractBasicPersistenceModuleExtensionHandler abstractBasicPersistenceModuleExtensionHandler =
-        new AbstractBasicPersistenceModuleExtensionHandler();
+    AbstractBasicPersistenceModuleExtensionHandler abstractBasicPersistenceModuleExtensionHandler = new AbstractBasicPersistenceModuleExtensionHandler();
     BasicPersistenceModule basicPersistenceModule = new BasicPersistenceModule();
     PersistencePackage persistencePackage = new PersistencePackage();
     SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
@@ -64,37 +53,22 @@ public class AbstractBasicPersistenceModuleExtensionHandlerDiffblueTest {
     resultHolder.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        abstractBasicPersistenceModuleExtensionHandler.rebalanceForUpdate(
-            basicPersistenceModule,
-            persistencePackage,
-            instance,
-            mergedProperties,
-            "Primary Key",
-            resultHolder));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        abstractBasicPersistenceModuleExtensionHandler.rebalanceForUpdate(basicPersistenceModule, persistencePackage,
+            instance, mergedProperties, "Primary Key", resultHolder));
   }
 
   /**
-   * Test {@link
-   * AbstractBasicPersistenceModuleExtensionHandler#rebalanceForAdd(BasicPersistenceModule,
-   * PersistencePackage, Serializable, Map, ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractBasicPersistenceModuleExtensionHandler#rebalanceForAdd(BasicPersistenceModule,
-   * PersistencePackage, Serializable, Map, ExtensionResultHolder)}
+   * Method under test:
+   * {@link AbstractBasicPersistenceModuleExtensionHandler#rebalanceForUpdate(BasicPersistenceModule, PersistencePackage, Serializable, Map, Object, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractBasicPersistenceModuleExtensionHandler.rebalanceForAdd(BasicPersistenceModule, PersistencePackage, Serializable, Map, ExtensionResultHolder)"
-  })
-  public void testRebalanceForAdd() {
+  public void testRebalanceForUpdate2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    AbstractBasicPersistenceModuleExtensionHandler abstractBasicPersistenceModuleExtensionHandler =
-        new AbstractBasicPersistenceModuleExtensionHandler();
-    BasicPersistenceModule basicPersistenceModule = new BasicPersistenceModule();
+    AbstractBasicPersistenceModuleExtensionHandler abstractBasicPersistenceModuleExtensionHandler = new AbstractBasicPersistenceModuleExtensionHandler();
+    AdornedTargetListPersistenceModule basicPersistenceModule = mock(AdornedTargetListPersistenceModule.class);
     PersistencePackage persistencePackage = new PersistencePackage();
     SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
     HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
@@ -104,30 +78,70 @@ public class AbstractBasicPersistenceModuleExtensionHandlerDiffblueTest {
     resultHolder.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        abstractBasicPersistenceModuleExtensionHandler.rebalanceForAdd(
-            basicPersistenceModule, persistencePackage, instance, mergedProperties, resultHolder));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        abstractBasicPersistenceModuleExtensionHandler.rebalanceForUpdate(basicPersistenceModule, persistencePackage,
+            instance, mergedProperties, "Primary Key", resultHolder));
   }
 
   /**
-   * Test new {@link AbstractBasicPersistenceModuleExtensionHandler} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * AbstractBasicPersistenceModuleExtensionHandler}
+   * Method under test: default or parameterless constructor of
+   * {@link AbstractBasicPersistenceModuleExtensionHandler}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AbstractBasicPersistenceModuleExtensionHandler.<init>()"})
   public void testNewAbstractBasicPersistenceModuleExtensionHandler() {
     // Arrange and Act
-    AbstractBasicPersistenceModuleExtensionHandler
-        actualAbstractBasicPersistenceModuleExtensionHandler =
-            new AbstractBasicPersistenceModuleExtensionHandler();
+    AbstractBasicPersistenceModuleExtensionHandler actualAbstractBasicPersistenceModuleExtensionHandler = new AbstractBasicPersistenceModuleExtensionHandler();
 
     // Assert
     assertEquals(0, actualAbstractBasicPersistenceModuleExtensionHandler.getPriority());
     assertTrue(actualAbstractBasicPersistenceModuleExtensionHandler.isEnabled());
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractBasicPersistenceModuleExtensionHandler#rebalanceForAdd(BasicPersistenceModule, PersistencePackage, Serializable, Map, ExtensionResultHolder)}
+   */
+  @Test
+  public void testRebalanceForAdd() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AbstractBasicPersistenceModuleExtensionHandler abstractBasicPersistenceModuleExtensionHandler = new AbstractBasicPersistenceModuleExtensionHandler();
+    BasicPersistenceModule basicPersistenceModule = new BasicPersistenceModule();
+    PersistencePackage persistencePackage = new PersistencePackage();
+    SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
+    HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
+
+    ExtensionResultHolder<Serializable> resultHolder = new ExtensionResultHolder<>();
+    resultHolder.setResult(new SimpleDateFormat("yyyy/mm/dd"));
+    resultHolder.setThrowable(new Throwable());
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED, abstractBasicPersistenceModuleExtensionHandler
+        .rebalanceForAdd(basicPersistenceModule, persistencePackage, instance, mergedProperties, resultHolder));
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractBasicPersistenceModuleExtensionHandler#rebalanceForAdd(BasicPersistenceModule, PersistencePackage, Serializable, Map, ExtensionResultHolder)}
+   */
+  @Test
+  public void testRebalanceForAdd2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AbstractBasicPersistenceModuleExtensionHandler abstractBasicPersistenceModuleExtensionHandler = new AbstractBasicPersistenceModuleExtensionHandler();
+    AdornedTargetListPersistenceModule basicPersistenceModule = mock(AdornedTargetListPersistenceModule.class);
+    PersistencePackage persistencePackage = new PersistencePackage();
+    SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
+    HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
+
+    ExtensionResultHolder<Serializable> resultHolder = new ExtensionResultHolder<>();
+    resultHolder.setResult(new SimpleDateFormat("yyyy/mm/dd"));
+    resultHolder.setThrowable(new Throwable());
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED, abstractBasicPersistenceModuleExtensionHandler
+        .rebalanceForAdd(basicPersistenceModule, persistencePackage, instance, mergedProperties, resultHolder));
   }
 }

@@ -22,64 +22,38 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Set;
 import javax.cache.configuration.CacheEntryListenerConfiguration;
 import javax.cache.configuration.Configuration;
 import javax.cache.configuration.MutableConfiguration;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class BigMemoryHydratedCacheJcacheEventListenerDiffblueTest {
   /**
-   * Test new {@link BigMemoryHydratedCacheJcacheEventListener} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * BigMemoryHydratedCacheJcacheEventListener}
+   * Method under test: default or parameterless constructor of
+   * {@link BigMemoryHydratedCacheJcacheEventListener}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BigMemoryHydratedCacheJcacheEventListener.<init>()"})
   public void testNewBigMemoryHydratedCacheJcacheEventListener() {
     // Arrange and Act
-    BigMemoryHydratedCacheJcacheEventListener actualBigMemoryHydratedCacheJcacheEventListener =
-        new BigMemoryHydratedCacheJcacheEventListener();
+    BigMemoryHydratedCacheJcacheEventListener actualBigMemoryHydratedCacheJcacheEventListener = new BigMemoryHydratedCacheJcacheEventListener();
 
     // Assert
-    Configuration<String, Object> bigMemoryHydratedCacheConfiguration =
-        actualBigMemoryHydratedCacheJcacheEventListener.getBigMemoryHydratedCacheConfiguration();
-    Iterable<CacheEntryListenerConfiguration<String, Object>> cacheEntryListenerConfigurations =
-        ((MutableConfiguration<String, Object>) bigMemoryHydratedCacheConfiguration)
-            .getCacheEntryListenerConfigurations();
+    Configuration<String, Object> bigMemoryHydratedCacheConfiguration = actualBigMemoryHydratedCacheJcacheEventListener
+        .getBigMemoryHydratedCacheConfiguration();
+    Iterable<CacheEntryListenerConfiguration<String, Object>> cacheEntryListenerConfigurations = ((MutableConfiguration<String, Object>) bigMemoryHydratedCacheConfiguration)
+        .getCacheEntryListenerConfigurations();
     assertTrue(cacheEntryListenerConfigurations instanceof Set);
     assertTrue(bigMemoryHydratedCacheConfiguration instanceof MutableConfiguration);
-    assertEquals(
-        "hydrated-offheap-cache",
+    assertEquals("hydrated-offheap-cache",
         actualBigMemoryHydratedCacheJcacheEventListener.getBigMemoryHydratedCacheName());
-    assertNull(
-        ((MutableConfiguration<String, Object>) bigMemoryHydratedCacheConfiguration)
-            .getCacheLoaderFactory());
-    assertNull(
-        ((MutableConfiguration<String, Object>) bigMemoryHydratedCacheConfiguration)
-            .getCacheWriterFactory());
-    assertFalse(
-        ((MutableConfiguration<String, Object>) bigMemoryHydratedCacheConfiguration)
-            .isManagementEnabled());
-    assertFalse(
-        ((MutableConfiguration<String, Object>) bigMemoryHydratedCacheConfiguration)
-            .isReadThrough());
-    assertFalse(
-        ((MutableConfiguration<String, Object>) bigMemoryHydratedCacheConfiguration)
-            .isStatisticsEnabled());
-    assertFalse(
-        ((MutableConfiguration<String, Object>) bigMemoryHydratedCacheConfiguration)
-            .isWriteThrough());
-    assertTrue(
-        ((Set<CacheEntryListenerConfiguration<String, Object>>) cacheEntryListenerConfigurations)
-            .isEmpty());
+    assertNull(((MutableConfiguration<String, Object>) bigMemoryHydratedCacheConfiguration).getCacheLoaderFactory());
+    assertNull(((MutableConfiguration<String, Object>) bigMemoryHydratedCacheConfiguration).getCacheWriterFactory());
+    assertFalse(((MutableConfiguration<String, Object>) bigMemoryHydratedCacheConfiguration).isManagementEnabled());
+    assertFalse(((MutableConfiguration<String, Object>) bigMemoryHydratedCacheConfiguration).isReadThrough());
+    assertFalse(((MutableConfiguration<String, Object>) bigMemoryHydratedCacheConfiguration).isStatisticsEnabled());
+    assertFalse(((MutableConfiguration<String, Object>) bigMemoryHydratedCacheConfiguration).isWriteThrough());
+    assertTrue(((Set<CacheEntryListenerConfiguration<String, Object>>) cacheEntryListenerConfigurations).isEmpty());
     assertTrue(bigMemoryHydratedCacheConfiguration.isStoreByValue());
     Class<Object> expectedKeyType = Object.class;
     Class<String> keyType = bigMemoryHydratedCacheConfiguration.getKeyType();

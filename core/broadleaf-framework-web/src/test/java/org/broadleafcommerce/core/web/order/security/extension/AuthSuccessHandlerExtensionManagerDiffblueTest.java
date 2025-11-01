@@ -18,33 +18,35 @@
 package org.broadleafcommerce.core.web.order.security.extension;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
+import static org.mockito.Mockito.mock;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@ContextConfiguration(classes = {AuthSuccessHandlerExtensionManager.class})
-@ExtendWith(SpringExtension.class)
 class AuthSuccessHandlerExtensionManagerDiffblueTest {
-  @Autowired private AuthSuccessHandlerExtensionManager authSuccessHandlerExtensionManager;
-
   /**
-   * Test {@link AuthSuccessHandlerExtensionManager#continueOnHandled()}.
-   *
-   * <p>Method under test: {@link AuthSuccessHandlerExtensionManager#continueOnHandled()}
+   * Method under test:
+   * {@link AuthSuccessHandlerExtensionManager#continueOnHandled()}
    */
   @Test
-  @DisplayName("Test continueOnHandled()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AuthSuccessHandlerExtensionManager.continueOnHandled()"})
   void testContinueOnHandled() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
+    assertTrue((new AuthSuccessHandlerExtensionManager()).continueOnHandled());
+  }
+
+  /**
+   * Method under test:
+   * {@link AuthSuccessHandlerExtensionManager#continueOnHandled()}
+   */
+  @Test
+  void testContinueOnHandled2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AuthSuccessHandlerExtensionManager authSuccessHandlerExtensionManager = new AuthSuccessHandlerExtensionManager();
+    authSuccessHandlerExtensionManager.registerHandler(mock(AbstractAuthSuccessHandlerExtensionHandler.class));
+
+    // Act and Assert
     assertTrue(authSuccessHandlerExtensionManager.continueOnHandled());
   }
 }

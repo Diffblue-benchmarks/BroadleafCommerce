@@ -18,124 +18,71 @@
 package org.broadleafcommerce.common.email.service.info;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class ServerInfoDiffblueTest {
   /**
-   * Test {@link ServerInfo#getSecureHost()}.
-   *
-   * <ul>
-   *   <li>Given {@link ServerInfo} (default constructor) SecurePort is {@code 8080}.
-   *   <li>Then return {@code Server Name:8080}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ServerInfo#getSecureHost()}
+   * Method under test: {@link ServerInfo#getSecureHost()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ServerInfo.getSecureHost()"})
-  public void testGetSecureHost_givenServerInfoSecurePortIs8080_thenReturnServerName8080() {
+  public void testGetSecureHost() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     ServerInfo serverInfo = new ServerInfo();
-    serverInfo.setAppName("App Name");
     serverInfo.setSecurePort(8080);
-    serverInfo.setServerName("Server Name");
-    serverInfo.setServerPort(8080);
 
     // Act and Assert
-    assertEquals("Server Name:8080", serverInfo.getSecureHost());
+    assertEquals("null:8080", serverInfo.getSecureHost());
   }
 
   /**
-   * Test {@link ServerInfo#getSecureHost()}.
-   *
-   * <ul>
-   *   <li>Then return {@code Server Name}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ServerInfo#getSecureHost()}
+   * Method under test: {@link ServerInfo#getSecureHost()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ServerInfo.getSecureHost()"})
-  public void testGetSecureHost_thenReturnServerName() {
+  public void testGetSecureHost2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     ServerInfo serverInfo = new ServerInfo();
-    serverInfo.setAppName("App Name");
     serverInfo.setSecurePort(443);
-    serverInfo.setServerName("Server Name");
-    serverInfo.setServerPort(8080);
 
     // Act and Assert
-    assertEquals("Server Name", serverInfo.getSecureHost());
+    assertEquals("null", serverInfo.getSecureHost());
   }
 
   /**
-   * Test {@link ServerInfo#getHost()}.
-   *
-   * <ul>
-   *   <li>Given {@link ServerInfo} (default constructor) ServerPort is {@code 8080}.
-   *   <li>Then return {@code Server Name:8080}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ServerInfo#getHost()}
+   * Method under test: {@link ServerInfo#getHost()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ServerInfo.getHost()"})
-  public void testGetHost_givenServerInfoServerPortIs8080_thenReturnServerName8080() {
+  public void testGetHost() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     ServerInfo serverInfo = new ServerInfo();
-    serverInfo.setAppName("App Name");
-    serverInfo.setSecurePort(8080);
-    serverInfo.setServerName("Server Name");
     serverInfo.setServerPort(8080);
 
     // Act and Assert
-    assertEquals("Server Name:8080", serverInfo.getHost());
+    assertEquals("null:8080", serverInfo.getHost());
   }
 
   /**
-   * Test {@link ServerInfo#getHost()}.
-   *
-   * <ul>
-   *   <li>Given {@link ServerInfo} (default constructor) ServerPort is eighty.
-   *   <li>Then return {@code Server Name}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ServerInfo#getHost()}
+   * Method under test: {@link ServerInfo#getHost()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ServerInfo.getHost()"})
-  public void testGetHost_givenServerInfoServerPortIsEighty_thenReturnServerName() {
+  public void testGetHost2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     ServerInfo serverInfo = new ServerInfo();
-    serverInfo.setAppName("App Name");
-    serverInfo.setSecurePort(8080);
-    serverInfo.setServerName("Server Name");
     serverInfo.setServerPort(80);
 
     // Act and Assert
-    assertEquals("Server Name", serverInfo.getHost());
+    assertEquals("null", serverInfo.getHost());
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link ServerInfo}
    *   <li>{@link ServerInfo#setAppName(String)}
@@ -149,19 +96,6 @@ public class ServerInfoDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ServerInfo.<init>()",
-    "String ServerInfo.getAppName()",
-    "Integer ServerInfo.getSecurePort()",
-    "String ServerInfo.getServerName()",
-    "Integer ServerInfo.getServerPort()",
-    "void ServerInfo.setAppName(String)",
-    "void ServerInfo.setSecurePort(Integer)",
-    "void ServerInfo.setServerName(String)",
-    "void ServerInfo.setServerPort(Integer)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     ServerInfo actualServerInfo = new ServerInfo();
@@ -174,7 +108,7 @@ public class ServerInfoDiffblueTest {
     String actualServerName = actualServerInfo.getServerName();
     Integer actualServerPort = actualServerInfo.getServerPort();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("App Name", actualAppName);
     assertEquals("Server Name", actualServerName);
     assertEquals(8080, actualSecurePort.intValue());

@@ -19,113 +19,21 @@ package org.broadleafcommerce.openadmin.server.service.persistence.module.criter
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = {NullAwareLongFilterValueConverter.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class NullAwareLongFilterValueConverterDiffblueTest {
-  @Autowired private NullAwareLongFilterValueConverter nullAwareLongFilterValueConverter;
-
   /**
-   * Test {@link NullAwareLongFilterValueConverter#convert(String)}.
-   *
-   * <ul>
-   *   <li>When {@code 42}.
-   *   <li>Then return longValue is forty-two.
-   * </ul>
-   *
-   * <p>Method under test: {@link NullAwareLongFilterValueConverter#convert(String)}
+   * Method under test: {@link NullAwareLongFilterValueConverter#convert(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.lang.Long NullAwareLongFilterValueConverter.convert(String)"})
-  public void testConvert_when42_thenReturnLongValueIsFortyTwo() {
-    // Arrange, Act and Assert
-    assertEquals(42L, nullAwareLongFilterValueConverter.convert("42").longValue());
-  }
+  public void testConvert() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-  /**
-   * Test {@link NullAwareLongFilterValueConverter#convert(String)}.
-   *
-   * <ul>
-   *   <li>When empty string.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link NullAwareLongFilterValueConverter#convert(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.lang.Long NullAwareLongFilterValueConverter.convert(String)"})
-  public void testConvert_whenEmptyString_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(nullAwareLongFilterValueConverter.convert(""));
-  }
-
-  /**
-   * Test {@link NullAwareLongFilterValueConverter#convert(String)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link NullAwareLongFilterValueConverter#convert(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.lang.Long NullAwareLongFilterValueConverter.convert(String)"})
-  public void testConvert_whenNull_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(nullAwareLongFilterValueConverter.convert("null"));
-  }
-
-  /**
-   * Test {@link NullAwareLongFilterValueConverter#convert(String)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link NullAwareLongFilterValueConverter#convert(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.lang.Long NullAwareLongFilterValueConverter.convert(String)"})
-  public void testConvert_whenNull_thenReturnNull2() {
-    // Arrange, Act and Assert
-    assertNull(nullAwareLongFilterValueConverter.convert(null));
-  }
-
-  /**
-   * Test {@link NullAwareLongFilterValueConverter#convert(String)}.
-   *
-   * <ul>
-   *   <li>When {@code String Value}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link NullAwareLongFilterValueConverter#convert(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.lang.Long NullAwareLongFilterValueConverter.convert(String)"})
-  public void testConvert_whenStringValue_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(nullAwareLongFilterValueConverter.convert("String Value"));
+    assertEquals(42L, (new NullAwareLongFilterValueConverter()).convert("42").longValue());
+    assertNull((new NullAwareLongFilterValueConverter()).convert("null"));
+    assertNull((new NullAwareLongFilterValueConverter()).convert(null));
+    assertNull((new NullAwareLongFilterValueConverter()).convert("String Value"));
+    assertNull((new NullAwareLongFilterValueConverter()).convert(""));
   }
 }

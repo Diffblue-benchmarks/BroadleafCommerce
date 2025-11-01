@@ -19,56 +19,35 @@ package org.broadleafcommerce.core.web.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 class AbstractCacheKeyResolverExtensionHandlerDiffblueTest {
   /**
-   * Test {@link AbstractCacheKeyResolverExtensionHandler#updateCacheKey(StringBuilder, boolean)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractCacheKeyResolverExtensionHandler#updateCacheKey(StringBuilder, boolean)}
+   * Method under test: default or parameterless constructor of
+   * {@link AbstractCacheKeyResolverExtensionHandler}
    */
   @Test
-  @DisplayName("Test updateCacheKey(StringBuilder, boolean)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractCacheKeyResolverExtensionHandler.updateCacheKey(StringBuilder, boolean)"
-  })
-  void testUpdateCacheKey() {
-    // Arrange
-    AbstractCacheKeyResolverExtensionHandler abstractCacheKeyResolverExtensionHandler =
-        new AbstractCacheKeyResolverExtensionHandler();
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        abstractCacheKeyResolverExtensionHandler.updateCacheKey(new StringBuilder("foo"), true));
-  }
-
-  /**
-   * Test new {@link AbstractCacheKeyResolverExtensionHandler} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * AbstractCacheKeyResolverExtensionHandler}
-   */
-  @Test
-  @DisplayName("Test new AbstractCacheKeyResolverExtensionHandler (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AbstractCacheKeyResolverExtensionHandler.<init>()"})
   void testNewAbstractCacheKeyResolverExtensionHandler() {
     // Arrange and Act
-    AbstractCacheKeyResolverExtensionHandler actualAbstractCacheKeyResolverExtensionHandler =
-        new AbstractCacheKeyResolverExtensionHandler();
+    AbstractCacheKeyResolverExtensionHandler actualAbstractCacheKeyResolverExtensionHandler = new AbstractCacheKeyResolverExtensionHandler();
 
     // Assert
     assertEquals(0, actualAbstractCacheKeyResolverExtensionHandler.getPriority());
     assertTrue(actualAbstractCacheKeyResolverExtensionHandler.isEnabled());
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractCacheKeyResolverExtensionHandler#updateCacheKey(StringBuilder, boolean)}
+   */
+  @Test
+  void testUpdateCacheKey() {
+    // Arrange
+    AbstractCacheKeyResolverExtensionHandler abstractCacheKeyResolverExtensionHandler = new AbstractCacheKeyResolverExtensionHandler();
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        abstractCacheKeyResolverExtensionHandler.updateCacheKey(new StringBuilder("foo"), true));
   }
 }

@@ -18,15 +18,18 @@
 package org.broadleafcommerce.core.web.controller.checkout;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import java.util.function.Function;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
+import org.broadleafcommerce.core.web.security.XssRequestWrapper;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.ui.ConcurrentModel;
@@ -34,89 +37,104 @@ import org.springframework.ui.Model;
 
 class BroadleafOrderConfirmationControllerDiffblueTest {
   /**
-   * Test {@link BroadleafOrderConfirmationController#displayOrderConfirmationByOrderNumber(String,
-   * Model, HttpServletRequest, HttpServletResponse)}.
-   *
-   * <p>Method under test: {@link
-   * BroadleafOrderConfirmationController#displayOrderConfirmationByOrderNumber(String, Model,
-   * HttpServletRequest, HttpServletResponse)}
+   * Method under test:
+   * {@link BroadleafOrderConfirmationController#displayOrderConfirmationByOrderNumber(String, Model, HttpServletRequest, HttpServletResponse)}
    */
   @Test
-  @DisplayName(
-      "Test displayOrderConfirmationByOrderNumber(String, Model, HttpServletRequest, HttpServletResponse)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String BroadleafOrderConfirmationController.displayOrderConfirmationByOrderNumber(String, Model, HttpServletRequest, HttpServletResponse)"
-  })
   void testDisplayOrderConfirmationByOrderNumber() {
     // Arrange
-    BroadleafOrderConfirmationController broadleafOrderConfirmationController =
-        new BroadleafOrderConfirmationController();
+    BroadleafOrderConfirmationController broadleafOrderConfirmationController = new BroadleafOrderConfirmationController();
     ConcurrentModel model = new ConcurrentModel();
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
 
     // Act and Assert
-    assertEquals(
-        "redirect:/",
-        broadleafOrderConfirmationController.displayOrderConfirmationByOrderNumber(
-            "42", model, request, new MockHttpServletResponse()));
+    assertEquals("redirect:/", broadleafOrderConfirmationController.displayOrderConfirmationByOrderNumber("42", model,
+        request, new MockHttpServletResponse()));
   }
 
   /**
-   * Test {@link BroadleafOrderConfirmationController#displayOrderConfirmationByOrderId(Long, Model,
-   * HttpServletRequest, HttpServletResponse)}.
-   *
-   * <p>Method under test: {@link
-   * BroadleafOrderConfirmationController#displayOrderConfirmationByOrderId(Long, Model,
-   * HttpServletRequest, HttpServletResponse)}
+   * Method under test:
+   * {@link BroadleafOrderConfirmationController#displayOrderConfirmationByOrderNumber(String, Model, HttpServletRequest, HttpServletResponse)}
    */
   @Test
-  @DisplayName(
-      "Test displayOrderConfirmationByOrderId(Long, Model, HttpServletRequest, HttpServletResponse)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String BroadleafOrderConfirmationController.displayOrderConfirmationByOrderId(Long, Model, HttpServletRequest, HttpServletResponse)"
-  })
-  void testDisplayOrderConfirmationByOrderId() {
+  void testDisplayOrderConfirmationByOrderNumber2() {
     // Arrange
-    BroadleafOrderConfirmationController broadleafOrderConfirmationController =
-        new BroadleafOrderConfirmationController();
-    ConcurrentModel model = new ConcurrentModel();
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
+    BroadleafOrderConfirmationController broadleafOrderConfirmationController = new BroadleafOrderConfirmationController();
+    Function<String, Object> function = mock(Function.class);
+    when(function.apply(Mockito.<String>any())).thenReturn("Apply");
 
-    // Act and Assert
-    assertEquals(
-        "redirect:/",
-        broadleafOrderConfirmationController.displayOrderConfirmationByOrderId(
-            1L, model, request, new MockHttpServletResponse()));
+    ConcurrentModel model = new ConcurrentModel();
+    model.computeIfAbsent("ThreadLocalManager.notify.orphans", function);
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
+
+    // Act
+    String actualDisplayOrderConfirmationByOrderNumberResult = broadleafOrderConfirmationController
+        .displayOrderConfirmationByOrderNumber("42", model, request, new MockHttpServletResponse());
+
+    // Assert
+    verify(function).apply(eq("ThreadLocalManager.notify.orphans"));
+    assertEquals("redirect:/", actualDisplayOrderConfirmationByOrderNumberResult);
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Method under test:
+   * {@link BroadleafOrderConfirmationController#displayOrderConfirmationByOrderId(Long, Model, HttpServletRequest, HttpServletResponse)}
+   */
+  @Test
+  void testDisplayOrderConfirmationByOrderId() {
+    // Arrange
+    BroadleafOrderConfirmationController broadleafOrderConfirmationController = new BroadleafOrderConfirmationController();
+    ConcurrentModel model = new ConcurrentModel();
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
+
+    // Act and Assert
+    assertEquals("redirect:/", broadleafOrderConfirmationController.displayOrderConfirmationByOrderId(1L, model,
+        request, new MockHttpServletResponse()));
+  }
+
+  /**
+   * Method under test:
+   * {@link BroadleafOrderConfirmationController#displayOrderConfirmationByOrderId(Long, Model, HttpServletRequest, HttpServletResponse)}
+   */
+  @Test
+  void testDisplayOrderConfirmationByOrderId2() {
+    // Arrange
+    BroadleafOrderConfirmationController broadleafOrderConfirmationController = new BroadleafOrderConfirmationController();
+    Function<String, Object> function = mock(Function.class);
+    when(function.apply(Mockito.<String>any())).thenReturn("Apply");
+
+    ConcurrentModel model = new ConcurrentModel();
+    model.computeIfAbsent("ThreadLocalManager.notify.orphans", function);
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
+
+    // Act
+    String actualDisplayOrderConfirmationByOrderIdResult = broadleafOrderConfirmationController
+        .displayOrderConfirmationByOrderId(1L, model, request, new MockHttpServletResponse());
+
+    // Assert
+    verify(function).apply(eq("ThreadLocalManager.notify.orphans"));
+    assertEquals("redirect:/", actualDisplayOrderConfirmationByOrderIdResult);
+  }
+
+  /**
+   * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of {@link BroadleafOrderConfirmationController}
+   *   <li>default or parameterless constructor of
+   * {@link BroadleafOrderConfirmationController}
    *   <li>{@link BroadleafOrderConfirmationController#getOrderConfirmationView()}
    * </ul>
    */
   @Test
-  @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void BroadleafOrderConfirmationController.<init>()",
-    "String BroadleafOrderConfirmationController.getOrderConfirmationView()"
-  })
   void testGettersAndSetters() {
     // Arrange, Act and Assert
-    assertEquals(
-        "checkout/confirmation",
-        new BroadleafOrderConfirmationController().getOrderConfirmationView());
+    assertEquals("checkout/confirmation", (new BroadleafOrderConfirmationController()).getOrderConfirmationView());
   }
 }

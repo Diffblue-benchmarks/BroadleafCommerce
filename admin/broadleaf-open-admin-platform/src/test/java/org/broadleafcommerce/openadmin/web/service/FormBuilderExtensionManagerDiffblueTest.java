@@ -18,32 +18,34 @@
 package org.broadleafcommerce.openadmin.web.service;
 
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
+import org.broadleafcommerce.openadmin.web.service.extension.TranslationsFormBuilderExtensionHandler;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = {FormBuilderExtensionManager.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class FormBuilderExtensionManagerDiffblueTest {
-  @Autowired private FormBuilderExtensionManager formBuilderExtensionManager;
-
   /**
-   * Test {@link FormBuilderExtensionManager#continueOnHandled()}.
-   *
-   * <p>Method under test: {@link FormBuilderExtensionManager#continueOnHandled()}
+   * Method under test: {@link FormBuilderExtensionManager#continueOnHandled()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean FormBuilderExtensionManager.continueOnHandled()"})
   public void testContinueOnHandled() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
+    assertTrue((new FormBuilderExtensionManager()).continueOnHandled());
+  }
+
+  /**
+   * Method under test: {@link FormBuilderExtensionManager#continueOnHandled()}
+   */
+  @Test
+  public void testContinueOnHandled2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FormBuilderExtensionManager formBuilderExtensionManager = new FormBuilderExtensionManager();
+    formBuilderExtensionManager.registerHandler(mock(TranslationsFormBuilderExtensionHandler.class));
+
+    // Act and Assert
     assertTrue(formBuilderExtensionManager.continueOnHandled());
   }
 }

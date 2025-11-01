@@ -20,9 +20,7 @@ package org.broadleafcommerce.openadmin.server.service.persistence.validation;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -32,51 +30,26 @@ import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = {CronExpressionValidator.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class CronExpressionValidatorDiffblueTest {
-  @Autowired private CronExpressionValidator cronExpressionValidator;
-
   /**
-   * Test {@link CronExpressionValidator#validate(Entity, Serializable, Map, Map,
-   * BasicFieldMetadata, String, String)}.
-   *
-   * <ul>
-   *   <li>When {@code 42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CronExpressionValidator#validate(Entity, Serializable, Map, Map,
-   * BasicFieldMetadata, String, String)}
+   * Method under test:
+   * {@link CronExpressionValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PropertyValidationResult CronExpressionValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"
-  })
-  public void testValidate_when42() {
+  public void testValidate() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    CronExpressionValidator cronExpressionValidator = new CronExpressionValidator();
     Entity entity = new Entity();
     SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
     HashMap<String, FieldMetadata> entityFieldMetadata = new HashMap<>();
     HashMap<String, String> validationConfiguration = new HashMap<>();
 
     // Act
-    PropertyValidationResult actualValidateResult =
-        cronExpressionValidator.validate(
-            entity,
-            instance,
-            entityFieldMetadata,
-            validationConfiguration,
-            new BasicFieldMetadata(),
-            "Property Name",
-            "42");
+    PropertyValidationResult actualValidateResult = cronExpressionValidator.validate(entity, instance,
+        entityFieldMetadata, validationConfiguration, new BasicFieldMetadata(), "Property Name", "42");
 
     // Assert
     List<String> errorMessages = actualValidateResult.getErrorMessages();
@@ -84,44 +57,27 @@ public class CronExpressionValidatorDiffblueTest {
     assertFalse(actualValidateResult.isValid());
     assertTrue(actualValidateResult.isNotValid());
     assertEquals(CronExpressionValidator.INVALID_EXPRESSION, errorMessages.get(0));
-    assertEquals(
-        CronExpressionValidator.INVALID_EXPRESSION, actualValidateResult.getErrorMessage());
+    assertEquals(CronExpressionValidator.INVALID_EXPRESSION, actualValidateResult.getErrorMessage());
   }
 
   /**
-   * Test {@link CronExpressionValidator#validate(Entity, Serializable, Map, Map,
-   * BasicFieldMetadata, String, String)}.
-   *
-   * <ul>
-   *   <li>When {@code L-9}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CronExpressionValidator#validate(Entity, Serializable, Map, Map,
-   * BasicFieldMetadata, String, String)}
+   * Method under test:
+   * {@link CronExpressionValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PropertyValidationResult CronExpressionValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"
-  })
-  public void testValidate_whenL9() {
+  public void testValidate2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    CronExpressionValidator cronExpressionValidator = new CronExpressionValidator();
     Entity entity = new Entity();
     SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
     HashMap<String, FieldMetadata> entityFieldMetadata = new HashMap<>();
     HashMap<String, String> validationConfiguration = new HashMap<>();
 
     // Act
-    PropertyValidationResult actualValidateResult =
-        cronExpressionValidator.validate(
-            entity,
-            instance,
-            entityFieldMetadata,
-            validationConfiguration,
-            new BasicFieldMetadata(),
-            "Property Name",
-            "L-9");
+    PropertyValidationResult actualValidateResult = cronExpressionValidator.validate(entity, instance,
+        entityFieldMetadata, validationConfiguration, new BasicFieldMetadata(), "Property Name", null);
 
     // Assert
     List<String> errorMessages = actualValidateResult.getErrorMessages();
@@ -129,44 +85,27 @@ public class CronExpressionValidatorDiffblueTest {
     assertFalse(actualValidateResult.isValid());
     assertTrue(actualValidateResult.isNotValid());
     assertEquals(CronExpressionValidator.INVALID_EXPRESSION, errorMessages.get(0));
-    assertEquals(
-        CronExpressionValidator.INVALID_EXPRESSION, actualValidateResult.getErrorMessage());
+    assertEquals(CronExpressionValidator.INVALID_EXPRESSION, actualValidateResult.getErrorMessage());
   }
 
   /**
-   * Test {@link CronExpressionValidator#validate(Entity, Serializable, Map, Map,
-   * BasicFieldMetadata, String, String)}.
-   *
-   * <ul>
-   *   <li>When {@code not blank}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CronExpressionValidator#validate(Entity, Serializable, Map, Map,
-   * BasicFieldMetadata, String, String)}
+   * Method under test:
+   * {@link CronExpressionValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PropertyValidationResult CronExpressionValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"
-  })
-  public void testValidate_whenNotBlank() {
+  public void testValidate3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    Entity entity = new Entity();
+    CronExpressionValidator cronExpressionValidator = new CronExpressionValidator();
+    Entity entity = mock(Entity.class);
     SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
     HashMap<String, FieldMetadata> entityFieldMetadata = new HashMap<>();
     HashMap<String, String> validationConfiguration = new HashMap<>();
 
     // Act
-    PropertyValidationResult actualValidateResult =
-        cronExpressionValidator.validate(
-            entity,
-            instance,
-            entityFieldMetadata,
-            validationConfiguration,
-            new BasicFieldMetadata(),
-            "Property Name",
-            "not blank");
+    PropertyValidationResult actualValidateResult = cronExpressionValidator.validate(entity, instance,
+        entityFieldMetadata, validationConfiguration, new BasicFieldMetadata(), "Property Name", "42");
 
     // Assert
     List<String> errorMessages = actualValidateResult.getErrorMessages();
@@ -174,44 +113,28 @@ public class CronExpressionValidatorDiffblueTest {
     assertFalse(actualValidateResult.isValid());
     assertTrue(actualValidateResult.isNotValid());
     assertEquals(CronExpressionValidator.INVALID_EXPRESSION, errorMessages.get(0));
-    assertEquals(
-        CronExpressionValidator.INVALID_EXPRESSION, actualValidateResult.getErrorMessage());
+    assertEquals(CronExpressionValidator.INVALID_EXPRESSION, actualValidateResult.getErrorMessage());
   }
 
   /**
-   * Test {@link CronExpressionValidator#validate(Entity, Serializable, Map, Map,
-   * BasicFieldMetadata, String, String)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CronExpressionValidator#validate(Entity, Serializable, Map, Map,
-   * BasicFieldMetadata, String, String)}
+   * Method under test:
+   * {@link CronExpressionValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PropertyValidationResult CronExpressionValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"
-  })
-  public void testValidate_whenNull() {
+  public void testValidate4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    CronExpressionValidator cronExpressionValidator = new CronExpressionValidator();
     Entity entity = new Entity();
     SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
     HashMap<String, FieldMetadata> entityFieldMetadata = new HashMap<>();
     HashMap<String, String> validationConfiguration = new HashMap<>();
 
     // Act
-    PropertyValidationResult actualValidateResult =
-        cronExpressionValidator.validate(
-            entity,
-            instance,
-            entityFieldMetadata,
-            validationConfiguration,
-            new BasicFieldMetadata(),
-            "Property Name",
-            null);
+    PropertyValidationResult actualValidateResult = cronExpressionValidator.validate(entity, instance,
+        entityFieldMetadata, validationConfiguration, new BasicFieldMetadata(), "Property Name",
+        CronExpressionValidator.INVALID_EXPRESSION);
 
     // Assert
     List<String> errorMessages = actualValidateResult.getErrorMessages();
@@ -219,52 +142,6 @@ public class CronExpressionValidatorDiffblueTest {
     assertFalse(actualValidateResult.isValid());
     assertTrue(actualValidateResult.isNotValid());
     assertEquals(CronExpressionValidator.INVALID_EXPRESSION, errorMessages.get(0));
-    assertEquals(
-        CronExpressionValidator.INVALID_EXPRESSION, actualValidateResult.getErrorMessage());
-  }
-
-  /**
-   * Test {@link CronExpressionValidator#validate(Entity, Serializable, Map, Map,
-   * BasicFieldMetadata, String, String)}.
-   *
-   * <ul>
-   *   <li>When space.
-   * </ul>
-   *
-   * <p>Method under test: {@link CronExpressionValidator#validate(Entity, Serializable, Map, Map,
-   * BasicFieldMetadata, String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PropertyValidationResult CronExpressionValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"
-  })
-  public void testValidate_whenSpace() {
-    // Arrange
-    Entity entity = new Entity();
-    SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
-    HashMap<String, FieldMetadata> entityFieldMetadata = new HashMap<>();
-    HashMap<String, String> validationConfiguration = new HashMap<>();
-
-    // Act
-    PropertyValidationResult actualValidateResult =
-        cronExpressionValidator.validate(
-            entity,
-            instance,
-            entityFieldMetadata,
-            validationConfiguration,
-            new BasicFieldMetadata(),
-            "Property Name",
-            " ");
-
-    // Assert
-    List<String> errorMessages = actualValidateResult.getErrorMessages();
-    assertEquals(1, errorMessages.size());
-    assertFalse(actualValidateResult.isValid());
-    assertTrue(actualValidateResult.isNotValid());
-    assertEquals(CronExpressionValidator.INVALID_EXPRESSION, errorMessages.get(0));
-    assertEquals(
-        CronExpressionValidator.INVALID_EXPRESSION, actualValidateResult.getErrorMessage());
+    assertEquals(CronExpressionValidator.INVALID_EXPRESSION, actualValidateResult.getErrorMessage());
   }
 }

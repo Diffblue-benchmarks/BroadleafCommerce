@@ -21,13 +21,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,113 +37,78 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {PassthroughEncryptionModule.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class PassthroughEncryptionModuleDiffblueTest {
-  @MockBean private Environment environment;
+  @MockBean
+  private Environment environment;
 
-  @Autowired private PassthroughEncryptionModule passthroughEncryptionModule;
+  @Autowired
+  private PassthroughEncryptionModule passthroughEncryptionModule;
 
   /**
-   * Test {@link PassthroughEncryptionModule#init()}.
-   *
-   * <ul>
-   *   <li>Given {@link Environment} {@link Environment#acceptsProfiles(String[])} return {@code
-   *       false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PassthroughEncryptionModule#init()}
+   * Method under test: {@link PassthroughEncryptionModule#init()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PassthroughEncryptionModule.init()"})
-  public void testInit_givenEnvironmentAcceptsProfilesReturnFalse() {
+  public void testInit() {
     // Arrange
-    when(environment.acceptsProfiles((String[]) Mockito.any())).thenReturn(false);
+    when(environment.acceptsProfiles((String[]) any())).thenReturn(true);
 
     // Act
     passthroughEncryptionModule.init();
 
     // Assert
-    verify(environment).acceptsProfiles((String[]) Mockito.any());
+    verify(environment).acceptsProfiles((String[]) any());
   }
 
   /**
-   * Test {@link PassthroughEncryptionModule#decrypt(String)}.
-   *
-   * <p>Method under test: {@link PassthroughEncryptionModule#decrypt(String)}
+   * Method under test: {@link PassthroughEncryptionModule#init()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String PassthroughEncryptionModule.decrypt(String)"})
+  public void testInit2() {
+    // Arrange
+    when(environment.acceptsProfiles((String[]) any())).thenReturn(false);
+
+    // Act
+    passthroughEncryptionModule.init();
+
+    // Assert
+    verify(environment).acceptsProfiles((String[]) any());
+  }
+
+  /**
+   * Method under test: {@link PassthroughEncryptionModule#decrypt(String)}
+   */
+  @Test
   public void testDecrypt() {
     // Arrange, Act and Assert
     assertEquals("Cipher Text", passthroughEncryptionModule.decrypt("Cipher Text"));
   }
 
   /**
-   * Test {@link PassthroughEncryptionModule#encrypt(String)}.
-   *
-   * <p>Method under test: {@link PassthroughEncryptionModule#encrypt(String)}
+   * Method under test: {@link PassthroughEncryptionModule#encrypt(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String PassthroughEncryptionModule.encrypt(String)"})
   public void testEncrypt() {
     // Arrange, Act and Assert
     assertEquals("Plain Text", passthroughEncryptionModule.encrypt("Plain Text"));
   }
 
   /**
-   * Test {@link PassthroughEncryptionModule#matches(String, String)}.
-   *
-   * <ul>
-   *   <li>When {@code Encrypted}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PassthroughEncryptionModule#matches(String, String)}
+   * Method under test:
+   * {@link PassthroughEncryptionModule#matches(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.lang.Boolean PassthroughEncryptionModule.matches(String, String)"})
-  public void testMatches_whenEncrypted_thenReturnTrue() {
+  public void testMatches() {
     // Arrange, Act and Assert
+    assertFalse(passthroughEncryptionModule.matches("Raw", "Encrypted"));
     assertTrue(passthroughEncryptionModule.matches("Encrypted", "Encrypted"));
   }
 
   /**
-   * Test {@link PassthroughEncryptionModule#matches(String, String)}.
-   *
-   * <ul>
-   *   <li>When {@code Raw}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PassthroughEncryptionModule#matches(String, String)}
+   * Method under test: default or parameterless constructor of
+   * {@link PassthroughEncryptionModule}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.lang.Boolean PassthroughEncryptionModule.matches(String, String)"})
-  public void testMatches_whenRaw_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(passthroughEncryptionModule.matches("Raw", "Encrypted"));
-  }
-
-  /**
-   * Test new {@link PassthroughEncryptionModule} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * PassthroughEncryptionModule}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PassthroughEncryptionModule.<init>()"})
   public void testNewPassthroughEncryptionModule() {
     // Arrange, Act and Assert
-    assertNull(new PassthroughEncryptionModule().env);
+    assertNull((new PassthroughEncryptionModule()).env);
   }
 }

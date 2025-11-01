@@ -18,26 +18,49 @@
 package org.broadleafcommerce.core.search.service.solr.index;
 
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import org.broadleafcommerce.core.search.dao.CatalogStructure;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.mockito.Mockito;
 
 public class SolrIndexCachedOperationDiffblueTest {
   /**
-   * Test {@link SolrIndexCachedOperation#getCache()}.
-   *
-   * <p>Method under test: {@link SolrIndexCachedOperation#getCache()}
+   * Method under test: {@link SolrIndexCachedOperation#getCache()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.core.search.dao.CatalogStructure SolrIndexCachedOperation.getCache()"
-  })
   public void testGetCache() {
     // Arrange, Act and Assert
     assertNull(SolrIndexCachedOperation.getCache());
+  }
+
+  /**
+   * Method under test:
+   * {@link SolrIndexCachedOperation#setCache(CatalogStructure)}
+   */
+  @Test
+  public void testSetCache() {
+    // Arrange
+    CatalogStructure cache = mock(CatalogStructure.class);
+    doNothing().when(cache).setDisplayOrdersByCategoryProduct(Mockito.<Map<String, BigDecimal>>any());
+    doNothing().when(cache).setParentCategoriesByCategory(Mockito.<Map<Long, Set<Long>>>any());
+    doNothing().when(cache).setParentCategoriesByProduct(Mockito.<Map<Long, Set<Long>>>any());
+    cache.setDisplayOrdersByCategoryProduct(new HashMap<>());
+    cache.setParentCategoriesByCategory(new HashMap<>());
+    cache.setParentCategoriesByProduct(new HashMap<>());
+
+    // Act
+    SolrIndexCachedOperation.setCache(cache);
+
+    // Assert
+    verify(cache).setDisplayOrdersByCategoryProduct(isA(Map.class));
+    verify(cache).setParentCategoriesByCategory(isA(Map.class));
+    verify(cache).setParentCategoriesByProduct(isA(Map.class));
   }
 }

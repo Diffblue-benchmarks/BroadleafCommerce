@@ -20,32 +20,14 @@ package org.broadleafcommerce.core.pricing.service.exception;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class TaxExceptionDiffblueTest {
   /**
-   * Test {@link TaxException#TaxException()}.
-   *
-   * <ul>
-   *   <li>Then return Message is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link TaxException#TaxException()}
+   * Method under test: {@link TaxException#TaxException()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void TaxException.<init>()",
-    "void TaxException.<init>(String)",
-    "void TaxException.<init>(String, Throwable)",
-    "void TaxException.<init>(Throwable)"
-  })
-  public void testNewTaxException_thenReturnMessageIsNull() {
+  public void testNewTaxException() {
     // Arrange and Act
     TaxException actualTaxException = new TaxException();
 
@@ -56,25 +38,10 @@ public class TaxExceptionDiffblueTest {
   }
 
   /**
-   * Test {@link TaxException#TaxException(String)}.
-   *
-   * <ul>
-   *   <li>When {@code An error occurred}.
-   *   <li>Then return Message is {@code An error occurred}.
-   * </ul>
-   *
-   * <p>Method under test: {@link TaxException#TaxException(String)}
+   * Method under test: {@link TaxException#TaxException(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void TaxException.<init>()",
-    "void TaxException.<init>(String)",
-    "void TaxException.<init>(String, Throwable)",
-    "void TaxException.<init>(Throwable)"
-  })
-  public void testNewTaxException_whenAnErrorOccurred_thenReturnMessageIsAnErrorOccurred() {
+  public void testNewTaxException2() {
     // Arrange and Act
     TaxException actualTaxException = new TaxException("An error occurred");
 
@@ -85,25 +52,10 @@ public class TaxExceptionDiffblueTest {
   }
 
   /**
-   * Test {@link TaxException#TaxException(String, Throwable)}.
-   *
-   * <ul>
-   *   <li>When {@code An error occurred}.
-   *   <li>Then return Message is {@code An error occurred}.
-   * </ul>
-   *
-   * <p>Method under test: {@link TaxException#TaxException(String, Throwable)}
+   * Method under test: {@link TaxException#TaxException(String, Throwable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void TaxException.<init>()",
-    "void TaxException.<init>(String)",
-    "void TaxException.<init>(String, Throwable)",
-    "void TaxException.<init>(Throwable)"
-  })
-  public void testNewTaxException_whenAnErrorOccurred_thenReturnMessageIsAnErrorOccurred2() {
+  public void testNewTaxException3() {
     // Arrange
     Throwable cause = new Throwable();
 
@@ -117,25 +69,10 @@ public class TaxExceptionDiffblueTest {
   }
 
   /**
-   * Test {@link TaxException#TaxException(Throwable)}.
-   *
-   * <ul>
-   *   <li>When {@link Throwable#Throwable()}.
-   *   <li>Then return Message is {@code Throwable}.
-   * </ul>
-   *
-   * <p>Method under test: {@link TaxException#TaxException(Throwable)}
+   * Method under test: {@link TaxException#TaxException(Throwable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void TaxException.<init>()",
-    "void TaxException.<init>(String)",
-    "void TaxException.<init>(String, Throwable)",
-    "void TaxException.<init>(Throwable)"
-  })
-  public void testNewTaxException_whenThrowable_thenReturnMessageIsJavaLangThrowable() {
+  public void testNewTaxException4() {
     // Arrange
     Throwable cause = new Throwable();
 

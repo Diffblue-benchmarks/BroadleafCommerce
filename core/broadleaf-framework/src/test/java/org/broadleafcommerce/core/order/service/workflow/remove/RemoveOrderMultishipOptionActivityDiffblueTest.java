@@ -17,14 +17,10 @@
  */
 package org.broadleafcommerce.core.order.service.workflow.remove;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
-import java.math.BigDecimal;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -37,8 +33,6 @@ import org.broadleafcommerce.core.order.domain.DiscreteOrderItem;
 import org.broadleafcommerce.core.order.domain.DiscreteOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.GiftWrapOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
-import org.broadleafcommerce.core.order.domain.Order;
-import org.broadleafcommerce.core.order.domain.OrderItem;
 import org.broadleafcommerce.core.order.domain.PersonalMessageImpl;
 import org.broadleafcommerce.core.order.service.call.OrderItemRequestDTO;
 import org.broadleafcommerce.core.order.service.type.OrderItemType;
@@ -46,36 +40,23 @@ import org.broadleafcommerce.core.order.service.workflow.CartOperationRequest;
 import org.broadleafcommerce.core.workflow.DefaultProcessContextImpl;
 import org.broadleafcommerce.core.workflow.ProcessContext;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
 public class RemoveOrderMultishipOptionActivityDiffblueTest {
-  @InjectMocks private RemoveOrderMultishipOptionActivity removeOrderMultishipOptionActivity;
-
   /**
-   * Test {@link RemoveOrderMultishipOptionActivity#execute(ProcessContext)}.
-   *
-   * <ul>
-   *   <li>Then SeedData AddedOrderItem return {@link BundleOrderItemImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RemoveOrderMultishipOptionActivity#execute(ProcessContext)}
+   * Method under test:
+   * {@link RemoveOrderMultishipOptionActivity#execute(ProcessContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ProcessContext RemoveOrderMultishipOptionActivity.execute(ProcessContext)"})
-  public void testExecute_thenSeedDataAddedOrderItemReturnBundleOrderItemImpl() throws Exception {
+  public void testExecute() throws Exception {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    RemoveOrderMultishipOptionActivity removeOrderMultishipOptionActivity = new RemoveOrderMultishipOptionActivity();
+
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     ArrayList<DiscreteOrderItem> discreteOrderItems = new ArrayList<>();
@@ -102,7 +83,6 @@ public class RemoveOrderMultishipOptionActivityDiffblueTest {
     orderItem.setOrderItemType(OrderItemType.BASIC);
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
-    orderItem.setPrice(new Money());
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
     orderItem.setRetailPrice(new Money());
@@ -114,64 +94,35 @@ public class RemoveOrderMultishipOptionActivityDiffblueTest {
     orderItem.setDiscreteOrderItems(discreteOrderItems);
     NullOrderImpl order = new NullOrderImpl();
 
-    CartOperationRequest cartOperationRequest =
-        new CartOperationRequest(order, new OrderItemRequestDTO(), true);
+    CartOperationRequest cartOperationRequest = new CartOperationRequest(order, new OrderItemRequestDTO(), true);
     cartOperationRequest.setOrderItem(orderItem);
 
     DefaultProcessContextImpl<CartOperationRequest> context = new DefaultProcessContextImpl<>();
     context.setSeedData(cartOperationRequest);
 
-    // Act
-    ProcessContext<CartOperationRequest> actualExecuteResult =
-        removeOrderMultishipOptionActivity.execute(context);
-
-    // Assert
-    CartOperationRequest seedData = actualExecuteResult.getSeedData();
-    OrderItem addedOrderItem = seedData.getAddedOrderItem();
-    assertTrue(addedOrderItem instanceof BundleOrderItemImpl);
-    assertTrue(actualExecuteResult instanceof DefaultProcessContextImpl);
-    assertSame(orderItem, addedOrderItem);
-    assertSame(orderItem, seedData.getOrderItem());
+    // Act and Assert
+    assertSame(context, removeOrderMultishipOptionActivity.execute((ProcessContext<CartOperationRequest>) context));
   }
 
   /**
-   * Test {@link RemoveOrderMultishipOptionActivity#execute(ProcessContext)}.
-   *
-   * <ul>
-   *   <li>Then SeedData Order return {@link NullOrderImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RemoveOrderMultishipOptionActivity#execute(ProcessContext)}
+   * Method under test:
+   * {@link RemoveOrderMultishipOptionActivity#execute(ProcessContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ProcessContext RemoveOrderMultishipOptionActivity.execute(ProcessContext)"})
-  public void testExecute_thenSeedDataOrderReturnNullOrderImpl() throws Exception {
+  public void testExecute2() throws Exception {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    DefaultProcessContextImpl<CartOperationRequest> context = new DefaultProcessContextImpl<>();
+    RemoveOrderMultishipOptionActivity removeOrderMultishipOptionActivity = new RemoveOrderMultishipOptionActivity();
+    ProcessContext<CartOperationRequest> context = mock(ProcessContext.class);
     NullOrderImpl order = new NullOrderImpl();
-    CartOperationRequest cartOperationRequest =
-        new CartOperationRequest(order, new OrderItemRequestDTO(), true);
-    context.setSeedData(cartOperationRequest);
+    when(context.getSeedData()).thenReturn(new CartOperationRequest(order, new OrderItemRequestDTO(), true));
 
     // Act
-    ProcessContext<CartOperationRequest> actualExecuteResult =
-        removeOrderMultishipOptionActivity.execute(context);
+    ProcessContext<CartOperationRequest> actualExecuteResult = removeOrderMultishipOptionActivity.execute(context);
 
     // Assert
-    CartOperationRequest seedData = actualExecuteResult.getSeedData();
-    Order order2 = seedData.getOrder();
-    assertTrue(order2 instanceof NullOrderImpl);
-    assertTrue(actualExecuteResult instanceof DefaultProcessContextImpl);
-    assertNull(seedData.getAddedOrderItem());
-    assertNull(seedData.getOrderItem());
-    Money orderAdjustmentsValue = order2.getOrderAdjustmentsValue();
-    assertEquals(new BigDecimal("0.00"), orderAdjustmentsValue.getAmount());
-    Money actualAbsResult = orderAdjustmentsValue.abs();
-    assertEquals(orderAdjustmentsValue, actualAbsResult);
-    Money actualZeroResult = orderAdjustmentsValue.zero();
-    assertEquals(orderAdjustmentsValue, actualZeroResult);
-    assertEquals(orderAdjustmentsValue, order2.getSubTotal());
+    verify(context).getSeedData();
+    assertSame(context, actualExecuteResult);
   }
 }

@@ -19,37 +19,33 @@ package org.broadleafcommerce.common.config;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Map;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.resource.jdbc.spi.PhysicalConnectionHandlingMode;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(classes = {BroadleafCommonConfig.class})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class BroadleafCommonConfigDiffblueTest {
+  @Autowired
+  private BroadleafCommonConfig broadleafCommonConfig;
+
   /**
-   * Test {@link BroadleafCommonConfig#blJpaVendorAdapter()}.
-   *
-   * <ul>
-   *   <li>Given {@link BroadleafCommonConfig} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link BroadleafCommonConfig#blJpaVendorAdapter()}
+   * Method under test: {@link BroadleafCommonConfig#blJpaVendorAdapter()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"JpaVendorAdapter BroadleafCommonConfig.blJpaVendorAdapter()"})
-  public void testBlJpaVendorAdapter_givenBroadleafCommonConfig() {
+  public void testBlJpaVendorAdapter() {
     // Arrange and Act
-    JpaVendorAdapter actualBlJpaVendorAdapterResult =
-        new BroadleafCommonConfig().blJpaVendorAdapter();
-    actualBlJpaVendorAdapterResult.getPersistenceProvider();
+    JpaVendorAdapter actualBlJpaVendorAdapterResult = broadleafCommonConfig.blJpaVendorAdapter();
 
     // Assert
     Map<String, ?> jpaPropertyMap = actualBlJpaVendorAdapterResult.getJpaPropertyMap();
@@ -57,15 +53,12 @@ public class BroadleafCommonConfigDiffblueTest {
     Object getResult = jpaPropertyMap.get("hibernate.connection.handling_mode");
     assertTrue(getResult instanceof PhysicalConnectionHandlingMode);
     assertTrue(actualBlJpaVendorAdapterResult instanceof HibernateJpaVendorAdapter);
-    assertEquals(
-        "org.hibernate", actualBlJpaVendorAdapterResult.getPersistenceProviderRootPackage());
+    assertEquals("org.hibernate", actualBlJpaVendorAdapterResult.getPersistenceProviderRootPackage());
     assertEquals(PhysicalConnectionHandlingMode.DELAYED_ACQUISITION_AND_HOLD, getResult);
     Class<Session> expectedEntityManagerInterface = Session.class;
-    assertEquals(
-        expectedEntityManagerInterface, actualBlJpaVendorAdapterResult.getEntityManagerInterface());
+    assertEquals(expectedEntityManagerInterface, actualBlJpaVendorAdapterResult.getEntityManagerInterface());
     Class<SessionFactory> expectedEntityManagerFactoryInterface = SessionFactory.class;
-    assertEquals(
-        expectedEntityManagerFactoryInterface,
+    assertEquals(expectedEntityManagerFactoryInterface,
         actualBlJpaVendorAdapterResult.getEntityManagerFactoryInterface());
   }
 }

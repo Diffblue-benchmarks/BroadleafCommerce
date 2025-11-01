@@ -18,37 +18,39 @@
 package org.broadleafcommerce.cms.admin.web.controller;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiFunction;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
 public class AdminStructuredContentControllerDiffblueTest {
-  @InjectMocks private AdminStructuredContentController adminStructuredContentController;
-
   /**
-   * Test {@link AdminStructuredContentController#getSectionKey(Map)}.
-   *
-   * <ul>
-   *   <li>Given {@code sectionKey}.
-   *   <li>Then return {@code sectionKey}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminStructuredContentController#getSectionKey(Map)}
+   * Method under test:
+   * {@link AdminStructuredContentController#getSectionKey(Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String AdminStructuredContentController.getSectionKey(Map)"})
-  public void testGetSectionKey_givenSectionKey_thenReturnSectionKey() {
+  public void testGetSectionKey() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    AdminStructuredContentController adminStructuredContentController = new AdminStructuredContentController();
+
+    // Act and Assert
+    assertEquals("structured-content", adminStructuredContentController.getSectionKey(new HashMap<>()));
+  }
+
+  /**
+   * Method under test:
+   * {@link AdminStructuredContentController#getSectionKey(Map)}
+   */
+  @Test
+  public void testGetSectionKey2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AdminStructuredContentController adminStructuredContentController = new AdminStructuredContentController();
+
     HashMap<String, String> pathVars = new HashMap<>();
     pathVars.put("sectionKey", "sectionKey");
 
@@ -57,22 +59,21 @@ public class AdminStructuredContentControllerDiffblueTest {
   }
 
   /**
-   * Test {@link AdminStructuredContentController#getSectionKey(Map)}.
-   *
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()}.
-   *   <li>Then return {@code structured-content}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminStructuredContentController#getSectionKey(Map)}
+   * Method under test:
+   * {@link AdminStructuredContentController#getSectionKey(Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String AdminStructuredContentController.getSectionKey(Map)"})
-  public void testGetSectionKey_whenHashMap_thenReturnStructuredContent() {
-    // Arrange, Act and Assert
-    assertEquals(
-        "structured-content", adminStructuredContentController.getSectionKey(new HashMap<>()));
+  public void testGetSectionKey3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AdminStructuredContentController adminStructuredContentController = new AdminStructuredContentController();
+
+    HashMap<String, String> pathVars = new HashMap<>();
+    pathVars.computeIfPresent("sectionKey", mock(BiFunction.class));
+    pathVars.put("sectionKey", "sectionKey");
+
+    // Act and Assert
+    assertEquals("sectionKey", adminStructuredContentController.getSectionKey(pathVars));
   }
 }

@@ -20,22 +20,33 @@ package org.broadleafcommerce.profile.core.event;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class RegisterCustomerEventDiffblueTest {
   /**
-   * Test {@link RegisterCustomerEvent#RegisterCustomerEvent(Object, Long)}.
-   *
-   * <p>Method under test: {@link RegisterCustomerEvent#RegisterCustomerEvent(Object, Long)}
+   * Methods under test:
+   * <ul>
+   *   <li>{@link RegisterCustomerEvent#setCustomerId(Long)}
+   *   <li>{@link RegisterCustomerEvent#getCustomerId()}
+   * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void RegisterCustomerEvent.<init>(Object, Long)"})
+  public void testGettersAndSetters() {
+    // Arrange
+    RegisterCustomerEvent registerCustomerEvent = new RegisterCustomerEvent("Source", 1L);
+
+    // Act
+    registerCustomerEvent.setCustomerId(1L);
+
+    // Assert that nothing has changed
+    assertEquals(1L, registerCustomerEvent.getCustomerId().longValue());
+  }
+
+  /**
+   * Method under test:
+   * {@link RegisterCustomerEvent#RegisterCustomerEvent(Object, Long)}
+   */
+  @Test
   public void testNewRegisterCustomerEvent() {
     // Arrange and Act
     RegisterCustomerEvent actualRegisterCustomerEvent = new RegisterCustomerEvent("Source", 1L);
@@ -50,33 +61,5 @@ public class RegisterCustomerEventDiffblueTest {
     assertNull(actualRegisterCustomerEvent.getTimeZoneId());
     assertEquals(1L, actualRegisterCustomerEvent.getCustomerId().longValue());
     assertTrue(actualRegisterCustomerEvent.getContext().isEmpty());
-  }
-
-  /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link RegisterCustomerEvent#setCustomerId(Long)}
-   *   <li>{@link RegisterCustomerEvent#getCustomerId()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Long RegisterCustomerEvent.getCustomerId()",
-    "void RegisterCustomerEvent.setCustomerId(Long)"
-  })
-  public void testGettersAndSetters() {
-    // Arrange
-    RegisterCustomerEvent registerCustomerEvent = new RegisterCustomerEvent("Source", 1L);
-
-    // Act
-    registerCustomerEvent.setCustomerId(1L);
-
-    // Assert
-    assertEquals(1L, registerCustomerEvent.getCustomerId().longValue());
   }
 }

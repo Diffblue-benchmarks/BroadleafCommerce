@@ -19,19 +19,30 @@ package org.broadleafcommerce.core.web.controller.catalog;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import java.io.IOException;
+import java.util.function.Function;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.core.search.service.SearchService;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
+import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
+import org.broadleafcommerce.core.web.security.XssRequestWrapper;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.ui.ConcurrentModel;
+import org.springframework.ui.Model;
 
 class BroadleafSearchControllerDiffblueTest {
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link BroadleafSearchController}
    *   <li>{@link BroadleafSearchController#getSearchService()}
@@ -39,14 +50,6 @@ class BroadleafSearchControllerDiffblueTest {
    * </ul>
    */
   @Test
-  @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void BroadleafSearchController.<init>()",
-    "SearchService BroadleafSearchController.getSearchService()",
-    "java.lang.String BroadleafSearchController.getSearchView()"
-  })
   void testGettersAndSetters() {
     // Arrange and Act
     BroadleafSearchController actualBroadleafSearchController = new BroadleafSearchController();
@@ -55,5 +58,33 @@ class BroadleafSearchControllerDiffblueTest {
     // Assert
     assertEquals("catalog/search", actualBroadleafSearchController.getSearchView());
     assertNull(actualSearchService);
+  }
+
+  /**
+   * Method under test:
+   * {@link BroadleafSearchController#search(Model, HttpServletRequest, HttpServletResponse, String)}
+   */
+  @Test
+  void testSearch() throws IOException, ServletException, ServiceException {
+    // Arrange
+    BroadleafSearchController broadleafSearchController = new BroadleafSearchController();
+    Function<String, Object> function = mock(Function.class);
+    when(function.apply(Mockito.<String>any())).thenReturn("Apply");
+
+    ConcurrentModel model = new ConcurrentModel();
+    model.computeIfAbsent("facetField", function);
+
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    servletRequest.addParameter("facetField", "42");
+    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
+
+    // Act
+    String actualSearchResult = broadleafSearchController.search(model, request, new MockHttpServletResponse(),
+        "Query");
+
+    // Assert
+    verify(function).apply(eq("facetField"));
+    assertEquals("redirect:http://localhost", actualSearchResult);
   }
 }

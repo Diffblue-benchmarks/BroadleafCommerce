@@ -19,56 +19,39 @@ package org.broadleafcommerce.core.web.seo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import java.util.HashMap;
 import java.util.Map;
-import org.broadleafcommerce.common.page.dto.PageDTO;
-import org.broadleafcommerce.core.catalog.domain.Category;
-import org.broadleafcommerce.core.catalog.domain.CategoryAttribute;
-import org.broadleafcommerce.core.catalog.domain.CategoryAttributeImpl;
-import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
-import org.broadleafcommerce.core.catalog.domain.Product;
-import org.broadleafcommerce.core.catalog.domain.ProductAttribute;
-import org.broadleafcommerce.core.catalog.domain.ProductAttributeImpl;
-import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
+import java.util.function.BiFunction;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(MockitoExtension.class)
 class BasicSeoPropertyGeneratorImplDiffblueTest {
-  @InjectMocks private BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl;
-
-  @Mock private SeoDefaultPropertyService seoDefaultPropertyService;
-
   /**
-   * Test {@link BasicSeoPropertyGeneratorImpl#filterForSeoProperties(Map)}.
-   *
-   * <ul>
-   *   <li>Given {@code foo}.
-   *   <li>When {@link HashMap#HashMap()} {@code foo} is {@code foo}.
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicSeoPropertyGeneratorImpl#filterForSeoProperties(Map)}
+   * Method under test:
+   * {@link BasicSeoPropertyGeneratorImpl#filterForSeoProperties(Map)}
    */
   @Test
-  @DisplayName(
-      "Test filterForSeoProperties(Map); given 'foo'; when HashMap() 'foo' is 'foo'; then return Empty")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map BasicSeoPropertyGeneratorImpl.filterForSeoProperties(Map)"})
-  void testFilterForSeoProperties_givenFoo_whenHashMapFooIsFoo_thenReturnEmpty() {
+  void testFilterForSeoProperties() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl = new BasicSeoPropertyGeneratorImpl();
+
+    // Act and Assert
+    assertTrue(basicSeoPropertyGeneratorImpl.filterForSeoProperties(new HashMap<>()).isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link BasicSeoPropertyGeneratorImpl#filterForSeoProperties(Map)}
+   */
+  @Test
+  void testFilterForSeoProperties2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl = new BasicSeoPropertyGeneratorImpl();
+
     HashMap<String, String> properties = new HashMap<>();
     properties.put("foo", "foo");
 
@@ -77,419 +60,80 @@ class BasicSeoPropertyGeneratorImplDiffblueTest {
   }
 
   /**
-   * Test {@link BasicSeoPropertyGeneratorImpl#filterForSeoProperties(Map)}.
-   *
-   * <ul>
-   *   <li>Given {@code metaDescription}.
-   *   <li>When {@link HashMap#HashMap()} {@code metaDescription} is {@code foo}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicSeoPropertyGeneratorImpl#filterForSeoProperties(Map)}
+   * Method under test:
+   * {@link BasicSeoPropertyGeneratorImpl#filterForSeoProperties(Map)}
    */
   @Test
-  @DisplayName(
-      "Test filterForSeoProperties(Map); given 'metaDescription'; when HashMap() 'metaDescription' is 'foo'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map BasicSeoPropertyGeneratorImpl.filterForSeoProperties(Map)"})
-  void testFilterForSeoProperties_givenMetaDescription_whenHashMapMetaDescriptionIsFoo() {
+  void testFilterForSeoProperties3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl = new BasicSeoPropertyGeneratorImpl();
+
     HashMap<String, String> properties = new HashMap<>();
-    properties.put("metaDescription", "foo");
+    properties.computeIfPresent("title", mock(BiFunction.class));
+    properties.put("foo", "foo");
 
-    // Act
-    Map<String, String> actualFilterForSeoPropertiesResult =
-        basicSeoPropertyGeneratorImpl.filterForSeoProperties(properties);
-
-    // Assert
-    assertEquals(properties, actualFilterForSeoPropertiesResult);
+    // Act and Assert
+    assertTrue(basicSeoPropertyGeneratorImpl.filterForSeoProperties(properties).isEmpty());
   }
 
   /**
-   * Test {@link BasicSeoPropertyGeneratorImpl#filterForSeoProperties(Map)}.
-   *
-   * <ul>
-   *   <li>Given {@code title}.
-   *   <li>When {@link HashMap#HashMap()} {@code title} is {@code foo}.
-   *   <li>Then return {@link HashMap#HashMap()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicSeoPropertyGeneratorImpl#filterForSeoProperties(Map)}
+   * Method under test:
+   * {@link BasicSeoPropertyGeneratorImpl#filterForSeoProperties(Map)}
    */
   @Test
-  @DisplayName(
-      "Test filterForSeoProperties(Map); given 'title'; when HashMap() 'title' is 'foo'; then return HashMap()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map BasicSeoPropertyGeneratorImpl.filterForSeoProperties(Map)"})
-  void testFilterForSeoProperties_givenTitle_whenHashMapTitleIsFoo_thenReturnHashMap() {
+  void testFilterForSeoProperties4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl = new BasicSeoPropertyGeneratorImpl();
+
     HashMap<String, String> properties = new HashMap<>();
     properties.put("title", "foo");
 
     // Act
-    Map<String, String> actualFilterForSeoPropertiesResult =
-        basicSeoPropertyGeneratorImpl.filterForSeoProperties(properties);
+    Map<String, String> actualFilterForSeoPropertiesResult = basicSeoPropertyGeneratorImpl
+        .filterForSeoProperties(properties);
 
     // Assert
-    assertEquals(properties, actualFilterForSeoPropertiesResult);
+    assertEquals(1, actualFilterForSeoPropertiesResult.size());
+    assertEquals("foo", actualFilterForSeoPropertiesResult.get("title"));
   }
 
   /**
-   * Test {@link BasicSeoPropertyGeneratorImpl#filterForSeoProperties(Map)}.
-   *
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()}.
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicSeoPropertyGeneratorImpl#filterForSeoProperties(Map)}
+   * Method under test:
+   * {@link BasicSeoPropertyGeneratorImpl#filterForSeoProperties(Map)}
    */
   @Test
-  @DisplayName("Test filterForSeoProperties(Map); when HashMap(); then return Empty")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map BasicSeoPropertyGeneratorImpl.filterForSeoProperties(Map)"})
-  void testFilterForSeoProperties_whenHashMap_thenReturnEmpty() {
-    // Arrange, Act and Assert
-    assertTrue(basicSeoPropertyGeneratorImpl.filterForSeoProperties(new HashMap<>()).isEmpty());
-  }
+  void testFilterForSeoProperties5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-  /**
-   * Test {@link BasicSeoPropertyGeneratorImpl#gatherSeoProperties(Category)} with {@code category}.
-   *
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@link CategoryAttributeImpl} (default
-   *       constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicSeoPropertyGeneratorImpl#gatherSeoProperties(Category)}
-   */
-  @Test
-  @DisplayName(
-      "Test gatherSeoProperties(Category) with 'category'; given HashMap() 'foo' is CategoryAttributeImpl (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map BasicSeoPropertyGeneratorImpl.gatherSeoProperties(Category)"})
-  void testGatherSeoPropertiesWithCategory_givenHashMapFooIsCategoryAttributeImpl() {
     // Arrange
-    when(seoDefaultPropertyService.getCanonicalUrl(Mockito.<Category>any()))
-        .thenReturn("https://example.org/example");
-    when(seoDefaultPropertyService.getCategoryDescriptionPattern())
-        .thenReturn("Category Description Pattern");
-    when(seoDefaultPropertyService.getCategoryTitlePattern()).thenReturn("Dr");
-    when(seoDefaultPropertyService.getPaginationNextUrl(Mockito.<Category>any()))
-        .thenReturn("https://example.org/example");
-    when(seoDefaultPropertyService.getPaginationPrevUrl(Mockito.<Category>any()))
-        .thenReturn("https://example.org/example");
+    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl = new BasicSeoPropertyGeneratorImpl();
 
-    HashMap<String, CategoryAttribute> categoryAttributes = new HashMap<>();
-    categoryAttributes.put("foo", new CategoryAttributeImpl());
-
-    CategoryImpl category = new CategoryImpl();
-    category.setCategoryAttributesMap(categoryAttributes);
-
-    // Act
-    Map<String, String> actualGatherSeoPropertiesResult =
-        basicSeoPropertyGeneratorImpl.gatherSeoProperties(category);
-
-    // Assert
-    verify(seoDefaultPropertyService).getCanonicalUrl(isA(Category.class));
-    verify(seoDefaultPropertyService).getCategoryDescriptionPattern();
-    verify(seoDefaultPropertyService).getCategoryTitlePattern();
-    verify(seoDefaultPropertyService).getPaginationNextUrl(isA(Category.class));
-    verify(seoDefaultPropertyService).getPaginationPrevUrl(isA(Category.class));
-    assertEquals(5, actualGatherSeoPropertiesResult.size());
-    assertEquals(
-        "Category Description Pattern", actualGatherSeoPropertiesResult.get("metaDescription"));
-    assertEquals("Dr", actualGatherSeoPropertiesResult.get("title"));
-    assertEquals(
-        "https://example.org/example", actualGatherSeoPropertiesResult.get("canonicalUrl"));
-    assertEquals(
-        "https://example.org/example", actualGatherSeoPropertiesResult.get("paginationNextUrl"));
-    assertEquals(
-        "https://example.org/example", actualGatherSeoPropertiesResult.get("paginationPrevUrl"));
-  }
-
-  /**
-   * Test {@link BasicSeoPropertyGeneratorImpl#gatherSeoProperties(Category)} with {@code category}.
-   *
-   * <ul>
-   *   <li>When {@link CategoryImpl} (default constructor).
-   *   <li>Then return size is five.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicSeoPropertyGeneratorImpl#gatherSeoProperties(Category)}
-   */
-  @Test
-  @DisplayName(
-      "Test gatherSeoProperties(Category) with 'category'; when CategoryImpl (default constructor); then return size is five")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map BasicSeoPropertyGeneratorImpl.gatherSeoProperties(Category)"})
-  void testGatherSeoPropertiesWithCategory_whenCategoryImpl_thenReturnSizeIsFive() {
-    // Arrange
-    when(seoDefaultPropertyService.getCanonicalUrl(Mockito.<Category>any()))
-        .thenReturn("https://example.org/example");
-    when(seoDefaultPropertyService.getCategoryDescriptionPattern())
-        .thenReturn("Category Description Pattern");
-    when(seoDefaultPropertyService.getCategoryTitlePattern()).thenReturn("Dr");
-    when(seoDefaultPropertyService.getPaginationNextUrl(Mockito.<Category>any()))
-        .thenReturn("https://example.org/example");
-    when(seoDefaultPropertyService.getPaginationPrevUrl(Mockito.<Category>any()))
-        .thenReturn("https://example.org/example");
-
-    // Act
-    Map<String, String> actualGatherSeoPropertiesResult =
-        basicSeoPropertyGeneratorImpl.gatherSeoProperties(new CategoryImpl());
-
-    // Assert
-    verify(seoDefaultPropertyService).getCanonicalUrl(isA(Category.class));
-    verify(seoDefaultPropertyService).getCategoryDescriptionPattern();
-    verify(seoDefaultPropertyService).getCategoryTitlePattern();
-    verify(seoDefaultPropertyService).getPaginationNextUrl(isA(Category.class));
-    verify(seoDefaultPropertyService).getPaginationPrevUrl(isA(Category.class));
-    assertEquals(5, actualGatherSeoPropertiesResult.size());
-    assertEquals(
-        "Category Description Pattern", actualGatherSeoPropertiesResult.get("metaDescription"));
-    assertEquals("Dr", actualGatherSeoPropertiesResult.get("title"));
-    assertEquals(
-        "https://example.org/example", actualGatherSeoPropertiesResult.get("canonicalUrl"));
-    assertEquals(
-        "https://example.org/example", actualGatherSeoPropertiesResult.get("paginationNextUrl"));
-    assertEquals(
-        "https://example.org/example", actualGatherSeoPropertiesResult.get("paginationPrevUrl"));
-  }
-
-  /**
-   * Test {@link BasicSeoPropertyGeneratorImpl#gatherSeoProperties(PageDTO)} with {@code page}.
-   *
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@code foo}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicSeoPropertyGeneratorImpl#gatherSeoProperties(PageDTO)}
-   */
-  @Test
-  @DisplayName("Test gatherSeoProperties(PageDTO) with 'page'; given HashMap() 'foo' is 'foo'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map BasicSeoPropertyGeneratorImpl.gatherSeoProperties(PageDTO)"})
-  void testGatherSeoPropertiesWithPage_givenHashMapFooIsFoo() {
-    // Arrange
-    when(seoDefaultPropertyService.getDescription(Mockito.<PageDTO>any()))
-        .thenReturn("The characteristics of someone or something");
-    when(seoDefaultPropertyService.getTitle(Mockito.<PageDTO>any())).thenReturn("Dr");
-
-    HashMap<String, String> pageAttributes = new HashMap<>();
-    pageAttributes.put("foo", "foo");
-
-    PageDTO page = new PageDTO();
-    page.setPageAttributes(pageAttributes);
-
-    // Act
-    Map<String, String> actualGatherSeoPropertiesResult =
-        basicSeoPropertyGeneratorImpl.gatherSeoProperties(page);
-
-    // Assert
-    verify(seoDefaultPropertyService).getDescription(isA(PageDTO.class));
-    verify(seoDefaultPropertyService).getTitle(isA(PageDTO.class));
-    assertEquals(2, actualGatherSeoPropertiesResult.size());
-    assertEquals("Dr", actualGatherSeoPropertiesResult.get("title"));
-    assertEquals(
-        "The characteristics of someone or something",
-        actualGatherSeoPropertiesResult.get("metaDescription"));
-  }
-
-  /**
-   * Test {@link BasicSeoPropertyGeneratorImpl#gatherSeoProperties(PageDTO)} with {@code page}.
-   *
-   * <ul>
-   *   <li>When {@link PageDTO} (default constructor).
-   *   <li>Then return size is two.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicSeoPropertyGeneratorImpl#gatherSeoProperties(PageDTO)}
-   */
-  @Test
-  @DisplayName(
-      "Test gatherSeoProperties(PageDTO) with 'page'; when PageDTO (default constructor); then return size is two")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map BasicSeoPropertyGeneratorImpl.gatherSeoProperties(PageDTO)"})
-  void testGatherSeoPropertiesWithPage_whenPageDTO_thenReturnSizeIsTwo() {
-    // Arrange
-    when(seoDefaultPropertyService.getDescription(Mockito.<PageDTO>any()))
-        .thenReturn("The characteristics of someone or something");
-    when(seoDefaultPropertyService.getTitle(Mockito.<PageDTO>any())).thenReturn("Dr");
-
-    // Act
-    Map<String, String> actualGatherSeoPropertiesResult =
-        basicSeoPropertyGeneratorImpl.gatherSeoProperties(new PageDTO());
-
-    // Assert
-    verify(seoDefaultPropertyService).getDescription(isA(PageDTO.class));
-    verify(seoDefaultPropertyService).getTitle(isA(PageDTO.class));
-    assertEquals(2, actualGatherSeoPropertiesResult.size());
-    assertEquals("Dr", actualGatherSeoPropertiesResult.get("title"));
-    assertEquals(
-        "The characteristics of someone or something",
-        actualGatherSeoPropertiesResult.get("metaDescription"));
-  }
-
-  /**
-   * Test {@link BasicSeoPropertyGeneratorImpl#gatherSeoProperties(Product)} with {@code product}.
-   *
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@link ProductAttributeImpl} (default
-   *       constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicSeoPropertyGeneratorImpl#gatherSeoProperties(Product)}
-   */
-  @Test
-  @DisplayName(
-      "Test gatherSeoProperties(Product) with 'product'; given HashMap() 'foo' is ProductAttributeImpl (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map BasicSeoPropertyGeneratorImpl.gatherSeoProperties(Product)"})
-  void testGatherSeoPropertiesWithProduct_givenHashMapFooIsProductAttributeImpl() {
-    // Arrange
-    when(seoDefaultPropertyService.getCanonicalUrl(Mockito.<Product>any()))
-        .thenReturn("https://example.org/example");
-    when(seoDefaultPropertyService.getPaginationNextUrl(Mockito.<Product>any()))
-        .thenReturn("https://example.org/example");
-    when(seoDefaultPropertyService.getPaginationPrevUrl(Mockito.<Product>any()))
-        .thenReturn("https://example.org/example");
-    when(seoDefaultPropertyService.getProductDescriptionPattern(Mockito.<Product>any()))
-        .thenReturn("Product Description Pattern");
-    when(seoDefaultPropertyService.getProductTitlePattern(Mockito.<Product>any())).thenReturn("Dr");
-
-    HashMap<String, ProductAttribute> productAttributes = new HashMap<>();
-    productAttributes.put("foo", new ProductAttributeImpl());
-
-    ProductBundleImpl product = new ProductBundleImpl();
-    product.setProductAttributes(productAttributes);
-
-    // Act
-    Map<String, String> actualGatherSeoPropertiesResult =
-        basicSeoPropertyGeneratorImpl.gatherSeoProperties(product);
-
-    // Assert
-    verify(seoDefaultPropertyService).getCanonicalUrl(isA(Product.class));
-    verify(seoDefaultPropertyService).getPaginationNextUrl(isA(Product.class));
-    verify(seoDefaultPropertyService).getPaginationPrevUrl(isA(Product.class));
-    verify(seoDefaultPropertyService).getProductDescriptionPattern(isA(Product.class));
-    verify(seoDefaultPropertyService).getProductTitlePattern(isA(Product.class));
-    assertEquals(5, actualGatherSeoPropertiesResult.size());
-    assertEquals("Dr", actualGatherSeoPropertiesResult.get("title"));
-    assertEquals(
-        "Product Description Pattern", actualGatherSeoPropertiesResult.get("metaDescription"));
-    assertEquals(
-        "https://example.org/example", actualGatherSeoPropertiesResult.get("canonicalUrl"));
-    assertEquals(
-        "https://example.org/example", actualGatherSeoPropertiesResult.get("paginationNextUrl"));
-    assertEquals(
-        "https://example.org/example", actualGatherSeoPropertiesResult.get("paginationPrevUrl"));
-  }
-
-  /**
-   * Test {@link BasicSeoPropertyGeneratorImpl#gatherSeoProperties(Product)} with {@code product}.
-   *
-   * <ul>
-   *   <li>When {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return size is five.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicSeoPropertyGeneratorImpl#gatherSeoProperties(Product)}
-   */
-  @Test
-  @DisplayName(
-      "Test gatherSeoProperties(Product) with 'product'; when ProductBundleImpl (default constructor); then return size is five")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map BasicSeoPropertyGeneratorImpl.gatherSeoProperties(Product)"})
-  void testGatherSeoPropertiesWithProduct_whenProductBundleImpl_thenReturnSizeIsFive() {
-    // Arrange
-    when(seoDefaultPropertyService.getCanonicalUrl(Mockito.<Product>any()))
-        .thenReturn("https://example.org/example");
-    when(seoDefaultPropertyService.getPaginationNextUrl(Mockito.<Product>any()))
-        .thenReturn("https://example.org/example");
-    when(seoDefaultPropertyService.getPaginationPrevUrl(Mockito.<Product>any()))
-        .thenReturn("https://example.org/example");
-    when(seoDefaultPropertyService.getProductDescriptionPattern(Mockito.<Product>any()))
-        .thenReturn("Product Description Pattern");
-    when(seoDefaultPropertyService.getProductTitlePattern(Mockito.<Product>any())).thenReturn("Dr");
-
-    // Act
-    Map<String, String> actualGatherSeoPropertiesResult =
-        basicSeoPropertyGeneratorImpl.gatherSeoProperties(new ProductBundleImpl());
-
-    // Assert
-    verify(seoDefaultPropertyService).getCanonicalUrl(isA(Product.class));
-    verify(seoDefaultPropertyService).getPaginationNextUrl(isA(Product.class));
-    verify(seoDefaultPropertyService).getPaginationPrevUrl(isA(Product.class));
-    verify(seoDefaultPropertyService).getProductDescriptionPattern(isA(Product.class));
-    verify(seoDefaultPropertyService).getProductTitlePattern(isA(Product.class));
-    assertEquals(5, actualGatherSeoPropertiesResult.size());
-    assertEquals("Dr", actualGatherSeoPropertiesResult.get("title"));
-    assertEquals(
-        "Product Description Pattern", actualGatherSeoPropertiesResult.get("metaDescription"));
-    assertEquals(
-        "https://example.org/example", actualGatherSeoPropertiesResult.get("canonicalUrl"));
-    assertEquals(
-        "https://example.org/example", actualGatherSeoPropertiesResult.get("paginationNextUrl"));
-    assertEquals(
-        "https://example.org/example", actualGatherSeoPropertiesResult.get("paginationPrevUrl"));
-  }
-
-  /**
-   * Test {@link BasicSeoPropertyGeneratorImpl#addDefaultTitle(Map, String)}.
-   *
-   * <ul>
-   *   <li>Given {@code title}.
-   *   <li>Then {@link HashMap#HashMap()} {@code title} is {@code Properties}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicSeoPropertyGeneratorImpl#addDefaultTitle(Map, String)}
-   */
-  @Test
-  @DisplayName(
-      "Test addDefaultTitle(Map, String); given 'title'; then HashMap() 'title' is 'Properties'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BasicSeoPropertyGeneratorImpl.addDefaultTitle(Map, String)"})
-  void testAddDefaultTitle_givenTitle_thenHashMapTitleIsProperties() {
-    // Arrange
     HashMap<String, String> properties = new HashMap<>();
-    properties.put("title", "Properties");
-    properties.put("title", "Properties");
+    properties.put("metaDescription", "foo");
 
     // Act
-    basicSeoPropertyGeneratorImpl.addDefaultTitle(properties, "Dr");
+    Map<String, String> actualFilterForSeoPropertiesResult = basicSeoPropertyGeneratorImpl
+        .filterForSeoProperties(properties);
 
-    // Assert that nothing has changed
-    assertEquals(1, properties.size());
-    assertEquals("Properties", properties.get("title"));
+    // Assert
+    assertEquals(1, actualFilterForSeoPropertiesResult.size());
+    assertEquals("foo", actualFilterForSeoPropertiesResult.get("metaDescription"));
   }
 
   /**
-   * Test {@link BasicSeoPropertyGeneratorImpl#addDefaultTitle(Map, String)}.
-   *
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()}.
-   *   <li>Then {@link HashMap#HashMap()} {@code title} is {@code Dr}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicSeoPropertyGeneratorImpl#addDefaultTitle(Map, String)}
+   * Method under test:
+   * {@link BasicSeoPropertyGeneratorImpl#addDefaultTitle(Map, String)}
    */
   @Test
-  @DisplayName("Test addDefaultTitle(Map, String); when HashMap(); then HashMap() 'title' is 'Dr'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BasicSeoPropertyGeneratorImpl.addDefaultTitle(Map, String)"})
-  void testAddDefaultTitle_whenHashMap_thenHashMapTitleIsDr() {
+  void testAddDefaultTitle() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl = new BasicSeoPropertyGeneratorImpl();
     HashMap<String, String> properties = new HashMap<>();
 
     // Act
@@ -501,22 +145,59 @@ class BasicSeoPropertyGeneratorImplDiffblueTest {
   }
 
   /**
-   * Test {@link BasicSeoPropertyGeneratorImpl#addDefaultDescription(Map, String)}.
-   *
-   * <ul>
-   *   <li>Then {@link HashMap#HashMap()} {@code metaDescription} is {@code Default Description}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicSeoPropertyGeneratorImpl#addDefaultDescription(Map, String)}
+   * Method under test:
+   * {@link BasicSeoPropertyGeneratorImpl#addDefaultTitle(Map, String)}
    */
   @Test
-  @DisplayName(
-      "Test addDefaultDescription(Map, String); then HashMap() 'metaDescription' is 'Default Description'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BasicSeoPropertyGeneratorImpl.addDefaultDescription(Map, String)"})
-  void testAddDefaultDescription_thenHashMapMetaDescriptionIsDefaultDescription() {
+  void testAddDefaultTitle2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl = new BasicSeoPropertyGeneratorImpl();
+
+    HashMap<String, String> properties = new HashMap<>();
+    properties.put("title", "Properties");
+
+    // Act
+    basicSeoPropertyGeneratorImpl.addDefaultTitle(properties, "Dr");
+
+    // Assert that nothing has changed
+    assertEquals(1, properties.size());
+    assertEquals("Properties", properties.get("title"));
+  }
+
+  /**
+   * Method under test:
+   * {@link BasicSeoPropertyGeneratorImpl#addDefaultTitle(Map, String)}
+   */
+  @Test
+  void testAddDefaultTitle3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl = new BasicSeoPropertyGeneratorImpl();
+
+    HashMap<String, String> properties = new HashMap<>();
+    properties.computeIfPresent("title", mock(BiFunction.class));
+
+    // Act
+    basicSeoPropertyGeneratorImpl.addDefaultTitle(properties, "Dr");
+
+    // Assert
+    assertEquals(1, properties.size());
+    assertEquals("Dr", properties.get("title"));
+  }
+
+  /**
+   * Method under test:
+   * {@link BasicSeoPropertyGeneratorImpl#addDefaultDescription(Map, String)}
+   */
+  @Test
+  void testAddDefaultDescription() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl = new BasicSeoPropertyGeneratorImpl();
     HashMap<String, String> properties = new HashMap<>();
 
     // Act
@@ -528,24 +209,17 @@ class BasicSeoPropertyGeneratorImplDiffblueTest {
   }
 
   /**
-   * Test {@link BasicSeoPropertyGeneratorImpl#addDefaultDescription(Map, String)}.
-   *
-   * <ul>
-   *   <li>Then {@link HashMap#HashMap()} {@code metaDescription} is {@code Properties}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BasicSeoPropertyGeneratorImpl#addDefaultDescription(Map, String)}
+   * Method under test:
+   * {@link BasicSeoPropertyGeneratorImpl#addDefaultDescription(Map, String)}
    */
   @Test
-  @DisplayName(
-      "Test addDefaultDescription(Map, String); then HashMap() 'metaDescription' is 'Properties'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BasicSeoPropertyGeneratorImpl.addDefaultDescription(Map, String)"})
-  void testAddDefaultDescription_thenHashMapMetaDescriptionIsProperties() {
+  void testAddDefaultDescription2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl = new BasicSeoPropertyGeneratorImpl();
+
     HashMap<String, String> properties = new HashMap<>();
-    properties.put("metaDescription", "Properties");
     properties.put("metaDescription", "Properties");
 
     // Act
@@ -554,5 +228,27 @@ class BasicSeoPropertyGeneratorImplDiffblueTest {
     // Assert that nothing has changed
     assertEquals(1, properties.size());
     assertEquals("Properties", properties.get("metaDescription"));
+  }
+
+  /**
+   * Method under test:
+   * {@link BasicSeoPropertyGeneratorImpl#addDefaultDescription(Map, String)}
+   */
+  @Test
+  void testAddDefaultDescription3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl = new BasicSeoPropertyGeneratorImpl();
+
+    HashMap<String, String> properties = new HashMap<>();
+    properties.computeIfPresent("metaDescription", mock(BiFunction.class));
+
+    // Act
+    basicSeoPropertyGeneratorImpl.addDefaultDescription(properties, "Default Description");
+
+    // Assert
+    assertEquals(1, properties.size());
+    assertEquals("Default Description", properties.get("metaDescription"));
   }
 }

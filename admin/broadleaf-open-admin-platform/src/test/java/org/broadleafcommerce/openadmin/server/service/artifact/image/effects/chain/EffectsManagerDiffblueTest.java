@@ -21,9 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -41,55 +39,36 @@ import org.broadleafcommerce.openadmin.server.service.artifact.image.effects.cha
 import org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.filter.Rotate;
 import org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.filter.UnsharpMask;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-open-admin-contentClient-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class EffectsManagerDiffblueTest {
-  @Autowired private EffectsManager effectsManager;
-
   /**
-   * Test {@link EffectsManager#buildOperations(Map, InputStream, String)}.
-   *
-   * <p>Method under test: {@link EffectsManager#buildOperations(Map, InputStream, String)}
+   * Method under test:
+   * {@link EffectsManager#buildOperations(Map, InputStream, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.openadmin.server.service.artifact.image.Operation[] EffectsManager.buildOperations(Map, InputStream, String)"
-  })
   public void testBuildOperations() throws UnsupportedEncodingException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    EffectsManager effectsManager = new EffectsManager();
     HashMap<String, String> parameterMap = new HashMap<>();
 
     // Act and Assert
-    assertEquals(
-        0,
-        effectsManager.buildOperations(
-                parameterMap, new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "text/plain")
-            .length);
+    assertEquals(0, effectsManager.buildOperations(parameterMap, new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")),
+        "Mime Type").length);
   }
 
   /**
-   * Test {@link EffectsManager#renderEffect(String, Double, UnmarshalledParameter[],
-   * BufferedImage)} with {@code effectName}, {@code factor}, {@code parameters}, {@code src}.
-   *
-   * <p>Method under test: {@link EffectsManager#renderEffect(String, Double,
-   * UnmarshalledParameter[], BufferedImage)}
+   * Method under test:
+   * {@link EffectsManager#renderEffect(String, Double, UnmarshalledParameter[], BufferedImage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BufferedImage EffectsManager.renderEffect(String, Double, UnmarshalledParameter[], BufferedImage)"
-  })
-  public void testRenderEffectWithEffectNameFactorParametersSrc() throws Exception {
+  public void testRenderEffect() throws Exception {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    EffectsManager effectsManager = new EffectsManager();
+
     UnmarshalledParameter unmarshalledParameter = new UnmarshalledParameter();
     unmarshalledParameter.setApplyFactor(true);
     unmarshalledParameter.setName("Name");
@@ -97,32 +76,21 @@ public class EffectsManagerDiffblueTest {
     unmarshalledParameter.setValue("42");
 
     // Act and Assert
-    assertThrows(
-        FilterNotFoundException.class,
-        () ->
-            effectsManager.renderEffect(
-                "Effect Name",
-                10.0d,
-                new UnmarshalledParameter[] {unmarshalledParameter},
-                new BufferedImage(1, 1, 1)));
+    assertThrows(FilterNotFoundException.class, () -> effectsManager.renderEffect("Effect Name", 10.0d,
+        new UnmarshalledParameter[]{unmarshalledParameter}, new BufferedImage(1, 1, 1)));
   }
 
   /**
-   * Test {@link EffectsManager#renderEffect(String, Double, UnmarshalledParameter[], BufferedImage,
-   * String)} with {@code effectName}, {@code factor}, {@code parameters}, {@code src}, {@code
-   * formatName}.
-   *
-   * <p>Method under test: {@link EffectsManager#renderEffect(String, Double,
-   * UnmarshalledParameter[], BufferedImage, String)}
+   * Method under test:
+   * {@link EffectsManager#renderEffect(String, Double, UnmarshalledParameter[], BufferedImage, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BufferedImage EffectsManager.renderEffect(String, Double, UnmarshalledParameter[], BufferedImage, String)"
-  })
-  public void testRenderEffectWithEffectNameFactorParametersSrcFormatName() throws Exception {
+  public void testRenderEffect2() throws Exception {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    EffectsManager effectsManager = new EffectsManager();
+
     UnmarshalledParameter unmarshalledParameter = new UnmarshalledParameter();
     unmarshalledParameter.setApplyFactor(true);
     unmarshalledParameter.setName("Name");
@@ -130,22 +98,62 @@ public class EffectsManagerDiffblueTest {
     unmarshalledParameter.setValue("42");
 
     // Act and Assert
-    assertThrows(
-        FilterNotFoundException.class,
-        () ->
-            effectsManager.renderEffect(
-                "Effect Name",
-                10.0d,
-                new UnmarshalledParameter[] {unmarshalledParameter},
-                new BufferedImage(1, 1, 1),
-                "Format Name"));
+    assertThrows(FilterNotFoundException.class, () -> effectsManager.renderEffect("Effect Name", 10.0d,
+        new UnmarshalledParameter[]{unmarshalledParameter}, new BufferedImage(1, 1, 1), "Format Name"));
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Method under test: {@link EffectsManager#setFilters(Map)}
+   */
+  @Test
+  public void testSetFilters() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EffectsManager effectsManager = new EffectsManager();
+
+    // Act
+    effectsManager.setFilters(new HashMap<>());
+
+    // Assert
+    Map<String, OperationBuilder> filters = effectsManager.getFilters();
+    assertEquals(8, filters.size());
+    assertTrue(filters.containsKey("alterhsb"));
+    assertTrue(filters.containsKey("autolevelsrgb"));
+    assertTrue(filters.containsKey("gaussianblur"));
+    assertTrue(filters.containsKey("resize"));
+    assertTrue(filters.containsKey("rotate"));
+    assertTrue(filters.containsKey("unsharpmask"));
+  }
+
+  /**
+   * Method under test: {@link EffectsManager#setFilters(Map)}
+   */
+  @Test
+  public void testSetFilters2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EffectsManager effectsManager = new EffectsManager();
+
+    HashMap<String, OperationBuilder> filters = new HashMap<>();
+    filters.put("foo", mock(OperationBuilder.class));
+
+    // Act
+    effectsManager.setFilters(filters);
+
+    // Assert
+    Map<String, OperationBuilder> filters2 = effectsManager.getFilters();
+    assertEquals(9, filters2.size());
+    assertTrue(filters2.containsKey("alterhsb"));
+    assertTrue(filters2.containsKey("gaussianblur"));
+    assertTrue(filters2.containsKey("resize"));
+    assertTrue(filters2.containsKey("rotate"));
+    assertTrue(filters2.containsKey("unsharpmask"));
+  }
+
+  /**
+   * Methods under test:
    * <ul>
    *   <li>{@link EffectsManager#setConversionManager(ConversionManager)}
    *   <li>{@link EffectsManager#getConversionManager()}
@@ -153,13 +161,6 @@ public class EffectsManagerDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ConversionManager EffectsManager.getConversionManager()",
-    "Map EffectsManager.getFilters()",
-    "void EffectsManager.setConversionManager(ConversionManager)"
-  })
   public void testGettersAndSetters() {
     // Arrange
     EffectsManager effectsManager = new EffectsManager();
@@ -170,7 +171,7 @@ public class EffectsManagerDiffblueTest {
     ConversionManager actualConversionManager = effectsManager.getConversionManager();
     Map<String, OperationBuilder> actualFilters = effectsManager.getFilters();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals(8, actualFilters.size());
     assertTrue(actualFilters.get("alterhsb") instanceof AlterHSB);
     assertTrue(actualFilters.get("alterrgb") instanceof AlterRGB);

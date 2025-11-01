@@ -21,16 +21,15 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
-import org.broadleafcommerce.common.page.dto.PageDTO;
 import org.broadleafcommerce.common.structure.dto.ItemCriteriaDTO;
 import org.broadleafcommerce.core.order.dao.OrderDao;
 import org.broadleafcommerce.core.order.dao.OrderDaoImpl;
@@ -41,35 +40,29 @@ import org.broadleafcommerce.core.order.domain.OrderItem;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = {PageCartRuleProcessor.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(SpringJUnit4ClassRunner.class)
 public class AbstractCartRuleProcessorDiffblueTest {
-  @Autowired private AbstractCartRuleProcessor<PageDTO> abstractCartRuleProcessor;
-
   /**
-   * Test {@link AbstractCartRuleProcessor#lookupOrderForCustomer(Customer)}.
-   *
-   * <ul>
-   *   <li>Then return {@link NullOrderImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractCartRuleProcessor#lookupOrderForCustomer(Customer)}
+   * Method under test:
+   * {@link AbstractCartRuleProcessor#lookupOrderForCustomer(Customer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Order AbstractCartRuleProcessor.lookupOrderForCustomer(Customer)"})
-  public void testLookupOrderForCustomer_thenReturnNullOrderImpl() {
+  public void testLookupOrderForCustomer() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertNull((new PageCartRuleProcessor()).lookupOrderForCustomer(null));
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractCartRuleProcessor#lookupOrderForCustomer(Customer)}
+   */
+  @Test
+  public void testLookupOrderForCustomer2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     OrderDaoImpl orderDao = mock(OrderDaoImpl.class);
     NullOrderImpl nullOrderImpl = new NullOrderImpl();
@@ -79,8 +72,7 @@ public class AbstractCartRuleProcessorDiffblueTest {
     pageCartRuleProcessor.setOrderDao(orderDao);
 
     // Act
-    Order actualLookupOrderForCustomerResult =
-        pageCartRuleProcessor.lookupOrderForCustomer(new CustomerImpl());
+    Order actualLookupOrderForCustomerResult = pageCartRuleProcessor.lookupOrderForCustomer(new CustomerImpl());
 
     // Assert
     verify(orderDao).readCartForCustomer(isA(Customer.class));
@@ -88,398 +80,35 @@ public class AbstractCartRuleProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link AbstractCartRuleProcessor#lookupOrderForCustomer(Customer)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractCartRuleProcessor#lookupOrderForCustomer(Customer)}
+   * Method under test:
+   * {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Order AbstractCartRuleProcessor.lookupOrderForCustomer(Customer)"})
-  public void testLookupOrderForCustomer_whenNull_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(abstractCartRuleProcessor.lookupOrderForCustomer(null));
-  }
+  public void testCheckItemCriteria() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-  /**
-   * Test {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}.
-   *
-   * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>When {@link ItemCriteriaDTO} (default constructor) MatchRule is {@code 42}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO,
-   * List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AbstractCartRuleProcessor.checkItemCriteria(ItemCriteriaDTO, List)"})
-  public void testCheckItemCriteria_given42_whenItemCriteriaDTOMatchRuleIs42_thenReturnFalse() {
     // Arrange
-    ItemCriteriaDTO itemCriteria = new ItemCriteriaDTO();
-    itemCriteria.setMatchRule("42");
-    itemCriteria.setQty(1);
+    PageCartRuleProcessor pageCartRuleProcessor = new PageCartRuleProcessor();
 
-    ArrayList<OrderItem> orderItems = new ArrayList<>();
-    orderItems.add(new BundleOrderItemImpl());
-
-    // Act and Assert
-    assertFalse(abstractCartRuleProcessor.checkItemCriteria(itemCriteria, orderItems));
-  }
-
-  /**
-   * Test {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}.
-   *
-   * <ul>
-   *   <li>Given {@code discreteOrderItem}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO,
-   * List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AbstractCartRuleProcessor.checkItemCriteria(ItemCriteriaDTO, List)"})
-  public void testCheckItemCriteria_givenDiscreteOrderItem() {
-    // Arrange
-    ItemCriteriaDTO itemCriteria = new ItemCriteriaDTO();
-    itemCriteria.setMatchRule("discreteOrderItem");
-    itemCriteria.setQty(1);
-
-    ArrayList<OrderItem> orderItems = new ArrayList<>();
-    orderItems.add(new BundleOrderItemImpl());
-
-    // Act and Assert
-    assertFalse(abstractCartRuleProcessor.checkItemCriteria(itemCriteria, orderItems));
-  }
-
-  /**
-   * Test {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}.
-   *
-   * <ul>
-   *   <li>Given empty string.
-   *   <li>When {@link ItemCriteriaDTO} (default constructor) MatchRule is empty string.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO,
-   * List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AbstractCartRuleProcessor.checkItemCriteria(ItemCriteriaDTO, List)"})
-  public void testCheckItemCriteria_givenEmptyString_whenItemCriteriaDTOMatchRuleIsEmptyString() {
-    // Arrange
-    ItemCriteriaDTO itemCriteria = new ItemCriteriaDTO();
-    itemCriteria.setMatchRule("");
-    itemCriteria.setQty(1);
-
-    ArrayList<OrderItem> orderItems = new ArrayList<>();
-    orderItems.add(new BundleOrderItemImpl());
-
-    // Act and Assert
-    assertFalse(abstractCartRuleProcessor.checkItemCriteria(itemCriteria, orderItems));
-  }
-
-  /**
-   * Test {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}.
-   *
-   * <ul>
-   *   <li>Given {@code getAdditionalAttributes()[UU]}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO,
-   * List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AbstractCartRuleProcessor.checkItemCriteria(ItemCriteriaDTO, List)"})
-  public void testCheckItemCriteria_givenGetAdditionalAttributesUu() {
-    // Arrange
-    ItemCriteriaDTO itemCriteria = new ItemCriteriaDTO();
-    itemCriteria.setMatchRule("getAdditionalAttributes()[UU]");
-    itemCriteria.setQty(1);
-
-    ArrayList<OrderItem> orderItems = new ArrayList<>();
-    orderItems.add(new BundleOrderItemImpl());
-
-    // Act and Assert
-    assertFalse(abstractCartRuleProcessor.checkItemCriteria(itemCriteria, orderItems));
-  }
-
-  /**
-   * Test {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}.
-   *
-   * <ul>
-   *   <li>Given {@code getAdditionalFields()[UU]}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO,
-   * List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AbstractCartRuleProcessor.checkItemCriteria(ItemCriteriaDTO, List)"})
-  public void testCheckItemCriteria_givenGetAdditionalFieldsUu() {
-    // Arrange
-    ItemCriteriaDTO itemCriteria = new ItemCriteriaDTO();
-    itemCriteria.setMatchRule("getAdditionalFields()[UU]");
-    itemCriteria.setQty(1);
-
-    ArrayList<OrderItem> orderItems = new ArrayList<>();
-    orderItems.add(new BundleOrderItemImpl());
-
-    // Act and Assert
-    assertFalse(abstractCartRuleProcessor.checkItemCriteria(itemCriteria, orderItems));
-  }
-
-  /**
-   * Test {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}.
-   *
-   * <ul>
-   *   <li>Given {@code getCategoryAttributesMap()[UU]}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO,
-   * List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AbstractCartRuleProcessor.checkItemCriteria(ItemCriteriaDTO, List)"})
-  public void testCheckItemCriteria_givenGetCategoryAttributesMapUu() {
-    // Arrange
-    ItemCriteriaDTO itemCriteria = new ItemCriteriaDTO();
-    itemCriteria.setMatchRule("getCategoryAttributesMap()[UU]");
-    itemCriteria.setQty(1);
-
-    ArrayList<OrderItem> orderItems = new ArrayList<>();
-    orderItems.add(new BundleOrderItemImpl());
-
-    // Act and Assert
-    assertFalse(abstractCartRuleProcessor.checkItemCriteria(itemCriteria, orderItems));
-  }
-
-  /**
-   * Test {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}.
-   *
-   * <ul>
-   *   <li>Given {@code getCustomerAttributes()[UU]}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO,
-   * List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AbstractCartRuleProcessor.checkItemCriteria(ItemCriteriaDTO, List)"})
-  public void testCheckItemCriteria_givenGetCustomerAttributesUu() {
-    // Arrange
-    ItemCriteriaDTO itemCriteria = new ItemCriteriaDTO();
-    itemCriteria.setMatchRule("getCustomerAttributes()[UU]");
-    itemCriteria.setQty(1);
-
-    ArrayList<OrderItem> orderItems = new ArrayList<>();
-    orderItems.add(new BundleOrderItemImpl());
-
-    // Act and Assert
-    assertFalse(abstractCartRuleProcessor.checkItemCriteria(itemCriteria, orderItems));
-  }
-
-  /**
-   * Test {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}.
-   *
-   * <ul>
-   *   <li>Given {@code getOrderItemAttributes()[UU]}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO,
-   * List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AbstractCartRuleProcessor.checkItemCriteria(ItemCriteriaDTO, List)"})
-  public void testCheckItemCriteria_givenGetOrderItemAttributesUu() {
-    // Arrange
-    ItemCriteriaDTO itemCriteria = new ItemCriteriaDTO();
-    itemCriteria.setMatchRule("getOrderItemAttributes()[UU]");
-    itemCriteria.setQty(1);
-
-    ArrayList<OrderItem> orderItems = new ArrayList<>();
-    orderItems.add(new BundleOrderItemImpl());
-
-    // Act and Assert
-    assertFalse(abstractCartRuleProcessor.checkItemCriteria(itemCriteria, orderItems));
-  }
-
-  /**
-   * Test {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}.
-   *
-   * <ul>
-   *   <li>Given {@code getProductAttributes()[UU]}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO,
-   * List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AbstractCartRuleProcessor.checkItemCriteria(ItemCriteriaDTO, List)"})
-  public void testCheckItemCriteria_givenGetProductAttributesUu() {
-    // Arrange
-    ItemCriteriaDTO itemCriteria = new ItemCriteriaDTO();
-    itemCriteria.setMatchRule("getProductAttributes()[UU]");
-    itemCriteria.setQty(1);
-
-    ArrayList<OrderItem> orderItems = new ArrayList<>();
-    orderItems.add(new BundleOrderItemImpl());
-
-    // Act and Assert
-    assertFalse(abstractCartRuleProcessor.checkItemCriteria(itemCriteria, orderItems));
-  }
-
-  /**
-   * Test {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}.
-   *
-   * <ul>
-   *   <li>Given {@code getSkuAttributes()[UU]}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO,
-   * List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AbstractCartRuleProcessor.checkItemCriteria(ItemCriteriaDTO, List)"})
-  public void testCheckItemCriteria_givenGetSkuAttributesUu() {
-    // Arrange
-    ItemCriteriaDTO itemCriteria = new ItemCriteriaDTO();
-    itemCriteria.setMatchRule("getSkuAttributes()[UU]");
-    itemCriteria.setQty(1);
-
-    ArrayList<OrderItem> orderItems = new ArrayList<>();
-    orderItems.add(new BundleOrderItemImpl());
-
-    // Act and Assert
-    assertFalse(abstractCartRuleProcessor.checkItemCriteria(itemCriteria, orderItems));
-  }
-
-  /**
-   * Test {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}.
-   *
-   * <ul>
-   *   <li>Given {@code Match Rule}.
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO,
-   * List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AbstractCartRuleProcessor.checkItemCriteria(ItemCriteriaDTO, List)"})
-  public void testCheckItemCriteria_givenMatchRule_whenArrayList_thenReturnFalse() {
-    // Arrange
     ItemCriteriaDTO itemCriteria = new ItemCriteriaDTO();
     itemCriteria.setMatchRule("Match Rule");
     itemCriteria.setQty(1);
 
     // Act and Assert
-    assertFalse(abstractCartRuleProcessor.checkItemCriteria(itemCriteria, new ArrayList<>()));
+    assertFalse(pageCartRuleProcessor.checkItemCriteria(itemCriteria, new ArrayList<>()));
   }
 
   /**
-   * Test {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}.
-   *
-   * <ul>
-   *   <li>Given {@code null}.
-   *   <li>When {@link ItemCriteriaDTO} (default constructor) MatchRule is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO,
-   * List)}
+   * Method under test:
+   * {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AbstractCartRuleProcessor.checkItemCriteria(ItemCriteriaDTO, List)"})
-  public void testCheckItemCriteria_givenNull_whenItemCriteriaDTOMatchRuleIsNull() {
+  public void testCheckItemCriteria2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    ItemCriteriaDTO itemCriteria = new ItemCriteriaDTO();
-    itemCriteria.setMatchRule(null);
-    itemCriteria.setQty(1);
+    PageCartRuleProcessor pageCartRuleProcessor = new PageCartRuleProcessor();
 
-    ArrayList<OrderItem> orderItems = new ArrayList<>();
-    orderItems.add(new BundleOrderItemImpl());
-
-    // Act and Assert
-    assertFalse(abstractCartRuleProcessor.checkItemCriteria(itemCriteria, orderItems));
-  }
-
-  /**
-   * Test {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}.
-   *
-   * <ul>
-   *   <li>Given seven.
-   *   <li>When {@link ItemCriteriaDTO} (default constructor) Qty is seven.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO,
-   * List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AbstractCartRuleProcessor.checkItemCriteria(ItemCriteriaDTO, List)"})
-  public void testCheckItemCriteria_givenSeven_whenItemCriteriaDTOQtyIsSeven_thenReturnFalse() {
-    // Arrange
-    ItemCriteriaDTO itemCriteria = new ItemCriteriaDTO();
-    itemCriteria.setMatchRule("getProductAttributes()[UU]");
-    itemCriteria.setQty(7);
-
-    ArrayList<OrderItem> orderItems = new ArrayList<>();
-    orderItems.add(new BundleOrderItemImpl());
-
-    // Act and Assert
-    assertFalse(abstractCartRuleProcessor.checkItemCriteria(itemCriteria, orderItems));
-  }
-
-  /**
-   * Test {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}.
-   *
-   * <ul>
-   *   <li>Given zero.
-   *   <li>When {@link ItemCriteriaDTO} (default constructor) Qty is zero.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO,
-   * List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AbstractCartRuleProcessor.checkItemCriteria(ItemCriteriaDTO, List)"})
-  public void testCheckItemCriteria_givenZero_whenItemCriteriaDTOQtyIsZero_thenReturnTrue() {
-    // Arrange
     ItemCriteriaDTO itemCriteria = new ItemCriteriaDTO();
     itemCriteria.setMatchRule("Match Rule");
     itemCriteria.setQty(0);
@@ -488,41 +117,487 @@ public class AbstractCartRuleProcessorDiffblueTest {
     orderItems.add(new BundleOrderItemImpl());
 
     // Act and Assert
-    assertTrue(abstractCartRuleProcessor.checkItemCriteria(itemCriteria, orderItems));
+    assertTrue(pageCartRuleProcessor.checkItemCriteria(itemCriteria, orderItems));
   }
 
   /**
-   * Test {@link AbstractCartRuleProcessor#setOrderDao(OrderDao)}.
-   *
-   * <p>Method under test: {@link AbstractCartRuleProcessor#setOrderDao(OrderDao)}
+   * Method under test:
+   * {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AbstractCartRuleProcessor.setOrderDao(OrderDao)"})
-  public void testSetOrderDao() {
+  public void testCheckItemCriteria3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    PageCartRuleProcessor pageCartRuleProcessor = new PageCartRuleProcessor();
+    ItemCriteriaDTO itemCriteria = mock(ItemCriteriaDTO.class);
+    when(itemCriteria.getQty()).thenReturn(1);
+    doNothing().when(itemCriteria).setMatchRule(Mockito.<String>any());
+    doNothing().when(itemCriteria).setQty(Mockito.<Integer>any());
+    itemCriteria.setMatchRule("Match Rule");
+    itemCriteria.setQty(1);
+
+    // Act
+    boolean actualCheckItemCriteriaResult = pageCartRuleProcessor.checkItemCriteria(itemCriteria, new ArrayList<>());
+
+    // Assert
+    verify(itemCriteria, atLeast(1)).getQty();
+    verify(itemCriteria).setMatchRule(eq("Match Rule"));
+    verify(itemCriteria).setQty(eq(1));
+    assertFalse(actualCheckItemCriteriaResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}
+   */
+  @Test
+  public void testCheckItemCriteria4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PageCartRuleProcessor pageCartRuleProcessor = new PageCartRuleProcessor();
+    ItemCriteriaDTO itemCriteria = mock(ItemCriteriaDTO.class);
+    when(itemCriteria.getMatchRule()).thenReturn("foo");
+    when(itemCriteria.getQty()).thenReturn(1);
+    doNothing().when(itemCriteria).setMatchRule(Mockito.<String>any());
+    doNothing().when(itemCriteria).setQty(Mockito.<Integer>any());
+    itemCriteria.setMatchRule("Match Rule");
+    itemCriteria.setQty(1);
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(new BundleOrderItemImpl());
+
+    // Act
+    boolean actualCheckItemCriteriaResult = pageCartRuleProcessor.checkItemCriteria(itemCriteria, orderItems);
+
+    // Assert
+    verify(itemCriteria).getMatchRule();
+    verify(itemCriteria, atLeast(1)).getQty();
+    verify(itemCriteria).setMatchRule(eq("Match Rule"));
+    verify(itemCriteria).setQty(eq(1));
+    assertFalse(actualCheckItemCriteriaResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}
+   */
+  @Test
+  public void testCheckItemCriteria5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PageCartRuleProcessor pageCartRuleProcessor = new PageCartRuleProcessor();
+    ItemCriteriaDTO itemCriteria = mock(ItemCriteriaDTO.class);
+    when(itemCriteria.getMatchRule()).thenReturn("42");
+    when(itemCriteria.getQty()).thenReturn(1);
+    doNothing().when(itemCriteria).setMatchRule(Mockito.<String>any());
+    doNothing().when(itemCriteria).setQty(Mockito.<Integer>any());
+    itemCriteria.setMatchRule("Match Rule");
+    itemCriteria.setQty(1);
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(new BundleOrderItemImpl());
+
+    // Act
+    boolean actualCheckItemCriteriaResult = pageCartRuleProcessor.checkItemCriteria(itemCriteria, orderItems);
+
+    // Assert
+    verify(itemCriteria).getMatchRule();
+    verify(itemCriteria, atLeast(1)).getQty();
+    verify(itemCriteria).setMatchRule(eq("Match Rule"));
+    verify(itemCriteria).setQty(eq(1));
+    assertFalse(actualCheckItemCriteriaResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}
+   */
+  @Test
+  public void testCheckItemCriteria6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PageCartRuleProcessor pageCartRuleProcessor = new PageCartRuleProcessor();
+    ItemCriteriaDTO itemCriteria = mock(ItemCriteriaDTO.class);
+    when(itemCriteria.getMatchRule()).thenReturn("");
+    when(itemCriteria.getQty()).thenReturn(1);
+    doNothing().when(itemCriteria).setMatchRule(Mockito.<String>any());
+    doNothing().when(itemCriteria).setQty(Mockito.<Integer>any());
+    itemCriteria.setMatchRule("Match Rule");
+    itemCriteria.setQty(1);
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(new BundleOrderItemImpl());
+
+    // Act
+    boolean actualCheckItemCriteriaResult = pageCartRuleProcessor.checkItemCriteria(itemCriteria, orderItems);
+
+    // Assert
+    verify(itemCriteria).getMatchRule();
+    verify(itemCriteria, atLeast(1)).getQty();
+    verify(itemCriteria).setMatchRule(eq("Match Rule"));
+    verify(itemCriteria).setQty(eq(1));
+    assertFalse(actualCheckItemCriteriaResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}
+   */
+  @Test
+  public void testCheckItemCriteria7() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PageCartRuleProcessor pageCartRuleProcessor = new PageCartRuleProcessor();
+    ItemCriteriaDTO itemCriteria = mock(ItemCriteriaDTO.class);
+    when(itemCriteria.getMatchRule()).thenReturn("foo");
+    when(itemCriteria.getQty()).thenReturn(7);
+    doNothing().when(itemCriteria).setMatchRule(Mockito.<String>any());
+    doNothing().when(itemCriteria).setQty(Mockito.<Integer>any());
+    itemCriteria.setMatchRule("Match Rule");
+    itemCriteria.setQty(1);
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(new BundleOrderItemImpl());
+
+    // Act
+    boolean actualCheckItemCriteriaResult = pageCartRuleProcessor.checkItemCriteria(itemCriteria, orderItems);
+
+    // Assert
+    verify(itemCriteria).getMatchRule();
+    verify(itemCriteria, atLeast(1)).getQty();
+    verify(itemCriteria).setMatchRule(eq("Match Rule"));
+    verify(itemCriteria).setQty(eq(1));
+    assertFalse(actualCheckItemCriteriaResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}
+   */
+  @Test
+  public void testCheckItemCriteria8() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PageCartRuleProcessor pageCartRuleProcessor = new PageCartRuleProcessor();
+    ItemCriteriaDTO itemCriteria = mock(ItemCriteriaDTO.class);
+    when(itemCriteria.getMatchRule()).thenReturn("getProductAttributes()[UU]");
+    when(itemCriteria.getQty()).thenReturn(1);
+    doNothing().when(itemCriteria).setMatchRule(Mockito.<String>any());
+    doNothing().when(itemCriteria).setQty(Mockito.<Integer>any());
+    itemCriteria.setMatchRule("Match Rule");
+    itemCriteria.setQty(1);
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(new BundleOrderItemImpl());
+    orderItems.add(new BundleOrderItemImpl());
+
+    // Act
+    boolean actualCheckItemCriteriaResult = pageCartRuleProcessor.checkItemCriteria(itemCriteria, orderItems);
+
+    // Assert
+    verify(itemCriteria, atLeast(1)).getMatchRule();
+    verify(itemCriteria, atLeast(1)).getQty();
+    verify(itemCriteria).setMatchRule(eq("Match Rule"));
+    verify(itemCriteria).setQty(eq(1));
+    assertFalse(actualCheckItemCriteriaResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}
+   */
+  @Test
+  public void testCheckItemCriteria9() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PageCartRuleProcessor pageCartRuleProcessor = new PageCartRuleProcessor();
+    ItemCriteriaDTO itemCriteria = mock(ItemCriteriaDTO.class);
+    when(itemCriteria.getMatchRule()).thenReturn("getCategoryAttributesMap()[UU]");
+    when(itemCriteria.getQty()).thenReturn(1);
+    doNothing().when(itemCriteria).setMatchRule(Mockito.<String>any());
+    doNothing().when(itemCriteria).setQty(Mockito.<Integer>any());
+    itemCriteria.setMatchRule("Match Rule");
+    itemCriteria.setQty(1);
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(new BundleOrderItemImpl());
+    orderItems.add(new BundleOrderItemImpl());
+
+    // Act
+    boolean actualCheckItemCriteriaResult = pageCartRuleProcessor.checkItemCriteria(itemCriteria, orderItems);
+
+    // Assert
+    verify(itemCriteria, atLeast(1)).getMatchRule();
+    verify(itemCriteria, atLeast(1)).getQty();
+    verify(itemCriteria).setMatchRule(eq("Match Rule"));
+    verify(itemCriteria).setQty(eq(1));
+    assertFalse(actualCheckItemCriteriaResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}
+   */
+  @Test
+  public void testCheckItemCriteria10() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PageCartRuleProcessor pageCartRuleProcessor = new PageCartRuleProcessor();
+    ItemCriteriaDTO itemCriteria = mock(ItemCriteriaDTO.class);
+    when(itemCriteria.getMatchRule()).thenReturn("getSkuAttributes()[UU]");
+    when(itemCriteria.getQty()).thenReturn(1);
+    doNothing().when(itemCriteria).setMatchRule(Mockito.<String>any());
+    doNothing().when(itemCriteria).setQty(Mockito.<Integer>any());
+    itemCriteria.setMatchRule("Match Rule");
+    itemCriteria.setQty(1);
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(new BundleOrderItemImpl());
+    orderItems.add(new BundleOrderItemImpl());
+
+    // Act
+    boolean actualCheckItemCriteriaResult = pageCartRuleProcessor.checkItemCriteria(itemCriteria, orderItems);
+
+    // Assert
+    verify(itemCriteria, atLeast(1)).getMatchRule();
+    verify(itemCriteria, atLeast(1)).getQty();
+    verify(itemCriteria).setMatchRule(eq("Match Rule"));
+    verify(itemCriteria).setQty(eq(1));
+    assertFalse(actualCheckItemCriteriaResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}
+   */
+  @Test
+  public void testCheckItemCriteria11() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PageCartRuleProcessor pageCartRuleProcessor = new PageCartRuleProcessor();
+    ItemCriteriaDTO itemCriteria = mock(ItemCriteriaDTO.class);
+    when(itemCriteria.getMatchRule()).thenReturn("getOrderItemAttributes()[UU]");
+    when(itemCriteria.getQty()).thenReturn(1);
+    doNothing().when(itemCriteria).setMatchRule(Mockito.<String>any());
+    doNothing().when(itemCriteria).setQty(Mockito.<Integer>any());
+    itemCriteria.setMatchRule("Match Rule");
+    itemCriteria.setQty(1);
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(new BundleOrderItemImpl());
+    orderItems.add(new BundleOrderItemImpl());
+
+    // Act
+    boolean actualCheckItemCriteriaResult = pageCartRuleProcessor.checkItemCriteria(itemCriteria, orderItems);
+
+    // Assert
+    verify(itemCriteria, atLeast(1)).getMatchRule();
+    verify(itemCriteria, atLeast(1)).getQty();
+    verify(itemCriteria).setMatchRule(eq("Match Rule"));
+    verify(itemCriteria).setQty(eq(1));
+    assertFalse(actualCheckItemCriteriaResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}
+   */
+  @Test
+  public void testCheckItemCriteria12() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PageCartRuleProcessor pageCartRuleProcessor = new PageCartRuleProcessor();
+    ItemCriteriaDTO itemCriteria = mock(ItemCriteriaDTO.class);
+    when(itemCriteria.getMatchRule()).thenReturn("getCustomerAttributes()[UU]");
+    when(itemCriteria.getQty()).thenReturn(1);
+    doNothing().when(itemCriteria).setMatchRule(Mockito.<String>any());
+    doNothing().when(itemCriteria).setQty(Mockito.<Integer>any());
+    itemCriteria.setMatchRule("Match Rule");
+    itemCriteria.setQty(1);
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(new BundleOrderItemImpl());
+    orderItems.add(new BundleOrderItemImpl());
+
+    // Act
+    boolean actualCheckItemCriteriaResult = pageCartRuleProcessor.checkItemCriteria(itemCriteria, orderItems);
+
+    // Assert
+    verify(itemCriteria, atLeast(1)).getMatchRule();
+    verify(itemCriteria, atLeast(1)).getQty();
+    verify(itemCriteria).setMatchRule(eq("Match Rule"));
+    verify(itemCriteria).setQty(eq(1));
+    assertFalse(actualCheckItemCriteriaResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}
+   */
+  @Test
+  public void testCheckItemCriteria13() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PageCartRuleProcessor pageCartRuleProcessor = new PageCartRuleProcessor();
+    ItemCriteriaDTO itemCriteria = mock(ItemCriteriaDTO.class);
+    when(itemCriteria.getMatchRule()).thenReturn("getAdditionalAttributes()[UU]");
+    when(itemCriteria.getQty()).thenReturn(1);
+    doNothing().when(itemCriteria).setMatchRule(Mockito.<String>any());
+    doNothing().when(itemCriteria).setQty(Mockito.<Integer>any());
+    itemCriteria.setMatchRule("Match Rule");
+    itemCriteria.setQty(1);
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(new BundleOrderItemImpl());
+    orderItems.add(new BundleOrderItemImpl());
+
+    // Act
+    boolean actualCheckItemCriteriaResult = pageCartRuleProcessor.checkItemCriteria(itemCriteria, orderItems);
+
+    // Assert
+    verify(itemCriteria, atLeast(1)).getMatchRule();
+    verify(itemCriteria, atLeast(1)).getQty();
+    verify(itemCriteria).setMatchRule(eq("Match Rule"));
+    verify(itemCriteria).setQty(eq(1));
+    assertFalse(actualCheckItemCriteriaResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}
+   */
+  @Test
+  public void testCheckItemCriteria14() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PageCartRuleProcessor pageCartRuleProcessor = new PageCartRuleProcessor();
+    ItemCriteriaDTO itemCriteria = mock(ItemCriteriaDTO.class);
+    when(itemCriteria.getMatchRule()).thenReturn("getAdditionalFields()[UU]");
+    when(itemCriteria.getQty()).thenReturn(1);
+    doNothing().when(itemCriteria).setMatchRule(Mockito.<String>any());
+    doNothing().when(itemCriteria).setQty(Mockito.<Integer>any());
+    itemCriteria.setMatchRule("Match Rule");
+    itemCriteria.setQty(1);
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(new BundleOrderItemImpl());
+    orderItems.add(new BundleOrderItemImpl());
+
+    // Act
+    boolean actualCheckItemCriteriaResult = pageCartRuleProcessor.checkItemCriteria(itemCriteria, orderItems);
+
+    // Assert
+    verify(itemCriteria, atLeast(1)).getMatchRule();
+    verify(itemCriteria, atLeast(1)).getQty();
+    verify(itemCriteria).setMatchRule(eq("Match Rule"));
+    verify(itemCriteria).setQty(eq(1));
+    assertFalse(actualCheckItemCriteriaResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}
+   */
+  @Test
+  public void testCheckItemCriteria15() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PageCartRuleProcessor pageCartRuleProcessor = new PageCartRuleProcessor();
+    ItemCriteriaDTO itemCriteria = mock(ItemCriteriaDTO.class);
+    when(itemCriteria.getMatchRule()).thenReturn("discreteOrderItem");
+    when(itemCriteria.getQty()).thenReturn(1);
+    doNothing().when(itemCriteria).setMatchRule(Mockito.<String>any());
+    doNothing().when(itemCriteria).setQty(Mockito.<Integer>any());
+    itemCriteria.setMatchRule("Match Rule");
+    itemCriteria.setQty(1);
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(new BundleOrderItemImpl());
+    orderItems.add(new BundleOrderItemImpl());
+
+    // Act
+    boolean actualCheckItemCriteriaResult = pageCartRuleProcessor.checkItemCriteria(itemCriteria, orderItems);
+
+    // Assert
+    verify(itemCriteria, atLeast(1)).getMatchRule();
+    verify(itemCriteria, atLeast(1)).getQty();
+    verify(itemCriteria).setMatchRule(eq("Match Rule"));
+    verify(itemCriteria).setQty(eq(1));
+    assertFalse(actualCheckItemCriteriaResult);
+  }
+
+  /**
+   * Method under test: {@link AbstractCartRuleProcessor#setOrderDao(OrderDao)}
+   */
+  @Test
+  public void testSetOrderDao() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PageCartRuleProcessor pageCartRuleProcessor = new PageCartRuleProcessor();
     OrderDaoImpl orderDao = new OrderDaoImpl();
 
     // Act
-    abstractCartRuleProcessor.setOrderDao(orderDao);
+    pageCartRuleProcessor.setOrderDao(orderDao);
 
     // Assert
-    assertTrue(abstractCartRuleProcessor instanceof PageCartRuleProcessor);
-    assertSame(orderDao, abstractCartRuleProcessor.getOrderDao());
+    assertSame(orderDao, pageCartRuleProcessor.getOrderDao());
   }
 
   /**
-   * Test {@link AbstractCartRuleProcessor#getOrderDao()}.
-   *
-   * <p>Method under test: {@link AbstractCartRuleProcessor#getOrderDao()}
+   * Method under test: {@link AbstractCartRuleProcessor#setOrderDao(OrderDao)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"OrderDao AbstractCartRuleProcessor.getOrderDao()"})
+  public void testSetOrderDao2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PageCartRuleProcessor pageCartRuleProcessor = new PageCartRuleProcessor();
+    OrderDaoImpl orderDao = mock(OrderDaoImpl.class);
+
+    // Act
+    pageCartRuleProcessor.setOrderDao(orderDao);
+
+    // Assert
+    assertSame(orderDao, pageCartRuleProcessor.getOrderDao());
+  }
+
+  /**
+   * Method under test: {@link AbstractCartRuleProcessor#getOrderDao()}
+   */
+  @Test
   public void testGetOrderDao() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertNull(abstractCartRuleProcessor.getOrderDao());
+    assertNull((new PageCartRuleProcessor()).getOrderDao());
+  }
+
+  /**
+   * Method under test: {@link AbstractCartRuleProcessor#getOrderDao()}
+   */
+  @Test
+  public void testGetOrderDao2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PageCartRuleProcessor pageCartRuleProcessor = new PageCartRuleProcessor();
+    pageCartRuleProcessor.setOrderDao(mock(OrderDaoImpl.class));
+
+    // Act and Assert
+    assertSame(pageCartRuleProcessor.orderDao, pageCartRuleProcessor.getOrderDao());
   }
 }

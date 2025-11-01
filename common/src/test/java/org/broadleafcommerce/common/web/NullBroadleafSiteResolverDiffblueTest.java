@@ -18,92 +18,107 @@
 package org.broadleafcommerce.common.web;
 
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import org.broadleafcommerce.common.exception.SiteNotFoundException;
 import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrapper;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
-@ContextConfiguration(classes = {NullBroadleafSiteResolver.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class NullBroadleafSiteResolverDiffblueTest {
-  @Autowired private NullBroadleafSiteResolver nullBroadleafSiteResolver;
-
   /**
-   * Test {@link NullBroadleafSiteResolver#resolveSite(HttpServletRequest)} with {@code
-   * HttpServletRequest}.
-   *
-   * <ul>
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link NullBroadleafSiteResolver#resolveSite(HttpServletRequest)}
+   * Method under test:
+   * {@link NullBroadleafSiteResolver#resolveSite(HttpServletRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.common.site.domain.Site NullBroadleafSiteResolver.resolveSite(HttpServletRequest)"
-  })
-  public void testResolveSiteWithHttpServletRequest_thenReturnNull() {
-    // Arrange, Act and Assert
+  public void testResolveSite() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    NullBroadleafSiteResolver nullBroadleafSiteResolver = new NullBroadleafSiteResolver();
+
+    // Act and Assert
     assertNull(
-        nullBroadleafSiteResolver.resolveSite(
-            new HttpServletRequestWrapper(
-                new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()))));
+        nullBroadleafSiteResolver.resolveSite(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest())));
   }
 
   /**
-   * Test {@link NullBroadleafSiteResolver#resolveSite(WebRequest)} with {@code WebRequest}.
-   *
-   * <p>Method under test: {@link NullBroadleafSiteResolver#resolveSite(WebRequest)}
+   * Method under test:
+   * {@link NullBroadleafSiteResolver#resolveSite(HttpServletRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.common.site.domain.Site NullBroadleafSiteResolver.resolveSite(WebRequest)"
-  })
-  public void testResolveSiteWithWebRequest() {
+  public void testResolveSite2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
+    NullBroadleafSiteResolver nullBroadleafSiteResolver = new NullBroadleafSiteResolver();
 
     // Act and Assert
-    assertNull(nullBroadleafSiteResolver.resolveSite(new ServletWebRequest(request)));
+    assertNull(nullBroadleafSiteResolver
+        .resolveSite(new SessionlessHttpServletRequestWrapper(mock(SessionlessHttpServletRequestWrapper.class))));
   }
 
   /**
-   * Test {@link NullBroadleafSiteResolver#resolveSite(WebRequest, boolean)} with {@code
-   * WebRequest}, {@code boolean}.
-   *
-   * <p>Method under test: {@link NullBroadleafSiteResolver#resolveSite(WebRequest, boolean)}
+   * Method under test: {@link NullBroadleafSiteResolver#resolveSite(WebRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.common.site.domain.Site NullBroadleafSiteResolver.resolveSite(WebRequest, boolean)"
-  })
-  public void testResolveSiteWithWebRequestBoolean() throws SiteNotFoundException {
+  public void testResolveSite3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
+    NullBroadleafSiteResolver nullBroadleafSiteResolver = new NullBroadleafSiteResolver();
 
     // Act and Assert
-    assertNull(nullBroadleafSiteResolver.resolveSite(new ServletWebRequest(request), true));
+    assertNull(nullBroadleafSiteResolver
+        .resolveSite(new ServletWebRequest(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()))));
+  }
+
+  /**
+   * Method under test: {@link NullBroadleafSiteResolver#resolveSite(WebRequest)}
+   */
+  @Test
+  public void testResolveSite4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    NullBroadleafSiteResolver nullBroadleafSiteResolver = new NullBroadleafSiteResolver();
+
+    // Act and Assert
+    assertNull(nullBroadleafSiteResolver.resolveSite(new ServletWebRequest(
+        new SessionlessHttpServletRequestWrapper(mock(SessionlessHttpServletRequestWrapper.class)))));
+  }
+
+  /**
+   * Method under test:
+   * {@link NullBroadleafSiteResolver#resolveSite(WebRequest, boolean)}
+   */
+  @Test
+  public void testResolveSite5() throws SiteNotFoundException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    NullBroadleafSiteResolver nullBroadleafSiteResolver = new NullBroadleafSiteResolver();
+
+    // Act and Assert
+    assertNull(nullBroadleafSiteResolver.resolveSite(
+        new ServletWebRequest(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest())), true));
+  }
+
+  /**
+   * Method under test:
+   * {@link NullBroadleafSiteResolver#resolveSite(WebRequest, boolean)}
+   */
+  @Test
+  public void testResolveSite6() throws SiteNotFoundException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    NullBroadleafSiteResolver nullBroadleafSiteResolver = new NullBroadleafSiteResolver();
+
+    // Act and Assert
+    assertNull(nullBroadleafSiteResolver.resolveSite(new ServletWebRequest(
+        new SessionlessHttpServletRequestWrapper(mock(SessionlessHttpServletRequestWrapper.class))), true));
   }
 }

@@ -20,9 +20,7 @@ package org.broadleafcommerce.core.promotionMessage.dto;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.Date;
@@ -33,80 +31,10 @@ import org.broadleafcommerce.core.promotionMessage.domain.PromotionMessage;
 import org.broadleafcommerce.core.promotionMessage.domain.PromotionMessageImpl;
 import org.broadleafcommerce.profile.core.dto.CustomerRuleHolder;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class PromotionMessageDTODiffblueTest {
   /**
-   * Test {@link PromotionMessageDTO#PromotionMessageDTO(PromotionMessage)}.
-   *
-   * <ul>
-   *   <li>Then return MessagePlacement is {@code Message Location}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotionMessageDTO#PromotionMessageDTO(PromotionMessage)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PromotionMessageDTO.<init>(PromotionMessage)"})
-  public void testNewPromotionMessageDTO_thenReturnMessagePlacementIsMessageLocation() {
-    // Arrange
-    PromotionMessageImpl promotionMessage = new PromotionMessageImpl();
-    promotionMessage.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    promotionMessage.setId(PromotionMessageImpl.serialVersionUID);
-    CategoryMediaXrefImpl media = new CategoryMediaXrefImpl();
-    promotionMessage.setMedia(media);
-    promotionMessage.setMessage("Promotion Message");
-    promotionMessage.setMessagePlacement("Message Location");
-    promotionMessage.setName("Name");
-    promotionMessage.setPriority(1);
-    promotionMessage.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    promotionMessage.setLocale(new LocaleImpl());
-
-    // Act
-    PromotionMessageDTO actualPromotionMessageDTO = new PromotionMessageDTO(promotionMessage);
-
-    // Assert
-    assertEquals("Message Location", actualPromotionMessageDTO.getMessagePlacement());
-    assertEquals("Promotion Message", actualPromotionMessageDTO.getMessage());
-    assertEquals(1, actualPromotionMessageDTO.getPriority().intValue());
-    assertSame(media, actualPromotionMessageDTO.getMedia());
-  }
-
-  /**
-   * Test {@link PromotionMessageDTO#PromotionMessageDTO(PromotionMessage)}.
-   *
-   * <ul>
-   *   <li>When {@link PromotionMessageImpl} (default constructor).
-   *   <li>Then return Message is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotionMessageDTO#PromotionMessageDTO(PromotionMessage)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PromotionMessageDTO.<init>(PromotionMessage)"})
-  public void testNewPromotionMessageDTO_whenPromotionMessageImpl_thenReturnMessageIsNull() {
-    // Arrange and Act
-    PromotionMessageDTO actualPromotionMessageDTO =
-        new PromotionMessageDTO(new PromotionMessageImpl());
-
-    // Assert
-    assertNull(actualPromotionMessageDTO.getMessage());
-    assertNull(actualPromotionMessageDTO.getMessagePlacement());
-    assertNull(actualPromotionMessageDTO.getEndDate());
-    assertNull(actualPromotionMessageDTO.getMedia());
-    assertEquals(2147483646, actualPromotionMessageDTO.getPriority().intValue());
-  }
-
-  /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link PromotionMessageDTO#setCustomerRuleHolder(CustomerRuleHolder)}
    *   <li>{@link PromotionMessageDTO#setEndDate(Date)}
@@ -125,24 +53,6 @@ public class PromotionMessageDTODiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CustomerRuleHolder PromotionMessageDTO.getCustomerRuleHolder()",
-    "Date PromotionMessageDTO.getEndDate()",
-    "String PromotionMessageDTO.getLocaleCode()",
-    "Media PromotionMessageDTO.getMedia()",
-    "String PromotionMessageDTO.getMessage()",
-    "String PromotionMessageDTO.getMessagePlacement()",
-    "Integer PromotionMessageDTO.getPriority()",
-    "void PromotionMessageDTO.setCustomerRuleHolder(CustomerRuleHolder)",
-    "void PromotionMessageDTO.setEndDate(Date)",
-    "void PromotionMessageDTO.setLocaleCode(String)",
-    "void PromotionMessageDTO.setMedia(Media)",
-    "void PromotionMessageDTO.setMessage(String)",
-    "void PromotionMessageDTO.setMessagePlacement(String)",
-    "void PromotionMessageDTO.setPriority(Integer)"
-  })
   public void testGettersAndSetters() {
     // Arrange
     PromotionMessageDTO promotionMessageDTO = new PromotionMessageDTO(new PromotionMessageImpl());
@@ -150,8 +60,7 @@ public class PromotionMessageDTODiffblueTest {
 
     // Act
     promotionMessageDTO.setCustomerRuleHolder(customerRuleHolder);
-    Date endDate =
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    Date endDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
     promotionMessageDTO.setEndDate(endDate);
     promotionMessageDTO.setLocaleCode("en");
     CategoryMediaXrefImpl media = new CategoryMediaXrefImpl();
@@ -165,15 +74,101 @@ public class PromotionMessageDTODiffblueTest {
     Media actualMedia = promotionMessageDTO.getMedia();
     String actualMessage = promotionMessageDTO.getMessage();
     String actualMessagePlacement = promotionMessageDTO.getMessagePlacement();
+    Integer actualPriority = promotionMessageDTO.getPriority();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("Customer Rule", actualCustomerRuleHolder.getCustomerRule());
     assertEquals("Message Placement", actualMessagePlacement);
     assertEquals("Not all who wander are lost", actualMessage);
     assertEquals("en", actualLocaleCode);
-    assertEquals(1, promotionMessageDTO.getPriority().intValue());
+    assertEquals(1, actualPriority.intValue());
     assertSame(media, actualMedia);
     assertSame(customerRuleHolder, actualCustomerRuleHolder);
     assertSame(endDate, actualEndDate);
+  }
+
+  /**
+   * Method under test:
+   * {@link PromotionMessageDTO#PromotionMessageDTO(PromotionMessage)}
+   */
+  @Test
+  public void testNewPromotionMessageDTO() {
+    // Arrange and Act
+    PromotionMessageDTO actualPromotionMessageDTO = new PromotionMessageDTO(new PromotionMessageImpl());
+
+    // Assert
+    assertNull(actualPromotionMessageDTO.getLocaleCode());
+    assertNull(actualPromotionMessageDTO.getMessage());
+    assertNull(actualPromotionMessageDTO.getMessagePlacement());
+    assertNull(actualPromotionMessageDTO.getEndDate());
+    assertNull(actualPromotionMessageDTO.getMedia());
+    assertNull(actualPromotionMessageDTO.getCustomerRuleHolder());
+    assertEquals(2147483646, actualPromotionMessageDTO.getPriority().intValue());
+  }
+
+  /**
+   * Method under test:
+   * {@link PromotionMessageDTO#PromotionMessageDTO(PromotionMessage)}
+   */
+  @Test
+  public void testNewPromotionMessageDTO2() {
+    // Arrange
+    PromotionMessageImpl promotionMessage = new PromotionMessageImpl();
+    Date endDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    promotionMessage.setEndDate(endDate);
+    promotionMessage.setId(PromotionMessageImpl.serialVersionUID);
+    CategoryMediaXrefImpl media = new CategoryMediaXrefImpl();
+    promotionMessage.setMedia(media);
+    promotionMessage.setMessage("Promotion Message");
+    promotionMessage.setMessagePlacement("Message Location");
+    promotionMessage.setName("Name");
+    promotionMessage.setPriority(1);
+    promotionMessage
+        .setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    promotionMessage.setLocale(new LocaleImpl());
+
+    // Act
+    PromotionMessageDTO actualPromotionMessageDTO = new PromotionMessageDTO(promotionMessage);
+
+    // Assert
+    assertEquals("Message Location", actualPromotionMessageDTO.getMessagePlacement());
+    assertEquals("Promotion Message", actualPromotionMessageDTO.getMessage());
+    assertNull(actualPromotionMessageDTO.getLocaleCode());
+    assertNull(actualPromotionMessageDTO.getCustomerRuleHolder());
+    assertEquals(1, actualPromotionMessageDTO.getPriority().intValue());
+    assertSame(media, actualPromotionMessageDTO.getMedia());
+    assertSame(endDate, actualPromotionMessageDTO.getEndDate());
+  }
+
+  /**
+   * Method under test:
+   * {@link PromotionMessageDTO#PromotionMessageDTO(PromotionMessage)}
+   */
+  @Test
+  public void testNewPromotionMessageDTO3() {
+    // Arrange
+    PromotionMessageImpl promotionMessage = new PromotionMessageImpl();
+    promotionMessage.setEndDate(mock(java.sql.Date.class));
+    promotionMessage.setId(PromotionMessageImpl.serialVersionUID);
+    CategoryMediaXrefImpl media = new CategoryMediaXrefImpl();
+    promotionMessage.setMedia(media);
+    promotionMessage.setMessage("Promotion Message");
+    promotionMessage.setMessagePlacement("Message Location");
+    promotionMessage.setName("Name");
+    promotionMessage.setPriority(1);
+    promotionMessage
+        .setStartDate(java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    promotionMessage.setLocale(new LocaleImpl());
+
+    // Act
+    PromotionMessageDTO actualPromotionMessageDTO = new PromotionMessageDTO(promotionMessage);
+
+    // Assert
+    assertEquals("Message Location", actualPromotionMessageDTO.getMessagePlacement());
+    assertEquals("Promotion Message", actualPromotionMessageDTO.getMessage());
+    assertNull(actualPromotionMessageDTO.getLocaleCode());
+    assertNull(actualPromotionMessageDTO.getCustomerRuleHolder());
+    assertEquals(1, actualPromotionMessageDTO.getPriority().intValue());
+    assertSame(media, actualPromotionMessageDTO.getMedia());
   }
 }

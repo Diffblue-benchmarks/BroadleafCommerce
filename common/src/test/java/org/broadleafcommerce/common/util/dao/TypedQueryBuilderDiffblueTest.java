@@ -20,115 +20,89 @@ package org.broadleafcommerce.common.util.dao;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import java.util.List;
 import java.util.Map;
-import org.broadleafcommerce.common.util.dao.TQRestriction.Mode;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class TypedQueryBuilderDiffblueTest {
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link TypedQueryBuilder#TypedQueryBuilder(Class, String)}
-   *   <li>{@link TypedQueryBuilder#getParamMap()}
-   * </ul>
+   * Method under test: {@link TypedQueryBuilder#addRestriction(TQRestriction)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void TypedQueryBuilder.<init>(Class, String)",
-    "Map TypedQueryBuilder.getParamMap()"
-  })
-  public void testGettersAndSetters() {
-    // Arrange
-    Class<Object> rootClass = Object.class;
-
-    // Act
-    TypedQueryBuilder<Object> actualTypedQueryBuilder =
-        new TypedQueryBuilder<>(rootClass, "Root Alias");
-    Map<String, Object> actualParamMap = actualTypedQueryBuilder.getParamMap();
-
-    // Assert
-    assertTrue(actualTypedQueryBuilder.joins.isEmpty());
-    assertTrue(actualTypedQueryBuilder.orders.isEmpty());
-    assertTrue(actualTypedQueryBuilder.restrictions.isEmpty());
-    assertTrue(actualParamMap.isEmpty());
-  }
-
-  /**
-   * Test {@link TypedQueryBuilder#addRestriction(String, String, Object)} with {@code expression},
-   * {@code operation}, {@code parameter}.
-   *
-   * <p>Method under test: {@link TypedQueryBuilder#addRestriction(String, String, Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"TypedQueryBuilder TypedQueryBuilder.addRestriction(String, String, Object)"})
-  public void testAddRestrictionWithExpressionOperationParameter() {
+  public void testAddRestriction() {
     // Arrange
     Class<Object> rootClass = Object.class;
     TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    TQRestriction restriction = new TQRestriction(TQRestriction.Mode.OR);
 
     // Act
-    TypedQueryBuilder<Object> actualAddRestrictionResult =
-        typedQueryBuilder.addRestriction(
-            "Expression", "Operation", DynamicDaoHelperImpl.LOCK_OBJECT);
+    TypedQueryBuilder<Object> actualAddRestrictionResult = typedQueryBuilder.addRestriction(restriction);
 
     // Assert
-    assertEquals(
-        "SELECT Root Alias FROM java.lang.Object Root Alias WHERE (Expression operation :p0)",
-        typedQueryBuilder.toQueryString());
-    assertEquals(1, typedQueryBuilder.restrictions.size());
-    assertSame(typedQueryBuilder, actualAddRestrictionResult);
-  }
-
-  /**
-   * Test {@link TypedQueryBuilder#addRestriction(TQRestriction)} with {@code restriction}.
-   *
-   * <p>Method under test: {@link TypedQueryBuilder#addRestriction(TQRestriction)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"TypedQueryBuilder TypedQueryBuilder.addRestriction(TQRestriction)"})
-  public void testAddRestrictionWithRestriction() {
-    // Arrange
-    Class<Object> rootClass = Object.class;
-    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
-    TQRestriction restriction = new TQRestriction(Mode.OR);
-
-    // Act
-    TypedQueryBuilder<Object> actualAddRestrictionResult =
-        typedQueryBuilder.addRestriction(restriction);
-
-    // Assert
-    assertEquals(
-        "SELECT Root Alias FROM java.lang.Object Root Alias WHERE ()",
-        typedQueryBuilder.toQueryString());
+    assertEquals("SELECT Root Alias FROM java.lang.Object Root Alias WHERE ()", typedQueryBuilder.toQueryString());
     List<TQRestriction> tqRestrictionList = typedQueryBuilder.restrictions;
     assertEquals(1, tqRestrictionList.size());
+    assertTrue(restriction.restrictions.isEmpty());
+    assertTrue(typedQueryBuilder.orders.isEmpty());
     assertSame(restriction, tqRestrictionList.get(0));
     assertSame(typedQueryBuilder, actualAddRestrictionResult);
   }
 
   /**
-   * Test {@link TypedQueryBuilder#addJoin(TQJoin)}.
-   *
-   * <p>Method under test: {@link TypedQueryBuilder#addJoin(TQJoin)}
+   * Method under test:
+   * {@link TypedQueryBuilder#addRestriction(String, String, Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"TypedQueryBuilder TypedQueryBuilder.addJoin(TQJoin)"})
+  public void testAddRestriction2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    Class<Object> rootClass = Object.class;
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+
+    // Act
+    TypedQueryBuilder<Object> actualAddRestrictionResult = typedQueryBuilder.addRestriction("Expression", "Operation",
+        DynamicDaoHelperImpl.LOCK_OBJECT);
+
+    // Assert
+    assertEquals("SELECT Root Alias FROM java.lang.Object Root Alias WHERE (Expression operation :p0)",
+        typedQueryBuilder.toQueryString());
+    assertEquals(1, typedQueryBuilder.restrictions.size());
+    assertTrue(typedQueryBuilder.orders.isEmpty());
+    assertSame(typedQueryBuilder, actualAddRestrictionResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link TypedQueryBuilder#addRestriction(String, String, Object)}
+   */
+  @Test
+  public void testAddRestriction3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    Class<Object> rootClass = Object.class;
+
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    typedQueryBuilder.addRestriction(mock(TQRestriction.class));
+
+    // Act
+    TypedQueryBuilder<Object> actualAddRestrictionResult = typedQueryBuilder.addRestriction("Expression", "Operation",
+        DynamicDaoHelperImpl.LOCK_OBJECT);
+
+    // Assert
+    assertEquals("SELECT Root Alias FROM java.lang.Object Root Alias WHERE null AND (Expression operation :p1)",
+        typedQueryBuilder.toQueryString());
+    assertEquals(2, typedQueryBuilder.restrictions.size());
+    assertTrue(typedQueryBuilder.orders.isEmpty());
+    assertSame(typedQueryBuilder, actualAddRestrictionResult);
+  }
+
+  /**
+   * Method under test: {@link TypedQueryBuilder#addJoin(TQJoin)}
+   */
+  @Test
   public void testAddJoin() {
     // Arrange
     Class<Object> rootClass = Object.class;
@@ -139,24 +113,19 @@ public class TypedQueryBuilderDiffblueTest {
     TypedQueryBuilder<Object> actualAddJoinResult = typedQueryBuilder.addJoin(join);
 
     // Assert
-    assertEquals(
-        "SELECT Root Alias FROM java.lang.Object Root Alias JOIN Expression Alias",
+    assertEquals("SELECT Root Alias FROM java.lang.Object Root Alias JOIN Expression Alias",
         typedQueryBuilder.toQueryString());
     List<TQJoin> tqJoinList = typedQueryBuilder.joins;
     assertEquals(1, tqJoinList.size());
+    assertTrue(typedQueryBuilder.restrictions.isEmpty());
     assertSame(join, tqJoinList.get(0));
     assertSame(typedQueryBuilder, actualAddJoinResult);
   }
 
   /**
-   * Test {@link TypedQueryBuilder#addOrder(TQOrder)}.
-   *
-   * <p>Method under test: {@link TypedQueryBuilder#addOrder(TQOrder)}
+   * Method under test: {@link TypedQueryBuilder#addOrder(TQOrder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"TypedQueryBuilder TypedQueryBuilder.addOrder(TQOrder)"})
   public void testAddOrder() {
     // Arrange
     Class<Object> rootClass = Object.class;
@@ -167,30 +136,514 @@ public class TypedQueryBuilderDiffblueTest {
     TypedQueryBuilder<Object> actualAddOrderResult = typedQueryBuilder.addOrder(order);
 
     // Assert
-    assertEquals(
-        "SELECT Root Alias FROM java.lang.Object Root Alias ORDER BY Expression ASC",
+    assertEquals("SELECT Root Alias FROM java.lang.Object Root Alias ORDER BY Expression ASC",
         typedQueryBuilder.toQueryString());
     List<TQOrder> tqOrderList = typedQueryBuilder.orders;
     assertEquals(1, tqOrderList.size());
+    assertTrue(typedQueryBuilder.restrictions.isEmpty());
     assertSame(order, tqOrderList.get(0));
     assertSame(typedQueryBuilder, actualAddOrderResult);
   }
 
   /**
-   * Test {@link TypedQueryBuilder#getSelectClause(StringBuilder, boolean)}.
-   *
-   * <ul>
-   *   <li>Then {@link StringBuilder#StringBuilder(String)} with {@code foo} toString is {@code
-   *       fooSELECT COUNT(*)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link TypedQueryBuilder#getSelectClause(StringBuilder, boolean)}
+   * Method under test: {@link TypedQueryBuilder#toQueryString()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"StringBuilder TypedQueryBuilder.getSelectClause(StringBuilder, boolean)"})
-  public void testGetSelectClause_thenStringBuilderWithFooToStringIsFooSELECTCount() {
+  public void testToQueryString() {
+    // Arrange
+    Class<Object> rootClass = Object.class;
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+
+    // Act and Assert
+    assertEquals("SELECT Root Alias FROM java.lang.Object Root Alias", typedQueryBuilder.toQueryString());
+  }
+
+  /**
+   * Method under test: {@link TypedQueryBuilder#toQueryString()}
+   */
+  @Test
+  public void testToQueryString2() {
+    // Arrange
+    Class<Object> rootClass = Object.class;
+
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    typedQueryBuilder.addRestriction("SELECT ", "SELECT ", DynamicDaoHelperImpl.LOCK_OBJECT);
+
+    // Act and Assert
+    assertEquals("SELECT Root Alias FROM java.lang.Object Root Alias WHERE (SELECT  select  :p0)",
+        typedQueryBuilder.toQueryString());
+  }
+
+  /**
+   * Method under test: {@link TypedQueryBuilder#toQueryString()}
+   */
+  @Test
+  public void testToQueryString3() {
+    // Arrange
+    Class<Object> rootClass = Object.class;
+
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    typedQueryBuilder.addRestriction(" FROM ", " FROM ", DynamicDaoHelperImpl.LOCK_OBJECT);
+    typedQueryBuilder.addRestriction("SELECT ", "SELECT ", DynamicDaoHelperImpl.LOCK_OBJECT);
+
+    // Act and Assert
+    assertEquals(
+        "SELECT Root Alias FROM java.lang.Object Root Alias WHERE ( FROM   from  :p0) AND (SELECT " + " select  :p1)",
+        typedQueryBuilder.toQueryString());
+  }
+
+  /**
+   * Method under test: {@link TypedQueryBuilder#toQueryString()}
+   */
+  @Test
+  public void testToQueryString4() {
+    // Arrange
+    Class<Object> rootClass = Object.class;
+
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    typedQueryBuilder.addRestriction(new TQRestriction(TQRestriction.Mode.OR));
+    typedQueryBuilder.addRestriction("SELECT ", "SELECT ", DynamicDaoHelperImpl.LOCK_OBJECT);
+
+    // Act and Assert
+    assertEquals("SELECT Root Alias FROM java.lang.Object Root Alias WHERE () AND (SELECT  select  :p1)",
+        typedQueryBuilder.toQueryString());
+  }
+
+  /**
+   * Method under test: {@link TypedQueryBuilder#toQueryString()}
+   */
+  @Test
+  public void testToQueryString5() {
+    // Arrange
+    Class<Object> rootClass = Object.class;
+
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    typedQueryBuilder.addJoin(new TQJoin("SELECT ", "SELECT "));
+    typedQueryBuilder.addRestriction("SELECT ", "SELECT ", DynamicDaoHelperImpl.LOCK_OBJECT);
+
+    // Act and Assert
+    assertEquals("SELECT Root Alias FROM java.lang.Object Root Alias JOIN SELECT  SELECT  WHERE (SELECT  select  :p0)",
+        typedQueryBuilder.toQueryString());
+  }
+
+  /**
+   * Method under test: {@link TypedQueryBuilder#toQueryString()}
+   */
+  @Test
+  public void testToQueryString6() {
+    // Arrange
+    Class<Object> rootClass = Object.class;
+
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    typedQueryBuilder.addOrder(new TQOrder("SELECT ", true));
+    typedQueryBuilder.addRestriction("SELECT ", "SELECT ", DynamicDaoHelperImpl.LOCK_OBJECT);
+
+    // Act and Assert
+    assertEquals("SELECT Root Alias FROM java.lang.Object Root Alias WHERE (SELECT  select  :p0) ORDER BY SELECT  ASC",
+        typedQueryBuilder.toQueryString());
+  }
+
+  /**
+   * Method under test: {@link TypedQueryBuilder#toQueryString()}
+   */
+  @Test
+  public void testToQueryString7() {
+    // Arrange
+    Class<Object> rootClass = Object.class;
+
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    typedQueryBuilder.addRestriction("SELECT ", "in", DynamicDaoHelperImpl.LOCK_OBJECT);
+
+    // Act and Assert
+    assertEquals("SELECT Root Alias FROM java.lang.Object Root Alias WHERE (SELECT  in (:p0))",
+        typedQueryBuilder.toQueryString());
+  }
+
+  /**
+   * Method under test: {@link TypedQueryBuilder#toQueryString()}
+   */
+  @Test
+  public void testToQueryString8() {
+    // Arrange
+    Class<Object> rootClass = Object.class;
+
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    typedQueryBuilder.addRestriction("SELECT ", "not in", DynamicDaoHelperImpl.LOCK_OBJECT);
+
+    // Act and Assert
+    assertEquals("SELECT Root Alias FROM java.lang.Object Root Alias WHERE (SELECT  not in (:p0))",
+        typedQueryBuilder.toQueryString());
+  }
+
+  /**
+   * Method under test: {@link TypedQueryBuilder#toQueryString()}
+   */
+  @Test
+  public void testToQueryString9() {
+    // Arrange
+    Class<Object> rootClass = Object.class;
+
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    typedQueryBuilder.addOrder(new TQOrder("SELECT ", true));
+    typedQueryBuilder.addOrder(new TQOrder("SELECT ", true));
+    typedQueryBuilder.addRestriction("SELECT ", "SELECT ", DynamicDaoHelperImpl.LOCK_OBJECT);
+
+    // Act and Assert
+    assertEquals("SELECT Root Alias FROM java.lang.Object Root Alias WHERE (SELECT  select  :p0) ORDER BY SELECT  ASC,"
+        + " SELECT  ASC", typedQueryBuilder.toQueryString());
+  }
+
+  /**
+   * Method under test: {@link TypedQueryBuilder#toQueryString()}
+   */
+  @Test
+  public void testToQueryString10() {
+    // Arrange
+    Class<Object> rootClass = Object.class;
+
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    typedQueryBuilder.addOrder(new TQOrder("SELECT ", false));
+    typedQueryBuilder.addRestriction("SELECT ", "SELECT ", DynamicDaoHelperImpl.LOCK_OBJECT);
+
+    // Act and Assert
+    assertEquals("SELECT Root Alias FROM java.lang.Object Root Alias WHERE (SELECT  select  :p0) ORDER BY SELECT  DESC",
+        typedQueryBuilder.toQueryString());
+  }
+
+  /**
+   * Method under test: {@link TypedQueryBuilder#toQueryString()}
+   */
+  @Test
+  public void testToQueryString11() {
+    // Arrange
+    Class<Object> rootClass = Object.class;
+
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    typedQueryBuilder.addRestriction("SELECT ", "SELECT ", null);
+
+    // Act and Assert
+    assertEquals("SELECT Root Alias FROM java.lang.Object Root Alias WHERE (SELECT  select )",
+        typedQueryBuilder.toQueryString());
+  }
+
+  /**
+   * Method under test: {@link TypedQueryBuilder#toQueryString()}
+   */
+  @Test
+  public void testToQueryString12() {
+    // Arrange
+    TQRestriction restriction = new TQRestriction(TQRestriction.Mode.OR);
+    restriction.addChildRestriction(new TQRestriction(TQRestriction.Mode.OR));
+    Class<Object> rootClass = Object.class;
+
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    typedQueryBuilder.addRestriction(restriction);
+    typedQueryBuilder.addRestriction("SELECT ", "SELECT ", DynamicDaoHelperImpl.LOCK_OBJECT);
+
+    // Act and Assert
+    assertEquals("SELECT Root Alias FROM java.lang.Object Root Alias WHERE (()) AND (SELECT  select  :p1)",
+        typedQueryBuilder.toQueryString());
+  }
+
+  /**
+   * Method under test: {@link TypedQueryBuilder#toQueryString()}
+   */
+  @Test
+  public void testToQueryString13() {
+    // Arrange
+    TQRestriction restriction = new TQRestriction(TQRestriction.Mode.OR);
+    restriction.addChildRestriction(new TQRestriction(TQRestriction.Mode.OR));
+    restriction.addChildRestriction(new TQRestriction(TQRestriction.Mode.OR));
+    Class<Object> rootClass = Object.class;
+
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    typedQueryBuilder.addRestriction(restriction);
+    typedQueryBuilder.addRestriction("SELECT ", "SELECT ", DynamicDaoHelperImpl.LOCK_OBJECT);
+
+    // Act and Assert
+    assertEquals("SELECT Root Alias FROM java.lang.Object Root Alias WHERE (() OR ()) AND (SELECT  select  :p1)",
+        typedQueryBuilder.toQueryString());
+  }
+
+  /**
+   * Method under test: {@link TypedQueryBuilder#toQueryString()}
+   */
+  @Test
+  public void testToQueryString14() {
+    // Arrange
+    TQRestriction restriction = new TQRestriction("SELECT ", "SELECT ");
+    restriction.addChildRestriction(new TQRestriction(TQRestriction.Mode.OR));
+    restriction.addChildRestriction(new TQRestriction(TQRestriction.Mode.OR));
+    Class<Object> rootClass = Object.class;
+
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    typedQueryBuilder.addRestriction(restriction);
+    typedQueryBuilder.addRestriction("SELECT ", "SELECT ", DynamicDaoHelperImpl.LOCK_OBJECT);
+
+    // Act and Assert
+    assertEquals("SELECT Root Alias FROM java.lang.Object Root Alias WHERE (SELECT  select () AND ()) AND (SELECT "
+        + " select  :p1)", typedQueryBuilder.toQueryString());
+  }
+
+  /**
+   * Method under test: {@link TypedQueryBuilder#toQueryString(boolean)}
+   */
+  @Test
+  public void testToQueryString15() {
+    // Arrange
+    Class<Object> rootClass = Object.class;
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+
+    // Act and Assert
+    assertEquals("SELECT COUNT(*) FROM java.lang.Object Root Alias", typedQueryBuilder.toQueryString(true));
+  }
+
+  /**
+   * Method under test: {@link TypedQueryBuilder#toQueryString(boolean)}
+   */
+  @Test
+  public void testToQueryString16() {
+    // Arrange
+    Class<Object> rootClass = Object.class;
+
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    typedQueryBuilder.addRestriction("SELECT ", "SELECT ", DynamicDaoHelperImpl.LOCK_OBJECT);
+
+    // Act and Assert
+    assertEquals("SELECT COUNT(*) FROM java.lang.Object Root Alias WHERE (SELECT  select  :p0)",
+        typedQueryBuilder.toQueryString(true));
+  }
+
+  /**
+   * Method under test: {@link TypedQueryBuilder#toQueryString(boolean)}
+   */
+  @Test
+  public void testToQueryString17() {
+    // Arrange
+    Class<Object> rootClass = Object.class;
+
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    typedQueryBuilder.addRestriction("COUNT(*)", "COUNT(*)", DynamicDaoHelperImpl.LOCK_OBJECT);
+    typedQueryBuilder.addRestriction("SELECT ", "SELECT ", DynamicDaoHelperImpl.LOCK_OBJECT);
+
+    // Act and Assert
+    assertEquals(
+        "SELECT COUNT(*) FROM java.lang.Object Root Alias WHERE (COUNT(*) count(*) :p0) AND (SELECT " + " select  :p1)",
+        typedQueryBuilder.toQueryString(true));
+  }
+
+  /**
+   * Method under test: {@link TypedQueryBuilder#toQueryString(boolean)}
+   */
+  @Test
+  public void testToQueryString18() {
+    // Arrange
+    Class<Object> rootClass = Object.class;
+
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    typedQueryBuilder.addRestriction(new TQRestriction(TQRestriction.Mode.OR));
+    typedQueryBuilder.addRestriction("SELECT ", "SELECT ", DynamicDaoHelperImpl.LOCK_OBJECT);
+
+    // Act and Assert
+    assertEquals("SELECT COUNT(*) FROM java.lang.Object Root Alias WHERE () AND (SELECT  select  :p1)",
+        typedQueryBuilder.toQueryString(true));
+  }
+
+  /**
+   * Method under test: {@link TypedQueryBuilder#toQueryString(boolean)}
+   */
+  @Test
+  public void testToQueryString19() {
+    // Arrange
+    Class<Object> rootClass = Object.class;
+
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    typedQueryBuilder.addJoin(new TQJoin("SELECT ", "SELECT "));
+    typedQueryBuilder.addRestriction("SELECT ", "SELECT ", DynamicDaoHelperImpl.LOCK_OBJECT);
+
+    // Act and Assert
+    assertEquals("SELECT COUNT(*) FROM java.lang.Object Root Alias JOIN SELECT  SELECT  WHERE (SELECT  select  :p0)",
+        typedQueryBuilder.toQueryString(true));
+  }
+
+  /**
+   * Method under test: {@link TypedQueryBuilder#toQueryString(boolean)}
+   */
+  @Test
+  public void testToQueryString20() {
+    // Arrange
+    Class<Object> rootClass = Object.class;
+
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    typedQueryBuilder.addOrder(new TQOrder("SELECT ", true));
+    typedQueryBuilder.addRestriction("SELECT ", "SELECT ", DynamicDaoHelperImpl.LOCK_OBJECT);
+
+    // Act and Assert
+    assertEquals("SELECT COUNT(*) FROM java.lang.Object Root Alias WHERE (SELECT  select  :p0) ORDER BY SELECT  ASC",
+        typedQueryBuilder.toQueryString(true));
+  }
+
+  /**
+   * Method under test: {@link TypedQueryBuilder#toQueryString(boolean)}
+   */
+  @Test
+  public void testToQueryString21() {
+    // Arrange
+    Class<Object> rootClass = Object.class;
+
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    typedQueryBuilder.addRestriction("SELECT ", "in", DynamicDaoHelperImpl.LOCK_OBJECT);
+
+    // Act and Assert
+    assertEquals("SELECT COUNT(*) FROM java.lang.Object Root Alias WHERE (SELECT  in (:p0))",
+        typedQueryBuilder.toQueryString(true));
+  }
+
+  /**
+   * Method under test: {@link TypedQueryBuilder#toQueryString(boolean)}
+   */
+  @Test
+  public void testToQueryString22() {
+    // Arrange
+    Class<Object> rootClass = Object.class;
+
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    typedQueryBuilder.addOrder(new TQOrder("SELECT ", true));
+    typedQueryBuilder.addOrder(new TQOrder("SELECT ", true));
+    typedQueryBuilder.addRestriction("SELECT ", "SELECT ", DynamicDaoHelperImpl.LOCK_OBJECT);
+
+    // Act and Assert
+    assertEquals("SELECT COUNT(*) FROM java.lang.Object Root Alias WHERE (SELECT  select  :p0) ORDER BY SELECT  ASC,"
+        + " SELECT  ASC", typedQueryBuilder.toQueryString(true));
+  }
+
+  /**
+   * Method under test: {@link TypedQueryBuilder#toQueryString(boolean)}
+   */
+  @Test
+  public void testToQueryString23() {
+    // Arrange
+    Class<Object> rootClass = Object.class;
+
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    typedQueryBuilder.addOrder(new TQOrder("SELECT ", false));
+    typedQueryBuilder.addRestriction("SELECT ", "SELECT ", DynamicDaoHelperImpl.LOCK_OBJECT);
+
+    // Act and Assert
+    assertEquals("SELECT COUNT(*) FROM java.lang.Object Root Alias WHERE (SELECT  select  :p0) ORDER BY SELECT  DESC",
+        typedQueryBuilder.toQueryString(true));
+  }
+
+  /**
+   * Method under test: {@link TypedQueryBuilder#toQueryString(boolean)}
+   */
+  @Test
+  public void testToQueryString24() {
+    // Arrange
+    Class<Object> rootClass = Object.class;
+
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    typedQueryBuilder.addRestriction("SELECT ", "not in", DynamicDaoHelperImpl.LOCK_OBJECT);
+
+    // Act and Assert
+    assertEquals("SELECT COUNT(*) FROM java.lang.Object Root Alias WHERE (SELECT  not in (:p0))",
+        typedQueryBuilder.toQueryString(true));
+  }
+
+  /**
+   * Method under test: {@link TypedQueryBuilder#toQueryString(boolean)}
+   */
+  @Test
+  public void testToQueryString25() {
+    // Arrange
+    Class<Object> rootClass = Object.class;
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+
+    // Act and Assert
+    assertEquals("SELECT Root Alias FROM java.lang.Object Root Alias", typedQueryBuilder.toQueryString(false));
+  }
+
+  /**
+   * Method under test: {@link TypedQueryBuilder#toQueryString(boolean)}
+   */
+  @Test
+  public void testToQueryString26() {
+    // Arrange
+    Class<Object> rootClass = Object.class;
+
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    typedQueryBuilder.addRestriction("SELECT ", "SELECT ", null);
+
+    // Act and Assert
+    assertEquals("SELECT COUNT(*) FROM java.lang.Object Root Alias WHERE (SELECT  select )",
+        typedQueryBuilder.toQueryString(true));
+  }
+
+  /**
+   * Method under test: {@link TypedQueryBuilder#toQueryString(boolean)}
+   */
+  @Test
+  public void testToQueryString27() {
+    // Arrange
+    TQRestriction restriction = new TQRestriction(TQRestriction.Mode.OR);
+    restriction.addChildRestriction(new TQRestriction(TQRestriction.Mode.OR));
+    Class<Object> rootClass = Object.class;
+
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    typedQueryBuilder.addRestriction(restriction);
+    typedQueryBuilder.addRestriction("SELECT ", "SELECT ", DynamicDaoHelperImpl.LOCK_OBJECT);
+
+    // Act and Assert
+    assertEquals("SELECT COUNT(*) FROM java.lang.Object Root Alias WHERE (()) AND (SELECT  select  :p1)",
+        typedQueryBuilder.toQueryString(true));
+  }
+
+  /**
+   * Method under test: {@link TypedQueryBuilder#toQueryString(boolean)}
+   */
+  @Test
+  public void testToQueryString28() {
+    // Arrange
+    TQRestriction restriction = new TQRestriction(TQRestriction.Mode.OR);
+    restriction.addChildRestriction(new TQRestriction(TQRestriction.Mode.OR));
+    restriction.addChildRestriction(new TQRestriction(TQRestriction.Mode.OR));
+    Class<Object> rootClass = Object.class;
+
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    typedQueryBuilder.addRestriction(restriction);
+    typedQueryBuilder.addRestriction("SELECT ", "SELECT ", DynamicDaoHelperImpl.LOCK_OBJECT);
+
+    // Act and Assert
+    assertEquals("SELECT COUNT(*) FROM java.lang.Object Root Alias WHERE (() OR ()) AND (SELECT  select  :p1)",
+        typedQueryBuilder.toQueryString(true));
+  }
+
+  /**
+   * Method under test: {@link TypedQueryBuilder#toQueryString(boolean)}
+   */
+  @Test
+  public void testToQueryString29() {
+    // Arrange
+    TQRestriction restriction = new TQRestriction("SELECT ", "SELECT ");
+    restriction.addChildRestriction(new TQRestriction(TQRestriction.Mode.OR));
+    restriction.addChildRestriction(new TQRestriction(TQRestriction.Mode.OR));
+    Class<Object> rootClass = Object.class;
+
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    typedQueryBuilder.addRestriction(restriction);
+    typedQueryBuilder.addRestriction("SELECT ", "SELECT ", DynamicDaoHelperImpl.LOCK_OBJECT);
+
+    // Act and Assert
+    assertEquals("SELECT COUNT(*) FROM java.lang.Object Root Alias WHERE (SELECT  select () AND ()) AND (SELECT "
+        + " select  :p1)", typedQueryBuilder.toQueryString(true));
+  }
+
+  /**
+   * Method under test:
+   * {@link TypedQueryBuilder#getSelectClause(StringBuilder, boolean)}
+   */
+  @Test
+  public void testGetSelectClause() {
     // Arrange
     Class<Object> rootClass = Object.class;
     TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
@@ -201,24 +654,16 @@ public class TypedQueryBuilderDiffblueTest {
 
     // Assert
     assertEquals("fooSELECT COUNT(*)", sb.toString());
+    assertEquals("fooSELECT COUNT(*)", actualSelectClause.toString());
     assertSame(sb, actualSelectClause);
   }
 
   /**
-   * Test {@link TypedQueryBuilder#getSelectClause(StringBuilder, boolean)}.
-   *
-   * <ul>
-   *   <li>Then {@link StringBuilder#StringBuilder(String)} with {@code foo} toString is {@code
-   *       fooSELECT Root Alias}.
-   * </ul>
-   *
-   * <p>Method under test: {@link TypedQueryBuilder#getSelectClause(StringBuilder, boolean)}
+   * Method under test:
+   * {@link TypedQueryBuilder#getSelectClause(StringBuilder, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"StringBuilder TypedQueryBuilder.getSelectClause(StringBuilder, boolean)"})
-  public void testGetSelectClause_thenStringBuilderWithFooToStringIsFooSELECTRootAlias() {
+  public void testGetSelectClause2() {
     // Arrange
     Class<Object> rootClass = Object.class;
     TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
@@ -229,6 +674,30 @@ public class TypedQueryBuilderDiffblueTest {
 
     // Assert
     assertEquals("fooSELECT Root Alias", sb.toString());
+    assertEquals("fooSELECT Root Alias", actualSelectClause.toString());
     assertSame(sb, actualSelectClause);
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link TypedQueryBuilder#TypedQueryBuilder(Class, String)}
+   *   <li>{@link TypedQueryBuilder#getParamMap()}
+   * </ul>
+   */
+  @Test
+  public void testGettersAndSetters() {
+    // Arrange
+    Class<Object> rootClass = Object.class;
+
+    // Act
+    TypedQueryBuilder<Object> actualTypedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    Map<String, Object> actualParamMap = actualTypedQueryBuilder.getParamMap();
+
+    // Assert
+    assertTrue(actualTypedQueryBuilder.joins.isEmpty());
+    assertTrue(actualTypedQueryBuilder.orders.isEmpty());
+    assertTrue(actualTypedQueryBuilder.restrictions.isEmpty());
+    assertTrue(actualParamMap.isEmpty());
   }
 }

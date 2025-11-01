@@ -17,20 +17,19 @@
  */
 package org.broadleafcommerce.common.util;
 
+import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.persistence.EntityManager;
-import org.broadleafcommerce.common.util.OptimisticLockUtils.UpdateOperation;
+import org.broadleafcommerce.common.exception.OptimisticLockInvalidStateException;
+import org.broadleafcommerce.common.exception.OptimisticLockMaxRetryException;
+import org.broadleafcommerce.common.persistence.transaction.LifecycleAwareJpaTransactionManager;
 import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -40,97 +39,44 @@ import org.springframework.transaction.support.SimpleTransactionStatus;
 
 public class OptimisticLockUtilsDiffblueTest {
   /**
-   * Test {@link OptimisticLockUtils#doTransactionalOptimisticUpdate(String, UpdateOperation, Class,
-   * Object, PlatformTransactionManager, EntityManager)}.
-   *
-   * <ul>
-   *   <li>Given {@code null}.
-   *   <li>Then calls {@link PlatformTransactionManager#rollback(TransactionStatus)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OptimisticLockUtils#doTransactionalOptimisticUpdate(String,
-   * UpdateOperation, Class, Object, PlatformTransactionManager, EntityManager)}
+   * Method under test:
+   * {@link OptimisticLockUtils#performOptimisticLockUpdate(String, OptimisticLockUtils.UpdateOperation, Class, Object, int, PlatformTransactionManager, EntityManager)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Object OptimisticLockUtils.doTransactionalOptimisticUpdate(String, UpdateOperation, Class, Object, PlatformTransactionManager, EntityManager)"
-  })
-  public void testDoTransactionalOptimisticUpdate_givenNull_thenCallsRollback()
-      throws TransactionException {
+  public void testPerformOptimisticLockUpdate()
+      throws OptimisticLockInvalidStateException, OptimisticLockMaxRetryException {
     // Arrange
-    UpdateOperation<Object> operation = mock(UpdateOperation.class);
-    doNothing().when(operation).update(Mockito.<Object>any());
+    OptimisticLockUtils.UpdateOperation<Object> operation = mock(OptimisticLockUtils.UpdateOperation.class);
     Class<Object> entityClass = Object.class;
 
-    PlatformTransactionManager transactionManager = mock(PlatformTransactionManager.class);
-    when(transactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(null);
-    doNothing().when(transactionManager).rollback(Mockito.<TransactionStatus>any());
-
-    SessionDelegatorBaseImpl entityManager = mock(SessionDelegatorBaseImpl.class);
-    when(entityManager.find(Mockito.<Class<Object>>any(), Mockito.<Object>any()))
-        .thenReturn(BLCFieldUtils.NULL_FIELD);
-    doNothing().when(entityManager).flush();
-
-    // Act
-    OptimisticLockUtils.doTransactionalOptimisticUpdate(
-        "Name",
-        operation,
-        entityClass,
-        BLCFieldUtils.NULL_FIELD,
-        transactionManager,
-        entityManager);
-
-    // Assert
-    verify(operation).update(isA(Object.class));
-    verify(entityManager).find(isA(Class.class), isA(Object.class));
-    verify(entityManager).flush();
-    verify(transactionManager).getTransaction(isA(TransactionDefinition.class));
-    verify(transactionManager).rollback(isNull());
+    // Act and Assert
+    assertThrows(OptimisticLockMaxRetryException.class, () -> OptimisticLockUtils.performOptimisticLockUpdate("Name",
+        operation, entityClass, BLCFieldUtils.NULL_FIELD, -1, new LifecycleAwareJpaTransactionManager(), null));
   }
 
   /**
-   * Test {@link OptimisticLockUtils#doTransactionalOptimisticUpdate(String, UpdateOperation, Class,
-   * Object, PlatformTransactionManager, EntityManager)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link PlatformTransactionManager#commit(TransactionStatus)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OptimisticLockUtils#doTransactionalOptimisticUpdate(String,
-   * UpdateOperation, Class, Object, PlatformTransactionManager, EntityManager)}
+   * Method under test:
+   * {@link OptimisticLockUtils#doTransactionalOptimisticUpdate(String, OptimisticLockUtils.UpdateOperation, Class, Object, PlatformTransactionManager, EntityManager)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Object OptimisticLockUtils.doTransactionalOptimisticUpdate(String, UpdateOperation, Class, Object, PlatformTransactionManager, EntityManager)"
-  })
-  public void testDoTransactionalOptimisticUpdate_thenCallsCommit() throws TransactionException {
+  public void testDoTransactionalOptimisticUpdate() throws TransactionException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    UpdateOperation<Object> operation = mock(UpdateOperation.class);
+    OptimisticLockUtils.UpdateOperation<Object> operation = mock(OptimisticLockUtils.UpdateOperation.class);
     doNothing().when(operation).update(Mockito.<Object>any());
     Class<Object> entityClass = Object.class;
-
     PlatformTransactionManager transactionManager = mock(PlatformTransactionManager.class);
     doNothing().when(transactionManager).commit(Mockito.<TransactionStatus>any());
     when(transactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
         .thenReturn(new SimpleTransactionStatus(true));
-
     SessionDelegatorBaseImpl entityManager = mock(SessionDelegatorBaseImpl.class);
-    when(entityManager.find(Mockito.<Class<Object>>any(), Mockito.<Object>any()))
-        .thenReturn(BLCFieldUtils.NULL_FIELD);
+    when(entityManager.find(Mockito.<Class<Object>>any(), Mockito.<Object>any())).thenReturn(BLCFieldUtils.NULL_FIELD);
     doNothing().when(entityManager).flush();
 
     // Act
-    OptimisticLockUtils.doTransactionalOptimisticUpdate(
-        "Name",
-        operation,
-        entityClass,
-        BLCFieldUtils.NULL_FIELD,
-        transactionManager,
-        entityManager);
+    OptimisticLockUtils.doTransactionalOptimisticUpdate("Name", operation, entityClass, BLCFieldUtils.NULL_FIELD,
+        transactionManager, entityManager);
 
     // Assert
     verify(operation).update(isA(Object.class));
@@ -141,50 +87,60 @@ public class OptimisticLockUtilsDiffblueTest {
   }
 
   /**
-   * Test {@link OptimisticLockUtils#doTransactionalOptimisticUpdate(String, UpdateOperation, Class,
-   * Object, PlatformTransactionManager, EntityManager)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link TransactionStatus#isRollbackOnly()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OptimisticLockUtils#doTransactionalOptimisticUpdate(String,
-   * UpdateOperation, Class, Object, PlatformTransactionManager, EntityManager)}
+   * Method under test:
+   * {@link OptimisticLockUtils#doTransactionalOptimisticUpdate(String, OptimisticLockUtils.UpdateOperation, Class, Object, PlatformTransactionManager, EntityManager)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Object OptimisticLockUtils.doTransactionalOptimisticUpdate(String, UpdateOperation, Class, Object, PlatformTransactionManager, EntityManager)"
-  })
-  public void testDoTransactionalOptimisticUpdate_thenCallsIsRollbackOnly()
-      throws TransactionException {
+  public void testDoTransactionalOptimisticUpdate2() throws TransactionException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    UpdateOperation<Object> operation = mock(UpdateOperation.class);
+    OptimisticLockUtils.UpdateOperation<Object> operation = mock(OptimisticLockUtils.UpdateOperation.class);
     doNothing().when(operation).update(Mockito.<Object>any());
     Class<Object> entityClass = Object.class;
-
-    TransactionStatus transactionStatus = mock(TransactionStatus.class);
-    when(transactionStatus.isRollbackOnly()).thenReturn(true);
-
     PlatformTransactionManager transactionManager = mock(PlatformTransactionManager.class);
-    when(transactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
-        .thenReturn(transactionStatus);
+    when(transactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(null);
     doNothing().when(transactionManager).rollback(Mockito.<TransactionStatus>any());
-
     SessionDelegatorBaseImpl entityManager = mock(SessionDelegatorBaseImpl.class);
-    when(entityManager.find(Mockito.<Class<Object>>any(), Mockito.<Object>any()))
-        .thenReturn(BLCFieldUtils.NULL_FIELD);
+    when(entityManager.find(Mockito.<Class<Object>>any(), Mockito.<Object>any())).thenReturn(BLCFieldUtils.NULL_FIELD);
     doNothing().when(entityManager).flush();
 
     // Act
-    OptimisticLockUtils.doTransactionalOptimisticUpdate(
-        "Name",
-        operation,
-        entityClass,
-        BLCFieldUtils.NULL_FIELD,
-        transactionManager,
-        entityManager);
+    OptimisticLockUtils.doTransactionalOptimisticUpdate("Name", operation, entityClass, BLCFieldUtils.NULL_FIELD,
+        transactionManager, entityManager);
+
+    // Assert
+    verify(operation).update(isA(Object.class));
+    verify(entityManager).find(isA(Class.class), isA(Object.class));
+    verify(entityManager).flush();
+    verify(transactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(transactionManager).rollback(isNull());
+  }
+
+  /**
+   * Method under test:
+   * {@link OptimisticLockUtils#doTransactionalOptimisticUpdate(String, OptimisticLockUtils.UpdateOperation, Class, Object, PlatformTransactionManager, EntityManager)}
+   */
+  @Test
+  public void testDoTransactionalOptimisticUpdate3() throws TransactionException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    OptimisticLockUtils.UpdateOperation<Object> operation = mock(OptimisticLockUtils.UpdateOperation.class);
+    doNothing().when(operation).update(Mockito.<Object>any());
+    Class<Object> entityClass = Object.class;
+    TransactionStatus transactionStatus = mock(TransactionStatus.class);
+    when(transactionStatus.isRollbackOnly()).thenReturn(true);
+    PlatformTransactionManager transactionManager = mock(PlatformTransactionManager.class);
+    when(transactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
+    doNothing().when(transactionManager).rollback(Mockito.<TransactionStatus>any());
+    SessionDelegatorBaseImpl entityManager = mock(SessionDelegatorBaseImpl.class);
+    when(entityManager.find(Mockito.<Class<Object>>any(), Mockito.<Object>any())).thenReturn(BLCFieldUtils.NULL_FIELD);
+    doNothing().when(entityManager).flush();
+
+    // Act
+    OptimisticLockUtils.doTransactionalOptimisticUpdate("Name", operation, entityClass, BLCFieldUtils.NULL_FIELD,
+        transactionManager, entityManager);
 
     // Assert
     verify(operation).update(isA(Object.class));

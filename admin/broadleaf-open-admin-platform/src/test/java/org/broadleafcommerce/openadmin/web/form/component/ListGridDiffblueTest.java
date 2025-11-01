@@ -22,9 +22,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -32,215 +33,105 @@ import java.util.List;
 import java.util.Set;
 import org.broadleafcommerce.common.presentation.client.AddMethodType;
 import org.broadleafcommerce.openadmin.dto.SectionCrumb;
-import org.broadleafcommerce.openadmin.web.form.component.ListGrid.SelectType;
-import org.broadleafcommerce.openadmin.web.form.component.ListGrid.Type;
 import org.broadleafcommerce.openadmin.web.form.entity.Field;
 import org.broadleafcommerce.openadmin.web.rulebuilder.dto.DataWrapper;
 import org.broadleafcommerce.openadmin.web.rulebuilder.dto.FieldWrapper;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {ListGrid.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class ListGridDiffblueTest {
-  @Autowired private ListGrid listGrid;
+  @Autowired
+  private ListGrid listGrid;
 
   /**
-   * Test {@link ListGrid#getPath()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor) ContainingEntityId is {@code foo}.
-   *   <li>Then return {@code //foo/not blank}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getPath()}
+   * Method under test: {@link ListGrid#getPath()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ListGrid.getPath()"})
-  public void testGetPath_givenListGridContainingEntityIdIsFoo_thenReturnFooNotBlank() {
+  public void testGetPath() {
     // Arrange
     ListGrid listGrid = new ListGrid();
-    listGrid.setPathOverride(" ");
     listGrid.setSectionKey("/");
-    listGrid.setContainingEntityId("foo");
-    listGrid.setSubCollectionFieldName("not blank");
 
     // Act and Assert
-    assertEquals("//foo/not blank", listGrid.getPath());
+    assertEquals("/", listGrid.getPath());
   }
 
   /**
-   * Test {@link ListGrid#getPath()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor) PathOverride is {@code not blank}.
-   *   <li>Then return {@code not blank}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getPath()}
+   * Method under test: {@link ListGrid#getPath()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ListGrid.getPath()"})
-  public void testGetPath_givenListGridPathOverrideIsNotBlank_thenReturnNotBlank() {
+  public void testGetPath2() {
     // Arrange
     ListGrid listGrid = new ListGrid();
-    listGrid.setPathOverride("not blank");
-    listGrid.setSectionKey("/");
-    listGrid.setContainingEntityId(null);
-    listGrid.setSubCollectionFieldName("not blank");
+    listGrid.setPathOverride("/");
 
     // Act and Assert
-    assertEquals("not blank", listGrid.getPath());
+    assertEquals("/", listGrid.getPath());
   }
 
   /**
-   * Test {@link ListGrid#getPath()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor) SectionKey is {@code Section Key}.
-   *   <li>Then return {@code /Section Key/not blank}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getPath()}
+   * Method under test: {@link ListGrid#getPath()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ListGrid.getPath()"})
-  public void testGetPath_givenListGridSectionKeyIsSectionKey_thenReturnSectionKeyNotBlank() {
+  public void testGetPath3() {
     // Arrange
     ListGrid listGrid = new ListGrid();
-    listGrid.setPathOverride(" ");
     listGrid.setSectionKey("Section Key");
-    listGrid.setContainingEntityId(null);
-    listGrid.setSubCollectionFieldName("not blank");
 
     // Act and Assert
-    assertEquals("/Section Key/not blank", listGrid.getPath());
+    assertEquals("/Section Key", listGrid.getPath());
   }
 
   /**
-   * Test {@link ListGrid#getPath()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor) SubCollectionFieldName is {@code not blank}.
-   *   <li>Then return {@code //not blank}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getPath()}
+   * Method under test: {@link ListGrid#getPath()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ListGrid.getPath()"})
-  public void testGetPath_givenListGridSubCollectionFieldNameIsNotBlank_thenReturnNotBlank() {
+  public void testGetPath4() {
     // Arrange
     ListGrid listGrid = new ListGrid();
-    listGrid.setPathOverride(" ");
-    listGrid.setSectionKey("/");
-    listGrid.setContainingEntityId(null);
-    listGrid.setSubCollectionFieldName("not blank");
+    listGrid.setContainingEntityId("42");
+    listGrid.setSectionKey("Section Key");
 
     // Act and Assert
-    assertEquals("//not blank", listGrid.getPath());
+    assertEquals("/Section Key/42", listGrid.getPath());
   }
 
   /**
-   * Test {@link ListGrid#getPath()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor) SubCollectionFieldName is {@code null}.
-   *   <li>Then return {@code /}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getPath()}
+   * Method under test: {@link ListGrid#getPath()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ListGrid.getPath()"})
-  public void testGetPath_givenListGridSubCollectionFieldNameIsNull_thenReturnSlash() {
+  public void testGetPath5() {
     // Arrange
     ListGrid listGrid = new ListGrid();
-    listGrid.setPathOverride(" ");
-    listGrid.setSectionKey("/");
-    listGrid.setContainingEntityId(null);
-    listGrid.setSubCollectionFieldName(null);
+    listGrid.setSubCollectionFieldName("/");
+    listGrid.setSectionKey("Section Key");
 
     // Act and Assert
-    assertEquals("/", listGrid.getPath());
+    assertEquals("/Section Key//", listGrid.getPath());
   }
 
   /**
-   * Test {@link ListGrid#getPath()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor) SubCollectionFieldName is space.
-   *   <li>Then return {@code /}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getPath()}
+   * Method under test: {@link ListGrid#getSectionCrumbRepresentation()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ListGrid.getPath()"})
-  public void testGetPath_givenListGridSubCollectionFieldNameIsSpace_thenReturnSlash() {
-    // Arrange
-    ListGrid listGrid = new ListGrid();
-    listGrid.setPathOverride(" ");
-    listGrid.setSectionKey("/");
-    listGrid.setContainingEntityId(null);
-    listGrid.setSubCollectionFieldName(" ");
-
-    // Act and Assert
-    assertEquals("/", listGrid.getPath());
-  }
-
-  /**
-   * Test {@link ListGrid#getSectionCrumbRepresentation()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor).
-   *   <li>Then return empty string.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getSectionCrumbRepresentation()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ListGrid.getSectionCrumbRepresentation()"})
-  public void testGetSectionCrumbRepresentation_givenListGrid_thenReturnEmptyString() {
+  public void testGetSectionCrumbRepresentation() {
     // Arrange, Act and Assert
-    assertEquals("", new ListGrid().getSectionCrumbRepresentation());
+    assertEquals("", (new ListGrid()).getSectionCrumbRepresentation());
   }
 
   /**
-   * Test {@link ListGrid#getSectionCrumbRepresentation()}.
-   *
-   * <ul>
-   *   <li>Then return {@code ?sectionCrumbs=42--42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getSectionCrumbRepresentation()}
+   * Method under test: {@link ListGrid#getSectionCrumbRepresentation()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ListGrid.getSectionCrumbRepresentation()"})
-  public void testGetSectionCrumbRepresentation_thenReturnSectionCrumbs4242() {
+  public void testGetSectionCrumbRepresentation2() {
     // Arrange
     SectionCrumb sectionCrumb = new SectionCrumb();
     sectionCrumb.setOriginalSectionIdentifier("42");
@@ -258,19 +149,10 @@ public class ListGridDiffblueTest {
   }
 
   /**
-   * Test {@link ListGrid#getSectionCrumbRepresentation()}.
-   *
-   * <ul>
-   *   <li>Then return {@code ?sectionCrumbs=42--42,42--42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getSectionCrumbRepresentation()}
+   * Method under test: {@link ListGrid#getSectionCrumbRepresentation()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ListGrid.getSectionCrumbRepresentation()"})
-  public void testGetSectionCrumbRepresentation_thenReturnSectionCrumbs42424242() {
+  public void testGetSectionCrumbRepresentation3() {
     // Arrange
     SectionCrumb sectionCrumb = new SectionCrumb();
     sectionCrumb.setOriginalSectionIdentifier("42");
@@ -294,21 +176,19 @@ public class ListGridDiffblueTest {
   }
 
   /**
-   * Test {@link ListGrid#getActiveToolbarActions()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor) addToolbarAction {@link
-   *       DefaultListGridActions#ADD}.
-   *   <li>Then return size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getActiveToolbarActions()}
+   * Method under test: {@link ListGrid#getActiveToolbarActions()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List ListGrid.getActiveToolbarActions()"})
-  public void testGetActiveToolbarActions_givenListGridAddToolbarActionAdd_thenReturnSizeIsOne() {
+  public void testGetActiveToolbarActions() {
+    // Arrange, Act and Assert
+    assertTrue((new ListGrid()).getActiveToolbarActions().isEmpty());
+  }
+
+  /**
+   * Method under test: {@link ListGrid#getActiveToolbarActions()}
+   */
+  @Test
+  public void testGetActiveToolbarActions2() {
     // Arrange
     ListGrid listGrid = new ListGrid();
     listGrid.addToolbarAction(DefaultListGridActions.ADD);
@@ -337,20 +217,10 @@ public class ListGridDiffblueTest {
   }
 
   /**
-   * Test {@link ListGrid#getActiveToolbarActions()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor) IsReadOnly is {@code true}.
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getActiveToolbarActions()}
+   * Method under test: {@link ListGrid#getActiveToolbarActions()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List ListGrid.getActiveToolbarActions()"})
-  public void testGetActiveToolbarActions_givenListGridIsReadOnlyIsTrue_thenReturnEmpty() {
+  public void testGetActiveToolbarActions3() {
     // Arrange
     ListGrid listGrid = new ListGrid();
     listGrid.setIsReadOnly(true);
@@ -361,40 +231,19 @@ public class ListGridDiffblueTest {
   }
 
   /**
-   * Test {@link ListGrid#getActiveToolbarActions()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor).
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getActiveToolbarActions()}
+   * Method under test: {@link ListGrid#getActiveRowActions()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List ListGrid.getActiveToolbarActions()"})
-  public void testGetActiveToolbarActions_givenListGrid_thenReturnEmpty() {
+  public void testGetActiveRowActions() {
     // Arrange, Act and Assert
-    assertTrue(new ListGrid().getActiveToolbarActions().isEmpty());
+    assertTrue((new ListGrid()).getActiveRowActions().isEmpty());
   }
 
   /**
-   * Test {@link ListGrid#getActiveRowActions()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor) addRowAction {@link
-   *       DefaultListGridActions#ADD}.
-   *   <li>Then return size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getActiveRowActions()}
+   * Method under test: {@link ListGrid#getActiveRowActions()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List ListGrid.getActiveRowActions()"})
-  public void testGetActiveRowActions_givenListGridAddRowActionAdd_thenReturnSizeIsOne() {
+  public void testGetActiveRowActions2() {
     // Arrange
     ListGrid listGrid = new ListGrid();
     listGrid.addRowAction(DefaultListGridActions.ADD);
@@ -423,20 +272,10 @@ public class ListGridDiffblueTest {
   }
 
   /**
-   * Test {@link ListGrid#getActiveRowActions()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor) IsReadOnly is {@code true}.
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getActiveRowActions()}
+   * Method under test: {@link ListGrid#getActiveRowActions()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List ListGrid.getActiveRowActions()"})
-  public void testGetActiveRowActions_givenListGridIsReadOnlyIsTrue_thenReturnEmpty() {
+  public void testGetActiveRowActions3() {
     // Arrange
     ListGrid listGrid = new ListGrid();
     listGrid.setIsReadOnly(true);
@@ -447,110 +286,19 @@ public class ListGridDiffblueTest {
   }
 
   /**
-   * Test {@link ListGrid#getActiveRowActions()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor).
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getActiveRowActions()}
+   * Method under test: {@link ListGrid#getActiveToolbarActionGroups()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List ListGrid.getActiveRowActions()"})
-  public void testGetActiveRowActions_givenListGrid_thenReturnEmpty() {
+  public void testGetActiveToolbarActionGroups() {
     // Arrange, Act and Assert
-    assertTrue(new ListGrid().getActiveRowActions().isEmpty());
+    assertTrue((new ListGrid()).getActiveToolbarActionGroups().isEmpty());
   }
 
   /**
-   * Test {@link ListGrid#getActiveToolbarActionGroups()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridActionGroup} (default constructor) addAction {@link
-   *       DefaultListGridActions#MANUAL_FETCH}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getActiveToolbarActionGroups()}
+   * Method under test: {@link ListGrid#getActiveToolbarActionGroups()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List ListGrid.getActiveToolbarActionGroups()"})
-  public void testGetActiveToolbarActionGroups_givenListGridActionGroupAddActionManual_fetch() {
-    // Arrange
-    ListGridActionGroup actionGroup = new ListGridActionGroup();
-    actionGroup.addAction(DefaultListGridActions.MANUAL_FETCH);
-
-    ListGrid listGrid = new ListGrid();
-    listGrid.addToolbarActionGroup(actionGroup);
-
-    // Act and Assert
-    assertTrue(listGrid.getActiveToolbarActionGroups().isEmpty());
-  }
-
-  /**
-   * Test {@link ListGrid#getActiveToolbarActionGroups()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor) IsReadOnly is {@code true}.
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getActiveToolbarActionGroups()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List ListGrid.getActiveToolbarActionGroups()"})
-  public void testGetActiveToolbarActionGroups_givenListGridIsReadOnlyIsTrue_thenReturnEmpty() {
-    // Arrange
-    ListGridActionGroup actionGroup = new ListGridActionGroup();
-    actionGroup.addAction(DefaultListGridActions.ADD);
-
-    ListGrid listGrid = new ListGrid();
-    listGrid.setIsReadOnly(true);
-    listGrid.addToolbarActionGroup(actionGroup);
-
-    // Act and Assert
-    assertTrue(listGrid.getActiveToolbarActionGroups().isEmpty());
-  }
-
-  /**
-   * Test {@link ListGrid#getActiveToolbarActionGroups()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor).
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getActiveToolbarActionGroups()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List ListGrid.getActiveToolbarActionGroups()"})
-  public void testGetActiveToolbarActionGroups_givenListGrid_thenReturnEmpty() {
-    // Arrange, Act and Assert
-    assertTrue(new ListGrid().getActiveToolbarActionGroups().isEmpty());
-  }
-
-  /**
-   * Test {@link ListGrid#getActiveToolbarActionGroups()}.
-   *
-   * <ul>
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getActiveToolbarActionGroups()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List ListGrid.getActiveToolbarActionGroups()"})
-  public void testGetActiveToolbarActionGroups_thenReturnEmpty() {
+  public void testGetActiveToolbarActionGroups2() {
     // Arrange
     ListGrid listGrid = new ListGrid();
     listGrid.addToolbarActionGroup(new ListGridActionGroup());
@@ -560,19 +308,10 @@ public class ListGridDiffblueTest {
   }
 
   /**
-   * Test {@link ListGrid#getActiveToolbarActionGroups()}.
-   *
-   * <ul>
-   *   <li>Then return size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getActiveToolbarActionGroups()}
+   * Method under test: {@link ListGrid#getActiveToolbarActionGroups()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List ListGrid.getActiveToolbarActionGroups()"})
-  public void testGetActiveToolbarActionGroups_thenReturnSizeIsOne() {
+  public void testGetActiveToolbarActionGroups3() {
     // Arrange
     ListGridActionGroup actionGroup = new ListGridActionGroup();
     actionGroup.addAction(DefaultListGridActions.ADD);
@@ -589,91 +328,52 @@ public class ListGridDiffblueTest {
   }
 
   /**
-   * Test {@link ListGrid#getActiveRowActionGroups()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridActionGroup} (default constructor) addAction {@link
-   *       DefaultListGridActions#MANUAL_FETCH}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getActiveRowActionGroups()}
+   * Method under test: {@link ListGrid#getActiveToolbarActionGroups()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List ListGrid.getActiveRowActionGroups()"})
-  public void testGetActiveRowActionGroups_givenListGridActionGroupAddActionManual_fetch() {
+  public void testGetActiveToolbarActionGroups4() {
     // Arrange
     ListGridActionGroup actionGroup = new ListGridActionGroup();
     actionGroup.addAction(DefaultListGridActions.MANUAL_FETCH);
 
     ListGrid listGrid = new ListGrid();
-    listGrid.addRowActionGroup(actionGroup);
+    listGrid.addToolbarActionGroup(actionGroup);
 
     // Act and Assert
-    assertTrue(listGrid.getActiveRowActionGroups().isEmpty());
+    assertTrue(listGrid.getActiveToolbarActionGroups().isEmpty());
   }
 
   /**
-   * Test {@link ListGrid#getActiveRowActionGroups()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor) IsReadOnly is {@code true}.
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getActiveRowActionGroups()}
+   * Method under test: {@link ListGrid#getActiveToolbarActionGroups()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List ListGrid.getActiveRowActionGroups()"})
-  public void testGetActiveRowActionGroups_givenListGridIsReadOnlyIsTrue_thenReturnEmpty() {
+  public void testGetActiveToolbarActionGroups5() {
     // Arrange
     ListGridActionGroup actionGroup = new ListGridActionGroup();
     actionGroup.addAction(DefaultListGridActions.ADD);
 
     ListGrid listGrid = new ListGrid();
     listGrid.setIsReadOnly(true);
-    listGrid.addRowActionGroup(actionGroup);
+    listGrid.addToolbarActionGroup(actionGroup);
 
     // Act and Assert
-    assertTrue(listGrid.getActiveRowActionGroups().isEmpty());
+    assertTrue(listGrid.getActiveToolbarActionGroups().isEmpty());
   }
 
   /**
-   * Test {@link ListGrid#getActiveRowActionGroups()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor).
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getActiveRowActionGroups()}
+   * Method under test: {@link ListGrid#getActiveRowActionGroups()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List ListGrid.getActiveRowActionGroups()"})
-  public void testGetActiveRowActionGroups_givenListGrid_thenReturnEmpty() {
+  public void testGetActiveRowActionGroups() {
     // Arrange, Act and Assert
-    assertTrue(new ListGrid().getActiveRowActionGroups().isEmpty());
+    assertTrue((new ListGrid()).getActiveRowActionGroups().isEmpty());
   }
 
   /**
-   * Test {@link ListGrid#getActiveRowActionGroups()}.
-   *
-   * <ul>
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getActiveRowActionGroups()}
+   * Method under test: {@link ListGrid#getActiveRowActionGroups()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List ListGrid.getActiveRowActionGroups()"})
-  public void testGetActiveRowActionGroups_thenReturnEmpty() {
+  public void testGetActiveRowActionGroups2() {
     // Arrange
     ListGrid listGrid = new ListGrid();
     listGrid.addRowActionGroup(new ListGridActionGroup());
@@ -683,19 +383,10 @@ public class ListGridDiffblueTest {
   }
 
   /**
-   * Test {@link ListGrid#getActiveRowActionGroups()}.
-   *
-   * <ul>
-   *   <li>Then return size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getActiveRowActionGroups()}
+   * Method under test: {@link ListGrid#getActiveRowActionGroups()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List ListGrid.getActiveRowActionGroups()"})
-  public void testGetActiveRowActionGroups_thenReturnSizeIsOne() {
+  public void testGetActiveRowActionGroups3() {
     // Arrange
     ListGridActionGroup actionGroup = new ListGridActionGroup();
     actionGroup.addAction(DefaultListGridActions.ADD);
@@ -712,62 +403,52 @@ public class ListGridDiffblueTest {
   }
 
   /**
-   * Test {@link ListGrid#getActiveModalRowActions()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor) IsReadOnly is {@code true}.
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getActiveModalRowActions()}
+   * Method under test: {@link ListGrid#getActiveRowActionGroups()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List ListGrid.getActiveModalRowActions()"})
-  public void testGetActiveModalRowActions_givenListGridIsReadOnlyIsTrue_thenReturnEmpty() {
+  public void testGetActiveRowActionGroups4() {
     // Arrange
+    ListGridActionGroup actionGroup = new ListGridActionGroup();
+    actionGroup.addAction(DefaultListGridActions.MANUAL_FETCH);
+
     ListGrid listGrid = new ListGrid();
-    listGrid.setIsReadOnly(true);
-    listGrid.addModalRowAction(DefaultListGridActions.ADD);
+    listGrid.addRowActionGroup(actionGroup);
 
     // Act and Assert
-    assertTrue(listGrid.getActiveModalRowActions().isEmpty());
+    assertTrue(listGrid.getActiveRowActionGroups().isEmpty());
   }
 
   /**
-   * Test {@link ListGrid#getActiveModalRowActions()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor).
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getActiveModalRowActions()}
+   * Method under test: {@link ListGrid#getActiveRowActionGroups()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List ListGrid.getActiveModalRowActions()"})
-  public void testGetActiveModalRowActions_givenListGrid_thenReturnEmpty() {
+  public void testGetActiveRowActionGroups5() {
+    // Arrange
+    ListGridActionGroup actionGroup = new ListGridActionGroup();
+    actionGroup.addAction(DefaultListGridActions.ADD);
+
+    ListGrid listGrid = new ListGrid();
+    listGrid.setIsReadOnly(true);
+    listGrid.addRowActionGroup(actionGroup);
+
+    // Act and Assert
+    assertTrue(listGrid.getActiveRowActionGroups().isEmpty());
+  }
+
+  /**
+   * Method under test: {@link ListGrid#getActiveModalRowActions()}
+   */
+  @Test
+  public void testGetActiveModalRowActions() {
     // Arrange, Act and Assert
-    assertTrue(new ListGrid().getActiveModalRowActions().isEmpty());
+    assertTrue((new ListGrid()).getActiveModalRowActions().isEmpty());
   }
 
   /**
-   * Test {@link ListGrid#getActiveModalRowActions()}.
-   *
-   * <ul>
-   *   <li>Then return size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getActiveModalRowActions()}
+   * Method under test: {@link ListGrid#getActiveModalRowActions()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List ListGrid.getActiveModalRowActions()"})
-  public void testGetActiveModalRowActions_thenReturnSizeIsOne() {
+  public void testGetActiveModalRowActions2() {
     // Arrange
     ListGrid listGrid = new ListGrid();
     listGrid.addModalRowAction(DefaultListGridActions.ADD);
@@ -796,14 +477,23 @@ public class ListGridDiffblueTest {
   }
 
   /**
-   * Test {@link ListGrid#addRowAction(ListGridAction)}.
-   *
-   * <p>Method under test: {@link ListGrid#addRowAction(ListGridAction)}
+   * Method under test: {@link ListGrid#getActiveModalRowActions()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ListGrid.addRowAction(ListGridAction)"})
+  public void testGetActiveModalRowActions3() {
+    // Arrange
+    ListGrid listGrid = new ListGrid();
+    listGrid.setIsReadOnly(true);
+    listGrid.addModalRowAction(DefaultListGridActions.ADD);
+
+    // Act and Assert
+    assertTrue(listGrid.getActiveModalRowActions().isEmpty());
+  }
+
+  /**
+   * Method under test: {@link ListGrid#addRowAction(ListGridAction)}
+   */
+  @Test
   public void testAddRowAction() {
     // Arrange
     ListGrid listGrid = new ListGrid();
@@ -815,19 +505,16 @@ public class ListGridDiffblueTest {
     // Assert
     List<ListGridAction> activeRowActions = listGrid.getActiveRowActions();
     assertEquals(1, activeRowActions.size());
-    assertEquals(activeRowActions, listGrid.getRowActions());
+    List<ListGridAction> rowActions = listGrid.getRowActions();
+    assertEquals(1, rowActions.size());
     assertSame(action, activeRowActions.get(0));
+    assertSame(action, rowActions.get(0));
   }
 
   /**
-   * Test {@link ListGrid#addModalRowAction(ListGridAction)}.
-   *
-   * <p>Method under test: {@link ListGrid#addModalRowAction(ListGridAction)}
+   * Method under test: {@link ListGrid#addModalRowAction(ListGridAction)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ListGrid.addModalRowAction(ListGridAction)"})
   public void testAddModalRowAction() {
     // Arrange
     ListGrid listGrid = new ListGrid();
@@ -839,18 +526,25 @@ public class ListGridDiffblueTest {
     // Assert
     List<ListGridAction> activeModalRowActions = listGrid.getActiveModalRowActions();
     assertEquals(1, activeModalRowActions.size());
+    List<ListGridAction> modalRowActions = listGrid.getModalRowActions();
+    assertEquals(1, modalRowActions.size());
+    assertTrue(listGrid.getActiveRowActions().isEmpty());
+    assertTrue(listGrid.getActiveToolbarActionGroups().isEmpty());
+    assertTrue(listGrid.getActiveToolbarActions().isEmpty());
+    assertTrue(listGrid.getRecords().isEmpty());
+    assertTrue(listGrid.getRowActionGroups().isEmpty());
+    assertTrue(listGrid.getRowActions().isEmpty());
+    assertTrue(listGrid.getSectionCrumbs().isEmpty());
+    assertTrue(listGrid.getToolbarActionGroups().isEmpty());
+    assertTrue(listGrid.getToolbarActions().isEmpty());
     assertSame(action, activeModalRowActions.get(0));
+    assertSame(action, modalRowActions.get(0));
   }
 
   /**
-   * Test {@link ListGrid#addToolbarAction(ListGridAction)}.
-   *
-   * <p>Method under test: {@link ListGrid#addToolbarAction(ListGridAction)}
+   * Method under test: {@link ListGrid#addToolbarAction(ListGridAction)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ListGrid.addToolbarAction(ListGridAction)"})
   public void testAddToolbarAction() {
     // Arrange
     ListGrid listGrid = new ListGrid();
@@ -862,19 +556,50 @@ public class ListGridDiffblueTest {
     // Assert
     List<ListGridAction> activeToolbarActions = listGrid.getActiveToolbarActions();
     assertEquals(1, activeToolbarActions.size());
-    assertEquals(activeToolbarActions, listGrid.getToolbarActions());
+    List<ListGridAction> toolbarActions = listGrid.getToolbarActions();
+    assertEquals(1, toolbarActions.size());
     assertSame(action, activeToolbarActions.get(0));
+    assertSame(action, toolbarActions.get(0));
   }
 
   /**
-   * Test {@link ListGrid#addToolbarActionGroup(ListGridActionGroup)}.
-   *
-   * <p>Method under test: {@link ListGrid#addToolbarActionGroup(ListGridActionGroup)}
+   * Method under test: {@link ListGrid#removeAllRowActions()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ListGrid.addToolbarActionGroup(ListGridActionGroup)"})
+  public void testRemoveAllRowActions() {
+    // Arrange
+    ListGrid listGrid = new ListGrid();
+
+    // Act
+    listGrid.removeAllRowActions();
+
+    // Assert
+    assertTrue(listGrid.getActiveRowActions().isEmpty());
+    assertTrue(listGrid.getRowActions().isEmpty());
+  }
+
+  /**
+   * Method under test: {@link ListGrid#removeAllRowActions()}
+   */
+  @Test
+  public void testRemoveAllRowActions2() {
+    // Arrange
+    ListGrid listGrid = new ListGrid();
+    listGrid.addRowAction(mock(ListGridAction.class));
+
+    // Act
+    listGrid.removeAllRowActions();
+
+    // Assert
+    assertTrue(listGrid.getActiveRowActions().isEmpty());
+    assertTrue(listGrid.getRowActions().isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link ListGrid#addToolbarActionGroup(ListGridActionGroup)}
+   */
+  @Test
   public void testAddToolbarActionGroup() {
     // Arrange
     ListGrid listGrid = new ListGrid();
@@ -890,14 +615,9 @@ public class ListGridDiffblueTest {
   }
 
   /**
-   * Test {@link ListGrid#addRowActionGroup(ListGridActionGroup)}.
-   *
-   * <p>Method under test: {@link ListGrid#addRowActionGroup(ListGridActionGroup)}
+   * Method under test: {@link ListGrid#addRowActionGroup(ListGridActionGroup)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ListGrid.addRowActionGroup(ListGridActionGroup)"})
   public void testAddRowActionGroup() {
     // Arrange
     ListGrid listGrid = new ListGrid();
@@ -913,261 +633,46 @@ public class ListGridDiffblueTest {
   }
 
   /**
-   * Test {@link ListGrid#findToolbarAction(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link DefaultListGridActions#ADD}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#findToolbarAction(String)}
+   * Method under test: {@link ListGrid#findToolbarAction(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ListGridAction ListGrid.findToolbarAction(String)"})
-  public void testFindToolbarAction_givenArrayListAddAdd_thenReturnNull() {
-    // Arrange
-    ArrayList<ListGridAction> toolbarActions = new ArrayList<>();
-    toolbarActions.add(DefaultListGridActions.ADD);
-
-    ArrayList<ListGridAction> listGridActions = new ArrayList<>();
-    listGridActions.add(DefaultListGridActions.ADD);
-
-    ListGridActionGroup listGridActionGroup = new ListGridActionGroup();
-    listGridActionGroup.setListGridActions(listGridActions);
-
-    ArrayList<ListGridActionGroup> toolbarActionGroups = new ArrayList<>();
-    toolbarActionGroups.add(listGridActionGroup);
-    listGrid.setToolbarActions(toolbarActions);
-    listGrid.setToolbarActionGroups(toolbarActionGroups);
-
-    // Act and Assert
-    assertNull(listGrid.findToolbarAction("42"));
-  }
-
-  /**
-   * Test {@link ListGrid#findToolbarAction(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#findToolbarAction(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ListGridAction ListGrid.findToolbarAction(String)"})
-  public void testFindToolbarAction_givenListGrid_thenReturnNull() {
+  public void testFindToolbarAction() {
     // Arrange, Act and Assert
     assertNull(listGrid.findToolbarAction("42"));
   }
 
   /**
-   * Test {@link ListGrid#findToolbarAction(String)}.
-   *
-   * <ul>
-   *   <li>Then return {@link ListGridAction#ListGridAction(String)} with actionId is {@code 42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#findToolbarAction(String)}
+   * Method under test: {@link ListGrid#findRowAction(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ListGridAction ListGrid.findToolbarAction(String)"})
-  public void testFindToolbarAction_thenReturnListGridActionWithActionIdIs42() {
-    // Arrange
-    ArrayList<ListGridAction> toolbarActions = new ArrayList<>();
-    ListGridAction listGridAction = new ListGridAction("42");
-    toolbarActions.add(listGridAction);
-
-    ArrayList<ListGridAction> listGridActions = new ArrayList<>();
-    listGridActions.add(DefaultListGridActions.ADD);
-
-    ListGridActionGroup listGridActionGroup = new ListGridActionGroup();
-    listGridActionGroup.setListGridActions(listGridActions);
-
-    ArrayList<ListGridActionGroup> toolbarActionGroups = new ArrayList<>();
-    toolbarActionGroups.add(listGridActionGroup);
-    listGrid.setToolbarActions(toolbarActions);
-    listGrid.setToolbarActionGroups(toolbarActionGroups);
-
-    // Act and Assert
-    assertSame(listGridAction, listGrid.findToolbarAction("42"));
-  }
-
-  /**
-   * Test {@link ListGrid#findRowAction(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link DefaultListGridActions#ADD}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#findRowAction(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ListGridAction ListGrid.findRowAction(String)"})
-  public void testFindRowAction_givenArrayListAddAdd_thenReturnNull() {
-    // Arrange
-    ArrayList<ListGridAction> rowActions = new ArrayList<>();
-    rowActions.add(DefaultListGridActions.ADD);
-
-    ArrayList<ListGridAction> listGridActions = new ArrayList<>();
-    listGridActions.add(DefaultListGridActions.ADD);
-
-    ListGridActionGroup listGridActionGroup = new ListGridActionGroup();
-    listGridActionGroup.setListGridActions(listGridActions);
-
-    ArrayList<ListGridActionGroup> rowActionGroups = new ArrayList<>();
-    rowActionGroups.add(listGridActionGroup);
-    listGrid.setRowActions(rowActions);
-    listGrid.setRowActionGroups(rowActionGroups);
-
-    // Act and Assert
-    assertNull(listGrid.findRowAction("42"));
-  }
-
-  /**
-   * Test {@link ListGrid#findRowAction(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#findRowAction(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ListGridAction ListGrid.findRowAction(String)"})
-  public void testFindRowAction_givenListGrid_thenReturnNull() {
+  public void testFindRowAction() {
     // Arrange, Act and Assert
     assertNull(listGrid.findRowAction("42"));
   }
 
   /**
-   * Test {@link ListGrid#findRowAction(String)}.
-   *
-   * <ul>
-   *   <li>Then return {@link ListGridAction#ListGridAction(String)} with actionId is {@code 42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#findRowAction(String)}
+   * Method under test: {@link ListGrid#findModalRowAction(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ListGridAction ListGrid.findRowAction(String)"})
-  public void testFindRowAction_thenReturnListGridActionWithActionIdIs42() {
-    // Arrange
-    ArrayList<ListGridAction> rowActions = new ArrayList<>();
-    ListGridAction listGridAction = new ListGridAction("42");
-    rowActions.add(listGridAction);
-
-    ArrayList<ListGridAction> listGridActions = new ArrayList<>();
-    listGridActions.add(DefaultListGridActions.ADD);
-
-    ListGridActionGroup listGridActionGroup = new ListGridActionGroup();
-    listGridActionGroup.setListGridActions(listGridActions);
-
-    ArrayList<ListGridActionGroup> rowActionGroups = new ArrayList<>();
-    rowActionGroups.add(listGridActionGroup);
-    listGrid.setRowActions(rowActions);
-    listGrid.setRowActionGroups(rowActionGroups);
-
-    // Act and Assert
-    assertSame(listGridAction, listGrid.findRowAction("42"));
-  }
-
-  /**
-   * Test {@link ListGrid#findModalRowAction(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link DefaultListGridActions#ADD}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#findModalRowAction(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ListGridAction ListGrid.findModalRowAction(String)"})
-  public void testFindModalRowAction_givenArrayListAddAdd_thenReturnNull() {
-    // Arrange
-    ArrayList<ListGridAction> modalRowActions = new ArrayList<>();
-    modalRowActions.add(DefaultListGridActions.ADD);
-    listGrid.setModalRowActions(modalRowActions);
-
-    // Act and Assert
-    assertNull(listGrid.findModalRowAction("42"));
-  }
-
-  /**
-   * Test {@link ListGrid#findModalRowAction(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#findModalRowAction(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ListGridAction ListGrid.findModalRowAction(String)"})
-  public void testFindModalRowAction_givenListGrid_thenReturnNull() {
+  public void testFindModalRowAction() {
     // Arrange, Act and Assert
     assertNull(listGrid.findModalRowAction("42"));
   }
 
   /**
-   * Test {@link ListGrid#findModalRowAction(String)}.
-   *
-   * <ul>
-   *   <li>Then return {@link ListGridAction#ListGridAction(String)} with actionId is {@code 42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#findModalRowAction(String)}
+   * Method under test: {@link ListGrid#isSortable()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ListGridAction ListGrid.findModalRowAction(String)"})
-  public void testFindModalRowAction_thenReturnListGridActionWithActionIdIs42() {
-    // Arrange
-    ArrayList<ListGridAction> modalRowActions = new ArrayList<>();
-    ListGridAction listGridAction = new ListGridAction("42");
-    modalRowActions.add(listGridAction);
-    listGrid.setModalRowActions(modalRowActions);
-
-    // Act and Assert
-    assertSame(listGridAction, listGrid.findModalRowAction("42"));
+  public void testIsSortable() {
+    // Arrange, Act and Assert
+    assertFalse((new ListGrid()).isSortable());
   }
 
   /**
-   * Test {@link ListGrid#isSortable()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor) IsSortable is {@code true}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#isSortable()}
+   * Method under test: {@link ListGrid#isSortable()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ListGrid.isSortable()"})
-  public void testIsSortable_givenListGridIsSortableIsTrue_thenReturnTrue() {
+  public void testIsSortable2() {
     // Arrange
     ListGrid listGrid = new ListGrid();
     listGrid.setIsSortable(true);
@@ -1177,102 +682,49 @@ public class ListGridDiffblueTest {
   }
 
   /**
-   * Test {@link ListGrid#isSortable()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#isSortable()}
+   * Method under test: {@link ListGrid#setListGridType(ListGrid.Type)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ListGrid.isSortable()"})
-  public void testIsSortable_givenListGrid_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(new ListGrid().isSortable());
-  }
-
-  /**
-   * Test {@link ListGrid#setListGridType(Type)}.
-   *
-   * <p>Method under test: {@link ListGrid#setListGridType(Type)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ListGrid.setListGridType(Type)"})
   public void testSetListGridType() {
     // Arrange
     ListGrid listGrid = new ListGrid();
 
     // Act
-    listGrid.setListGridType(Type.MAIN);
+    listGrid.setListGridType(ListGrid.Type.MAIN);
 
     // Assert
     assertEquals("main", listGrid.getListGridType());
   }
 
   /**
-   * Test {@link ListGrid#setSelectType(SelectType)}.
-   *
-   * <p>Method under test: {@link ListGrid#setSelectType(SelectType)}
+   * Method under test: {@link ListGrid#setSelectType(ListGrid.SelectType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ListGrid.setSelectType(SelectType)"})
   public void testSetSelectType() {
     // Arrange
     ListGrid listGrid = new ListGrid();
 
     // Act
-    listGrid.setSelectType(SelectType.SINGLE_SELECT);
+    listGrid.setSelectType(ListGrid.SelectType.SINGLE_SELECT);
 
     // Assert
     assertEquals("single_select", listGrid.getSelectType());
   }
 
   /**
-   * Test {@link ListGrid#getCanFilterAndSort()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor) CanFilterAndSort is {@code false}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getCanFilterAndSort()}
+   * Method under test: {@link ListGrid#getCanFilterAndSort()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ListGrid.getCanFilterAndSort()"})
-  public void testGetCanFilterAndSort_givenListGridCanFilterAndSortIsFalse_thenReturnFalse() {
-    // Arrange
-    ListGrid listGrid = new ListGrid();
-    listGrid.setCanFilterAndSort(false);
-
-    // Act and Assert
-    assertFalse(listGrid.getCanFilterAndSort());
+  public void testGetCanFilterAndSort() {
+    // Arrange, Act and Assert
+    assertTrue((new ListGrid()).getCanFilterAndSort());
   }
 
   /**
-   * Test {@link ListGrid#getCanFilterAndSort()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor) CanFilterAndSort is {@code true}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getCanFilterAndSort()}
+   * Method under test: {@link ListGrid#getCanFilterAndSort()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ListGrid.getCanFilterAndSort()"})
-  public void testGetCanFilterAndSort_givenListGridCanFilterAndSortIsTrue_thenReturnTrue() {
+  public void testGetCanFilterAndSort2() {
     // Arrange
     ListGrid listGrid = new ListGrid();
     listGrid.setCanFilterAndSort(true);
@@ -1282,39 +734,32 @@ public class ListGridDiffblueTest {
   }
 
   /**
-   * Test {@link ListGrid#getCanFilterAndSort()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor).
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getCanFilterAndSort()}
+   * Method under test: {@link ListGrid#getCanFilterAndSort()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ListGrid.getCanFilterAndSort()"})
-  public void testGetCanFilterAndSort_givenListGrid_thenReturnTrue() {
-    // Arrange, Act and Assert
-    assertTrue(new ListGrid().getCanFilterAndSort());
+  public void testGetCanFilterAndSort3() {
+    // Arrange
+    ListGrid listGrid = new ListGrid();
+    listGrid.setCanFilterAndSort(false);
+
+    // Act and Assert
+    assertFalse(listGrid.getCanFilterAndSort());
   }
 
   /**
-   * Test {@link ListGrid#getIsReadOnly()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor) IsReadOnly is {@code true}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getIsReadOnly()}
+   * Method under test: {@link ListGrid#getIsReadOnly()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ListGrid.getIsReadOnly()"})
-  public void testGetIsReadOnly_givenListGridIsReadOnlyIsTrue_thenReturnTrue() {
+  public void testGetIsReadOnly() {
+    // Arrange, Act and Assert
+    assertFalse((new ListGrid()).getIsReadOnly());
+  }
+
+  /**
+   * Method under test: {@link ListGrid#getIsReadOnly()}
+   */
+  @Test
+  public void testGetIsReadOnly2() {
     // Arrange
     ListGrid listGrid = new ListGrid();
     listGrid.setIsReadOnly(true);
@@ -1324,39 +769,19 @@ public class ListGridDiffblueTest {
   }
 
   /**
-   * Test {@link ListGrid#getIsReadOnly()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getIsReadOnly()}
+   * Method under test: {@link ListGrid#getClickable()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ListGrid.getIsReadOnly()"})
-  public void testGetIsReadOnly_givenListGrid_thenReturnFalse() {
+  public void testGetClickable() {
     // Arrange, Act and Assert
-    assertFalse(new ListGrid().getIsReadOnly());
+    assertTrue((new ListGrid()).getClickable());
   }
 
   /**
-   * Test {@link ListGrid#getClickable()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor) SelectTypeString is {@code none}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getClickable()}
+   * Method under test: {@link ListGrid#getClickable()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ListGrid.getClickable()"})
-  public void testGetClickable_givenListGridSelectTypeStringIsNone_thenReturnFalse() {
+  public void testGetClickable2() {
     // Arrange
     ListGrid listGrid = new ListGrid();
     listGrid.setSelectTypeString("none");
@@ -1366,62 +791,19 @@ public class ListGridDiffblueTest {
   }
 
   /**
-   * Test {@link ListGrid#getClickable()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor).
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getClickable()}
+   * Method under test: {@link ListGrid#getHideIdColumn()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ListGrid.getClickable()"})
-  public void testGetClickable_givenListGrid_thenReturnTrue() {
+  public void testGetHideIdColumn() {
     // Arrange, Act and Assert
-    assertTrue(new ListGrid().getClickable());
+    assertTrue((new ListGrid()).getHideIdColumn());
   }
 
   /**
-   * Test {@link ListGrid#getHideIdColumn()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor) HideIdColumn is {@code false}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getHideIdColumn()}
+   * Method under test: {@link ListGrid#getHideIdColumn()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ListGrid.getHideIdColumn()"})
-  public void testGetHideIdColumn_givenListGridHideIdColumnIsFalse_thenReturnFalse() {
-    // Arrange
-    ListGrid listGrid = new ListGrid();
-    listGrid.setHideIdColumn(false);
-
-    // Act and Assert
-    assertFalse(listGrid.getHideIdColumn());
-  }
-
-  /**
-   * Test {@link ListGrid#getHideIdColumn()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor) HideIdColumn is {@code true}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getHideIdColumn()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ListGrid.getHideIdColumn()"})
-  public void testGetHideIdColumn_givenListGridHideIdColumnIsTrue_thenReturnTrue() {
+  public void testGetHideIdColumn2() {
     // Arrange
     ListGrid listGrid = new ListGrid();
     listGrid.setHideIdColumn(true);
@@ -1431,172 +813,227 @@ public class ListGridDiffblueTest {
   }
 
   /**
-   * Test {@link ListGrid#getHideIdColumn()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor).
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getHideIdColumn()}
+   * Method under test: {@link ListGrid#getHideIdColumn()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ListGrid.getHideIdColumn()"})
-  public void testGetHideIdColumn_givenListGrid_thenReturnTrue() {
+  public void testGetHideIdColumn3() {
+    // Arrange
+    ListGrid listGrid = new ListGrid();
+    listGrid.setHideIdColumn(false);
+
+    // Act and Assert
+    assertFalse(listGrid.getHideIdColumn());
+  }
+
+  /**
+   * Method under test: {@link ListGrid#findHeaderField(String)}
+   */
+  @Test
+  public void testFindHeaderField() {
     // Arrange, Act and Assert
-    assertTrue(new ListGrid().getHideIdColumn());
-  }
-
-  /**
-   * Test {@link ListGrid#findHeaderField(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link Field} (default constructor) Name is {@code Name}.
-   *   <li>When {@code Name}.
-   *   <li>Then return {@link Field} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#findHeaderField(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Field ListGrid.findHeaderField(String)"})
-  public void testFindHeaderField_givenFieldNameIsName_whenName_thenReturnField() {
-    // Arrange
-    Field field = new Field();
-    field.setName("Name");
-
-    LinkedHashSet<Field> headerFields = new LinkedHashSet<>();
-    headerFields.add(field);
-    listGrid.setHeaderFields(headerFields);
-
-    // Act and Assert
-    assertSame(field, listGrid.findHeaderField("Name"));
-  }
-
-  /**
-   * Test {@link ListGrid#findHeaderField(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link LinkedHashSet#LinkedHashSet()} add {@link Field} (default constructor).
-   *   <li>When {@code Name}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#findHeaderField(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Field ListGrid.findHeaderField(String)"})
-  public void testFindHeaderField_givenLinkedHashSetAddField_whenName_thenReturnNull() {
-    // Arrange
-    LinkedHashSet<Field> headerFields = new LinkedHashSet<>();
-    headerFields.add(new Field());
-    listGrid.setHeaderFields(headerFields);
-
-    // Act and Assert
     assertNull(listGrid.findHeaderField("Name"));
-  }
-
-  /**
-   * Test {@link ListGrid#findHeaderField(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link LinkedHashSet#LinkedHashSet()} add {@link Field} (default constructor).
-   *   <li>When {@code null}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#findHeaderField(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Field ListGrid.findHeaderField(String)"})
-  public void testFindHeaderField_givenLinkedHashSetAddField_whenNull_thenReturnNull() {
-    // Arrange
-    LinkedHashSet<Field> headerFields = new LinkedHashSet<>();
-    headerFields.add(new Field());
-    listGrid.setHeaderFields(headerFields);
-
-    // Act and Assert
     assertNull(listGrid.findHeaderField(null));
   }
 
   /**
-   * Test {@link ListGrid#findHeaderField(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid}.
-   *   <li>When {@code Name}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#findHeaderField(String)}
+   * Method under test: {@link ListGrid#isEmpty()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Field ListGrid.findHeaderField(String)"})
-  public void testFindHeaderField_givenListGrid_whenName_thenReturnNull() {
+  public void testIsEmpty() {
     // Arrange, Act and Assert
-    assertNull(listGrid.findHeaderField("Name"));
+    assertTrue((new ListGrid()).isEmpty());
   }
 
   /**
-   * Test {@link ListGrid#isEmpty()}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link ListGridRecord} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#isEmpty()}
+   * Method under test: {@link ListGrid#getManualFetch()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ListGrid.isEmpty()"})
-  public void testIsEmpty_givenArrayListAddListGridRecord_thenReturnFalse() {
-    // Arrange
-    ArrayList<ListGridRecord> records = new ArrayList<>();
-    records.add(new ListGridRecord());
+  public void testGetManualFetch() {
+    // Arrange, Act and Assert
+    assertFalse((new ListGrid()).getManualFetch());
+  }
 
+  /**
+   * Method under test: {@link ListGrid#getManualFetch()}
+   */
+  @Test
+  public void testGetManualFetch2() {
+    // Arrange
     ListGrid listGrid = new ListGrid();
-    listGrid.setRecords(records);
+    listGrid.setManualFetch(true);
 
     // Act and Assert
-    assertFalse(listGrid.isEmpty());
+    assertTrue(listGrid.getManualFetch());
   }
 
   /**
-   * Test {@link ListGrid#isEmpty()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor).
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#isEmpty()}
+   * Method under test: {@link ListGrid#setSectionCrumbs(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ListGrid.isEmpty()"})
-  public void testIsEmpty_givenListGrid_thenReturnTrue() {
-    // Arrange, Act and Assert
-    assertTrue(new ListGrid().isEmpty());
+  public void testSetSectionCrumbs() {
+    // Arrange
+    ArrayList<SectionCrumb> sectionCrumbs = new ArrayList<>();
+
+    // Act
+    listGrid.setSectionCrumbs(sectionCrumbs);
+
+    // Assert
+    assertEquals("", listGrid.getSectionCrumbRepresentation());
+    assertSame(sectionCrumbs, listGrid.getSectionCrumbs());
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Method under test: {@link ListGrid#setSectionCrumbs(List)}
+   */
+  @Test
+  public void testSetSectionCrumbs2() {
+    // Arrange
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+
+    ArrayList<SectionCrumb> sectionCrumbs = new ArrayList<>();
+    sectionCrumbs.add(sectionCrumb);
+
+    // Act
+    listGrid.setSectionCrumbs(sectionCrumbs);
+
+    // Assert
+    assertEquals("?sectionCrumbs=42--42", listGrid.getSectionCrumbRepresentation());
+    assertSame(sectionCrumbs, listGrid.getSectionCrumbs());
+  }
+
+  /**
+   * Method under test: {@link ListGrid#setSectionCrumbs(List)}
+   */
+  @Test
+  public void testSetSectionCrumbs3() {
+    // Arrange
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+
+    SectionCrumb sectionCrumb2 = new SectionCrumb();
+    sectionCrumb2.setOriginalSectionIdentifier("Original Section Identifier");
+    sectionCrumb2.setSectionId("Section Id");
+    sectionCrumb2.setSectionIdentifier("Section Identifier");
+
+    ArrayList<SectionCrumb> sectionCrumbs = new ArrayList<>();
+    sectionCrumbs.add(sectionCrumb2);
+    sectionCrumbs.add(sectionCrumb);
+
+    // Act
+    listGrid.setSectionCrumbs(sectionCrumbs);
+
+    // Assert
+    assertEquals("?sectionCrumbs=Section Identifier--Section Id,42--42", listGrid.getSectionCrumbRepresentation());
+    assertSame(sectionCrumbs, listGrid.getSectionCrumbs());
+  }
+
+  /**
+   * Method under test: {@link ListGrid#setSectionCrumbs(List)}
+   */
+  @Test
+  public void testSetSectionCrumbs4() {
+    // Arrange
+    SectionCrumb sectionCrumb = mock(SectionCrumb.class);
+    doNothing().when(sectionCrumb).setOriginalSectionIdentifier(Mockito.<String>any());
+    doNothing().when(sectionCrumb).setSectionId(Mockito.<String>any());
+    doNothing().when(sectionCrumb).setSectionIdentifier(Mockito.<String>any());
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+
+    ArrayList<SectionCrumb> sectionCrumbs = new ArrayList<>();
+    sectionCrumbs.add(sectionCrumb);
+
+    // Act
+    listGrid.setSectionCrumbs(sectionCrumbs);
+
+    // Assert
+    verify(sectionCrumb).setOriginalSectionIdentifier(eq("42"));
+    verify(sectionCrumb).setSectionId(eq("42"));
+    verify(sectionCrumb).setSectionIdentifier(eq("42"));
+    assertEquals("?sectionCrumbs=null--null", listGrid.getSectionCrumbRepresentation());
+    assertSame(sectionCrumbs, listGrid.getSectionCrumbs());
+  }
+
+  /**
+   * Method under test: {@link ListGrid#addCssClass(String)}
+   */
+  @Test
+  public void testAddCssClass() {
+    // Arrange and Act
+    listGrid.addCssClass("Class Name");
+
+    // Assert
+    assertEquals("Class Name", listGrid.getCssClassNames());
+  }
+
+  /**
+   * Method under test: {@link ListGrid#getCssClassNames()}
+   */
+  @Test
+  public void testGetCssClassNames() {
+    // Arrange, Act and Assert
+    assertEquals("", (new ListGrid()).getCssClassNames());
+  }
+
+  /**
+   * Method under test: {@link ListGrid#getCssClassNames()}
+   */
+  @Test
+  public void testGetCssClassNames2() {
+    // Arrange
+    ListGrid listGrid = new ListGrid();
+    listGrid.addCssClass(" ");
+
+    // Act and Assert
+    assertEquals(" ", listGrid.getCssClassNames());
+  }
+
+  /**
+   * Method under test: {@link ListGrid#getFirstSearchableFieldFriendlyName()}
+   */
+  @Test
+  public void testGetFirstSearchableFieldFriendlyName() {
+    // Arrange
+    Field field = new Field();
+    field.setFilterSortDisabled(null);
+
+    LinkedHashSet<Field> headerFields = new LinkedHashSet<>();
+    headerFields.add(field);
+
+    ListGrid listGrid = new ListGrid();
+    listGrid.setHeaderFields(headerFields);
+
+    // Act and Assert
+    assertNull(listGrid.getFirstSearchableFieldFriendlyName());
+  }
+
+  /**
+   * Method under test: {@link ListGrid#getFirstSearchableFieldFriendlyName()}
+   */
+  @Test
+  public void testGetFirstSearchableFieldFriendlyName2() {
+    // Arrange
+    Field field = new Field();
+    field.setFilterSortDisabled(true);
+
+    LinkedHashSet<Field> headerFields = new LinkedHashSet<>();
+    headerFields.add(field);
+
+    ListGrid listGrid = new ListGrid();
+    listGrid.setHeaderFields(headerFields);
+
+    // Act and Assert
+    assertNull(listGrid.getFirstSearchableFieldFriendlyName());
+  }
+
+  /**
+   * Methods under test:
    * <ul>
    *   <li>{@link ListGrid#setAddMethodType(AddMethodType)}
    *   <li>{@link ListGrid#setCanFilterAndSort(Boolean)}
@@ -1690,99 +1127,6 @@ public class ListGridDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "AddMethodType ListGrid.getAddMethodType()",
-    "String ListGrid.getClassName()",
-    "String ListGrid.getContainingEntityId()",
-    "DataWrapper ListGrid.getDataWrapper()",
-    "String ListGrid.getExternalEntitySectionKey()",
-    "String ListGrid.getFetchType()",
-    "String ListGrid.getFieldBuilder()",
-    "FieldWrapper ListGrid.getFieldWrapper()",
-    "long ListGrid.getFirstId()",
-    "String ListGrid.getFriendlyName()",
-    "Set ListGrid.getHeaderFields()",
-    "String ListGrid.getHelpText()",
-    "boolean ListGrid.getHideFriendlyName()",
-    "String ListGrid.getIdProperty()",
-    "boolean ListGrid.getIsSortable()",
-    "String ListGrid.getJson()",
-    "String ListGrid.getJsonFieldName()",
-    "long ListGrid.getLastId()",
-    "String ListGrid.getListGridType()",
-    "int ListGrid.getLowerCount()",
-    "List ListGrid.getModalRowActions()",
-    "int ListGrid.getOrder()",
-    "int ListGrid.getPageSize()",
-    "String ListGrid.getPathOverride()",
-    "List ListGrid.getRecords()",
-    "List ListGrid.getRowActionGroups()",
-    "List ListGrid.getRowActions()",
-    "String ListGrid.getSearchFieldsTemplateOverride()",
-    "List ListGrid.getSectionCrumbs()",
-    "String ListGrid.getSectionKey()",
-    "String ListGrid.getSelectType()",
-    "String ListGrid.getSelectizeUrl()",
-    "int ListGrid.getStartIndex()",
-    "String ListGrid.getSubCollectionFieldName()",
-    "String ListGrid.getTemplateOverride()",
-    "List ListGrid.getToolbarActionGroups()",
-    "List ListGrid.getToolbarActions()",
-    "int ListGrid.getTotalRecords()",
-    "int ListGrid.getUpperCount()",
-    "boolean ListGrid.isHtmlEscapeMainEntityLink()",
-    "boolean ListGrid.isMultiSelectCheckBoxOnly()",
-    "boolean ListGrid.isPromptSearch()",
-    "boolean ListGrid.isTotalCountLessThanPageSize()",
-    "void ListGrid.setAddMethodType(AddMethodType)",
-    "void ListGrid.setCanFilterAndSort(Boolean)",
-    "void ListGrid.setClassName(String)",
-    "void ListGrid.setContainingEntityId(String)",
-    "void ListGrid.setDataWrapper(DataWrapper)",
-    "void ListGrid.setExternalEntitySectionKey(String)",
-    "void ListGrid.setFetchType(String)",
-    "void ListGrid.setFieldBuilder(String)",
-    "void ListGrid.setFieldWrapper(FieldWrapper)",
-    "void ListGrid.setFirstId(long)",
-    "void ListGrid.setFriendlyName(String)",
-    "void ListGrid.setHeaderFields(Set)",
-    "void ListGrid.setHelpText(String)",
-    "void ListGrid.setHideFriendlyName(boolean)",
-    "void ListGrid.setHideIdColumn(Boolean)",
-    "void ListGrid.setHtmlEscapeMainEntityLink(boolean)",
-    "void ListGrid.setIdProperty(String)",
-    "void ListGrid.setIsReadOnly(Boolean)",
-    "void ListGrid.setIsSortable(boolean)",
-    "void ListGrid.setJson(String)",
-    "void ListGrid.setJsonFieldName(String)",
-    "void ListGrid.setLastId(long)",
-    "void ListGrid.setListGridTypeString(String)",
-    "void ListGrid.setLowerCount(int)",
-    "void ListGrid.setManualFetch(Boolean)",
-    "void ListGrid.setModalRowActions(List)",
-    "void ListGrid.setMultiSelectCheckBoxOnly(boolean)",
-    "void ListGrid.setOrder(int)",
-    "void ListGrid.setPageSize(int)",
-    "void ListGrid.setPathOverride(String)",
-    "void ListGrid.setPromptSearch(boolean)",
-    "void ListGrid.setRecords(List)",
-    "void ListGrid.setRowActionGroups(List)",
-    "void ListGrid.setRowActions(List)",
-    "void ListGrid.setSearchFieldsTemplateOverride(String)",
-    "void ListGrid.setSectionKey(String)",
-    "void ListGrid.setSelectTypeString(String)",
-    "void ListGrid.setSelectizeUrl(String)",
-    "void ListGrid.setStartIndex(int)",
-    "void ListGrid.setSubCollectionFieldName(String)",
-    "void ListGrid.setTemplateOverride(String)",
-    "void ListGrid.setToolbarActionGroups(List)",
-    "void ListGrid.setToolbarActions(List)",
-    "void ListGrid.setTotalCountLessThanPageSize(boolean)",
-    "void ListGrid.setTotalRecords(int)",
-    "void ListGrid.setUpperCount(int)"
-  })
   public void testGettersAndSetters() {
     // Arrange
     ListGrid listGrid = new ListGrid();
@@ -1887,7 +1231,7 @@ public class ListGridDiffblueTest {
     boolean actualIsPromptSearchResult = listGrid.isPromptSearch();
     boolean actualIsTotalCountLessThanPageSizeResult = listGrid.isTotalCountLessThanPageSize();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("42", actualContainingEntityId);
     assertEquals("Class Name", actualClassName);
     assertEquals("External Entity Section Key", actualExternalEntitySectionKey);
@@ -1941,285 +1285,9 @@ public class ListGridDiffblueTest {
   }
 
   /**
-   * Test {@link ListGrid#getManualFetch()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor) ManualFetch is {@code true}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getManualFetch()}
+   * Method under test: default or parameterless constructor of {@link ListGrid}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ListGrid.getManualFetch()"})
-  public void testGetManualFetch_givenListGridManualFetchIsTrue_thenReturnTrue() {
-    // Arrange
-    ListGrid listGrid = new ListGrid();
-    listGrid.setManualFetch(true);
-
-    // Act and Assert
-    assertTrue(listGrid.getManualFetch());
-  }
-
-  /**
-   * Test {@link ListGrid#getManualFetch()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getManualFetch()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ListGrid.getManualFetch()"})
-  public void testGetManualFetch_givenListGrid_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(new ListGrid().getManualFetch());
-  }
-
-  /**
-   * Test {@link ListGrid#setSectionCrumbs(List)}.
-   *
-   * <p>Method under test: {@link ListGrid#setSectionCrumbs(List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ListGrid.setSectionCrumbs(List)"})
-  public void testSetSectionCrumbs() {
-    // Arrange
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("42");
-
-    SectionCrumb sectionCrumb2 = new SectionCrumb();
-    sectionCrumb2.setOriginalSectionIdentifier("Original Section Identifier");
-    sectionCrumb2.setSectionId("Section Id");
-    sectionCrumb2.setSectionIdentifier("Section Identifier");
-
-    ArrayList<SectionCrumb> sectionCrumbs = new ArrayList<>();
-    sectionCrumbs.add(sectionCrumb2);
-    sectionCrumbs.add(sectionCrumb);
-
-    // Act
-    listGrid.setSectionCrumbs(sectionCrumbs);
-
-    // Assert
-    assertEquals(
-        "?sectionCrumbs=Section Identifier--Section Id,42--42",
-        listGrid.getSectionCrumbRepresentation());
-    assertSame(sectionCrumbs, listGrid.getSectionCrumbs());
-  }
-
-  /**
-   * Test {@link ListGrid#setSectionCrumbs(List)}.
-   *
-   * <ul>
-   *   <li>Then {@link ListGrid} SectionCrumbRepresentation is {@code ?sectionCrumbs=42--42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#setSectionCrumbs(List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ListGrid.setSectionCrumbs(List)"})
-  public void testSetSectionCrumbs_thenListGridSectionCrumbRepresentationIsSectionCrumbs4242() {
-    // Arrange
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("42");
-
-    ArrayList<SectionCrumb> sectionCrumbs = new ArrayList<>();
-    sectionCrumbs.add(sectionCrumb);
-
-    // Act
-    listGrid.setSectionCrumbs(sectionCrumbs);
-
-    // Assert
-    assertEquals("?sectionCrumbs=42--42", listGrid.getSectionCrumbRepresentation());
-    assertSame(sectionCrumbs, listGrid.getSectionCrumbs());
-  }
-
-  /**
-   * Test {@link ListGrid#setSectionCrumbs(List)}.
-   *
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#setSectionCrumbs(List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ListGrid.setSectionCrumbs(List)"})
-  public void testSetSectionCrumbs_whenArrayList() {
-    // Arrange
-    ArrayList<SectionCrumb> sectionCrumbs = new ArrayList<>();
-
-    // Act
-    listGrid.setSectionCrumbs(sectionCrumbs);
-
-    // Assert
-    assertEquals("", listGrid.getSectionCrumbRepresentation());
-    assertSame(sectionCrumbs, listGrid.getSectionCrumbs());
-  }
-
-  /**
-   * Test {@link ListGrid#setSectionCrumbs(List)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then {@link ListGrid} SectionCrumbs Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#setSectionCrumbs(List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ListGrid.setSectionCrumbs(List)"})
-  public void testSetSectionCrumbs_whenNull_thenListGridSectionCrumbsEmpty() {
-    // Arrange and Act
-    listGrid.setSectionCrumbs(null);
-
-    // Assert that nothing has changed
-    assertEquals("", listGrid.getSectionCrumbRepresentation());
-    assertTrue(listGrid.getSectionCrumbs().isEmpty());
-  }
-
-  /**
-   * Test {@link ListGrid#addCssClass(String)}.
-   *
-   * <p>Method under test: {@link ListGrid#addCssClass(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ListGrid.addCssClass(String)"})
-  public void testAddCssClass() {
-    // Arrange and Act
-    listGrid.addCssClass("Class Name");
-
-    // Assert
-    assertEquals("Class Name", listGrid.getCssClassNames());
-  }
-
-  /**
-   * Test {@link ListGrid#getCssClassNames()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor) addCssClass space.
-   *   <li>Then return space.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getCssClassNames()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ListGrid.getCssClassNames()"})
-  public void testGetCssClassNames_givenListGridAddCssClassSpace_thenReturnSpace() {
-    // Arrange
-    ListGrid listGrid = new ListGrid();
-    listGrid.addCssClass(" ");
-
-    // Act and Assert
-    assertEquals(" ", listGrid.getCssClassNames());
-  }
-
-  /**
-   * Test {@link ListGrid#getCssClassNames()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor).
-   *   <li>Then return empty string.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getCssClassNames()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ListGrid.getCssClassNames()"})
-  public void testGetCssClassNames_givenListGrid_thenReturnEmptyString() {
-    // Arrange, Act and Assert
-    assertEquals("", new ListGrid().getCssClassNames());
-  }
-
-  /**
-   * Test {@link ListGrid#getFirstSearchableFieldFriendlyName()}.
-   *
-   * <ul>
-   *   <li>Given {@link Field} (default constructor) FilterSortDisabled is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getFirstSearchableFieldFriendlyName()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ListGrid.getFirstSearchableFieldFriendlyName()"})
-  public void testGetFirstSearchableFieldFriendlyName_givenFieldFilterSortDisabledIsNull() {
-    // Arrange
-    Field field = new Field();
-    field.setFilterSortDisabled(null);
-
-    LinkedHashSet<Field> headerFields = new LinkedHashSet<>();
-    headerFields.add(field);
-
-    ListGrid listGrid = new ListGrid();
-    listGrid.setHeaderFields(headerFields);
-
-    // Act and Assert
-    assertNull(listGrid.getFirstSearchableFieldFriendlyName());
-  }
-
-  /**
-   * Test {@link ListGrid#getFirstSearchableFieldFriendlyName()}.
-   *
-   * <ul>
-   *   <li>Given {@link Field} (default constructor) FilterSortDisabled is {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGrid#getFirstSearchableFieldFriendlyName()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ListGrid.getFirstSearchableFieldFriendlyName()"})
-  public void testGetFirstSearchableFieldFriendlyName_givenFieldFilterSortDisabledIsTrue() {
-    // Arrange
-    Field field = new Field();
-    field.setFilterSortDisabled(true);
-
-    LinkedHashSet<Field> headerFields = new LinkedHashSet<>();
-    headerFields.add(field);
-
-    ListGrid listGrid = new ListGrid();
-    listGrid.setHeaderFields(headerFields);
-
-    // Act and Assert
-    assertNull(listGrid.getFirstSearchableFieldFriendlyName());
-  }
-
-  /**
-   * Test new {@link ListGrid} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link ListGrid}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ListGrid.<init>()"})
   public void testNewListGrid() {
     // Arrange and Act
     ListGrid actualListGrid = new ListGrid();

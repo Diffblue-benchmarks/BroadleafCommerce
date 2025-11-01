@@ -26,23 +26,21 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Set;
 import org.broadleafcommerce.common.audit.Auditable;
-import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.money.Money;
+import org.broadleafcommerce.core.offer.service.type.OfferAdjustmentType;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl;
 import org.broadleafcommerce.core.order.domain.FulfillmentOptionImpl;
+import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.OrderImpl;
 import org.broadleafcommerce.core.order.domain.PersonalMessageImpl;
 import org.broadleafcommerce.core.order.service.type.FulfillmentGroupStatusType;
@@ -52,42 +50,260 @@ import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.broadleafcommerce.profile.core.domain.PhoneImpl;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(SpringJUnit4ClassRunner.class)
 public class FulfillmentGroupAdjustmentImplDiffblueTest {
-  @Autowired private FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl;
-
   /**
-   * Test {@link FulfillmentGroupAdjustmentImpl#init(FulfillmentGroup, Offer, String)}.
-   *
-   * <ul>
-   *   <li>Given {@code null}.
-   *   <li>Then {@link FulfillmentGroupAdjustmentImpl} Reason is {@code Name}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupAdjustmentImpl#init(FulfillmentGroup, Offer,
-   * String)}
+   * Method under test:
+   * {@link FulfillmentGroupAdjustmentImpl#init(FulfillmentGroup, Offer, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupAdjustmentImpl.init(FulfillmentGroup, Offer, String)"})
-  public void testInit_givenNull_thenFulfillmentGroupAdjustmentImplReasonIsName() {
+  public void testInit() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    OfferImpl offer = new OfferImpl();
+
+    // Act
+    fulfillmentGroupAdjustmentImpl.init(fulfillmentGroup, offer, "Just cause");
+
+    // Assert
+    Offer offer2 = fulfillmentGroupAdjustmentImpl.offer;
+    assertTrue(offer2 instanceof OfferImpl);
+    assertEquals("Just cause", fulfillmentGroupAdjustmentImpl.getReason());
+    assertEquals('N', offer2.getArchived().charValue());
+    assertNull(((OfferImpl) offer2).maxUsesPerOrder);
+    assertNull(((OfferImpl) offer2).priority);
+    assertNull(offer2.getId());
+    assertNull(offer2.getMinimumDaysPerUsage());
+    assertNull(((OfferImpl) offer2).maxUsesPerCustomer);
+    assertNull(offer2.getDescription());
+    assertNull(offer2.getMarketingMessage());
+    assertNull(offer2.getName());
+    assertNull(offer2.getTargetSystem());
+    assertNull(((OfferImpl) offer2).getMainEntityName());
+    assertNull(((OfferImpl) offer2).adjustmentType);
+    assertNull(((OfferImpl) offer2).discountType);
+    assertNull(((OfferImpl) offer2).marketingMessage);
+    assertNull(((OfferImpl) offer2).maxUsesStrategy);
+    assertNull(((OfferImpl) offer2).offerItemQualifierRuleType);
+    assertNull(((OfferImpl) offer2).offerItemTargetRuleType);
+    assertNull(((OfferImpl) offer2).type);
+    assertNull(offer2.getValue());
+    assertNull(((OfferImpl) offer2).orderMinSubTotal);
+    assertNull(((OfferImpl) offer2).qualifyingItemSubTotal);
+    assertNull(((OfferImpl) offer2).targetMinSubTotal);
+    assertNull(offer2.getEndDate());
+    assertNull(offer2.getStartDate());
+    assertNull(((OfferImpl) offer2).startDate);
+    assertNull(offer2.getOrderMinSubTotal());
+    assertNull(offer2.getQualifyingItemSubTotal());
+    assertNull(offer2.getTargetMinSubTotal());
+    assertNull(offer2.getMaxUsesStrategyType());
+    assertNull(offer2.getDiscountType());
+    assertNull(offer2.getType());
+    assertEquals(0, offer2.getMaxUsesPerOrder());
+    assertEquals(0L, offer2.getMaxUsesPerCustomer().longValue());
+    assertEquals(2147483646, offer2.getPriority());
+    assertFalse(fulfillmentGroupAdjustmentImpl.isFutureCredit());
+    assertFalse(offer2.getApplyToChildItems());
+    assertFalse(offer2.getRequiresRelatedTargetAndQualifiers());
+    assertFalse(offer2.getUseListForDiscounts());
+    assertFalse(offer2.isFutureCredit());
+    assertFalse(offer2.isLimitedUsePerOrder());
+    assertFalse(((OfferImpl) offer2).applyToChildItems);
+    assertFalse(((OfferImpl) offer2).automaticallyAdded);
+    assertFalse(((OfferImpl) offer2).requiresRelatedTargetAndQualifiers);
+    assertFalse(((OfferImpl) offer2).totalitarianOffer);
+    assertFalse(((OfferImpl) offer2).useListForDiscounts);
+    assertTrue(offer2.getApplyDiscountToSalePrice());
+    assertTrue(offer2.isUnlimitedUsePerOrder());
+    assertTrue(((OfferImpl) offer2).getCombinableWithOtherOffers());
+    assertTrue(((OfferImpl) offer2).applyToSalePrice);
+    assertTrue(((OfferImpl) offer2).combinableWithOtherOffers);
+    assertSame(offer, fulfillmentGroupAdjustmentImpl.getOffer());
+    assertSame(offer, fulfillmentGroupAdjustmentImpl.deproxiedOffer);
+    assertSame(fulfillmentGroup, fulfillmentGroupAdjustmentImpl.getFulfillmentGroup());
+    assertSame(offer.archiveStatus, ((OfferImpl) offer2).archiveStatus);
+    assertSame(offer.legacyQualifyingItemCriteria, ((OfferImpl) offer2).legacyQualifyingItemCriteria);
+    assertSame(offer.legacyTargetItemCriteria, ((OfferImpl) offer2).legacyTargetItemCriteria);
+    Set<OfferTargetCriteriaXref> offerTargetCriteriaXrefSet = offer.targetItemCriteria;
+    assertSame(offerTargetCriteriaXrefSet, offer2.getTargetItemCriteriaXref());
+    assertSame(offerTargetCriteriaXrefSet, ((OfferImpl) offer2).targetItemCriteria);
+  }
+
+  /**
+   * Method under test:
+   * {@link FulfillmentGroupAdjustmentImpl#init(FulfillmentGroup, Offer, String)}
+   */
+  @Test
+  public void testInit2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroup fulfillmentGroup = mock(FulfillmentGroup.class);
+    OfferImpl offer = new OfferImpl();
+
+    // Act
+    fulfillmentGroupAdjustmentImpl.init(fulfillmentGroup, offer, "Just cause");
+
+    // Assert
+    Offer offer2 = fulfillmentGroupAdjustmentImpl.offer;
+    assertTrue(offer2 instanceof OfferImpl);
+    assertEquals("Just cause", fulfillmentGroupAdjustmentImpl.getReason());
+    assertEquals('N', offer2.getArchived().charValue());
+    assertNull(((OfferImpl) offer2).maxUsesPerOrder);
+    assertNull(((OfferImpl) offer2).priority);
+    assertNull(offer2.getId());
+    assertNull(offer2.getMinimumDaysPerUsage());
+    assertNull(((OfferImpl) offer2).maxUsesPerCustomer);
+    assertNull(offer2.getDescription());
+    assertNull(offer2.getMarketingMessage());
+    assertNull(offer2.getName());
+    assertNull(offer2.getTargetSystem());
+    assertNull(((OfferImpl) offer2).getMainEntityName());
+    assertNull(((OfferImpl) offer2).adjustmentType);
+    assertNull(((OfferImpl) offer2).discountType);
+    assertNull(((OfferImpl) offer2).marketingMessage);
+    assertNull(((OfferImpl) offer2).maxUsesStrategy);
+    assertNull(((OfferImpl) offer2).offerItemQualifierRuleType);
+    assertNull(((OfferImpl) offer2).offerItemTargetRuleType);
+    assertNull(((OfferImpl) offer2).type);
+    assertNull(offer2.getValue());
+    assertNull(((OfferImpl) offer2).orderMinSubTotal);
+    assertNull(((OfferImpl) offer2).qualifyingItemSubTotal);
+    assertNull(((OfferImpl) offer2).targetMinSubTotal);
+    assertNull(offer2.getEndDate());
+    assertNull(offer2.getStartDate());
+    assertNull(((OfferImpl) offer2).startDate);
+    assertNull(offer2.getOrderMinSubTotal());
+    assertNull(offer2.getQualifyingItemSubTotal());
+    assertNull(offer2.getTargetMinSubTotal());
+    assertNull(offer2.getMaxUsesStrategyType());
+    assertNull(offer2.getDiscountType());
+    assertNull(offer2.getType());
+    assertEquals(0, offer2.getMaxUsesPerOrder());
+    assertEquals(0L, offer2.getMaxUsesPerCustomer().longValue());
+    assertEquals(2147483646, offer2.getPriority());
+    assertFalse(fulfillmentGroupAdjustmentImpl.isFutureCredit());
+    assertFalse(offer2.getApplyToChildItems());
+    assertFalse(offer2.getRequiresRelatedTargetAndQualifiers());
+    assertFalse(offer2.getUseListForDiscounts());
+    assertFalse(offer2.isFutureCredit());
+    assertFalse(offer2.isLimitedUsePerOrder());
+    assertFalse(((OfferImpl) offer2).applyToChildItems);
+    assertFalse(((OfferImpl) offer2).automaticallyAdded);
+    assertFalse(((OfferImpl) offer2).requiresRelatedTargetAndQualifiers);
+    assertFalse(((OfferImpl) offer2).totalitarianOffer);
+    assertFalse(((OfferImpl) offer2).useListForDiscounts);
+    assertTrue(offer2.getApplyDiscountToSalePrice());
+    assertTrue(offer2.isUnlimitedUsePerOrder());
+    assertTrue(((OfferImpl) offer2).getCombinableWithOtherOffers());
+    assertTrue(((OfferImpl) offer2).applyToSalePrice);
+    assertTrue(((OfferImpl) offer2).combinableWithOtherOffers);
+    assertSame(offer, fulfillmentGroupAdjustmentImpl.getOffer());
+    assertSame(offer, fulfillmentGroupAdjustmentImpl.deproxiedOffer);
+    assertSame(offer.archiveStatus, ((OfferImpl) offer2).archiveStatus);
+    assertSame(offer.legacyQualifyingItemCriteria, ((OfferImpl) offer2).legacyQualifyingItemCriteria);
+    assertSame(offer.legacyTargetItemCriteria, ((OfferImpl) offer2).legacyTargetItemCriteria);
+    Set<OfferTargetCriteriaXref> offerTargetCriteriaXrefSet = offer.targetItemCriteria;
+    assertSame(offerTargetCriteriaXrefSet, offer2.getTargetItemCriteriaXref());
+    assertSame(offerTargetCriteriaXrefSet, ((OfferImpl) offer2).targetItemCriteria);
+    assertSame(fulfillmentGroup, fulfillmentGroupAdjustmentImpl.getFulfillmentGroup());
+  }
+
+  /**
+   * Method under test:
+   * {@link FulfillmentGroupAdjustmentImpl#init(FulfillmentGroup, Offer, String)}
+   */
+  @Test
+  public void testInit3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
 
-    OfferImpl offer = mock(OfferImpl.class);
-    when(offer.getName()).thenReturn("Name");
+    // Act
+    fulfillmentGroupAdjustmentImpl.init(fulfillmentGroup, null, "Just cause");
+
+    // Assert
+    assertEquals("Just cause", fulfillmentGroupAdjustmentImpl.getReason());
+    assertNull(fulfillmentGroupAdjustmentImpl.getOffer());
+    assertNull(fulfillmentGroupAdjustmentImpl.deproxiedOffer);
+    assertNull(fulfillmentGroupAdjustmentImpl.offer);
+    assertFalse(fulfillmentGroupAdjustmentImpl.isFutureCredit());
+    assertSame(fulfillmentGroup, fulfillmentGroupAdjustmentImpl.getFulfillmentGroup());
+  }
+
+  /**
+   * Method under test:
+   * {@link FulfillmentGroupAdjustmentImpl#init(FulfillmentGroup, Offer, String)}
+   */
+  @Test
+  public void testInit4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    Offer offer = mock(Offer.class);
+    when(offer.getAdjustmentType()).thenReturn(OfferAdjustmentType.FUTURE_CREDIT);
+
+    // Act
+    fulfillmentGroupAdjustmentImpl.init(fulfillmentGroup, offer, "Just cause");
+
+    // Assert
+    verify(offer).getAdjustmentType();
+    assertEquals("Just cause", fulfillmentGroupAdjustmentImpl.getReason());
+    assertTrue(fulfillmentGroupAdjustmentImpl.isFutureCredit());
+    assertSame(fulfillmentGroup, fulfillmentGroupAdjustmentImpl.getFulfillmentGroup());
+    assertSame(offer, fulfillmentGroupAdjustmentImpl.getOffer());
+    assertSame(offer, fulfillmentGroupAdjustmentImpl.deproxiedOffer);
+  }
+
+  /**
+   * Method under test:
+   * {@link FulfillmentGroupAdjustmentImpl#init(FulfillmentGroup, Offer, String)}
+   */
+  @Test
+  public void testInit5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    Offer offer = mock(Offer.class);
     when(offer.getAdjustmentType()).thenReturn(null);
+
+    // Act
+    fulfillmentGroupAdjustmentImpl.init(fulfillmentGroup, offer, "Just cause");
+
+    // Assert
+    verify(offer).getAdjustmentType();
+    assertEquals("Just cause", fulfillmentGroupAdjustmentImpl.getReason());
+    assertFalse(fulfillmentGroupAdjustmentImpl.isFutureCredit());
+    assertSame(fulfillmentGroup, fulfillmentGroupAdjustmentImpl.getFulfillmentGroup());
+    assertSame(offer, fulfillmentGroupAdjustmentImpl.getOffer());
+    assertSame(offer, fulfillmentGroupAdjustmentImpl.deproxiedOffer);
+  }
+
+  /**
+   * Method under test:
+   * {@link FulfillmentGroupAdjustmentImpl#init(FulfillmentGroup, Offer, String)}
+   */
+  @Test
+  public void testInit6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    Offer offer = mock(Offer.class);
+    when(offer.getName()).thenReturn("Name");
+    when(offer.getAdjustmentType()).thenReturn(OfferAdjustmentType.FUTURE_CREDIT);
 
     // Act
     fulfillmentGroupAdjustmentImpl.init(fulfillmentGroup, offer, null);
@@ -96,275 +312,145 @@ public class FulfillmentGroupAdjustmentImplDiffblueTest {
     verify(offer).getAdjustmentType();
     verify(offer).getName();
     assertEquals("Name", fulfillmentGroupAdjustmentImpl.getReason());
+    assertTrue(fulfillmentGroupAdjustmentImpl.isFutureCredit());
+    assertSame(fulfillmentGroup, fulfillmentGroupAdjustmentImpl.getFulfillmentGroup());
     assertSame(offer, fulfillmentGroupAdjustmentImpl.getOffer());
     assertSame(offer, fulfillmentGroupAdjustmentImpl.deproxiedOffer);
   }
 
   /**
-   * Test {@link FulfillmentGroupAdjustmentImpl#init(FulfillmentGroup, Offer, String)}.
-   *
-   * <ul>
-   *   <li>When {@code Just cause}.
-   *   <li>Then {@link FulfillmentGroupAdjustmentImpl} Offer is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupAdjustmentImpl#init(FulfillmentGroup, Offer,
-   * String)}
+   * Method under test: {@link FulfillmentGroupAdjustmentImpl#getOffer()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupAdjustmentImpl.init(FulfillmentGroup, Offer, String)"})
-  public void testInit_whenJustCause_thenFulfillmentGroupAdjustmentImplOfferIsNull() {
-    // Arrange and Act
-    fulfillmentGroupAdjustmentImpl.init(new FulfillmentGroupImpl(), null, "Just cause");
-
-    // Assert
-    assertEquals("Just cause", fulfillmentGroupAdjustmentImpl.getReason());
-    assertNull(fulfillmentGroupAdjustmentImpl.getOffer());
-    assertNull(fulfillmentGroupAdjustmentImpl.deproxiedOffer);
-    assertNull(fulfillmentGroupAdjustmentImpl.offer);
-  }
-
-  /**
-   * Test {@link FulfillmentGroupAdjustmentImpl#init(FulfillmentGroup, Offer, String)}.
-   *
-   * <ul>
-   *   <li>When {@link OfferImpl} (default constructor).
-   *   <li>Then {@link FulfillmentGroupAdjustmentImpl} Reason is {@code Just cause}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupAdjustmentImpl#init(FulfillmentGroup, Offer,
-   * String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupAdjustmentImpl.init(FulfillmentGroup, Offer, String)"})
-  public void testInit_whenOfferImpl_thenFulfillmentGroupAdjustmentImplReasonIsJustCause() {
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    OfferImpl offer = new OfferImpl();
-
-    // Act
-    fulfillmentGroupAdjustmentImpl.init(fulfillmentGroup, offer, "Just cause");
-
-    // Assert
-    assertTrue(fulfillmentGroupAdjustmentImpl.offer instanceof OfferImpl);
-    assertEquals("Just cause", fulfillmentGroupAdjustmentImpl.getReason());
-    assertSame(offer, fulfillmentGroupAdjustmentImpl.getOffer());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupAdjustmentImpl#init(FulfillmentGroup, Offer, String)}.
-   *
-   * <ul>
-   *   <li>When {@link OfferImpl} (default constructor).
-   *   <li>Then {@link FulfillmentGroupAdjustmentImpl} Reason is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupAdjustmentImpl#init(FulfillmentGroup, Offer,
-   * String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupAdjustmentImpl.init(FulfillmentGroup, Offer, String)"})
-  public void testInit_whenOfferImpl_thenFulfillmentGroupAdjustmentImplReasonIsNull() {
-    // Arrange
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    OfferImpl offer = new OfferImpl();
-
-    // Act
-    fulfillmentGroupAdjustmentImpl.init(fulfillmentGroup, offer, null);
-
-    // Assert
-    assertTrue(fulfillmentGroupAdjustmentImpl.offer instanceof OfferImpl);
-    assertNull(fulfillmentGroupAdjustmentImpl.getReason());
-    assertSame(offer, fulfillmentGroupAdjustmentImpl.getOffer());
-  }
-
-  /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link FulfillmentGroupAdjustmentImpl#setFulfillmentGroup(FulfillmentGroup)}
-   *   <li>{@link FulfillmentGroupAdjustmentImpl#setFutureCredit(Boolean)}
-   *   <li>{@link FulfillmentGroupAdjustmentImpl#setId(Long)}
-   *   <li>{@link FulfillmentGroupAdjustmentImpl#setReason(String)}
-   *   <li>{@link FulfillmentGroupAdjustmentImpl#getFulfillmentGroup()}
-   *   <li>{@link FulfillmentGroupAdjustmentImpl#getId()}
-   *   <li>{@link FulfillmentGroupAdjustmentImpl#getReason()}
-   *   <li>{@link FulfillmentGroupAdjustmentImpl#isFutureCredit()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "FulfillmentGroup FulfillmentGroupAdjustmentImpl.getFulfillmentGroup()",
-    "Long FulfillmentGroupAdjustmentImpl.getId()",
-    "String FulfillmentGroupAdjustmentImpl.getReason()",
-    "Boolean FulfillmentGroupAdjustmentImpl.isFutureCredit()",
-    "void FulfillmentGroupAdjustmentImpl.setFulfillmentGroup(FulfillmentGroup)",
-    "void FulfillmentGroupAdjustmentImpl.setFutureCredit(Boolean)",
-    "void FulfillmentGroupAdjustmentImpl.setId(Long)",
-    "void FulfillmentGroupAdjustmentImpl.setReason(String)"
-  })
-  public void testGettersAndSetters() {
-    // Arrange
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl =
-        new FulfillmentGroupAdjustmentImpl();
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-
-    // Act
-    fulfillmentGroupAdjustmentImpl.setFulfillmentGroup(fulfillmentGroup);
-    fulfillmentGroupAdjustmentImpl.setFutureCredit(true);
-    fulfillmentGroupAdjustmentImpl.setId(FulfillmentGroupAdjustmentImpl.serialVersionUID);
-    fulfillmentGroupAdjustmentImpl.setReason("Just cause");
-    FulfillmentGroup actualFulfillmentGroup = fulfillmentGroupAdjustmentImpl.getFulfillmentGroup();
-    Long actualId = fulfillmentGroupAdjustmentImpl.getId();
-    String actualReason = fulfillmentGroupAdjustmentImpl.getReason();
-
-    // Assert
-    assertEquals("Just cause", actualReason);
-    assertTrue(fulfillmentGroupAdjustmentImpl.isFutureCredit());
-    assertEquals(FulfillmentGroupAdjustmentImpl.serialVersionUID, actualId.longValue());
-    assertSame(fulfillmentGroup, actualFulfillmentGroup);
-  }
-
-  /**
-   * Test {@link FulfillmentGroupAdjustmentImpl#getOffer()}.
-   *
-   * <p>Method under test: {@link FulfillmentGroupAdjustmentImpl#getOffer()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Offer FulfillmentGroupAdjustmentImpl.getOffer()"})
   public void testGetOffer() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
+    assertNull((new FulfillmentGroupAdjustmentImpl()).getOffer());
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupAdjustmentImpl#getOffer()}
+   */
+  @Test
+  public void testGetOffer2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
+    fulfillmentGroupAdjustmentImpl.setFulfillmentGroup(mock(FulfillmentGroupImpl.class));
+
+    // Act and Assert
     assertNull(fulfillmentGroupAdjustmentImpl.getOffer());
   }
 
   /**
-   * Test {@link FulfillmentGroupAdjustmentImpl#getValue()}.
-   *
-   * <ul>
-   *   <li>Given {@link Money} {@link Money#getAmount()} return {@code null}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupAdjustmentImpl#getValue()}
+   * Method under test: {@link FulfillmentGroupAdjustmentImpl#setOffer(Offer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupAdjustmentImpl.getValue()"})
-  public void testGetValue_givenMoneyGetAmountReturnNull_thenReturnNull() {
+  public void testSetOffer() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    Money value = mock(Money.class);
-    when(value.getAmount()).thenReturn(null);
-
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(FulfillmentGroupAdjustmentImpl.serialVersionUID);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(FulfillmentGroupAdjustmentImpl.serialVersionUID);
-
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setFulfillmentGroups(new ArrayList<>());
-    order.setId(FulfillmentGroupAdjustmentImpl.serialVersionUID);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalTax(new Money());
-    order.setCurrency(mock(BroadleafCurrency.class));
-
-    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    fulfillmentGroup.setAddress(new AddressImpl());
-    fulfillmentGroup.setCandidateFulfillmentGroupOffer(new ArrayList<>());
-    fulfillmentGroup.setDeliveryInstruction("Delivery Instruction");
-    fulfillmentGroup.setFulfillmentGroupAdjustments(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupFees(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentGroupItems(new ArrayList<>());
-    fulfillmentGroup.setFulfillmentOption(new FulfillmentOptionImpl());
-    fulfillmentGroup.setFulfillmentPrice(new Money());
-    fulfillmentGroup.setId(FulfillmentGroupAdjustmentImpl.serialVersionUID);
-    fulfillmentGroup.setIsShippingPriceTaxable(true);
-    fulfillmentGroup.setMerchandiseTotal(new Money());
-    fulfillmentGroup.setMethod("Fulfillment Method");
-    fulfillmentGroup.setPersonalMessage(new PersonalMessageImpl());
-    fulfillmentGroup.setPhone(new PhoneImpl());
-    fulfillmentGroup.setPrimary(true);
-    fulfillmentGroup.setReferenceNumber("42");
-    fulfillmentGroup.setRetailFulfillmentPrice(new Money());
-    fulfillmentGroup.setSaleFulfillmentPrice(new Money());
-    fulfillmentGroup.setSequence(1);
-    fulfillmentGroup.setService("Service");
-    fulfillmentGroup.setShippingOverride(true);
-    fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
-    fulfillmentGroup.setTaxes(new ArrayList<>());
-    fulfillmentGroup.setTotal(new Money());
-    fulfillmentGroup.setTotalFeeTax(new Money());
-    fulfillmentGroup.setTotalFulfillmentGroupTax(new Money());
-    fulfillmentGroup.setTotalItemTax(new Money());
-    fulfillmentGroup.setTotalTax(new Money());
-    fulfillmentGroup.setType(FulfillmentType.DIGITAL);
-    fulfillmentGroup.setOrder(order);
-    fulfillmentGroupAdjustmentImpl.setValue(value);
-    fulfillmentGroupAdjustmentImpl.setFulfillmentGroup(fulfillmentGroup);
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
+    OfferImpl offer = new OfferImpl();
 
     // Act
-    Money actualValue = fulfillmentGroupAdjustmentImpl.getValue();
+    fulfillmentGroupAdjustmentImpl.setOffer(offer);
 
     // Assert
-    verify(value).getAmount();
-    assertNull(actualValue);
+    Offer offer2 = fulfillmentGroupAdjustmentImpl.offer;
+    assertTrue(offer2 instanceof OfferImpl);
+    assertEquals('N', offer2.getArchived().charValue());
+    assertNull(((OfferImpl) offer2).maxUsesPerOrder);
+    assertNull(((OfferImpl) offer2).priority);
+    assertNull(offer2.getId());
+    assertNull(offer2.getMinimumDaysPerUsage());
+    assertNull(((OfferImpl) offer2).maxUsesPerCustomer);
+    assertNull(offer2.getDescription());
+    assertNull(offer2.getMarketingMessage());
+    assertNull(offer2.getName());
+    assertNull(offer2.getTargetSystem());
+    assertNull(((OfferImpl) offer2).getMainEntityName());
+    assertNull(((OfferImpl) offer2).adjustmentType);
+    assertNull(((OfferImpl) offer2).discountType);
+    assertNull(((OfferImpl) offer2).marketingMessage);
+    assertNull(((OfferImpl) offer2).maxUsesStrategy);
+    assertNull(((OfferImpl) offer2).offerItemQualifierRuleType);
+    assertNull(((OfferImpl) offer2).offerItemTargetRuleType);
+    assertNull(((OfferImpl) offer2).type);
+    assertNull(offer2.getValue());
+    assertNull(((OfferImpl) offer2).orderMinSubTotal);
+    assertNull(((OfferImpl) offer2).qualifyingItemSubTotal);
+    assertNull(((OfferImpl) offer2).targetMinSubTotal);
+    assertNull(offer2.getEndDate());
+    assertNull(offer2.getStartDate());
+    assertNull(((OfferImpl) offer2).startDate);
+    assertNull(offer2.getOrderMinSubTotal());
+    assertNull(offer2.getQualifyingItemSubTotal());
+    assertNull(offer2.getTargetMinSubTotal());
+    assertNull(offer2.getMaxUsesStrategyType());
+    assertNull(offer2.getDiscountType());
+    assertNull(offer2.getType());
+    assertEquals(0, offer2.getMaxUsesPerOrder());
+    assertEquals(0L, offer2.getMaxUsesPerCustomer().longValue());
+    assertEquals(2147483646, offer2.getPriority());
+    assertFalse(offer2.getApplyToChildItems());
+    assertFalse(offer2.getRequiresRelatedTargetAndQualifiers());
+    assertFalse(offer2.getUseListForDiscounts());
+    assertFalse(offer2.isFutureCredit());
+    assertFalse(offer2.isLimitedUsePerOrder());
+    assertFalse(((OfferImpl) offer2).applyToChildItems);
+    assertFalse(((OfferImpl) offer2).automaticallyAdded);
+    assertFalse(((OfferImpl) offer2).requiresRelatedTargetAndQualifiers);
+    assertFalse(((OfferImpl) offer2).totalitarianOffer);
+    assertFalse(((OfferImpl) offer2).useListForDiscounts);
+    assertTrue(offer2.getApplyDiscountToSalePrice());
+    assertTrue(offer2.isUnlimitedUsePerOrder());
+    assertTrue(((OfferImpl) offer2).getCombinableWithOtherOffers());
+    assertTrue(((OfferImpl) offer2).applyToSalePrice);
+    assertTrue(((OfferImpl) offer2).combinableWithOtherOffers);
+    assertSame(offer, fulfillmentGroupAdjustmentImpl.getOffer());
+    assertSame(offer, fulfillmentGroupAdjustmentImpl.deproxiedOffer);
+    assertSame(offer.archiveStatus, ((OfferImpl) offer2).archiveStatus);
+    assertSame(offer.legacyQualifyingItemCriteria, ((OfferImpl) offer2).legacyQualifyingItemCriteria);
+    assertSame(offer.legacyTargetItemCriteria, ((OfferImpl) offer2).legacyTargetItemCriteria);
+    Set<OfferTargetCriteriaXref> offerTargetCriteriaXrefSet = offer.targetItemCriteria;
+    assertSame(offerTargetCriteriaXrefSet, offer2.getTargetItemCriteriaXref());
+    assertSame(offerTargetCriteriaXrefSet, ((OfferImpl) offer2).targetItemCriteria);
   }
 
   /**
-   * Test {@link FulfillmentGroupAdjustmentImpl#getValue()}.
-   *
-   * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.
-   *   <li>Then return {@link Money#Money()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupAdjustmentImpl#getValue()}
+   * Method under test: {@link FulfillmentGroupAdjustmentImpl#setOffer(Offer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupAdjustmentImpl.getValue()"})
-  public void testGetValue_givenOrderImplCurrencyIsNull_thenReturnMoney() {
+  public void testSetOffer2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
+    OfferImpl offer = mock(OfferImpl.class);
+
+    // Act
+    fulfillmentGroupAdjustmentImpl.setOffer(offer);
+
+    // Assert
+    assertSame(offer, fulfillmentGroupAdjustmentImpl.getOffer());
+    assertSame(offer, fulfillmentGroupAdjustmentImpl.deproxiedOffer);
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupAdjustmentImpl#getValue()}
+   */
+  @Test
+  public void testGetValue() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(FulfillmentGroupAdjustmentImpl.serialVersionUID);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(FulfillmentGroupAdjustmentImpl.serialVersionUID);
 
     OrderImpl order = new OrderImpl();
@@ -384,11 +470,11 @@ public class FulfillmentGroupAdjustmentImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
 
@@ -410,10 +496,13 @@ public class FulfillmentGroupAdjustmentImplDiffblueTest {
     fulfillmentGroup.setPrimary(true);
     fulfillmentGroup.setReferenceNumber("42");
     fulfillmentGroup.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroup.setRetailShippingPrice(new Money());
     fulfillmentGroup.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroup.setSaleShippingPrice(new Money());
     fulfillmentGroup.setSequence(1);
     fulfillmentGroup.setService("Service");
     fulfillmentGroup.setShippingOverride(true);
+    fulfillmentGroup.setShippingPrice(new Money());
     fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
     fulfillmentGroup.setTaxes(new ArrayList<>());
     fulfillmentGroup.setTotal(new Money());
@@ -423,6 +512,11 @@ public class FulfillmentGroupAdjustmentImplDiffblueTest {
     fulfillmentGroup.setTotalTax(new Money());
     fulfillmentGroup.setType(FulfillmentType.DIGITAL);
     fulfillmentGroup.setOrder(order);
+
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
+    fulfillmentGroupAdjustmentImpl.setFutureCredit(true);
+    fulfillmentGroupAdjustmentImpl.setId(FulfillmentGroupAdjustmentImpl.serialVersionUID);
+    fulfillmentGroupAdjustmentImpl.setReason("Just cause");
     Money value = new Money();
     fulfillmentGroupAdjustmentImpl.setValue(value);
     fulfillmentGroupAdjustmentImpl.setFulfillmentGroup(fulfillmentGroup);
@@ -432,30 +526,43 @@ public class FulfillmentGroupAdjustmentImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupAdjustmentImpl#getValue()}.
-   *
-   * <ul>
-   *   <li>Then return Currency DisplayName is {@code British Pound}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupAdjustmentImpl#getValue()}
+   * Method under test: {@link FulfillmentGroupAdjustmentImpl#getValue()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money FulfillmentGroupAdjustmentImpl.getValue()"})
-  public void testGetValue_thenReturnCurrencyDisplayNameIsBritishPound() {
+  public void testGetValue2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    FulfillmentGroupImpl fulfillmentGroup = mock(FulfillmentGroupImpl.class);
+    when(fulfillmentGroup.getOrder()).thenReturn(new NullOrderImpl());
+
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
+    fulfillmentGroupAdjustmentImpl.setFulfillmentGroup(fulfillmentGroup);
+
+    // Act
+    Money actualValue = fulfillmentGroupAdjustmentImpl.getValue();
+
+    // Assert
+    verify(fulfillmentGroup).getOrder();
+    assertEquals(actualValue.ZERO, actualValue);
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupAdjustmentImpl#getValue()}
+   */
+  @Test
+  public void testGetValue3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    Money value = mock(Money.class);
+    when(value.getAmount()).thenReturn(null);
+
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(FulfillmentGroupAdjustmentImpl.serialVersionUID);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(FulfillmentGroupAdjustmentImpl.serialVersionUID);
-
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
 
     OrderImpl order = new OrderImpl();
     order.setAdditionalOfferInformation(new HashMap<>());
@@ -474,13 +581,13 @@ public class FulfillmentGroupAdjustmentImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
     order.setTotalTax(new Money());
-    order.setCurrency(currency);
+    order.setCurrency(null);
 
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
     fulfillmentGroup.setAddress(new AddressImpl());
@@ -500,10 +607,13 @@ public class FulfillmentGroupAdjustmentImplDiffblueTest {
     fulfillmentGroup.setPrimary(true);
     fulfillmentGroup.setReferenceNumber("42");
     fulfillmentGroup.setRetailFulfillmentPrice(new Money());
+    fulfillmentGroup.setRetailShippingPrice(new Money());
     fulfillmentGroup.setSaleFulfillmentPrice(new Money());
+    fulfillmentGroup.setSaleShippingPrice(new Money());
     fulfillmentGroup.setSequence(1);
     fulfillmentGroup.setService("Service");
     fulfillmentGroup.setShippingOverride(true);
+    fulfillmentGroup.setShippingPrice(new Money());
     fulfillmentGroup.setStatus(FulfillmentGroupStatusType.CANCELLED);
     fulfillmentGroup.setTaxes(new ArrayList<>());
     fulfillmentGroup.setTotal(new Money());
@@ -513,64 +623,48 @@ public class FulfillmentGroupAdjustmentImplDiffblueTest {
     fulfillmentGroup.setTotalTax(new Money());
     fulfillmentGroup.setType(FulfillmentType.DIGITAL);
     fulfillmentGroup.setOrder(order);
-    fulfillmentGroupAdjustmentImpl.setValue(new Money());
+
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
+    fulfillmentGroupAdjustmentImpl.setFutureCredit(true);
+    fulfillmentGroupAdjustmentImpl.setId(FulfillmentGroupAdjustmentImpl.serialVersionUID);
+    fulfillmentGroupAdjustmentImpl.setReason("Just cause");
+    fulfillmentGroupAdjustmentImpl.setValue(value);
     fulfillmentGroupAdjustmentImpl.setFulfillmentGroup(fulfillmentGroup);
 
     // Act
     Money actualValue = fulfillmentGroupAdjustmentImpl.getValue();
 
     // Assert
-    verify(currency).getCurrencyCode();
-    Currency currency2 = actualValue.getCurrency();
-    assertEquals("British Pound", currency2.getDisplayName());
-    assertEquals("GBP", currency2.getCurrencyCode());
-    assertEquals("GBP", currency2.toString());
-    assertEquals("£", currency2.getSymbol());
-    assertEquals(826, currency2.getNumericCode());
-    Money actualAbsResult = actualValue.abs();
-    assertEquals(actualValue, actualAbsResult);
-    Money actualZeroResult = actualValue.zero();
-    assertEquals(actualValue, actualZeroResult);
+    verify(value).getAmount();
+    assertNull(actualValue);
   }
 
   /**
-   * Test {@link FulfillmentGroupAdjustmentImpl#setValue(Money)}.
-   *
-   * <ul>
-   *   <li>Then {@link FulfillmentGroupAdjustmentImpl} {@link FulfillmentGroupAdjustmentImpl#value}
-   *       is {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupAdjustmentImpl#setValue(Money)}
+   * Method under test: {@link FulfillmentGroupAdjustmentImpl#setValue(Money)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupAdjustmentImpl.setValue(Money)"})
-  public void testSetValue_thenFulfillmentGroupAdjustmentImplValueIsBigDecimalWith000() {
-    // Arrange and Act
+  public void testSetValue() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
+
+    // Act
     fulfillmentGroupAdjustmentImpl.setValue(new Money());
 
-    // Assert that nothing has changed
+    // Assert
     assertEquals(new BigDecimal("0.00"), fulfillmentGroupAdjustmentImpl.value);
   }
 
   /**
-   * Test {@link FulfillmentGroupAdjustmentImpl#setValue(Money)}.
-   *
-   * <ul>
-   *   <li>Then {@link FulfillmentGroupAdjustmentImpl} {@link FulfillmentGroupAdjustmentImpl#value}
-   *       is {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupAdjustmentImpl#setValue(Money)}
+   * Method under test: {@link FulfillmentGroupAdjustmentImpl#setValue(Money)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupAdjustmentImpl.setValue(Money)"})
-  public void testSetValue_thenFulfillmentGroupAdjustmentImplValueIsBigDecimalWith23() {
+  public void testSetValue2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
     Money value = mock(Money.class);
     when(value.getAmount()).thenReturn(new BigDecimal("2.3"));
 
@@ -583,25 +677,17 @@ public class FulfillmentGroupAdjustmentImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupAdjustmentImpl#getCurrencyCode()}.
-   *
-   * <ul>
-   *   <li>Then return {@code GBP}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupAdjustmentImpl#getCurrencyCode()}
+   * Method under test: {@link FulfillmentGroupAdjustmentImpl#getCurrencyCode()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String FulfillmentGroupAdjustmentImpl.getCurrencyCode()"})
-  public void testGetCurrencyCode_thenReturnGbp() {
+  public void testGetCurrencyCode() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     FulfillmentGroupImpl fulfillmentGroup = mock(FulfillmentGroupImpl.class);
     when(fulfillmentGroup.getCurrencyCode()).thenReturn("GBP");
 
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl =
-        new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
     fulfillmentGroupAdjustmentImpl.setFulfillmentGroup(fulfillmentGroup);
 
     // Act
@@ -613,40 +699,23 @@ public class FulfillmentGroupAdjustmentImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupAdjustmentImpl#equals(Object)}, and {@link
-   * FulfillmentGroupAdjustmentImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link FulfillmentGroupAdjustmentImpl#equals(Object)}
    *   <li>{@link FulfillmentGroupAdjustmentImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupAdjustmentImpl.equals(Object)",
-    "int FulfillmentGroupAdjustmentImpl.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl =
-        new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
     fulfillmentGroupAdjustmentImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
     fulfillmentGroupAdjustmentImpl.setFutureCredit(true);
     fulfillmentGroupAdjustmentImpl.setId(FulfillmentGroupAdjustmentImpl.serialVersionUID);
     fulfillmentGroupAdjustmentImpl.setReason("Just cause");
     fulfillmentGroupAdjustmentImpl.setValue(new Money());
 
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl2 =
-        new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl2 = new FulfillmentGroupAdjustmentImpl();
     fulfillmentGroupAdjustmentImpl2.setFulfillmentGroup(new FulfillmentGroupImpl());
     fulfillmentGroupAdjustmentImpl2.setFutureCredit(true);
     fulfillmentGroupAdjustmentImpl2.setId(FulfillmentGroupAdjustmentImpl.serialVersionUID);
@@ -655,45 +724,58 @@ public class FulfillmentGroupAdjustmentImplDiffblueTest {
 
     // Act and Assert
     assertEquals(fulfillmentGroupAdjustmentImpl, fulfillmentGroupAdjustmentImpl2);
-    assertEquals(
-        fulfillmentGroupAdjustmentImpl.hashCode(), fulfillmentGroupAdjustmentImpl2.hashCode());
+    int expectedHashCodeResult = fulfillmentGroupAdjustmentImpl.hashCode();
+    assertEquals(expectedHashCodeResult, fulfillmentGroupAdjustmentImpl2.hashCode());
   }
 
   /**
-   * Test {@link FulfillmentGroupAdjustmentImpl#equals(Object)}, and {@link
-   * FulfillmentGroupAdjustmentImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link FulfillmentGroupAdjustmentImpl#equals(Object)}
    *   <li>{@link FulfillmentGroupAdjustmentImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupAdjustmentImpl.equals(Object)",
-    "int FulfillmentGroupAdjustmentImpl.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl =
-        new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
+    fulfillmentGroupAdjustmentImpl.setFulfillmentGroup(mock(FulfillmentGroup.class));
+    fulfillmentGroupAdjustmentImpl.setFutureCredit(true);
+    fulfillmentGroupAdjustmentImpl.setId(FulfillmentGroupAdjustmentImpl.serialVersionUID);
+    fulfillmentGroupAdjustmentImpl.setReason("Just cause");
+    fulfillmentGroupAdjustmentImpl.setValue(new Money());
+
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl2 = new FulfillmentGroupAdjustmentImpl();
+    fulfillmentGroupAdjustmentImpl2.setFulfillmentGroup(new FulfillmentGroupImpl());
+    fulfillmentGroupAdjustmentImpl2.setFutureCredit(true);
+    fulfillmentGroupAdjustmentImpl2.setId(FulfillmentGroupAdjustmentImpl.serialVersionUID);
+    fulfillmentGroupAdjustmentImpl2.setReason("Just cause");
+    fulfillmentGroupAdjustmentImpl2.setValue(new Money());
+
+    // Act and Assert
+    assertEquals(fulfillmentGroupAdjustmentImpl, fulfillmentGroupAdjustmentImpl2);
+    int notExpectedHashCodeResult = fulfillmentGroupAdjustmentImpl.hashCode();
+    assertNotEquals(notExpectedHashCodeResult, fulfillmentGroupAdjustmentImpl2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link FulfillmentGroupAdjustmentImpl#equals(Object)}
+   *   <li>{@link FulfillmentGroupAdjustmentImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
+    // Arrange
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
     fulfillmentGroupAdjustmentImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
     fulfillmentGroupAdjustmentImpl.setFutureCredit(true);
     fulfillmentGroupAdjustmentImpl.setId(null);
     fulfillmentGroupAdjustmentImpl.setReason("Just cause");
     fulfillmentGroupAdjustmentImpl.setValue(new Money());
 
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl2 =
-        new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl2 = new FulfillmentGroupAdjustmentImpl();
     fulfillmentGroupAdjustmentImpl2.setFulfillmentGroup(new FulfillmentGroupImpl());
     fulfillmentGroupAdjustmentImpl2.setFutureCredit(true);
     fulfillmentGroupAdjustmentImpl2.setId(FulfillmentGroupAdjustmentImpl.serialVersionUID);
@@ -702,45 +784,28 @@ public class FulfillmentGroupAdjustmentImplDiffblueTest {
 
     // Act and Assert
     assertEquals(fulfillmentGroupAdjustmentImpl, fulfillmentGroupAdjustmentImpl2);
-    assertEquals(
-        fulfillmentGroupAdjustmentImpl.hashCode(), fulfillmentGroupAdjustmentImpl2.hashCode());
+    int expectedHashCodeResult = fulfillmentGroupAdjustmentImpl.hashCode();
+    assertEquals(expectedHashCodeResult, fulfillmentGroupAdjustmentImpl2.hashCode());
   }
 
   /**
-   * Test {@link FulfillmentGroupAdjustmentImpl#equals(Object)}, and {@link
-   * FulfillmentGroupAdjustmentImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link FulfillmentGroupAdjustmentImpl#equals(Object)}
    *   <li>{@link FulfillmentGroupAdjustmentImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupAdjustmentImpl.equals(Object)",
-    "int FulfillmentGroupAdjustmentImpl.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl =
-        new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
     fulfillmentGroupAdjustmentImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
     fulfillmentGroupAdjustmentImpl.setFutureCredit(true);
     fulfillmentGroupAdjustmentImpl.setId(FulfillmentGroupAdjustmentImpl.serialVersionUID);
     fulfillmentGroupAdjustmentImpl.setReason("Just cause");
     fulfillmentGroupAdjustmentImpl.setValue(new Money());
 
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl2 =
-        new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl2 = new FulfillmentGroupAdjustmentImpl();
     fulfillmentGroupAdjustmentImpl2.setFulfillmentGroup(new FulfillmentGroupImpl());
     fulfillmentGroupAdjustmentImpl2.setFutureCredit(true);
     fulfillmentGroupAdjustmentImpl2.setId(null);
@@ -749,145 +814,33 @@ public class FulfillmentGroupAdjustmentImplDiffblueTest {
 
     // Act and Assert
     assertEquals(fulfillmentGroupAdjustmentImpl, fulfillmentGroupAdjustmentImpl2);
-    assertEquals(
-        fulfillmentGroupAdjustmentImpl.hashCode(), fulfillmentGroupAdjustmentImpl2.hashCode());
+    int expectedHashCodeResult = fulfillmentGroupAdjustmentImpl.hashCode();
+    assertEquals(expectedHashCodeResult, fulfillmentGroupAdjustmentImpl2.hashCode());
   }
 
   /**
-   * Test {@link FulfillmentGroupAdjustmentImpl#equals(Object)}, and {@link
-   * FulfillmentGroupAdjustmentImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link FulfillmentGroupAdjustmentImpl#equals(Object)}
    *   <li>{@link FulfillmentGroupAdjustmentImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupAdjustmentImpl.equals(Object)",
-    "int FulfillmentGroupAdjustmentImpl.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
-    // Arrange
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl =
-        new FulfillmentGroupAdjustmentImpl();
-    fulfillmentGroupAdjustmentImpl.setFulfillmentGroup(null);
-    fulfillmentGroupAdjustmentImpl.setFutureCredit(true);
-    fulfillmentGroupAdjustmentImpl.setId(null);
-    fulfillmentGroupAdjustmentImpl.setReason("Just cause");
-    fulfillmentGroupAdjustmentImpl.setValue(new Money());
-
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl2 =
-        new FulfillmentGroupAdjustmentImpl();
-    fulfillmentGroupAdjustmentImpl2.setFulfillmentGroup(null);
-    fulfillmentGroupAdjustmentImpl2.setFutureCredit(true);
-    fulfillmentGroupAdjustmentImpl2.setId(FulfillmentGroupAdjustmentImpl.serialVersionUID);
-    fulfillmentGroupAdjustmentImpl2.setReason("Just cause");
-    fulfillmentGroupAdjustmentImpl2.setValue(new Money());
-
-    // Act and Assert
-    assertEquals(fulfillmentGroupAdjustmentImpl, fulfillmentGroupAdjustmentImpl2);
-    assertEquals(
-        fulfillmentGroupAdjustmentImpl.hashCode(), fulfillmentGroupAdjustmentImpl2.hashCode());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupAdjustmentImpl#equals(Object)}, and {@link
-   * FulfillmentGroupAdjustmentImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link FulfillmentGroupAdjustmentImpl#equals(Object)}
-   *   <li>{@link FulfillmentGroupAdjustmentImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupAdjustmentImpl.equals(Object)",
-    "int FulfillmentGroupAdjustmentImpl.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
-    // Arrange
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl =
-        new FulfillmentGroupAdjustmentImpl();
-    fulfillmentGroupAdjustmentImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
-    fulfillmentGroupAdjustmentImpl.setFutureCredit(true);
-    fulfillmentGroupAdjustmentImpl.setId(null);
-    fulfillmentGroupAdjustmentImpl.setReason(null);
-    fulfillmentGroupAdjustmentImpl.setValue(new Money());
-
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl2 =
-        new FulfillmentGroupAdjustmentImpl();
-    fulfillmentGroupAdjustmentImpl2.setFulfillmentGroup(new FulfillmentGroupImpl());
-    fulfillmentGroupAdjustmentImpl2.setFutureCredit(true);
-    fulfillmentGroupAdjustmentImpl2.setId(FulfillmentGroupAdjustmentImpl.serialVersionUID);
-    fulfillmentGroupAdjustmentImpl2.setReason(null);
-    fulfillmentGroupAdjustmentImpl2.setValue(new Money());
-
-    // Act and Assert
-    assertEquals(fulfillmentGroupAdjustmentImpl, fulfillmentGroupAdjustmentImpl2);
-    assertEquals(
-        fulfillmentGroupAdjustmentImpl.hashCode(), fulfillmentGroupAdjustmentImpl2.hashCode());
-  }
-
-  /**
-   * Test {@link FulfillmentGroupAdjustmentImpl#equals(Object)}, and {@link
-   * FulfillmentGroupAdjustmentImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link FulfillmentGroupAdjustmentImpl#equals(Object)}
-   *   <li>{@link FulfillmentGroupAdjustmentImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupAdjustmentImpl.equals(Object)",
-    "int FulfillmentGroupAdjustmentImpl.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual6() {
     // Arrange
     Money value = mock(Money.class);
     when(value.getAmount()).thenReturn(null);
 
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl =
-        new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
     fulfillmentGroupAdjustmentImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
     fulfillmentGroupAdjustmentImpl.setFutureCredit(true);
     fulfillmentGroupAdjustmentImpl.setId(null);
     fulfillmentGroupAdjustmentImpl.setReason("Just cause");
     fulfillmentGroupAdjustmentImpl.setValue(value);
-
     Money value2 = mock(Money.class);
     when(value2.getAmount()).thenReturn(null);
 
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl2 =
-        new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl2 = new FulfillmentGroupAdjustmentImpl();
     fulfillmentGroupAdjustmentImpl2.setFulfillmentGroup(new FulfillmentGroupImpl());
     fulfillmentGroupAdjustmentImpl2.setFutureCredit(true);
     fulfillmentGroupAdjustmentImpl2.setId(FulfillmentGroupAdjustmentImpl.serialVersionUID);
@@ -896,37 +849,21 @@ public class FulfillmentGroupAdjustmentImplDiffblueTest {
 
     // Act and Assert
     assertEquals(fulfillmentGroupAdjustmentImpl, fulfillmentGroupAdjustmentImpl2);
-    assertEquals(
-        fulfillmentGroupAdjustmentImpl.hashCode(), fulfillmentGroupAdjustmentImpl2.hashCode());
+    int expectedHashCodeResult = fulfillmentGroupAdjustmentImpl.hashCode();
+    assertEquals(expectedHashCodeResult, fulfillmentGroupAdjustmentImpl2.hashCode());
   }
 
   /**
-   * Test {@link FulfillmentGroupAdjustmentImpl#equals(Object)}, and {@link
-   * FulfillmentGroupAdjustmentImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link FulfillmentGroupAdjustmentImpl#equals(Object)}
    *   <li>{@link FulfillmentGroupAdjustmentImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupAdjustmentImpl.equals(Object)",
-    "int FulfillmentGroupAdjustmentImpl.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl =
-        new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
     fulfillmentGroupAdjustmentImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
     fulfillmentGroupAdjustmentImpl.setFutureCredit(true);
     fulfillmentGroupAdjustmentImpl.setId(FulfillmentGroupAdjustmentImpl.serialVersionUID);
@@ -940,34 +877,19 @@ public class FulfillmentGroupAdjustmentImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupAdjustmentImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupAdjustmentImpl#equals(Object)}
+   * Method under test: {@link FulfillmentGroupAdjustmentImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupAdjustmentImpl.equals(Object)",
-    "int FulfillmentGroupAdjustmentImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl =
-        new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
     fulfillmentGroupAdjustmentImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
     fulfillmentGroupAdjustmentImpl.setFutureCredit(true);
     fulfillmentGroupAdjustmentImpl.setId(2L);
     fulfillmentGroupAdjustmentImpl.setReason("Just cause");
     fulfillmentGroupAdjustmentImpl.setValue(new Money());
 
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl2 =
-        new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl2 = new FulfillmentGroupAdjustmentImpl();
     fulfillmentGroupAdjustmentImpl2.setFulfillmentGroup(new FulfillmentGroupImpl());
     fulfillmentGroupAdjustmentImpl2.setFutureCredit(true);
     fulfillmentGroupAdjustmentImpl2.setId(FulfillmentGroupAdjustmentImpl.serialVersionUID);
@@ -979,34 +901,43 @@ public class FulfillmentGroupAdjustmentImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupAdjustmentImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupAdjustmentImpl#equals(Object)}
+   * Method under test: {@link FulfillmentGroupAdjustmentImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupAdjustmentImpl.equals(Object)",
-    "int FulfillmentGroupAdjustmentImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl =
-        new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
+    fulfillmentGroupAdjustmentImpl.setFulfillmentGroup(mock(FulfillmentGroup.class));
+    fulfillmentGroupAdjustmentImpl.setFutureCredit(true);
+    fulfillmentGroupAdjustmentImpl.setId(null);
+    fulfillmentGroupAdjustmentImpl.setReason("Just cause");
+    fulfillmentGroupAdjustmentImpl.setValue(new Money());
+
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl2 = new FulfillmentGroupAdjustmentImpl();
+    fulfillmentGroupAdjustmentImpl2.setFulfillmentGroup(new FulfillmentGroupImpl());
+    fulfillmentGroupAdjustmentImpl2.setFutureCredit(true);
+    fulfillmentGroupAdjustmentImpl2.setId(FulfillmentGroupAdjustmentImpl.serialVersionUID);
+    fulfillmentGroupAdjustmentImpl2.setReason("Just cause");
+    fulfillmentGroupAdjustmentImpl2.setValue(new Money());
+
+    // Act and Assert
+    assertNotEquals(fulfillmentGroupAdjustmentImpl, fulfillmentGroupAdjustmentImpl2);
+  }
+
+  /**
+   * Method under test: {@link FulfillmentGroupAdjustmentImpl#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
+    // Arrange
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
     fulfillmentGroupAdjustmentImpl.setFulfillmentGroup(null);
     fulfillmentGroupAdjustmentImpl.setFutureCredit(true);
     fulfillmentGroupAdjustmentImpl.setId(null);
     fulfillmentGroupAdjustmentImpl.setReason("Just cause");
     fulfillmentGroupAdjustmentImpl.setValue(new Money());
 
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl2 =
-        new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl2 = new FulfillmentGroupAdjustmentImpl();
     fulfillmentGroupAdjustmentImpl2.setFulfillmentGroup(new FulfillmentGroupImpl());
     fulfillmentGroupAdjustmentImpl2.setFutureCredit(true);
     fulfillmentGroupAdjustmentImpl2.setId(FulfillmentGroupAdjustmentImpl.serialVersionUID);
@@ -1018,73 +949,19 @@ public class FulfillmentGroupAdjustmentImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupAdjustmentImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupAdjustmentImpl#equals(Object)}
+   * Method under test: {@link FulfillmentGroupAdjustmentImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupAdjustmentImpl.equals(Object)",
-    "int FulfillmentGroupAdjustmentImpl.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
-    // Arrange
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl =
-        new FulfillmentGroupAdjustmentImpl();
-    fulfillmentGroupAdjustmentImpl.setFulfillmentGroup(mock(FulfillmentGroupImpl.class));
-    fulfillmentGroupAdjustmentImpl.setFutureCredit(true);
-    fulfillmentGroupAdjustmentImpl.setId(null);
-    fulfillmentGroupAdjustmentImpl.setReason("Just cause");
-    fulfillmentGroupAdjustmentImpl.setValue(new Money());
-
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl2 =
-        new FulfillmentGroupAdjustmentImpl();
-    fulfillmentGroupAdjustmentImpl2.setFulfillmentGroup(new FulfillmentGroupImpl());
-    fulfillmentGroupAdjustmentImpl2.setFutureCredit(true);
-    fulfillmentGroupAdjustmentImpl2.setId(FulfillmentGroupAdjustmentImpl.serialVersionUID);
-    fulfillmentGroupAdjustmentImpl2.setReason("Just cause");
-    fulfillmentGroupAdjustmentImpl2.setValue(new Money());
-
-    // Act and Assert
-    assertNotEquals(fulfillmentGroupAdjustmentImpl, fulfillmentGroupAdjustmentImpl2);
-  }
-
-  /**
-   * Test {@link FulfillmentGroupAdjustmentImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupAdjustmentImpl#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupAdjustmentImpl.equals(Object)",
-    "int FulfillmentGroupAdjustmentImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl =
-        new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
     fulfillmentGroupAdjustmentImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
     fulfillmentGroupAdjustmentImpl.setFutureCredit(false);
     fulfillmentGroupAdjustmentImpl.setId(null);
     fulfillmentGroupAdjustmentImpl.setReason("Just cause");
     fulfillmentGroupAdjustmentImpl.setValue(new Money());
 
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl2 =
-        new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl2 = new FulfillmentGroupAdjustmentImpl();
     fulfillmentGroupAdjustmentImpl2.setFulfillmentGroup(new FulfillmentGroupImpl());
     fulfillmentGroupAdjustmentImpl2.setFutureCredit(true);
     fulfillmentGroupAdjustmentImpl2.setId(FulfillmentGroupAdjustmentImpl.serialVersionUID);
@@ -1096,34 +973,19 @@ public class FulfillmentGroupAdjustmentImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupAdjustmentImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupAdjustmentImpl#equals(Object)}
+   * Method under test: {@link FulfillmentGroupAdjustmentImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupAdjustmentImpl.equals(Object)",
-    "int FulfillmentGroupAdjustmentImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl =
-        new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
     fulfillmentGroupAdjustmentImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
     fulfillmentGroupAdjustmentImpl.setFutureCredit(true);
     fulfillmentGroupAdjustmentImpl.setId(null);
     fulfillmentGroupAdjustmentImpl.setReason("Reason");
     fulfillmentGroupAdjustmentImpl.setValue(new Money());
 
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl2 =
-        new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl2 = new FulfillmentGroupAdjustmentImpl();
     fulfillmentGroupAdjustmentImpl2.setFulfillmentGroup(new FulfillmentGroupImpl());
     fulfillmentGroupAdjustmentImpl2.setFutureCredit(true);
     fulfillmentGroupAdjustmentImpl2.setId(FulfillmentGroupAdjustmentImpl.serialVersionUID);
@@ -1135,34 +997,19 @@ public class FulfillmentGroupAdjustmentImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupAdjustmentImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupAdjustmentImpl#equals(Object)}
+   * Method under test: {@link FulfillmentGroupAdjustmentImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupAdjustmentImpl.equals(Object)",
-    "int FulfillmentGroupAdjustmentImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl =
-        new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
     fulfillmentGroupAdjustmentImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
     fulfillmentGroupAdjustmentImpl.setFutureCredit(true);
     fulfillmentGroupAdjustmentImpl.setId(null);
     fulfillmentGroupAdjustmentImpl.setReason(null);
     fulfillmentGroupAdjustmentImpl.setValue(new Money());
 
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl2 =
-        new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl2 = new FulfillmentGroupAdjustmentImpl();
     fulfillmentGroupAdjustmentImpl2.setFulfillmentGroup(new FulfillmentGroupImpl());
     fulfillmentGroupAdjustmentImpl2.setFutureCredit(true);
     fulfillmentGroupAdjustmentImpl2.setId(FulfillmentGroupAdjustmentImpl.serialVersionUID);
@@ -1174,34 +1021,19 @@ public class FulfillmentGroupAdjustmentImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupAdjustmentImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupAdjustmentImpl#equals(Object)}
+   * Method under test: {@link FulfillmentGroupAdjustmentImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupAdjustmentImpl.equals(Object)",
-    "int FulfillmentGroupAdjustmentImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl =
-        new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
     fulfillmentGroupAdjustmentImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
     fulfillmentGroupAdjustmentImpl.setFutureCredit(true);
     fulfillmentGroupAdjustmentImpl.setId(null);
     fulfillmentGroupAdjustmentImpl.setReason("Just cause");
     fulfillmentGroupAdjustmentImpl.setValue(new Money(10.0d));
 
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl2 =
-        new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl2 = new FulfillmentGroupAdjustmentImpl();
     fulfillmentGroupAdjustmentImpl2.setFulfillmentGroup(new FulfillmentGroupImpl());
     fulfillmentGroupAdjustmentImpl2.setFutureCredit(true);
     fulfillmentGroupAdjustmentImpl2.setId(FulfillmentGroupAdjustmentImpl.serialVersionUID);
@@ -1213,37 +1045,22 @@ public class FulfillmentGroupAdjustmentImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupAdjustmentImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupAdjustmentImpl#equals(Object)}
+   * Method under test: {@link FulfillmentGroupAdjustmentImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupAdjustmentImpl.equals(Object)",
-    "int FulfillmentGroupAdjustmentImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
     // Arrange
     Money value = mock(Money.class);
     when(value.getAmount()).thenReturn(null);
 
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl =
-        new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
     fulfillmentGroupAdjustmentImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
     fulfillmentGroupAdjustmentImpl.setFutureCredit(true);
     fulfillmentGroupAdjustmentImpl.setId(null);
     fulfillmentGroupAdjustmentImpl.setReason("Just cause");
     fulfillmentGroupAdjustmentImpl.setValue(value);
 
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl2 =
-        new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl2 = new FulfillmentGroupAdjustmentImpl();
     fulfillmentGroupAdjustmentImpl2.setFulfillmentGroup(new FulfillmentGroupImpl());
     fulfillmentGroupAdjustmentImpl2.setFutureCredit(true);
     fulfillmentGroupAdjustmentImpl2.setId(FulfillmentGroupAdjustmentImpl.serialVersionUID);
@@ -1255,26 +1072,12 @@ public class FulfillmentGroupAdjustmentImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupAdjustmentImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupAdjustmentImpl#equals(Object)}
+   * Method under test: {@link FulfillmentGroupAdjustmentImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupAdjustmentImpl.equals(Object)",
-    "int FulfillmentGroupAdjustmentImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl =
-        new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
     fulfillmentGroupAdjustmentImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
     fulfillmentGroupAdjustmentImpl.setFutureCredit(true);
     fulfillmentGroupAdjustmentImpl.setId(FulfillmentGroupAdjustmentImpl.serialVersionUID);
@@ -1286,26 +1089,12 @@ public class FulfillmentGroupAdjustmentImplDiffblueTest {
   }
 
   /**
-   * Test {@link FulfillmentGroupAdjustmentImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FulfillmentGroupAdjustmentImpl#equals(Object)}
+   * Method under test: {@link FulfillmentGroupAdjustmentImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean FulfillmentGroupAdjustmentImpl.equals(Object)",
-    "int FulfillmentGroupAdjustmentImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl =
-        new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
     fulfillmentGroupAdjustmentImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
     fulfillmentGroupAdjustmentImpl.setFutureCredit(true);
     fulfillmentGroupAdjustmentImpl.setId(FulfillmentGroupAdjustmentImpl.serialVersionUID);
@@ -1313,24 +1102,55 @@ public class FulfillmentGroupAdjustmentImplDiffblueTest {
     fulfillmentGroupAdjustmentImpl.setValue(new Money());
 
     // Act and Assert
-    assertNotEquals(
-        fulfillmentGroupAdjustmentImpl, "Different type to FulfillmentGroupAdjustmentImpl");
+    assertNotEquals(fulfillmentGroupAdjustmentImpl, "Different type to FulfillmentGroupAdjustmentImpl");
   }
 
   /**
-   * Test new {@link FulfillmentGroupAdjustmentImpl} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * FulfillmentGroupAdjustmentImpl}
+   * Methods under test:
+   * <ul>
+   *   <li>
+   * {@link FulfillmentGroupAdjustmentImpl#setFulfillmentGroup(FulfillmentGroup)}
+   *   <li>{@link FulfillmentGroupAdjustmentImpl#setFutureCredit(Boolean)}
+   *   <li>{@link FulfillmentGroupAdjustmentImpl#setId(Long)}
+   *   <li>{@link FulfillmentGroupAdjustmentImpl#setReason(String)}
+   *   <li>{@link FulfillmentGroupAdjustmentImpl#getFulfillmentGroup()}
+   *   <li>{@link FulfillmentGroupAdjustmentImpl#getId()}
+   *   <li>{@link FulfillmentGroupAdjustmentImpl#getReason()}
+   *   <li>{@link FulfillmentGroupAdjustmentImpl#isFutureCredit()}
+   * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FulfillmentGroupAdjustmentImpl.<init>()"})
+  public void testGettersAndSetters() {
+    // Arrange
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+
+    // Act
+    fulfillmentGroupAdjustmentImpl.setFulfillmentGroup(fulfillmentGroup);
+    fulfillmentGroupAdjustmentImpl.setFutureCredit(true);
+    fulfillmentGroupAdjustmentImpl.setId(FulfillmentGroupAdjustmentImpl.serialVersionUID);
+    fulfillmentGroupAdjustmentImpl.setReason("Just cause");
+    FulfillmentGroup actualFulfillmentGroup = fulfillmentGroupAdjustmentImpl.getFulfillmentGroup();
+    Long actualId = fulfillmentGroupAdjustmentImpl.getId();
+    String actualReason = fulfillmentGroupAdjustmentImpl.getReason();
+
+    // Assert that nothing has changed
+    assertEquals("Just cause", actualReason);
+    assertTrue(fulfillmentGroupAdjustmentImpl.isFutureCredit());
+    assertEquals(FulfillmentGroupAdjustmentImpl.serialVersionUID, actualId.longValue());
+    assertSame(fulfillmentGroup, actualFulfillmentGroup);
+  }
+
+  /**
+   * Method under test: default or parameterless constructor of
+   * {@link FulfillmentGroupAdjustmentImpl}
+   */
+  @Test
   public void testNewFulfillmentGroupAdjustmentImpl() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange and Act
-    FulfillmentGroupAdjustmentImpl actualFulfillmentGroupAdjustmentImpl =
-        new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupAdjustmentImpl actualFulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
 
     // Assert
     assertNull(actualFulfillmentGroupAdjustmentImpl.getId());

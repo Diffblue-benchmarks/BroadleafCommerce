@@ -19,143 +19,72 @@ package org.broadleafcommerce.core.offer.service.type;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ContextConfiguration(classes = {StackabilityType.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class StackabilityTypeDiffblueTest {
-  @Autowired private StackabilityType stackabilityType;
+  @Autowired
+  private StackabilityType stackabilityType;
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link StackabilityType#StackabilityType()}
-   *   <li>{@link StackabilityType#setOrder(int)}
-   *   <li>{@link StackabilityType#getFriendlyType()}
-   *   <li>{@link StackabilityType#getOrder()}
-   *   <li>{@link StackabilityType#getType()}
-   * </ul>
+   * Method under test: {@link StackabilityType#getInstance(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void StackabilityType.<init>()",
-    "String StackabilityType.getFriendlyType()",
-    "int StackabilityType.getOrder()",
-    "String StackabilityType.getType()",
-    "void StackabilityType.setOrder(int)"
-  })
-  public void testGettersAndSetters() {
+  public void testGetInstance() {
     // Arrange and Act
-    StackabilityType actualStackabilityType = new StackabilityType();
-    actualStackabilityType.setOrder(1);
-    String actualFriendlyType = actualStackabilityType.getFriendlyType();
-    int actualOrder = actualStackabilityType.getOrder();
+    StackabilityType actualInstance = StackabilityType.getInstance("Type");
 
     // Assert
-    assertNull(actualFriendlyType);
-    assertNull(actualStackabilityType.getType());
-    assertEquals(1, actualOrder);
+    assertEquals("Friendly Type", actualInstance.getFriendlyType());
+    assertEquals("Type", actualInstance.getType());
+    assertEquals(1, actualInstance.getOrder());
   }
 
   /**
-   * Test {@link StackabilityType#StackabilityType(String, String, int)}.
-   *
-   * <p>Method under test: {@link StackabilityType#StackabilityType(String, String, int)}
+   * Method under test: {@link StackabilityType#setType(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void StackabilityType.<init>(String, String, int)"})
-  public void testNewStackabilityType() {
-    // Arrange and Act
-    StackabilityType actualStackabilityType = new StackabilityType("Type", "Friendly Type", 1);
+  public void testSetType() {
+    // Arrange
+    StackabilityType stackabilityType2 = StackabilityType.NO;
+
+    // Act
+    stackabilityType2.setType("Type");
 
     // Assert
-    assertEquals("Friendly Type", actualStackabilityType.getFriendlyType());
-    assertEquals("Type", actualStackabilityType.getType());
-    assertEquals(1, actualStackabilityType.getOrder());
+    assertEquals("Type", stackabilityType2.getType());
   }
 
   /**
-   * Test {@link StackabilityType#setType(String)}.
-   *
-   * <ul>
-   *   <li>When {@code TypeType}.
-   *   <li>Then {@link StackabilityType} Type is {@code TypeType}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StackabilityType#setType(String)}
+   * Method under test: {@link StackabilityType#setType(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void StackabilityType.setType(String)"})
-  public void testSetType_whenTypeType_thenStackabilityTypeTypeIsTypeType() {
-    // Arrange and Act
-    stackabilityType.setType("TypeType");
+  public void testSetType2() {
+    // Arrange
+    StackabilityType stackabilityType2 = StackabilityType.NO;
+
+    // Act
+    stackabilityType2.setType("TypeType");
 
     // Assert
-    assertEquals("TypeType", stackabilityType.getType());
+    assertEquals("TypeType", stackabilityType2.getType());
   }
 
   /**
-   * Test {@link StackabilityType#setType(String)}.
-   *
-   * <ul>
-   *   <li>When {@code Type}.
-   *   <li>Then {@link StackabilityType} Type is {@code Type}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StackabilityType#setType(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void StackabilityType.setType(String)"})
-  public void testSetType_whenType_thenStackabilityTypeTypeIsType() {
-    // Arrange and Act
-    stackabilityType.setType("Type");
-
-    // Assert
-    assertEquals("Type", stackabilityType.getType());
-  }
-
-  /**
-   * Test {@link StackabilityType#equals(Object)}, and {@link StackabilityType#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link StackabilityType#equals(Object)}
    *   <li>{@link StackabilityType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean StackabilityType.equals(Object)", "int StackabilityType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     StackabilityType stackabilityType = StackabilityType.NO;
@@ -163,86 +92,56 @@ public class StackabilityTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(stackabilityType, stackabilityType2);
-    assertEquals(stackabilityType.hashCode(), stackabilityType2.hashCode());
+    int expectedHashCodeResult = stackabilityType.hashCode();
+    assertEquals(expectedHashCodeResult, stackabilityType2.hashCode());
   }
 
   /**
-   * Test {@link StackabilityType#equals(Object)}, and {@link StackabilityType#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link StackabilityType#equals(Object)}
    *   <li>{@link StackabilityType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean StackabilityType.equals(Object)", "int StackabilityType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
-    // Arrange
-    StackabilityType stackabilityType = StackabilityType.YES;
-    StackabilityType stackabilityType2 = new StackabilityType("YES", "YES", 1);
-
-    // Act and Assert
-    assertEquals(stackabilityType, stackabilityType2);
-    assertEquals(stackabilityType.hashCode(), stackabilityType2.hashCode());
-  }
-
-  /**
-   * Test {@link StackabilityType#equals(Object)}, and {@link StackabilityType#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link StackabilityType#equals(Object)}
-   *   <li>{@link StackabilityType#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean StackabilityType.equals(Object)", "int StackabilityType.hashCode()"})
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     StackabilityType stackabilityType = new StackabilityType();
     StackabilityType stackabilityType2 = new StackabilityType();
 
     // Act and Assert
     assertEquals(stackabilityType, stackabilityType2);
-    assertEquals(stackabilityType.hashCode(), stackabilityType2.hashCode());
+    int expectedHashCodeResult = stackabilityType.hashCode();
+    assertEquals(expectedHashCodeResult, stackabilityType2.hashCode());
   }
 
   /**
-   * Test {@link StackabilityType#equals(Object)}, and {@link StackabilityType#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link StackabilityType#equals(Object)}
    *   <li>{@link StackabilityType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean StackabilityType.equals(Object)", "int StackabilityType.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
+    // Arrange
+    StackabilityType stackabilityType = new StackabilityType("NO", "Friendly Type", 1);
+    StackabilityType stackabilityType2 = StackabilityType.NO;
+
+    // Act and Assert
+    assertEquals(stackabilityType, stackabilityType2);
+    int expectedHashCodeResult = stackabilityType.hashCode();
+    assertEquals(expectedHashCodeResult, stackabilityType2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link StackabilityType#equals(Object)}
+   *   <li>{@link StackabilityType#hashCode()}
+   * </ul>
+   */
+  @Test
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     StackabilityType stackabilityType = StackabilityType.NO;
@@ -254,97 +153,77 @@ public class StackabilityTypeDiffblueTest {
   }
 
   /**
-   * Test {@link StackabilityType#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link StackabilityType#equals(Object)}
+   * Method under test: {@link StackabilityType#compareTo(StackabilityType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean StackabilityType.equals(Object)", "int StackabilityType.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+  public void testCompareTo() {
     // Arrange, Act and Assert
-    assertNotEquals(StackabilityType.YES, StackabilityType.NO);
+    assertEquals(0, StackabilityType.NO.compareTo(StackabilityType.NO));
   }
 
   /**
-   * Test {@link StackabilityType#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link StackabilityType#equals(Object)}
+   * Method under test: {@link StackabilityType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean StackabilityType.equals(Object)", "int StackabilityType.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
+    assertNotEquals(StackabilityType.YES, StackabilityType.NO);
     assertNotEquals(new StackabilityType(), StackabilityType.NO);
   }
 
   /**
-   * Test {@link StackabilityType#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link StackabilityType#equals(Object)}
+   * Method under test: {@link StackabilityType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean StackabilityType.equals(Object)", "int StackabilityType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(StackabilityType.NO, null);
   }
 
   /**
-   * Test {@link StackabilityType#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link StackabilityType#equals(Object)}
+   * Method under test: {@link StackabilityType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean StackabilityType.equals(Object)", "int StackabilityType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(StackabilityType.NO, "Different type to StackabilityType");
   }
 
   /**
-   * Test {@link StackabilityType#compareTo(StackabilityType)} with {@code StackabilityType}.
-   *
+   * Methods under test:
    * <ul>
-   *   <li>When {@link StackabilityType#NO}.
-   *   <li>Then return zero.
+   *   <li>{@link StackabilityType#StackabilityType()}
+   *   <li>{@link StackabilityType#setOrder(int)}
+   *   <li>{@link StackabilityType#getFriendlyType()}
+   *   <li>{@link StackabilityType#getOrder()}
+   *   <li>{@link StackabilityType#getType()}
    * </ul>
-   *
-   * <p>Method under test: {@link StackabilityType#compareTo(StackabilityType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int StackabilityType.compareTo(StackabilityType)"})
-  public void testCompareToWithStackabilityType_whenNo_thenReturnZero() {
-    // Arrange, Act and Assert
-    assertEquals(0, StackabilityType.NO.compareTo(StackabilityType.NO));
+  public void testGettersAndSetters() {
+    // Arrange and Act
+    StackabilityType actualStackabilityType = new StackabilityType();
+    actualStackabilityType.setOrder(1);
+    actualStackabilityType.getFriendlyType();
+    int actualOrder = actualStackabilityType.getOrder();
+    actualStackabilityType.getType();
+
+    // Assert that nothing has changed
+    assertEquals(1, actualOrder);
+  }
+
+  /**
+   * Method under test:
+   * {@link StackabilityType#StackabilityType(String, String, int)}
+   */
+  @Test
+  public void testNewStackabilityType() {
+    // Arrange and Act
+    StackabilityType actualStackabilityType = new StackabilityType("Type", "Friendly Type", 1);
+
+    // Assert
+    assertEquals("Friendly Type", actualStackabilityType.getFriendlyType());
+    assertEquals("Type", actualStackabilityType.getType());
+    assertEquals(1, actualStackabilityType.getOrder());
   }
 }

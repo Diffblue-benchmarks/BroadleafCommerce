@@ -20,31 +20,40 @@ package org.broadleafcommerce.cms.web.controller;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.servlet.http.HttpServletRequest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 public class BroadleafRobotsControllerDiffblueTest {
   /**
-   * Test {@link BroadleafRobotsController#isSecure(HttpServletRequest)}.
-   *
-   * <ul>
-   *   <li>Given {@code true}.
-   *   <li>When {@link MockHttpServletRequest#MockHttpServletRequest()} Secure is {@code true}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BroadleafRobotsController#isSecure(HttpServletRequest)}
+   * Method under test:
+   * {@link BroadleafRobotsController#isSecure(HttpServletRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean BroadleafRobotsController.isSecure(HttpServletRequest)"})
-  public void testIsSecure_givenTrue_whenMockHttpServletRequestSecureIsTrue_thenReturnTrue() {
+  public void testIsSecure() {
+    // Arrange
+    BroadleafRobotsController broadleafRobotsController = new BroadleafRobotsController();
+
+    // Act and Assert
+    assertFalse(broadleafRobotsController.isSecure(new MockHttpServletRequest()));
+  }
+
+  /**
+   * Method under test:
+   * {@link BroadleafRobotsController#isSecure(HttpServletRequest)}
+   */
+  @Test
+  public void testIsSecure2() {
+    // Arrange, Act and Assert
+    assertFalse((new BroadleafRobotsController()).isSecure(null));
+  }
+
+  /**
+   * Method under test:
+   * {@link BroadleafRobotsController#isSecure(HttpServletRequest)}
+   */
+  @Test
+  public void testIsSecure3() {
     // Arrange
     BroadleafRobotsController broadleafRobotsController = new BroadleafRobotsController();
 
@@ -56,57 +65,12 @@ public class BroadleafRobotsControllerDiffblueTest {
   }
 
   /**
-   * Test {@link BroadleafRobotsController#isSecure(HttpServletRequest)}.
-   *
-   * <ul>
-   *   <li>When {@link MockHttpServletRequest#MockHttpServletRequest()}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BroadleafRobotsController#isSecure(HttpServletRequest)}
+   * Method under test: default or parameterless constructor of
+   * {@link BroadleafRobotsController}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean BroadleafRobotsController.isSecure(HttpServletRequest)"})
-  public void testIsSecure_whenMockHttpServletRequest_thenReturnFalse() {
-    // Arrange
-    BroadleafRobotsController broadleafRobotsController = new BroadleafRobotsController();
-
-    // Act and Assert
-    assertFalse(broadleafRobotsController.isSecure(new MockHttpServletRequest()));
-  }
-
-  /**
-   * Test {@link BroadleafRobotsController#isSecure(HttpServletRequest)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BroadleafRobotsController#isSecure(HttpServletRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean BroadleafRobotsController.isSecure(HttpServletRequest)"})
-  public void testIsSecure_whenNull_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(new BroadleafRobotsController().isSecure(null));
-  }
-
-  /**
-   * Test new {@link BroadleafRobotsController} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link BroadleafRobotsController}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BroadleafRobotsController.<init>()"})
   public void testNewBroadleafRobotsController() {
     // Arrange, Act and Assert
-    assertNull(new BroadleafRobotsController().blcContextUtil);
+    assertNull((new BroadleafRobotsController()).blcContextUtil);
   }
 }

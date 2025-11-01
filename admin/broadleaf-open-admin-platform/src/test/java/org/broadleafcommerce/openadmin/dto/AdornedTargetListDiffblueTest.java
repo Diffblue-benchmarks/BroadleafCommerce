@@ -22,12 +22,15 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import org.broadleafcommerce.openadmin.dto.visitor.PersistencePerspectiveItemVisitor;
+import org.broadleafcommerce.openadmin.dto.visitor.PersistencePerspectiveItemVisitorAdapter;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -35,220 +38,581 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {AdornedTargetList.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class AdornedTargetListDiffblueTest {
-  @Autowired private AdornedTargetList adornedTargetList;
+  @Autowired
+  private AdornedTargetList adornedTargetList;
 
   /**
-   * Test {@link AdornedTargetList#AdornedTargetList()}.
-   *
-   * <p>Method under test: {@link AdornedTargetList#AdornedTargetList()}
+   * Method under test:
+   * {@link AdornedTargetList#accept(PersistencePerspectiveItemVisitor)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AdornedTargetList.<init>()"})
-  public void testNewAdornedTargetList() {
-    // Arrange and Act
-    AdornedTargetList actualAdornedTargetList = new AdornedTargetList();
+  public void testAccept() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+    PersistencePerspectiveItemVisitorAdapter visitor = mock(PersistencePerspectiveItemVisitorAdapter.class);
+    doNothing().when(visitor).visit(Mockito.<AdornedTargetList>any());
+
+    // Act
+    adornedTargetList.accept(visitor);
 
     // Assert
-    assertNull(actualAdornedTargetList.getSortAscending());
-    assertNull(actualAdornedTargetList.getAdornedTargetEntityClassname());
-    assertNull(actualAdornedTargetList.getAdornedTargetEntityPolymorphicType());
-    assertNull(actualAdornedTargetList.getCollectionFieldName());
-    assertNull(actualAdornedTargetList.getIdProperty());
-    assertNull(actualAdornedTargetList.getJoinEntityClass());
-    assertNull(actualAdornedTargetList.getLinkedIdProperty());
-    assertNull(actualAdornedTargetList.getLinkedObjectPath());
-    assertNull(actualAdornedTargetList.getSortField());
-    assertNull(actualAdornedTargetList.getTargetIdProperty());
-    assertNull(actualAdornedTargetList.getTargetObjectPath());
-    assertFalse(actualAdornedTargetList.getInverse());
-    assertTrue(actualAdornedTargetList.getMutable());
+    verify(visitor).visit(isA(AdornedTargetList.class));
   }
 
   /**
-   * Test {@link AdornedTargetList#AdornedTargetList(String, String, String, String, String,
-   * String)}.
-   *
-   * <p>Method under test: {@link AdornedTargetList#AdornedTargetList(String, String, String,
-   * String, String, String)}
+   * Method under test:
+   * {@link AdornedTargetList#clonePersistencePerspectiveItem()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdornedTargetList.<init>(String, String, String, String, String, String)"
-  })
-  public void testNewAdornedTargetList2() {
-    // Arrange and Act
-    AdornedTargetList actualAdornedTargetList =
-        new AdornedTargetList(
-            "Collection Field Name",
-            "Linked Object Path",
-            "Linked Id Property",
-            "Target Object Path",
-            "Target Id Property",
-            "Adorned Target Entity Classname");
+  public void testClonePersistencePerspectiveItem() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+
+    // Act
+    PersistencePerspectiveItem actualClonePersistencePerspectiveItemResult = adornedTargetList
+        .clonePersistencePerspectiveItem();
 
     // Assert
-    assertEquals(
-        "Adorned Target Entity Classname",
-        actualAdornedTargetList.getAdornedTargetEntityClassname());
-    assertEquals("Collection Field Name", actualAdornedTargetList.getCollectionFieldName());
-    assertEquals("Linked Id Property", actualAdornedTargetList.getLinkedIdProperty());
-    assertEquals("Linked Object Path", actualAdornedTargetList.getLinkedObjectPath());
-    assertEquals("Target Id Property", actualAdornedTargetList.getTargetIdProperty());
-    assertEquals("Target Object Path", actualAdornedTargetList.getTargetObjectPath());
-    assertNull(actualAdornedTargetList.getSortAscending());
-    assertNull(actualAdornedTargetList.getAdornedTargetEntityPolymorphicType());
-    assertNull(actualAdornedTargetList.getIdProperty());
-    assertNull(actualAdornedTargetList.getJoinEntityClass());
-    assertNull(actualAdornedTargetList.getSortField());
-    assertFalse(actualAdornedTargetList.getInverse());
-    assertTrue(actualAdornedTargetList.getMutable());
+    assertTrue(actualClonePersistencePerspectiveItemResult instanceof AdornedTargetList);
+    assertEquals(adornedTargetList, actualClonePersistencePerspectiveItemResult);
   }
 
   /**
-   * Test {@link AdornedTargetList#AdornedTargetList(String, String, String, String, String, String,
-   * String)}.
-   *
-   * <p>Method under test: {@link AdornedTargetList#AdornedTargetList(String, String, String,
-   * String, String, String, String)}
+   * Methods under test:
+   * <ul>
+   *   <li>{@link AdornedTargetList#equals(Object)}
+   *   <li>{@link AdornedTargetList#hashCode()}
+   * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdornedTargetList.<init>(String, String, String, String, String, String, String)"
-  })
-  public void testNewAdornedTargetList3() {
-    // Arrange and Act
-    AdornedTargetList actualAdornedTargetList =
-        new AdornedTargetList(
-            "Collection Field Name",
-            "Linked Object Path",
-            "Linked Id Property",
-            "Target Object Path",
-            "Target Id Property",
-            "Adorned Target Entity Classname",
-            "Adorned Target Entity Polymorphic Type");
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
 
-    // Assert
-    assertEquals(
-        "Adorned Target Entity Classname",
-        actualAdornedTargetList.getAdornedTargetEntityClassname());
-    assertEquals(
-        "Adorned Target Entity Polymorphic Type",
-        actualAdornedTargetList.getAdornedTargetEntityPolymorphicType());
-    assertEquals("Collection Field Name", actualAdornedTargetList.getCollectionFieldName());
-    assertEquals("Linked Id Property", actualAdornedTargetList.getLinkedIdProperty());
-    assertEquals("Linked Object Path", actualAdornedTargetList.getLinkedObjectPath());
-    assertEquals("Target Id Property", actualAdornedTargetList.getTargetIdProperty());
-    assertEquals("Target Object Path", actualAdornedTargetList.getTargetObjectPath());
-    assertNull(actualAdornedTargetList.getSortAscending());
-    assertNull(actualAdornedTargetList.getIdProperty());
-    assertNull(actualAdornedTargetList.getJoinEntityClass());
-    assertNull(actualAdornedTargetList.getSortField());
-    assertFalse(actualAdornedTargetList.getInverse());
-    assertTrue(actualAdornedTargetList.getMutable());
+    // Act and Assert
+    assertEquals(adornedTargetList, adornedTargetList2);
+    int expectedHashCodeResult = adornedTargetList.hashCode();
+    assertEquals(expectedHashCodeResult, adornedTargetList2.hashCode());
   }
 
   /**
-   * Test {@link AdornedTargetList#AdornedTargetList(String, String, String, String, String, String,
-   * String, Boolean)}.
-   *
-   * <p>Method under test: {@link AdornedTargetList#AdornedTargetList(String, String, String,
-   * String, String, String, String, Boolean)}
+   * Methods under test:
+   * <ul>
+   *   <li>{@link AdornedTargetList#equals(Object)}
+   *   <li>{@link AdornedTargetList#hashCode()}
+   * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdornedTargetList.<init>(String, String, String, String, String, String, String, Boolean)"
-  })
-  public void testNewAdornedTargetList4() {
-    // Arrange and Act
-    AdornedTargetList actualAdornedTargetList =
-        new AdornedTargetList(
-            "Collection Field Name",
-            "Linked Object Path",
-            "Linked Id Property",
-            "Target Object Path",
-            "Target Id Property",
-            "Adorned Target Entity Classname",
-            "Sort Field",
-            true);
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList("Collection Field Name", "Linked Object Path",
+        "Linked Id Property", "Target Object Path", "Target Id Property", "Adorned Target Entity Classname");
+    AdornedTargetList adornedTargetList2 = new AdornedTargetList("Collection Field Name", "Linked Object Path",
+        "Linked Id Property", "Target Object Path", "Target Id Property", "Adorned Target Entity Classname");
 
-    // Assert
-    assertEquals(
-        "Adorned Target Entity Classname",
-        actualAdornedTargetList.getAdornedTargetEntityClassname());
-    assertEquals("Collection Field Name", actualAdornedTargetList.getCollectionFieldName());
-    assertEquals("Linked Id Property", actualAdornedTargetList.getLinkedIdProperty());
-    assertEquals("Linked Object Path", actualAdornedTargetList.getLinkedObjectPath());
-    assertEquals("Sort Field", actualAdornedTargetList.getSortField());
-    assertEquals("Target Id Property", actualAdornedTargetList.getTargetIdProperty());
-    assertEquals("Target Object Path", actualAdornedTargetList.getTargetObjectPath());
-    assertNull(actualAdornedTargetList.getAdornedTargetEntityPolymorphicType());
-    assertNull(actualAdornedTargetList.getIdProperty());
-    assertNull(actualAdornedTargetList.getJoinEntityClass());
-    assertFalse(actualAdornedTargetList.getInverse());
-    assertTrue(actualAdornedTargetList.getMutable());
-    assertTrue(actualAdornedTargetList.getSortAscending());
+    // Act and Assert
+    assertEquals(adornedTargetList, adornedTargetList2);
+    int expectedHashCodeResult = adornedTargetList.hashCode();
+    assertEquals(expectedHashCodeResult, adornedTargetList2.hashCode());
   }
 
   /**
-   * Test {@link AdornedTargetList#AdornedTargetList(String, String, String, String, String, String,
-   * String, String, Boolean)}.
-   *
-   * <p>Method under test: {@link AdornedTargetList#AdornedTargetList(String, String, String,
-   * String, String, String, String, String, Boolean)}
+   * Methods under test:
+   * <ul>
+   *   <li>{@link AdornedTargetList#equals(Object)}
+   *   <li>{@link AdornedTargetList#hashCode()}
+   * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdornedTargetList.<init>(String, String, String, String, String, String, String, String, Boolean)"
-  })
-  public void testNewAdornedTargetList5() {
-    // Arrange and Act
-    AdornedTargetList actualAdornedTargetList =
-        new AdornedTargetList(
-            "Collection Field Name",
-            "Linked Object Path",
-            "Linked Id Property",
-            "Target Object Path",
-            "Target Id Property",
-            "Adorned Target Entity Classname",
-            "Adorned Target Entity Polymorphic Type",
-            "Sort Field",
-            true);
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+    adornedTargetList.setSortField("Sort Field");
 
-    // Assert
-    assertEquals(
-        "Adorned Target Entity Classname",
-        actualAdornedTargetList.getAdornedTargetEntityClassname());
-    assertEquals(
-        "Adorned Target Entity Polymorphic Type",
-        actualAdornedTargetList.getAdornedTargetEntityPolymorphicType());
-    assertEquals("Collection Field Name", actualAdornedTargetList.getCollectionFieldName());
-    assertEquals("Linked Id Property", actualAdornedTargetList.getLinkedIdProperty());
-    assertEquals("Linked Object Path", actualAdornedTargetList.getLinkedObjectPath());
-    assertEquals("Sort Field", actualAdornedTargetList.getSortField());
-    assertEquals("Target Id Property", actualAdornedTargetList.getTargetIdProperty());
-    assertEquals("Target Object Path", actualAdornedTargetList.getTargetObjectPath());
-    assertNull(actualAdornedTargetList.getIdProperty());
-    assertNull(actualAdornedTargetList.getJoinEntityClass());
-    assertFalse(actualAdornedTargetList.getInverse());
-    assertTrue(actualAdornedTargetList.getMutable());
-    assertTrue(actualAdornedTargetList.getSortAscending());
+    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
+    adornedTargetList2.setSortField("Sort Field");
+
+    // Act and Assert
+    assertEquals(adornedTargetList, adornedTargetList2);
+    int expectedHashCodeResult = adornedTargetList.hashCode();
+    assertEquals(expectedHashCodeResult, adornedTargetList2.hashCode());
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
+   * <ul>
+   *   <li>{@link AdornedTargetList#equals(Object)}
+   *   <li>{@link AdornedTargetList#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+    adornedTargetList.setSortAscending(true);
+
+    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
+    adornedTargetList2.setSortAscending(true);
+
+    // Act and Assert
+    assertEquals(adornedTargetList, adornedTargetList2);
+    int expectedHashCodeResult = adornedTargetList.hashCode();
+    assertEquals(expectedHashCodeResult, adornedTargetList2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link AdornedTargetList#equals(Object)}
+   *   <li>{@link AdornedTargetList#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+    adornedTargetList.setAdornedTargetEntityPolymorphicType("Adorned Target Entity Polymorphic Type");
+
+    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
+    adornedTargetList2.setAdornedTargetEntityPolymorphicType("Adorned Target Entity Polymorphic Type");
+
+    // Act and Assert
+    assertEquals(adornedTargetList, adornedTargetList2);
+    int expectedHashCodeResult = adornedTargetList.hashCode();
+    assertEquals(expectedHashCodeResult, adornedTargetList2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link AdornedTargetList#equals(Object)}
+   *   <li>{@link AdornedTargetList#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual6() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+    adornedTargetList.setJoinEntityClass("Join Entity Class");
+
+    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
+    adornedTargetList2.setJoinEntityClass("Join Entity Class");
+
+    // Act and Assert
+    assertEquals(adornedTargetList, adornedTargetList2);
+    int expectedHashCodeResult = adornedTargetList.hashCode();
+    assertEquals(expectedHashCodeResult, adornedTargetList2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link AdornedTargetList#equals(Object)}
+   *   <li>{@link AdornedTargetList#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual7() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+    adornedTargetList.setIdProperty("Id Property");
+
+    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
+    adornedTargetList2.setIdProperty("Id Property");
+
+    // Act and Assert
+    assertEquals(adornedTargetList, adornedTargetList2);
+    int expectedHashCodeResult = adornedTargetList.hashCode();
+    assertEquals(expectedHashCodeResult, adornedTargetList2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link AdornedTargetList#equals(Object)}
+   *   <li>{@link AdornedTargetList#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+
+    // Act and Assert
+    assertEquals(adornedTargetList, adornedTargetList);
+    int expectedHashCodeResult = adornedTargetList.hashCode();
+    assertEquals(expectedHashCodeResult, adornedTargetList.hashCode());
+  }
+
+  /**
+   * Method under test: {@link AdornedTargetList#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList("Collection Field Name", "Linked Object Path",
+        "Linked Id Property", "Target Object Path", "Target Id Property", "Adorned Target Entity Classname");
+
+    // Act and Assert
+    assertNotEquals(adornedTargetList, new AdornedTargetList());
+  }
+
+  /**
+   * Method under test: {@link AdornedTargetList#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+
+    // Act and Assert
+    assertNotEquals(adornedTargetList, new AdornedTargetList("Collection Field Name", "Linked Object Path",
+        "Linked Id Property", "Target Object Path", "Target Id Property", "Adorned Target Entity Classname"));
+  }
+
+  /**
+   * Method under test: {@link AdornedTargetList#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+    adornedTargetList.setCollectionFieldName("Many To Field");
+
+    // Act and Assert
+    assertNotEquals(adornedTargetList, new AdornedTargetList());
+  }
+
+  /**
+   * Method under test: {@link AdornedTargetList#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+    adornedTargetList.setLinkedObjectPath("Linked Property Path");
+
+    // Act and Assert
+    assertNotEquals(adornedTargetList, new AdornedTargetList());
+  }
+
+  /**
+   * Method under test: {@link AdornedTargetList#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+    adornedTargetList.setTargetObjectPath("Target Object Path");
+
+    // Act and Assert
+    assertNotEquals(adornedTargetList, new AdornedTargetList());
+  }
+
+  /**
+   * Method under test: {@link AdornedTargetList#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+    adornedTargetList.setSortField("Sort Field");
+
+    // Act and Assert
+    assertNotEquals(adornedTargetList, new AdornedTargetList());
+  }
+
+  /**
+   * Method under test: {@link AdornedTargetList#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+    adornedTargetList.setSortAscending(true);
+
+    // Act and Assert
+    assertNotEquals(adornedTargetList, new AdornedTargetList());
+  }
+
+  /**
+   * Method under test: {@link AdornedTargetList#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+    adornedTargetList.setLinkedIdProperty("Linked Id Property");
+
+    // Act and Assert
+    assertNotEquals(adornedTargetList, new AdornedTargetList());
+  }
+
+  /**
+   * Method under test: {@link AdornedTargetList#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+    adornedTargetList.setTargetIdProperty("Target Id Property");
+
+    // Act and Assert
+    assertNotEquals(adornedTargetList, new AdornedTargetList());
+  }
+
+  /**
+   * Method under test: {@link AdornedTargetList#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual10() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+    adornedTargetList.setInverse(true);
+
+    // Act and Assert
+    assertNotEquals(adornedTargetList, new AdornedTargetList());
+  }
+
+  /**
+   * Method under test: {@link AdornedTargetList#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual11() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+    adornedTargetList.setAdornedTargetEntityPolymorphicType("Adorned Target Entity Polymorphic Type");
+
+    // Act and Assert
+    assertNotEquals(adornedTargetList, new AdornedTargetList());
+  }
+
+  /**
+   * Method under test: {@link AdornedTargetList#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual12() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+    adornedTargetList.setJoinEntityClass("Join Entity Class");
+
+    // Act and Assert
+    assertNotEquals(adornedTargetList, new AdornedTargetList());
+  }
+
+  /**
+   * Method under test: {@link AdornedTargetList#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual13() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+    adornedTargetList.setIdProperty("Id Property");
+
+    // Act and Assert
+    assertNotEquals(adornedTargetList, new AdornedTargetList());
+  }
+
+  /**
+   * Method under test: {@link AdornedTargetList#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual14() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList("Collection Field Name", "Linked Object Path",
+        "Linked Id Property", "Target Object Path", "Target Id Property", "Adorned Target Entity Classname");
+
+    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
+    adornedTargetList2.setAdornedTargetEntityClassname("Adorned Target Entity Classname");
+
+    // Act and Assert
+    assertNotEquals(adornedTargetList, adornedTargetList2);
+  }
+
+  /**
+   * Method under test: {@link AdornedTargetList#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual15() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList("Collection Field Name", "Linked Object Path",
+        "Linked Id Property", "Target Object Path", "Target Id Property", "Adorned Target Entity Classname");
+
+    // Act and Assert
+    assertNotEquals(adornedTargetList,
+        new AdornedTargetList("Collection Field Name", "Linked Object Path", "Linked Id Property", "Target Object Path",
+            "Target Id Property", "Adorned Target Entity Classname", "Adorned Target Entity Polymorphic Type"));
+  }
+
+  /**
+   * Method under test: {@link AdornedTargetList#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual16() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+
+    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
+    adornedTargetList2.setCollectionFieldName("Many To Field");
+
+    // Act and Assert
+    assertNotEquals(adornedTargetList, adornedTargetList2);
+  }
+
+  /**
+   * Method under test: {@link AdornedTargetList#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual17() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+
+    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
+    adornedTargetList2.setLinkedObjectPath("Linked Property Path");
+
+    // Act and Assert
+    assertNotEquals(adornedTargetList, adornedTargetList2);
+  }
+
+  /**
+   * Method under test: {@link AdornedTargetList#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual18() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+
+    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
+    adornedTargetList2.setTargetObjectPath("Target Object Path");
+
+    // Act and Assert
+    assertNotEquals(adornedTargetList, adornedTargetList2);
+  }
+
+  /**
+   * Method under test: {@link AdornedTargetList#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual19() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+
+    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
+    adornedTargetList2.setSortField("Sort Field");
+
+    // Act and Assert
+    assertNotEquals(adornedTargetList, adornedTargetList2);
+  }
+
+  /**
+   * Method under test: {@link AdornedTargetList#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual20() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+
+    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
+    adornedTargetList2.setSortAscending(true);
+
+    // Act and Assert
+    assertNotEquals(adornedTargetList, adornedTargetList2);
+  }
+
+  /**
+   * Method under test: {@link AdornedTargetList#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual21() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+
+    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
+    adornedTargetList2.setLinkedIdProperty("Linked Id Property");
+
+    // Act and Assert
+    assertNotEquals(adornedTargetList, adornedTargetList2);
+  }
+
+  /**
+   * Method under test: {@link AdornedTargetList#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual22() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+
+    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
+    adornedTargetList2.setTargetIdProperty("Target Id Property");
+
+    // Act and Assert
+    assertNotEquals(adornedTargetList, adornedTargetList2);
+  }
+
+  /**
+   * Method under test: {@link AdornedTargetList#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual23() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+
+    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
+    adornedTargetList2.setJoinEntityClass("Join Entity Class");
+
+    // Act and Assert
+    assertNotEquals(adornedTargetList, adornedTargetList2);
+  }
+
+  /**
+   * Method under test: {@link AdornedTargetList#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual24() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+
+    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
+    adornedTargetList2.setIdProperty("Id Property");
+
+    // Act and Assert
+    assertNotEquals(adornedTargetList, adornedTargetList2);
+  }
+
+  /**
+   * Method under test: {@link AdornedTargetList#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual25() {
+    // Arrange
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+    adornedTargetList.setInverse(null);
+
+    // Act and Assert
+    assertNotEquals(adornedTargetList, new AdornedTargetList());
+  }
+
+  /**
+   * Method under test: {@link AdornedTargetList#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
+    // Arrange, Act and Assert
+    assertNotEquals(new AdornedTargetList(), null);
+  }
+
+  /**
+   * Method under test: {@link AdornedTargetList#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+    // Arrange, Act and Assert
+    assertNotEquals(new AdornedTargetList(), "Different type to AdornedTargetList");
+  }
+
+  /**
+   * Methods under test:
    * <ul>
    *   <li>{@link AdornedTargetList#setAdornedTargetEntityClassname(String)}
    *   <li>{@link AdornedTargetList#setAdornedTargetEntityPolymorphicType(String)}
@@ -280,45 +644,13 @@ public class AdornedTargetListDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String AdornedTargetList.getAdornedTargetEntityClassname()",
-    "String AdornedTargetList.getAdornedTargetEntityPolymorphicType()",
-    "String AdornedTargetList.getCollectionFieldName()",
-    "String AdornedTargetList.getIdProperty()",
-    "Boolean AdornedTargetList.getInverse()",
-    "String AdornedTargetList.getJoinEntityClass()",
-    "String AdornedTargetList.getLinkedIdProperty()",
-    "String AdornedTargetList.getLinkedObjectPath()",
-    "Boolean AdornedTargetList.getMutable()",
-    "Boolean AdornedTargetList.getSortAscending()",
-    "String AdornedTargetList.getSortField()",
-    "String AdornedTargetList.getTargetIdProperty()",
-    "String AdornedTargetList.getTargetObjectPath()",
-    "void AdornedTargetList.setAdornedTargetEntityClassname(String)",
-    "void AdornedTargetList.setAdornedTargetEntityPolymorphicType(String)",
-    "void AdornedTargetList.setCollectionFieldName(String)",
-    "void AdornedTargetList.setIdProperty(String)",
-    "void AdornedTargetList.setInverse(Boolean)",
-    "void AdornedTargetList.setJoinEntityClass(String)",
-    "void AdornedTargetList.setLinkedIdProperty(String)",
-    "void AdornedTargetList.setLinkedObjectPath(String)",
-    "void AdornedTargetList.setMutable(Boolean)",
-    "void AdornedTargetList.setSortAscending(Boolean)",
-    "void AdornedTargetList.setSortField(String)",
-    "void AdornedTargetList.setTargetIdProperty(String)",
-    "void AdornedTargetList.setTargetObjectPath(String)",
-    "String AdornedTargetList.toString()"
-  })
   public void testGettersAndSetters() {
     // Arrange
     AdornedTargetList adornedTargetList = new AdornedTargetList();
 
     // Act
     adornedTargetList.setAdornedTargetEntityClassname("Adorned Target Entity Classname");
-    adornedTargetList.setAdornedTargetEntityPolymorphicType(
-        "Adorned Target Entity Polymorphic Type");
+    adornedTargetList.setAdornedTargetEntityPolymorphicType("Adorned Target Entity Polymorphic Type");
     adornedTargetList.setCollectionFieldName("Many To Field");
     adornedTargetList.setIdProperty("Id Property");
     adornedTargetList.setInverse(true);
@@ -332,8 +664,7 @@ public class AdornedTargetListDiffblueTest {
     adornedTargetList.setTargetObjectPath("Target Object Path");
     String actualToStringResult = adornedTargetList.toString();
     String actualAdornedTargetEntityClassname = adornedTargetList.getAdornedTargetEntityClassname();
-    String actualAdornedTargetEntityPolymorphicType =
-        adornedTargetList.getAdornedTargetEntityPolymorphicType();
+    String actualAdornedTargetEntityPolymorphicType = adornedTargetList.getAdornedTargetEntityPolymorphicType();
     String actualCollectionFieldName = adornedTargetList.getCollectionFieldName();
     String actualIdProperty = adornedTargetList.getIdProperty();
     Boolean actualInverse = adornedTargetList.getInverse();
@@ -345,10 +676,9 @@ public class AdornedTargetListDiffblueTest {
     String actualSortField = adornedTargetList.getSortField();
     String actualTargetIdProperty = adornedTargetList.getTargetIdProperty();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("Adorned Target Entity Classname", actualAdornedTargetEntityClassname);
-    assertEquals(
-        "Adorned Target Entity Polymorphic Type", actualAdornedTargetEntityPolymorphicType);
+    assertEquals("Adorned Target Entity Polymorphic Type", actualAdornedTargetEntityPolymorphicType);
     assertEquals(
         "AdornedTargetList{collectionFieldName='Many To Field', linkedObjectPath='Linked Property Path',"
             + " targetObjectPath='Target Object Path', adornedTargetEntityClassname='Adorned Target Entity Classname',"
@@ -370,1063 +700,135 @@ public class AdornedTargetListDiffblueTest {
   }
 
   /**
-   * Test {@link AdornedTargetList#clonePersistencePerspectiveItem()}.
-   *
-   * <p>Method under test: {@link AdornedTargetList#clonePersistencePerspectiveItem()}
+   * Method under test: {@link AdornedTargetList#AdornedTargetList()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistencePerspectiveItem AdornedTargetList.clonePersistencePerspectiveItem()"
-  })
-  public void testClonePersistencePerspectiveItem() {
-    // Arrange
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-
-    // Act
-    PersistencePerspectiveItem actualClonePersistencePerspectiveItemResult =
-        adornedTargetList.clonePersistencePerspectiveItem();
+  public void testNewAdornedTargetList() {
+    // Arrange and Act
+    AdornedTargetList actualAdornedTargetList = new AdornedTargetList();
 
     // Assert
-    assertTrue(actualClonePersistencePerspectiveItemResult instanceof AdornedTargetList);
-    assertEquals(adornedTargetList, actualClonePersistencePerspectiveItemResult);
+    assertNull(actualAdornedTargetList.getSortAscending());
+    assertNull(actualAdornedTargetList.getAdornedTargetEntityClassname());
+    assertNull(actualAdornedTargetList.getAdornedTargetEntityPolymorphicType());
+    assertNull(actualAdornedTargetList.getCollectionFieldName());
+    assertNull(actualAdornedTargetList.getIdProperty());
+    assertNull(actualAdornedTargetList.getJoinEntityClass());
+    assertNull(actualAdornedTargetList.getLinkedIdProperty());
+    assertNull(actualAdornedTargetList.getLinkedObjectPath());
+    assertNull(actualAdornedTargetList.getSortField());
+    assertNull(actualAdornedTargetList.getTargetIdProperty());
+    assertNull(actualAdornedTargetList.getTargetObjectPath());
+    assertFalse(actualAdornedTargetList.getInverse());
+    assertTrue(actualAdornedTargetList.getMutable());
   }
 
   /**
-   * Test {@link AdornedTargetList#equals(Object)}, and {@link AdornedTargetList#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link AdornedTargetList#equals(Object)}
-   *   <li>{@link AdornedTargetList#hashCode()}
-   * </ul>
+   * Method under test:
+   * {@link AdornedTargetList#AdornedTargetList(String, String, String, String, String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
-    // Arrange
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
+  public void testNewAdornedTargetList2() {
+    // Arrange and Act
+    AdornedTargetList actualAdornedTargetList = new AdornedTargetList("Collection Field Name", "Linked Object Path",
+        "Linked Id Property", "Target Object Path", "Target Id Property", "Adorned Target Entity Classname");
 
-    // Act and Assert
-    assertEquals(adornedTargetList, adornedTargetList2);
-    assertEquals(adornedTargetList.hashCode(), adornedTargetList2.hashCode());
+    // Assert
+    assertEquals("Adorned Target Entity Classname", actualAdornedTargetList.getAdornedTargetEntityClassname());
+    assertEquals("Collection Field Name", actualAdornedTargetList.getCollectionFieldName());
+    assertEquals("Linked Id Property", actualAdornedTargetList.getLinkedIdProperty());
+    assertEquals("Linked Object Path", actualAdornedTargetList.getLinkedObjectPath());
+    assertEquals("Target Id Property", actualAdornedTargetList.getTargetIdProperty());
+    assertEquals("Target Object Path", actualAdornedTargetList.getTargetObjectPath());
+    assertNull(actualAdornedTargetList.getSortAscending());
+    assertNull(actualAdornedTargetList.getAdornedTargetEntityPolymorphicType());
+    assertNull(actualAdornedTargetList.getIdProperty());
+    assertNull(actualAdornedTargetList.getJoinEntityClass());
+    assertNull(actualAdornedTargetList.getSortField());
+    assertFalse(actualAdornedTargetList.getInverse());
+    assertTrue(actualAdornedTargetList.getMutable());
   }
 
   /**
-   * Test {@link AdornedTargetList#equals(Object)}, and {@link AdornedTargetList#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link AdornedTargetList#equals(Object)}
-   *   <li>{@link AdornedTargetList#hashCode()}
-   * </ul>
+   * Method under test:
+   * {@link AdornedTargetList#AdornedTargetList(String, String, String, String, String, String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
-    // Arrange
-    AdornedTargetList adornedTargetList =
-        new AdornedTargetList(
-            "Collection Field Name",
-            "Linked Object Path",
-            "Linked Id Property",
-            "Target Object Path",
-            "Target Id Property",
-            "Adorned Target Entity Classname");
-    AdornedTargetList adornedTargetList2 =
-        new AdornedTargetList(
-            "Collection Field Name",
-            "Linked Object Path",
-            "Linked Id Property",
-            "Target Object Path",
-            "Target Id Property",
-            "Adorned Target Entity Classname");
-
-    // Act and Assert
-    assertEquals(adornedTargetList, adornedTargetList2);
-    assertEquals(adornedTargetList.hashCode(), adornedTargetList2.hashCode());
-  }
-
-  /**
-   * Test {@link AdornedTargetList#equals(Object)}, and {@link AdornedTargetList#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link AdornedTargetList#equals(Object)}
-   *   <li>{@link AdornedTargetList#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
-    // Arrange
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-    adornedTargetList.setSortField("Sort Field");
-
-    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
-    adornedTargetList2.setSortField("Sort Field");
-
-    // Act and Assert
-    assertEquals(adornedTargetList, adornedTargetList2);
-    assertEquals(adornedTargetList.hashCode(), adornedTargetList2.hashCode());
-  }
-
-  /**
-   * Test {@link AdornedTargetList#equals(Object)}, and {@link AdornedTargetList#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link AdornedTargetList#equals(Object)}
-   *   <li>{@link AdornedTargetList#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
-    // Arrange
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-    adornedTargetList.setSortAscending(true);
-
-    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
-    adornedTargetList2.setSortAscending(true);
-
-    // Act and Assert
-    assertEquals(adornedTargetList, adornedTargetList2);
-    assertEquals(adornedTargetList.hashCode(), adornedTargetList2.hashCode());
-  }
-
-  /**
-   * Test {@link AdornedTargetList#equals(Object)}, and {@link AdornedTargetList#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link AdornedTargetList#equals(Object)}
-   *   <li>{@link AdornedTargetList#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
-    // Arrange
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-    adornedTargetList.setAdornedTargetEntityPolymorphicType(
+  public void testNewAdornedTargetList3() {
+    // Arrange and Act
+    AdornedTargetList actualAdornedTargetList = new AdornedTargetList("Collection Field Name", "Linked Object Path",
+        "Linked Id Property", "Target Object Path", "Target Id Property", "Adorned Target Entity Classname",
         "Adorned Target Entity Polymorphic Type");
 
-    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
-    adornedTargetList2.setAdornedTargetEntityPolymorphicType(
-        "Adorned Target Entity Polymorphic Type");
-
-    // Act and Assert
-    assertEquals(adornedTargetList, adornedTargetList2);
-    assertEquals(adornedTargetList.hashCode(), adornedTargetList2.hashCode());
+    // Assert
+    assertEquals("Adorned Target Entity Classname", actualAdornedTargetList.getAdornedTargetEntityClassname());
+    assertEquals("Adorned Target Entity Polymorphic Type",
+        actualAdornedTargetList.getAdornedTargetEntityPolymorphicType());
+    assertEquals("Collection Field Name", actualAdornedTargetList.getCollectionFieldName());
+    assertEquals("Linked Id Property", actualAdornedTargetList.getLinkedIdProperty());
+    assertEquals("Linked Object Path", actualAdornedTargetList.getLinkedObjectPath());
+    assertEquals("Target Id Property", actualAdornedTargetList.getTargetIdProperty());
+    assertEquals("Target Object Path", actualAdornedTargetList.getTargetObjectPath());
+    assertNull(actualAdornedTargetList.getSortAscending());
+    assertNull(actualAdornedTargetList.getIdProperty());
+    assertNull(actualAdornedTargetList.getJoinEntityClass());
+    assertNull(actualAdornedTargetList.getSortField());
+    assertFalse(actualAdornedTargetList.getInverse());
+    assertTrue(actualAdornedTargetList.getMutable());
   }
 
   /**
-   * Test {@link AdornedTargetList#equals(Object)}, and {@link AdornedTargetList#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link AdornedTargetList#equals(Object)}
-   *   <li>{@link AdornedTargetList#hashCode()}
-   * </ul>
+   * Method under test:
+   * {@link AdornedTargetList#AdornedTargetList(String, String, String, String, String, String, String, Boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual6() {
-    // Arrange
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-    adornedTargetList.setJoinEntityClass("Join Entity Class");
+  public void testNewAdornedTargetList4() {
+    // Arrange and Act
+    AdornedTargetList actualAdornedTargetList = new AdornedTargetList("Collection Field Name", "Linked Object Path",
+        "Linked Id Property", "Target Object Path", "Target Id Property", "Adorned Target Entity Classname",
+        "Sort Field", true);
 
-    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
-    adornedTargetList2.setJoinEntityClass("Join Entity Class");
-
-    // Act and Assert
-    assertEquals(adornedTargetList, adornedTargetList2);
-    assertEquals(adornedTargetList.hashCode(), adornedTargetList2.hashCode());
+    // Assert
+    assertEquals("Adorned Target Entity Classname", actualAdornedTargetList.getAdornedTargetEntityClassname());
+    assertEquals("Collection Field Name", actualAdornedTargetList.getCollectionFieldName());
+    assertEquals("Linked Id Property", actualAdornedTargetList.getLinkedIdProperty());
+    assertEquals("Linked Object Path", actualAdornedTargetList.getLinkedObjectPath());
+    assertEquals("Sort Field", actualAdornedTargetList.getSortField());
+    assertEquals("Target Id Property", actualAdornedTargetList.getTargetIdProperty());
+    assertEquals("Target Object Path", actualAdornedTargetList.getTargetObjectPath());
+    assertNull(actualAdornedTargetList.getAdornedTargetEntityPolymorphicType());
+    assertNull(actualAdornedTargetList.getIdProperty());
+    assertNull(actualAdornedTargetList.getJoinEntityClass());
+    assertFalse(actualAdornedTargetList.getInverse());
+    assertTrue(actualAdornedTargetList.getMutable());
+    assertTrue(actualAdornedTargetList.getSortAscending());
   }
 
   /**
-   * Test {@link AdornedTargetList#equals(Object)}, and {@link AdornedTargetList#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link AdornedTargetList#equals(Object)}
-   *   <li>{@link AdornedTargetList#hashCode()}
-   * </ul>
+   * Method under test:
+   * {@link AdornedTargetList#AdornedTargetList(String, String, String, String, String, String, String, String, Boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual7() {
-    // Arrange
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-    adornedTargetList.setIdProperty("Id Property");
-
-    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
-    adornedTargetList2.setIdProperty("Id Property");
-
-    // Act and Assert
-    assertEquals(adornedTargetList, adornedTargetList2);
-    assertEquals(adornedTargetList.hashCode(), adornedTargetList2.hashCode());
-  }
-
-  /**
-   * Test {@link AdornedTargetList#equals(Object)}, and {@link AdornedTargetList#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link AdornedTargetList#equals(Object)}
-   *   <li>{@link AdornedTargetList#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
-    // Arrange
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-
-    // Act and Assert
-    assertEquals(adornedTargetList, adornedTargetList);
-    int expectedHashCodeResult = adornedTargetList.hashCode();
-    assertEquals(expectedHashCodeResult, adornedTargetList.hashCode());
-  }
-
-  /**
-   * Test {@link AdornedTargetList#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetList#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
-    // Arrange
-    AdornedTargetList adornedTargetList =
-        new AdornedTargetList(
-            "Collection Field Name",
-            "Linked Object Path",
-            "Linked Id Property",
-            "Target Object Path",
-            "Target Id Property",
-            "Adorned Target Entity Classname");
-
-    // Act and Assert
-    assertNotEquals(adornedTargetList, new AdornedTargetList());
-  }
-
-  /**
-   * Test {@link AdornedTargetList#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetList#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
-    // Arrange
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-
-    // Act and Assert
-    assertNotEquals(
-        adornedTargetList,
-        new AdornedTargetList(
-            "Collection Field Name",
-            "Linked Object Path",
-            "Linked Id Property",
-            "Target Object Path",
-            "Target Id Property",
-            "Adorned Target Entity Classname"));
-  }
-
-  /**
-   * Test {@link AdornedTargetList#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetList#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
-    // Arrange
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-    adornedTargetList.setCollectionFieldName("Many To Field");
-
-    // Act and Assert
-    assertNotEquals(adornedTargetList, new AdornedTargetList());
-  }
-
-  /**
-   * Test {@link AdornedTargetList#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetList#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
-    // Arrange
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-    adornedTargetList.setLinkedObjectPath("Linked Property Path");
-
-    // Act and Assert
-    assertNotEquals(adornedTargetList, new AdornedTargetList());
-  }
-
-  /**
-   * Test {@link AdornedTargetList#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetList#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
-    // Arrange
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-    adornedTargetList.setTargetObjectPath("Target Object Path");
-
-    // Act and Assert
-    assertNotEquals(adornedTargetList, new AdornedTargetList());
-  }
-
-  /**
-   * Test {@link AdornedTargetList#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetList#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
-    // Arrange
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-    adornedTargetList.setSortField("Sort Field");
-
-    // Act and Assert
-    assertNotEquals(adornedTargetList, new AdornedTargetList());
-  }
-
-  /**
-   * Test {@link AdornedTargetList#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetList#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
-    // Arrange
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-    adornedTargetList.setSortAscending(true);
-
-    // Act and Assert
-    assertNotEquals(adornedTargetList, new AdornedTargetList());
-  }
-
-  /**
-   * Test {@link AdornedTargetList#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetList#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
-    // Arrange
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-    adornedTargetList.setLinkedIdProperty("Linked Id Property");
-
-    // Act and Assert
-    assertNotEquals(adornedTargetList, new AdornedTargetList());
-  }
-
-  /**
-   * Test {@link AdornedTargetList#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetList#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
-    // Arrange
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-    adornedTargetList.setTargetIdProperty("Target Id Property");
-
-    // Act and Assert
-    assertNotEquals(adornedTargetList, new AdornedTargetList());
-  }
-
-  /**
-   * Test {@link AdornedTargetList#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetList#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual10() {
-    // Arrange
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-    adornedTargetList.setInverse(true);
-
-    // Act and Assert
-    assertNotEquals(adornedTargetList, new AdornedTargetList());
-  }
-
-  /**
-   * Test {@link AdornedTargetList#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetList#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual11() {
-    // Arrange
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-    adornedTargetList.setAdornedTargetEntityPolymorphicType(
-        "Adorned Target Entity Polymorphic Type");
-
-    // Act and Assert
-    assertNotEquals(adornedTargetList, new AdornedTargetList());
-  }
-
-  /**
-   * Test {@link AdornedTargetList#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetList#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual12() {
-    // Arrange
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-    adornedTargetList.setJoinEntityClass("Join Entity Class");
-
-    // Act and Assert
-    assertNotEquals(adornedTargetList, new AdornedTargetList());
-  }
-
-  /**
-   * Test {@link AdornedTargetList#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetList#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual13() {
-    // Arrange
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-    adornedTargetList.setIdProperty("Id Property");
-
-    // Act and Assert
-    assertNotEquals(adornedTargetList, new AdornedTargetList());
-  }
-
-  /**
-   * Test {@link AdornedTargetList#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetList#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual14() {
-    // Arrange
-    AdornedTargetList adornedTargetList =
-        new AdornedTargetList(
-            "Collection Field Name",
-            "Linked Object Path",
-            "Linked Id Property",
-            "Target Object Path",
-            "Target Id Property",
-            "Adorned Target Entity Classname");
-
-    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
-    adornedTargetList2.setAdornedTargetEntityClassname("Adorned Target Entity Classname");
-
-    // Act and Assert
-    assertNotEquals(adornedTargetList, adornedTargetList2);
-  }
-
-  /**
-   * Test {@link AdornedTargetList#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetList#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual15() {
-    // Arrange
-    AdornedTargetList adornedTargetList =
-        new AdornedTargetList(
-            "Collection Field Name",
-            "Linked Object Path",
-            "Linked Id Property",
-            "Target Object Path",
-            "Target Id Property",
-            "Adorned Target Entity Classname");
-
-    // Act and Assert
-    assertNotEquals(
-        adornedTargetList,
-        new AdornedTargetList(
-            "Collection Field Name",
-            "Linked Object Path",
-            "Linked Id Property",
-            "Target Object Path",
-            "Target Id Property",
-            "Adorned Target Entity Classname",
-            "Adorned Target Entity Polymorphic Type"));
-  }
-
-  /**
-   * Test {@link AdornedTargetList#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetList#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual16() {
-    // Arrange
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-
-    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
-    adornedTargetList2.setCollectionFieldName("Many To Field");
-
-    // Act and Assert
-    assertNotEquals(adornedTargetList, adornedTargetList2);
-  }
-
-  /**
-   * Test {@link AdornedTargetList#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetList#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual17() {
-    // Arrange
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-
-    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
-    adornedTargetList2.setLinkedObjectPath("Linked Property Path");
-
-    // Act and Assert
-    assertNotEquals(adornedTargetList, adornedTargetList2);
-  }
-
-  /**
-   * Test {@link AdornedTargetList#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetList#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual18() {
-    // Arrange
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-
-    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
-    adornedTargetList2.setTargetObjectPath("Target Object Path");
-
-    // Act and Assert
-    assertNotEquals(adornedTargetList, adornedTargetList2);
-  }
-
-  /**
-   * Test {@link AdornedTargetList#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetList#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual19() {
-    // Arrange
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-
-    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
-    adornedTargetList2.setSortField("Sort Field");
-
-    // Act and Assert
-    assertNotEquals(adornedTargetList, adornedTargetList2);
-  }
-
-  /**
-   * Test {@link AdornedTargetList#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetList#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual20() {
-    // Arrange
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-
-    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
-    adornedTargetList2.setSortAscending(true);
-
-    // Act and Assert
-    assertNotEquals(adornedTargetList, adornedTargetList2);
-  }
-
-  /**
-   * Test {@link AdornedTargetList#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetList#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual21() {
-    // Arrange
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-
-    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
-    adornedTargetList2.setLinkedIdProperty("Linked Id Property");
-
-    // Act and Assert
-    assertNotEquals(adornedTargetList, adornedTargetList2);
-  }
-
-  /**
-   * Test {@link AdornedTargetList#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetList#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual22() {
-    // Arrange
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-
-    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
-    adornedTargetList2.setTargetIdProperty("Target Id Property");
-
-    // Act and Assert
-    assertNotEquals(adornedTargetList, adornedTargetList2);
-  }
-
-  /**
-   * Test {@link AdornedTargetList#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetList#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual23() {
-    // Arrange
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-
-    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
-    adornedTargetList2.setJoinEntityClass("Join Entity Class");
-
-    // Act and Assert
-    assertNotEquals(adornedTargetList, adornedTargetList2);
-  }
-
-  /**
-   * Test {@link AdornedTargetList#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetList#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual24() {
-    // Arrange
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-
-    AdornedTargetList adornedTargetList2 = new AdornedTargetList();
-    adornedTargetList2.setIdProperty("Id Property");
-
-    // Act and Assert
-    assertNotEquals(adornedTargetList, adornedTargetList2);
-  }
-
-  /**
-   * Test {@link AdornedTargetList#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetList#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual25() {
-    // Arrange
-    AdornedTargetList adornedTargetList = new AdornedTargetList();
-    adornedTargetList.setInverse(null);
-
-    // Act and Assert
-    assertNotEquals(adornedTargetList, new AdornedTargetList());
-  }
-
-  /**
-   * Test {@link AdornedTargetList#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetList#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
-    // Arrange, Act and Assert
-    assertNotEquals(new AdornedTargetList(), null);
-  }
-
-  /**
-   * Test {@link AdornedTargetList#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdornedTargetList#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AdornedTargetList.equals(Object)",
-    "int AdornedTargetList.hashCode()"
-  })
-  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
-    // Arrange, Act and Assert
-    assertNotEquals(new AdornedTargetList(), "Different type to AdornedTargetList");
+  public void testNewAdornedTargetList5() {
+    // Arrange and Act
+    AdornedTargetList actualAdornedTargetList = new AdornedTargetList("Collection Field Name", "Linked Object Path",
+        "Linked Id Property", "Target Object Path", "Target Id Property", "Adorned Target Entity Classname",
+        "Adorned Target Entity Polymorphic Type", "Sort Field", true);
+
+    // Assert
+    assertEquals("Adorned Target Entity Classname", actualAdornedTargetList.getAdornedTargetEntityClassname());
+    assertEquals("Adorned Target Entity Polymorphic Type",
+        actualAdornedTargetList.getAdornedTargetEntityPolymorphicType());
+    assertEquals("Collection Field Name", actualAdornedTargetList.getCollectionFieldName());
+    assertEquals("Linked Id Property", actualAdornedTargetList.getLinkedIdProperty());
+    assertEquals("Linked Object Path", actualAdornedTargetList.getLinkedObjectPath());
+    assertEquals("Sort Field", actualAdornedTargetList.getSortField());
+    assertEquals("Target Id Property", actualAdornedTargetList.getTargetIdProperty());
+    assertEquals("Target Object Path", actualAdornedTargetList.getTargetObjectPath());
+    assertNull(actualAdornedTargetList.getIdProperty());
+    assertNull(actualAdornedTargetList.getJoinEntityClass());
+    assertFalse(actualAdornedTargetList.getInverse());
+    assertTrue(actualAdornedTargetList.getMutable());
+    assertTrue(actualAdornedTargetList.getSortAscending());
   }
 }

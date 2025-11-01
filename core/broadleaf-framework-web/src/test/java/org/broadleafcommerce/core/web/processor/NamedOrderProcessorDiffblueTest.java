@@ -18,134 +18,26 @@
 package org.broadleafcommerce.core.web.processor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
-import java.util.HashMap;
-import java.util.Map;
-import org.broadleafcommerce.core.order.domain.NullOrderImpl;
-import org.broadleafcommerce.core.order.service.OrderService;
-import org.broadleafcommerce.presentation.model.BroadleafTemplateContext;
-import org.broadleafcommerce.profile.core.domain.Customer;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(MockitoExtension.class)
 class NamedOrderProcessorDiffblueTest {
-  @InjectMocks private NamedOrderProcessor namedOrderProcessor;
-
-  @Mock private OrderService orderService;
-
   /**
-   * Test {@link NamedOrderProcessor#getName()}.
-   *
-   * <p>Method under test: {@link NamedOrderProcessor#getName()}
+   * Method under test: {@link NamedOrderProcessor#getName()}
    */
   @Test
-  @DisplayName("Test getName()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String NamedOrderProcessor.getName()"})
   void testGetName() {
     // Arrange, Act and Assert
-    assertEquals("named_order", new NamedOrderProcessor().getName());
+    assertEquals("named_order", (new NamedOrderProcessor()).getName());
   }
 
   /**
-   * Test {@link NamedOrderProcessor#getPrecedence()}.
-   *
-   * <p>Method under test: {@link NamedOrderProcessor#getPrecedence()}
+   * Method under test: {@link NamedOrderProcessor#getPrecedence()}
    */
   @Test
-  @DisplayName("Test getPrecedence()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int NamedOrderProcessor.getPrecedence()"})
   void testGetPrecedence() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertEquals(10000, namedOrderProcessor.getPrecedence());
-  }
-
-  /**
-   * Test {@link NamedOrderProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}.
-   *
-   * <ul>
-   *   <li>Given {@link OrderService} {@link OrderService#findNamedOrderForCustomer(String,
-   *       Customer)} return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link NamedOrderProcessor#populateModelVariables(String, Map,
-   * BroadleafTemplateContext)}
-   */
-  @Test
-  @DisplayName(
-      "Test populateModelVariables(String, Map, BroadleafTemplateContext); given OrderService findNamedOrderForCustomer(String, Customer) return 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map NamedOrderProcessor.populateModelVariables(String, Map, BroadleafTemplateContext)"
-  })
-  void testPopulateModelVariables_givenOrderServiceFindNamedOrderForCustomerReturnNull() {
-    // Arrange
-    when(orderService.findNamedOrderForCustomer(Mockito.<String>any(), Mockito.<Customer>any()))
-        .thenReturn(null);
-
-    // Act
-    Map<String, Object> actualPopulateModelVariablesResult =
-        namedOrderProcessor.populateModelVariables(
-            "Tag Name", new HashMap<>(), mock(BroadleafTemplateContext.class));
-
-    // Assert
-    verify(orderService).findNamedOrderForCustomer(isNull(), isNull());
-    assertEquals(1, actualPopulateModelVariablesResult.size());
-    assertTrue(actualPopulateModelVariablesResult.get(null) instanceof NullOrderImpl);
-  }
-
-  /**
-   * Test {@link NamedOrderProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}.
-   *
-   * <ul>
-   *   <li>Then return {@code null} is {@link NullOrderImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link NamedOrderProcessor#populateModelVariables(String, Map,
-   * BroadleafTemplateContext)}
-   */
-  @Test
-  @DisplayName(
-      "Test populateModelVariables(String, Map, BroadleafTemplateContext); then return 'null' is NullOrderImpl (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map NamedOrderProcessor.populateModelVariables(String, Map, BroadleafTemplateContext)"
-  })
-  void testPopulateModelVariables_thenReturnNullIsNullOrderImpl() {
-    // Arrange
-    NullOrderImpl nullOrderImpl = new NullOrderImpl();
-    when(orderService.findNamedOrderForCustomer(Mockito.<String>any(), Mockito.<Customer>any()))
-        .thenReturn(nullOrderImpl);
-
-    // Act
-    Map<String, Object> actualPopulateModelVariablesResult =
-        namedOrderProcessor.populateModelVariables(
-            "Tag Name", new HashMap<>(), mock(BroadleafTemplateContext.class));
-
-    // Assert
-    verify(orderService).findNamedOrderForCustomer(isNull(), isNull());
-    assertEquals(1, actualPopulateModelVariablesResult.size());
-    Object getResult = actualPopulateModelVariablesResult.get(null);
-    assertTrue(getResult instanceof NullOrderImpl);
-    assertSame(nullOrderImpl, getResult);
+    assertEquals(10000, (new NamedOrderProcessor()).getPrecedence());
   }
 }

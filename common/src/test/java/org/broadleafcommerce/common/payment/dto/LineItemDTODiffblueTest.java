@@ -21,59 +21,49 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Map;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {LineItemDTO.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class LineItemDTODiffblueTest {
-  @Autowired private LineItemDTO lineItemDTO;
+  @Autowired
+  private LineItemDTO lineItemDTO;
 
-  @MockBean private PaymentRequestDTO paymentRequestDTO;
+  @MockBean
+  private PaymentRequestDTO paymentRequestDTO;
 
   /**
-   * Test {@link LineItemDTO#done()}.
-   *
-   * <ul>
-   *   <li>Then return {@link LineItemDTO#LineItemDTO(PaymentRequestDTO)} with parent is {@link
-   *       PaymentRequestDTO} (default constructor) {@link LineItemDTO#parent}.
-   * </ul>
-   *
-   * <p>Method under test: {@link LineItemDTO#done()}
+   * Method under test: {@link LineItemDTO#done()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"PaymentRequestDTO LineItemDTO.done()"})
-  public void testDone_thenReturnLineItemDTOWithParentIsPaymentRequestDTOParent() {
+  public void testDone() {
     // Arrange
     LineItemDTO lineItemDTO = new LineItemDTO(new PaymentRequestDTO());
 
-    // Act
-    PaymentRequestDTO actualDoneResult = lineItemDTO.done();
-
-    // Assert
-    assertSame(lineItemDTO.parent, actualDoneResult);
+    // Act and Assert
+    assertSame(lineItemDTO.parent, lineItemDTO.done());
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Method under test: {@link LineItemDTO#additionalField(String, Object)}
+   */
+  @Test
+  public void testAdditionalField() {
+    // Arrange, Act and Assert
+    assertSame(lineItemDTO, lineItemDTO.additionalField("Key", BLCFieldUtils.NULL_FIELD));
+  }
+
+  /**
+   * Methods under test:
    * <ul>
    *   <li>{@link LineItemDTO#LineItemDTO(PaymentRequestDTO)}
    *   <li>{@link LineItemDTO#amount(String)}
@@ -100,44 +90,16 @@ public class LineItemDTODiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void LineItemDTO.<init>(PaymentRequestDTO)",
-    "LineItemDTO LineItemDTO.amount(String)",
-    "LineItemDTO LineItemDTO.category(String)",
-    "LineItemDTO LineItemDTO.description(String)",
-    "Map LineItemDTO.getAdditionalFields()",
-    "String LineItemDTO.getAmount()",
-    "String LineItemDTO.getCategory()",
-    "String LineItemDTO.getDescription()",
-    "String LineItemDTO.getItemTotal()",
-    "String LineItemDTO.getName()",
-    "String LineItemDTO.getQuantity()",
-    "String LineItemDTO.getShortDescription()",
-    "String LineItemDTO.getSystemId()",
-    "String LineItemDTO.getTax()",
-    "String LineItemDTO.getTotal()",
-    "LineItemDTO LineItemDTO.itemTotal(String)",
-    "LineItemDTO LineItemDTO.name(String)",
-    "LineItemDTO LineItemDTO.quantity(String)",
-    "LineItemDTO LineItemDTO.shortDescription(String)",
-    "LineItemDTO LineItemDTO.systemId(String)",
-    "LineItemDTO LineItemDTO.tax(String)",
-    "LineItemDTO LineItemDTO.total(String)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     LineItemDTO actualLineItemDTO = new LineItemDTO(new PaymentRequestDTO());
     LineItemDTO actualAmountResult = actualLineItemDTO.amount("10");
     LineItemDTO actualCategoryResult = actualLineItemDTO.category("Category");
-    LineItemDTO actualDescriptionResult =
-        actualLineItemDTO.description("The characteristics of someone or something");
+    LineItemDTO actualDescriptionResult = actualLineItemDTO.description("The characteristics of someone or something");
     LineItemDTO actualItemTotalResult = actualLineItemDTO.itemTotal("Item Total");
     LineItemDTO actualNameResult = actualLineItemDTO.name("Name");
     LineItemDTO actualQuantityResult = actualLineItemDTO.quantity("Quantity");
-    LineItemDTO actualShortDescriptionResult =
-        actualLineItemDTO.shortDescription("Short Description");
+    LineItemDTO actualShortDescriptionResult = actualLineItemDTO.shortDescription("Short Description");
     LineItemDTO actualSystemIdResult = actualLineItemDTO.systemId("42");
     LineItemDTO actualTaxResult = actualLineItemDTO.tax("Tax");
     LineItemDTO actualTotalResult = actualLineItemDTO.total("Total");
@@ -194,23 +156,5 @@ public class LineItemDTODiffblueTest {
     assertSame(actualLineItemDTO, actualSystemIdResult);
     assertSame(actualLineItemDTO, actualTaxResult);
     assertSame(actualLineItemDTO, actualTotalResult);
-  }
-
-  /**
-   * Test {@link LineItemDTO#additionalField(String, Object)}.
-   *
-   * <p>Method under test: {@link LineItemDTO#additionalField(String, Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"LineItemDTO LineItemDTO.additionalField(String, Object)"})
-  public void testAdditionalField() {
-    // Arrange and Act
-    LineItemDTO actualAdditionalFieldResult =
-        lineItemDTO.additionalField("Key", BLCFieldUtils.NULL_FIELD);
-
-    // Assert
-    assertSame(lineItemDTO, actualAdditionalFieldResult);
   }
 }

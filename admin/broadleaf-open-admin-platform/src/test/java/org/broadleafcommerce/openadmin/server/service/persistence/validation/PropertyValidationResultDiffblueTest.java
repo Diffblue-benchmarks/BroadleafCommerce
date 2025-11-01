@@ -21,23 +21,19 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.List;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 public class PropertyValidationResultDiffblueTest {
+  @MockBean
+  private PropertyValidationResult propertyValidationResult;
+
   /**
-   * Test {@link PropertyValidationResult#PropertyValidationResult(boolean)}.
-   *
-   * <p>Method under test: {@link PropertyValidationResult#PropertyValidationResult(boolean)}
+   * Method under test:
+   * {@link PropertyValidationResult#PropertyValidationResult(boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PropertyValidationResult.<init>(boolean)"})
   public void testNewPropertyValidationResult() {
     // Arrange and Act
     PropertyValidationResult actualPropertyValidationResult = new PropertyValidationResult(true);
@@ -50,23 +46,13 @@ public class PropertyValidationResultDiffblueTest {
   }
 
   /**
-   * Test {@link PropertyValidationResult#PropertyValidationResult(boolean, String)}.
-   *
-   * <ul>
-   *   <li>Then return ErrorMessages size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link PropertyValidationResult#PropertyValidationResult(boolean,
-   * String)}
+   * Method under test:
+   * {@link PropertyValidationResult#PropertyValidationResult(boolean, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PropertyValidationResult.<init>(boolean, String)"})
-  public void testNewPropertyValidationResult_thenReturnErrorMessagesSizeIsOne() {
+  public void testNewPropertyValidationResult2() {
     // Arrange and Act
-    PropertyValidationResult actualPropertyValidationResult =
-        new PropertyValidationResult(true, "An error occurred");
+    PropertyValidationResult actualPropertyValidationResult = new PropertyValidationResult(true, "An error occurred");
 
     // Assert
     List<String> errorMessages = actualPropertyValidationResult.getErrorMessages();

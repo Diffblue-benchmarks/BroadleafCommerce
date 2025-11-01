@@ -19,64 +19,77 @@ package org.broadleafcommerce.core.checkout.service.gateway;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.math.BigDecimal;
+import java.util.Currency;
 import java.util.HashMap;
+import org.broadleafcommerce.common.money.Money;
+import org.broadleafcommerce.common.payment.PaymentGatewayType;
+import org.broadleafcommerce.common.payment.PaymentTransactionType;
 import org.broadleafcommerce.common.payment.dto.PaymentRequestDTO;
 import org.broadleafcommerce.common.payment.dto.PaymentResponseDTO;
 import org.broadleafcommerce.common.vendor.service.exception.PaymentException;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
 public class PassthroughPaymentRollbackServiceImplDiffblueTest {
-  @InjectMocks private PassthroughPaymentRollbackServiceImpl passthroughPaymentRollbackServiceImpl;
-
   /**
-   * Test {@link PassthroughPaymentRollbackServiceImpl#rollbackAuthorize(PaymentRequestDTO)}.
-   *
-   * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>Then return RawResponse is {@code rollback authorize - successful}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * PassthroughPaymentRollbackServiceImpl#rollbackAuthorize(PaymentRequestDTO)}
+   * Method under test:
+   * {@link PassthroughPaymentRollbackServiceImpl#rollbackAuthorize(PaymentRequestDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PaymentResponseDTO PassthroughPaymentRollbackServiceImpl.rollbackAuthorize(PaymentRequestDTO)"
-  })
-  public void testRollbackAuthorize_given42_thenReturnRawResponseIsRollbackAuthorizeSuccessful()
-      throws PaymentException {
-    // Arrange
-    HashMap<String, Object> stringObjectMap = new HashMap<>();
-    stringObjectMap.put(PassthroughPaymentConstants.PASSTHROUGH_PAYMENT_TYPE, "Additional Fields");
-    stringObjectMap.put(PassthroughPaymentConstants.PASSTHROUGH_PAYMENT_TYPE, "Additional Fields");
+  public void testRollbackAuthorize() throws PaymentException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
+    // Arrange
+    PassthroughPaymentRollbackServiceImpl passthroughPaymentRollbackServiceImpl = new PassthroughPaymentRollbackServiceImpl();
+
+    // Act and Assert
+    assertThrows(PaymentException.class,
+        () -> passthroughPaymentRollbackServiceImpl.rollbackAuthorize(new PaymentRequestDTO()));
+  }
+
+  /**
+   * Method under test:
+   * {@link PassthroughPaymentRollbackServiceImpl#rollbackAuthorize(PaymentRequestDTO)}
+   */
+  @Test
+  public void testRollbackAuthorize2() throws PaymentException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PassthroughPaymentRollbackServiceImpl passthroughPaymentRollbackServiceImpl = new PassthroughPaymentRollbackServiceImpl();
+
+    HashMap<String, Object> stringObjectMap = new HashMap<>();
+    stringObjectMap.put(PassthroughPaymentConstants.PASSTHROUGH_PAYMENT_TYPE, "42");
     PaymentRequestDTO transactionToBeRolledBack = mock(PaymentRequestDTO.class);
     when(transactionToBeRolledBack.getTransactionTotal()).thenReturn("42");
     when(transactionToBeRolledBack.getAdditionalFields()).thenReturn(stringObjectMap);
 
     // Act
-    PaymentResponseDTO actualRollbackAuthorizeResult =
-        passthroughPaymentRollbackServiceImpl.rollbackAuthorize(transactionToBeRolledBack);
+    PaymentResponseDTO actualRollbackAuthorizeResult = passthroughPaymentRollbackServiceImpl
+        .rollbackAuthorize(transactionToBeRolledBack);
 
     // Assert
     verify(transactionToBeRolledBack, atLeast(1)).getAdditionalFields();
     verify(transactionToBeRolledBack).getTransactionTotal();
+    Money amount = actualRollbackAuthorizeResult.getAmount();
+    Currency currency = amount.getCurrency();
+    assertEquals("$", currency.getSymbol());
+    PaymentGatewayType paymentGatewayType = actualRollbackAuthorizeResult.getPaymentGatewayType();
+    assertEquals("Passthrough Payment", paymentGatewayType.getFriendlyType());
+    assertEquals("Passthrough", paymentGatewayType.getType());
+    PaymentTransactionType paymentTransactionType = actualRollbackAuthorizeResult.getPaymentTransactionType();
+    assertEquals("REVERSE_AUTH", paymentTransactionType.getType());
+    assertEquals("Reverse Auth", paymentTransactionType.getFriendlyType());
+    assertEquals("US Dollar", currency.getDisplayName());
+    assertEquals("USD", currency.getCurrencyCode());
+    assertEquals("USD", currency.toString());
     assertEquals("rollback authorize - successful", actualRollbackAuthorizeResult.getRawResponse());
     assertNull(actualRollbackAuthorizeResult.getOrderId());
     assertNull(actualRollbackAuthorizeResult.getPaymentToken());
@@ -85,102 +98,134 @@ public class PassthroughPaymentRollbackServiceImplDiffblueTest {
     assertNull(actualRollbackAuthorizeResult.getShipTo());
     assertNull(actualRollbackAuthorizeResult.getCreditCard());
     assertNull(actualRollbackAuthorizeResult.getCustomer());
+    assertEquals(2, currency.getDefaultFractionDigits());
+    assertEquals(840, currency.getNumericCode());
     assertTrue(actualRollbackAuthorizeResult.getCustomerCredits().isEmpty());
     assertTrue(actualRollbackAuthorizeResult.getGiftCards().isEmpty());
     assertTrue(actualRollbackAuthorizeResult.getResponseMap().isEmpty());
     assertTrue(actualRollbackAuthorizeResult.isCompleteCheckoutOnCallback());
     assertTrue(actualRollbackAuthorizeResult.isSuccessful());
     assertTrue(actualRollbackAuthorizeResult.isValid());
+    BigDecimal expectedAmount = new BigDecimal("0.00");
+    Money zeroResult = amount.zero();
+    assertEquals(expectedAmount, zeroResult.getAmount());
+    BigDecimal expectedAmount2 = new BigDecimal("42.00");
+    assertEquals(expectedAmount2, amount.getAmount());
+    assertEquals(zeroResult.zero(), zeroResult.zero());
+    assertEquals(zeroResult, zeroResult.abs());
+    assertEquals(amount, amount.abs());
+    assertSame(currency, zeroResult.getCurrency());
   }
 
   /**
-   * Test {@link PassthroughPaymentRollbackServiceImpl#rollbackAuthorize(PaymentRequestDTO)}.
-   *
-   * <ul>
-   *   <li>When {@link PaymentRequestDTO} (default constructor).
-   *   <li>Then throw {@link PaymentException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * PassthroughPaymentRollbackServiceImpl#rollbackAuthorize(PaymentRequestDTO)}
+   * Method under test:
+   * {@link PassthroughPaymentRollbackServiceImpl#rollbackCapture(PaymentRequestDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PaymentResponseDTO PassthroughPaymentRollbackServiceImpl.rollbackAuthorize(PaymentRequestDTO)"
-  })
-  public void testRollbackAuthorize_whenPaymentRequestDTO_thenThrowPaymentException()
-      throws PaymentException {
-    // Arrange, Act and Assert
-    assertThrows(
-        PaymentException.class,
-        () -> passthroughPaymentRollbackServiceImpl.rollbackAuthorize(new PaymentRequestDTO()));
-  }
-
-  /**
-   * Test {@link PassthroughPaymentRollbackServiceImpl#rollbackCapture(PaymentRequestDTO)}.
-   *
-   * <p>Method under test: {@link
-   * PassthroughPaymentRollbackServiceImpl#rollbackCapture(PaymentRequestDTO)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PaymentResponseDTO PassthroughPaymentRollbackServiceImpl.rollbackCapture(PaymentRequestDTO)"
-  })
   public void testRollbackCapture() throws PaymentException {
-    // Arrange, Act and Assert
-    assertThrows(
-        PaymentException.class,
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PassthroughPaymentRollbackServiceImpl passthroughPaymentRollbackServiceImpl = new PassthroughPaymentRollbackServiceImpl();
+
+    // Act and Assert
+    assertThrows(PaymentException.class,
         () -> passthroughPaymentRollbackServiceImpl.rollbackCapture(new PaymentRequestDTO()));
   }
 
   /**
-   * Test {@link
-   * PassthroughPaymentRollbackServiceImpl#rollbackAuthorizeAndCapture(PaymentRequestDTO)}.
-   *
-   * <ul>
-   *   <li>When {@link PaymentRequestDTO} (default constructor).
-   *   <li>Then throw {@link PaymentException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * PassthroughPaymentRollbackServiceImpl#rollbackAuthorizeAndCapture(PaymentRequestDTO)}
+   * Method under test:
+   * {@link PassthroughPaymentRollbackServiceImpl#rollbackAuthorizeAndCapture(PaymentRequestDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PaymentResponseDTO PassthroughPaymentRollbackServiceImpl.rollbackAuthorizeAndCapture(PaymentRequestDTO)"
-  })
-  public void testRollbackAuthorizeAndCapture_whenPaymentRequestDTO_thenThrowPaymentException()
-      throws PaymentException {
-    // Arrange, Act and Assert
-    assertThrows(
-        PaymentException.class,
-        () ->
-            passthroughPaymentRollbackServiceImpl.rollbackAuthorizeAndCapture(
-                new PaymentRequestDTO()));
+  public void testRollbackAuthorizeAndCapture() throws PaymentException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PassthroughPaymentRollbackServiceImpl passthroughPaymentRollbackServiceImpl = new PassthroughPaymentRollbackServiceImpl();
+
+    // Act and Assert
+    assertThrows(PaymentException.class,
+        () -> passthroughPaymentRollbackServiceImpl.rollbackAuthorizeAndCapture(new PaymentRequestDTO()));
   }
 
   /**
-   * Test {@link PassthroughPaymentRollbackServiceImpl#rollbackRefund(PaymentRequestDTO)}.
-   *
-   * <p>Method under test: {@link
-   * PassthroughPaymentRollbackServiceImpl#rollbackRefund(PaymentRequestDTO)}
+   * Method under test:
+   * {@link PassthroughPaymentRollbackServiceImpl#rollbackAuthorizeAndCapture(PaymentRequestDTO)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PaymentResponseDTO PassthroughPaymentRollbackServiceImpl.rollbackRefund(PaymentRequestDTO)"
-  })
+  public void testRollbackAuthorizeAndCapture2() throws PaymentException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PassthroughPaymentRollbackServiceImpl passthroughPaymentRollbackServiceImpl = new PassthroughPaymentRollbackServiceImpl();
+
+    HashMap<String, Object> stringObjectMap = new HashMap<>();
+    stringObjectMap.put(PassthroughPaymentConstants.PASSTHROUGH_PAYMENT_TYPE, "42");
+    PaymentRequestDTO transactionToBeRolledBack = mock(PaymentRequestDTO.class);
+    when(transactionToBeRolledBack.getTransactionTotal()).thenReturn("42");
+    when(transactionToBeRolledBack.getAdditionalFields()).thenReturn(stringObjectMap);
+
+    // Act
+    PaymentResponseDTO actualRollbackAuthorizeAndCaptureResult = passthroughPaymentRollbackServiceImpl
+        .rollbackAuthorizeAndCapture(transactionToBeRolledBack);
+
+    // Assert
+    verify(transactionToBeRolledBack, atLeast(1)).getAdditionalFields();
+    verify(transactionToBeRolledBack).getTransactionTotal();
+    Money amount = actualRollbackAuthorizeAndCaptureResult.getAmount();
+    Currency currency = amount.getCurrency();
+    assertEquals("$", currency.getSymbol());
+    PaymentGatewayType paymentGatewayType = actualRollbackAuthorizeAndCaptureResult.getPaymentGatewayType();
+    assertEquals("Passthrough Payment", paymentGatewayType.getFriendlyType());
+    assertEquals("Passthrough", paymentGatewayType.getType());
+    assertEquals("US Dollar", currency.getDisplayName());
+    assertEquals("USD", currency.getCurrencyCode());
+    assertEquals("USD", currency.toString());
+    PaymentTransactionType paymentTransactionType = actualRollbackAuthorizeAndCaptureResult.getPaymentTransactionType();
+    assertEquals("VOID", paymentTransactionType.getType());
+    assertEquals("Void", paymentTransactionType.getFriendlyType());
+    assertEquals("rollback authorize and capture - successful",
+        actualRollbackAuthorizeAndCaptureResult.getRawResponse());
+    assertNull(actualRollbackAuthorizeAndCaptureResult.getOrderId());
+    assertNull(actualRollbackAuthorizeAndCaptureResult.getPaymentToken());
+    assertNull(actualRollbackAuthorizeAndCaptureResult.getPaymentType());
+    assertNull(actualRollbackAuthorizeAndCaptureResult.getBillTo());
+    assertNull(actualRollbackAuthorizeAndCaptureResult.getShipTo());
+    assertNull(actualRollbackAuthorizeAndCaptureResult.getCreditCard());
+    assertNull(actualRollbackAuthorizeAndCaptureResult.getCustomer());
+    assertEquals(2, currency.getDefaultFractionDigits());
+    assertEquals(840, currency.getNumericCode());
+    assertTrue(actualRollbackAuthorizeAndCaptureResult.getCustomerCredits().isEmpty());
+    assertTrue(actualRollbackAuthorizeAndCaptureResult.getGiftCards().isEmpty());
+    assertTrue(actualRollbackAuthorizeAndCaptureResult.getResponseMap().isEmpty());
+    assertTrue(actualRollbackAuthorizeAndCaptureResult.isCompleteCheckoutOnCallback());
+    assertTrue(actualRollbackAuthorizeAndCaptureResult.isSuccessful());
+    assertTrue(actualRollbackAuthorizeAndCaptureResult.isValid());
+    BigDecimal expectedAmount = new BigDecimal("0.00");
+    Money zeroResult = amount.zero();
+    assertEquals(expectedAmount, zeroResult.getAmount());
+    BigDecimal expectedAmount2 = new BigDecimal("42.00");
+    assertEquals(expectedAmount2, amount.getAmount());
+    assertEquals(zeroResult.zero(), zeroResult.zero());
+    assertEquals(zeroResult, zeroResult.abs());
+    assertEquals(amount, amount.abs());
+    assertSame(currency, zeroResult.getCurrency());
+  }
+
+  /**
+   * Method under test:
+   * {@link PassthroughPaymentRollbackServiceImpl#rollbackRefund(PaymentRequestDTO)}
+   */
+  @Test
   public void testRollbackRefund() throws PaymentException {
-    // Arrange, Act and Assert
-    assertThrows(
-        PaymentException.class,
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PassthroughPaymentRollbackServiceImpl passthroughPaymentRollbackServiceImpl = new PassthroughPaymentRollbackServiceImpl();
+
+    // Act and Assert
+    assertThrows(PaymentException.class,
         () -> passthroughPaymentRollbackServiceImpl.rollbackRefund(new PaymentRequestDTO()));
   }
 }

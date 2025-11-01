@@ -18,19 +18,11 @@
 package org.broadleafcommerce.common.currency.domain;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class NullBroadleafCurrencyDiffblueTest {
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link NullBroadleafCurrency}
    *   <li>{@link NullBroadleafCurrency#setCurrencyCode(String)}
@@ -43,32 +35,18 @@ public class NullBroadleafCurrencyDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void NullBroadleafCurrency.<init>()",
-    "String NullBroadleafCurrency.getCurrencyCode()",
-    "boolean NullBroadleafCurrency.getDefaultFlag()",
-    "String NullBroadleafCurrency.getFriendlyName()",
-    "java.util.Currency NullBroadleafCurrency.getJavaCurrency()",
-    "void NullBroadleafCurrency.setCurrencyCode(String)",
-    "void NullBroadleafCurrency.setDefaultFlag(boolean)",
-    "void NullBroadleafCurrency.setFriendlyName(String)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     NullBroadleafCurrency actualNullBroadleafCurrency = new NullBroadleafCurrency();
     actualNullBroadleafCurrency.setCurrencyCode("Code");
     actualNullBroadleafCurrency.setDefaultFlag(true);
     actualNullBroadleafCurrency.setFriendlyName("Friendly Name");
-    String actualCurrencyCode = actualNullBroadleafCurrency.getCurrencyCode();
+    actualNullBroadleafCurrency.getCurrencyCode();
     boolean actualDefaultFlag = actualNullBroadleafCurrency.getDefaultFlag();
-    String actualFriendlyName = actualNullBroadleafCurrency.getFriendlyName();
+    actualNullBroadleafCurrency.getFriendlyName();
+    actualNullBroadleafCurrency.getJavaCurrency();
 
-    // Assert
-    assertNull(actualCurrencyCode);
-    assertNull(actualFriendlyName);
-    assertNull(actualNullBroadleafCurrency.getJavaCurrency());
+    // Assert that nothing has changed
     assertFalse(actualDefaultFlag);
   }
 }

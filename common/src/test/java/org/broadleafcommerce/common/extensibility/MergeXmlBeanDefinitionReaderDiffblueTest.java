@@ -19,495 +19,363 @@ package org.broadleafcommerce.common.extensibility;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.io.UnsupportedEncodingException;
 import javax.imageio.metadata.IIOMetadataNode;
+import org.apache.html.dom.HTMLAnchorElementImpl;
 import org.apache.html.dom.HTMLDocumentImpl;
 import org.apache.xerces.impl.xs.opti.DefaultElement;
-import org.broadleafcommerce.common.extensibility.MergeXmlBeanDefinitionReader.BeanUtil;
-import org.broadleafcommerce.common.extensibility.MergeXmlBeanDefinitionReader.MergeBeanDefinitionDocumentReader;
 import org.broadleafcommerce.common.resource.GeneratedResource;
 import org.dom4j.dom.DOMAttributeNodeMap;
 import org.dom4j.dom.DOMElement;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.parsing.EmptyReaderEventListener;
 import org.springframework.beans.factory.parsing.FailFastProblemReporter;
 import org.springframework.beans.factory.parsing.NullSourceExtractor;
-import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.beans.factory.support.DefaultBeanNameGenerator;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.beans.factory.xml.BeanDefinitionParserDelegate;
 import org.springframework.beans.factory.xml.DefaultNamespaceHandlerResolver;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.beans.factory.xml.XmlReaderContext;
-import org.springframework.core.env.StandardEnvironment;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.context.annotation.ScannedGenericBeanDefinition;
+import org.springframework.core.type.StandardAnnotationMetadata;
+import org.springframework.core.type.classreading.MetadataReader;
+import org.springframework.util.StringValueResolver;
 import org.w3c.dom.Element;
+import org.w3c.dom.events.EventListener;
 
 public class MergeXmlBeanDefinitionReaderDiffblueTest {
   /**
-   * Test BeanUtil {@link BeanUtil#isXMLBean(BeanDefinition)}.
-   *
-   * <p>Method under test: {@link BeanUtil#isXMLBean(BeanDefinition)}
+   * Method under test:
+   * {@link MergeXmlBeanDefinitionReader.BeanUtil#isXMLBean(BeanDefinition)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean BeanUtil.isXMLBean(BeanDefinition)"})
   public void testBeanUtilIsXMLBean() {
-    // Arrange
-    GenericBeanDefinition beanDefinition = new GenericBeanDefinition(new GenericBeanDefinition());
-    GeneratedResource resource =
-        new GeneratedResource(
-            new byte[] {'A', 1, 'A', 1, 'A', 1, 'A', 1},
-            "The characteristics of someone or something");
-    beanDefinition.setResource(resource);
-
-    // Act and Assert
-    assertFalse(BeanUtil.isXMLBean(beanDefinition));
-  }
-
-  /**
-   * Test BeanUtil {@link BeanUtil#isXMLBean(BeanDefinition)}.
-   *
-   * <ul>
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BeanUtil#isXMLBean(BeanDefinition)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean BeanUtil.isXMLBean(BeanDefinition)"})
-  public void testBeanUtilIsXMLBean_thenReturnTrue() {
-    // Arrange
-    GenericBeanDefinition beanDefinition = new GenericBeanDefinition(new GenericBeanDefinition());
-    GeneratedResource resource =
-        new GeneratedResource(new byte[] {'A', 1, 'A', 1, 'A', 1, 'A', 1}, ".xml");
-    beanDefinition.setResource(resource);
-
-    // Act and Assert
-    assertTrue(BeanUtil.isXMLBean(beanDefinition));
-  }
-
-  /**
-   * Test BeanUtil {@link BeanUtil#isXMLBean(BeanDefinition)}.
-   *
-   * <ul>
-   *   <li>When {@link GenericBeanDefinition#GenericBeanDefinition()}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BeanUtil#isXMLBean(BeanDefinition)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean BeanUtil.isXMLBean(BeanDefinition)"})
-  public void testBeanUtilIsXMLBean_whenGenericBeanDefinition_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(BeanUtil.isXMLBean(new GenericBeanDefinition()));
+    assertFalse(MergeXmlBeanDefinitionReader.BeanUtil.isXMLBean(new GenericBeanDefinition()));
+    assertFalse(MergeXmlBeanDefinitionReader.BeanUtil.isXMLBean(null));
   }
 
   /**
-   * Test BeanUtil {@link BeanUtil#isXMLBean(BeanDefinition)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BeanUtil#isXMLBean(BeanDefinition)}
+   * Method under test:
+   * {@link MergeXmlBeanDefinitionReader.BeanUtil#isXMLBean(BeanDefinition)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean BeanUtil.isXMLBean(BeanDefinition)"})
-  public void testBeanUtilIsXMLBean_whenNull_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(BeanUtil.isXMLBean(null));
-  }
-
-  /**
-   * Test MergeBeanDefinitionDocumentReader {@link
-   * MergeBeanDefinitionDocumentReader#getBeanId(Element)}.
-   *
-   * <ul>
-   *   <li>Then return empty string.
-   * </ul>
-   *
-   * <p>Method under test: {@link MergeBeanDefinitionDocumentReader#getBeanId(Element)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String MergeBeanDefinitionDocumentReader.getBeanId(Element)"})
-  public void testMergeBeanDefinitionDocumentReaderGetBeanId_thenReturnEmptyString() {
+  public void testBeanUtilIsXMLBean2() throws UnsupportedEncodingException {
     // Arrange
-    MergeBeanDefinitionDocumentReader mergeBeanDefinitionDocumentReader =
-        new MergeBeanDefinitionDocumentReader();
-
-    // Act and Assert
-    assertEquals("", mergeBeanDefinitionDocumentReader.getBeanId(new IIOMetadataNode()));
-  }
-
-  /**
-   * Test MergeBeanDefinitionDocumentReader {@link
-   * MergeBeanDefinitionDocumentReader#isXMLBean(BeanDefinition)}.
-   *
-   * <p>Method under test: {@link MergeBeanDefinitionDocumentReader#isXMLBean(BeanDefinition)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean MergeBeanDefinitionDocumentReader.isXMLBean(BeanDefinition)"})
-  public void testMergeBeanDefinitionDocumentReaderIsXMLBean() {
-    // Arrange
-    MergeBeanDefinitionDocumentReader mergeBeanDefinitionDocumentReader =
-        new MergeBeanDefinitionDocumentReader();
-
-    GenericBeanDefinition beanDefinition = new GenericBeanDefinition(new GenericBeanDefinition());
-    GeneratedResource resource =
-        new GeneratedResource(
-            new byte[] {'A', 1, 'A', 1, 'A', 1, 'A', 1},
-            "The characteristics of someone or something");
-    beanDefinition.setResource(resource);
+    MetadataReader metadataReader = mock(MetadataReader.class);
+    when(metadataReader.getResource())
+        .thenReturn(new GeneratedResource("AXAXAXAX".getBytes("UTF-8"), "The characteristics of someone or something"));
+    Class<Object> introspectedClass = Object.class;
+    when(metadataReader.getAnnotationMetadata()).thenReturn(new StandardAnnotationMetadata(introspectedClass));
 
     // Act
-    boolean actualIsXMLBeanResult = mergeBeanDefinitionDocumentReader.isXMLBean(beanDefinition);
+    boolean actualIsXMLBeanResult = MergeXmlBeanDefinitionReader.BeanUtil
+        .isXMLBean(new ScannedGenericBeanDefinition(metadataReader));
 
     // Assert
+    verify(metadataReader).getAnnotationMetadata();
+    verify(metadataReader).getResource();
     assertFalse(actualIsXMLBeanResult);
   }
 
   /**
-   * Test MergeBeanDefinitionDocumentReader {@link
-   * MergeBeanDefinitionDocumentReader#isXMLBean(BeanDefinition)}.
-   *
-   * <ul>
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link MergeBeanDefinitionDocumentReader#isXMLBean(BeanDefinition)}
+   * Method under test:
+   * {@link MergeXmlBeanDefinitionReader.BeanUtil#isXMLBean(BeanDefinition)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean MergeBeanDefinitionDocumentReader.isXMLBean(BeanDefinition)"})
-  public void testMergeBeanDefinitionDocumentReaderIsXMLBean_thenReturnTrue() {
+  public void testBeanUtilIsXMLBean3() throws UnsupportedEncodingException {
     // Arrange
-    MergeBeanDefinitionDocumentReader mergeBeanDefinitionDocumentReader =
-        new MergeBeanDefinitionDocumentReader();
-
-    GenericBeanDefinition beanDefinition = new GenericBeanDefinition(new GenericBeanDefinition());
-    GeneratedResource resource =
-        new GeneratedResource(new byte[] {'A', 1, 'A', 1, 'A', 1, 'A', 1}, ".xml");
-    beanDefinition.setResource(resource);
+    MetadataReader metadataReader = mock(MetadataReader.class);
+    when(metadataReader.getResource()).thenReturn(new GeneratedResource("AXAXAXAX".getBytes("UTF-8"), ".xml"));
+    Class<Object> introspectedClass = Object.class;
+    when(metadataReader.getAnnotationMetadata()).thenReturn(new StandardAnnotationMetadata(introspectedClass));
 
     // Act
-    boolean actualIsXMLBeanResult = mergeBeanDefinitionDocumentReader.isXMLBean(beanDefinition);
+    boolean actualIsXMLBeanResult = MergeXmlBeanDefinitionReader.BeanUtil
+        .isXMLBean(new ScannedGenericBeanDefinition(metadataReader));
 
     // Assert
+    verify(metadataReader).getAnnotationMetadata();
+    verify(metadataReader).getResource();
     assertTrue(actualIsXMLBeanResult);
   }
 
   /**
-   * Test MergeBeanDefinitionDocumentReader {@link
-   * MergeBeanDefinitionDocumentReader#isXMLBean(BeanDefinition)}.
-   *
-   * <ul>
-   *   <li>When {@link GenericBeanDefinition#GenericBeanDefinition()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link MergeBeanDefinitionDocumentReader#isXMLBean(BeanDefinition)}
+   * Method under test:
+   * {@link MergeXmlBeanDefinitionReader#isXMLBean(BeanDefinition)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean MergeBeanDefinitionDocumentReader.isXMLBean(BeanDefinition)"})
-  public void testMergeBeanDefinitionDocumentReaderIsXMLBean_whenGenericBeanDefinition() {
-    // Arrange
-    MergeBeanDefinitionDocumentReader mergeBeanDefinitionDocumentReader =
-        new MergeBeanDefinitionDocumentReader();
-
-    // Act and Assert
-    assertFalse(mergeBeanDefinitionDocumentReader.isXMLBean(new GenericBeanDefinition()));
-  }
-
-  /**
-   * Test MergeBeanDefinitionDocumentReader {@link
-   * MergeBeanDefinitionDocumentReader#isXMLBean(BeanDefinition)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link MergeBeanDefinitionDocumentReader#isXMLBean(BeanDefinition)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean MergeBeanDefinitionDocumentReader.isXMLBean(BeanDefinition)"})
-  public void testMergeBeanDefinitionDocumentReaderIsXMLBean_whenNull_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(new MergeBeanDefinitionDocumentReader().isXMLBean(null));
-  }
-
-  /**
-   * Test MergeBeanDefinitionDocumentReader new {@link MergeBeanDefinitionDocumentReader} (default
-   * constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * MergeBeanDefinitionDocumentReader}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void MergeBeanDefinitionDocumentReader.<init>()"})
-  public void testMergeBeanDefinitionDocumentReaderNewMergeBeanDefinitionDocumentReader() {
-    // Arrange and Act
-    MergeBeanDefinitionDocumentReader actualMergeBeanDefinitionDocumentReader =
-        new MergeBeanDefinitionDocumentReader();
-    HTMLDocumentImpl doc = new HTMLDocumentImpl();
-    GeneratedResource resource = new GeneratedResource();
-    FailFastProblemReporter problemReporter = new FailFastProblemReporter();
-    EmptyReaderEventListener eventListener = new EmptyReaderEventListener();
-    NullSourceExtractor sourceExtractor = new NullSourceExtractor();
-    XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(new DefaultListableBeanFactory());
-    XmlReaderContext readerContext =
-        new XmlReaderContext(
-            resource,
-            problemReporter,
-            eventListener,
-            sourceExtractor,
-            reader,
-            new DefaultNamespaceHandlerResolver());
-    actualMergeBeanDefinitionDocumentReader.registerBeanDefinitions(doc, readerContext);
-
-    // Assert
-    assertFalse(actualMergeBeanDefinitionDocumentReader.isXMLBean(null));
-  }
-
-  /**
-   * Test MergeBeanDefinitionDocumentReader {@link
-   * MergeBeanDefinitionDocumentReader#processBeanDefinition(Element,
-   * BeanDefinitionParserDelegate)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link DefaultElement#getAttribute(String)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link MergeBeanDefinitionDocumentReader#processBeanDefinition(Element,
-   * BeanDefinitionParserDelegate)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void MergeBeanDefinitionDocumentReader.processBeanDefinition(Element, BeanDefinitionParserDelegate)"
-  })
-  public void testMergeBeanDefinitionDocumentReaderProcessBeanDefinition_thenCallsGetAttribute() {
-    // Arrange
-    MergeBeanDefinitionDocumentReader mergeBeanDefinitionDocumentReader =
-        new MergeBeanDefinitionDocumentReader();
-    HTMLDocumentImpl doc = new HTMLDocumentImpl();
-    GeneratedResource resource = new GeneratedResource();
-    FailFastProblemReporter problemReporter = new FailFastProblemReporter();
-    EmptyReaderEventListener eventListener = new EmptyReaderEventListener();
-    NullSourceExtractor sourceExtractor = new NullSourceExtractor();
-    XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(new DefaultListableBeanFactory());
-
-    XmlReaderContext readerContext =
-        new XmlReaderContext(
-            resource,
-            problemReporter,
-            eventListener,
-            sourceExtractor,
-            reader,
-            new DefaultNamespaceHandlerResolver());
-
-    mergeBeanDefinitionDocumentReader.registerBeanDefinitions(doc, readerContext);
-
-    DefaultElement ele = mock(DefaultElement.class);
-    when(ele.getAttributes()).thenReturn(new DOMAttributeNodeMap(new DOMElement("Name")));
-    when(ele.hasAttribute(Mockito.<String>any())).thenReturn(false);
-    when(ele.getAttribute(Mockito.<String>any())).thenReturn("Attribute");
-    when(ele.getChildNodes()).thenReturn(new IIOMetadataNode());
-    GeneratedResource resource2 = new GeneratedResource();
-    FailFastProblemReporter problemReporter2 = new FailFastProblemReporter();
-    EmptyReaderEventListener eventListener2 = new EmptyReaderEventListener();
-    NullSourceExtractor sourceExtractor2 = new NullSourceExtractor();
-    XmlBeanDefinitionReader reader2 = new XmlBeanDefinitionReader(new DefaultListableBeanFactory());
-
-    XmlReaderContext readerContext2 =
-        new XmlReaderContext(
-            resource2,
-            problemReporter2,
-            eventListener2,
-            sourceExtractor2,
-            reader2,
-            new DefaultNamespaceHandlerResolver());
-
-    // Act
-    mergeBeanDefinitionDocumentReader.processBeanDefinition(
-        ele, new BeanDefinitionParserDelegate(readerContext2));
-
-    // Assert
-    verify(ele, atLeast(1)).getAttribute(Mockito.<String>any());
-    verify(ele, atLeast(1)).hasAttribute(Mockito.<String>any());
-    verify(ele).getAttributes();
-    verify(ele, atLeast(1)).getChildNodes();
-  }
-
-  /**
-   * Test {@link MergeXmlBeanDefinitionReader#MergeXmlBeanDefinitionReader(BeanDefinitionRegistry)}.
-   *
-   * <p>Method under test: {@link
-   * MergeXmlBeanDefinitionReader#MergeXmlBeanDefinitionReader(BeanDefinitionRegistry)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void MergeXmlBeanDefinitionReader.<init>(BeanDefinitionRegistry)"})
-  public void testNewMergeXmlBeanDefinitionReader() {
-    // Arrange
-    DefaultListableBeanFactory registry = new DefaultListableBeanFactory();
-
-    // Act
-    MergeXmlBeanDefinitionReader actualMergeXmlBeanDefinitionReader =
-        new MergeXmlBeanDefinitionReader(registry);
-
-    // Assert
-    assertTrue(
-        actualMergeXmlBeanDefinitionReader.getBeanNameGenerator()
-            instanceof DefaultBeanNameGenerator);
-    BeanDefinitionRegistry beanFactory = actualMergeXmlBeanDefinitionReader.getBeanFactory();
-    assertTrue(beanFactory instanceof DefaultListableBeanFactory);
-    assertTrue(
-        actualMergeXmlBeanDefinitionReader.getNamespaceHandlerResolver()
-            instanceof DefaultNamespaceHandlerResolver);
-    assertTrue(actualMergeXmlBeanDefinitionReader.getEnvironment() instanceof StandardEnvironment);
-    assertTrue(
-        actualMergeXmlBeanDefinitionReader.getResourceLoader()
-            instanceof PathMatchingResourcePatternResolver);
-    assertNull(actualMergeXmlBeanDefinitionReader.getBeanClassLoader());
-    assertEquals(1, actualMergeXmlBeanDefinitionReader.getValidationMode());
-    assertFalse(actualMergeXmlBeanDefinitionReader.isNamespaceAware());
-    assertSame(registry, beanFactory);
-    assertSame(registry, actualMergeXmlBeanDefinitionReader.getRegistry());
-  }
-
-  /**
-   * Test {@link MergeXmlBeanDefinitionReader#isXMLBean(BeanDefinition)}.
-   *
-   * <p>Method under test: {@link MergeXmlBeanDefinitionReader#isXMLBean(BeanDefinition)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean MergeXmlBeanDefinitionReader.isXMLBean(BeanDefinition)"})
   public void testIsXMLBean() {
     // Arrange
-    MergeXmlBeanDefinitionReader mergeXmlBeanDefinitionReader =
-        new MergeXmlBeanDefinitionReader(new DefaultListableBeanFactory());
-
-    GenericBeanDefinition beanDefinition = new GenericBeanDefinition(new GenericBeanDefinition());
-    GeneratedResource resource =
-        new GeneratedResource(
-            new byte[] {'A', 1, 'A', 1, 'A', 1, 'A', 1},
-            "The characteristics of someone or something");
-    beanDefinition.setResource(resource);
-
-    // Act
-    boolean actualIsXMLBeanResult = mergeXmlBeanDefinitionReader.isXMLBean(beanDefinition);
-
-    // Assert
-    assertFalse(actualIsXMLBeanResult);
-  }
-
-  /**
-   * Test {@link MergeXmlBeanDefinitionReader#isXMLBean(BeanDefinition)}.
-   *
-   * <ul>
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link MergeXmlBeanDefinitionReader#isXMLBean(BeanDefinition)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean MergeXmlBeanDefinitionReader.isXMLBean(BeanDefinition)"})
-  public void testIsXMLBean_thenReturnTrue() {
-    // Arrange
-    MergeXmlBeanDefinitionReader mergeXmlBeanDefinitionReader =
-        new MergeXmlBeanDefinitionReader(new DefaultListableBeanFactory());
-
-    GenericBeanDefinition beanDefinition = new GenericBeanDefinition(new GenericBeanDefinition());
-    GeneratedResource resource =
-        new GeneratedResource(new byte[] {'A', 1, 'A', 1, 'A', 1, 'A', 1}, ".xml");
-    beanDefinition.setResource(resource);
-
-    // Act
-    boolean actualIsXMLBeanResult = mergeXmlBeanDefinitionReader.isXMLBean(beanDefinition);
-
-    // Assert
-    assertTrue(actualIsXMLBeanResult);
-  }
-
-  /**
-   * Test {@link MergeXmlBeanDefinitionReader#isXMLBean(BeanDefinition)}.
-   *
-   * <ul>
-   *   <li>When {@link GenericBeanDefinition#GenericBeanDefinition()}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link MergeXmlBeanDefinitionReader#isXMLBean(BeanDefinition)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean MergeXmlBeanDefinitionReader.isXMLBean(BeanDefinition)"})
-  public void testIsXMLBean_whenGenericBeanDefinition_thenReturnFalse() {
-    // Arrange
-    MergeXmlBeanDefinitionReader mergeXmlBeanDefinitionReader =
-        new MergeXmlBeanDefinitionReader(new DefaultListableBeanFactory());
+    MergeXmlBeanDefinitionReader mergeXmlBeanDefinitionReader = new MergeXmlBeanDefinitionReader(
+        new DefaultListableBeanFactory());
 
     // Act and Assert
     assertFalse(mergeXmlBeanDefinitionReader.isXMLBean(new GenericBeanDefinition()));
   }
 
   /**
-   * Test {@link MergeXmlBeanDefinitionReader#isXMLBean(BeanDefinition)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link MergeXmlBeanDefinitionReader#isXMLBean(BeanDefinition)}
+   * Method under test:
+   * {@link MergeXmlBeanDefinitionReader#isXMLBean(BeanDefinition)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean MergeXmlBeanDefinitionReader.isXMLBean(BeanDefinition)"})
-  public void testIsXMLBean_whenNull_thenReturnFalse() {
+  public void testIsXMLBean2() {
+    // Arrange
+    DefaultListableBeanFactory registry = new DefaultListableBeanFactory();
+    registry.addEmbeddedValueResolver(mock(StringValueResolver.class));
+    MergeXmlBeanDefinitionReader mergeXmlBeanDefinitionReader = new MergeXmlBeanDefinitionReader(registry);
+
+    // Act and Assert
+    assertFalse(mergeXmlBeanDefinitionReader.isXMLBean(new GenericBeanDefinition()));
+  }
+
+  /**
+   * Method under test:
+   * {@link MergeXmlBeanDefinitionReader#isXMLBean(BeanDefinition)}
+   */
+  @Test
+  public void testIsXMLBean3() {
     // Arrange, Act and Assert
-    assertFalse(new MergeXmlBeanDefinitionReader(new DefaultListableBeanFactory()).isXMLBean(null));
+    assertFalse((new MergeXmlBeanDefinitionReader(new DefaultListableBeanFactory())).isXMLBean(null));
+  }
+
+  /**
+   * Method under test:
+   * {@link MergeXmlBeanDefinitionReader#isXMLBean(BeanDefinition)}
+   */
+  @Test
+  public void testIsXMLBean4() {
+    // Arrange
+    MergeXmlBeanDefinitionReader mergeXmlBeanDefinitionReader = new MergeXmlBeanDefinitionReader(
+        new DefaultListableBeanFactory());
+
+    GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
+    beanDefinition.setResource(new GeneratedResource(new byte[]{'A', 1, 'A', 1, 'A', 1, 'A', 1},
+        "The characteristics of someone or something"));
+
+    // Act and Assert
+    assertFalse(mergeXmlBeanDefinitionReader.isXMLBean(beanDefinition));
+  }
+
+  /**
+   * Method under test:
+   * {@link MergeXmlBeanDefinitionReader#isXMLBean(BeanDefinition)}
+   */
+  @Test
+  public void testIsXMLBean5() {
+    // Arrange
+    MergeXmlBeanDefinitionReader mergeXmlBeanDefinitionReader = new MergeXmlBeanDefinitionReader(
+        new DefaultListableBeanFactory());
+
+    GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
+    beanDefinition.setResource(new GeneratedResource(new byte[]{'A', 1, 'A', 1, 'A', 1, 'A', 1}, ".xml"));
+
+    // Act and Assert
+    assertTrue(mergeXmlBeanDefinitionReader.isXMLBean(beanDefinition));
+  }
+
+  /**
+   * Method under test:
+   * {@link MergeXmlBeanDefinitionReader.MergeBeanDefinitionDocumentReader#getBeanId(Element)}
+   */
+  @Test
+  public void testMergeBeanDefinitionDocumentReaderGetBeanId() {
+    // Arrange
+    MergeXmlBeanDefinitionReader.MergeBeanDefinitionDocumentReader mergeBeanDefinitionDocumentReader = new MergeXmlBeanDefinitionReader.MergeBeanDefinitionDocumentReader();
+
+    // Act and Assert
+    assertEquals("", mergeBeanDefinitionDocumentReader.getBeanId(new IIOMetadataNode("foo")));
+  }
+
+  /**
+   * Method under test:
+   * {@link MergeXmlBeanDefinitionReader.MergeBeanDefinitionDocumentReader#getBeanId(Element)}
+   */
+  @Test
+  public void testMergeBeanDefinitionDocumentReaderGetBeanId2() {
+    // Arrange
+    MergeXmlBeanDefinitionReader.MergeBeanDefinitionDocumentReader mergeBeanDefinitionDocumentReader = new MergeXmlBeanDefinitionReader.MergeBeanDefinitionDocumentReader();
+
+    HTMLDocumentImpl htmlDocumentImpl = new HTMLDocumentImpl();
+    htmlDocumentImpl.addEventListener("foo", mock(EventListener.class), true);
+
+    // Act and Assert
+    assertEquals("", mergeBeanDefinitionDocumentReader.getBeanId(new HTMLAnchorElementImpl(htmlDocumentImpl, "id")));
+  }
+
+  /**
+   * Method under test:
+   * {@link MergeXmlBeanDefinitionReader.MergeBeanDefinitionDocumentReader#getBeanId(Element)}
+   */
+  @Test
+  public void testMergeBeanDefinitionDocumentReaderGetBeanId3() {
+    // Arrange
+    MergeXmlBeanDefinitionReader.MergeBeanDefinitionDocumentReader mergeBeanDefinitionDocumentReader = new MergeXmlBeanDefinitionReader.MergeBeanDefinitionDocumentReader();
+
+    HTMLDocumentImpl htmlDocumentImpl = new HTMLDocumentImpl();
+    htmlDocumentImpl.addEventListener("foo", mock(EventListener.class), true);
+
+    HTMLAnchorElementImpl ele = new HTMLAnchorElementImpl(htmlDocumentImpl, "id");
+    ele.setAttribute("id", "id");
+
+    // Act and Assert
+    assertEquals("id", mergeBeanDefinitionDocumentReader.getBeanId(ele));
+  }
+
+  /**
+   * Method under test:
+   * {@link MergeXmlBeanDefinitionReader.MergeBeanDefinitionDocumentReader#getBeanId(Element)}
+   */
+  @Test
+  public void testMergeBeanDefinitionDocumentReaderGetBeanId4() {
+    // Arrange
+    MergeXmlBeanDefinitionReader.MergeBeanDefinitionDocumentReader mergeBeanDefinitionDocumentReader = new MergeXmlBeanDefinitionReader.MergeBeanDefinitionDocumentReader();
+
+    HTMLDocumentImpl htmlDocumentImpl = new HTMLDocumentImpl();
+    htmlDocumentImpl.addEventListener("foo", mock(EventListener.class), true);
+
+    HTMLAnchorElementImpl ele = new HTMLAnchorElementImpl(htmlDocumentImpl, "id");
+    ele.setAttribute("name", "id");
+
+    // Act and Assert
+    assertEquals("id", mergeBeanDefinitionDocumentReader.getBeanId(ele));
+  }
+
+  /**
+   * Method under test:
+   * {@link MergeXmlBeanDefinitionReader.MergeBeanDefinitionDocumentReader#isXMLBean(BeanDefinition)}
+   */
+  @Test
+  public void testMergeBeanDefinitionDocumentReaderIsXMLBean() {
+    // Arrange
+    MergeXmlBeanDefinitionReader.MergeBeanDefinitionDocumentReader mergeBeanDefinitionDocumentReader = new MergeXmlBeanDefinitionReader.MergeBeanDefinitionDocumentReader();
+
+    // Act and Assert
+    assertFalse(mergeBeanDefinitionDocumentReader.isXMLBean(new GenericBeanDefinition()));
+  }
+
+  /**
+   * Method under test:
+   * {@link MergeXmlBeanDefinitionReader.MergeBeanDefinitionDocumentReader#isXMLBean(BeanDefinition)}
+   */
+  @Test
+  public void testMergeBeanDefinitionDocumentReaderIsXMLBean2() {
+    // Arrange, Act and Assert
+    assertFalse((new MergeXmlBeanDefinitionReader.MergeBeanDefinitionDocumentReader()).isXMLBean(null));
+  }
+
+  /**
+   * Method under test:
+   * {@link MergeXmlBeanDefinitionReader.MergeBeanDefinitionDocumentReader#isXMLBean(BeanDefinition)}
+   */
+  @Test
+  public void testMergeBeanDefinitionDocumentReaderIsXMLBean3() throws UnsupportedEncodingException {
+    // Arrange
+    MergeXmlBeanDefinitionReader.MergeBeanDefinitionDocumentReader mergeBeanDefinitionDocumentReader = new MergeXmlBeanDefinitionReader.MergeBeanDefinitionDocumentReader();
+    MetadataReader metadataReader = mock(MetadataReader.class);
+    when(metadataReader.getResource())
+        .thenReturn(new GeneratedResource("AXAXAXAX".getBytes("UTF-8"), "The characteristics of someone or something"));
+    Class<Object> introspectedClass = Object.class;
+    when(metadataReader.getAnnotationMetadata()).thenReturn(new StandardAnnotationMetadata(introspectedClass));
+
+    // Act
+    boolean actualIsXMLBeanResult = mergeBeanDefinitionDocumentReader
+        .isXMLBean(new ScannedGenericBeanDefinition(metadataReader));
+
+    // Assert
+    verify(metadataReader).getAnnotationMetadata();
+    verify(metadataReader).getResource();
+    assertFalse(actualIsXMLBeanResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link MergeXmlBeanDefinitionReader.MergeBeanDefinitionDocumentReader#isXMLBean(BeanDefinition)}
+   */
+  @Test
+  public void testMergeBeanDefinitionDocumentReaderIsXMLBean4() throws UnsupportedEncodingException {
+    // Arrange
+    MergeXmlBeanDefinitionReader.MergeBeanDefinitionDocumentReader mergeBeanDefinitionDocumentReader = new MergeXmlBeanDefinitionReader.MergeBeanDefinitionDocumentReader();
+    MetadataReader metadataReader = mock(MetadataReader.class);
+    when(metadataReader.getResource()).thenReturn(new GeneratedResource("AXAXAXAX".getBytes("UTF-8"), ".xml"));
+    Class<Object> introspectedClass = Object.class;
+    when(metadataReader.getAnnotationMetadata()).thenReturn(new StandardAnnotationMetadata(introspectedClass));
+
+    // Act
+    boolean actualIsXMLBeanResult = mergeBeanDefinitionDocumentReader
+        .isXMLBean(new ScannedGenericBeanDefinition(metadataReader));
+
+    // Assert
+    verify(metadataReader).getAnnotationMetadata();
+    verify(metadataReader).getResource();
+    assertTrue(actualIsXMLBeanResult);
+  }
+
+  /**
+   * Method under test: default or parameterless constructor of
+   * {@link MergeXmlBeanDefinitionReader.MergeBeanDefinitionDocumentReader}
+   */
+  @Test
+  public void testMergeBeanDefinitionDocumentReaderNewMergeBeanDefinitionDocumentReader() {
+    // Arrange and Act
+    MergeXmlBeanDefinitionReader.MergeBeanDefinitionDocumentReader actualMergeBeanDefinitionDocumentReader = new MergeXmlBeanDefinitionReader.MergeBeanDefinitionDocumentReader();
+    HTMLDocumentImpl doc = new HTMLDocumentImpl();
+    GeneratedResource resource = new GeneratedResource();
+    FailFastProblemReporter problemReporter = new FailFastProblemReporter();
+    EmptyReaderEventListener eventListener = new EmptyReaderEventListener();
+    NullSourceExtractor sourceExtractor = new NullSourceExtractor();
+    XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(new DefaultListableBeanFactory());
+    actualMergeBeanDefinitionDocumentReader.registerBeanDefinitions(doc, new XmlReaderContext(resource, problemReporter,
+        eventListener, sourceExtractor, reader, new DefaultNamespaceHandlerResolver()));
+
+    // Assert
+    assertFalse(actualMergeBeanDefinitionDocumentReader.isXMLBean(null));
+  }
+
+  /**
+   * Method under test:
+   * {@link MergeXmlBeanDefinitionReader.MergeBeanDefinitionDocumentReader#processBeanDefinition(Element, BeanDefinitionParserDelegate)}
+   */
+  @Test
+  public void testMergeBeanDefinitionDocumentReaderProcessBeanDefinition() {
+    // Arrange
+    MergeXmlBeanDefinitionReader.MergeBeanDefinitionDocumentReader mergeBeanDefinitionDocumentReader = new MergeXmlBeanDefinitionReader.MergeBeanDefinitionDocumentReader();
+    HTMLDocumentImpl doc = new HTMLDocumentImpl();
+    GeneratedResource resource = new GeneratedResource();
+    FailFastProblemReporter problemReporter = new FailFastProblemReporter();
+    EmptyReaderEventListener eventListener = new EmptyReaderEventListener();
+    NullSourceExtractor sourceExtractor = new NullSourceExtractor();
+    XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(new DefaultListableBeanFactory());
+    mergeBeanDefinitionDocumentReader.registerBeanDefinitions(doc, new XmlReaderContext(resource, problemReporter,
+        eventListener, sourceExtractor, reader, new DefaultNamespaceHandlerResolver()));
+    DefaultElement ele = mock(DefaultElement.class);
+    when(ele.getAttributes()).thenReturn(new DOMAttributeNodeMap(new DOMElement("Name")));
+    when(ele.hasAttribute(Mockito.<String>any())).thenReturn(false);
+    when(ele.getAttribute(Mockito.<String>any())).thenReturn("Attribute");
+    when(ele.getChildNodes()).thenReturn(new IIOMetadataNode("foo"));
+    GeneratedResource resource2 = new GeneratedResource();
+    FailFastProblemReporter problemReporter2 = new FailFastProblemReporter();
+    EmptyReaderEventListener eventListener2 = new EmptyReaderEventListener();
+    NullSourceExtractor sourceExtractor2 = new NullSourceExtractor();
+    XmlBeanDefinitionReader reader2 = new XmlBeanDefinitionReader(new DefaultListableBeanFactory());
+
+    // Act
+    mergeBeanDefinitionDocumentReader.processBeanDefinition(ele,
+        new BeanDefinitionParserDelegate(new XmlReaderContext(resource2, problemReporter2, eventListener2,
+            sourceExtractor2, reader2, new DefaultNamespaceHandlerResolver())));
+
+    // Assert
+    verify(ele, atLeast(1)).getAttribute(Mockito.<String>any());
+    verify(ele, atLeast(1)).hasAttribute(Mockito.<String>any());
+    verify(ele).getAttributes();
+    verify(ele, atLeast(1)).getChildNodes();
   }
 }

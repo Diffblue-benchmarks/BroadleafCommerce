@@ -21,40 +21,27 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 import org.broadleafcommerce.common.email.service.message.Attachment;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/context/config/client-override.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(SpringJUnit4ClassRunner.class)
 public class EmailInfoDiffblueTest {
-  @Autowired private EmailInfo emailInfo;
-
   /**
-   * Test {@link EmailInfo#addHeader(String, String)}.
-   *
-   * <p>Method under test: {@link EmailInfo#addHeader(String, String)}
+   * Method under test: {@link EmailInfo#addHeader(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void EmailInfo.addHeader(String, String)"})
   public void testAddHeader() {
-    // Arrange and Act
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EmailInfo emailInfo = new EmailInfo();
+
+    // Act
     emailInfo.addHeader("Key", "42");
 
     // Assert
@@ -64,23 +51,42 @@ public class EmailInfoDiffblueTest {
   }
 
   /**
-   * Test {@link EmailInfo#clone()}.
-   *
-   * <p>Method under test: {@link EmailInfo#clone()}
+   * Method under test: {@link EmailInfo#addHeader(String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"EmailInfo EmailInfo.clone()"})
+  public void testAddHeader2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    HashMap<String, String> headers = new HashMap<>();
+    headers.computeIfPresent("foo", mock(BiFunction.class));
+    headers.put("Delivered-To", "alice.liddell@example.org");
+
+    EmailInfo emailInfo = new EmailInfo();
+    emailInfo.setHeaders(headers);
+
+    // Act
+    emailInfo.addHeader("Key", "42");
+
+    // Assert
+    assertSame(headers, emailInfo.getHeaders());
+  }
+
+  /**
+   * Method under test: {@link EmailInfo#clone()}
+   */
+  @Test
   public void testClone() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange and Act
-    EmailInfo actualCloneResult = emailInfo.clone();
+    EmailInfo actualCloneResult = (new EmailInfo()).clone();
 
     // Assert
     assertEquals("UTF8", actualCloneResult.getEncoding());
-    assertEquals("framework", actualCloneResult.getFromAddress());
     assertNull(actualCloneResult.getEmailTemplate());
     assertNull(actualCloneResult.getEmailType());
+    assertNull(actualCloneResult.getFromAddress());
     assertNull(actualCloneResult.getMessageBody());
     assertNull(actualCloneResult.getSendAsyncPriority());
     assertNull(actualCloneResult.getSendEmailReliableAsync());
@@ -90,10 +96,41 @@ public class EmailInfoDiffblueTest {
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Method under test: {@link EmailInfo#clone()}
+   */
+  @Test
+  public void testClone2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    HashMap<String, String> headers = new HashMap<>();
+    headers.computeIfPresent("foo", mock(BiFunction.class));
+    headers.put("Delivered-To", "alice.liddell@example.org");
+
+    EmailInfo emailInfo = new EmailInfo();
+    emailInfo.setHeaders(headers);
+
+    // Act
+    EmailInfo actualCloneResult = emailInfo.clone();
+
+    // Assert
+    assertEquals("UTF8", actualCloneResult.getEncoding());
+    Map<String, String> headers2 = actualCloneResult.getHeaders();
+    assertEquals(1, headers2.size());
+    assertEquals("alice.liddell@example.org", headers2.get("Delivered-To"));
+    assertNull(actualCloneResult.getEmailTemplate());
+    assertNull(actualCloneResult.getEmailType());
+    assertNull(actualCloneResult.getFromAddress());
+    assertNull(actualCloneResult.getMessageBody());
+    assertNull(actualCloneResult.getSendAsyncPriority());
+    assertNull(actualCloneResult.getSendEmailReliableAsync());
+    assertNull(actualCloneResult.getSubject());
+    assertTrue(actualCloneResult.getAttachments().isEmpty());
+    assertSame(headers, headers2);
+  }
+
+  /**
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link EmailInfo}
    *   <li>{@link EmailInfo#setAttachments(List)}
@@ -119,31 +156,6 @@ public class EmailInfoDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void EmailInfo.<init>()",
-    "List EmailInfo.getAttachments()",
-    "String EmailInfo.getEmailTemplate()",
-    "String EmailInfo.getEmailType()",
-    "String EmailInfo.getEncoding()",
-    "String EmailInfo.getFromAddress()",
-    "Map EmailInfo.getHeaders()",
-    "String EmailInfo.getMessageBody()",
-    "String EmailInfo.getSendAsyncPriority()",
-    "String EmailInfo.getSendEmailReliableAsync()",
-    "String EmailInfo.getSubject()",
-    "void EmailInfo.setAttachments(List)",
-    "void EmailInfo.setEmailTemplate(String)",
-    "void EmailInfo.setEmailType(String)",
-    "void EmailInfo.setEncoding(String)",
-    "void EmailInfo.setFromAddress(String)",
-    "void EmailInfo.setHeaders(Map)",
-    "void EmailInfo.setMessageBody(String)",
-    "void EmailInfo.setSendAsyncPriority(String)",
-    "void EmailInfo.setSendEmailReliableAsync(String)",
-    "void EmailInfo.setSubject(String)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     EmailInfo actualEmailInfo = new EmailInfo();
@@ -170,7 +182,7 @@ public class EmailInfoDiffblueTest {
     String actualSendAsyncPriority = actualEmailInfo.getSendAsyncPriority();
     String actualSendEmailReliableAsync = actualEmailInfo.getSendEmailReliableAsync();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("42 Main St", actualFromAddress);
     assertEquals("Hello from the Dreaming Spires", actualEmailInfo.getSubject());
     assertEquals("Not all who wander are lost", actualMessageBody);

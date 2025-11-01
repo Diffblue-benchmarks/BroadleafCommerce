@@ -20,54 +20,28 @@ package org.broadleafcommerce.profile.core.domain;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class CountryImplDiffblueTest {
-  @Autowired private CountryImpl countryImpl;
-
   /**
-   * Test {@link CountryImpl#getName()}.
-   *
-   * <p>Method under test: {@link CountryImpl#getName()}
+   * Method under test: {@link CountryImpl#getName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String CountryImpl.getName()"})
   public void testGetName() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertNull(countryImpl.getName());
+    assertNull((new CountryImpl()).getName());
   }
 
   /**
-   * Test {@link CountryImpl#equals(Object)}, and {@link CountryImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link CountryImpl#equals(Object)}
    *   <li>{@link CountryImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean CountryImpl.equals(Object)", "int CountryImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     CountryImpl countryImpl = new CountryImpl();
@@ -80,28 +54,18 @@ public class CountryImplDiffblueTest {
 
     // Act and Assert
     assertEquals(countryImpl, countryImpl2);
-    assertEquals(countryImpl.hashCode(), countryImpl2.hashCode());
+    int expectedHashCodeResult = countryImpl.hashCode();
+    assertEquals(expectedHashCodeResult, countryImpl2.hashCode());
   }
 
   /**
-   * Test {@link CountryImpl#equals(Object)}, and {@link CountryImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link CountryImpl#equals(Object)}
    *   <li>{@link CountryImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean CountryImpl.equals(Object)", "int CountryImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     CountryImpl countryImpl = new CountryImpl();
@@ -114,28 +78,18 @@ public class CountryImplDiffblueTest {
 
     // Act and Assert
     assertEquals(countryImpl, countryImpl2);
-    assertEquals(countryImpl.hashCode(), countryImpl2.hashCode());
+    int expectedHashCodeResult = countryImpl.hashCode();
+    assertEquals(expectedHashCodeResult, countryImpl2.hashCode());
   }
 
   /**
-   * Test {@link CountryImpl#equals(Object)}, and {@link CountryImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link CountryImpl#equals(Object)}
    *   <li>{@link CountryImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean CountryImpl.equals(Object)", "int CountryImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     CountryImpl countryImpl = new CountryImpl();
@@ -148,28 +102,18 @@ public class CountryImplDiffblueTest {
 
     // Act and Assert
     assertEquals(countryImpl, countryImpl2);
-    assertEquals(countryImpl.hashCode(), countryImpl2.hashCode());
+    int expectedHashCodeResult = countryImpl.hashCode();
+    assertEquals(expectedHashCodeResult, countryImpl2.hashCode());
   }
 
   /**
-   * Test {@link CountryImpl#equals(Object)}, and {@link CountryImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link CountryImpl#equals(Object)}
    *   <li>{@link CountryImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean CountryImpl.equals(Object)", "int CountryImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     CountryImpl countryImpl = new CountryImpl();
@@ -183,19 +127,20 @@ public class CountryImplDiffblueTest {
   }
 
   /**
-   * Test {@link CountryImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link CountryImpl#equals(Object)}
+   * Method under test: {@link CountryImpl#getMainEntityName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean CountryImpl.equals(Object)", "int CountryImpl.hashCode()"})
+  public void testGetMainEntityName() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertNull((new CountryImpl()).getMainEntityName());
+  }
+
+  /**
+   * Method under test: {@link CountryImpl#equals(Object)}
+   */
+  @Test
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     CountryImpl countryImpl = new CountryImpl();
@@ -211,19 +156,9 @@ public class CountryImplDiffblueTest {
   }
 
   /**
-   * Test {@link CountryImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link CountryImpl#equals(Object)}
+   * Method under test: {@link CountryImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean CountryImpl.equals(Object)", "int CountryImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     CountryImpl countryImpl = new CountryImpl();
@@ -239,19 +174,9 @@ public class CountryImplDiffblueTest {
   }
 
   /**
-   * Test {@link CountryImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link CountryImpl#equals(Object)}
+   * Method under test: {@link CountryImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean CountryImpl.equals(Object)", "int CountryImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     CountryImpl countryImpl = new CountryImpl();
@@ -267,19 +192,9 @@ public class CountryImplDiffblueTest {
   }
 
   /**
-   * Test {@link CountryImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link CountryImpl#equals(Object)}
+   * Method under test: {@link CountryImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean CountryImpl.equals(Object)", "int CountryImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     CountryImpl countryImpl = new CountryImpl();
@@ -295,19 +210,9 @@ public class CountryImplDiffblueTest {
   }
 
   /**
-   * Test {@link CountryImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link CountryImpl#equals(Object)}
+   * Method under test: {@link CountryImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean CountryImpl.equals(Object)", "int CountryImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     CountryImpl countryImpl = new CountryImpl();
@@ -319,19 +224,9 @@ public class CountryImplDiffblueTest {
   }
 
   /**
-   * Test {@link CountryImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link CountryImpl#equals(Object)}
+   * Method under test: {@link CountryImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean CountryImpl.equals(Object)", "int CountryImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     CountryImpl countryImpl = new CountryImpl();
@@ -343,24 +238,7 @@ public class CountryImplDiffblueTest {
   }
 
   /**
-   * Test {@link CountryImpl#getMainEntityName()}.
-   *
-   * <p>Method under test: {@link CountryImpl#getMainEntityName()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String CountryImpl.getMainEntityName()"})
-  public void testGetMainEntityName() {
-    // Arrange, Act and Assert
-    assertNull(countryImpl.getMainEntityName());
-  }
-
-  /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link CountryImpl}
    *   <li>{@link CountryImpl#setAbbreviation(String)}
@@ -369,21 +247,13 @@ public class CountryImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CountryImpl.<init>()",
-    "String CountryImpl.getAbbreviation()",
-    "void CountryImpl.setAbbreviation(String)",
-    "void CountryImpl.setName(String)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     CountryImpl actualCountryImpl = new CountryImpl();
     actualCountryImpl.setAbbreviation("Abbreviation");
     actualCountryImpl.setName("Name");
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("Abbreviation", actualCountryImpl.getAbbreviation());
   }
 }

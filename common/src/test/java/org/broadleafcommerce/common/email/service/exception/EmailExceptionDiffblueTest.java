@@ -20,32 +20,14 @@ package org.broadleafcommerce.common.email.service.exception;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class EmailExceptionDiffblueTest {
   /**
-   * Test {@link EmailException#EmailException()}.
-   *
-   * <ul>
-   *   <li>Then return Message is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EmailException#EmailException()}
+   * Method under test: {@link EmailException#EmailException()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void EmailException.<init>()",
-    "void EmailException.<init>(String)",
-    "void EmailException.<init>(String, Throwable)",
-    "void EmailException.<init>(Throwable)"
-  })
-  public void testNewEmailException_thenReturnMessageIsNull() {
+  public void testNewEmailException() {
     // Arrange and Act
     EmailException actualEmailException = new EmailException();
 
@@ -56,25 +38,10 @@ public class EmailExceptionDiffblueTest {
   }
 
   /**
-   * Test {@link EmailException#EmailException(String)}.
-   *
-   * <ul>
-   *   <li>When {@code Arg0}.
-   *   <li>Then return Message is {@code Arg0}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EmailException#EmailException(String)}
+   * Method under test: {@link EmailException#EmailException(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void EmailException.<init>()",
-    "void EmailException.<init>(String)",
-    "void EmailException.<init>(String, Throwable)",
-    "void EmailException.<init>(Throwable)"
-  })
-  public void testNewEmailException_whenArg0_thenReturnMessageIsArg0() {
+  public void testNewEmailException2() {
     // Arrange and Act
     EmailException actualEmailException = new EmailException("Arg0");
 
@@ -85,25 +52,10 @@ public class EmailExceptionDiffblueTest {
   }
 
   /**
-   * Test {@link EmailException#EmailException(String, Throwable)}.
-   *
-   * <ul>
-   *   <li>When {@code Arg0}.
-   *   <li>Then return Message is {@code Arg0}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EmailException#EmailException(String, Throwable)}
+   * Method under test: {@link EmailException#EmailException(String, Throwable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void EmailException.<init>()",
-    "void EmailException.<init>(String)",
-    "void EmailException.<init>(String, Throwable)",
-    "void EmailException.<init>(Throwable)"
-  })
-  public void testNewEmailException_whenArg0_thenReturnMessageIsArg02() {
+  public void testNewEmailException3() {
     // Arrange
     Throwable arg1 = new Throwable();
 
@@ -117,25 +69,10 @@ public class EmailExceptionDiffblueTest {
   }
 
   /**
-   * Test {@link EmailException#EmailException(Throwable)}.
-   *
-   * <ul>
-   *   <li>When {@link Throwable#Throwable()}.
-   *   <li>Then return Message is {@code Throwable}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EmailException#EmailException(Throwable)}
+   * Method under test: {@link EmailException#EmailException(Throwable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void EmailException.<init>()",
-    "void EmailException.<init>(String)",
-    "void EmailException.<init>(String, Throwable)",
-    "void EmailException.<init>(Throwable)"
-  })
-  public void testNewEmailException_whenThrowable_thenReturnMessageIsJavaLangThrowable() {
+  public void testNewEmailException4() {
     // Arrange
     Throwable arg0 = new Throwable();
 

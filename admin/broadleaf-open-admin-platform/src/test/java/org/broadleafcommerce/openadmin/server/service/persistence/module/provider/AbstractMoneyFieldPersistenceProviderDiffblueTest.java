@@ -18,9 +18,9 @@
 package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,104 +34,62 @@ import org.broadleafcommerce.openadmin.server.service.persistence.module.FieldMa
 import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.ExtractValueRequest;
 import org.broadleafcommerce.openadmin.server.service.type.MetadataProviderResponse;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mvel2.util.InternalNumber;
 
-@ContextConfiguration(classes = {MoneyFieldPersistenceProvider.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class AbstractMoneyFieldPersistenceProviderDiffblueTest {
-  @Autowired private AbstractMoneyFieldPersistenceProvider abstractMoneyFieldPersistenceProvider;
-
   /**
-   * Test {@link AbstractMoneyFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}.
-   *
-   * <ul>
-   *   <li>Then return {@code NOT_HANDLED}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AbstractMoneyFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}
+   * Method under test:
+   * {@link AbstractMoneyFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "MetadataProviderResponse AbstractMoneyFieldPersistenceProvider.extractValue(ExtractValueRequest, Property)"
-  })
-  public void testExtractValue_thenReturnNotHandled() throws PersistenceException {
+  public void testExtractValue() throws PersistenceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    MoneyFieldPersistenceProvider moneyFieldPersistenceProvider = new MoneyFieldPersistenceProvider();
     ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+    FieldManager fieldManager = new FieldManager(mock(EntityConfiguration.class), null);
+
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
     AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            "Requested Value",
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
+    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
+        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
+        new String[]{"Custom Criteria"});
 
     // Act and Assert
-    assertEquals(
-        MetadataProviderResponse.NOT_HANDLED,
-        abstractMoneyFieldPersistenceProvider.extractValue(extractValueRequest, new Property()));
+    assertEquals(MetadataProviderResponse.NOT_HANDLED,
+        moneyFieldPersistenceProvider.extractValue(extractValueRequest, new Property()));
   }
 
   /**
-   * Test {@link AbstractMoneyFieldPersistenceProvider#formatValue(BigDecimal, ExtractValueRequest,
-   * Property)}.
-   *
-   * <ul>
-   *   <li>When {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.
-   *   <li>Then return {@code 2.30}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractMoneyFieldPersistenceProvider#formatValue(BigDecimal,
-   * ExtractValueRequest, Property)}
+   * Method under test:
+   * {@link AbstractMoneyFieldPersistenceProvider#formatValue(BigDecimal, ExtractValueRequest, Property)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String AbstractMoneyFieldPersistenceProvider.formatValue(BigDecimal, ExtractValueRequest, Property)"
-  })
-  public void testFormatValue_whenBigDecimalWith23_thenReturn230() {
+  public void testFormatValue() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    BigDecimal value = new BigDecimal("2.3");
+    MoneyFieldPersistenceProvider moneyFieldPersistenceProvider = new MoneyFieldPersistenceProvider();
+    InternalNumber value = mock(InternalNumber.class);
+    when(value.signum()).thenReturn(10);
     ArrayList<Property> props = new ArrayList<>();
     FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
     AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
+    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
+        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
+        new String[]{"Custom Criteria"});
 
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            "Requested Value",
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
+    // Act
+    String actualFormatValueResult = moneyFieldPersistenceProvider.formatValue(value, extractValueRequest,
+        new Property());
 
-    // Act and Assert
-    assertEquals(
-        "2.30",
-        abstractMoneyFieldPersistenceProvider.formatValue(
-            value, extractValueRequest, new Property()));
+    // Assert
+    verify(value).signum();
+    assertEquals("Mock for Int.00", actualFormatValueResult);
   }
 }

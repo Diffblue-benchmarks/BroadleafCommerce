@@ -20,11 +20,7 @@ package org.broadleafcommerce.common.site.service.type;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -33,17 +29,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {SiteResolutionType.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class SiteResolutionTypeDiffblueTest {
-  @Autowired private SiteResolutionType siteResolutionType;
+  @Autowired
+  private SiteResolutionType siteResolutionType;
 
   /**
-   * Test {@link SiteResolutionType#getInstance(String)}.
-   *
-   * <p>Method under test: {@link SiteResolutionType#getInstance(String)}
+   * Method under test: {@link SiteResolutionType#getInstance(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"SiteResolutionType SiteResolutionType.getInstance(String)"})
   public void testGetInstance() {
     // Arrange and Act
     SiteResolutionType actualInstance = SiteResolutionType.getInstance("Type");
@@ -54,74 +46,13 @@ public class SiteResolutionTypeDiffblueTest {
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link SiteResolutionType#SiteResolutionType()}
-   *   <li>{@link SiteResolutionType#getFriendlyType()}
-   *   <li>{@link SiteResolutionType#getType()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SiteResolutionType.<init>()",
-    "String SiteResolutionType.getFriendlyType()",
-    "String SiteResolutionType.getType()"
-  })
-  public void testGettersAndSetters() {
-    // Arrange and Act
-    SiteResolutionType actualSiteResolutionType = new SiteResolutionType();
-    String actualFriendlyType = actualSiteResolutionType.getFriendlyType();
-
-    // Assert
-    assertNull(actualFriendlyType);
-    assertNull(actualSiteResolutionType.getType());
-  }
-
-  /**
-   * Test {@link SiteResolutionType#SiteResolutionType(String, String)}.
-   *
-   * <p>Method under test: {@link SiteResolutionType#SiteResolutionType(String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SiteResolutionType.<init>(String, String)"})
-  public void testNewSiteResolutionType() {
-    // Arrange and Act
-    SiteResolutionType actualSiteResolutionType = new SiteResolutionType("Type", "Friendly Type");
-
-    // Assert
-    assertEquals("Friendly Type", actualSiteResolutionType.getFriendlyType());
-    assertEquals("Type", actualSiteResolutionType.getType());
-  }
-
-  /**
-   * Test {@link SiteResolutionType#equals(Object)}, and {@link SiteResolutionType#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link SiteResolutionType#equals(Object)}
    *   <li>{@link SiteResolutionType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SiteResolutionType.equals(Object)",
-    "int SiteResolutionType.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     SiteResolutionType siteResolutionType = SiteResolutionType.DOMAIN;
@@ -129,96 +60,56 @@ public class SiteResolutionTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(siteResolutionType, siteResolutionType2);
-    assertEquals(siteResolutionType.hashCode(), siteResolutionType2.hashCode());
+    int expectedHashCodeResult = siteResolutionType.hashCode();
+    assertEquals(expectedHashCodeResult, siteResolutionType2.hashCode());
   }
 
   /**
-   * Test {@link SiteResolutionType#equals(Object)}, and {@link SiteResolutionType#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link SiteResolutionType#equals(Object)}
    *   <li>{@link SiteResolutionType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SiteResolutionType.equals(Object)",
-    "int SiteResolutionType.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
-    // Arrange
-    SiteResolutionType siteResolutionType = SiteResolutionType.DOMAIN_PREFIX;
-    SiteResolutionType siteResolutionType2 =
-        new SiteResolutionType("DOMAIN_PREFIX", "DOMAIN_PREFIX");
-
-    // Act and Assert
-    assertEquals(siteResolutionType, siteResolutionType2);
-    assertEquals(siteResolutionType.hashCode(), siteResolutionType2.hashCode());
-  }
-
-  /**
-   * Test {@link SiteResolutionType#equals(Object)}, and {@link SiteResolutionType#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link SiteResolutionType#equals(Object)}
-   *   <li>{@link SiteResolutionType#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SiteResolutionType.equals(Object)",
-    "int SiteResolutionType.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     SiteResolutionType siteResolutionType = new SiteResolutionType();
     SiteResolutionType siteResolutionType2 = new SiteResolutionType();
 
     // Act and Assert
     assertEquals(siteResolutionType, siteResolutionType2);
-    assertEquals(siteResolutionType.hashCode(), siteResolutionType2.hashCode());
+    int expectedHashCodeResult = siteResolutionType.hashCode();
+    assertEquals(expectedHashCodeResult, siteResolutionType2.hashCode());
   }
 
   /**
-   * Test {@link SiteResolutionType#equals(Object)}, and {@link SiteResolutionType#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link SiteResolutionType#equals(Object)}
    *   <li>{@link SiteResolutionType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SiteResolutionType.equals(Object)",
-    "int SiteResolutionType.hashCode()"
-  })
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
+    // Arrange
+    SiteResolutionType siteResolutionType = new SiteResolutionType("DOMAIN", "Friendly Type");
+    SiteResolutionType siteResolutionType2 = SiteResolutionType.DOMAIN;
+
+    // Act and Assert
+    assertEquals(siteResolutionType, siteResolutionType2);
+    int expectedHashCodeResult = siteResolutionType.hashCode();
+    assertEquals(expectedHashCodeResult, siteResolutionType2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link SiteResolutionType#equals(Object)}
+   *   <li>{@link SiteResolutionType#hashCode()}
+   * </ul>
+   */
+  @Test
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     SiteResolutionType siteResolutionType = SiteResolutionType.DOMAIN;
@@ -230,90 +121,63 @@ public class SiteResolutionTypeDiffblueTest {
   }
 
   /**
-   * Test {@link SiteResolutionType#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteResolutionType#equals(Object)}
+   * Method under test: {@link SiteResolutionType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SiteResolutionType.equals(Object)",
-    "int SiteResolutionType.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(SiteResolutionType.DOMAIN_PREFIX, SiteResolutionType.DOMAIN);
-  }
-
-  /**
-   * Test {@link SiteResolutionType#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteResolutionType#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SiteResolutionType.equals(Object)",
-    "int SiteResolutionType.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
-    // Arrange, Act and Assert
     assertNotEquals(new SiteResolutionType(), SiteResolutionType.DOMAIN);
   }
 
   /**
-   * Test {@link SiteResolutionType#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteResolutionType#equals(Object)}
+   * Method under test: {@link SiteResolutionType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SiteResolutionType.equals(Object)",
-    "int SiteResolutionType.hashCode()"
-  })
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(SiteResolutionType.DOMAIN, null);
   }
 
   /**
-   * Test {@link SiteResolutionType#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteResolutionType#equals(Object)}
+   * Method under test: {@link SiteResolutionType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SiteResolutionType.equals(Object)",
-    "int SiteResolutionType.hashCode()"
-  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(SiteResolutionType.DOMAIN, "Different type to SiteResolutionType");
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link SiteResolutionType#SiteResolutionType()}
+   *   <li>{@link SiteResolutionType#getFriendlyType()}
+   *   <li>{@link SiteResolutionType#getType()}
+   * </ul>
+   */
+  @Test
+  public void testGettersAndSetters() {
+    // Arrange and Act
+    SiteResolutionType actualSiteResolutionType = new SiteResolutionType();
+    String actualFriendlyType = actualSiteResolutionType.getFriendlyType();
+
+    // Assert
+    assertNull(actualFriendlyType);
+    assertNull(actualSiteResolutionType.getType());
+  }
+
+  /**
+   * Method under test:
+   * {@link SiteResolutionType#SiteResolutionType(String, String)}
+   */
+  @Test
+  public void testNewSiteResolutionType() {
+    // Arrange and Act
+    SiteResolutionType actualSiteResolutionType = new SiteResolutionType("Type", "Friendly Type");
+
+    // Assert
+    assertEquals("Friendly Type", actualSiteResolutionType.getFriendlyType());
+    assertEquals("Type", actualSiteResolutionType.getType());
   }
 }

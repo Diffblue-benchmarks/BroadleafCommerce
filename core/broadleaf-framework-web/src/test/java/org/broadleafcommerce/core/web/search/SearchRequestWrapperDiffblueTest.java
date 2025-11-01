@@ -19,97 +19,68 @@ package org.broadleafcommerce.core.web.search;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import org.broadleafcommerce.core.web.security.XssRequestWrapper;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 class SearchRequestWrapperDiffblueTest {
   /**
-   * Test {@link SearchRequestWrapper#SearchRequestWrapper(HttpServletRequest)}.
-   *
-   * <p>Method under test: {@link SearchRequestWrapper#SearchRequestWrapper(HttpServletRequest)}
+   * Method under test: {@link SearchRequestWrapper#getParameterValues(String)}
    */
   @Test
-  @DisplayName("Test new SearchRequestWrapper(HttpServletRequest)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SearchRequestWrapper.<init>(HttpServletRequest)"})
+  void testGetParameterValues() {
+    // Arrange
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+
+    // Act and Assert
+    assertNull((new SearchRequestWrapper(new XssRequestWrapper(servletRequest, new StandardReactiveWebEnvironment(),
+        new String[]{"White List Param Names"}))).getParameterValues("Parameter"));
+  }
+
+  /**
+   * Method under test: {@link SearchRequestWrapper#getParameterValues(String)}
+   */
+  @Test
+  void testGetParameterValues2() {
+    // Arrange
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+
+    // Act and Assert
+    assertNull((new SearchRequestWrapper(new XssRequestWrapper(servletRequest, new StandardReactiveWebEnvironment(),
+        new String[]{"White List Param Names"}))).getParameterValues(null));
+  }
+
+  /**
+   * Method under test: {@link SearchRequestWrapper#getParameterValues(String)}
+   */
+  @Test
+  void testGetParameterValues3() {
+    // Arrange
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    HttpServletRequestWrapper servletRequest2 = new HttpServletRequestWrapper(
+        new SearchRequestWrapper(new XssRequestWrapper(servletRequest, new StandardReactiveWebEnvironment(),
+            new String[]{"White List Param Names"})));
+
+    // Act and Assert
+    assertNull((new SearchRequestWrapper(new XssRequestWrapper(servletRequest2, new StandardReactiveWebEnvironment(),
+        new String[]{"White List Param Names"}))).getParameterValues("Parameter"));
+  }
+
+  /**
+   * Method under test:
+   * {@link SearchRequestWrapper#SearchRequestWrapper(HttpServletRequest)}
+   */
+  @Test
   void testNewSearchRequestWrapper() {
     // Arrange
     MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-    String[] whiteListParamNames = new String[] {"White List Param Names"};
-
-    XssRequestWrapper request =
-        new XssRequestWrapper(
-            servletRequest, new StandardReactiveWebEnvironment(), whiteListParamNames);
-    HttpServletRequestWrapper servletRequest2 = new HttpServletRequestWrapper(request);
+    XssRequestWrapper servletRequest2 = new XssRequestWrapper(servletRequest, new StandardReactiveWebEnvironment(),
+        new String[]{"White List Param Names"});
 
     // Act and Assert
-    assertSame(servletRequest2, new SearchRequestWrapper(servletRequest2).getRequest());
-  }
-
-  /**
-   * Test {@link SearchRequestWrapper#getParameterValues(String)}.
-   *
-   * <p>Method under test: {@link SearchRequestWrapper#getParameterValues(String)}
-   */
-  @Test
-  @DisplayName("Test getParameterValues(String)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String[] SearchRequestWrapper.getParameterValues(String)"})
-  void testGetParameterValues() {
-    // Arrange, Act and Assert
-    assertNull(
-        new SearchRequestWrapper(new HttpServletRequestWrapper(new MockHttpServletRequest()))
-            .getParameterValues("Parameter"));
-  }
-
-  /**
-   * Test {@link SearchRequestWrapper#getParameterValues(String)}.
-   *
-   * <p>Method under test: {@link SearchRequestWrapper#getParameterValues(String)}
-   */
-  @Test
-  @DisplayName("Test getParameterValues(String)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String[] SearchRequestWrapper.getParameterValues(String)"})
-  void testGetParameterValues2() {
-    // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
-    HttpServletRequestWrapper servletRequest = new HttpServletRequestWrapper(request);
-
-    // Act and Assert
-    assertNull(new SearchRequestWrapper(servletRequest).getParameterValues("Parameter"));
-  }
-
-  /**
-   * Test {@link SearchRequestWrapper#getParameterValues(String)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SearchRequestWrapper#getParameterValues(String)}
-   */
-  @Test
-  @DisplayName("Test getParameterValues(String); when 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String[] SearchRequestWrapper.getParameterValues(String)"})
-  void testGetParameterValues_whenNull() {
-    // Arrange, Act and Assert
-    assertNull(
-        new SearchRequestWrapper(new HttpServletRequestWrapper(new MockHttpServletRequest()))
-            .getParameterValues(null));
+    assertSame(servletRequest2, (new SearchRequestWrapper(servletRequest2)).getRequest());
   }
 }

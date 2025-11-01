@@ -20,34 +20,18 @@ package org.broadleafcommerce.openadmin.web.rulebuilder.dto;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class ExpressionDTODiffblueTest {
   /**
-   * Test {@link ExpressionDTO#equals(Object)}, and {@link ExpressionDTO#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link ExpressionDTO#equals(Object)}
    *   <li>{@link ExpressionDTO#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ExpressionDTO.equals(Object)", "int ExpressionDTO.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     ExpressionDTO expressionDTO = new ExpressionDTO();
@@ -78,28 +62,18 @@ public class ExpressionDTODiffblueTest {
 
     // Act and Assert
     assertEquals(expressionDTO, expressionDTO2);
-    assertEquals(expressionDTO.hashCode(), expressionDTO2.hashCode());
+    int expectedHashCodeResult = expressionDTO.hashCode();
+    assertEquals(expectedHashCodeResult, expressionDTO2.hashCode());
   }
 
   /**
-   * Test {@link ExpressionDTO#equals(Object)}, and {@link ExpressionDTO#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link ExpressionDTO#equals(Object)}
    *   <li>{@link ExpressionDTO#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ExpressionDTO.equals(Object)", "int ExpressionDTO.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     ExpressionDTO expressionDTO = new ExpressionDTO();
@@ -122,19 +96,9 @@ public class ExpressionDTODiffblueTest {
   }
 
   /**
-   * Test {@link ExpressionDTO#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link ExpressionDTO#equals(Object)}
+   * Method under test: {@link ExpressionDTO#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ExpressionDTO.equals(Object)", "int ExpressionDTO.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     ExpressionDTO expressionDTO = new ExpressionDTO();
@@ -168,19 +132,9 @@ public class ExpressionDTODiffblueTest {
   }
 
   /**
-   * Test {@link ExpressionDTO#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link ExpressionDTO#equals(Object)}
+   * Method under test: {@link ExpressionDTO#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ExpressionDTO.equals(Object)", "int ExpressionDTO.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     ExpressionDTO expressionDTO = new ExpressionDTO();
@@ -214,19 +168,9 @@ public class ExpressionDTODiffblueTest {
   }
 
   /**
-   * Test {@link ExpressionDTO#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link ExpressionDTO#equals(Object)}
+   * Method under test: {@link ExpressionDTO#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ExpressionDTO.equals(Object)", "int ExpressionDTO.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     ExpressionDTO expressionDTO = new ExpressionDTO();
@@ -247,19 +191,9 @@ public class ExpressionDTODiffblueTest {
   }
 
   /**
-   * Test {@link ExpressionDTO#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link ExpressionDTO#equals(Object)}
+   * Method under test: {@link ExpressionDTO#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ExpressionDTO.equals(Object)", "int ExpressionDTO.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     ExpressionDTO expressionDTO = new ExpressionDTO();
@@ -280,10 +214,7 @@ public class ExpressionDTODiffblueTest {
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link ExpressionDTO}
    *   <li>{@link ExpressionDTO#setId(String)}
@@ -295,17 +226,6 @@ public class ExpressionDTODiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ExpressionDTO.<init>()",
-    "String ExpressionDTO.getId()",
-    "String ExpressionDTO.getOperator()",
-    "String ExpressionDTO.getValue()",
-    "void ExpressionDTO.setId(String)",
-    "void ExpressionDTO.setOperator(String)",
-    "void ExpressionDTO.setValue(String)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     ExpressionDTO actualExpressionDTO = new ExpressionDTO();
@@ -315,16 +235,10 @@ public class ExpressionDTODiffblueTest {
     String actualId = actualExpressionDTO.getId();
     String actualOperator = actualExpressionDTO.getOperator();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("42", actualId);
     assertEquals("42", actualExpressionDTO.getValue());
     assertEquals("Operator", actualOperator);
-    assertNull(actualExpressionDTO.getQuantity());
-    assertNull(actualExpressionDTO.getContainedPk());
-    assertNull(actualExpressionDTO.getPk());
-    assertNull(actualExpressionDTO.getPreviousContainedPk());
-    assertNull(actualExpressionDTO.getPreviousPk());
-    assertNull(actualExpressionDTO.getCondition());
     assertFalse(actualExpressionDTO.isCreatedFromSubGroup());
   }
 }

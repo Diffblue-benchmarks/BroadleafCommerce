@@ -21,18 +21,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class RelatedProductDTODiffblueTest {
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link RelatedProductDTO#setCategoryId(Long)}
    *   <li>{@link RelatedProductDTO#setCumulativeResults(boolean)}
@@ -47,20 +40,6 @@ public class RelatedProductDTODiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Long RelatedProductDTO.getCategoryId()",
-    "Long RelatedProductDTO.getProductId()",
-    "Integer RelatedProductDTO.getQuantity()",
-    "RelatedProductTypeEnum RelatedProductDTO.getType()",
-    "boolean RelatedProductDTO.isCumulativeResults()",
-    "void RelatedProductDTO.setCategoryId(Long)",
-    "void RelatedProductDTO.setCumulativeResults(boolean)",
-    "void RelatedProductDTO.setProductId(Long)",
-    "void RelatedProductDTO.setQuantity(Integer)",
-    "void RelatedProductDTO.setType(RelatedProductTypeEnum)"
-  })
   public void testGettersAndSetters() {
     // Arrange
     RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
@@ -77,23 +56,19 @@ public class RelatedProductDTODiffblueTest {
     RelatedProductTypeEnum actualType = relatedProductDTO.getType();
     boolean actualIsCumulativeResultsResult = relatedProductDTO.isCumulativeResults();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals(1, actualQuantity.intValue());
     assertEquals(1L, actualCategoryId.longValue());
     assertEquals(1L, actualProductId.longValue());
     assertTrue(actualIsCumulativeResultsResult);
-    assertSame(RelatedProductTypeEnum.CROSS_SALE, actualType);
+    assertSame(actualType.CROSS_SALE, actualType);
   }
 
   /**
-   * Test new {@link RelatedProductDTO} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link RelatedProductDTO}
+   * Method under test: default or parameterless constructor of
+   * {@link RelatedProductDTO}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void RelatedProductDTO.<init>()"})
   public void testNewRelatedProductDTO() {
     // Arrange and Act
     RelatedProductDTO actualRelatedProductDTO = new RelatedProductDTO();

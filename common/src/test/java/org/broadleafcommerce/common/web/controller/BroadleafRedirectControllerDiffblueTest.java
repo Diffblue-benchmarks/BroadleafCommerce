@@ -18,16 +18,13 @@
 package org.broadleafcommerce.common.web.controller;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.io.IOException;
+import java.nio.file.Paths;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
+import org.broadleafcommerce.common.web.util.FileSystemResponseWrapper;
 import org.broadleafcommerce.common.web.util.StatusExposingServletResponse;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.ui.ConcurrentModel;
@@ -35,33 +32,19 @@ import org.springframework.ui.Model;
 
 public class BroadleafRedirectControllerDiffblueTest {
   /**
-   * Test {@link BroadleafRedirectController#redirect(HttpServletRequest, HttpServletResponse,
-   * Model)}.
-   *
-   * <ul>
-   *   <li>Then return {@code ajaxredirect:}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BroadleafRedirectController#redirect(HttpServletRequest,
-   * HttpServletResponse, Model)}
+   * Method under test:
+   * {@link BroadleafRedirectController#redirect(HttpServletRequest, HttpServletResponse, Model)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.String BroadleafRedirectController.redirect(HttpServletRequest, HttpServletResponse, Model)"
-  })
-  public void testRedirect_thenReturnAjaxredirect() {
+  public void testRedirect() throws IOException {
     // Arrange
     BroadleafRedirectController broadleafRedirectController = new BroadleafRedirectController();
-    HttpServletRequestWrapper request = new HttpServletRequestWrapper(new MockHttpServletRequest());
-    HttpServletResponseWrapper response =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
+    MockHttpServletRequest request = new MockHttpServletRequest();
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse response2 = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
 
     // Act and Assert
-    assertEquals(
-        "ajaxredirect:",
-        broadleafRedirectController.redirect(request, response, new ConcurrentModel()));
+    assertEquals("ajaxredirect:", broadleafRedirectController.redirect(request, response2, new ConcurrentModel()));
   }
 }

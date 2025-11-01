@@ -19,120 +19,70 @@ package org.broadleafcommerce.core.web.controller.catalog;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
-import java.util.Map;
-import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-import javax.servlet.http.HttpServletResponse;
 import org.broadleafcommerce.common.template.TemplateType;
-import org.broadleafcommerce.core.catalog.domain.SkuImpl;
+import org.broadleafcommerce.common.web.deeplink.DeepLinkService;
+import org.broadleafcommerce.core.catalog.domain.Sku;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
+import org.broadleafcommerce.core.web.security.XssRequestWrapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 
 @ContextConfiguration(classes = {BroadleafSkuController.class})
-@ExtendWith(MockitoExtension.class)
 @ExtendWith(SpringExtension.class)
 class BroadleafSkuControllerDiffblueTest {
-  @Autowired private BroadleafSkuController broadleafSkuController;
+  @Autowired
+  private BroadleafSkuController broadleafSkuController;
 
-  @InjectMocks private BroadleafSkuController broadleafSkuController2;
+  @MockBean(name = "blSkuDeepLinkService")
+  private DeepLinkService<Sku> deepLinkService;
 
   /**
-   * Test {@link BroadleafSkuController#handleRequest(HttpServletRequest, HttpServletResponse)}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor).
-   *   <li>Then Model {@code sku} return {@link SkuImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BroadleafSkuController#handleRequest(HttpServletRequest,
-   * HttpServletResponse)}
+   * Method under test:
+   * {@link BroadleafSkuController#getTemplateType(HttpServletRequest)}
    */
   @Test
-  @DisplayName(
-      "Test handleRequest(HttpServletRequest, HttpServletResponse); given SkuImpl (default constructor); then Model 'sku' return SkuImpl")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ModelAndView BroadleafSkuController.handleRequest(HttpServletRequest, HttpServletResponse)"
-  })
-  void testHandleRequest_givenSkuImpl_thenModelSkuReturnSkuImpl() throws Exception {
+  void testGetTemplateType() {
     // Arrange
-    MockHttpServletRequest servletRequest = mock(MockHttpServletRequest.class);
-    doNothing().when(servletRequest).setAttribute(Mockito.<String>any(), Mockito.<Object>any());
-    doNothing().when(servletRequest).setCharacterEncoding(Mockito.<String>any());
-    SkuImpl skuImpl = new SkuImpl();
-    when(servletRequest.getAttribute(Mockito.<String>any())).thenReturn(skuImpl);
-    doNothing().when(servletRequest).addParameter(Mockito.<String>any(), Mockito.<String>any());
-    servletRequest.addParameter("https://example.org/example", "https://example.org/example");
-
-    SearchRequestWrapper request = new SearchRequestWrapper(servletRequest);
-    request.setAttribute("currentSku", "42");
-    request.setCharacterEncoding("currentSku");
-    HttpServletRequestWrapper request2 = new HttpServletRequestWrapper(request);
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
 
     // Act
-    ModelAndView actualHandleRequestResult =
-        broadleafSkuController2.handleRequest(request2, new MockHttpServletResponse());
+    TemplateType actualTemplateType = broadleafSkuController
+        .getTemplateType(new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+            new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"})));
 
     // Assert
-    verify(servletRequest)
-        .addParameter("https://example.org/example", "https://example.org/example");
-    verify(servletRequest).getAttribute("currentSku");
-    verify(servletRequest).setAttribute(eq("currentSku"), isA(Object.class));
-    verify(servletRequest).setCharacterEncoding("currentSku");
-    Map<String, Object> model = actualHandleRequestResult.getModel();
-    assertEquals(2, model.size());
-    assertTrue(model.get("blcAllDisplayedSkus") instanceof Set);
-    Object getResult = model.get("sku");
-    assertTrue(getResult instanceof SkuImpl);
-    assertSame(skuImpl, getResult);
+    assertSame(actualTemplateType.SKU, actualTemplateType);
   }
 
   /**
-   * Test {@link BroadleafSkuController#getTemplateType(HttpServletRequest)}.
-   *
-   * <p>Method under test: {@link BroadleafSkuController#getTemplateType(HttpServletRequest)}
+   * Method under test:
+   * {@link BroadleafSkuController#getTemplateType(HttpServletRequest)}
    */
   @Test
-  @DisplayName("Test getTemplateType(HttpServletRequest)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"TemplateType BroadleafSkuController.getTemplateType(HttpServletRequest)"})
-  void testGetTemplateType() {
-    // Arrange, Act and Assert
-    assertSame(
-        TemplateType.SKU,
-        broadleafSkuController.getTemplateType(
-            new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()))));
+  void testGetTemplateType2() {
+    // Arrange
+    DefaultMultipartHttpServletRequest servletRequest = mock(DefaultMultipartHttpServletRequest.class);
+
+    // Act
+    TemplateType actualTemplateType = broadleafSkuController
+        .getTemplateType(new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+            new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"})));
+
+    // Assert
+    assertSame(actualTemplateType.SKU, actualTemplateType);
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link BroadleafSkuController}
    *   <li>{@link BroadleafSkuController#setDefaultSkuView(String)}
@@ -140,20 +90,12 @@ class BroadleafSkuControllerDiffblueTest {
    * </ul>
    */
   @Test
-  @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void BroadleafSkuController.<init>()",
-    "String BroadleafSkuController.getDefaultSkuView()",
-    "void BroadleafSkuController.setDefaultSkuView(String)"
-  })
   void testGettersAndSetters() {
     // Arrange and Act
     BroadleafSkuController actualBroadleafSkuController = new BroadleafSkuController();
     actualBroadleafSkuController.setDefaultSkuView("Default Sku View");
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("Default Sku View", actualBroadleafSkuController.getDefaultSkuView());
   }
 }

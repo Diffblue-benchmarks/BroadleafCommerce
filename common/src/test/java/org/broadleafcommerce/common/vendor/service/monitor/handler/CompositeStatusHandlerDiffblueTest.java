@@ -24,67 +24,16 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.broadleafcommerce.common.vendor.service.monitor.StatusHandler;
 import org.broadleafcommerce.common.vendor.service.type.ServiceStatusType;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = {CompositeStatusHandler.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(SpringJUnit4ClassRunner.class)
 public class CompositeStatusHandlerDiffblueTest {
-  @Autowired private CompositeStatusHandler compositeStatusHandler;
-
   /**
-   * Test {@link CompositeStatusHandler#handleStatus(String, ServiceStatusType)}.
-   *
-   * <ul>
-   *   <li>Given {@link StatusHandler} {@link StatusHandler#handleStatus(String, ServiceStatusType)}
-   *       does nothing.
-   *   <li>Then calls {@link StatusHandler#handleStatus(String, ServiceStatusType)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link CompositeStatusHandler#handleStatus(String, ServiceStatusType)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void CompositeStatusHandler.handleStatus(String, ServiceStatusType)"})
-  public void testHandleStatus_givenStatusHandlerHandleStatusDoesNothing_thenCallsHandleStatus() {
-    // Arrange
-    StatusHandler statusHandler = mock(StatusHandler.class);
-    doNothing()
-        .when(statusHandler)
-        .handleStatus(Mockito.<String>any(), Mockito.<ServiceStatusType>any());
-
-    ArrayList<StatusHandler> handlers = new ArrayList<>();
-    handlers.add(statusHandler);
-    compositeStatusHandler.setHandlers(handlers);
-
-    // Act
-    compositeStatusHandler.handleStatus("Service Name", ServiceStatusType.DOWN);
-
-    // Assert
-    verify(statusHandler).handleStatus(eq("Service Name"), isA(ServiceStatusType.class));
-  }
-
-  /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link CompositeStatusHandler}
    *   <li>{@link CompositeStatusHandler#setHandlers(List)}
@@ -92,13 +41,6 @@ public class CompositeStatusHandlerDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CompositeStatusHandler.<init>()",
-    "List CompositeStatusHandler.getHandlers()",
-    "void CompositeStatusHandler.setHandlers(List)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     CompositeStatusHandler actualCompositeStatusHandler = new CompositeStatusHandler();
@@ -106,8 +48,33 @@ public class CompositeStatusHandlerDiffblueTest {
     actualCompositeStatusHandler.setHandlers(handlers);
     List<StatusHandler> actualHandlers = actualCompositeStatusHandler.getHandlers();
 
-    // Assert
+    // Assert that nothing has changed
     assertTrue(actualHandlers.isEmpty());
     assertSame(handlers, actualHandlers);
+  }
+
+  /**
+   * Method under test:
+   * {@link CompositeStatusHandler#handleStatus(String, ServiceStatusType)}
+   */
+  @Test
+  public void testHandleStatus() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StatusHandler statusHandler = mock(StatusHandler.class);
+    doNothing().when(statusHandler).handleStatus(Mockito.<String>any(), Mockito.<ServiceStatusType>any());
+
+    ArrayList<StatusHandler> handlers = new ArrayList<>();
+    handlers.add(statusHandler);
+
+    CompositeStatusHandler compositeStatusHandler = new CompositeStatusHandler();
+    compositeStatusHandler.setHandlers(handlers);
+
+    // Act
+    compositeStatusHandler.handleStatus("Service Name", ServiceStatusType.DOWN);
+
+    // Assert
+    verify(statusHandler).handleStatus(eq("Service Name"), isA(ServiceStatusType.class));
   }
 }

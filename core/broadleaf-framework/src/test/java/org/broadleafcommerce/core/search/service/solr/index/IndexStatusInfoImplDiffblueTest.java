@@ -19,23 +19,16 @@ package org.broadleafcommerce.core.search.service.solr.index;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class IndexStatusInfoImplDiffblueTest {
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link IndexStatusInfoImpl}
    *   <li>{@link IndexStatusInfoImpl#setAdditionalInfo(Map)}
@@ -49,19 +42,6 @@ public class IndexStatusInfoImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void IndexStatusInfoImpl.<init>()",
-    "Map IndexStatusInfoImpl.getAdditionalInfo()",
-    "Map IndexStatusInfoImpl.getDeadIndexEvents()",
-    "Map IndexStatusInfoImpl.getIndexErrors()",
-    "Date IndexStatusInfoImpl.getLastIndexDate()",
-    "void IndexStatusInfoImpl.setAdditionalInfo(Map)",
-    "void IndexStatusInfoImpl.setDeadIndexEvents(Map)",
-    "void IndexStatusInfoImpl.setIndexErrors(Map)",
-    "void IndexStatusInfoImpl.setLastIndexDate(Date)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     IndexStatusInfoImpl actualIndexStatusInfoImpl = new IndexStatusInfoImpl();
@@ -71,15 +51,14 @@ public class IndexStatusInfoImplDiffblueTest {
     actualIndexStatusInfoImpl.setDeadIndexEvents(deadIndexEvents);
     HashMap<Long, Integer> indexErrors = new HashMap<>();
     actualIndexStatusInfoImpl.setIndexErrors(indexErrors);
-    Date lastIndexDate =
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    Date lastIndexDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
     actualIndexStatusInfoImpl.setLastIndexDate(lastIndexDate);
     Map<String, String> actualAdditionalInfo = actualIndexStatusInfoImpl.getAdditionalInfo();
     Map<Long, Date> actualDeadIndexEvents = actualIndexStatusInfoImpl.getDeadIndexEvents();
     Map<Long, Integer> actualIndexErrors = actualIndexStatusInfoImpl.getIndexErrors();
     Date actualLastIndexDate = actualIndexStatusInfoImpl.getLastIndexDate();
 
-    // Assert
+    // Assert that nothing has changed
     assertTrue(actualAdditionalInfo.isEmpty());
     assertTrue(actualDeadIndexEvents.isEmpty());
     assertTrue(actualIndexErrors.isEmpty());

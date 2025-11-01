@@ -23,114 +23,69 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
 public class RuleBuilderEnumOptionsExtensionManagerDiffblueTest {
-  @Mock private List<RuleBuilderEnumOptionsExtensionListener> list;
-
-  @InjectMocks
-  private RuleBuilderEnumOptionsExtensionManager ruleBuilderEnumOptionsExtensionManager;
-
   /**
-   * Test {@link RuleBuilderEnumOptionsExtensionManager#getOptionValues()}.
-   *
-   * <ul>
-   *   <li>Then return {@code 42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RuleBuilderEnumOptionsExtensionManager#getOptionValues()}
+   * Method under test:
+   * {@link RuleBuilderEnumOptionsExtensionManager#getOptionValues()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String RuleBuilderEnumOptionsExtensionManager.getOptionValues()"})
-  public void testGetOptionValues_thenReturn42() {
+  public void testGetOptionValues() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertEquals("", (new RuleBuilderEnumOptionsExtensionManager()).getOptionValues());
+  }
+
+  /**
+   * Method under test:
+   * {@link RuleBuilderEnumOptionsExtensionManager#getOptionValues()}
+   */
+  @Test
+  public void testGetOptionValues2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    RuleBuilderEnumOptionsExtensionListener ruleBuilderEnumOptionsExtensionListener =
-        mock(RuleBuilderEnumOptionsExtensionListener.class);
+    RuleBuilderEnumOptionsExtensionListener ruleBuilderEnumOptionsExtensionListener = mock(
+        RuleBuilderEnumOptionsExtensionListener.class);
     when(ruleBuilderEnumOptionsExtensionListener.getOptionValues()).thenReturn("42");
 
-    ArrayList<RuleBuilderEnumOptionsExtensionListener> ruleBuilderEnumOptionsExtensionListenerList =
-        new ArrayList<>();
-    ruleBuilderEnumOptionsExtensionListenerList.add(ruleBuilderEnumOptionsExtensionListener);
-    when(list.iterator()).thenReturn(ruleBuilderEnumOptionsExtensionListenerList.iterator());
+    ArrayList<RuleBuilderEnumOptionsExtensionListener> listeners = new ArrayList<>();
+    listeners.add(ruleBuilderEnumOptionsExtensionListener);
+
+    RuleBuilderEnumOptionsExtensionManager ruleBuilderEnumOptionsExtensionManager = new RuleBuilderEnumOptionsExtensionManager();
+    ruleBuilderEnumOptionsExtensionManager.setListeners(listeners);
 
     // Act
     String actualOptionValues = ruleBuilderEnumOptionsExtensionManager.getOptionValues();
 
     // Assert
-    verify(list).iterator();
     verify(ruleBuilderEnumOptionsExtensionListener).getOptionValues();
     assertEquals("42\r\n", actualOptionValues);
   }
 
   /**
-   * Test {@link RuleBuilderEnumOptionsExtensionManager#getOptionValues()}.
-   *
-   * <ul>
-   *   <li>Then return empty string.
-   * </ul>
-   *
-   * <p>Method under test: {@link RuleBuilderEnumOptionsExtensionManager#getOptionValues()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String RuleBuilderEnumOptionsExtensionManager.getOptionValues()"})
-  public void testGetOptionValues_thenReturnEmptyString() {
-    // Arrange
-    ArrayList<RuleBuilderEnumOptionsExtensionListener> ruleBuilderEnumOptionsExtensionListenerList =
-        new ArrayList<>();
-    when(list.iterator()).thenReturn(ruleBuilderEnumOptionsExtensionListenerList.iterator());
-
-    // Act
-    String actualOptionValues = ruleBuilderEnumOptionsExtensionManager.getOptionValues();
-
-    // Assert
-    verify(list).iterator();
-    assertEquals("", actualOptionValues);
-  }
-
-  /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link RuleBuilderEnumOptionsExtensionManager#setListeners(List)}
    *   <li>{@link RuleBuilderEnumOptionsExtensionManager#getListeners()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List RuleBuilderEnumOptionsExtensionManager.getListeners()",
-    "void RuleBuilderEnumOptionsExtensionManager.setListeners(List)"
-  })
   public void testGettersAndSetters() {
     // Arrange
-    RuleBuilderEnumOptionsExtensionManager ruleBuilderEnumOptionsExtensionManager =
-        new RuleBuilderEnumOptionsExtensionManager();
+    RuleBuilderEnumOptionsExtensionManager ruleBuilderEnumOptionsExtensionManager = new RuleBuilderEnumOptionsExtensionManager();
     ArrayList<RuleBuilderEnumOptionsExtensionListener> listeners = new ArrayList<>();
 
     // Act
     ruleBuilderEnumOptionsExtensionManager.setListeners(listeners);
-    List<RuleBuilderEnumOptionsExtensionListener> actualListeners =
-        ruleBuilderEnumOptionsExtensionManager.getListeners();
+    List<RuleBuilderEnumOptionsExtensionListener> actualListeners = ruleBuilderEnumOptionsExtensionManager
+        .getListeners();
 
-    // Assert
+    // Assert that nothing has changed
     assertTrue(actualListeners.isEmpty());
     assertSame(listeners, actualListeners);
   }

@@ -18,78 +18,74 @@
 package org.broadleafcommerce.core.search.domain;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.copy.CreateResponse;
+import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
+import org.broadleafcommerce.common.service.GenericEntityService;
+import org.broadleafcommerce.common.site.domain.CatalogImpl;
+import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 
 public class RequiredFacetImplDiffblueTest {
   /**
-   * Test {@link RequiredFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * RequiredFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test:
+   * {@link RequiredFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse RequiredFacetImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
     RequiredFacetImpl requiredFacetImpl = new RequiredFacetImpl();
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(new RequiredFacetImpl(), true);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+    GenericEntityService genericEntityService = mock(GenericEntityService.class);
+    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
 
     // Act
-    CreateResponse<RequiredFacet> actualCreateOrRetrieveCopyInstanceResult =
-        requiredFacetImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<RequiredFacet> actualCreateOrRetrieveCopyInstanceResult = requiredFacetImpl
+        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+            genericEntityService, new MultiTenantCopierExtensionManager()));
 
     // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+    verify(genericEntityService).getCeilingImplClass(eq("org.broadleafcommerce.core.search.domain.RequiredFacetImpl"));
+    verify(genericEntityService).getIdentifier(isA(Object.class));
+    RequiredFacet clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
+    assertTrue(clone instanceof RequiredFacetImpl);
+    assertNull(clone.getId());
+    assertNull(clone.getRequiredFacet());
+    assertNull(clone.getSearchFacet());
+    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
   }
 
   /**
-   * Test {@link RequiredFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * RequiredFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test:
+   * {@link RequiredFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse RequiredFacetImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
   public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
     // Arrange
     RequiredFacetImpl requiredFacetImpl = new RequiredFacetImpl();
-
-    RequiredFacetImpl requiredFacetImpl2 = new RequiredFacetImpl();
-    requiredFacetImpl2.setId(1L);
-    requiredFacetImpl2.setRequiredFacet(new SearchFacetImpl());
-    requiredFacetImpl2.setSearchFacet(new SearchFacetImpl());
-    CreateResponse<Object> createResponse = new CreateResponse<>(requiredFacetImpl2, false);
-
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<RequiredFacet> actualCreateOrRetrieveCopyInstanceResult =
-        requiredFacetImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<RequiredFacet> actualCreateOrRetrieveCopyInstanceResult = requiredFacetImpl
+        .createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -97,17 +93,10 @@ public class RequiredFacetImplDiffblueTest {
   }
 
   /**
-   * Test {@link RequiredFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * RequiredFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test:
+   * {@link RequiredFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse RequiredFacetImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
   public void testCreateOrRetrieveCopyInstance3() throws CloneNotSupportedException {
     // Arrange
     RequiredFacetImpl requiredFacetImpl = new RequiredFacetImpl();
@@ -123,8 +112,8 @@ public class RequiredFacetImplDiffblueTest {
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<RequiredFacet> actualCreateOrRetrieveCopyInstanceResult =
-        requiredFacetImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<RequiredFacet> actualCreateOrRetrieveCopyInstanceResult = requiredFacetImpl
+        .createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -132,17 +121,10 @@ public class RequiredFacetImplDiffblueTest {
   }
 
   /**
-   * Test {@link RequiredFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * RequiredFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test:
+   * {@link RequiredFacetImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse RequiredFacetImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
   public void testCreateOrRetrieveCopyInstance4() throws CloneNotSupportedException {
     // Arrange
     RequiredFacetImpl requiredFacetImpl = new RequiredFacetImpl();
@@ -158,8 +140,8 @@ public class RequiredFacetImplDiffblueTest {
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<RequiredFacet> actualCreateOrRetrieveCopyInstanceResult =
-        requiredFacetImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<RequiredFacet> actualCreateOrRetrieveCopyInstanceResult = requiredFacetImpl
+        .createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -167,10 +149,7 @@ public class RequiredFacetImplDiffblueTest {
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link RequiredFacetImpl}
    *   <li>{@link RequiredFacetImpl#setId(Long)}
@@ -182,17 +161,6 @@ public class RequiredFacetImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void RequiredFacetImpl.<init>()",
-    "Long RequiredFacetImpl.getId()",
-    "SearchFacet RequiredFacetImpl.getRequiredFacet()",
-    "SearchFacet RequiredFacetImpl.getSearchFacet()",
-    "void RequiredFacetImpl.setId(Long)",
-    "void RequiredFacetImpl.setRequiredFacet(SearchFacet)",
-    "void RequiredFacetImpl.setSearchFacet(SearchFacet)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     RequiredFacetImpl actualRequiredFacetImpl = new RequiredFacetImpl();
@@ -205,7 +173,7 @@ public class RequiredFacetImplDiffblueTest {
     SearchFacet actualRequiredFacet = actualRequiredFacetImpl.getRequiredFacet();
     SearchFacet actualSearchFacet = actualRequiredFacetImpl.getSearchFacet();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals(1L, actualId.longValue());
     assertSame(requiredFacet, actualRequiredFacet);
     assertSame(searchFacet, actualSearchFacet);

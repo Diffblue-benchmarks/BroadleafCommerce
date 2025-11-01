@@ -22,95 +22,55 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.broadleafcommerce.core.order.domain.OrderLockImpl.OrderLockPk;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(SpringJUnit4ClassRunner.class)
 public class OrderLockImplDiffblueTest {
-  @Autowired private OrderLockImpl orderLockImpl;
-
   /**
-   * Test {@link OrderLockImpl#getOrderId()}.
-   *
-   * <p>Method under test: {@link OrderLockImpl#getOrderId()}
+   * Method under test: {@link OrderLockImpl#getOrderId()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Long OrderLockImpl.getOrderId()"})
   public void testGetOrderId() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertNull(orderLockImpl.getOrderId());
+    assertNull((new OrderLockImpl()).getOrderId());
   }
 
   /**
-   * Test OrderLockPk {@link OrderLockPk#equals(Object)}, and {@link OrderLockPk#hashCode()}.
-   *
+   * Methods under test:
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link OrderLockPk#equals(Object)}
-   *   <li>{@link OrderLockPk#hashCode()}
+   *   <li>{@link OrderLockImpl.OrderLockPk#equals(Object)}
+   *   <li>{@link OrderLockImpl.OrderLockPk#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean OrderLockPk.equals(Object)", "int OrderLockPk.hashCode()"})
   public void testOrderLockPkEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
-    OrderLockPk orderLockPk = new OrderLockPk();
+    OrderLockImpl.OrderLockPk orderLockPk = new OrderLockImpl.OrderLockPk();
     orderLockPk.setKey("Key");
     orderLockPk.setOrderId(OrderItemQualifierImpl.serialVersionUID);
 
-    OrderLockPk orderLockPk2 = new OrderLockPk();
+    OrderLockImpl.OrderLockPk orderLockPk2 = new OrderLockImpl.OrderLockPk();
     orderLockPk2.setKey("Key");
     orderLockPk2.setOrderId(OrderItemQualifierImpl.serialVersionUID);
 
     // Act and Assert
     assertEquals(orderLockPk, orderLockPk2);
-    assertEquals(orderLockPk.hashCode(), orderLockPk2.hashCode());
+    int expectedHashCodeResult = orderLockPk.hashCode();
+    assertEquals(expectedHashCodeResult, orderLockPk2.hashCode());
   }
 
   /**
-   * Test OrderLockPk {@link OrderLockPk#equals(Object)}, and {@link OrderLockPk#hashCode()}.
-   *
+   * Methods under test:
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link OrderLockPk#equals(Object)}
-   *   <li>{@link OrderLockPk#hashCode()}
+   *   <li>{@link OrderLockImpl.OrderLockPk#equals(Object)}
+   *   <li>{@link OrderLockImpl.OrderLockPk#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean OrderLockPk.equals(Object)", "int OrderLockPk.hashCode()"})
   public void testOrderLockPkEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
-    OrderLockPk orderLockPk = new OrderLockPk();
+    OrderLockImpl.OrderLockPk orderLockPk = new OrderLockImpl.OrderLockPk();
     orderLockPk.setKey("Key");
     orderLockPk.setOrderId(OrderItemQualifierImpl.serialVersionUID);
 
@@ -121,26 +81,16 @@ public class OrderLockImplDiffblueTest {
   }
 
   /**
-   * Test OrderLockPk {@link OrderLockPk#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderLockPk#equals(Object)}
+   * Method under test: {@link OrderLockImpl.OrderLockPk#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean OrderLockPk.equals(Object)", "int OrderLockPk.hashCode()"})
   public void testOrderLockPkEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
-    OrderLockPk orderLockPk = new OrderLockPk();
+    OrderLockImpl.OrderLockPk orderLockPk = new OrderLockImpl.OrderLockPk();
     orderLockPk.setKey(null);
     orderLockPk.setOrderId(OrderItemQualifierImpl.serialVersionUID);
 
-    OrderLockPk orderLockPk2 = new OrderLockPk();
+    OrderLockImpl.OrderLockPk orderLockPk2 = new OrderLockImpl.OrderLockPk();
     orderLockPk2.setKey("Key");
     orderLockPk2.setOrderId(OrderItemQualifierImpl.serialVersionUID);
 
@@ -149,22 +99,12 @@ public class OrderLockImplDiffblueTest {
   }
 
   /**
-   * Test OrderLockPk {@link OrderLockPk#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderLockPk#equals(Object)}
+   * Method under test: {@link OrderLockImpl.OrderLockPk#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean OrderLockPk.equals(Object)", "int OrderLockPk.hashCode()"})
   public void testOrderLockPkEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
-    OrderLockPk orderLockPk = new OrderLockPk();
+    OrderLockImpl.OrderLockPk orderLockPk = new OrderLockImpl.OrderLockPk();
     orderLockPk.setKey("Key");
     orderLockPk.setOrderId(OrderItemQualifierImpl.serialVersionUID);
 
@@ -173,22 +113,12 @@ public class OrderLockImplDiffblueTest {
   }
 
   /**
-   * Test OrderLockPk {@link OrderLockPk#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderLockPk#equals(Object)}
+   * Method under test: {@link OrderLockImpl.OrderLockPk#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean OrderLockPk.equals(Object)", "int OrderLockPk.hashCode()"})
   public void testOrderLockPkEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
-    OrderLockPk orderLockPk = new OrderLockPk();
+    OrderLockImpl.OrderLockPk orderLockPk = new OrderLockImpl.OrderLockPk();
     orderLockPk.setKey("Key");
     orderLockPk.setOrderId(OrderItemQualifierImpl.serialVersionUID);
 
@@ -197,77 +127,69 @@ public class OrderLockImplDiffblueTest {
   }
 
   /**
-   * Test OrderLockPk getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of {@link OrderLockPk}
-   *   <li>{@link OrderLockPk#setKey(String)}
-   *   <li>{@link OrderLockPk#setOrderId(Long)}
-   *   <li>{@link OrderLockPk#getKey()}
-   *   <li>{@link OrderLockPk#getOrderId()}
+   *   <li>default or parameterless constructor of {@link OrderLockImpl.OrderLockPk}
+   *   <li>{@link OrderLockImpl.OrderLockPk#setKey(String)}
+   *   <li>{@link OrderLockImpl.OrderLockPk#setOrderId(Long)}
+   *   <li>{@link OrderLockImpl.OrderLockPk#getKey()}
+   *   <li>{@link OrderLockImpl.OrderLockPk#getOrderId()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OrderLockPk.<init>()",
-    "String OrderLockPk.getKey()",
-    "Long OrderLockPk.getOrderId()",
-    "void OrderLockPk.setKey(String)",
-    "void OrderLockPk.setOrderId(Long)"
-  })
   public void testOrderLockPkGettersAndSetters() {
     // Arrange and Act
-    OrderLockPk actualOrderLockPk = new OrderLockPk();
+    OrderLockImpl.OrderLockPk actualOrderLockPk = new OrderLockImpl.OrderLockPk();
     actualOrderLockPk.setKey("Key");
     actualOrderLockPk.setOrderId(OrderItemQualifierImpl.serialVersionUID);
     String actualKey = actualOrderLockPk.getKey();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("Key", actualKey);
-    assertEquals(
-        OrderItemQualifierImpl.serialVersionUID, actualOrderLockPk.getOrderId().longValue());
+    assertEquals(OrderItemQualifierImpl.serialVersionUID, actualOrderLockPk.getOrderId().longValue());
   }
 
   /**
-   * Test {@link OrderLockImpl#setOrderId(Long)}.
-   *
-   * <p>Method under test: {@link OrderLockImpl#setOrderId(Long)}
+   * Method under test: {@link OrderLockImpl#setOrderId(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void OrderLockImpl.setOrderId(Long)"})
   public void testSetOrderId() {
-    // Arrange and Act
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    OrderLockImpl orderLockImpl = new OrderLockImpl();
+
+    // Act
     orderLockImpl.setOrderId(OrderItemQualifierImpl.serialVersionUID);
 
     // Assert
     assertEquals(OrderItemQualifierImpl.serialVersionUID, orderLockImpl.getOrderId().longValue());
-    assertEquals(
-        OrderItemQualifierImpl.serialVersionUID,
-        orderLockImpl.orderLockPK.getOrderId().longValue());
+    assertEquals(OrderItemQualifierImpl.serialVersionUID, orderLockImpl.orderLockPK.getOrderId().longValue());
   }
 
   /**
-   * Test {@link OrderLockImpl#getLocked()}.
-   *
-   * <ul>
-   *   <li>Given {@link OrderLockImpl} Locked is {@code true}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderLockImpl#getLocked()}
+   * Method under test: {@link OrderLockImpl#getLocked()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean OrderLockImpl.getLocked()"})
-  public void testGetLocked_givenOrderLockImplLockedIsTrue_thenReturnTrue() {
+  public void testGetLocked() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertFalse((new OrderLockImpl()).getLocked());
+  }
+
+  /**
+   * Method under test: {@link OrderLockImpl#getLocked()}
+   */
+  @Test
+  public void testGetLocked2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    OrderLockImpl orderLockImpl = new OrderLockImpl();
+    orderLockImpl.setKey("Node Key");
+    orderLockImpl.setLastUpdated(OrderItemQualifierImpl.serialVersionUID);
+    orderLockImpl.setOrderId(OrderItemQualifierImpl.serialVersionUID);
     orderLockImpl.setLocked(true);
 
     // Act and Assert
@@ -275,86 +197,16 @@ public class OrderLockImplDiffblueTest {
   }
 
   /**
-   * Test {@link OrderLockImpl#getLocked()}.
-   *
-   * <ul>
-   *   <li>Given {@link OrderLockImpl}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderLockImpl#getLocked()}
+   * Method under test: {@link OrderLockImpl#setLocked(Boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean OrderLockImpl.getLocked()"})
-  public void testGetLocked_givenOrderLockImpl_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(orderLockImpl.getLocked());
-  }
+  public void testSetLocked() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-  /**
-   * Test {@link OrderLockImpl#setLocked(Boolean)}.
-   *
-   * <ul>
-   *   <li>When {@code false}.
-   *   <li>Then {@link OrderLockImpl} {@link OrderLockImpl#locked} charValue is {@code N}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderLockImpl#setLocked(Boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void OrderLockImpl.setLocked(Boolean)"})
-  public void testSetLocked_whenFalse_thenOrderLockImplLockedCharValueIsN() {
-    // Arrange and Act
-    orderLockImpl.setLocked(false);
+    // Arrange
+    OrderLockImpl orderLockImpl = new OrderLockImpl();
 
-    // Assert that nothing has changed
-    assertEquals('N', orderLockImpl.locked.charValue());
-    assertFalse(orderLockImpl.getLocked());
-  }
-
-  /**
-   * Test {@link OrderLockImpl#setLocked(Boolean)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then {@link OrderLockImpl} {@link OrderLockImpl#locked} charValue is {@code N}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderLockImpl#setLocked(Boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void OrderLockImpl.setLocked(Boolean)"})
-  public void testSetLocked_whenNull_thenOrderLockImplLockedCharValueIsN() {
-    // Arrange and Act
-    orderLockImpl.setLocked(null);
-
-    // Assert that nothing has changed
-    assertEquals('N', orderLockImpl.locked.charValue());
-    assertFalse(orderLockImpl.getLocked());
-  }
-
-  /**
-   * Test {@link OrderLockImpl#setLocked(Boolean)}.
-   *
-   * <ul>
-   *   <li>When {@code true}.
-   *   <li>Then {@link OrderLockImpl} {@link OrderLockImpl#locked} charValue is {@code Y}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderLockImpl#setLocked(Boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void OrderLockImpl.setLocked(Boolean)"})
-  public void testSetLocked_whenTrue_thenOrderLockImplLockedCharValueIsY() {
-    // Arrange and Act
+    // Act
     orderLockImpl.setLocked(true);
 
     // Assert
@@ -363,59 +215,67 @@ public class OrderLockImplDiffblueTest {
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link OrderLockImpl#setLastUpdated(Long)}
-   *   <li>{@link OrderLockImpl#getLastUpdated()}
-   * </ul>
+   * Method under test: {@link OrderLockImpl#setLocked(Boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Long OrderLockImpl.getLastUpdated()",
-    "void OrderLockImpl.setLastUpdated(Long)"
-  })
-  public void testGettersAndSetters() {
+  public void testSetLocked2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    OrderLockImpl orderLockImpl = new OrderLockImpl();
+    orderLockImpl.setKey("Node Key");
+    orderLockImpl.setLastUpdated(OrderItemQualifierImpl.serialVersionUID);
+    orderLockImpl.setLocked(true);
+    orderLockImpl.setOrderId(OrderItemQualifierImpl.serialVersionUID);
+
+    // Act
+    orderLockImpl.setLocked(null);
+
+    // Assert
+    assertEquals('N', orderLockImpl.locked.charValue());
+    assertFalse(orderLockImpl.getLocked());
+  }
+
+  /**
+   * Method under test: {@link OrderLockImpl#setLocked(Boolean)}
+   */
+  @Test
+  public void testSetLocked3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     OrderLockImpl orderLockImpl = new OrderLockImpl();
 
     // Act
-    orderLockImpl.setLastUpdated(OrderItemQualifierImpl.serialVersionUID);
+    orderLockImpl.setLocked(false);
 
     // Assert
-    assertEquals(
-        OrderItemQualifierImpl.serialVersionUID, orderLockImpl.getLastUpdated().longValue());
+    assertEquals('N', orderLockImpl.locked.charValue());
+    assertFalse(orderLockImpl.getLocked());
   }
 
   /**
-   * Test {@link OrderLockImpl#getKey()}.
-   *
-   * <p>Method under test: {@link OrderLockImpl#getKey()}
+   * Method under test: {@link OrderLockImpl#getKey()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String OrderLockImpl.getKey()"})
   public void testGetKey() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertNull(orderLockImpl.getKey());
+    assertNull((new OrderLockImpl()).getKey());
   }
 
   /**
-   * Test {@link OrderLockImpl#setKey(String)}.
-   *
-   * <p>Method under test: {@link OrderLockImpl#setKey(String)}
+   * Method under test: {@link OrderLockImpl#setKey(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void OrderLockImpl.setKey(String)"})
   public void testSetKey() {
-    // Arrange and Act
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    OrderLockImpl orderLockImpl = new OrderLockImpl();
+
+    // Act
     orderLockImpl.setKey("Node Key");
 
     // Assert
@@ -424,15 +284,32 @@ public class OrderLockImplDiffblueTest {
   }
 
   /**
-   * Test new {@link OrderLockImpl} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link OrderLockImpl}
+   * Methods under test:
+   * <ul>
+   *   <li>{@link OrderLockImpl#setLastUpdated(Long)}
+   *   <li>{@link OrderLockImpl#getLastUpdated()}
+   * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void OrderLockImpl.<init>()"})
+  public void testGettersAndSetters() {
+    // Arrange
+    OrderLockImpl orderLockImpl = new OrderLockImpl();
+
+    // Act
+    orderLockImpl.setLastUpdated(OrderItemQualifierImpl.serialVersionUID);
+
+    // Assert that nothing has changed
+    assertEquals(OrderItemQualifierImpl.serialVersionUID, orderLockImpl.getLastUpdated().longValue());
+  }
+
+  /**
+   * Method under test: default or parameterless constructor of
+   * {@link OrderLockImpl}
+   */
+  @Test
   public void testNewOrderLockImpl() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange and Act
     OrderLockImpl actualOrderLockImpl = new OrderLockImpl();
 
@@ -440,7 +317,7 @@ public class OrderLockImplDiffblueTest {
     assertEquals('N', actualOrderLockImpl.locked.charValue());
     assertNull(actualOrderLockImpl.getLastUpdated());
     assertNull(actualOrderLockImpl.getOrderId());
-    OrderLockPk orderLockPk = actualOrderLockImpl.orderLockPK;
+    OrderLockImpl.OrderLockPk orderLockPk = actualOrderLockImpl.orderLockPK;
     assertNull(orderLockPk.getOrderId());
     assertNull(actualOrderLockImpl.getKey());
     assertNull(orderLockPk.getKey());

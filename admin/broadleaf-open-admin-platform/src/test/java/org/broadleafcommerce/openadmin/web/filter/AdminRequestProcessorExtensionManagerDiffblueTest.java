@@ -23,12 +23,8 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashSet;
 import java.util.Set;
-import javax.servlet.http.HttpServletRequestWrapper;
 import org.broadleafcommerce.common.extension.ExtensionResultHolder;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.common.site.domain.Catalog;
@@ -37,43 +33,23 @@ import org.broadleafcommerce.common.site.domain.Site;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.broadleafcommerce.openadmin.web.compatibility.JSCompatibilityRequestWrapper;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 
-@ContextConfiguration(classes = {AdminRequestProcessorExtensionManager.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(SpringJUnit4ClassRunner.class)
 public class AdminRequestProcessorExtensionManagerDiffblueTest {
-  @Autowired private AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager;
-
   /**
-   * Test {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AdminRequestProcessorExtensionManager.retrieveProfiles(Site, ExtensionResultHolder)"
-  })
   public void testRetrieveProfiles() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager =
-        new AdminRequestProcessorExtensionManager();
-    adminRequestProcessorExtensionManager.registerHandler(
-        new AdminRequestProcessorExtensionManager());
+    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
     SiteImpl currentSite = new SiteImpl();
 
     ExtensionResultHolder<Set<Site>> result = new ExtensionResultHolder<>();
@@ -81,77 +57,69 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
     result.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
         adminRequestProcessorExtensionManager.retrieveProfiles(currentSite, result));
   }
 
   /**
-   * Test {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AdminRequestProcessorExtensionManager.retrieveProfiles(Site, ExtensionResultHolder)"
-  })
   public void testRetrieveProfiles2() {
-    // Arrange
-    AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler =
-        mock(AdminRequestProcessorExtensionHandler.class);
-    when(adminRequestProcessorExtensionHandler.retrieveProfiles(
-            Mockito.<Site>any(), Mockito.<ExtensionResultHolder<Set<Site>>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(adminRequestProcessorExtensionHandler.isEnabled()).thenReturn(true);
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager =
-        new AdminRequestProcessorExtensionManager();
-    adminRequestProcessorExtensionManager.registerHandler(adminRequestProcessorExtensionHandler);
-    SiteImpl currentSite = new SiteImpl();
+    // Arrange
+    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
+    SiteImpl currentSite = mock(SiteImpl.class);
 
     ExtensionResultHolder<Set<Site>> result = new ExtensionResultHolder<>();
     result.setResult(new HashSet<>());
     result.setThrowable(new Throwable());
 
-    // Act
-    ExtensionResultStatusType actualRetrieveProfilesResult =
-        adminRequestProcessorExtensionManager.retrieveProfiles(currentSite, result);
-
-    // Assert
-    verify(adminRequestProcessorExtensionHandler).isEnabled();
-    verify(adminRequestProcessorExtensionHandler)
-        .retrieveProfiles(isA(Site.class), isA(ExtensionResultHolder.class));
-    assertEquals(ExtensionResultStatusType.HANDLED, actualRetrieveProfilesResult);
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        adminRequestProcessorExtensionManager.retrieveProfiles(currentSite, result));
   }
 
   /**
-   * Test {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AdminRequestProcessorExtensionManager.retrieveProfiles(Site, ExtensionResultHolder)"
-  })
   public void testRetrieveProfiles3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler =
-        mock(AdminRequestProcessorExtensionHandler.class);
-    when(adminRequestProcessorExtensionHandler.retrieveProfiles(
-            Mockito.<Site>any(), Mockito.<ExtensionResultHolder<Set<Site>>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED_STOP);
+    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
+    adminRequestProcessorExtensionManager.registerHandler(new AdminRequestProcessorExtensionManager());
+    SiteImpl currentSite = new SiteImpl();
+
+    ExtensionResultHolder<Set<Site>> result = new ExtensionResultHolder<>();
+    result.setResult(new HashSet<>());
+    result.setThrowable(new Throwable());
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        adminRequestProcessorExtensionManager.retrieveProfiles(currentSite, result));
+  }
+
+  /**
+   * Method under test:
+   * {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}
+   */
+  @Test
+  public void testRetrieveProfiles4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler = mock(
+        AdminRequestProcessorExtensionHandler.class);
+    when(adminRequestProcessorExtensionHandler.retrieveProfiles(Mockito.<Site>any(),
+        Mockito.<ExtensionResultHolder<Set<Site>>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
     when(adminRequestProcessorExtensionHandler.isEnabled()).thenReturn(true);
 
-    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager =
-        new AdminRequestProcessorExtensionManager();
+    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
     adminRequestProcessorExtensionManager.registerHandler(adminRequestProcessorExtensionHandler);
     SiteImpl currentSite = new SiteImpl();
 
@@ -160,37 +128,62 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
     result.setThrowable(new Throwable());
 
     // Act
-    ExtensionResultStatusType actualRetrieveProfilesResult =
-        adminRequestProcessorExtensionManager.retrieveProfiles(currentSite, result);
+    ExtensionResultStatusType actualRetrieveProfilesResult = adminRequestProcessorExtensionManager
+        .retrieveProfiles(currentSite, result);
 
     // Assert
     verify(adminRequestProcessorExtensionHandler).isEnabled();
-    verify(adminRequestProcessorExtensionHandler)
-        .retrieveProfiles(isA(Site.class), isA(ExtensionResultHolder.class));
+    verify(adminRequestProcessorExtensionHandler).retrieveProfiles(isA(Site.class), isA(ExtensionResultHolder.class));
     assertEquals(ExtensionResultStatusType.HANDLED, actualRetrieveProfilesResult);
   }
 
   /**
-   * Test {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AdminRequestProcessorExtensionManager.retrieveProfiles(Site, ExtensionResultHolder)"
-  })
-  public void testRetrieveProfiles4() {
+  public void testRetrieveProfiles5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler =
-        mock(AdminRequestProcessorExtensionHandler.class);
+    AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler = mock(
+        AdminRequestProcessorExtensionHandler.class);
+    when(adminRequestProcessorExtensionHandler.retrieveProfiles(Mockito.<Site>any(),
+        Mockito.<ExtensionResultHolder<Set<Site>>>any())).thenReturn(ExtensionResultStatusType.HANDLED_STOP);
+    when(adminRequestProcessorExtensionHandler.isEnabled()).thenReturn(true);
+
+    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
+    adminRequestProcessorExtensionManager.registerHandler(adminRequestProcessorExtensionHandler);
+    SiteImpl currentSite = new SiteImpl();
+
+    ExtensionResultHolder<Set<Site>> result = new ExtensionResultHolder<>();
+    result.setResult(new HashSet<>());
+    result.setThrowable(new Throwable());
+
+    // Act
+    ExtensionResultStatusType actualRetrieveProfilesResult = adminRequestProcessorExtensionManager
+        .retrieveProfiles(currentSite, result);
+
+    // Assert
+    verify(adminRequestProcessorExtensionHandler).isEnabled();
+    verify(adminRequestProcessorExtensionHandler).retrieveProfiles(isA(Site.class), isA(ExtensionResultHolder.class));
+    assertEquals(ExtensionResultStatusType.HANDLED, actualRetrieveProfilesResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}
+   */
+  @Test
+  public void testRetrieveProfiles6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler = mock(
+        AdminRequestProcessorExtensionHandler.class);
     when(adminRequestProcessorExtensionHandler.isEnabled()).thenReturn(false);
 
-    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager =
-        new AdminRequestProcessorExtensionManager();
+    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
     adminRequestProcessorExtensionManager.registerHandler(adminRequestProcessorExtensionHandler);
     SiteImpl currentSite = new SiteImpl();
 
@@ -199,8 +192,8 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
     result.setThrowable(new Throwable());
 
     // Act
-    ExtensionResultStatusType actualRetrieveProfilesResult =
-        adminRequestProcessorExtensionManager.retrieveProfiles(currentSite, result);
+    ExtensionResultStatusType actualRetrieveProfilesResult = adminRequestProcessorExtensionManager
+        .retrieveProfiles(currentSite, result);
 
     // Assert
     verify(adminRequestProcessorExtensionHandler).isEnabled();
@@ -208,55 +201,15 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Given {@link AdminRequestProcessorExtensionManager}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AdminRequestProcessorExtensionManager.retrieveProfiles(Site, ExtensionResultHolder)"
-  })
-  public void testRetrieveProfiles_givenAdminRequestProcessorExtensionManager() {
-    // Arrange
-    SiteImpl currentSite = new SiteImpl();
-
-    ExtensionResultHolder<Set<Site>> result = new ExtensionResultHolder<>();
-    result.setResult(new HashSet<>());
-    result.setThrowable(new Throwable());
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        adminRequestProcessorExtensionManager.retrieveProfiles(currentSite, result));
-  }
-
-  /**
-   * Test {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AdminRequestProcessorExtensionManager.retrieveCatalogs(Site, ExtensionResultHolder)"
-  })
   public void testRetrieveCatalogs() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager =
-        new AdminRequestProcessorExtensionManager();
-    adminRequestProcessorExtensionManager.registerHandler(
-        new AdminRequestProcessorExtensionManager());
+    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
     SiteImpl currentSite = new SiteImpl();
 
     ExtensionResultHolder<Set<Catalog>> result = new ExtensionResultHolder<>();
@@ -264,77 +217,69 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
     result.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
         adminRequestProcessorExtensionManager.retrieveCatalogs(currentSite, result));
   }
 
   /**
-   * Test {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AdminRequestProcessorExtensionManager.retrieveCatalogs(Site, ExtensionResultHolder)"
-  })
   public void testRetrieveCatalogs2() {
-    // Arrange
-    AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler =
-        mock(AdminRequestProcessorExtensionHandler.class);
-    when(adminRequestProcessorExtensionHandler.retrieveCatalogs(
-            Mockito.<Site>any(), Mockito.<ExtensionResultHolder<Set<Catalog>>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(adminRequestProcessorExtensionHandler.isEnabled()).thenReturn(true);
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager =
-        new AdminRequestProcessorExtensionManager();
-    adminRequestProcessorExtensionManager.registerHandler(adminRequestProcessorExtensionHandler);
-    SiteImpl currentSite = new SiteImpl();
+    // Arrange
+    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
+    SiteImpl currentSite = mock(SiteImpl.class);
 
     ExtensionResultHolder<Set<Catalog>> result = new ExtensionResultHolder<>();
     result.setResult(new HashSet<>());
     result.setThrowable(new Throwable());
 
-    // Act
-    ExtensionResultStatusType actualRetrieveCatalogsResult =
-        adminRequestProcessorExtensionManager.retrieveCatalogs(currentSite, result);
-
-    // Assert
-    verify(adminRequestProcessorExtensionHandler).isEnabled();
-    verify(adminRequestProcessorExtensionHandler)
-        .retrieveCatalogs(isA(Site.class), isA(ExtensionResultHolder.class));
-    assertEquals(ExtensionResultStatusType.HANDLED, actualRetrieveCatalogsResult);
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        adminRequestProcessorExtensionManager.retrieveCatalogs(currentSite, result));
   }
 
   /**
-   * Test {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AdminRequestProcessorExtensionManager.retrieveCatalogs(Site, ExtensionResultHolder)"
-  })
   public void testRetrieveCatalogs3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler =
-        mock(AdminRequestProcessorExtensionHandler.class);
-    when(adminRequestProcessorExtensionHandler.retrieveCatalogs(
-            Mockito.<Site>any(), Mockito.<ExtensionResultHolder<Set<Catalog>>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED_STOP);
+    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
+    adminRequestProcessorExtensionManager.registerHandler(new AdminRequestProcessorExtensionManager());
+    SiteImpl currentSite = new SiteImpl();
+
+    ExtensionResultHolder<Set<Catalog>> result = new ExtensionResultHolder<>();
+    result.setResult(new HashSet<>());
+    result.setThrowable(new Throwable());
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        adminRequestProcessorExtensionManager.retrieveCatalogs(currentSite, result));
+  }
+
+  /**
+   * Method under test:
+   * {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}
+   */
+  @Test
+  public void testRetrieveCatalogs4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler = mock(
+        AdminRequestProcessorExtensionHandler.class);
+    when(adminRequestProcessorExtensionHandler.retrieveCatalogs(Mockito.<Site>any(),
+        Mockito.<ExtensionResultHolder<Set<Catalog>>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
     when(adminRequestProcessorExtensionHandler.isEnabled()).thenReturn(true);
 
-    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager =
-        new AdminRequestProcessorExtensionManager();
+    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
     adminRequestProcessorExtensionManager.registerHandler(adminRequestProcessorExtensionHandler);
     SiteImpl currentSite = new SiteImpl();
 
@@ -343,37 +288,62 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
     result.setThrowable(new Throwable());
 
     // Act
-    ExtensionResultStatusType actualRetrieveCatalogsResult =
-        adminRequestProcessorExtensionManager.retrieveCatalogs(currentSite, result);
+    ExtensionResultStatusType actualRetrieveCatalogsResult = adminRequestProcessorExtensionManager
+        .retrieveCatalogs(currentSite, result);
 
     // Assert
     verify(adminRequestProcessorExtensionHandler).isEnabled();
-    verify(adminRequestProcessorExtensionHandler)
-        .retrieveCatalogs(isA(Site.class), isA(ExtensionResultHolder.class));
+    verify(adminRequestProcessorExtensionHandler).retrieveCatalogs(isA(Site.class), isA(ExtensionResultHolder.class));
     assertEquals(ExtensionResultStatusType.HANDLED, actualRetrieveCatalogsResult);
   }
 
   /**
-   * Test {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AdminRequestProcessorExtensionManager.retrieveCatalogs(Site, ExtensionResultHolder)"
-  })
-  public void testRetrieveCatalogs4() {
+  public void testRetrieveCatalogs5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler =
-        mock(AdminRequestProcessorExtensionHandler.class);
+    AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler = mock(
+        AdminRequestProcessorExtensionHandler.class);
+    when(adminRequestProcessorExtensionHandler.retrieveCatalogs(Mockito.<Site>any(),
+        Mockito.<ExtensionResultHolder<Set<Catalog>>>any())).thenReturn(ExtensionResultStatusType.HANDLED_STOP);
+    when(adminRequestProcessorExtensionHandler.isEnabled()).thenReturn(true);
+
+    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
+    adminRequestProcessorExtensionManager.registerHandler(adminRequestProcessorExtensionHandler);
+    SiteImpl currentSite = new SiteImpl();
+
+    ExtensionResultHolder<Set<Catalog>> result = new ExtensionResultHolder<>();
+    result.setResult(new HashSet<>());
+    result.setThrowable(new Throwable());
+
+    // Act
+    ExtensionResultStatusType actualRetrieveCatalogsResult = adminRequestProcessorExtensionManager
+        .retrieveCatalogs(currentSite, result);
+
+    // Assert
+    verify(adminRequestProcessorExtensionHandler).isEnabled();
+    verify(adminRequestProcessorExtensionHandler).retrieveCatalogs(isA(Site.class), isA(ExtensionResultHolder.class));
+    assertEquals(ExtensionResultStatusType.HANDLED, actualRetrieveCatalogsResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}
+   */
+  @Test
+  public void testRetrieveCatalogs6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler = mock(
+        AdminRequestProcessorExtensionHandler.class);
     when(adminRequestProcessorExtensionHandler.isEnabled()).thenReturn(false);
 
-    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager =
-        new AdminRequestProcessorExtensionManager();
+    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
     adminRequestProcessorExtensionManager.registerHandler(adminRequestProcessorExtensionHandler);
     SiteImpl currentSite = new SiteImpl();
 
@@ -382,8 +352,8 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
     result.setThrowable(new Throwable());
 
     // Act
-    ExtensionResultStatusType actualRetrieveCatalogsResult =
-        adminRequestProcessorExtensionManager.retrieveCatalogs(currentSite, result);
+    ExtensionResultStatusType actualRetrieveCatalogsResult = adminRequestProcessorExtensionManager
+        .retrieveCatalogs(currentSite, result);
 
     // Assert
     verify(adminRequestProcessorExtensionHandler).isEnabled();
@@ -391,58 +361,16 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site,
-   * ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Given {@link AdminRequestProcessorExtensionManager}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AdminRequestProcessorExtensionManager.retrieveCatalogs(Site, ExtensionResultHolder)"
-  })
-  public void testRetrieveCatalogs_givenAdminRequestProcessorExtensionManager() {
-    // Arrange
-    SiteImpl currentSite = new SiteImpl();
-
-    ExtensionResultHolder<Set<Catalog>> result = new ExtensionResultHolder<>();
-    result.setResult(new HashSet<>());
-    result.setThrowable(new Throwable());
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        adminRequestProcessorExtensionManager.retrieveCatalogs(currentSite, result));
-  }
-
-  /**
-   * Test {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AdminRequestProcessorExtensionManager.overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)"
-  })
   public void testOverrideCurrentCatalog() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    JSCompatibilityRequestWrapper request2 = new JSCompatibilityRequestWrapper(request);
-    HttpServletRequestWrapper request3 = new HttpServletRequestWrapper(request2);
-    ServletWebRequest request4 = new ServletWebRequest(request3);
+    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
+    ServletWebRequest request = new ServletWebRequest(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
     SiteImpl currentSite = new SiteImpl();
 
     ExtensionResultHolder<Catalog> result = new ExtensionResultHolder<>();
@@ -450,36 +378,22 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
     result.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        adminRequestProcessorExtensionManager.overrideCurrentCatalog(
-            request4, currentSite, result));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        adminRequestProcessorExtensionManager.overrideCurrentCatalog(request, currentSite, result));
   }
 
   /**
-   * Test {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AdminRequestProcessorExtensionManager.overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)"
-  })
   public void testOverrideCurrentCatalog2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager =
-        new AdminRequestProcessorExtensionManager();
-    adminRequestProcessorExtensionManager.registerHandler(
-        new AdminRequestProcessorExtensionManager());
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    ServletWebRequest request2 = new ServletWebRequest(request);
+    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
+    ServletWebRequest request = new ServletWebRequest(
+        new JSCompatibilityRequestWrapper(mock(DefaultMultipartHttpServletRequest.class)));
     SiteImpl currentSite = new SiteImpl();
 
     ExtensionResultHolder<Catalog> result = new ExtensionResultHolder<>();
@@ -487,94 +401,51 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
     result.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        adminRequestProcessorExtensionManager.overrideCurrentCatalog(
-            request2, currentSite, result));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        adminRequestProcessorExtensionManager.overrideCurrentCatalog(request, currentSite, result));
   }
 
   /**
-   * Test {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AdminRequestProcessorExtensionManager.overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)"
-  })
   public void testOverrideCurrentCatalog3() {
-    // Arrange
-    AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler =
-        mock(AdminRequestProcessorExtensionHandler.class);
-    when(adminRequestProcessorExtensionHandler.overrideCurrentCatalog(
-            Mockito.<WebRequest>any(),
-            Mockito.<Site>any(),
-            Mockito.<ExtensionResultHolder<Catalog>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(adminRequestProcessorExtensionHandler.isEnabled()).thenReturn(true);
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager =
-        new AdminRequestProcessorExtensionManager();
-    adminRequestProcessorExtensionManager.registerHandler(adminRequestProcessorExtensionHandler);
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    ServletWebRequest request2 = new ServletWebRequest(request);
+    // Arrange
+    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
+    adminRequestProcessorExtensionManager.registerHandler(new AdminRequestProcessorExtensionManager());
+    ServletWebRequest request = new ServletWebRequest(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
     SiteImpl currentSite = new SiteImpl();
 
     ExtensionResultHolder<Catalog> result = new ExtensionResultHolder<>();
     result.setResult(new CatalogImpl());
     result.setThrowable(new Throwable());
 
-    // Act
-    ExtensionResultStatusType actualOverrideCurrentCatalogResult =
-        adminRequestProcessorExtensionManager.overrideCurrentCatalog(request2, currentSite, result);
-
-    // Assert
-    verify(adminRequestProcessorExtensionHandler).isEnabled();
-    verify(adminRequestProcessorExtensionHandler)
-        .overrideCurrentCatalog(
-            isA(WebRequest.class), isA(Site.class), isA(ExtensionResultHolder.class));
-    assertEquals(ExtensionResultStatusType.HANDLED, actualOverrideCurrentCatalogResult);
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        adminRequestProcessorExtensionManager.overrideCurrentCatalog(request, currentSite, result));
   }
 
   /**
-   * Test {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AdminRequestProcessorExtensionManager.overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)"
-  })
   public void testOverrideCurrentCatalog4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler =
-        mock(AdminRequestProcessorExtensionHandler.class);
-    when(adminRequestProcessorExtensionHandler.overrideCurrentCatalog(
-            Mockito.<WebRequest>any(),
-            Mockito.<Site>any(),
-            Mockito.<ExtensionResultHolder<Catalog>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED_STOP);
+    AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler = mock(
+        AdminRequestProcessorExtensionHandler.class);
+    when(adminRequestProcessorExtensionHandler.overrideCurrentCatalog(Mockito.<WebRequest>any(), Mockito.<Site>any(),
+        Mockito.<ExtensionResultHolder<Catalog>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
     when(adminRequestProcessorExtensionHandler.isEnabled()).thenReturn(true);
 
-    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager =
-        new AdminRequestProcessorExtensionManager();
+    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
     adminRequestProcessorExtensionManager.registerHandler(adminRequestProcessorExtensionHandler);
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    ServletWebRequest request2 = new ServletWebRequest(request);
+    ServletWebRequest request = new ServletWebRequest(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
     SiteImpl currentSite = new SiteImpl();
 
     ExtensionResultHolder<Catalog> result = new ExtensionResultHolder<>();
@@ -582,44 +453,67 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
     result.setThrowable(new Throwable());
 
     // Act
-    ExtensionResultStatusType actualOverrideCurrentCatalogResult =
-        adminRequestProcessorExtensionManager.overrideCurrentCatalog(request2, currentSite, result);
+    ExtensionResultStatusType actualOverrideCurrentCatalogResult = adminRequestProcessorExtensionManager
+        .overrideCurrentCatalog(request, currentSite, result);
 
     // Assert
     verify(adminRequestProcessorExtensionHandler).isEnabled();
-    verify(adminRequestProcessorExtensionHandler)
-        .overrideCurrentCatalog(
-            isA(WebRequest.class), isA(Site.class), isA(ExtensionResultHolder.class));
+    verify(adminRequestProcessorExtensionHandler).overrideCurrentCatalog(isA(WebRequest.class), isA(Site.class),
+        isA(ExtensionResultHolder.class));
     assertEquals(ExtensionResultStatusType.HANDLED, actualOverrideCurrentCatalogResult);
   }
 
   /**
-   * Test {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AdminRequestProcessorExtensionManager.overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)"
-  })
   public void testOverrideCurrentCatalog5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler =
-        mock(AdminRequestProcessorExtensionHandler.class);
+    AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler = mock(
+        AdminRequestProcessorExtensionHandler.class);
+    when(adminRequestProcessorExtensionHandler.overrideCurrentCatalog(Mockito.<WebRequest>any(), Mockito.<Site>any(),
+        Mockito.<ExtensionResultHolder<Catalog>>any())).thenReturn(ExtensionResultStatusType.HANDLED_STOP);
+    when(adminRequestProcessorExtensionHandler.isEnabled()).thenReturn(true);
+
+    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
+    adminRequestProcessorExtensionManager.registerHandler(adminRequestProcessorExtensionHandler);
+    ServletWebRequest request = new ServletWebRequest(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+    SiteImpl currentSite = new SiteImpl();
+
+    ExtensionResultHolder<Catalog> result = new ExtensionResultHolder<>();
+    result.setResult(new CatalogImpl());
+    result.setThrowable(new Throwable());
+
+    // Act
+    ExtensionResultStatusType actualOverrideCurrentCatalogResult = adminRequestProcessorExtensionManager
+        .overrideCurrentCatalog(request, currentSite, result);
+
+    // Assert
+    verify(adminRequestProcessorExtensionHandler).isEnabled();
+    verify(adminRequestProcessorExtensionHandler).overrideCurrentCatalog(isA(WebRequest.class), isA(Site.class),
+        isA(ExtensionResultHolder.class));
+    assertEquals(ExtensionResultStatusType.HANDLED, actualOverrideCurrentCatalogResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}
+   */
+  @Test
+  public void testOverrideCurrentCatalog6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler = mock(
+        AdminRequestProcessorExtensionHandler.class);
     when(adminRequestProcessorExtensionHandler.isEnabled()).thenReturn(false);
 
-    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager =
-        new AdminRequestProcessorExtensionManager();
+    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
     adminRequestProcessorExtensionManager.registerHandler(adminRequestProcessorExtensionHandler);
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    ServletWebRequest request2 = new ServletWebRequest(request);
+    ServletWebRequest request = new ServletWebRequest(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
     SiteImpl currentSite = new SiteImpl();
 
     ExtensionResultHolder<Catalog> result = new ExtensionResultHolder<>();
@@ -627,8 +521,8 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
     result.setThrowable(new Throwable());
 
     // Act
-    ExtensionResultStatusType actualOverrideCurrentCatalogResult =
-        adminRequestProcessorExtensionManager.overrideCurrentCatalog(request2, currentSite, result);
+    ExtensionResultStatusType actualOverrideCurrentCatalogResult = adminRequestProcessorExtensionManager
+        .overrideCurrentCatalog(request, currentSite, result);
 
     // Assert
     verify(adminRequestProcessorExtensionHandler).isEnabled();
@@ -636,66 +530,16 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site,
-   * ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Given {@link AdminRequestProcessorExtensionManager}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AdminRequestProcessorExtensionManager.overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)"
-  })
-  public void testOverrideCurrentCatalog_givenAdminRequestProcessorExtensionManager() {
-    // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    ServletWebRequest request2 = new ServletWebRequest(request);
-    SiteImpl currentSite = new SiteImpl();
-
-    ExtensionResultHolder<Catalog> result = new ExtensionResultHolder<>();
-    result.setResult(new CatalogImpl());
-    result.setThrowable(new Throwable());
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        adminRequestProcessorExtensionManager.overrideCurrentCatalog(
-            request2, currentSite, result));
-  }
-
-  /**
-   * Test {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AdminRequestProcessorExtensionManager.overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)"
-  })
   public void testOverrideCurrentProfile() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager =
-        new AdminRequestProcessorExtensionManager();
-    adminRequestProcessorExtensionManager.registerHandler(
-        new AdminRequestProcessorExtensionManager());
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    ServletWebRequest request2 = new ServletWebRequest(request);
+    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
+    ServletWebRequest request = new ServletWebRequest(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
     SiteImpl currentSite = new SiteImpl();
 
     ExtensionResultHolder<Site> result = new ExtensionResultHolder<>();
@@ -703,94 +547,74 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
     result.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        adminRequestProcessorExtensionManager.overrideCurrentProfile(
-            request2, currentSite, result));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        adminRequestProcessorExtensionManager.overrideCurrentProfile(request, currentSite, result));
   }
 
   /**
-   * Test {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AdminRequestProcessorExtensionManager.overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)"
-  })
   public void testOverrideCurrentProfile2() {
-    // Arrange
-    AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler =
-        mock(AdminRequestProcessorExtensionHandler.class);
-    when(adminRequestProcessorExtensionHandler.overrideCurrentProfile(
-            Mockito.<WebRequest>any(),
-            Mockito.<Site>any(),
-            Mockito.<ExtensionResultHolder<Site>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(adminRequestProcessorExtensionHandler.isEnabled()).thenReturn(true);
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager =
-        new AdminRequestProcessorExtensionManager();
-    adminRequestProcessorExtensionManager.registerHandler(adminRequestProcessorExtensionHandler);
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    ServletWebRequest request2 = new ServletWebRequest(request);
+    // Arrange
+    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
+    ServletWebRequest request = new ServletWebRequest(
+        new JSCompatibilityRequestWrapper(mock(DefaultMultipartHttpServletRequest.class)));
     SiteImpl currentSite = new SiteImpl();
 
     ExtensionResultHolder<Site> result = new ExtensionResultHolder<>();
     result.setResult(new SiteImpl());
     result.setThrowable(new Throwable());
 
-    // Act
-    ExtensionResultStatusType actualOverrideCurrentProfileResult =
-        adminRequestProcessorExtensionManager.overrideCurrentProfile(request2, currentSite, result);
-
-    // Assert
-    verify(adminRequestProcessorExtensionHandler).isEnabled();
-    verify(adminRequestProcessorExtensionHandler)
-        .overrideCurrentProfile(
-            isA(WebRequest.class), isA(Site.class), isA(ExtensionResultHolder.class));
-    assertEquals(ExtensionResultStatusType.HANDLED, actualOverrideCurrentProfileResult);
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        adminRequestProcessorExtensionManager.overrideCurrentProfile(request, currentSite, result));
   }
 
   /**
-   * Test {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AdminRequestProcessorExtensionManager.overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)"
-  })
   public void testOverrideCurrentProfile3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler =
-        mock(AdminRequestProcessorExtensionHandler.class);
-    when(adminRequestProcessorExtensionHandler.overrideCurrentProfile(
-            Mockito.<WebRequest>any(),
-            Mockito.<Site>any(),
-            Mockito.<ExtensionResultHolder<Site>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED_STOP);
+    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
+    adminRequestProcessorExtensionManager.registerHandler(new AdminRequestProcessorExtensionManager());
+    ServletWebRequest request = new ServletWebRequest(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+    SiteImpl currentSite = new SiteImpl();
+
+    ExtensionResultHolder<Site> result = new ExtensionResultHolder<>();
+    result.setResult(new SiteImpl());
+    result.setThrowable(new Throwable());
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        adminRequestProcessorExtensionManager.overrideCurrentProfile(request, currentSite, result));
+  }
+
+  /**
+   * Method under test:
+   * {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}
+   */
+  @Test
+  public void testOverrideCurrentProfile4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler = mock(
+        AdminRequestProcessorExtensionHandler.class);
+    when(adminRequestProcessorExtensionHandler.overrideCurrentProfile(Mockito.<WebRequest>any(), Mockito.<Site>any(),
+        Mockito.<ExtensionResultHolder<Site>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
     when(adminRequestProcessorExtensionHandler.isEnabled()).thenReturn(true);
 
-    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager =
-        new AdminRequestProcessorExtensionManager();
+    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
     adminRequestProcessorExtensionManager.registerHandler(adminRequestProcessorExtensionHandler);
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    ServletWebRequest request2 = new ServletWebRequest(request);
+    ServletWebRequest request = new ServletWebRequest(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
     SiteImpl currentSite = new SiteImpl();
 
     ExtensionResultHolder<Site> result = new ExtensionResultHolder<>();
@@ -798,44 +622,67 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
     result.setThrowable(new Throwable());
 
     // Act
-    ExtensionResultStatusType actualOverrideCurrentProfileResult =
-        adminRequestProcessorExtensionManager.overrideCurrentProfile(request2, currentSite, result);
+    ExtensionResultStatusType actualOverrideCurrentProfileResult = adminRequestProcessorExtensionManager
+        .overrideCurrentProfile(request, currentSite, result);
 
     // Assert
     verify(adminRequestProcessorExtensionHandler).isEnabled();
-    verify(adminRequestProcessorExtensionHandler)
-        .overrideCurrentProfile(
-            isA(WebRequest.class), isA(Site.class), isA(ExtensionResultHolder.class));
+    verify(adminRequestProcessorExtensionHandler).overrideCurrentProfile(isA(WebRequest.class), isA(Site.class),
+        isA(ExtensionResultHolder.class));
     assertEquals(ExtensionResultStatusType.HANDLED, actualOverrideCurrentProfileResult);
   }
 
   /**
-   * Test {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AdminRequestProcessorExtensionManager.overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)"
-  })
-  public void testOverrideCurrentProfile4() {
+  public void testOverrideCurrentProfile5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler =
-        mock(AdminRequestProcessorExtensionHandler.class);
+    AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler = mock(
+        AdminRequestProcessorExtensionHandler.class);
+    when(adminRequestProcessorExtensionHandler.overrideCurrentProfile(Mockito.<WebRequest>any(), Mockito.<Site>any(),
+        Mockito.<ExtensionResultHolder<Site>>any())).thenReturn(ExtensionResultStatusType.HANDLED_STOP);
+    when(adminRequestProcessorExtensionHandler.isEnabled()).thenReturn(true);
+
+    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
+    adminRequestProcessorExtensionManager.registerHandler(adminRequestProcessorExtensionHandler);
+    ServletWebRequest request = new ServletWebRequest(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+    SiteImpl currentSite = new SiteImpl();
+
+    ExtensionResultHolder<Site> result = new ExtensionResultHolder<>();
+    result.setResult(new SiteImpl());
+    result.setThrowable(new Throwable());
+
+    // Act
+    ExtensionResultStatusType actualOverrideCurrentProfileResult = adminRequestProcessorExtensionManager
+        .overrideCurrentProfile(request, currentSite, result);
+
+    // Assert
+    verify(adminRequestProcessorExtensionHandler).isEnabled();
+    verify(adminRequestProcessorExtensionHandler).overrideCurrentProfile(isA(WebRequest.class), isA(Site.class),
+        isA(ExtensionResultHolder.class));
+    assertEquals(ExtensionResultStatusType.HANDLED, actualOverrideCurrentProfileResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}
+   */
+  @Test
+  public void testOverrideCurrentProfile6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AdminRequestProcessorExtensionHandler adminRequestProcessorExtensionHandler = mock(
+        AdminRequestProcessorExtensionHandler.class);
     when(adminRequestProcessorExtensionHandler.isEnabled()).thenReturn(false);
 
-    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager =
-        new AdminRequestProcessorExtensionManager();
+    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager = new AdminRequestProcessorExtensionManager();
     adminRequestProcessorExtensionManager.registerHandler(adminRequestProcessorExtensionHandler);
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    ServletWebRequest request2 = new ServletWebRequest(request);
+    ServletWebRequest request = new ServletWebRequest(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
     SiteImpl currentSite = new SiteImpl();
 
     ExtensionResultHolder<Site> result = new ExtensionResultHolder<>();
@@ -843,8 +690,8 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
     result.setThrowable(new Throwable());
 
     // Act
-    ExtensionResultStatusType actualOverrideCurrentProfileResult =
-        adminRequestProcessorExtensionManager.overrideCurrentProfile(request2, currentSite, result);
+    ExtensionResultStatusType actualOverrideCurrentProfileResult = adminRequestProcessorExtensionManager
+        .overrideCurrentProfile(request, currentSite, result);
 
     // Assert
     verify(adminRequestProcessorExtensionHandler).isEnabled();
@@ -852,53 +699,11 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site,
-   * ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Given {@link AdminRequestProcessorExtensionManager}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site,
-   * ExtensionResultHolder)}
+   * Method under test: {@link AdminRequestProcessorExtensionManager#isEnabled()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AdminRequestProcessorExtensionManager.overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)"
-  })
-  public void testOverrideCurrentProfile_givenAdminRequestProcessorExtensionManager() {
-    // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    ServletWebRequest request2 = new ServletWebRequest(request);
-    SiteImpl currentSite = new SiteImpl();
-
-    ExtensionResultHolder<Site> result = new ExtensionResultHolder<>();
-    result.setResult(new SiteImpl());
-    result.setThrowable(new Throwable());
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        adminRequestProcessorExtensionManager.overrideCurrentProfile(
-            request2, currentSite, result));
-  }
-
-  /**
-   * Test {@link AdminRequestProcessorExtensionManager#isEnabled()}.
-   *
-   * <p>Method under test: {@link AdminRequestProcessorExtensionManager#isEnabled()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AdminRequestProcessorExtensionManager.isEnabled()"})
   public void testIsEnabled() {
     // Arrange, Act and Assert
-    assertTrue(new AdminRequestProcessorExtensionManager().isEnabled());
+    assertTrue((new AdminRequestProcessorExtensionManager()).isEnabled());
   }
 }

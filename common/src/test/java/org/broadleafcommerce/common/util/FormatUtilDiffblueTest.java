@@ -18,83 +18,58 @@
 package org.broadleafcommerce.common.util;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.TimeZone;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class FormatUtilDiffblueTest {
   /**
-   * Test {@link FormatUtil#getDateFormat()}.
-   *
-   * <p>Method under test: {@link FormatUtil#getDateFormat()}
+   * Method under test: {@link FormatUtil#formatDateUsingW3C(java.util.Date)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"SimpleDateFormat FormatUtil.getDateFormat()"})
-  public void testGetDateFormat() {
-    // Arrange and Act
-    SimpleDateFormat actualDateFormat = FormatUtil.getDateFormat();
+  public void testFormatDateUsingW3C() {
+    // Arrange
+    java.sql.Date date = mock(java.sql.Date.class);
+    when(date.getTime()).thenReturn(10L);
+
+    // Act
+    FormatUtil.formatDateUsingW3C(date);
 
     // Assert
-    assertTrue(actualDateFormat.getNumberFormat() instanceof DecimalFormat);
-    assertTrue(actualDateFormat.getCalendar() instanceof GregorianCalendar);
-    assertNull(actualDateFormat.getTimeZone());
-    assertTrue(actualDateFormat.isLenient());
-    assertEquals(FormatUtil.DATE_FORMAT, actualDateFormat.toPattern());
+    verify(date).getTime();
   }
 
   /**
-   * Test {@link FormatUtil#getTimeZoneFormat()}.
-   *
-   * <p>Method under test: {@link FormatUtil#getTimeZoneFormat()}
+   * Method under test: {@link FormatUtil#dateToSting(Date, TimeZone)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"SimpleDateFormat FormatUtil.getTimeZoneFormat()"})
-  public void testGetTimeZoneFormat() {
-    // Arrange and Act
-    SimpleDateFormat actualTimeZoneFormat = FormatUtil.getTimeZoneFormat();
+  public void testDateToSting() {
+    // Arrange
+    Date date = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
 
-    // Assert
-    assertTrue(actualTimeZoneFormat.getNumberFormat() instanceof DecimalFormat);
-    assertTrue(actualTimeZoneFormat.getCalendar() instanceof GregorianCalendar);
-    assertNull(actualTimeZoneFormat.getTimeZone());
-    assertTrue(actualTimeZoneFormat.isLenient());
-    assertEquals(FormatUtil.DATE_FORMAT_WITH_TIMEZONE, actualTimeZoneFormat.toPattern());
+    // Act and Assert
+    assertEquals("Dec 31, 1969 @ 04:00pm", FormatUtil.dateToSting(date, TimeZone.getTimeZone("America/Los_Angeles")));
   }
 
   /**
-   * Test {@link FormatUtil#dateToSting(Date, TimeZone)}.
-   *
-   * <ul>
-   *   <li>Then return {@code Dec 31, 1969 @ 04:00pm}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FormatUtil#dateToSting(Date, TimeZone)}
+   * Method under test: {@link FormatUtil#dateToSting(java.util.Date, TimeZone)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.lang.String FormatUtil.dateToSting(Date, TimeZone)"})
-  public void testDateToSting_thenReturnDec3119690400pm() {
-    // Arrange, Act and Assert
-    assertEquals(
-        "Dec 31, 1969 @ 04:00pm",
-        FormatUtil.dateToSting(
-            Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()),
-            TimeZone.getTimeZone("America/Los_Angeles")));
+  public void testDateToSting2() {
+    // Arrange
+    java.sql.Date date = mock(java.sql.Date.class);
+    when(date.getTime()).thenReturn(10L);
+
+    // Act
+    String actualDateToStingResult = FormatUtil.dateToSting(date, TimeZone.getTimeZone("America/Los_Angeles"));
+
+    // Assert
+    verify(date).getTime();
+    assertEquals("Dec 31, 1969 @ 04:00pm", actualDateToStingResult);
   }
 }

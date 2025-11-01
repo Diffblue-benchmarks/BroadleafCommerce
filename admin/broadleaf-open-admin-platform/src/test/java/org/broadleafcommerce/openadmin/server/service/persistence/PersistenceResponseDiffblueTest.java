@@ -19,36 +19,28 @@ package org.broadleafcommerce.openadmin.server.service.persistence;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiFunction;
 import org.broadleafcommerce.openadmin.dto.DynamicResultSet;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class PersistenceResponseDiffblueTest {
   /**
-   * Test {@link PersistenceResponse#withDynamicResultSet(DynamicResultSet)}.
-   *
-   * <p>Method under test: {@link PersistenceResponse#withDynamicResultSet(DynamicResultSet)}
+   * Method under test:
+   * {@link PersistenceResponse#withDynamicResultSet(DynamicResultSet)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PersistenceResponse PersistenceResponse.withDynamicResultSet(DynamicResultSet)"
-  })
   public void testWithDynamicResultSet() {
     // Arrange
     PersistenceResponse persistenceResponse = new PersistenceResponse();
     DynamicResultSet dynamicResultSet = new DynamicResultSet();
 
     // Act
-    PersistenceResponse actualWithDynamicResultSetResult =
-        persistenceResponse.withDynamicResultSet(dynamicResultSet);
+    PersistenceResponse actualWithDynamicResultSetResult = persistenceResponse.withDynamicResultSet(dynamicResultSet);
 
     // Assert
     assertSame(dynamicResultSet, persistenceResponse.getDynamicResultSet());
@@ -56,14 +48,31 @@ public class PersistenceResponseDiffblueTest {
   }
 
   /**
-   * Test {@link PersistenceResponse#withEntity(Entity)}.
-   *
-   * <p>Method under test: {@link PersistenceResponse#withEntity(Entity)}
+   * Method under test:
+   * {@link PersistenceResponse#withDynamicResultSet(DynamicResultSet)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"PersistenceResponse PersistenceResponse.withEntity(Entity)"})
+  public void testWithDynamicResultSet2() {
+    // Arrange
+    HashMap<String, Object> additionalData = new HashMap<>();
+    additionalData.computeIfPresent("foo", mock(BiFunction.class));
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setAdditionalData(additionalData);
+    DynamicResultSet dynamicResultSet = new DynamicResultSet();
+
+    // Act
+    PersistenceResponse actualWithDynamicResultSetResult = persistenceResponse.withDynamicResultSet(dynamicResultSet);
+
+    // Assert
+    assertSame(dynamicResultSet, persistenceResponse.getDynamicResultSet());
+    assertSame(persistenceResponse, actualWithDynamicResultSetResult);
+  }
+
+  /**
+   * Method under test: {@link PersistenceResponse#withEntity(Entity)}
+   */
+  @Test
   public void testWithEntity() {
     // Arrange
     PersistenceResponse persistenceResponse = new PersistenceResponse();
@@ -78,33 +87,26 @@ public class PersistenceResponseDiffblueTest {
   }
 
   /**
-   * Test {@link PersistenceResponse#withAdditionalData(Map)}.
-   *
-   * <p>Method under test: {@link PersistenceResponse#withAdditionalData(Map)}
+   * Method under test: {@link PersistenceResponse#withEntity(Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"PersistenceResponse PersistenceResponse.withAdditionalData(Map)"})
-  public void testWithAdditionalData() {
+  public void testWithEntity2() {
     // Arrange
     PersistenceResponse persistenceResponse = new PersistenceResponse();
-    HashMap<String, Object> additionalData = new HashMap<>();
+
+    Entity entity = new Entity();
+    entity.setDeployDate(mock(Date.class));
 
     // Act
-    PersistenceResponse actualWithAdditionalDataResult =
-        persistenceResponse.withAdditionalData(additionalData);
+    PersistenceResponse actualWithEntityResult = persistenceResponse.withEntity(entity);
 
     // Assert
-    assertSame(additionalData, persistenceResponse.getAdditionalData());
-    assertSame(persistenceResponse, actualWithAdditionalDataResult);
+    assertSame(entity, persistenceResponse.getEntity());
+    assertSame(persistenceResponse, actualWithEntityResult);
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link PersistenceResponse}
    *   <li>{@link PersistenceResponse#setAdditionalData(Map)}
@@ -116,17 +118,6 @@ public class PersistenceResponseDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PersistenceResponse.<init>()",
-    "Map PersistenceResponse.getAdditionalData()",
-    "DynamicResultSet PersistenceResponse.getDynamicResultSet()",
-    "Entity PersistenceResponse.getEntity()",
-    "void PersistenceResponse.setAdditionalData(Map)",
-    "void PersistenceResponse.setDynamicResultSet(DynamicResultSet)",
-    "void PersistenceResponse.setEntity(Entity)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     PersistenceResponse actualPersistenceResponse = new PersistenceResponse();
@@ -140,10 +131,46 @@ public class PersistenceResponseDiffblueTest {
     DynamicResultSet actualDynamicResultSet = actualPersistenceResponse.getDynamicResultSet();
     Entity actualEntity = actualPersistenceResponse.getEntity();
 
-    // Assert
+    // Assert that nothing has changed
     assertTrue(actualAdditionalData.isEmpty());
     assertSame(additionalData, actualAdditionalData);
     assertSame(dynamicResultSet, actualDynamicResultSet);
     assertSame(entity, actualEntity);
+  }
+
+  /**
+   * Method under test: {@link PersistenceResponse#withAdditionalData(Map)}
+   */
+  @Test
+  public void testWithAdditionalData() {
+    // Arrange
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    HashMap<String, Object> additionalData = new HashMap<>();
+
+    // Act
+    PersistenceResponse actualWithAdditionalDataResult = persistenceResponse.withAdditionalData(additionalData);
+
+    // Assert
+    assertSame(additionalData, persistenceResponse.getAdditionalData());
+    assertSame(persistenceResponse, actualWithAdditionalDataResult);
+  }
+
+  /**
+   * Method under test: {@link PersistenceResponse#withAdditionalData(Map)}
+   */
+  @Test
+  public void testWithAdditionalData2() {
+    // Arrange
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+
+    HashMap<String, Object> additionalData = new HashMap<>();
+    additionalData.computeIfPresent("foo", mock(BiFunction.class));
+
+    // Act
+    PersistenceResponse actualWithAdditionalDataResult = persistenceResponse.withAdditionalData(additionalData);
+
+    // Assert
+    assertSame(additionalData, persistenceResponse.getAdditionalData());
+    assertSame(persistenceResponse, actualWithAdditionalDataResult);
   }
 }

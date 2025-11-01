@@ -20,41 +20,93 @@ package org.broadleafcommerce.openadmin.server.service.persistence.module.criter
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {FieldPath.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class FieldPathDiffblueTest {
-  @Autowired private FieldPath fieldPath;
+  @Autowired
+  private FieldPath fieldPath;
 
   /**
-   * Test {@link FieldPath#withAssociationPath(List)}.
-   *
+   * Methods under test:
    * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.
+   *   <li>default or parameterless constructor of {@link FieldPath}
+   *   <li>{@link FieldPath#setAssociationPath(List)}
+   *   <li>{@link FieldPath#setTargetProperty(String)}
+   *   <li>{@link FieldPath#setTargetPropertyPieces(List)}
+   *   <li>{@link FieldPath#getAssociationPath()}
+   *   <li>{@link FieldPath#getTargetProperty()}
+   *   <li>{@link FieldPath#getTargetPropertyPieces()}
    * </ul>
-   *
-   * <p>Method under test: {@link FieldPath#withAssociationPath(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FieldPath FieldPath.withAssociationPath(List)"})
-  public void testWithAssociationPath_given42_whenArrayListAdd42() {
+  public void testGettersAndSetters() {
+    // Arrange and Act
+    FieldPath actualFieldPath = new FieldPath();
+    ArrayList<String> associationPath = new ArrayList<>();
+    actualFieldPath.setAssociationPath(associationPath);
+    actualFieldPath.setTargetProperty("Target Property");
+    ArrayList<String> targetPropertyPieces = new ArrayList<>();
+    actualFieldPath.setTargetPropertyPieces(targetPropertyPieces);
+    List<String> actualAssociationPath = actualFieldPath.getAssociationPath();
+    String actualTargetProperty = actualFieldPath.getTargetProperty();
+    List<String> actualTargetPropertyPieces = actualFieldPath.getTargetPropertyPieces();
+
+    // Assert that nothing has changed
+    assertEquals("Target Property", actualTargetProperty);
+    assertTrue(actualAssociationPath.isEmpty());
+    assertTrue(actualTargetPropertyPieces.isEmpty());
+    assertSame(associationPath, actualAssociationPath);
+    assertSame(targetPropertyPieces, actualTargetPropertyPieces);
+  }
+
+  /**
+   * Method under test: {@link FieldPath#withAssociationPath(List)}
+   */
+  @Test
+  public void testWithAssociationPath() {
+    // Arrange
+    ArrayList<String> associationPath = new ArrayList<>();
+
+    // Act
+    FieldPath actualWithAssociationPathResult = fieldPath.withAssociationPath(associationPath);
+
+    // Assert
+    assertSame(associationPath, fieldPath.getAssociationPath());
+    assertSame(fieldPath, actualWithAssociationPathResult);
+  }
+
+  /**
+   * Method under test: {@link FieldPath#withAssociationPath(List)}
+   */
+  @Test
+  public void testWithAssociationPath2() {
+    // Arrange
+    ArrayList<String> associationPath = new ArrayList<>();
+    associationPath.add("foo");
+
+    // Act
+    FieldPath actualWithAssociationPathResult = fieldPath.withAssociationPath(associationPath);
+
+    // Assert
+    assertSame(associationPath, fieldPath.getAssociationPath());
+    assertSame(fieldPath, actualWithAssociationPathResult);
+  }
+
+  /**
+   * Method under test: {@link FieldPath#withAssociationPath(List)}
+   */
+  @Test
+  public void testWithAssociationPath3() {
     // Arrange
     ArrayList<String> associationPath = new ArrayList<>();
     associationPath.add("42");
@@ -69,80 +121,50 @@ public class FieldPathDiffblueTest {
   }
 
   /**
-   * Test {@link FieldPath#withAssociationPath(List)}.
-   *
-   * <ul>
-   *   <li>Given {@code foo}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@code foo}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldPath#withAssociationPath(List)}
+   * Method under test: {@link FieldPath#withTargetPropertyPieces(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FieldPath FieldPath.withAssociationPath(List)"})
-  public void testWithAssociationPath_givenFoo_whenArrayListAddFoo() {
+  public void testWithTargetPropertyPieces() {
     // Arrange
-    ArrayList<String> associationPath = new ArrayList<>();
-    associationPath.add("foo");
+    ArrayList<String> targetPropertyPieces = new ArrayList<>();
 
     // Act
-    FieldPath actualWithAssociationPathResult = fieldPath.withAssociationPath(associationPath);
+    FieldPath actualWithTargetPropertyPiecesResult = fieldPath.withTargetPropertyPieces(targetPropertyPieces);
 
     // Assert
-    assertSame(associationPath, fieldPath.getAssociationPath());
-    assertSame(fieldPath, actualWithAssociationPathResult);
+    assertSame(targetPropertyPieces, fieldPath.getTargetPropertyPieces());
+    assertSame(fieldPath, actualWithTargetPropertyPiecesResult);
   }
 
   /**
-   * Test {@link FieldPath#withAssociationPath(List)}.
-   *
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldPath#withAssociationPath(List)}
+   * Method under test: {@link FieldPath#withTargetPropertyPieces(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FieldPath FieldPath.withAssociationPath(List)"})
-  public void testWithAssociationPath_whenArrayList() {
+  public void testWithTargetPropertyPieces2() {
     // Arrange
-    ArrayList<String> associationPath = new ArrayList<>();
+    ArrayList<String> targetPropertyPieces = new ArrayList<>();
+    targetPropertyPieces.add("foo");
 
     // Act
-    FieldPath actualWithAssociationPathResult = fieldPath.withAssociationPath(associationPath);
+    FieldPath actualWithTargetPropertyPiecesResult = fieldPath.withTargetPropertyPieces(targetPropertyPieces);
 
     // Assert
-    assertSame(associationPath, fieldPath.getAssociationPath());
-    assertSame(fieldPath, actualWithAssociationPathResult);
+    assertSame(targetPropertyPieces, fieldPath.getTargetPropertyPieces());
+    assertSame(fieldPath, actualWithTargetPropertyPiecesResult);
   }
 
   /**
-   * Test {@link FieldPath#withTargetPropertyPieces(List)}.
-   *
-   * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldPath#withTargetPropertyPieces(List)}
+   * Method under test: {@link FieldPath#withTargetPropertyPieces(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FieldPath FieldPath.withTargetPropertyPieces(List)"})
-  public void testWithTargetPropertyPieces_given42_whenArrayListAdd42() {
+  public void testWithTargetPropertyPieces3() {
     // Arrange
     ArrayList<String> targetPropertyPieces = new ArrayList<>();
     targetPropertyPieces.add("42");
     targetPropertyPieces.add("foo");
 
     // Act
-    FieldPath actualWithTargetPropertyPiecesResult =
-        fieldPath.withTargetPropertyPieces(targetPropertyPieces);
+    FieldPath actualWithTargetPropertyPiecesResult = fieldPath.withTargetPropertyPieces(targetPropertyPieces);
 
     // Assert
     assertSame(targetPropertyPieces, fieldPath.getTargetPropertyPieces());
@@ -150,68 +172,9 @@ public class FieldPathDiffblueTest {
   }
 
   /**
-   * Test {@link FieldPath#withTargetPropertyPieces(List)}.
-   *
-   * <ul>
-   *   <li>Given {@code foo}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@code foo}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldPath#withTargetPropertyPieces(List)}
+   * Method under test: {@link FieldPath#withTargetProperty(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FieldPath FieldPath.withTargetPropertyPieces(List)"})
-  public void testWithTargetPropertyPieces_givenFoo_whenArrayListAddFoo() {
-    // Arrange
-    ArrayList<String> targetPropertyPieces = new ArrayList<>();
-    targetPropertyPieces.add("foo");
-
-    // Act
-    FieldPath actualWithTargetPropertyPiecesResult =
-        fieldPath.withTargetPropertyPieces(targetPropertyPieces);
-
-    // Assert
-    assertSame(targetPropertyPieces, fieldPath.getTargetPropertyPieces());
-    assertSame(fieldPath, actualWithTargetPropertyPiecesResult);
-  }
-
-  /**
-   * Test {@link FieldPath#withTargetPropertyPieces(List)}.
-   *
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldPath#withTargetPropertyPieces(List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FieldPath FieldPath.withTargetPropertyPieces(List)"})
-  public void testWithTargetPropertyPieces_whenArrayList() {
-    // Arrange
-    ArrayList<String> targetPropertyPieces = new ArrayList<>();
-
-    // Act
-    FieldPath actualWithTargetPropertyPiecesResult =
-        fieldPath.withTargetPropertyPieces(targetPropertyPieces);
-
-    // Assert
-    assertSame(targetPropertyPieces, fieldPath.getTargetPropertyPieces());
-    assertSame(fieldPath, actualWithTargetPropertyPiecesResult);
-  }
-
-  /**
-   * Test {@link FieldPath#withTargetProperty(String)}.
-   *
-   * <p>Method under test: {@link FieldPath#withTargetProperty(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FieldPath FieldPath.withTargetProperty(String)"})
   public void testWithTargetProperty() {
     // Arrange and Act
     FieldPath actualWithTargetPropertyResult = fieldPath.withTargetProperty("Target Property");
@@ -219,52 +182,5 @@ public class FieldPathDiffblueTest {
     // Assert
     assertEquals("Target Property", fieldPath.getTargetProperty());
     assertSame(fieldPath, actualWithTargetPropertyResult);
-  }
-
-  /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>default or parameterless constructor of {@link FieldPath}
-   *   <li>{@link FieldPath#setAssociationPath(List)}
-   *   <li>{@link FieldPath#setTargetProperty(String)}
-   *   <li>{@link FieldPath#setTargetPropertyPieces(List)}
-   *   <li>{@link FieldPath#getAssociationPath()}
-   *   <li>{@link FieldPath#getTargetProperty()}
-   *   <li>{@link FieldPath#getTargetPropertyPieces()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void FieldPath.<init>()",
-    "List FieldPath.getAssociationPath()",
-    "String FieldPath.getTargetProperty()",
-    "List FieldPath.getTargetPropertyPieces()",
-    "void FieldPath.setAssociationPath(List)",
-    "void FieldPath.setTargetProperty(String)",
-    "void FieldPath.setTargetPropertyPieces(List)"
-  })
-  public void testGettersAndSetters() {
-    // Arrange and Act
-    FieldPath actualFieldPath = new FieldPath();
-    ArrayList<String> associationPath = new ArrayList<>();
-    actualFieldPath.setAssociationPath(associationPath);
-    actualFieldPath.setTargetProperty("Target Property");
-    ArrayList<String> targetPropertyPieces = new ArrayList<>();
-    actualFieldPath.setTargetPropertyPieces(targetPropertyPieces);
-    List<String> actualAssociationPath = actualFieldPath.getAssociationPath();
-    String actualTargetProperty = actualFieldPath.getTargetProperty();
-    List<String> actualTargetPropertyPieces = actualFieldPath.getTargetPropertyPieces();
-
-    // Assert
-    assertEquals("Target Property", actualTargetProperty);
-    assertTrue(actualAssociationPath.isEmpty());
-    assertTrue(actualTargetPropertyPieces.isEmpty());
-    assertSame(associationPath, actualAssociationPath);
-    assertSame(targetPropertyPieces, actualTargetPropertyPieces);
   }
 }

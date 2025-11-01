@@ -22,170 +22,82 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.web.form.entity.Field;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {ListGridRecord.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class ListGridRecordDiffblueTest {
-  @Autowired private ListGridRecord listGridRecord;
+  @Autowired
+  private ListGridRecord listGridRecord;
 
   /**
-   * Test {@link ListGridRecord#getPath()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor) PathOverride is {@code not blank}.
-   *   <li>Then return {@code not blank/null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getPath()}
+   * Method under test: {@link ListGridRecord#getPath()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ListGridRecord.getPath()"})
-  public void testGetPath_givenListGridPathOverrideIsNotBlank_thenReturnNotBlankNull() {
+  public void testGetPath() {
     // Arrange
     ListGrid listGrid = new ListGrid();
-    listGrid.setPathOverride("not blank");
     listGrid.setSectionKey("/");
-    listGrid.setContainingEntityId(null);
-    listGrid.setSubCollectionFieldName("not blank");
 
     ListGridRecord listGridRecord = new ListGridRecord();
-    listGridRecord.setAltId("");
     listGridRecord.setListGrid(listGrid);
 
     // Act and Assert
-    assertEquals("not blank/null", listGridRecord.getPath());
+    assertEquals("//null", listGridRecord.getPath());
   }
 
   /**
-   * Test {@link ListGridRecord#getPath()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor) PathOverride is space.
-   *   <li>Then return {@code //not blank/null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getPath()}
+   * Method under test: {@link ListGridRecord#getPath()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ListGridRecord.getPath()"})
-  public void testGetPath_givenListGridPathOverrideIsSpace_thenReturnNotBlankNull() {
+  public void testGetPath2() {
     // Arrange
     ListGrid listGrid = new ListGrid();
-    listGrid.setPathOverride(" ");
-    listGrid.setSectionKey("/");
-    listGrid.setContainingEntityId(null);
-    listGrid.setSubCollectionFieldName("not blank");
+    listGrid.setPathOverride("/");
 
     ListGridRecord listGridRecord = new ListGridRecord();
-    listGridRecord.setAltId("");
     listGridRecord.setListGrid(listGrid);
 
     // Act and Assert
-    assertEquals("//not blank/null", listGridRecord.getPath());
+    assertEquals("//null", listGridRecord.getPath());
   }
 
   /**
-   * Test {@link ListGridRecord#getPath()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridRecord} (default constructor) AltId is {@code 42}.
-   *   <li>Then return {@code not blank/null/42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getPath()}
+   * Method under test: {@link ListGridRecord#getPath()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ListGridRecord.getPath()"})
-  public void testGetPath_givenListGridRecordAltIdIs42_thenReturnNotBlankNull42() {
+  public void testGetPath3() {
     // Arrange
     ListGrid listGrid = new ListGrid();
-    listGrid.setPathOverride("not blank");
     listGrid.setSectionKey("/");
-    listGrid.setContainingEntityId(null);
-    listGrid.setSubCollectionFieldName("not blank");
 
     ListGridRecord listGridRecord = new ListGridRecord();
     listGridRecord.setAltId("42");
     listGridRecord.setListGrid(listGrid);
 
     // Act and Assert
-    assertEquals("not blank/null/42", listGridRecord.getPath());
+    assertEquals("//null/42", listGridRecord.getPath());
   }
 
   /**
-   * Test {@link ListGridRecord#getPath()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridRecord} (default constructor) AltId is {@code null}.
-   *   <li>Then return {@code not blank/null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getPath()}
+   * Method under test: {@link ListGridRecord#getPath()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ListGridRecord.getPath()"})
-  public void testGetPath_givenListGridRecordAltIdIsNull_thenReturnNotBlankNull() {
+  public void testGetPath4() {
     // Arrange
     ListGrid listGrid = new ListGrid();
-    listGrid.setPathOverride("not blank");
     listGrid.setSectionKey("/");
-    listGrid.setContainingEntityId(null);
-    listGrid.setSubCollectionFieldName("not blank");
-
-    ListGridRecord listGridRecord = new ListGridRecord();
-    listGridRecord.setAltId(null);
-    listGridRecord.setListGrid(listGrid);
-
-    // Act and Assert
-    assertEquals("not blank/null", listGridRecord.getPath());
-  }
-
-  /**
-   * Test {@link ListGridRecord#getPath()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor) SubCollectionFieldName is {@code null}.
-   *   <li>Then return {@code //null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getPath()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ListGridRecord.getPath()"})
-  public void testGetPath_givenListGridSubCollectionFieldNameIsNull_thenReturnNull() {
-    // Arrange
-    ListGrid listGrid = new ListGrid();
-    listGrid.setPathOverride(" ");
-    listGrid.setSectionKey("/");
-    listGrid.setContainingEntityId(null);
-    listGrid.setSubCollectionFieldName(null);
 
     ListGridRecord listGridRecord = new ListGridRecord();
     listGridRecord.setAltId("");
@@ -196,19 +108,10 @@ public class ListGridRecordDiffblueTest {
   }
 
   /**
-   * Test {@link ListGridRecord#getCanLinkToExternalEntity()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor) ExternalEntitySectionKey is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getCanLinkToExternalEntity()}
+   * Method under test: {@link ListGridRecord#getCanLinkToExternalEntity()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ListGridRecord.getCanLinkToExternalEntity()"})
-  public void testGetCanLinkToExternalEntity_givenListGridExternalEntitySectionKeyIsNull() {
+  public void testGetCanLinkToExternalEntity() {
     // Arrange
     ListGrid listGrid = new ListGrid();
     listGrid.setExternalEntitySectionKey(null);
@@ -221,47 +124,13 @@ public class ListGridRecordDiffblueTest {
   }
 
   /**
-   * Test {@link ListGridRecord#getCanLinkToExternalEntity()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGrid} (default constructor) ExternalEntitySectionKey is space.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getCanLinkToExternalEntity()}
+   * Method under test: {@link ListGridRecord#getCanLinkToExternalEntity()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ListGridRecord.getCanLinkToExternalEntity()"})
-  public void testGetCanLinkToExternalEntity_givenListGridExternalEntitySectionKeyIsSpace() {
+  public void testGetCanLinkToExternalEntity2() {
     // Arrange
     ListGrid listGrid = new ListGrid();
-    listGrid.setExternalEntitySectionKey(" ");
-
-    ListGridRecord listGridRecord = new ListGridRecord();
-    listGridRecord.setListGrid(listGrid);
-
-    // Act and Assert
-    assertFalse(listGridRecord.getCanLinkToExternalEntity());
-  }
-
-  /**
-   * Test {@link ListGridRecord#getCanLinkToExternalEntity()}.
-   *
-   * <ul>
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getCanLinkToExternalEntity()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ListGridRecord.getCanLinkToExternalEntity()"})
-  public void testGetCanLinkToExternalEntity_thenReturnTrue() {
-    // Arrange
-    ListGrid listGrid = new ListGrid();
-    listGrid.setExternalEntitySectionKey("not blank");
+    listGrid.setExternalEntitySectionKey("foo");
 
     ListGridRecord listGridRecord = new ListGridRecord();
     listGridRecord.setListGrid(listGrid);
@@ -271,19 +140,10 @@ public class ListGridRecordDiffblueTest {
   }
 
   /**
-   * Test {@link ListGridRecord#getExternalEntityPath()}.
-   *
-   * <ul>
-   *   <li>Then return {@code null/null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getExternalEntityPath()}
+   * Method under test: {@link ListGridRecord#getExternalEntityPath()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ListGridRecord.getExternalEntityPath()"})
-  public void testGetExternalEntityPath_thenReturnNullNull() {
+  public void testGetExternalEntityPath() {
     // Arrange
     ListGridRecord listGridRecord = new ListGridRecord();
     listGridRecord.setListGrid(new ListGrid());
@@ -293,23 +153,12 @@ public class ListGridRecordDiffblueTest {
   }
 
   /**
-   * Test {@link ListGridRecord#getIndex()}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link ListGridRecord} (default constructor).
-   *   <li>Then return minus one.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getIndex()}
+   * Method under test: {@link ListGridRecord#getIndex()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int ListGridRecord.getIndex()"})
-  public void testGetIndex_givenArrayListAddListGridRecord_thenReturnMinusOne() {
+  public void testGetIndex() {
     // Arrange
     ArrayList<ListGridRecord> records = new ArrayList<>();
-    records.add(new ListGridRecord());
     records.add(new ListGridRecord());
 
     ListGrid listGrid = new ListGrid();
@@ -323,204 +172,10 @@ public class ListGridRecordDiffblueTest {
   }
 
   /**
-   * Test {@link ListGridRecord#getField(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridRecord} (default constructor) Fields is {@link
-   *       ArrayList#ArrayList()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getField(String)}
+   * Method under test: {@link ListGridRecord#getField(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Field ListGridRecord.getField(String)"})
-  public void testGetField_givenListGridRecordFieldsIsArrayList() {
-    // Arrange
-    ArrayList<Field> fields = new ArrayList<>();
-    fields.add(new Field());
-
-    ListGridRecord listGridRecord = new ListGridRecord();
-    listGridRecord.setFields(fields);
-
-    // Act
-    Field actualField = listGridRecord.getField("Field Name");
-
-    // Assert
-    assertEquals("null/null", actualField.getEntityViewPath());
-    assertNull(actualField.getOrder());
-    assertNull(actualField.getAssociatedFieldName());
-    assertNull(actualField.getColumnWidth());
-    assertNull(actualField.getConfirmEnabledText());
-    assertNull(actualField.getDisplayType());
-    assertNull(actualField.getDisplayValue());
-    assertNull(actualField.getFieldComponentRenderer());
-    assertNull(actualField.getFieldType());
-    assertNull(actualField.getForeignKeyClass());
-    assertNull(actualField.getForeignKeyDisplayValueProperty());
-    assertNull(actualField.getForeignKeySectionPath());
-    assertNull(actualField.getFriendlyName());
-    assertNull(actualField.getGridFieldComponentRenderer());
-    assertNull(actualField.getHelp());
-    assertNull(actualField.getHint());
-    assertNull(actualField.getIdOverride());
-    assertNull(actualField.getName());
-    assertNull(actualField.getOnChangeTrigger());
-    assertNull(actualField.getOwningEntityClass());
-    assertNull(actualField.getRawDisplayValue());
-    assertNull(actualField.getTooltip());
-    assertNull(actualField.getTranslationFieldName());
-    assertNull(actualField.getValue());
-    Map<String, Field> stringFieldMap = listGridRecord.fieldMap;
-    assertEquals(1, stringFieldMap.size());
-    assertFalse(actualField.getAllowNoValueEnumOption());
-    assertFalse(actualField.getAlternateOrdering());
-    assertFalse(actualField.getCanLinkToExternalEntity());
-    assertFalse(actualField.getContentOverflowAllowed());
-    assertFalse(actualField.getDisabled());
-    assertFalse(actualField.getFilterSortDisabled());
-    assertFalse(actualField.getIsConfirmEnabled());
-    assertFalse(actualField.getIsDerived());
-    assertFalse(actualField.getIsDirty());
-    assertFalse(actualField.getIsLargeEntry());
-    assertFalse(actualField.getIsTypeaheadEnabled());
-    assertFalse(actualField.getMainEntityLink());
-    assertFalse(actualField.getReadOnly());
-    assertFalse(actualField.getRequired());
-    assertFalse(actualField.getResizeDisabled());
-    assertFalse(actualField.getTranslatable());
-    assertTrue(stringFieldMap.containsKey(null));
-    assertTrue(actualField.getAttributes().isEmpty());
-    assertTrue(actualField.getIsVisible());
-    assertTrue(actualField.getShouldRender());
-  }
-
-  /**
-   * Test {@link ListGridRecord#getField(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridRecord} (default constructor) Fields is {@link
-   *       ArrayList#ArrayList()}.
-   *   <li>When {@code null}.
-   *   <li>Then return {@link Field} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getField(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Field ListGridRecord.getField(String)"})
-  public void testGetField_givenListGridRecordFieldsIsArrayList_whenNull_thenReturnField() {
-    // Arrange
-    ArrayList<Field> fields = new ArrayList<>();
-    Field field = new Field();
-    fields.add(field);
-
-    ListGridRecord listGridRecord = new ListGridRecord();
-    listGridRecord.setFields(fields);
-
-    // Act
-    Field actualField = listGridRecord.getField(null);
-
-    // Assert
-    Map<String, Field> stringFieldMap = listGridRecord.fieldMap;
-    assertEquals(1, stringFieldMap.size());
-    assertTrue(stringFieldMap.containsKey(null));
-    assertSame(field, actualField);
-  }
-
-  /**
-   * Test {@link ListGridRecord#getField(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridRecord} (default constructor) HiddenFields is {@link
-   *       ArrayList#ArrayList()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getField(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Field ListGridRecord.getField(String)"})
-  public void testGetField_givenListGridRecordHiddenFieldsIsArrayList() {
-    // Arrange
-    ArrayList<Field> hiddenFields = new ArrayList<>();
-    hiddenFields.add(new Field());
-
-    ListGridRecord listGridRecord = new ListGridRecord();
-    listGridRecord.setHiddenFields(hiddenFields);
-
-    // Act
-    Field actualField = listGridRecord.getField("Field Name");
-
-    // Assert
-    assertEquals("null/null", actualField.getEntityViewPath());
-    assertNull(actualField.getOrder());
-    assertNull(actualField.getAssociatedFieldName());
-    assertNull(actualField.getColumnWidth());
-    assertNull(actualField.getConfirmEnabledText());
-    assertNull(actualField.getDisplayType());
-    assertNull(actualField.getDisplayValue());
-    assertNull(actualField.getFieldComponentRenderer());
-    assertNull(actualField.getFieldType());
-    assertNull(actualField.getForeignKeyClass());
-    assertNull(actualField.getForeignKeyDisplayValueProperty());
-    assertNull(actualField.getForeignKeySectionPath());
-    assertNull(actualField.getFriendlyName());
-    assertNull(actualField.getGridFieldComponentRenderer());
-    assertNull(actualField.getHelp());
-    assertNull(actualField.getHint());
-    assertNull(actualField.getIdOverride());
-    assertNull(actualField.getName());
-    assertNull(actualField.getOnChangeTrigger());
-    assertNull(actualField.getOwningEntityClass());
-    assertNull(actualField.getRawDisplayValue());
-    assertNull(actualField.getTooltip());
-    assertNull(actualField.getTranslationFieldName());
-    assertNull(actualField.getValue());
-    Map<String, Field> stringFieldMap = listGridRecord.fieldMap;
-    assertEquals(1, stringFieldMap.size());
-    assertFalse(actualField.getAllowNoValueEnumOption());
-    assertFalse(actualField.getAlternateOrdering());
-    assertFalse(actualField.getCanLinkToExternalEntity());
-    assertFalse(actualField.getContentOverflowAllowed());
-    assertFalse(actualField.getDisabled());
-    assertFalse(actualField.getFilterSortDisabled());
-    assertFalse(actualField.getIsConfirmEnabled());
-    assertFalse(actualField.getIsDerived());
-    assertFalse(actualField.getIsDirty());
-    assertFalse(actualField.getIsLargeEntry());
-    assertFalse(actualField.getIsTypeaheadEnabled());
-    assertFalse(actualField.getMainEntityLink());
-    assertFalse(actualField.getReadOnly());
-    assertFalse(actualField.getRequired());
-    assertFalse(actualField.getResizeDisabled());
-    assertFalse(actualField.getTranslatable());
-    assertTrue(stringFieldMap.containsKey(null));
-    assertTrue(actualField.getAttributes().isEmpty());
-    assertTrue(actualField.getIsVisible());
-    assertTrue(actualField.getShouldRender());
-  }
-
-  /**
-   * Test {@link ListGridRecord#getField(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridRecord}.
-   *   <li>When {@code Field Name}.
-   *   <li>Then {@link ListGridRecord} {@link ListGridRecord#fieldMap} Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getField(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Field ListGridRecord.getField(String)"})
-  public void testGetField_givenListGridRecord_whenFieldName_thenListGridRecordFieldMapEmpty() {
+  public void testGetField() {
     // Arrange and Act
     Field actualField = listGridRecord.getField("Field Name");
 
@@ -572,21 +227,10 @@ public class ListGridRecordDiffblueTest {
   }
 
   /**
-   * Test {@link ListGridRecord#getField(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridRecord}.
-   *   <li>When {@code null}.
-   *   <li>Then {@link ListGridRecord} {@link ListGridRecord#fieldMap} Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getField(String)}
+   * Method under test: {@link ListGridRecord#getField(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Field ListGridRecord.getField(String)"})
-  public void testGetField_givenListGridRecord_whenNull_thenListGridRecordFieldMapEmpty() {
+  public void testGetField2() {
     // Arrange and Act
     Field actualField = listGridRecord.getField(null);
 
@@ -638,203 +282,45 @@ public class ListGridRecordDiffblueTest {
   }
 
   /**
-   * Test {@link ListGridRecord#hasField(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridRecord} (default constructor) Fields is {@link
-   *       ArrayList#ArrayList()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#hasField(String)}
+   * Method under test: {@link ListGridRecord#hasField(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ListGridRecord.hasField(String)"})
-  public void testHasField_givenListGridRecordFieldsIsArrayList() {
-    // Arrange
-    ArrayList<Field> fields = new ArrayList<>();
-    Field field = new Field();
-    fields.add(field);
-
-    ListGridRecord listGridRecord = new ListGridRecord();
-    listGridRecord.setFields(fields);
-
-    // Act
-    boolean actualHasFieldResult = listGridRecord.hasField("Field Name");
-
-    // Assert
-    Map<String, Field> stringFieldMap = listGridRecord.fieldMap;
-    assertEquals(1, stringFieldMap.size());
-    assertFalse(actualHasFieldResult);
-    assertSame(field, stringFieldMap.get(null));
-  }
-
-  /**
-   * Test {@link ListGridRecord#hasField(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridRecord} (default constructor) Fields is {@link
-   *       ArrayList#ArrayList()}.
-   *   <li>When {@code null}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#hasField(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ListGridRecord.hasField(String)"})
-  public void testHasField_givenListGridRecordFieldsIsArrayList_whenNull_thenReturnTrue() {
-    // Arrange
-    ArrayList<Field> fields = new ArrayList<>();
-    Field field = new Field();
-    fields.add(field);
-
-    ListGridRecord listGridRecord = new ListGridRecord();
-    listGridRecord.setFields(fields);
-
-    // Act
-    boolean actualHasFieldResult = listGridRecord.hasField(null);
-
-    // Assert
-    Map<String, Field> stringFieldMap = listGridRecord.fieldMap;
-    assertEquals(1, stringFieldMap.size());
-    assertTrue(actualHasFieldResult);
-    assertSame(field, stringFieldMap.get(null));
-  }
-
-  /**
-   * Test {@link ListGridRecord#hasField(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridRecord} (default constructor) HiddenFields is {@link
-   *       ArrayList#ArrayList()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#hasField(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ListGridRecord.hasField(String)"})
-  public void testHasField_givenListGridRecordHiddenFieldsIsArrayList() {
-    // Arrange
-    ArrayList<Field> hiddenFields = new ArrayList<>();
-    Field field = new Field();
-    hiddenFields.add(field);
-
-    ListGridRecord listGridRecord = new ListGridRecord();
-    listGridRecord.setHiddenFields(hiddenFields);
-
-    // Act
-    boolean actualHasFieldResult = listGridRecord.hasField("Field Name");
-
-    // Assert
-    Map<String, Field> stringFieldMap = listGridRecord.fieldMap;
-    assertEquals(1, stringFieldMap.size());
-    assertFalse(actualHasFieldResult);
-    assertSame(field, stringFieldMap.get(null));
-  }
-
-  /**
-   * Test {@link ListGridRecord#hasField(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridRecord}.
-   *   <li>When {@code Field Name}.
-   *   <li>Then {@link ListGridRecord} {@link ListGridRecord#fieldMap} Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#hasField(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ListGridRecord.hasField(String)"})
-  public void testHasField_givenListGridRecord_whenFieldName_thenListGridRecordFieldMapEmpty() {
+  public void testHasField() {
     // Arrange, Act and Assert
     assertFalse(listGridRecord.hasField("Field Name"));
     assertTrue(listGridRecord.fieldMap.isEmpty());
   }
 
   /**
-   * Test {@link ListGridRecord#hasField(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridRecord}.
-   *   <li>When {@code null}.
-   *   <li>Then {@link ListGridRecord} {@link ListGridRecord#fieldMap} Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#hasField(String)}
+   * Method under test: {@link ListGridRecord#populateFieldMap()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ListGridRecord.hasField(String)"})
-  public void testHasField_givenListGridRecord_whenNull_thenListGridRecordFieldMapEmpty() {
-    // Arrange, Act and Assert
-    assertFalse(listGridRecord.hasField(null));
-    assertTrue(listGridRecord.fieldMap.isEmpty());
-  }
-
-  /**
-   * Test {@link ListGridRecord#populateFieldMap()}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link Field} (default constructor).
-   *   <li>Then {@link ListGridRecord} (default constructor) {@link ListGridRecord#fieldMap} size is
-   *       one.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#populateFieldMap()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ListGridRecord.populateFieldMap()"})
-  public void testPopulateFieldMap_givenArrayListAddField_thenListGridRecordFieldMapSizeIsOne() {
+  public void testPopulateFieldMap() {
     // Arrange
-    ArrayList<Field> fields = new ArrayList<>();
-    Field field = new Field();
-    fields.add(field);
-
     ListGridRecord listGridRecord = new ListGridRecord();
-    listGridRecord.setFields(fields);
 
     // Act
     listGridRecord.populateFieldMap();
 
     // Assert
-    Map<String, Field> stringFieldMap = listGridRecord.fieldMap;
-    assertEquals(1, stringFieldMap.size());
-    assertSame(field, stringFieldMap.get(null));
+    assertTrue(listGridRecord.fieldMap.isEmpty());
   }
 
   /**
-   * Test {@link ListGridRecord#populateFieldMap()}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link Field} (default constructor).
-   *   <li>Then {@link ListGridRecord} (default constructor) {@link ListGridRecord#fieldMap} size is
-   *       one.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#populateFieldMap()}
+   * Method under test: {@link ListGridRecord#populateFieldMap()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ListGridRecord.populateFieldMap()"})
-  public void testPopulateFieldMap_givenArrayListAddField_thenListGridRecordFieldMapSizeIsOne2() {
+  public void testPopulateFieldMap2() {
     // Arrange
+    ArrayList<Field> fields = new ArrayList<>();
+    fields.add(new Field());
+
     ArrayList<Field> hiddenFields = new ArrayList<>();
     Field field = new Field();
     hiddenFields.add(field);
 
     ListGridRecord listGridRecord = new ListGridRecord();
+    listGridRecord.setFields(fields);
     listGridRecord.setHiddenFields(hiddenFields);
 
     // Act
@@ -847,45 +333,19 @@ public class ListGridRecordDiffblueTest {
   }
 
   /**
-   * Test {@link ListGridRecord#populateFieldMap()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridRecord} (default constructor).
-   *   <li>Then {@link ListGridRecord} (default constructor) {@link ListGridRecord#fieldMap} Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#populateFieldMap()}
+   * Method under test: {@link ListGridRecord#getHiddenFieldsJson()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ListGridRecord.populateFieldMap()"})
-  public void testPopulateFieldMap_givenListGridRecord_thenListGridRecordFieldMapEmpty() {
-    // Arrange
-    ListGridRecord listGridRecord = new ListGridRecord();
-
-    // Act
-    listGridRecord.populateFieldMap();
-
-    // Assert
-    assertTrue(listGridRecord.fieldMap.isEmpty());
+  public void testGetHiddenFieldsJson() {
+    // Arrange, Act and Assert
+    assertEquals("{\"hiddenFields\":[]}", (new ListGridRecord()).getHiddenFieldsJson());
   }
 
   /**
-   * Test {@link ListGridRecord#getHiddenFieldsJson()}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link Field} (default constructor).
-   *   <li>Then return a string.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getHiddenFieldsJson()}
+   * Method under test: {@link ListGridRecord#getHiddenFieldsJson()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ListGridRecord.getHiddenFieldsJson()"})
-  public void testGetHiddenFieldsJson_givenArrayListAddField_thenReturnAString() {
+  public void testGetHiddenFieldsJson2() {
     // Arrange
     ArrayList<Field> hiddenFields = new ArrayList<>();
     hiddenFields.add(new Field());
@@ -921,20 +381,10 @@ public class ListGridRecordDiffblueTest {
   }
 
   /**
-   * Test {@link ListGridRecord#getHiddenFieldsJson()}.
-   *
-   * <ul>
-   *   <li>Given {@link Field} (default constructor) Value is {@code 42}.
-   *   <li>Then return a string.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getHiddenFieldsJson()}
+   * Method under test: {@link ListGridRecord#getHiddenFieldsJson()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ListGridRecord.getHiddenFieldsJson()"})
-  public void testGetHiddenFieldsJson_givenFieldValueIs42_thenReturnAString() {
+  public void testGetHiddenFieldsJson3() {
     // Arrange
     Field field = new Field();
     field.setValue("42");
@@ -973,39 +423,19 @@ public class ListGridRecordDiffblueTest {
   }
 
   /**
-   * Test {@link ListGridRecord#getHiddenFieldsJson()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridRecord} (default constructor).
-   *   <li>Then return {@code {"hiddenFields":[]}}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getHiddenFieldsJson()}
+   * Method under test: {@link ListGridRecord#getIsDirty()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ListGridRecord.getHiddenFieldsJson()"})
-  public void testGetHiddenFieldsJson_givenListGridRecord_thenReturnHiddenFields() {
+  public void testGetIsDirty() {
     // Arrange, Act and Assert
-    assertEquals("{\"hiddenFields\":[]}", new ListGridRecord().getHiddenFieldsJson());
+    assertFalse((new ListGridRecord()).getIsDirty());
   }
 
   /**
-   * Test {@link ListGridRecord#getIsDirty()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridRecord} (default constructor) Dirty is {@code true}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getIsDirty()}
+   * Method under test: {@link ListGridRecord#getIsDirty()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ListGridRecord.getIsDirty()"})
-  public void testGetIsDirty_givenListGridRecordDirtyIsTrue_thenReturnTrue() {
+  public void testGetIsDirty2() {
     // Arrange
     ListGridRecord listGridRecord = new ListGridRecord();
     listGridRecord.setDirty(true);
@@ -1015,39 +445,19 @@ public class ListGridRecordDiffblueTest {
   }
 
   /**
-   * Test {@link ListGridRecord#getIsDirty()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridRecord} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getIsDirty()}
+   * Method under test: {@link ListGridRecord#getReadOnly()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ListGridRecord.getIsDirty()"})
-  public void testGetIsDirty_givenListGridRecord_thenReturnFalse() {
+  public void testGetReadOnly() {
     // Arrange, Act and Assert
-    assertFalse(new ListGridRecord().getIsDirty());
+    assertFalse((new ListGridRecord()).getReadOnly());
   }
 
   /**
-   * Test {@link ListGridRecord#getReadOnly()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridRecord} (default constructor) ReadOnly is {@code null}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getReadOnly()}
+   * Method under test: {@link ListGridRecord#getReadOnly()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ListGridRecord.getReadOnly()"})
-  public void testGetReadOnly_givenListGridRecordReadOnlyIsNull_thenReturnFalse() {
+  public void testGetReadOnly2() {
     // Arrange
     ListGridRecord listGridRecord = new ListGridRecord();
     listGridRecord.setReadOnly(null);
@@ -1057,20 +467,10 @@ public class ListGridRecordDiffblueTest {
   }
 
   /**
-   * Test {@link ListGridRecord#getReadOnly()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridRecord} (default constructor) ReadOnly is {@code true}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getReadOnly()}
+   * Method under test: {@link ListGridRecord#getReadOnly()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ListGridRecord.getReadOnly()"})
-  public void testGetReadOnly_givenListGridRecordReadOnlyIsTrue_thenReturnTrue() {
+  public void testGetReadOnly3() {
     // Arrange
     ListGridRecord listGridRecord = new ListGridRecord();
     listGridRecord.setReadOnly(true);
@@ -1080,39 +480,19 @@ public class ListGridRecordDiffblueTest {
   }
 
   /**
-   * Test {@link ListGridRecord#getReadOnly()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridRecord} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getReadOnly()}
+   * Method under test: {@link ListGridRecord#getIsError()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ListGridRecord.getReadOnly()"})
-  public void testGetReadOnly_givenListGridRecord_thenReturnFalse() {
+  public void testGetIsError() {
     // Arrange, Act and Assert
-    assertFalse(new ListGridRecord().getReadOnly());
+    assertFalse((new ListGridRecord()).getIsError());
   }
 
   /**
-   * Test {@link ListGridRecord#getIsError()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridRecord} (default constructor) IsError is {@code true}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getIsError()}
+   * Method under test: {@link ListGridRecord#getIsError()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ListGridRecord.getIsError()"})
-  public void testGetIsError_givenListGridRecordIsErrorIsTrue_thenReturnTrue() {
+  public void testGetIsError2() {
     // Arrange
     ListGridRecord listGridRecord = new ListGridRecord();
     listGridRecord.setIsError(true);
@@ -1122,62 +502,19 @@ public class ListGridRecordDiffblueTest {
   }
 
   /**
-   * Test {@link ListGridRecord#getIsError()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridRecord} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getIsError()}
+   * Method under test: {@link ListGridRecord#getIcon()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ListGridRecord.getIsError()"})
-  public void testGetIsError_givenListGridRecord_thenReturnFalse() {
+  public void testGetIcon() {
     // Arrange, Act and Assert
-    assertFalse(new ListGridRecord().getIsError());
+    assertNull((new ListGridRecord()).getIcon());
   }
 
   /**
-   * Test {@link ListGridRecord#getIcon()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridRecord} (default constructor) Dirty is {@code false}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getIcon()}
+   * Method under test: {@link ListGridRecord#getIcon()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ListGridRecordIcon ListGridRecord.getIcon()"})
-  public void testGetIcon_givenListGridRecordDirtyIsFalse_thenReturnNull() {
-    // Arrange
-    ListGridRecord listGridRecord = new ListGridRecord();
-    listGridRecord.setDirty(false);
-
-    // Act and Assert
-    assertNull(listGridRecord.getIcon());
-  }
-
-  /**
-   * Test {@link ListGridRecord#getIcon()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridRecord} (default constructor) Status is {@code foo}.
-   *   <li>Then return CssClass is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getIcon()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ListGridRecordIcon ListGridRecord.getIcon()"})
-  public void testGetIcon_givenListGridRecordStatusIsFoo_thenReturnCssClassIsNull() {
+  public void testGetIcon2() {
     // Arrange
     ListGridRecord listGridRecord = new ListGridRecord();
     listGridRecord.setIcon(null);
@@ -1196,38 +533,10 @@ public class ListGridRecordDiffblueTest {
   }
 
   /**
-   * Test {@link ListGridRecord#getIcon()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridRecord} (default constructor).
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getIcon()}
+   * Method under test: {@link ListGridRecord#getIcon()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ListGridRecordIcon ListGridRecord.getIcon()"})
-  public void testGetIcon_givenListGridRecord_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(new ListGridRecord().getIcon());
-  }
-
-  /**
-   * Test {@link ListGridRecord#getIcon()}.
-   *
-   * <ul>
-   *   <li>Then return CssClass is {@code fa fa-exclamation-triangle}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getIcon()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ListGridRecordIcon ListGridRecord.getIcon()"})
-  public void testGetIcon_thenReturnCssClassIsFaFaExclamationTriangle() {
+  public void testGetIcon3() {
     // Arrange
     ListGridRecord listGridRecord = new ListGridRecord();
     listGridRecord.setIcon(null);
@@ -1246,19 +555,10 @@ public class ListGridRecordDiffblueTest {
   }
 
   /**
-   * Test {@link ListGridRecord#getIcon()}.
-   *
-   * <ul>
-   *   <li>Then return {@link ListGridRecordIcon} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getIcon()}
+   * Method under test: {@link ListGridRecord#getIcon()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ListGridRecordIcon ListGridRecord.getIcon()"})
-  public void testGetIcon_thenReturnListGridRecordIcon() {
+  public void testGetIcon4() {
     // Arrange
     ListGridRecord listGridRecord = new ListGridRecord();
     ListGridRecordIcon icon = new ListGridRecordIcon();
@@ -1273,134 +573,80 @@ public class ListGridRecordDiffblueTest {
   }
 
   /**
-   * Test {@link ListGridRecord#getHasIcon()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridRecord} (default constructor) Dirty is {@code true}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getHasIcon()}
+   * Method under test: {@link ListGridRecord#getHasIcon()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ListGridRecord.getHasIcon()"})
-  public void testGetHasIcon_givenListGridRecordDirtyIsTrue_thenReturnTrue() {
+  public void testGetHasIcon() {
+    // Arrange, Act and Assert
+    assertFalse((new ListGridRecord()).getHasIcon());
+  }
+
+  /**
+   * Method under test: {@link ListGridRecord#getHasIcon()}
+   */
+  @Test
+  public void testGetHasIcon2() {
     // Arrange
     ListGridRecord listGridRecord = new ListGridRecord();
     listGridRecord.setIcon(null);
     listGridRecord.setStatus(null);
-    listGridRecord.setIsError(null);
-    listGridRecord.setDirty(true);
-
-    // Act and Assert
-    assertTrue(listGridRecord.getHasIcon());
-  }
-
-  /**
-   * Test {@link ListGridRecord#getHasIcon()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridRecord} (default constructor) Icon is {@link ListGridRecordIcon}
-   *       (default constructor).
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getHasIcon()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ListGridRecord.getHasIcon()"})
-  public void testGetHasIcon_givenListGridRecordIconIsListGridRecordIcon_thenReturnTrue() {
-    // Arrange
-    ListGridRecord listGridRecord = new ListGridRecord();
-    listGridRecord.setIcon(new ListGridRecordIcon());
-    listGridRecord.setStatus(null);
-    listGridRecord.setIsError(null);
     listGridRecord.setDirty(null);
-
-    // Act and Assert
-    assertTrue(listGridRecord.getHasIcon());
-  }
-
-  /**
-   * Test {@link ListGridRecord#getHasIcon()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridRecord} (default constructor) IsError is {@code true}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getHasIcon()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ListGridRecord.getHasIcon()"})
-  public void testGetHasIcon_givenListGridRecordIsErrorIsTrue_thenReturnTrue() {
-    // Arrange
-    ListGridRecord listGridRecord = new ListGridRecord();
-    listGridRecord.setIcon(null);
-    listGridRecord.setStatus(null);
     listGridRecord.setIsError(true);
-    listGridRecord.setDirty(null);
 
     // Act and Assert
     assertTrue(listGridRecord.getHasIcon());
   }
 
   /**
-   * Test {@link ListGridRecord#getHasIcon()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridRecord} (default constructor) Status is {@code foo}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getHasIcon()}
+   * Method under test: {@link ListGridRecord#getHasIcon()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ListGridRecord.getHasIcon()"})
-  public void testGetHasIcon_givenListGridRecordStatusIsFoo_thenReturnTrue() {
+  public void testGetHasIcon3() {
+    // Arrange
+    ListGridRecord listGridRecord = new ListGridRecord();
+    listGridRecord.setIcon(null);
+    listGridRecord.setStatus(null);
+    listGridRecord.setDirty(true);
+    listGridRecord.setIsError(null);
+
+    // Act and Assert
+    assertTrue(listGridRecord.getHasIcon());
+  }
+
+  /**
+   * Method under test: {@link ListGridRecord#getHasIcon()}
+   */
+  @Test
+  public void testGetHasIcon4() {
     // Arrange
     ListGridRecord listGridRecord = new ListGridRecord();
     listGridRecord.setIcon(null);
     listGridRecord.setStatus("foo");
-    listGridRecord.setIsError(null);
     listGridRecord.setDirty(null);
+    listGridRecord.setIsError(null);
 
     // Act and Assert
     assertTrue(listGridRecord.getHasIcon());
   }
 
   /**
-   * Test {@link ListGridRecord#getHasIcon()}.
-   *
-   * <ul>
-   *   <li>Given {@link ListGridRecord} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ListGridRecord#getHasIcon()}
+   * Method under test: {@link ListGridRecord#getHasIcon()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ListGridRecord.getHasIcon()"})
-  public void testGetHasIcon_givenListGridRecord_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(new ListGridRecord().getHasIcon());
+  public void testGetHasIcon5() {
+    // Arrange
+    ListGridRecord listGridRecord = new ListGridRecord();
+    listGridRecord.setIcon(new ListGridRecordIcon());
+    listGridRecord.setStatus(null);
+    listGridRecord.setDirty(null);
+    listGridRecord.setIsError(null);
+
+    // Act and Assert
+    assertTrue(listGridRecord.getHasIcon());
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link ListGridRecord}
    *   <li>{@link ListGridRecord#setAltId(String)}
@@ -1435,40 +681,6 @@ public class ListGridRecordDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ListGridRecord.<init>()",
-    "void ListGridRecord.clearFieldMap()",
-    "String ListGridRecord.getAltId()",
-    "String ListGridRecord.getDisplayOrder()",
-    "Entity ListGridRecord.getEntity()",
-    "String ListGridRecord.getErrorKey()",
-    "String ListGridRecord.getErrorMessage()",
-    "List ListGridRecord.getFields()",
-    "List ListGridRecord.getHiddenFields()",
-    "String ListGridRecord.getId()",
-    "ListGrid ListGridRecord.getListGrid()",
-    "Boolean ListGridRecord.getLocked()",
-    "String ListGridRecord.getStatus()",
-    "String ListGridRecord.getStatusCssClass()",
-    "void ListGridRecord.setAltId(String)",
-    "void ListGridRecord.setDirty(Boolean)",
-    "void ListGridRecord.setDisplayOrder(String)",
-    "void ListGridRecord.setEntity(Entity)",
-    "void ListGridRecord.setErrorKey(String)",
-    "void ListGridRecord.setErrorMessage(String)",
-    "void ListGridRecord.setFields(List)",
-    "void ListGridRecord.setHiddenFields(List)",
-    "void ListGridRecord.setIcon(ListGridRecordIcon)",
-    "void ListGridRecord.setId(String)",
-    "void ListGridRecord.setIsError(Boolean)",
-    "void ListGridRecord.setListGrid(ListGrid)",
-    "void ListGridRecord.setLocked(Boolean)",
-    "void ListGridRecord.setReadOnly(Boolean)",
-    "void ListGridRecord.setStatus(String)",
-    "void ListGridRecord.setStatusCssClass(String)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     ListGridRecord actualListGridRecord = new ListGridRecord();
@@ -1505,7 +717,7 @@ public class ListGridRecordDiffblueTest {
     Boolean actualLocked = actualListGridRecord.getLocked();
     String actualStatus = actualListGridRecord.getStatus();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("42", actualAltId);
     assertEquals("42", actualId);
     assertEquals("An error occurred", actualErrorKey);
@@ -1513,10 +725,6 @@ public class ListGridRecordDiffblueTest {
     assertEquals("Display Order", actualDisplayOrder);
     assertEquals("Status Css Class", actualListGridRecord.getStatusCssClass());
     assertEquals("Status", actualStatus);
-    ListGridRecordIcon listGridRecordIcon = actualListGridRecord.icon;
-    assertNull(listGridRecordIcon.getHasDetails());
-    assertNull(listGridRecordIcon.getCssClass());
-    assertNull(listGridRecordIcon.getMessage());
     assertTrue(actualFields.isEmpty());
     assertTrue(actualHiddenFields.isEmpty());
     assertTrue(actualLocked);

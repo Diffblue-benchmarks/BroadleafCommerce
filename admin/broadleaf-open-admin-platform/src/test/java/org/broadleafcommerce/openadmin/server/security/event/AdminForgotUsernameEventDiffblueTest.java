@@ -18,22 +18,19 @@
 package org.broadleafcommerce.openadmin.server.security.event;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
+import org.broadleafcommerce.common.web.BroadleafRequestContext;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class AdminForgotUsernameEventDiffblueTest {
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link AdminForgotUsernameEvent#setActiveUsernames(List)}
    *   <li>{@link AdminForgotUsernameEvent#setEmailAddress(String)}
@@ -44,20 +41,10 @@ public class AdminForgotUsernameEventDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List AdminForgotUsernameEvent.getActiveUsernames()",
-    "String AdminForgotUsernameEvent.getEmailAddress()",
-    "String AdminForgotUsernameEvent.getPhoneNumber()",
-    "void AdminForgotUsernameEvent.setActiveUsernames(List)",
-    "void AdminForgotUsernameEvent.setEmailAddress(String)",
-    "void AdminForgotUsernameEvent.setPhoneNumber(String)"
-  })
   public void testGettersAndSetters() {
     // Arrange
-    AdminForgotUsernameEvent adminForgotUsernameEvent =
-        new AdminForgotUsernameEvent("Source", "42 Main St", "6625550144", new ArrayList<>());
+    AdminForgotUsernameEvent adminForgotUsernameEvent = new AdminForgotUsernameEvent("Source", "42 Main St",
+        "6625550144", new ArrayList<>());
     ArrayList<String> activeUsernames = new ArrayList<>();
 
     // Act
@@ -67,10 +54,45 @@ public class AdminForgotUsernameEventDiffblueTest {
     List<String> actualActiveUsernames = adminForgotUsernameEvent.getActiveUsernames();
     String actualEmailAddress = adminForgotUsernameEvent.getEmailAddress();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("42 Main St", actualEmailAddress);
     assertEquals("6625550144", adminForgotUsernameEvent.getPhoneNumber());
     assertTrue(actualActiveUsernames.isEmpty());
     assertSame(activeUsernames, actualActiveUsernames);
+  }
+
+  /**
+   * Method under test:
+   * {@link AdminForgotUsernameEvent#AdminForgotUsernameEvent(Object, String, String, List)}
+   */
+  @Test
+  public void testNewAdminForgotUsernameEvent() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    BroadleafRequestContext broadleafRequestContext = BroadleafRequestContext.getBroadleafRequestContext(true);
+    broadleafRequestContext.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
+    ArrayList<String> activeUsernames = new ArrayList<>();
+
+    // Act
+    AdminForgotUsernameEvent actualAdminForgotUsernameEvent = new AdminForgotUsernameEvent(broadleafRequestContext,
+        "42 Main St", "6625550144", activeUsernames);
+
+    // Assert
+    assertEquals("42 Main St", actualAdminForgotUsernameEvent.getEmailAddress());
+    assertEquals("America/Los_Angeles", actualAdminForgotUsernameEvent.getTimeZoneId());
+    Map<String, Object> context = actualAdminForgotUsernameEvent.getContext();
+    assertEquals(1, context.size());
+    assertEquals("America/Los_Angeles", context.get("_TIMEZONE_ID"));
+    assertNull(actualAdminForgotUsernameEvent.getCatalogId());
+    assertNull(actualAdminForgotUsernameEvent.getProfileId());
+    assertNull(actualAdminForgotUsernameEvent.getSiteId());
+    assertNull(actualAdminForgotUsernameEvent.getCurrencyCode());
+    assertNull(actualAdminForgotUsernameEvent.getLocaleCode());
+    assertNull(actualAdminForgotUsernameEvent.getPhoneNumber());
+    List<String> activeUsernames2 = actualAdminForgotUsernameEvent.getActiveUsernames();
+    assertTrue(activeUsernames2.isEmpty());
+    assertSame(activeUsernames, activeUsernames2);
+    assertSame(broadleafRequestContext, actualAdminForgotUsernameEvent.getSource());
   }
 }

@@ -23,53 +23,72 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class SandBoxImplDiffblueTest {
   /**
-   * Test {@link SandBoxImpl#getSandBoxType()}.
-   *
-   * <p>Method under test: {@link SandBoxImpl#getSandBoxType()}
+   * Method under test: {@link SandBoxImpl#getSandBoxType()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"SandBoxType SandBoxImpl.getSandBoxType()"})
   public void testGetSandBoxType() {
-    // Arrange, Act and Assert
-    assertSame(SandBoxType.APPROVAL, new SandBoxImpl().getSandBoxType());
+    // Arrange and Act
+    SandBoxType actualSandBoxType = (new SandBoxImpl()).getSandBoxType();
+
+    // Assert
+    assertSame(actualSandBoxType.APPROVAL, actualSandBoxType);
   }
 
   /**
-   * Test {@link SandBoxImpl#setSandBoxType(SandBoxType)}.
-   *
-   * <ul>
-   *   <li>Then {@link SandBoxImpl} (default constructor) SandBoxType Type is {@code APPROVAL}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SandBoxImpl#setSandBoxType(SandBoxType)}
+   * Method under test: {@link SandBoxImpl#getSandBoxType()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SandBoxImpl.setSandBoxType(SandBoxType)"})
-  public void testSetSandBoxType_thenSandBoxImplSandBoxTypeTypeIsApproval() {
+  public void testGetSandBoxType2() {
+    // Arrange
+    SandBoxImpl sandBoxImpl = new SandBoxImpl();
+    sandBoxImpl.setGoLiveDate(mock(java.sql.Date.class));
+
+    // Act
+    SandBoxType actualSandBoxType = sandBoxImpl.getSandBoxType();
+
+    // Assert
+    assertSame(actualSandBoxType.APPROVAL, actualSandBoxType);
+  }
+
+  /**
+   * Method under test: {@link SandBoxImpl#setSandBoxType(SandBoxType)}
+   */
+  @Test
+  public void testSetSandBoxType() {
+    // Arrange
+    SandBoxImpl sandBoxImpl = new SandBoxImpl();
+    SandBoxType sandboxType = SandBoxType.APPROVAL;
+
+    // Act
+    sandBoxImpl.setSandBoxType(sandboxType);
+
+    // Assert
+    assertEquals("APPROVAL", sandBoxImpl.sandboxType);
+    SandBoxType expectedSandBoxType = sandboxType.APPROVAL;
+    assertSame(expectedSandBoxType, sandBoxImpl.getSandBoxType());
+  }
+
+  /**
+   * Method under test: {@link SandBoxImpl#setSandBoxType(SandBoxType)}
+   */
+  @Test
+  public void testSetSandBoxType2() {
     // Arrange
     SandBoxImpl sandBoxImpl = new SandBoxImpl();
     sandBoxImpl.setAuthor(1L);
     sandBoxImpl.setChildSandBoxes(new ArrayList<>());
     sandBoxImpl.setColor("Color");
-    sandBoxImpl.setGoLiveDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    sandBoxImpl.setGoLiveDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     sandBoxImpl.setId(1L);
     sandBoxImpl.setName("Name");
     sandBoxImpl.setParentSandBox(new SandBoxImpl());
@@ -87,36 +106,562 @@ public class SandBoxImplDiffblueTest {
   }
 
   /**
-   * Test {@link SandBoxImpl#setSandBoxType(SandBoxType)}.
-   *
-   * <ul>
-   *   <li>When {@link SandBoxType#APPROVAL}.
-   *   <li>Then {@link SandBoxImpl} (default constructor) {@link SandBoxImpl#sandboxType} is {@code
-   *       APPROVAL}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SandBoxImpl#setSandBoxType(SandBoxType)}
+   * Method under test: {@link SandBoxImpl#getColor()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SandBoxImpl.setSandBoxType(SandBoxType)"})
-  public void testSetSandBoxType_whenApproval_thenSandBoxImplSandboxTypeIsApproval() {
+  public void testGetColor() {
+    // Arrange, Act and Assert
+    assertNull((new SandBoxImpl()).getColor());
+  }
+
+  /**
+   * Method under test: {@link SandBoxImpl#getColor()}
+   */
+  @Test
+  public void testGetColor2() {
+    // Arrange
+    SandBoxImpl sandBoxImpl = new SandBoxImpl();
+    sandBoxImpl.setAuthor(1L);
+    sandBoxImpl.setChildSandBoxes(new ArrayList<>());
+    sandBoxImpl.setGoLiveDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    sandBoxImpl.setId(1L);
+    sandBoxImpl.setName("Name");
+    sandBoxImpl.setSandBoxType(SandBoxType.APPROVAL);
+    sandBoxImpl.setParentSandBox(null);
+    sandBoxImpl.setColor("foo");
+
+    // Act and Assert
+    assertEquals("foo", sandBoxImpl.getColor());
+  }
+
+  /**
+   * Method under test: {@link SandBoxImpl#getColor()}
+   */
+  @Test
+  public void testGetColor3() {
+    // Arrange
+    SandBoxImpl sandBoxImpl = new SandBoxImpl();
+    sandBoxImpl.setAuthor(1L);
+    sandBoxImpl.setChildSandBoxes(new ArrayList<>());
+    sandBoxImpl.setGoLiveDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    sandBoxImpl.setId(1L);
+    sandBoxImpl.setName("Name");
+    sandBoxImpl.setSandBoxType(SandBoxType.APPROVAL);
+    sandBoxImpl.setParentSandBox(new SandBoxImpl());
+    sandBoxImpl.setColor(null);
+
+    // Act and Assert
+    assertNull(sandBoxImpl.getColor());
+  }
+
+  /**
+   * Method under test: {@link SandBoxImpl#getColor()}
+   */
+  @Test
+  public void testGetColor4() {
+    // Arrange
+    SandBoxImpl sandBoxImpl = new SandBoxImpl();
+    sandBoxImpl.setAuthor(1L);
+    sandBoxImpl.setChildSandBoxes(new ArrayList<>());
+    sandBoxImpl.setGoLiveDate(mock(java.sql.Date.class));
+    sandBoxImpl.setId(1L);
+    sandBoxImpl.setName("Name");
+    sandBoxImpl.setSandBoxType(SandBoxType.APPROVAL);
+    sandBoxImpl.setParentSandBox(null);
+    sandBoxImpl.setColor("foo");
+
+    // Act and Assert
+    assertEquals("foo", sandBoxImpl.getColor());
+  }
+
+  /**
+   * Method under test:
+   * {@link SandBoxImpl#getSandBoxIdsForUpwardHierarchy(boolean)}
+   */
+  @Test
+  public void testGetSandBoxIdsForUpwardHierarchy() {
+    // Arrange and Act
+    List<Long> actualSandBoxIdsForUpwardHierarchy = (new SandBoxImpl()).getSandBoxIdsForUpwardHierarchy(true);
+
+    // Assert
+    assertEquals(1, actualSandBoxIdsForUpwardHierarchy.size());
+    assertNull(actualSandBoxIdsForUpwardHierarchy.get(0));
+  }
+
+  /**
+   * Method under test:
+   * {@link SandBoxImpl#getSandBoxIdsForUpwardHierarchy(boolean)}
+   */
+  @Test
+  public void testGetSandBoxIdsForUpwardHierarchy2() {
+    // Arrange
+    SandBoxImpl sandBoxImpl = new SandBoxImpl();
+    sandBoxImpl.setAuthor(1L);
+    sandBoxImpl.setChildSandBoxes(new ArrayList<>());
+    sandBoxImpl.setColor("Color");
+    sandBoxImpl.setGoLiveDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    sandBoxImpl.setId(1L);
+    sandBoxImpl.setName("Name");
+    sandBoxImpl.setSandBoxType(SandBoxType.APPROVAL);
+    sandBoxImpl.setParentSandBox(null);
+
+    // Act
+    List<Long> actualSandBoxIdsForUpwardHierarchy = sandBoxImpl.getSandBoxIdsForUpwardHierarchy(false);
+
+    // Assert
+    assertEquals(1, actualSandBoxIdsForUpwardHierarchy.size());
+    assertEquals(1L, actualSandBoxIdsForUpwardHierarchy.get(0).longValue());
+  }
+
+  /**
+   * Method under test:
+   * {@link SandBoxImpl#getSandBoxIdsForUpwardHierarchy(boolean)}
+   */
+  @Test
+  public void testGetSandBoxIdsForUpwardHierarchy3() {
+    // Arrange
+    SandBoxImpl sandBoxImpl = new SandBoxImpl();
+    sandBoxImpl.setParentSandBox(new SandBoxImpl());
+
+    // Act
+    List<Long> actualSandBoxIdsForUpwardHierarchy = sandBoxImpl.getSandBoxIdsForUpwardHierarchy(true);
+
+    // Assert
+    assertEquals(2, actualSandBoxIdsForUpwardHierarchy.size());
+    assertNull(actualSandBoxIdsForUpwardHierarchy.get(0));
+    assertNull(actualSandBoxIdsForUpwardHierarchy.get(1));
+  }
+
+  /**
+   * Method under test:
+   * {@link SandBoxImpl#getSandBoxIdsForUpwardHierarchy(boolean)}
+   */
+  @Test
+  public void testGetSandBoxIdsForUpwardHierarchy4() {
+    // Arrange
+    SandBoxImpl sandBoxImpl = new SandBoxImpl();
+    sandBoxImpl.setAuthor(1L);
+    sandBoxImpl.setChildSandBoxes(new ArrayList<>());
+    sandBoxImpl.setColor("Color");
+    sandBoxImpl.setGoLiveDate(mock(java.sql.Date.class));
+    sandBoxImpl.setId(1L);
+    sandBoxImpl.setName("Name");
+    sandBoxImpl.setSandBoxType(SandBoxType.APPROVAL);
+    sandBoxImpl.setParentSandBox(null);
+
+    // Act
+    List<Long> actualSandBoxIdsForUpwardHierarchy = sandBoxImpl.getSandBoxIdsForUpwardHierarchy(false);
+
+    // Assert
+    assertEquals(1, actualSandBoxIdsForUpwardHierarchy.size());
+    assertEquals(1L, actualSandBoxIdsForUpwardHierarchy.get(0).longValue());
+  }
+
+  /**
+   * Method under test:
+   * {@link SandBoxImpl#getSandBoxIdsForUpwardHierarchy(boolean, boolean)}
+   */
+  @Test
+  public void testGetSandBoxIdsForUpwardHierarchy5() {
+    // Arrange and Act
+    List<Long> actualSandBoxIdsForUpwardHierarchy = (new SandBoxImpl()).getSandBoxIdsForUpwardHierarchy(true, true);
+
+    // Assert
+    assertEquals(1, actualSandBoxIdsForUpwardHierarchy.size());
+    assertNull(actualSandBoxIdsForUpwardHierarchy.get(0));
+  }
+
+  /**
+   * Method under test:
+   * {@link SandBoxImpl#getSandBoxIdsForUpwardHierarchy(boolean, boolean)}
+   */
+  @Test
+  public void testGetSandBoxIdsForUpwardHierarchy6() {
+    // Arrange
+    SandBoxImpl sandBoxImpl = new SandBoxImpl();
+    sandBoxImpl.setAuthor(1L);
+    sandBoxImpl.setChildSandBoxes(new ArrayList<>());
+    sandBoxImpl.setColor("Color");
+    sandBoxImpl.setGoLiveDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    sandBoxImpl.setId(1L);
+    sandBoxImpl.setName("Name");
+    sandBoxImpl.setSandBoxType(SandBoxType.APPROVAL);
+    sandBoxImpl.setParentSandBox(null);
+
+    // Act and Assert
+    assertTrue(sandBoxImpl.getSandBoxIdsForUpwardHierarchy(false, false).isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link SandBoxImpl#getSandBoxIdsForUpwardHierarchy(boolean, boolean)}
+   */
+  @Test
+  public void testGetSandBoxIdsForUpwardHierarchy7() {
+    // Arrange
+    SandBoxImpl sandBoxImpl = new SandBoxImpl();
+    sandBoxImpl.setParentSandBox(new SandBoxImpl());
+
+    // Act
+    List<Long> actualSandBoxIdsForUpwardHierarchy = sandBoxImpl.getSandBoxIdsForUpwardHierarchy(true, true);
+
+    // Assert
+    assertEquals(2, actualSandBoxIdsForUpwardHierarchy.size());
+    assertNull(actualSandBoxIdsForUpwardHierarchy.get(0));
+    assertNull(actualSandBoxIdsForUpwardHierarchy.get(1));
+  }
+
+  /**
+   * Method under test:
+   * {@link SandBoxImpl#getSandBoxIdsForUpwardHierarchy(boolean, boolean)}
+   */
+  @Test
+  public void testGetSandBoxIdsForUpwardHierarchy8() {
+    // Arrange
+    SandBoxImpl sandBoxImpl = new SandBoxImpl();
+    sandBoxImpl.setAuthor(1L);
+    sandBoxImpl.setChildSandBoxes(new ArrayList<>());
+    sandBoxImpl.setColor("Color");
+    sandBoxImpl.setGoLiveDate(mock(java.sql.Date.class));
+    sandBoxImpl.setId(1L);
+    sandBoxImpl.setName("Name");
+    sandBoxImpl.setSandBoxType(SandBoxType.APPROVAL);
+    sandBoxImpl.setParentSandBox(null);
+
+    // Act and Assert
+    assertTrue(sandBoxImpl.getSandBoxIdsForUpwardHierarchy(false, false).isEmpty());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link SandBoxImpl#equals(Object)}
+   *   <li>{@link SandBoxImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
+    // Arrange
+    SandBoxImpl sandBoxImpl = new SandBoxImpl();
+    sandBoxImpl.setAuthor(1L);
+    sandBoxImpl.setChildSandBoxes(new ArrayList<>());
+    sandBoxImpl.setColor("Color");
+    sandBoxImpl.setGoLiveDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    sandBoxImpl.setId(1L);
+    sandBoxImpl.setName("Name");
+    sandBoxImpl.setParentSandBox(new SandBoxImpl());
+    sandBoxImpl.setSandBoxType(SandBoxType.APPROVAL);
+
+    SandBoxImpl sandBoxImpl2 = new SandBoxImpl();
+    sandBoxImpl2.setAuthor(1L);
+    sandBoxImpl2.setChildSandBoxes(new ArrayList<>());
+    sandBoxImpl2.setColor("Color");
+    sandBoxImpl2.setGoLiveDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    sandBoxImpl2.setId(1L);
+    sandBoxImpl2.setName("Name");
+    sandBoxImpl2.setParentSandBox(new SandBoxImpl());
+    sandBoxImpl2.setSandBoxType(SandBoxType.APPROVAL);
+
+    // Act and Assert
+    assertEquals(sandBoxImpl, sandBoxImpl2);
+    int expectedHashCodeResult = sandBoxImpl.hashCode();
+    assertEquals(expectedHashCodeResult, sandBoxImpl2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link SandBoxImpl#equals(Object)}
+   *   <li>{@link SandBoxImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
+    // Arrange
+    SandBoxImpl sandBoxImpl = new SandBoxImpl();
+    sandBoxImpl.setAuthor(1L);
+    sandBoxImpl.setChildSandBoxes(new ArrayList<>());
+    sandBoxImpl.setColor("Color");
+    sandBoxImpl.setGoLiveDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    sandBoxImpl.setId(1L);
+    sandBoxImpl.setName("Name");
+    sandBoxImpl.setParentSandBox(mock(SandBox.class));
+    sandBoxImpl.setSandBoxType(SandBoxType.APPROVAL);
+
+    SandBoxImpl sandBoxImpl2 = new SandBoxImpl();
+    sandBoxImpl2.setAuthor(1L);
+    sandBoxImpl2.setChildSandBoxes(new ArrayList<>());
+    sandBoxImpl2.setColor("Color");
+    sandBoxImpl2.setGoLiveDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    sandBoxImpl2.setId(1L);
+    sandBoxImpl2.setName("Name");
+    sandBoxImpl2.setParentSandBox(new SandBoxImpl());
+    sandBoxImpl2.setSandBoxType(SandBoxType.APPROVAL);
+
+    // Act and Assert
+    assertEquals(sandBoxImpl, sandBoxImpl2);
+    int expectedHashCodeResult = sandBoxImpl.hashCode();
+    assertEquals(expectedHashCodeResult, sandBoxImpl2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link SandBoxImpl#equals(Object)}
+   *   <li>{@link SandBoxImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
+    // Arrange
+    SandBoxImpl sandBoxImpl = new SandBoxImpl();
+    sandBoxImpl.setAuthor(1L);
+    sandBoxImpl.setChildSandBoxes(new ArrayList<>());
+    sandBoxImpl.setColor("Color");
+    sandBoxImpl.setGoLiveDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    sandBoxImpl.setId(1L);
+    sandBoxImpl.setName("Name");
+    sandBoxImpl.setParentSandBox(new SandBoxImpl());
+    sandBoxImpl.setSandBoxType(SandBoxType.APPROVAL);
+
+    // Act and Assert
+    assertEquals(sandBoxImpl, sandBoxImpl);
+    int expectedHashCodeResult = sandBoxImpl.hashCode();
+    assertEquals(expectedHashCodeResult, sandBoxImpl.hashCode());
+  }
+
+  /**
+   * Method under test: {@link SandBoxImpl#getMainEntityName()}
+   */
+  @Test
+  public void testGetMainEntityName() {
+    // Arrange, Act and Assert
+    assertNull((new SandBoxImpl()).getMainEntityName());
+  }
+
+  /**
+   * Method under test: {@link SandBoxImpl#getMainEntityName()}
+   */
+  @Test
+  public void testGetMainEntityName2() {
+    // Arrange
+    SandBoxImpl sandBoxImpl = new SandBoxImpl();
+    sandBoxImpl.setGoLiveDate(mock(java.sql.Date.class));
+
+    // Act and Assert
+    assertNull(sandBoxImpl.getMainEntityName());
+  }
+
+  /**
+   * Method under test: {@link SandBoxImpl#getIsInDefaultHierarchy()}
+   */
+  @Test
+  public void testGetIsInDefaultHierarchy() {
+    // Arrange, Act and Assert
+    assertFalse((new SandBoxImpl()).getIsInDefaultHierarchy());
+  }
+
+  /**
+   * Method under test: {@link SandBoxImpl#getIsInDefaultHierarchy()}
+   */
+  @Test
+  public void testGetIsInDefaultHierarchy2() {
+    // Arrange
+    SandBoxImpl sandBoxImpl = new SandBoxImpl();
+    sandBoxImpl.setParentSandBox(new SandBoxImpl());
+
+    // Act and Assert
+    assertFalse(sandBoxImpl.getIsInDefaultHierarchy());
+  }
+
+  /**
+   * Method under test: {@link SandBoxImpl#getIsInDefaultHierarchy()}
+   */
+  @Test
+  public void testGetIsInDefaultHierarchy3() {
+    // Arrange
+    SandBoxImpl sandBoxImpl = new SandBoxImpl();
+    sandBoxImpl.setSandBoxType(SandBoxType.DEFAULT);
+
+    // Act and Assert
+    assertTrue(sandBoxImpl.getIsInDefaultHierarchy());
+  }
+
+  /**
+   * Method under test: {@link SandBoxImpl#getIsInDefaultHierarchy()}
+   */
+  @Test
+  public void testGetIsInDefaultHierarchy4() {
+    // Arrange
+    SandBoxImpl sandBoxImpl = new SandBoxImpl();
+    sandBoxImpl.setSandBoxType(new SandBoxType());
+
+    // Act and Assert
+    assertFalse(sandBoxImpl.getIsInDefaultHierarchy());
+  }
+
+  /**
+   * Method under test: {@link SandBoxImpl#getIsInDefaultHierarchy()}
+   */
+  @Test
+  public void testGetIsInDefaultHierarchy5() {
+    // Arrange
+    SandBoxImpl sandBoxImpl = new SandBoxImpl();
+    sandBoxImpl.setGoLiveDate(mock(java.sql.Date.class));
+
+    // Act and Assert
+    assertFalse(sandBoxImpl.getIsInDefaultHierarchy());
+  }
+
+  /**
+   * Method under test: {@link SandBoxImpl#setArchived(Character)}
+   */
+  @Test
+  public void testSetArchived() {
     // Arrange
     SandBoxImpl sandBoxImpl = new SandBoxImpl();
 
     // Act
-    sandBoxImpl.setSandBoxType(SandBoxType.APPROVAL);
+    sandBoxImpl.setArchived('A');
 
-    // Assert that nothing has changed
-    assertEquals("APPROVAL", sandBoxImpl.sandboxType);
+    // Assert
+    assertEquals('A', sandBoxImpl.archiveStatus.getArchived().charValue());
+    assertEquals('A', sandBoxImpl.getArchived().charValue());
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Method under test: {@link SandBoxImpl#setArchived(Character)}
+   */
+  @Test
+  public void testSetArchived2() {
+    // Arrange
+    SandBoxImpl sandBoxImpl = new SandBoxImpl();
+    sandBoxImpl.setGoLiveDate(mock(java.sql.Date.class));
+
+    // Act
+    sandBoxImpl.setArchived('A');
+
+    // Assert
+    assertEquals('A', sandBoxImpl.archiveStatus.getArchived().charValue());
+    assertEquals('A', sandBoxImpl.getArchived().charValue());
+  }
+
+  /**
+   * Method under test: {@link SandBoxImpl#getArchived()}
+   */
+  @Test
+  public void testGetArchived() {
+    // Arrange, Act and Assert
+    assertEquals('N', (new SandBoxImpl()).getArchived().charValue());
+  }
+
+  /**
+   * Method under test: {@link SandBoxImpl#getArchived()}
+   */
+  @Test
+  public void testGetArchived2() {
+    // Arrange
+    SandBoxImpl sandBoxImpl = new SandBoxImpl();
+    sandBoxImpl.setGoLiveDate(mock(java.sql.Date.class));
+
+    // Act and Assert
+    assertEquals('N', sandBoxImpl.getArchived().charValue());
+  }
+
+  /**
+   * Method under test: {@link SandBoxImpl#isActive()}
+   */
+  @Test
+  public void testIsActive() {
+    // Arrange, Act and Assert
+    assertTrue((new SandBoxImpl()).isActive());
+  }
+
+  /**
+   * Method under test: {@link SandBoxImpl#isActive()}
+   */
+  @Test
+  public void testIsActive2() {
+    // Arrange
+    SandBoxImpl sandBoxImpl = new SandBoxImpl();
+    sandBoxImpl.setArchived('Y');
+
+    // Act and Assert
+    assertFalse(sandBoxImpl.isActive());
+  }
+
+  /**
+   * Method under test: {@link SandBoxImpl#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+    // Arrange
+    SandBoxImpl sandBoxImpl = new SandBoxImpl();
+    sandBoxImpl.setAuthor(0L);
+    sandBoxImpl.setChildSandBoxes(new ArrayList<>());
+    sandBoxImpl.setColor("Color");
+    sandBoxImpl.setGoLiveDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    sandBoxImpl.setId(1L);
+    sandBoxImpl.setName("Name");
+    sandBoxImpl.setParentSandBox(new SandBoxImpl());
+    sandBoxImpl.setSandBoxType(SandBoxType.APPROVAL);
+
+    SandBoxImpl sandBoxImpl2 = new SandBoxImpl();
+    sandBoxImpl2.setAuthor(1L);
+    sandBoxImpl2.setChildSandBoxes(new ArrayList<>());
+    sandBoxImpl2.setColor("Color");
+    sandBoxImpl2.setGoLiveDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    sandBoxImpl2.setId(1L);
+    sandBoxImpl2.setName("Name");
+    sandBoxImpl2.setParentSandBox(new SandBoxImpl());
+    sandBoxImpl2.setSandBoxType(SandBoxType.APPROVAL);
+
+    // Act and Assert
+    assertNotEquals(sandBoxImpl, sandBoxImpl2);
+  }
+
+  /**
+   * Method under test: {@link SandBoxImpl#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
+    // Arrange
+    SandBoxImpl sandBoxImpl = new SandBoxImpl();
+    sandBoxImpl.setAuthor(1L);
+    sandBoxImpl.setChildSandBoxes(new ArrayList<>());
+    sandBoxImpl.setColor("Color");
+    sandBoxImpl.setGoLiveDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    sandBoxImpl.setId(1L);
+    sandBoxImpl.setName("Name");
+    sandBoxImpl.setParentSandBox(new SandBoxImpl());
+    sandBoxImpl.setSandBoxType(SandBoxType.APPROVAL);
+
+    // Act and Assert
+    assertNotEquals(sandBoxImpl, null);
+  }
+
+  /**
+   * Method under test: {@link SandBoxImpl#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+    // Arrange
+    SandBoxImpl sandBoxImpl = new SandBoxImpl();
+    sandBoxImpl.setAuthor(1L);
+    sandBoxImpl.setChildSandBoxes(new ArrayList<>());
+    sandBoxImpl.setColor("Color");
+    sandBoxImpl.setGoLiveDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    sandBoxImpl.setId(1L);
+    sandBoxImpl.setName("Name");
+    sandBoxImpl.setParentSandBox(new SandBoxImpl());
+    sandBoxImpl.setSandBoxType(SandBoxType.APPROVAL);
+
+    // Act and Assert
+    assertNotEquals(sandBoxImpl, "Different type to SandBoxImpl");
+  }
+
+  /**
+   * Methods under test:
    * <ul>
    *   <li>{@link SandBoxImpl#setAuthor(Long)}
    *   <li>{@link SandBoxImpl#setChildSandBoxes(List)}
@@ -134,23 +679,6 @@ public class SandBoxImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Long SandBoxImpl.getAuthor()",
-    "List SandBoxImpl.getChildSandBoxes()",
-    "Date SandBoxImpl.getGoLiveDate()",
-    "Long SandBoxImpl.getId()",
-    "String SandBoxImpl.getName()",
-    "SandBox SandBoxImpl.getParentSandBox()",
-    "void SandBoxImpl.setAuthor(Long)",
-    "void SandBoxImpl.setChildSandBoxes(List)",
-    "void SandBoxImpl.setColor(String)",
-    "void SandBoxImpl.setGoLiveDate(Date)",
-    "void SandBoxImpl.setId(Long)",
-    "void SandBoxImpl.setName(String)",
-    "void SandBoxImpl.setParentSandBox(SandBox)"
-  })
   public void testGettersAndSetters() {
     // Arrange
     SandBoxImpl sandBoxImpl = new SandBoxImpl();
@@ -160,8 +688,7 @@ public class SandBoxImplDiffblueTest {
     ArrayList<SandBox> childSandBoxes = new ArrayList<>();
     sandBoxImpl.setChildSandBoxes(childSandBoxes);
     sandBoxImpl.setColor("Color");
-    Date goLiveDate =
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    Date goLiveDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
     sandBoxImpl.setGoLiveDate(goLiveDate);
     sandBoxImpl.setId(1L);
     sandBoxImpl.setName("Name");
@@ -174,7 +701,7 @@ public class SandBoxImplDiffblueTest {
     String actualName = sandBoxImpl.getName();
     SandBox actualParentSandBox = sandBoxImpl.getParentSandBox();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("Name", actualName);
     assertEquals(1L, actualAuthor.longValue());
     assertEquals(1L, actualId.longValue());
@@ -185,693 +712,20 @@ public class SandBoxImplDiffblueTest {
   }
 
   /**
-   * Test {@link SandBoxImpl#getColor()}.
-   *
-   * <ul>
-   *   <li>Given {@link SandBoxImpl} (default constructor) Color is {@code not blank}.
-   *   <li>Then return {@code not blank}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SandBoxImpl#getColor()}
+   * Method under test: default or parameterless constructor of
+   * {@link SandBoxImpl}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SandBoxImpl.getColor()"})
-  public void testGetColor_givenSandBoxImplColorIsNotBlank_thenReturnNotBlank() {
-    // Arrange
-    SandBoxImpl sandBoxImpl = new SandBoxImpl();
-    sandBoxImpl.setAuthor(1L);
-    sandBoxImpl.setChildSandBoxes(new ArrayList<>());
-    sandBoxImpl.setGoLiveDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    sandBoxImpl.setId(1L);
-    sandBoxImpl.setName("Name");
-    sandBoxImpl.setSandBoxType(SandBoxType.APPROVAL);
-    sandBoxImpl.setColor("not blank");
-    sandBoxImpl.setParentSandBox(null);
-
-    // Act and Assert
-    assertEquals("not blank", sandBoxImpl.getColor());
-  }
-
-  /**
-   * Test {@link SandBoxImpl#getColor()}.
-   *
-   * <ul>
-   *   <li>Given {@link SandBoxImpl} (default constructor) Color is space.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SandBoxImpl#getColor()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SandBoxImpl.getColor()"})
-  public void testGetColor_givenSandBoxImplColorIsSpace_thenReturnNull() {
-    // Arrange
-    SandBoxImpl sandBoxImpl = new SandBoxImpl();
-    sandBoxImpl.setAuthor(1L);
-    sandBoxImpl.setChildSandBoxes(new ArrayList<>());
-    sandBoxImpl.setGoLiveDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    sandBoxImpl.setId(1L);
-    sandBoxImpl.setName("Name");
-    sandBoxImpl.setSandBoxType(SandBoxType.APPROVAL);
-    sandBoxImpl.setColor(" ");
-    sandBoxImpl.setParentSandBox(null);
-
-    // Act and Assert
-    assertNull(sandBoxImpl.getColor());
-  }
-
-  /**
-   * Test {@link SandBoxImpl#getColor()}.
-   *
-   * <ul>
-   *   <li>Given {@link SandBoxImpl} (default constructor) ParentSandBox is {@link SandBoxImpl}
-   *       (default constructor).
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SandBoxImpl#getColor()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SandBoxImpl.getColor()"})
-  public void testGetColor_givenSandBoxImplParentSandBoxIsSandBoxImpl_thenReturnNull() {
-    // Arrange
-    SandBoxImpl sandBoxImpl = new SandBoxImpl();
-    sandBoxImpl.setAuthor(1L);
-    sandBoxImpl.setChildSandBoxes(new ArrayList<>());
-    sandBoxImpl.setGoLiveDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    sandBoxImpl.setId(1L);
-    sandBoxImpl.setName("Name");
-    sandBoxImpl.setSandBoxType(SandBoxType.APPROVAL);
-    sandBoxImpl.setColor(" ");
-    sandBoxImpl.setParentSandBox(new SandBoxImpl());
-
-    // Act and Assert
-    assertNull(sandBoxImpl.getColor());
-  }
-
-  /**
-   * Test {@link SandBoxImpl#getColor()}.
-   *
-   * <ul>
-   *   <li>Given {@link SandBoxImpl} (default constructor).
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SandBoxImpl#getColor()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SandBoxImpl.getColor()"})
-  public void testGetColor_givenSandBoxImpl_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(new SandBoxImpl().getColor());
-  }
-
-  /**
-   * Test {@link SandBoxImpl#getSandBoxIdsForUpwardHierarchy(boolean)} with {@code
-   * includeInherited}.
-   *
-   * <p>Method under test: {@link SandBoxImpl#getSandBoxIdsForUpwardHierarchy(boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List SandBoxImpl.getSandBoxIdsForUpwardHierarchy(boolean)"})
-  public void testGetSandBoxIdsForUpwardHierarchyWithIncludeInherited() {
-    // Arrange
-    SandBoxImpl sandBoxImpl = new SandBoxImpl();
-    sandBoxImpl.setAuthor(1L);
-    sandBoxImpl.setChildSandBoxes(new ArrayList<>());
-    sandBoxImpl.setColor("Color");
-    sandBoxImpl.setGoLiveDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    sandBoxImpl.setId(1L);
-    sandBoxImpl.setName("Name");
-    sandBoxImpl.setSandBoxType(SandBoxType.APPROVAL);
-    sandBoxImpl.setParentSandBox(null);
-
-    // Act
-    List<Long> actualSandBoxIdsForUpwardHierarchy =
-        sandBoxImpl.getSandBoxIdsForUpwardHierarchy(false);
-
-    // Assert
-    assertEquals(1, actualSandBoxIdsForUpwardHierarchy.size());
-    assertEquals(1L, actualSandBoxIdsForUpwardHierarchy.get(0).longValue());
-  }
-
-  /**
-   * Test {@link SandBoxImpl#getSandBoxIdsForUpwardHierarchy(boolean, boolean)} with {@code
-   * includeInherited}, {@code includeCurrent}.
-   *
-   * <p>Method under test: {@link SandBoxImpl#getSandBoxIdsForUpwardHierarchy(boolean, boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List SandBoxImpl.getSandBoxIdsForUpwardHierarchy(boolean, boolean)"})
-  public void testGetSandBoxIdsForUpwardHierarchyWithIncludeInheritedIncludeCurrent() {
-    // Arrange and Act
-    List<Long> actualSandBoxIdsForUpwardHierarchy =
-        new SandBoxImpl().getSandBoxIdsForUpwardHierarchy(true, true);
-
-    // Assert
-    assertEquals(1, actualSandBoxIdsForUpwardHierarchy.size());
-    assertNull(actualSandBoxIdsForUpwardHierarchy.get(0));
-  }
-
-  /**
-   * Test {@link SandBoxImpl#getSandBoxIdsForUpwardHierarchy(boolean, boolean)} with {@code
-   * includeInherited}, {@code includeCurrent}.
-   *
-   * <p>Method under test: {@link SandBoxImpl#getSandBoxIdsForUpwardHierarchy(boolean, boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List SandBoxImpl.getSandBoxIdsForUpwardHierarchy(boolean, boolean)"})
-  public void testGetSandBoxIdsForUpwardHierarchyWithIncludeInheritedIncludeCurrent2() {
-    // Arrange
-    SandBoxImpl sandBoxImpl = new SandBoxImpl();
-    sandBoxImpl.setAuthor(1L);
-    sandBoxImpl.setChildSandBoxes(new ArrayList<>());
-    sandBoxImpl.setColor("Color");
-    sandBoxImpl.setGoLiveDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    sandBoxImpl.setId(1L);
-    sandBoxImpl.setName("Name");
-    sandBoxImpl.setSandBoxType(SandBoxType.APPROVAL);
-    sandBoxImpl.setParentSandBox(null);
-
-    // Act and Assert
-    assertTrue(sandBoxImpl.getSandBoxIdsForUpwardHierarchy(false, false).isEmpty());
-  }
-
-  /**
-   * Test {@link SandBoxImpl#getSandBoxIdsForUpwardHierarchy(boolean, boolean)} with {@code
-   * includeInherited}, {@code includeCurrent}.
-   *
-   * <p>Method under test: {@link SandBoxImpl#getSandBoxIdsForUpwardHierarchy(boolean, boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List SandBoxImpl.getSandBoxIdsForUpwardHierarchy(boolean, boolean)"})
-  public void testGetSandBoxIdsForUpwardHierarchyWithIncludeInheritedIncludeCurrent3() {
-    // Arrange
-    SandBoxImpl sandBoxImpl = new SandBoxImpl();
-    sandBoxImpl.setParentSandBox(new SandBoxImpl());
-
-    // Act
-    List<Long> actualSandBoxIdsForUpwardHierarchy =
-        sandBoxImpl.getSandBoxIdsForUpwardHierarchy(true, true);
-
-    // Assert
-    assertEquals(2, actualSandBoxIdsForUpwardHierarchy.size());
-    assertNull(actualSandBoxIdsForUpwardHierarchy.get(0));
-    assertNull(actualSandBoxIdsForUpwardHierarchy.get(1));
-  }
-
-  /**
-   * Test {@link SandBoxImpl#getSandBoxIdsForUpwardHierarchy(boolean)} with {@code
-   * includeInherited}.
-   *
-   * <ul>
-   *   <li>Given {@link SandBoxImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link SandBoxImpl#getSandBoxIdsForUpwardHierarchy(boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List SandBoxImpl.getSandBoxIdsForUpwardHierarchy(boolean)"})
-  public void testGetSandBoxIdsForUpwardHierarchyWithIncludeInherited_givenSandBoxImpl() {
-    // Arrange and Act
-    List<Long> actualSandBoxIdsForUpwardHierarchy =
-        new SandBoxImpl().getSandBoxIdsForUpwardHierarchy(true);
-
-    // Assert
-    assertEquals(1, actualSandBoxIdsForUpwardHierarchy.size());
-    assertNull(actualSandBoxIdsForUpwardHierarchy.get(0));
-  }
-
-  /**
-   * Test {@link SandBoxImpl#getSandBoxIdsForUpwardHierarchy(boolean)} with {@code
-   * includeInherited}.
-   *
-   * <ul>
-   *   <li>Then return size is two.
-   * </ul>
-   *
-   * <p>Method under test: {@link SandBoxImpl#getSandBoxIdsForUpwardHierarchy(boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List SandBoxImpl.getSandBoxIdsForUpwardHierarchy(boolean)"})
-  public void testGetSandBoxIdsForUpwardHierarchyWithIncludeInherited_thenReturnSizeIsTwo() {
-    // Arrange
-    SandBoxImpl sandBoxImpl = new SandBoxImpl();
-    sandBoxImpl.setParentSandBox(new SandBoxImpl());
-
-    // Act
-    List<Long> actualSandBoxIdsForUpwardHierarchy =
-        sandBoxImpl.getSandBoxIdsForUpwardHierarchy(true);
-
-    // Assert
-    assertEquals(2, actualSandBoxIdsForUpwardHierarchy.size());
-    assertNull(actualSandBoxIdsForUpwardHierarchy.get(0));
-    assertNull(actualSandBoxIdsForUpwardHierarchy.get(1));
-  }
-
-  /**
-   * Test {@link SandBoxImpl#equals(Object)}, and {@link SandBoxImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link SandBoxImpl#equals(Object)}
-   *   <li>{@link SandBoxImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SandBoxImpl.equals(Object)", "int SandBoxImpl.hashCode()"})
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
-    // Arrange
-    SandBoxImpl sandBoxImpl = new SandBoxImpl();
-    sandBoxImpl.setAuthor(1L);
-    sandBoxImpl.setChildSandBoxes(new ArrayList<>());
-    sandBoxImpl.setColor("Color");
-    sandBoxImpl.setGoLiveDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    sandBoxImpl.setId(1L);
-    sandBoxImpl.setName("Name");
-    sandBoxImpl.setParentSandBox(new SandBoxImpl());
-    sandBoxImpl.setSandBoxType(SandBoxType.APPROVAL);
-
-    SandBoxImpl sandBoxImpl2 = new SandBoxImpl();
-    sandBoxImpl2.setAuthor(1L);
-    sandBoxImpl2.setChildSandBoxes(new ArrayList<>());
-    sandBoxImpl2.setColor("Color");
-    sandBoxImpl2.setGoLiveDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    sandBoxImpl2.setId(1L);
-    sandBoxImpl2.setName("Name");
-    sandBoxImpl2.setParentSandBox(new SandBoxImpl());
-    sandBoxImpl2.setSandBoxType(SandBoxType.APPROVAL);
-
-    // Act and Assert
-    assertEquals(sandBoxImpl, sandBoxImpl2);
-    assertEquals(sandBoxImpl.hashCode(), sandBoxImpl2.hashCode());
-  }
-
-  /**
-   * Test {@link SandBoxImpl#equals(Object)}, and {@link SandBoxImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link SandBoxImpl#equals(Object)}
-   *   <li>{@link SandBoxImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SandBoxImpl.equals(Object)", "int SandBoxImpl.hashCode()"})
-  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
-    // Arrange
-    SandBoxImpl sandBoxImpl = new SandBoxImpl();
-    sandBoxImpl.setAuthor(1L);
-    sandBoxImpl.setChildSandBoxes(new ArrayList<>());
-    sandBoxImpl.setColor("Color");
-    sandBoxImpl.setGoLiveDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    sandBoxImpl.setId(1L);
-    sandBoxImpl.setName("Name");
-    sandBoxImpl.setParentSandBox(new SandBoxImpl());
-    sandBoxImpl.setSandBoxType(SandBoxType.APPROVAL);
-
-    // Act and Assert
-    assertEquals(sandBoxImpl, sandBoxImpl);
-    int expectedHashCodeResult = sandBoxImpl.hashCode();
-    assertEquals(expectedHashCodeResult, sandBoxImpl.hashCode());
-  }
-
-  /**
-   * Test {@link SandBoxImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link SandBoxImpl#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SandBoxImpl.equals(Object)", "int SandBoxImpl.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
-    // Arrange
-    SandBoxImpl sandBoxImpl = new SandBoxImpl();
-    sandBoxImpl.setAuthor(0L);
-    sandBoxImpl.setChildSandBoxes(new ArrayList<>());
-    sandBoxImpl.setColor("Color");
-    sandBoxImpl.setGoLiveDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    sandBoxImpl.setId(1L);
-    sandBoxImpl.setName("Name");
-    sandBoxImpl.setParentSandBox(new SandBoxImpl());
-    sandBoxImpl.setSandBoxType(SandBoxType.APPROVAL);
-
-    SandBoxImpl sandBoxImpl2 = new SandBoxImpl();
-    sandBoxImpl2.setAuthor(1L);
-    sandBoxImpl2.setChildSandBoxes(new ArrayList<>());
-    sandBoxImpl2.setColor("Color");
-    sandBoxImpl2.setGoLiveDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    sandBoxImpl2.setId(1L);
-    sandBoxImpl2.setName("Name");
-    sandBoxImpl2.setParentSandBox(new SandBoxImpl());
-    sandBoxImpl2.setSandBoxType(SandBoxType.APPROVAL);
-
-    // Act and Assert
-    assertNotEquals(sandBoxImpl, sandBoxImpl2);
-  }
-
-  /**
-   * Test {@link SandBoxImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link SandBoxImpl#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SandBoxImpl.equals(Object)", "int SandBoxImpl.hashCode()"})
-  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
-    // Arrange
-    SandBoxImpl sandBoxImpl = new SandBoxImpl();
-    sandBoxImpl.setAuthor(1L);
-    sandBoxImpl.setChildSandBoxes(new ArrayList<>());
-    sandBoxImpl.setColor("Color");
-    sandBoxImpl.setGoLiveDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    sandBoxImpl.setId(1L);
-    sandBoxImpl.setName("Name");
-    sandBoxImpl.setParentSandBox(new SandBoxImpl());
-    sandBoxImpl.setSandBoxType(SandBoxType.APPROVAL);
-
-    // Act and Assert
-    assertNotEquals(sandBoxImpl, null);
-  }
-
-  /**
-   * Test {@link SandBoxImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link SandBoxImpl#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SandBoxImpl.equals(Object)", "int SandBoxImpl.hashCode()"})
-  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
-    // Arrange
-    SandBoxImpl sandBoxImpl = new SandBoxImpl();
-    sandBoxImpl.setAuthor(1L);
-    sandBoxImpl.setChildSandBoxes(new ArrayList<>());
-    sandBoxImpl.setColor("Color");
-    sandBoxImpl.setGoLiveDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    sandBoxImpl.setId(1L);
-    sandBoxImpl.setName("Name");
-    sandBoxImpl.setParentSandBox(new SandBoxImpl());
-    sandBoxImpl.setSandBoxType(SandBoxType.APPROVAL);
-
-    // Act and Assert
-    assertNotEquals(sandBoxImpl, "Different type to SandBoxImpl");
-  }
-
-  /**
-   * Test {@link SandBoxImpl#getMainEntityName()}.
-   *
-   * <p>Method under test: {@link SandBoxImpl#getMainEntityName()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SandBoxImpl.getMainEntityName()"})
-  public void testGetMainEntityName() {
-    // Arrange, Act and Assert
-    assertNull(new SandBoxImpl().getMainEntityName());
-  }
-
-  /**
-   * Test {@link SandBoxImpl#getIsInDefaultHierarchy()}.
-   *
-   * <ul>
-   *   <li>Given {@link SandBoxImpl} (default constructor) SandBoxType is {@link
-   *       SandBoxType#APPROVAL}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SandBoxImpl#getIsInDefaultHierarchy()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SandBoxImpl.getIsInDefaultHierarchy()"})
-  public void testGetIsInDefaultHierarchy_givenSandBoxImplSandBoxTypeIsApproval() {
-    // Arrange
-    SandBoxImpl sandBoxImpl = new SandBoxImpl();
-    sandBoxImpl.setAuthor(1L);
-    sandBoxImpl.setChildSandBoxes(new ArrayList<>());
-    sandBoxImpl.setColor("Color");
-    sandBoxImpl.setGoLiveDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    sandBoxImpl.setId(1L);
-    sandBoxImpl.setName("Name");
-    sandBoxImpl.setSandBoxType(SandBoxType.APPROVAL);
-    sandBoxImpl.setParentSandBox(new SandBoxImpl());
-
-    // Act and Assert
-    assertFalse(sandBoxImpl.getIsInDefaultHierarchy());
-  }
-
-  /**
-   * Test {@link SandBoxImpl#getIsInDefaultHierarchy()}.
-   *
-   * <ul>
-   *   <li>Given {@link SandBoxImpl} (default constructor) SandBoxType is {@link
-   *       SandBoxType#DEFAULT}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SandBoxImpl#getIsInDefaultHierarchy()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SandBoxImpl.getIsInDefaultHierarchy()"})
-  public void testGetIsInDefaultHierarchy_givenSandBoxImplSandBoxTypeIsDefault_thenReturnTrue() {
-    // Arrange
-    SandBoxImpl sandBoxImpl = new SandBoxImpl();
-    sandBoxImpl.setAuthor(1L);
-    sandBoxImpl.setChildSandBoxes(new ArrayList<>());
-    sandBoxImpl.setColor("Color");
-    sandBoxImpl.setGoLiveDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    sandBoxImpl.setId(1L);
-    sandBoxImpl.setName("Name");
-    sandBoxImpl.setSandBoxType(SandBoxType.DEFAULT);
-    sandBoxImpl.setParentSandBox(new SandBoxImpl());
-
-    // Act and Assert
-    assertTrue(sandBoxImpl.getIsInDefaultHierarchy());
-  }
-
-  /**
-   * Test {@link SandBoxImpl#getIsInDefaultHierarchy()}.
-   *
-   * <ul>
-   *   <li>Given {@link SandBoxImpl} (default constructor) SandBoxType is {@link
-   *       SandBoxType#SandBoxType()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SandBoxImpl#getIsInDefaultHierarchy()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SandBoxImpl.getIsInDefaultHierarchy()"})
-  public void testGetIsInDefaultHierarchy_givenSandBoxImplSandBoxTypeIsSandBoxType() {
-    // Arrange
-    SandBoxImpl sandBoxImpl = new SandBoxImpl();
-    sandBoxImpl.setAuthor(1L);
-    sandBoxImpl.setChildSandBoxes(new ArrayList<>());
-    sandBoxImpl.setColor("Color");
-    sandBoxImpl.setGoLiveDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    sandBoxImpl.setId(1L);
-    sandBoxImpl.setName("Name");
-    sandBoxImpl.setSandBoxType(new SandBoxType());
-    sandBoxImpl.setParentSandBox(new SandBoxImpl());
-
-    // Act and Assert
-    assertFalse(sandBoxImpl.getIsInDefaultHierarchy());
-  }
-
-  /**
-   * Test {@link SandBoxImpl#getIsInDefaultHierarchy()}.
-   *
-   * <ul>
-   *   <li>Given {@link SandBoxImpl} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SandBoxImpl#getIsInDefaultHierarchy()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SandBoxImpl.getIsInDefaultHierarchy()"})
-  public void testGetIsInDefaultHierarchy_givenSandBoxImpl_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(new SandBoxImpl().getIsInDefaultHierarchy());
-  }
-
-  /**
-   * Test {@link SandBoxImpl#setArchived(Character)}.
-   *
-   * <p>Method under test: {@link SandBoxImpl#setArchived(Character)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SandBoxImpl.setArchived(Character)"})
-  public void testSetArchived() {
-    // Arrange
-    SandBoxImpl sandBoxImpl = new SandBoxImpl();
-
-    // Act
-    sandBoxImpl.setArchived('A');
-
-    // Assert
-    assertEquals('A', sandBoxImpl.archiveStatus.getArchived().charValue());
-    assertEquals('A', sandBoxImpl.getArchived().charValue());
-  }
-
-  /**
-   * Test {@link SandBoxImpl#getArchived()}.
-   *
-   * <p>Method under test: {@link SandBoxImpl#getArchived()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Character SandBoxImpl.getArchived()"})
-  public void testGetArchived() {
-    // Arrange, Act and Assert
-    assertEquals('N', new SandBoxImpl().getArchived().charValue());
-  }
-
-  /**
-   * Test {@link SandBoxImpl#isActive()}.
-   *
-   * <ul>
-   *   <li>Given {@link SandBoxImpl} (default constructor) Archived is {@code Y}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SandBoxImpl#isActive()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SandBoxImpl.isActive()"})
-  public void testIsActive_givenSandBoxImplArchivedIsY_thenReturnFalse() {
-    // Arrange
-    SandBoxImpl sandBoxImpl = new SandBoxImpl();
-    sandBoxImpl.setAuthor(1L);
-    sandBoxImpl.setChildSandBoxes(new ArrayList<>());
-    sandBoxImpl.setColor("Color");
-    sandBoxImpl.setGoLiveDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    sandBoxImpl.setId(1L);
-    sandBoxImpl.setName("Name");
-    sandBoxImpl.setParentSandBox(new SandBoxImpl());
-    sandBoxImpl.setSandBoxType(SandBoxType.APPROVAL);
-    sandBoxImpl.setArchived('Y');
-
-    // Act and Assert
-    assertFalse(sandBoxImpl.isActive());
-  }
-
-  /**
-   * Test {@link SandBoxImpl#isActive()}.
-   *
-   * <ul>
-   *   <li>Given {@link SandBoxImpl} (default constructor).
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SandBoxImpl#isActive()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SandBoxImpl.isActive()"})
-  public void testIsActive_givenSandBoxImpl_thenReturnTrue() {
-    // Arrange, Act and Assert
-    assertTrue(new SandBoxImpl().isActive());
-  }
-
-  /**
-   * Test new {@link SandBoxImpl} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link SandBoxImpl}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SandBoxImpl.<init>()"})
   public void testNewSandBoxImpl() {
     // Arrange and Act
     SandBoxImpl actualSandBoxImpl = new SandBoxImpl();
 
     // Assert
+    SandBoxType sandBoxType = actualSandBoxImpl.getSandBoxType();
+    assertEquals("APPROVAL", sandBoxType.getType());
     assertEquals("APPROVAL", actualSandBoxImpl.sandboxType);
+    assertEquals("Approval", sandBoxType.getFriendlyType());
+    assertEquals('N', actualSandBoxImpl.archiveStatus.getArchived().charValue());
     assertEquals('N', actualSandBoxImpl.getArchived().charValue());
     assertNull(actualSandBoxImpl.getAuthor());
     assertNull(actualSandBoxImpl.getId());
@@ -883,6 +737,7 @@ public class SandBoxImplDiffblueTest {
     assertNull(actualSandBoxImpl.getGoLiveDate());
     assertNull(actualSandBoxImpl.getChildSandBoxes());
     assertNull(actualSandBoxImpl.getParentSandBox());
+    assertEquals(2, sandBoxType.getPriority().intValue());
     assertFalse(actualSandBoxImpl.getIsInDefaultHierarchy());
   }
 }

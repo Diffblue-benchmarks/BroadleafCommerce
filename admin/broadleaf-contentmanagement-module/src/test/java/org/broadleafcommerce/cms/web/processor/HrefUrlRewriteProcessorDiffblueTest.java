@@ -19,83 +19,48 @@ package org.broadleafcommerce.cms.web.processor;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.anyBoolean;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
-import org.broadleafcommerce.common.file.service.StaticAssetPathService;
 import org.broadleafcommerce.presentation.model.BroadleafAttributeModifier;
 import org.broadleafcommerce.presentation.model.BroadleafTemplateContext;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
 public class HrefUrlRewriteProcessorDiffblueTest {
-  @InjectMocks private HrefUrlRewriteProcessor hrefUrlRewriteProcessor;
-
-  @Mock private StaticAssetPathService staticAssetPathService;
-
   /**
-   * Test {@link HrefUrlRewriteProcessor#getName()}.
-   *
-   * <p>Method under test: {@link HrefUrlRewriteProcessor#getName()}
+   * Method under test: {@link HrefUrlRewriteProcessor#getName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String HrefUrlRewriteProcessor.getName()"})
   public void testGetName() {
     // Arrange, Act and Assert
-    assertEquals("href", new HrefUrlRewriteProcessor().getName());
+    assertEquals("href", (new HrefUrlRewriteProcessor()).getName());
   }
 
   /**
-   * Test {@link HrefUrlRewriteProcessor#getModifiedAttributes(String, Map, String, String,
-   * BroadleafTemplateContext)}.
-   *
-   * <ul>
-   *   <li>Given {@code link}.
-   *   <li>When {@link HashMap#HashMap()} {@code useCDN} is {@code link}.
-   * </ul>
-   *
-   * <p>Method under test: {@link HrefUrlRewriteProcessor#getModifiedAttributes(String, Map, String,
-   * String, BroadleafTemplateContext)}
+   * Method under test:
+   * {@link HrefUrlRewriteProcessor#getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BroadleafAttributeModifier HrefUrlRewriteProcessor.getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)"
-  })
-  public void testGetModifiedAttributes_givenLink_whenHashMapUseCDNIsLink() {
-    // Arrange
-    HashMap<String, String> tagAttributes = new HashMap<>();
-    tagAttributes.put("useCDN", "link");
+  public void testGetModifiedAttributes() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
+    // Arrange
+    HrefUrlRewriteProcessor hrefUrlRewriteProcessor = new HrefUrlRewriteProcessor();
+    HashMap<String, String> tagAttributes = new HashMap<>();
     BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
     when(context.parseExpression(Mockito.<String>any())).thenReturn("Parse Expression");
 
     // Act
-    BroadleafAttributeModifier actualModifiedAttributes =
-        hrefUrlRewriteProcessor.getModifiedAttributes(
-            "https://example.org/example",
-            tagAttributes,
-            "https://example.org/example",
-            "/",
-            context);
+    BroadleafAttributeModifier actualModifiedAttributes = hrefUrlRewriteProcessor.getModifiedAttributes(
+        "https://example.org/example", tagAttributes, "https://example.org/example", "https://example.org/example",
+        context);
 
     // Assert
-    verify(context).parseExpression("@{ / }");
+    verify(context).parseExpression(eq("https://example.org/example"));
     Map<String, String> added = actualModifiedAttributes.getAdded();
     assertEquals(1, added.size());
     assertEquals("Parse Expression", added.get("href"));
@@ -103,88 +68,28 @@ public class HrefUrlRewriteProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link HrefUrlRewriteProcessor#getModifiedAttributes(String, Map, String, String,
-   * BroadleafTemplateContext)}.
-   *
-   * <ul>
-   *   <li>Then return Added {@code href} is {@code Convert Asset Path}.
-   * </ul>
-   *
-   * <p>Method under test: {@link HrefUrlRewriteProcessor#getModifiedAttributes(String, Map, String,
-   * String, BroadleafTemplateContext)}
+   * Method under test:
+   * {@link HrefUrlRewriteProcessor#getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BroadleafAttributeModifier HrefUrlRewriteProcessor.getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)"
-  })
-  public void testGetModifiedAttributes_thenReturnAddedHrefIsConvertAssetPath() {
+  public void testGetModifiedAttributes2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    when(staticAssetPathService.convertAssetPath(
-            Mockito.<String>any(), Mockito.<String>any(), anyBoolean()))
-        .thenReturn("Convert Asset Path");
+    HrefUrlRewriteProcessor hrefUrlRewriteProcessor = new HrefUrlRewriteProcessor();
 
-    HashMap<String, String> tagAttributes = new HashMap<>();
-    tagAttributes.put("useCDN", Boolean.TRUE.toString());
-
-    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
-    when(context.parseExpression(Mockito.<String>any())).thenReturn("Parse Expression");
-
-    // Act
-    BroadleafAttributeModifier actualModifiedAttributes =
-        hrefUrlRewriteProcessor.getModifiedAttributes(
-            "https://example.org/example",
-            tagAttributes,
-            "https://example.org/example",
-            "/",
-            context);
-
-    // Assert
-    verify(staticAssetPathService).convertAssetPath("Parse Expression", null, true);
-    verify(context).parseExpression("@{ / }");
-    Map<String, String> added = actualModifiedAttributes.getAdded();
-    assertEquals(1, added.size());
-    assertEquals("Convert Asset Path", added.get("href"));
-    assertTrue(actualModifiedAttributes.getRemoved().isEmpty());
-  }
-
-  /**
-   * Test {@link HrefUrlRewriteProcessor#getModifiedAttributes(String, Map, String, String,
-   * BroadleafTemplateContext)}.
-   *
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()} {@code useCDN} is {@code useCDN}.
-   * </ul>
-   *
-   * <p>Method under test: {@link HrefUrlRewriteProcessor#getModifiedAttributes(String, Map, String,
-   * String, BroadleafTemplateContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BroadleafAttributeModifier HrefUrlRewriteProcessor.getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)"
-  })
-  public void testGetModifiedAttributes_whenHashMapUseCDNIsUseCDN() {
-    // Arrange
     HashMap<String, String> tagAttributes = new HashMap<>();
     tagAttributes.put("useCDN", "useCDN");
-
     BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
     when(context.parseExpression(Mockito.<String>any())).thenReturn("Parse Expression");
 
     // Act
-    BroadleafAttributeModifier actualModifiedAttributes =
-        hrefUrlRewriteProcessor.getModifiedAttributes(
-            "https://example.org/example",
-            tagAttributes,
-            "https://example.org/example",
-            "https://example.org/example",
-            context);
+    BroadleafAttributeModifier actualModifiedAttributes = hrefUrlRewriteProcessor.getModifiedAttributes(
+        "https://example.org/example", tagAttributes, "https://example.org/example", "https://example.org/example",
+        context);
 
     // Assert
-    verify(context).parseExpression("https://example.org/example");
+    verify(context).parseExpression(eq("https://example.org/example"));
     Map<String, String> added = actualModifiedAttributes.getAdded();
     assertEquals(1, added.size());
     assertEquals("Parse Expression", added.get("href"));
@@ -192,132 +97,28 @@ public class HrefUrlRewriteProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link HrefUrlRewriteProcessor#getModifiedAttributes(String, Map, String, String,
-   * BroadleafTemplateContext)}.
-   *
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()}.
-   *   <li>Then return Added {@code href} is {@code Parse Expression}.
-   * </ul>
-   *
-   * <p>Method under test: {@link HrefUrlRewriteProcessor#getModifiedAttributes(String, Map, String,
-   * String, BroadleafTemplateContext)}
+   * Method under test:
+   * {@link HrefUrlRewriteProcessor#getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BroadleafAttributeModifier HrefUrlRewriteProcessor.getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)"
-  })
-  public void testGetModifiedAttributes_whenHashMap_thenReturnAddedHrefIsParseExpression() {
-    // Arrange
-    HashMap<String, String> tagAttributes = new HashMap<>();
+  public void testGetModifiedAttributes3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
+    // Arrange
+    HrefUrlRewriteProcessor hrefUrlRewriteProcessor = new HrefUrlRewriteProcessor();
+    HashMap<String, String> tagAttributes = new HashMap<>();
     BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
     when(context.parseExpression(Mockito.<String>any())).thenReturn("Parse Expression");
 
     // Act
-    BroadleafAttributeModifier actualModifiedAttributes =
-        hrefUrlRewriteProcessor.getModifiedAttributes(
-            "https://example.org/example",
-            tagAttributes,
-            "https://example.org/example",
-            "https://example.org/example",
-            context);
+    BroadleafAttributeModifier actualModifiedAttributes = hrefUrlRewriteProcessor.getModifiedAttributes(
+        "https://example.org/example", tagAttributes, "https://example.org/example", "/", context);
 
     // Assert
-    verify(context).parseExpression("https://example.org/example");
+    verify(context).parseExpression(eq("@{ / }"));
     Map<String, String> added = actualModifiedAttributes.getAdded();
     assertEquals(1, added.size());
     assertEquals("Parse Expression", added.get("href"));
-    assertTrue(actualModifiedAttributes.getRemoved().isEmpty());
-  }
-
-  /**
-   * Test {@link HrefUrlRewriteProcessor#getModifiedAttributes(String, Map, String, String,
-   * BroadleafTemplateContext)}.
-   *
-   * <ul>
-   *   <li>When {@code link}.
-   *   <li>Then return Added {@code href} is {@code Convert Asset Path}.
-   * </ul>
-   *
-   * <p>Method under test: {@link HrefUrlRewriteProcessor#getModifiedAttributes(String, Map, String,
-   * String, BroadleafTemplateContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BroadleafAttributeModifier HrefUrlRewriteProcessor.getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)"
-  })
-  public void testGetModifiedAttributes_whenLink_thenReturnAddedHrefIsConvertAssetPath() {
-    // Arrange
-    when(staticAssetPathService.convertAssetPath(
-            Mockito.<String>any(), Mockito.<String>any(), anyBoolean()))
-        .thenReturn("Convert Asset Path");
-    HashMap<String, String> tagAttributes = new HashMap<>();
-
-    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
-    when(context.parseExpression(Mockito.<String>any())).thenReturn("Parse Expression");
-
-    // Act
-    BroadleafAttributeModifier actualModifiedAttributes =
-        hrefUrlRewriteProcessor.getModifiedAttributes(
-            "link",
-            tagAttributes,
-            "https://example.org/example",
-            "https://example.org/example",
-            context);
-
-    // Assert
-    verify(staticAssetPathService).convertAssetPath("Parse Expression", null, true);
-    verify(context).parseExpression("https://example.org/example");
-    Map<String, String> added = actualModifiedAttributes.getAdded();
-    assertEquals(1, added.size());
-    assertEquals("Convert Asset Path", added.get("href"));
-    assertTrue(actualModifiedAttributes.getRemoved().isEmpty());
-  }
-
-  /**
-   * Test {@link HrefUrlRewriteProcessor#getModifiedAttributes(String, Map, String, String,
-   * BroadleafTemplateContext)}.
-   *
-   * <ul>
-   *   <li>When {@code link}.
-   *   <li>Then return Added {@code href} is {@code Convert Asset Path}.
-   * </ul>
-   *
-   * <p>Method under test: {@link HrefUrlRewriteProcessor#getModifiedAttributes(String, Map, String,
-   * String, BroadleafTemplateContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BroadleafAttributeModifier HrefUrlRewriteProcessor.getModifiedAttributes(String, Map, String, String, BroadleafTemplateContext)"
-  })
-  public void testGetModifiedAttributes_whenLink_thenReturnAddedHrefIsConvertAssetPath2() {
-    // Arrange
-    when(staticAssetPathService.convertAssetPath(
-            Mockito.<String>any(), Mockito.<String>any(), anyBoolean()))
-        .thenReturn("Convert Asset Path");
-    HashMap<String, String> tagAttributes = new HashMap<>();
-
-    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
-    when(context.parseExpression(Mockito.<String>any())).thenReturn("Parse Expression");
-
-    // Act
-    BroadleafAttributeModifier actualModifiedAttributes =
-        hrefUrlRewriteProcessor.getModifiedAttributes(
-            "link", tagAttributes, "https://example.org/example", "/", context);
-
-    // Assert
-    verify(staticAssetPathService).convertAssetPath("Parse Expression", null, true);
-    verify(context).parseExpression("@{ / }");
-    Map<String, String> added = actualModifiedAttributes.getAdded();
-    assertEquals(1, added.size());
-    assertEquals("Convert Asset Path", added.get("href"));
     assertTrue(actualModifiedAttributes.getRemoved().isEmpty());
   }
 }

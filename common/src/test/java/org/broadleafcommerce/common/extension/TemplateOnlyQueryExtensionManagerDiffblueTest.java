@@ -19,246 +19,114 @@ package org.broadleafcommerce.common.extension;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.TypedQuery;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = {TemplateOnlyQueryExtensionManager.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(SpringJUnit4ClassRunner.class)
 public class TemplateOnlyQueryExtensionManagerDiffblueTest {
-  @Autowired private TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager;
-
   /**
-   * Test {@link TemplateOnlyQueryExtensionManager#refineQuery(Class, Object, TypedQuery)}.
-   *
-   * <p>Method under test: {@link TemplateOnlyQueryExtensionManager#refineQuery(Class, Object,
-   * TypedQuery)}
+   * Method under test: {@link TemplateOnlyQueryExtensionManager#setup(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType TemplateOnlyQueryExtensionManager.refineQuery(Class, Object, TypedQuery)"
-  })
-  public void testRefineQuery() {
+  public void testSetup() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager =
-        new TemplateOnlyQueryExtensionManager();
+    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager = new TemplateOnlyQueryExtensionManager();
+    Class<Object> type = Object.class;
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED, templateOnlyQueryExtensionManager.setup(type));
+  }
+
+  /**
+   * Method under test: {@link TemplateOnlyQueryExtensionManager#setup(Class)}
+   */
+  @Test
+  public void testSetup2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager = new TemplateOnlyQueryExtensionManager();
     templateOnlyQueryExtensionManager.registerHandler(new TemplateOnlyQueryExtensionManager());
     Class<Object> type = Object.class;
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        templateOnlyQueryExtensionManager.refineQuery(type, BLCFieldUtils.NULL_FIELD, null));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED, templateOnlyQueryExtensionManager.setup(type));
   }
 
   /**
-   * Test {@link TemplateOnlyQueryExtensionManager#refineQuery(Class, Object, TypedQuery)}.
-   *
-   * <p>Method under test: {@link TemplateOnlyQueryExtensionManager#refineQuery(Class, Object,
-   * TypedQuery)}
+   * Method under test: {@link TemplateOnlyQueryExtensionManager#setup(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType TemplateOnlyQueryExtensionManager.refineQuery(Class, Object, TypedQuery)"
-  })
-  public void testRefineQuery2() {
+  public void testSetup3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler =
-        mock(TemplateOnlyQueryExtensionHandler.class);
-    when(templateOnlyQueryExtensionHandler.refineQuery(
-            Mockito.<Class<?>>any(), Mockito.<Object>any(), Mockito.<TypedQuery<Object>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED_STOP);
-    when(templateOnlyQueryExtensionHandler.isEnabled()).thenReturn(true);
-
-    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager =
-        new TemplateOnlyQueryExtensionManager();
-    templateOnlyQueryExtensionManager.registerHandler(templateOnlyQueryExtensionHandler);
-    Class<Object> type = Object.class;
-
-    // Act
-    ExtensionResultStatusType actualRefineQueryResult =
-        templateOnlyQueryExtensionManager.refineQuery(type, BLCFieldUtils.NULL_FIELD, null);
-
-    // Assert
-    verify(templateOnlyQueryExtensionHandler).isEnabled();
-    verify(templateOnlyQueryExtensionHandler)
-        .refineQuery(isA(Class.class), isA(Object.class), isNull());
-    assertEquals(ExtensionResultStatusType.HANDLED, actualRefineQueryResult);
-  }
-
-  /**
-   * Test {@link TemplateOnlyQueryExtensionManager#refineQuery(Class, Object, TypedQuery)}.
-   *
-   * <ul>
-   *   <li>Given {@link TemplateOnlyQueryExtensionHandler} {@link
-   *       TemplateOnlyQueryExtensionHandler#isEnabled()} return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link TemplateOnlyQueryExtensionManager#refineQuery(Class, Object,
-   * TypedQuery)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType TemplateOnlyQueryExtensionManager.refineQuery(Class, Object, TypedQuery)"
-  })
-  public void testRefineQuery_givenTemplateOnlyQueryExtensionHandlerIsEnabledReturnFalse() {
-    // Arrange
-    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler =
-        mock(TemplateOnlyQueryExtensionHandler.class);
-    when(templateOnlyQueryExtensionHandler.isEnabled()).thenReturn(false);
-
-    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager =
-        new TemplateOnlyQueryExtensionManager();
-    templateOnlyQueryExtensionManager.registerHandler(templateOnlyQueryExtensionHandler);
-    Class<Object> type = Object.class;
-
-    // Act
-    ExtensionResultStatusType actualRefineQueryResult =
-        templateOnlyQueryExtensionManager.refineQuery(type, BLCFieldUtils.NULL_FIELD, null);
-
-    // Assert
-    verify(templateOnlyQueryExtensionHandler).isEnabled();
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualRefineQueryResult);
-  }
-
-  /**
-   * Test {@link TemplateOnlyQueryExtensionManager#refineQuery(Class, Object, TypedQuery)}.
-   *
-   * <ul>
-   *   <li>Given {@link TemplateOnlyQueryExtensionHandler} {@link
-   *       TemplateOnlyQueryExtensionHandler#refineQuery(Class, Object, TypedQuery)} return {@code
-   *       HANDLED}.
-   * </ul>
-   *
-   * <p>Method under test: {@link TemplateOnlyQueryExtensionManager#refineQuery(Class, Object,
-   * TypedQuery)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType TemplateOnlyQueryExtensionManager.refineQuery(Class, Object, TypedQuery)"
-  })
-  public void testRefineQuery_givenTemplateOnlyQueryExtensionHandlerRefineQueryReturnHandled() {
-    // Arrange
-    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler =
-        mock(TemplateOnlyQueryExtensionHandler.class);
-    when(templateOnlyQueryExtensionHandler.refineQuery(
-            Mockito.<Class<?>>any(), Mockito.<Object>any(), Mockito.<TypedQuery<Object>>any()))
+    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler = mock(TemplateOnlyQueryExtensionHandler.class);
+    when(templateOnlyQueryExtensionHandler.setup(Mockito.<Class<Object>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(templateOnlyQueryExtensionHandler.isEnabled()).thenReturn(true);
 
-    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager =
-        new TemplateOnlyQueryExtensionManager();
+    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager = new TemplateOnlyQueryExtensionManager();
     templateOnlyQueryExtensionManager.registerHandler(templateOnlyQueryExtensionHandler);
     Class<Object> type = Object.class;
 
     // Act
-    ExtensionResultStatusType actualRefineQueryResult =
-        templateOnlyQueryExtensionManager.refineQuery(type, BLCFieldUtils.NULL_FIELD, null);
+    ExtensionResultStatusType actualSetupResult = templateOnlyQueryExtensionManager.setup(type);
 
     // Assert
     verify(templateOnlyQueryExtensionHandler).isEnabled();
-    verify(templateOnlyQueryExtensionHandler)
-        .refineQuery(isA(Class.class), isA(Object.class), isNull());
-    assertEquals(ExtensionResultStatusType.HANDLED, actualRefineQueryResult);
+    verify(templateOnlyQueryExtensionHandler).setup(isA(Class.class));
+    assertEquals(ExtensionResultStatusType.HANDLED, actualSetupResult);
   }
 
   /**
-   * Test {@link TemplateOnlyQueryExtensionManager#refineQuery(Class, Object, TypedQuery)}.
-   *
-   * <ul>
-   *   <li>Given {@link TemplateOnlyQueryExtensionManager}.
-   *   <li>Then return {@code NOT_HANDLED}.
-   * </ul>
-   *
-   * <p>Method under test: {@link TemplateOnlyQueryExtensionManager#refineQuery(Class, Object,
-   * TypedQuery)}
+   * Method under test: {@link TemplateOnlyQueryExtensionManager#setup(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType TemplateOnlyQueryExtensionManager.refineQuery(Class, Object, TypedQuery)"
-  })
-  public void testRefineQuery_givenTemplateOnlyQueryExtensionManager_thenReturnNotHandled() {
+  public void testSetup4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler = mock(TemplateOnlyQueryExtensionHandler.class);
+    when(templateOnlyQueryExtensionHandler.setup(Mockito.<Class<Object>>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED_STOP);
+    when(templateOnlyQueryExtensionHandler.isEnabled()).thenReturn(true);
+
+    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager = new TemplateOnlyQueryExtensionManager();
+    templateOnlyQueryExtensionManager.registerHandler(templateOnlyQueryExtensionHandler);
     Class<Object> type = Object.class;
 
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        templateOnlyQueryExtensionManager.refineQuery(type, BLCFieldUtils.NULL_FIELD, null));
+    // Act
+    ExtensionResultStatusType actualSetupResult = templateOnlyQueryExtensionManager.setup(type);
+
+    // Assert
+    verify(templateOnlyQueryExtensionHandler).isEnabled();
+    verify(templateOnlyQueryExtensionHandler).setup(isA(Class.class));
+    assertEquals(ExtensionResultStatusType.HANDLED, actualSetupResult);
   }
 
   /**
-   * Test {@link TemplateOnlyQueryExtensionManager#setup(Class)}.
-   *
-   * <p>Method under test: {@link TemplateOnlyQueryExtensionManager#setup(Class)}
+   * Method under test: {@link TemplateOnlyQueryExtensionManager#setup(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ExtensionResultStatusType TemplateOnlyQueryExtensionManager.setup(Class)"})
-  public void testSetup() {
-    // Arrange
-    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager =
-        new TemplateOnlyQueryExtensionManager();
-    templateOnlyQueryExtensionManager.registerHandler(new TemplateOnlyQueryExtensionManager());
-    Class<Object> type = Object.class;
+  public void testSetup5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED, templateOnlyQueryExtensionManager.setup(type));
-  }
-
-  /**
-   * Test {@link TemplateOnlyQueryExtensionManager#setup(Class)}.
-   *
-   * <ul>
-   *   <li>Given {@link TemplateOnlyQueryExtensionHandler} {@link
-   *       TemplateOnlyQueryExtensionHandler#isEnabled()} return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link TemplateOnlyQueryExtensionManager#setup(Class)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ExtensionResultStatusType TemplateOnlyQueryExtensionManager.setup(Class)"})
-  public void testSetup_givenTemplateOnlyQueryExtensionHandlerIsEnabledReturnFalse() {
     // Arrange
-    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler =
-        mock(TemplateOnlyQueryExtensionHandler.class);
+    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler = mock(TemplateOnlyQueryExtensionHandler.class);
     when(templateOnlyQueryExtensionHandler.isEnabled()).thenReturn(false);
 
-    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager =
-        new TemplateOnlyQueryExtensionManager();
+    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager = new TemplateOnlyQueryExtensionManager();
     templateOnlyQueryExtensionManager.registerHandler(templateOnlyQueryExtensionHandler);
     Class<Object> type = Object.class;
 
@@ -271,189 +139,64 @@ public class TemplateOnlyQueryExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test {@link TemplateOnlyQueryExtensionManager#setup(Class)}.
-   *
-   * <ul>
-   *   <li>Given {@link TemplateOnlyQueryExtensionHandler} {@link
-   *       TemplateOnlyQueryExtensionHandler#setup(Class)} return {@code HANDLED}.
-   * </ul>
-   *
-   * <p>Method under test: {@link TemplateOnlyQueryExtensionManager#setup(Class)}
+   * Method under test: {@link TemplateOnlyQueryExtensionManager#isEnabled()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ExtensionResultStatusType TemplateOnlyQueryExtensionManager.setup(Class)"})
-  public void testSetup_givenTemplateOnlyQueryExtensionHandlerSetupReturnHandled() {
-    // Arrange
-    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler =
-        mock(TemplateOnlyQueryExtensionHandler.class);
-    when(templateOnlyQueryExtensionHandler.setup(Mockito.<Class<?>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(templateOnlyQueryExtensionHandler.isEnabled()).thenReturn(true);
-
-    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager =
-        new TemplateOnlyQueryExtensionManager();
-    templateOnlyQueryExtensionManager.registerHandler(templateOnlyQueryExtensionHandler);
-    Class<Object> type = Object.class;
-
-    // Act
-    ExtensionResultStatusType actualSetupResult = templateOnlyQueryExtensionManager.setup(type);
-
-    // Assert
-    verify(templateOnlyQueryExtensionHandler).isEnabled();
-    verify(templateOnlyQueryExtensionHandler).setup(isA(Class.class));
-    assertEquals(ExtensionResultStatusType.HANDLED, actualSetupResult);
-  }
-
-  /**
-   * Test {@link TemplateOnlyQueryExtensionManager#setup(Class)}.
-   *
-   * <ul>
-   *   <li>Given {@link TemplateOnlyQueryExtensionHandler} {@link
-   *       TemplateOnlyQueryExtensionHandler#setup(Class)} return {@code HANDLED_STOP}.
-   * </ul>
-   *
-   * <p>Method under test: {@link TemplateOnlyQueryExtensionManager#setup(Class)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ExtensionResultStatusType TemplateOnlyQueryExtensionManager.setup(Class)"})
-  public void testSetup_givenTemplateOnlyQueryExtensionHandlerSetupReturnHandledStop() {
-    // Arrange
-    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler =
-        mock(TemplateOnlyQueryExtensionHandler.class);
-    when(templateOnlyQueryExtensionHandler.setup(Mockito.<Class<?>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED_STOP);
-    when(templateOnlyQueryExtensionHandler.isEnabled()).thenReturn(true);
-
-    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager =
-        new TemplateOnlyQueryExtensionManager();
-    templateOnlyQueryExtensionManager.registerHandler(templateOnlyQueryExtensionHandler);
-    Class<Object> type = Object.class;
-
-    // Act
-    ExtensionResultStatusType actualSetupResult = templateOnlyQueryExtensionManager.setup(type);
-
-    // Assert
-    verify(templateOnlyQueryExtensionHandler).isEnabled();
-    verify(templateOnlyQueryExtensionHandler).setup(isA(Class.class));
-    assertEquals(ExtensionResultStatusType.HANDLED, actualSetupResult);
-  }
-
-  /**
-   * Test {@link TemplateOnlyQueryExtensionManager#setup(Class)}.
-   *
-   * <ul>
-   *   <li>Given {@link TemplateOnlyQueryExtensionManager}.
-   *   <li>Then return {@code NOT_HANDLED}.
-   * </ul>
-   *
-   * <p>Method under test: {@link TemplateOnlyQueryExtensionManager#setup(Class)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ExtensionResultStatusType TemplateOnlyQueryExtensionManager.setup(Class)"})
-  public void testSetup_givenTemplateOnlyQueryExtensionManager_thenReturnNotHandled() {
-    // Arrange
-    Class<Object> type = Object.class;
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED, templateOnlyQueryExtensionManager.setup(type));
-  }
-
-  /**
-   * Test {@link TemplateOnlyQueryExtensionManager#isEnabled()}.
-   *
-   * <p>Method under test: {@link TemplateOnlyQueryExtensionManager#isEnabled()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean TemplateOnlyQueryExtensionManager.isEnabled()"})
   public void testIsEnabled() {
     // Arrange, Act and Assert
-    assertTrue(new TemplateOnlyQueryExtensionManager().isEnabled());
+    assertTrue((new TemplateOnlyQueryExtensionManager()).isEnabled());
   }
 
   /**
-   * Test {@link TemplateOnlyQueryExtensionManager#breakdown(Class)}.
-   *
-   * <p>Method under test: {@link TemplateOnlyQueryExtensionManager#breakdown(Class)}
+   * Method under test: {@link TemplateOnlyQueryExtensionManager#breakdown(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType TemplateOnlyQueryExtensionManager.breakdown(Class)"
-  })
   public void testBreakdown() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    Class<TemplateOnlyQueryExtensionHandler> type = TemplateOnlyQueryExtensionHandler.class;
+    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager = new TemplateOnlyQueryExtensionManager();
+    Class<Object> type = Object.class;
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED, templateOnlyQueryExtensionManager.breakdown(type));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED, templateOnlyQueryExtensionManager.breakdown(type));
   }
 
   /**
-   * Test {@link TemplateOnlyQueryExtensionManager#breakdown(Class)}.
-   *
-   * <p>Method under test: {@link TemplateOnlyQueryExtensionManager#breakdown(Class)}
+   * Method under test: {@link TemplateOnlyQueryExtensionManager#breakdown(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType TemplateOnlyQueryExtensionManager.breakdown(Class)"
-  })
   public void testBreakdown2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager =
-        new TemplateOnlyQueryExtensionManager();
+    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager = new TemplateOnlyQueryExtensionManager();
     templateOnlyQueryExtensionManager.registerHandler(new TemplateOnlyQueryExtensionManager());
     Class<Object> type = Object.class;
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED, templateOnlyQueryExtensionManager.breakdown(type));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED, templateOnlyQueryExtensionManager.breakdown(type));
   }
 
   /**
-   * Test {@link TemplateOnlyQueryExtensionManager#breakdown(Class)}.
-   *
-   * <ul>
-   *   <li>Given {@link TemplateOnlyQueryExtensionHandler} {@link
-   *       TemplateOnlyQueryExtensionHandler#breakdown(Class)} return {@code HANDLED}.
-   * </ul>
-   *
-   * <p>Method under test: {@link TemplateOnlyQueryExtensionManager#breakdown(Class)}
+   * Method under test: {@link TemplateOnlyQueryExtensionManager#breakdown(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType TemplateOnlyQueryExtensionManager.breakdown(Class)"
-  })
-  public void testBreakdown_givenTemplateOnlyQueryExtensionHandlerBreakdownReturnHandled() {
+  public void testBreakdown3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler =
-        mock(TemplateOnlyQueryExtensionHandler.class);
-    when(templateOnlyQueryExtensionHandler.breakdown(Mockito.<Class<?>>any()))
+    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler = mock(TemplateOnlyQueryExtensionHandler.class);
+    when(templateOnlyQueryExtensionHandler.breakdown(Mockito.<Class<Object>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(templateOnlyQueryExtensionHandler.isEnabled()).thenReturn(true);
 
-    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager =
-        new TemplateOnlyQueryExtensionManager();
+    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager = new TemplateOnlyQueryExtensionManager();
     templateOnlyQueryExtensionManager.registerHandler(templateOnlyQueryExtensionHandler);
     Class<Object> type = Object.class;
 
     // Act
-    ExtensionResultStatusType actualBreakdownResult =
-        templateOnlyQueryExtensionManager.breakdown(type);
+    ExtensionResultStatusType actualBreakdownResult = templateOnlyQueryExtensionManager.breakdown(type);
 
     // Assert
     verify(templateOnlyQueryExtensionHandler).isEnabled();
@@ -462,37 +205,24 @@ public class TemplateOnlyQueryExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test {@link TemplateOnlyQueryExtensionManager#breakdown(Class)}.
-   *
-   * <ul>
-   *   <li>Given {@link TemplateOnlyQueryExtensionHandler} {@link
-   *       TemplateOnlyQueryExtensionHandler#breakdown(Class)} return {@code HANDLED_STOP}.
-   * </ul>
-   *
-   * <p>Method under test: {@link TemplateOnlyQueryExtensionManager#breakdown(Class)}
+   * Method under test: {@link TemplateOnlyQueryExtensionManager#breakdown(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType TemplateOnlyQueryExtensionManager.breakdown(Class)"
-  })
-  public void testBreakdown_givenTemplateOnlyQueryExtensionHandlerBreakdownReturnHandledStop() {
+  public void testBreakdown4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler =
-        mock(TemplateOnlyQueryExtensionHandler.class);
-    when(templateOnlyQueryExtensionHandler.breakdown(Mockito.<Class<?>>any()))
+    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler = mock(TemplateOnlyQueryExtensionHandler.class);
+    when(templateOnlyQueryExtensionHandler.breakdown(Mockito.<Class<Object>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED_STOP);
     when(templateOnlyQueryExtensionHandler.isEnabled()).thenReturn(true);
 
-    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager =
-        new TemplateOnlyQueryExtensionManager();
+    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager = new TemplateOnlyQueryExtensionManager();
     templateOnlyQueryExtensionManager.registerHandler(templateOnlyQueryExtensionHandler);
     Class<Object> type = Object.class;
 
     // Act
-    ExtensionResultStatusType actualBreakdownResult =
-        templateOnlyQueryExtensionManager.breakdown(type);
+    ExtensionResultStatusType actualBreakdownResult = templateOnlyQueryExtensionManager.breakdown(type);
 
     // Assert
     verify(templateOnlyQueryExtensionHandler).isEnabled();
@@ -501,35 +231,22 @@ public class TemplateOnlyQueryExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test {@link TemplateOnlyQueryExtensionManager#breakdown(Class)}.
-   *
-   * <ul>
-   *   <li>Given {@link TemplateOnlyQueryExtensionHandler} {@link
-   *       TemplateOnlyQueryExtensionHandler#isEnabled()} return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link TemplateOnlyQueryExtensionManager#breakdown(Class)}
+   * Method under test: {@link TemplateOnlyQueryExtensionManager#breakdown(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType TemplateOnlyQueryExtensionManager.breakdown(Class)"
-  })
-  public void testBreakdown_givenTemplateOnlyQueryExtensionHandlerIsEnabledReturnFalse() {
+  public void testBreakdown5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler =
-        mock(TemplateOnlyQueryExtensionHandler.class);
+    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler = mock(TemplateOnlyQueryExtensionHandler.class);
     when(templateOnlyQueryExtensionHandler.isEnabled()).thenReturn(false);
 
-    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager =
-        new TemplateOnlyQueryExtensionManager();
+    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager = new TemplateOnlyQueryExtensionManager();
     templateOnlyQueryExtensionManager.registerHandler(templateOnlyQueryExtensionHandler);
     Class<Object> type = Object.class;
 
     // Act
-    ExtensionResultStatusType actualBreakdownResult =
-        templateOnlyQueryExtensionManager.breakdown(type);
+    ExtensionResultStatusType actualBreakdownResult = templateOnlyQueryExtensionManager.breakdown(type);
 
     // Assert
     verify(templateOnlyQueryExtensionHandler).isEnabled();
@@ -537,620 +254,497 @@ public class TemplateOnlyQueryExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test {@link TemplateOnlyQueryExtensionManager#breakdown(Class)}.
-   *
-   * <ul>
-   *   <li>Given {@link TemplateOnlyQueryExtensionManager}.
-   *   <li>Then return {@code NOT_HANDLED}.
-   * </ul>
-   *
-   * <p>Method under test: {@link TemplateOnlyQueryExtensionManager#breakdown(Class)}
+   * Method under test:
+   * {@link TemplateOnlyQueryExtensionManager#isValidState(ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType TemplateOnlyQueryExtensionManager.breakdown(Class)"
-  })
-  public void testBreakdown_givenTemplateOnlyQueryExtensionManager_thenReturnNotHandled() {
-    // Arrange
-    Class<Object> type = Object.class;
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED, templateOnlyQueryExtensionManager.breakdown(type));
-  }
-
-  /**
-   * Test {@link TemplateOnlyQueryExtensionManager#isValidState(ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * TemplateOnlyQueryExtensionManager#isValidState(ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType TemplateOnlyQueryExtensionManager.isValidState(ExtensionResultHolder)"
-  })
   public void testIsValidState() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager =
-        new TemplateOnlyQueryExtensionManager();
-    templateOnlyQueryExtensionManager.registerHandler(new TemplateOnlyQueryExtensionManager());
+    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager = new TemplateOnlyQueryExtensionManager();
 
     ExtensionResultHolder<Boolean> response = new ExtensionResultHolder<>();
     response.setResult(true);
     response.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        templateOnlyQueryExtensionManager.isValidState(response));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED, templateOnlyQueryExtensionManager.isValidState(response));
   }
 
   /**
-   * Test {@link TemplateOnlyQueryExtensionManager#isValidState(ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * TemplateOnlyQueryExtensionManager#isValidState(ExtensionResultHolder)}
+   * Method under test:
+   * {@link TemplateOnlyQueryExtensionManager#isValidState(ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType TemplateOnlyQueryExtensionManager.isValidState(ExtensionResultHolder)"
-  })
   public void testIsValidState2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler =
-        mock(TemplateOnlyQueryExtensionHandler.class);
-    when(templateOnlyQueryExtensionHandler.isValidState(
-            Mockito.<ExtensionResultHolder<Boolean>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED_STOP);
-    when(templateOnlyQueryExtensionHandler.isEnabled()).thenReturn(true);
-
-    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager =
-        new TemplateOnlyQueryExtensionManager();
-    templateOnlyQueryExtensionManager.registerHandler(templateOnlyQueryExtensionHandler);
-
-    ExtensionResultHolder<Boolean> response = new ExtensionResultHolder<>();
+    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager = new TemplateOnlyQueryExtensionManager();
+    ExtensionResultHolder<Boolean> response = mock(ExtensionResultHolder.class);
+    doNothing().when(response).setResult(Mockito.<Boolean>any());
+    doNothing().when(response).setThrowable(Mockito.<Throwable>any());
     response.setResult(true);
     response.setThrowable(new Throwable());
 
     // Act
-    ExtensionResultStatusType actualIsValidStateResult =
-        templateOnlyQueryExtensionManager.isValidState(response);
+    ExtensionResultStatusType actualIsValidStateResult = templateOnlyQueryExtensionManager.isValidState(response);
 
     // Assert
-    verify(templateOnlyQueryExtensionHandler).isEnabled();
-    verify(templateOnlyQueryExtensionHandler).isValidState(isA(ExtensionResultHolder.class));
-    assertEquals(ExtensionResultStatusType.HANDLED, actualIsValidStateResult);
-  }
-
-  /**
-   * Test {@link TemplateOnlyQueryExtensionManager#isValidState(ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Given {@link TemplateOnlyQueryExtensionHandler} {@link
-   *       TemplateOnlyQueryExtensionHandler#isEnabled()} return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * TemplateOnlyQueryExtensionManager#isValidState(ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType TemplateOnlyQueryExtensionManager.isValidState(ExtensionResultHolder)"
-  })
-  public void testIsValidState_givenTemplateOnlyQueryExtensionHandlerIsEnabledReturnFalse() {
-    // Arrange
-    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler =
-        mock(TemplateOnlyQueryExtensionHandler.class);
-    when(templateOnlyQueryExtensionHandler.isEnabled()).thenReturn(false);
-
-    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager =
-        new TemplateOnlyQueryExtensionManager();
-    templateOnlyQueryExtensionManager.registerHandler(templateOnlyQueryExtensionHandler);
-
-    ExtensionResultHolder<Boolean> response = new ExtensionResultHolder<>();
-    response.setResult(true);
-    response.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualIsValidStateResult =
-        templateOnlyQueryExtensionManager.isValidState(response);
-
-    // Assert
-    verify(templateOnlyQueryExtensionHandler).isEnabled();
+    verify(response).setResult(eq(true));
+    verify(response).setThrowable(isA(Throwable.class));
     assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualIsValidStateResult);
   }
 
   /**
-   * Test {@link TemplateOnlyQueryExtensionManager#isValidState(ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Given {@link TemplateOnlyQueryExtensionHandler} {@link
-   *       TemplateOnlyQueryExtensionHandler#isValidState(ExtensionResultHolder)} return {@code
-   *       HANDLED}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * TemplateOnlyQueryExtensionManager#isValidState(ExtensionResultHolder)}
+   * Method under test:
+   * {@link TemplateOnlyQueryExtensionManager#isValidState(ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType TemplateOnlyQueryExtensionManager.isValidState(ExtensionResultHolder)"
-  })
-  public void testIsValidState_givenTemplateOnlyQueryExtensionHandlerIsValidStateReturnHandled() {
+  public void testIsValidState3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler =
-        mock(TemplateOnlyQueryExtensionHandler.class);
-    when(templateOnlyQueryExtensionHandler.isValidState(
-            Mockito.<ExtensionResultHolder<Boolean>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(templateOnlyQueryExtensionHandler.isEnabled()).thenReturn(true);
-
-    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager =
-        new TemplateOnlyQueryExtensionManager();
-    templateOnlyQueryExtensionManager.registerHandler(templateOnlyQueryExtensionHandler);
-
-    ExtensionResultHolder<Boolean> response = new ExtensionResultHolder<>();
+    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager = new TemplateOnlyQueryExtensionManager();
+    templateOnlyQueryExtensionManager.registerHandler(new TemplateOnlyQueryExtensionManager());
+    ExtensionResultHolder<Boolean> response = mock(ExtensionResultHolder.class);
+    doNothing().when(response).setResult(Mockito.<Boolean>any());
+    doNothing().when(response).setThrowable(Mockito.<Throwable>any());
     response.setResult(true);
     response.setThrowable(new Throwable());
 
     // Act
-    ExtensionResultStatusType actualIsValidStateResult =
-        templateOnlyQueryExtensionManager.isValidState(response);
+    ExtensionResultStatusType actualIsValidStateResult = templateOnlyQueryExtensionManager.isValidState(response);
+
+    // Assert
+    verify(response).setResult(eq(true));
+    verify(response).setThrowable(isA(Throwable.class));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualIsValidStateResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link TemplateOnlyQueryExtensionManager#isValidState(ExtensionResultHolder)}
+   */
+  @Test
+  public void testIsValidState4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler = mock(TemplateOnlyQueryExtensionHandler.class);
+    when(templateOnlyQueryExtensionHandler.isValidState(Mockito.<ExtensionResultHolder<Boolean>>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(templateOnlyQueryExtensionHandler.isEnabled()).thenReturn(true);
+
+    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager = new TemplateOnlyQueryExtensionManager();
+    templateOnlyQueryExtensionManager.registerHandler(templateOnlyQueryExtensionHandler);
+    ExtensionResultHolder<Boolean> response = mock(ExtensionResultHolder.class);
+    doNothing().when(response).setResult(Mockito.<Boolean>any());
+    doNothing().when(response).setThrowable(Mockito.<Throwable>any());
+    response.setResult(true);
+    response.setThrowable(new Throwable());
+
+    // Act
+    ExtensionResultStatusType actualIsValidStateResult = templateOnlyQueryExtensionManager.isValidState(response);
 
     // Assert
     verify(templateOnlyQueryExtensionHandler).isEnabled();
+    verify(response).setResult(eq(true));
+    verify(response).setThrowable(isA(Throwable.class));
     verify(templateOnlyQueryExtensionHandler).isValidState(isA(ExtensionResultHolder.class));
     assertEquals(ExtensionResultStatusType.HANDLED, actualIsValidStateResult);
   }
 
   /**
-   * Test {@link TemplateOnlyQueryExtensionManager#isValidState(ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Given {@link TemplateOnlyQueryExtensionManager}.
-   *   <li>Then return {@code NOT_HANDLED}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * TemplateOnlyQueryExtensionManager#isValidState(ExtensionResultHolder)}
+   * Method under test:
+   * {@link TemplateOnlyQueryExtensionManager#isValidState(ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType TemplateOnlyQueryExtensionManager.isValidState(ExtensionResultHolder)"
-  })
-  public void testIsValidState_givenTemplateOnlyQueryExtensionManager_thenReturnNotHandled() {
+  public void testIsValidState5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    ExtensionResultHolder<Boolean> response = new ExtensionResultHolder<>();
+    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler = mock(TemplateOnlyQueryExtensionHandler.class);
+    when(templateOnlyQueryExtensionHandler.isValidState(Mockito.<ExtensionResultHolder<Boolean>>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED_STOP);
+    when(templateOnlyQueryExtensionHandler.isEnabled()).thenReturn(true);
+
+    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager = new TemplateOnlyQueryExtensionManager();
+    templateOnlyQueryExtensionManager.registerHandler(templateOnlyQueryExtensionHandler);
+    ExtensionResultHolder<Boolean> response = mock(ExtensionResultHolder.class);
+    doNothing().when(response).setResult(Mockito.<Boolean>any());
+    doNothing().when(response).setThrowable(Mockito.<Throwable>any());
     response.setResult(true);
     response.setThrowable(new Throwable());
 
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        templateOnlyQueryExtensionManager.isValidState(response));
+    // Act
+    ExtensionResultStatusType actualIsValidStateResult = templateOnlyQueryExtensionManager.isValidState(response);
+
+    // Assert
+    verify(templateOnlyQueryExtensionHandler).isEnabled();
+    verify(response).setResult(eq(true));
+    verify(response).setThrowable(isA(Throwable.class));
+    verify(templateOnlyQueryExtensionHandler).isValidState(isA(ExtensionResultHolder.class));
+    assertEquals(ExtensionResultStatusType.HANDLED, actualIsValidStateResult);
   }
 
   /**
-   * Test {@link TemplateOnlyQueryExtensionManager#buildStatus(Object, ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link TemplateOnlyQueryExtensionManager#buildStatus(Object,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link TemplateOnlyQueryExtensionManager#isValidState(ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType TemplateOnlyQueryExtensionManager.buildStatus(Object, ExtensionResultHolder)"
-  })
-  public void testBuildStatus() {
+  public void testIsValidState6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager =
-        new TemplateOnlyQueryExtensionManager();
-    templateOnlyQueryExtensionManager.registerHandler(new TemplateOnlyQueryExtensionManager());
+    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler = mock(TemplateOnlyQueryExtensionHandler.class);
+    when(templateOnlyQueryExtensionHandler.isEnabled()).thenReturn(false);
+
+    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager = new TemplateOnlyQueryExtensionManager();
+    templateOnlyQueryExtensionManager.registerHandler(templateOnlyQueryExtensionHandler);
+    ExtensionResultHolder<Boolean> response = mock(ExtensionResultHolder.class);
+    doNothing().when(response).setResult(Mockito.<Boolean>any());
+    doNothing().when(response).setThrowable(Mockito.<Throwable>any());
+    response.setResult(true);
+    response.setThrowable(new Throwable());
+
+    // Act
+    ExtensionResultStatusType actualIsValidStateResult = templateOnlyQueryExtensionManager.isValidState(response);
+
+    // Assert
+    verify(templateOnlyQueryExtensionHandler).isEnabled();
+    verify(response).setResult(eq(true));
+    verify(response).setThrowable(isA(Throwable.class));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualIsValidStateResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link TemplateOnlyQueryExtensionManager#buildStatus(Object, ExtensionResultHolder)}
+   */
+  @Test
+  public void testBuildStatus() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager = new TemplateOnlyQueryExtensionManager();
 
     ExtensionResultHolder<ItemStatus> response = new ExtensionResultHolder<>();
     response.setResult(ItemStatus.DELETED);
     response.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
         templateOnlyQueryExtensionManager.buildStatus(BLCFieldUtils.NULL_FIELD, response));
   }
 
   /**
-   * Test {@link TemplateOnlyQueryExtensionManager#buildStatus(Object, ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link TemplateOnlyQueryExtensionManager#buildStatus(Object,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link TemplateOnlyQueryExtensionManager#buildStatus(Object, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType TemplateOnlyQueryExtensionManager.buildStatus(Object, ExtensionResultHolder)"
-  })
   public void testBuildStatus2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler =
-        mock(TemplateOnlyQueryExtensionHandler.class);
-    when(templateOnlyQueryExtensionHandler.buildStatus(
-            Mockito.<Object>any(), Mockito.<ExtensionResultHolder<ItemStatus>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED_STOP);
-    when(templateOnlyQueryExtensionHandler.isEnabled()).thenReturn(true);
-
-    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager =
-        new TemplateOnlyQueryExtensionManager();
-    templateOnlyQueryExtensionManager.registerHandler(templateOnlyQueryExtensionHandler);
-
-    ExtensionResultHolder<ItemStatus> response = new ExtensionResultHolder<>();
+    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager = new TemplateOnlyQueryExtensionManager();
+    ExtensionResultHolder<ItemStatus> response = mock(ExtensionResultHolder.class);
+    doNothing().when(response).setResult(Mockito.<ItemStatus>any());
+    doNothing().when(response).setThrowable(Mockito.<Throwable>any());
     response.setResult(ItemStatus.DELETED);
     response.setThrowable(new Throwable());
 
     // Act
-    ExtensionResultStatusType actualBuildStatusResult =
-        templateOnlyQueryExtensionManager.buildStatus(BLCFieldUtils.NULL_FIELD, response);
+    ExtensionResultStatusType actualBuildStatusResult = templateOnlyQueryExtensionManager
+        .buildStatus(BLCFieldUtils.NULL_FIELD, response);
 
     // Assert
-    verify(templateOnlyQueryExtensionHandler).isEnabled();
-    verify(templateOnlyQueryExtensionHandler)
-        .buildStatus(isA(Object.class), isA(ExtensionResultHolder.class));
-    assertEquals(ExtensionResultStatusType.HANDLED, actualBuildStatusResult);
-  }
-
-  /**
-   * Test {@link TemplateOnlyQueryExtensionManager#buildStatus(Object, ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Given {@link TemplateOnlyQueryExtensionHandler} {@link
-   *       TemplateOnlyQueryExtensionHandler#buildStatus(Object, ExtensionResultHolder)} return
-   *       {@code HANDLED}.
-   * </ul>
-   *
-   * <p>Method under test: {@link TemplateOnlyQueryExtensionManager#buildStatus(Object,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType TemplateOnlyQueryExtensionManager.buildStatus(Object, ExtensionResultHolder)"
-  })
-  public void testBuildStatus_givenTemplateOnlyQueryExtensionHandlerBuildStatusReturnHandled() {
-    // Arrange
-    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler =
-        mock(TemplateOnlyQueryExtensionHandler.class);
-    when(templateOnlyQueryExtensionHandler.buildStatus(
-            Mockito.<Object>any(), Mockito.<ExtensionResultHolder<ItemStatus>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(templateOnlyQueryExtensionHandler.isEnabled()).thenReturn(true);
-
-    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager =
-        new TemplateOnlyQueryExtensionManager();
-    templateOnlyQueryExtensionManager.registerHandler(templateOnlyQueryExtensionHandler);
-
-    ExtensionResultHolder<ItemStatus> response = new ExtensionResultHolder<>();
-    response.setResult(ItemStatus.DELETED);
-    response.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualBuildStatusResult =
-        templateOnlyQueryExtensionManager.buildStatus(BLCFieldUtils.NULL_FIELD, response);
-
-    // Assert
-    verify(templateOnlyQueryExtensionHandler).isEnabled();
-    verify(templateOnlyQueryExtensionHandler)
-        .buildStatus(isA(Object.class), isA(ExtensionResultHolder.class));
-    assertEquals(ExtensionResultStatusType.HANDLED, actualBuildStatusResult);
-  }
-
-  /**
-   * Test {@link TemplateOnlyQueryExtensionManager#buildStatus(Object, ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Given {@link TemplateOnlyQueryExtensionHandler} {@link
-   *       TemplateOnlyQueryExtensionHandler#isEnabled()} return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link TemplateOnlyQueryExtensionManager#buildStatus(Object,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType TemplateOnlyQueryExtensionManager.buildStatus(Object, ExtensionResultHolder)"
-  })
-  public void testBuildStatus_givenTemplateOnlyQueryExtensionHandlerIsEnabledReturnFalse() {
-    // Arrange
-    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler =
-        mock(TemplateOnlyQueryExtensionHandler.class);
-    when(templateOnlyQueryExtensionHandler.isEnabled()).thenReturn(false);
-
-    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager =
-        new TemplateOnlyQueryExtensionManager();
-    templateOnlyQueryExtensionManager.registerHandler(templateOnlyQueryExtensionHandler);
-
-    ExtensionResultHolder<ItemStatus> response = new ExtensionResultHolder<>();
-    response.setResult(ItemStatus.DELETED);
-    response.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualBuildStatusResult =
-        templateOnlyQueryExtensionManager.buildStatus(BLCFieldUtils.NULL_FIELD, response);
-
-    // Assert
-    verify(templateOnlyQueryExtensionHandler).isEnabled();
+    verify(response).setResult(eq(ItemStatus.DELETED));
+    verify(response).setThrowable(isA(Throwable.class));
     assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualBuildStatusResult);
   }
 
   /**
-   * Test {@link TemplateOnlyQueryExtensionManager#buildStatus(Object, ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Given {@link TemplateOnlyQueryExtensionManager}.
-   *   <li>Then return {@code NOT_HANDLED}.
-   * </ul>
-   *
-   * <p>Method under test: {@link TemplateOnlyQueryExtensionManager#buildStatus(Object,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link TemplateOnlyQueryExtensionManager#buildStatus(Object, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType TemplateOnlyQueryExtensionManager.buildStatus(Object, ExtensionResultHolder)"
-  })
-  public void testBuildStatus_givenTemplateOnlyQueryExtensionManager_thenReturnNotHandled() {
+  public void testBuildStatus3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    ExtensionResultHolder<ItemStatus> response = new ExtensionResultHolder<>();
+    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager = new TemplateOnlyQueryExtensionManager();
+    templateOnlyQueryExtensionManager.registerHandler(new TemplateOnlyQueryExtensionManager());
+    ExtensionResultHolder<ItemStatus> response = mock(ExtensionResultHolder.class);
+    doNothing().when(response).setResult(Mockito.<ItemStatus>any());
+    doNothing().when(response).setThrowable(Mockito.<Throwable>any());
     response.setResult(ItemStatus.DELETED);
     response.setThrowable(new Throwable());
 
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        templateOnlyQueryExtensionManager.buildStatus(BLCFieldUtils.NULL_FIELD, response));
+    // Act
+    ExtensionResultStatusType actualBuildStatusResult = templateOnlyQueryExtensionManager
+        .buildStatus(BLCFieldUtils.NULL_FIELD, response);
+
+    // Assert
+    verify(response).setResult(eq(ItemStatus.DELETED));
+    verify(response).setThrowable(isA(Throwable.class));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualBuildStatusResult);
   }
 
   /**
-   * Test {@link TemplateOnlyQueryExtensionManager#filterResults(Class, Object, List)}.
-   *
-   * <p>Method under test: {@link TemplateOnlyQueryExtensionManager#filterResults(Class, Object,
-   * List)}
+   * Method under test:
+   * {@link TemplateOnlyQueryExtensionManager#buildStatus(Object, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType TemplateOnlyQueryExtensionManager.filterResults(Class, Object, List)"
-  })
-  public void testFilterResults() {
+  public void testBuildStatus4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager =
-        new TemplateOnlyQueryExtensionManager();
+    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler = mock(TemplateOnlyQueryExtensionHandler.class);
+    when(templateOnlyQueryExtensionHandler.buildStatus(Mockito.<Object>any(),
+        Mockito.<ExtensionResultHolder<ItemStatus>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(templateOnlyQueryExtensionHandler.isEnabled()).thenReturn(true);
+
+    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager = new TemplateOnlyQueryExtensionManager();
+    templateOnlyQueryExtensionManager.registerHandler(templateOnlyQueryExtensionHandler);
+    ExtensionResultHolder<ItemStatus> response = mock(ExtensionResultHolder.class);
+    doNothing().when(response).setResult(Mockito.<ItemStatus>any());
+    doNothing().when(response).setThrowable(Mockito.<Throwable>any());
+    response.setResult(ItemStatus.DELETED);
+    response.setThrowable(new Throwable());
+
+    // Act
+    ExtensionResultStatusType actualBuildStatusResult = templateOnlyQueryExtensionManager
+        .buildStatus(BLCFieldUtils.NULL_FIELD, response);
+
+    // Assert
+    verify(templateOnlyQueryExtensionHandler).isEnabled();
+    verify(response).setResult(eq(ItemStatus.DELETED));
+    verify(response).setThrowable(isA(Throwable.class));
+    verify(templateOnlyQueryExtensionHandler).buildStatus(isA(Object.class), isA(ExtensionResultHolder.class));
+    assertEquals(ExtensionResultStatusType.HANDLED, actualBuildStatusResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link TemplateOnlyQueryExtensionManager#buildStatus(Object, ExtensionResultHolder)}
+   */
+  @Test
+  public void testBuildStatus5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler = mock(TemplateOnlyQueryExtensionHandler.class);
+    when(templateOnlyQueryExtensionHandler.buildStatus(Mockito.<Object>any(),
+        Mockito.<ExtensionResultHolder<ItemStatus>>any())).thenReturn(ExtensionResultStatusType.HANDLED_STOP);
+    when(templateOnlyQueryExtensionHandler.isEnabled()).thenReturn(true);
+
+    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager = new TemplateOnlyQueryExtensionManager();
+    templateOnlyQueryExtensionManager.registerHandler(templateOnlyQueryExtensionHandler);
+    ExtensionResultHolder<ItemStatus> response = mock(ExtensionResultHolder.class);
+    doNothing().when(response).setResult(Mockito.<ItemStatus>any());
+    doNothing().when(response).setThrowable(Mockito.<Throwable>any());
+    response.setResult(ItemStatus.DELETED);
+    response.setThrowable(new Throwable());
+
+    // Act
+    ExtensionResultStatusType actualBuildStatusResult = templateOnlyQueryExtensionManager
+        .buildStatus(BLCFieldUtils.NULL_FIELD, response);
+
+    // Assert
+    verify(templateOnlyQueryExtensionHandler).isEnabled();
+    verify(response).setResult(eq(ItemStatus.DELETED));
+    verify(response).setThrowable(isA(Throwable.class));
+    verify(templateOnlyQueryExtensionHandler).buildStatus(isA(Object.class), isA(ExtensionResultHolder.class));
+    assertEquals(ExtensionResultStatusType.HANDLED, actualBuildStatusResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link TemplateOnlyQueryExtensionManager#buildStatus(Object, ExtensionResultHolder)}
+   */
+  @Test
+  public void testBuildStatus6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler = mock(TemplateOnlyQueryExtensionHandler.class);
+    when(templateOnlyQueryExtensionHandler.isEnabled()).thenReturn(false);
+
+    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager = new TemplateOnlyQueryExtensionManager();
+    templateOnlyQueryExtensionManager.registerHandler(templateOnlyQueryExtensionHandler);
+    ExtensionResultHolder<ItemStatus> response = mock(ExtensionResultHolder.class);
+    doNothing().when(response).setResult(Mockito.<ItemStatus>any());
+    doNothing().when(response).setThrowable(Mockito.<Throwable>any());
+    response.setResult(ItemStatus.DELETED);
+    response.setThrowable(new Throwable());
+
+    // Act
+    ExtensionResultStatusType actualBuildStatusResult = templateOnlyQueryExtensionManager
+        .buildStatus(BLCFieldUtils.NULL_FIELD, response);
+
+    // Assert
+    verify(templateOnlyQueryExtensionHandler).isEnabled();
+    verify(response).setResult(eq(ItemStatus.DELETED));
+    verify(response).setThrowable(isA(Throwable.class));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualBuildStatusResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link TemplateOnlyQueryExtensionManager#filterResults(Class, Object, List)}
+   */
+  @Test
+  public void testFilterResults() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager = new TemplateOnlyQueryExtensionManager();
+    Class<Object> type = Object.class;
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        templateOnlyQueryExtensionManager.filterResults(type, BLCFieldUtils.NULL_FIELD, new ArrayList<>()));
+  }
+
+  /**
+   * Method under test:
+   * {@link TemplateOnlyQueryExtensionManager#filterResults(Class, Object, List)}
+   */
+  @Test
+  public void testFilterResults2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager = new TemplateOnlyQueryExtensionManager();
+    Class<Object> type = Object.class;
+
+    ArrayList<Object> results = new ArrayList<>();
+    results.add(BLCFieldUtils.NULL_FIELD);
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        templateOnlyQueryExtensionManager.filterResults(type, BLCFieldUtils.NULL_FIELD, results));
+  }
+
+  /**
+   * Method under test:
+   * {@link TemplateOnlyQueryExtensionManager#filterResults(Class, Object, List)}
+   */
+  @Test
+  public void testFilterResults3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager = new TemplateOnlyQueryExtensionManager();
+    Class<Object> type = Object.class;
+
+    ArrayList<Object> results = new ArrayList<>();
+    results.add(BLCFieldUtils.NULL_FIELD);
+    results.add(BLCFieldUtils.NULL_FIELD);
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        templateOnlyQueryExtensionManager.filterResults(type, BLCFieldUtils.NULL_FIELD, results));
+  }
+
+  /**
+   * Method under test:
+   * {@link TemplateOnlyQueryExtensionManager#filterResults(Class, Object, List)}
+   */
+  @Test
+  public void testFilterResults4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager = new TemplateOnlyQueryExtensionManager();
     templateOnlyQueryExtensionManager.registerHandler(new TemplateOnlyQueryExtensionManager());
     Class<Object> type = Object.class;
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        templateOnlyQueryExtensionManager.filterResults(
-            type, BLCFieldUtils.NULL_FIELD, new ArrayList<>()));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        templateOnlyQueryExtensionManager.filterResults(type, BLCFieldUtils.NULL_FIELD, new ArrayList<>()));
   }
 
   /**
-   * Test {@link TemplateOnlyQueryExtensionManager#filterResults(Class, Object, List)}.
-   *
-   * <p>Method under test: {@link TemplateOnlyQueryExtensionManager#filterResults(Class, Object,
-   * List)}
+   * Method under test:
+   * {@link TemplateOnlyQueryExtensionManager#filterResults(Class, Object, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType TemplateOnlyQueryExtensionManager.filterResults(Class, Object, List)"
-  })
-  public void testFilterResults2() {
+  public void testFilterResults5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler =
-        mock(TemplateOnlyQueryExtensionHandler.class);
-    when(templateOnlyQueryExtensionHandler.filterResults(
-            Mockito.<Class<?>>any(), Mockito.<Object>any(), Mockito.<List<Object>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
+    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler = mock(TemplateOnlyQueryExtensionHandler.class);
+    when(templateOnlyQueryExtensionHandler.filterResults(Mockito.<Class<Object>>any(), Mockito.<Object>any(),
+        Mockito.<List<Object>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
     when(templateOnlyQueryExtensionHandler.isEnabled()).thenReturn(true);
 
-    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager =
-        new TemplateOnlyQueryExtensionManager();
+    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager = new TemplateOnlyQueryExtensionManager();
     templateOnlyQueryExtensionManager.registerHandler(templateOnlyQueryExtensionHandler);
     Class<Object> type = Object.class;
 
     // Act
-    ExtensionResultStatusType actualFilterResultsResult =
-        templateOnlyQueryExtensionManager.filterResults(
-            type, BLCFieldUtils.NULL_FIELD, new ArrayList<>());
+    ExtensionResultStatusType actualFilterResultsResult = templateOnlyQueryExtensionManager.filterResults(type,
+        BLCFieldUtils.NULL_FIELD, new ArrayList<>());
 
     // Assert
     verify(templateOnlyQueryExtensionHandler).isEnabled();
-    verify(templateOnlyQueryExtensionHandler)
-        .filterResults(isA(Class.class), isA(Object.class), isA(List.class));
+    verify(templateOnlyQueryExtensionHandler).filterResults(isA(Class.class), isA(Object.class), isA(List.class));
     assertEquals(ExtensionResultStatusType.HANDLED, actualFilterResultsResult);
   }
 
   /**
-   * Test {@link TemplateOnlyQueryExtensionManager#filterResults(Class, Object, List)}.
-   *
-   * <p>Method under test: {@link TemplateOnlyQueryExtensionManager#filterResults(Class, Object,
-   * List)}
+   * Method under test:
+   * {@link TemplateOnlyQueryExtensionManager#filterResults(Class, Object, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType TemplateOnlyQueryExtensionManager.filterResults(Class, Object, List)"
-  })
-  public void testFilterResults3() {
+  public void testFilterResults6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler =
-        mock(TemplateOnlyQueryExtensionHandler.class);
-    when(templateOnlyQueryExtensionHandler.filterResults(
-            Mockito.<Class<?>>any(), Mockito.<Object>any(), Mockito.<List<Object>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED_STOP);
+    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler = mock(TemplateOnlyQueryExtensionHandler.class);
+    when(templateOnlyQueryExtensionHandler.filterResults(Mockito.<Class<Object>>any(), Mockito.<Object>any(),
+        Mockito.<List<Object>>any())).thenReturn(ExtensionResultStatusType.HANDLED_STOP);
     when(templateOnlyQueryExtensionHandler.isEnabled()).thenReturn(true);
 
-    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager =
-        new TemplateOnlyQueryExtensionManager();
+    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager = new TemplateOnlyQueryExtensionManager();
     templateOnlyQueryExtensionManager.registerHandler(templateOnlyQueryExtensionHandler);
     Class<Object> type = Object.class;
 
     // Act
-    ExtensionResultStatusType actualFilterResultsResult =
-        templateOnlyQueryExtensionManager.filterResults(
-            type, BLCFieldUtils.NULL_FIELD, new ArrayList<>());
+    ExtensionResultStatusType actualFilterResultsResult = templateOnlyQueryExtensionManager.filterResults(type,
+        BLCFieldUtils.NULL_FIELD, new ArrayList<>());
 
     // Assert
     verify(templateOnlyQueryExtensionHandler).isEnabled();
-    verify(templateOnlyQueryExtensionHandler)
-        .filterResults(isA(Class.class), isA(Object.class), isA(List.class));
+    verify(templateOnlyQueryExtensionHandler).filterResults(isA(Class.class), isA(Object.class), isA(List.class));
     assertEquals(ExtensionResultStatusType.HANDLED, actualFilterResultsResult);
   }
 
   /**
-   * Test {@link TemplateOnlyQueryExtensionManager#filterResults(Class, Object, List)}.
-   *
-   * <ul>
-   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@link BLCFieldUtils#NULL_FIELD}.
-   * </ul>
-   *
-   * <p>Method under test: {@link TemplateOnlyQueryExtensionManager#filterResults(Class, Object,
-   * List)}
+   * Method under test:
+   * {@link TemplateOnlyQueryExtensionManager#filterResults(Class, Object, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType TemplateOnlyQueryExtensionManager.filterResults(Class, Object, List)"
-  })
-  public void testFilterResults_givenNull_field_whenArrayListAddNull_field() {
+  public void testFilterResults7() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    Class<Object> type = Object.class;
-
-    ArrayList<Object> results = new ArrayList<>();
-    results.add(BLCFieldUtils.NULL_FIELD);
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        templateOnlyQueryExtensionManager.filterResults(type, BLCFieldUtils.NULL_FIELD, results));
-  }
-
-  /**
-   * Test {@link TemplateOnlyQueryExtensionManager#filterResults(Class, Object, List)}.
-   *
-   * <ul>
-   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@link BLCFieldUtils#NULL_FIELD}.
-   * </ul>
-   *
-   * <p>Method under test: {@link TemplateOnlyQueryExtensionManager#filterResults(Class, Object,
-   * List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType TemplateOnlyQueryExtensionManager.filterResults(Class, Object, List)"
-  })
-  public void testFilterResults_givenNull_field_whenArrayListAddNull_field2() {
-    // Arrange
-    Class<Object> type = Object.class;
-
-    ArrayList<Object> results = new ArrayList<>();
-    results.add(BLCFieldUtils.NULL_FIELD);
-    results.add(BLCFieldUtils.NULL_FIELD);
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        templateOnlyQueryExtensionManager.filterResults(type, BLCFieldUtils.NULL_FIELD, results));
-  }
-
-  /**
-   * Test {@link TemplateOnlyQueryExtensionManager#filterResults(Class, Object, List)}.
-   *
-   * <ul>
-   *   <li>Given {@link TemplateOnlyQueryExtensionHandler} {@link
-   *       TemplateOnlyQueryExtensionHandler#isEnabled()} return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link TemplateOnlyQueryExtensionManager#filterResults(Class, Object,
-   * List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType TemplateOnlyQueryExtensionManager.filterResults(Class, Object, List)"
-  })
-  public void testFilterResults_givenTemplateOnlyQueryExtensionHandlerIsEnabledReturnFalse() {
-    // Arrange
-    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler =
-        mock(TemplateOnlyQueryExtensionHandler.class);
+    TemplateOnlyQueryExtensionHandler templateOnlyQueryExtensionHandler = mock(TemplateOnlyQueryExtensionHandler.class);
     when(templateOnlyQueryExtensionHandler.isEnabled()).thenReturn(false);
 
-    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager =
-        new TemplateOnlyQueryExtensionManager();
+    TemplateOnlyQueryExtensionManager templateOnlyQueryExtensionManager = new TemplateOnlyQueryExtensionManager();
     templateOnlyQueryExtensionManager.registerHandler(templateOnlyQueryExtensionHandler);
     Class<Object> type = Object.class;
 
     // Act
-    ExtensionResultStatusType actualFilterResultsResult =
-        templateOnlyQueryExtensionManager.filterResults(
-            type, BLCFieldUtils.NULL_FIELD, new ArrayList<>());
+    ExtensionResultStatusType actualFilterResultsResult = templateOnlyQueryExtensionManager.filterResults(type,
+        BLCFieldUtils.NULL_FIELD, new ArrayList<>());
 
     // Assert
     verify(templateOnlyQueryExtensionHandler).isEnabled();
     assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualFilterResultsResult);
-  }
-
-  /**
-   * Test {@link TemplateOnlyQueryExtensionManager#filterResults(Class, Object, List)}.
-   *
-   * <ul>
-   *   <li>Given {@link TemplateOnlyQueryExtensionManager}.
-   *   <li>Then return {@code NOT_HANDLED}.
-   * </ul>
-   *
-   * <p>Method under test: {@link TemplateOnlyQueryExtensionManager#filterResults(Class, Object,
-   * List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType TemplateOnlyQueryExtensionManager.filterResults(Class, Object, List)"
-  })
-  public void testFilterResults_givenTemplateOnlyQueryExtensionManager_thenReturnNotHandled() {
-    // Arrange
-    Class<Object> type = Object.class;
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        templateOnlyQueryExtensionManager.filterResults(
-            type, BLCFieldUtils.NULL_FIELD, new ArrayList<>()));
   }
 }

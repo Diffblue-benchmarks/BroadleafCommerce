@@ -19,22 +19,24 @@ package org.broadleafcommerce.core.workflow;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.junit.Assert.assertSame;
+import java.io.IOException;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(classes = {WorkflowException.class})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class WorkflowExceptionDiffblueTest {
+  @Autowired
+  private WorkflowException workflowException;
+
   /**
-   * Test {@link WorkflowException#WorkflowException()}.
-   *
-   * <p>Method under test: {@link WorkflowException#WorkflowException()}
+   * Method under test: {@link WorkflowException#WorkflowException()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void WorkflowException.<init>()"})
   public void testNewWorkflowException() {
     // Arrange and Act
     WorkflowException actualWorkflowException = new WorkflowException();
@@ -44,5 +46,142 @@ public class WorkflowExceptionDiffblueTest {
     assertNull(actualWorkflowException.getCause());
     assertNull(actualWorkflowException.getRootCause());
     assertEquals(0, actualWorkflowException.getSuppressed().length);
+  }
+
+  /**
+   * Method under test: {@link WorkflowException#WorkflowException(Throwable)}
+   */
+  @Test
+  public void testNewWorkflowException2() {
+    // Arrange
+    Throwable cause = new Throwable();
+
+    // Act
+    WorkflowException actualWorkflowException = new WorkflowException(cause);
+
+    // Assert
+    assertEquals("java.lang.Throwable", actualWorkflowException.getLocalizedMessage());
+    assertEquals("java.lang.Throwable", actualWorkflowException.getMessage());
+    assertNull(actualWorkflowException.getRootCauseMessage());
+    assertEquals(0, actualWorkflowException.getSuppressed().length);
+    assertSame(cause, actualWorkflowException.getCause());
+    assertSame(cause, actualWorkflowException.getRootCause());
+  }
+
+  /**
+   * Method under test: {@link WorkflowException#WorkflowException(Throwable)}
+   */
+  @Test
+  public void testNewWorkflowException3() {
+    // Arrange and Act
+    WorkflowException actualWorkflowException = new WorkflowException((Throwable) null);
+
+    // Assert
+    assertNull(actualWorkflowException.getLocalizedMessage());
+    assertNull(actualWorkflowException.getMessage());
+    assertNull(actualWorkflowException.getRootCauseMessage());
+    assertNull(actualWorkflowException.getCause());
+    assertNull(actualWorkflowException.getRootCause());
+    assertEquals(0, actualWorkflowException.getSuppressed().length);
+  }
+
+  /**
+   * Method under test: {@link WorkflowException#WorkflowException(Throwable)}
+   */
+  @Test
+  public void testNewWorkflowException4() {
+    // Arrange
+    Throwable cause = new Throwable();
+    Throwable throwable = new Throwable();
+    cause.initCause(throwable);
+
+    // Act
+    WorkflowException actualWorkflowException = new WorkflowException(cause);
+
+    // Assert
+    assertEquals("java.lang.Throwable", actualWorkflowException.getLocalizedMessage());
+    assertEquals("java.lang.Throwable", actualWorkflowException.getMessage());
+    assertNull(actualWorkflowException.getRootCauseMessage());
+    assertEquals(0, actualWorkflowException.getSuppressed().length);
+    assertSame(cause, actualWorkflowException.getCause());
+    assertSame(throwable, actualWorkflowException.getRootCause());
+  }
+
+  /**
+   * Method under test: {@link WorkflowException#WorkflowException(String)}
+   */
+  @Test
+  public void testNewWorkflowException5() {
+    // Arrange and Act
+    WorkflowException actualWorkflowException = new WorkflowException("An error occurred");
+
+    // Assert
+    assertEquals("An error occurred", actualWorkflowException.getLocalizedMessage());
+    assertEquals("An error occurred", actualWorkflowException.getMessage());
+    assertEquals("An error occurred", actualWorkflowException.getRootCauseMessage());
+    assertNull(actualWorkflowException.getCause());
+    assertEquals(0, actualWorkflowException.getSuppressed().length);
+    assertSame(actualWorkflowException, actualWorkflowException.getRootCause());
+  }
+
+  /**
+   * Method under test:
+   * {@link WorkflowException#WorkflowException(String, Throwable)}
+   */
+  @Test
+  public void testNewWorkflowException6() {
+    // Arrange
+    Throwable cause = new Throwable();
+
+    // Act
+    WorkflowException actualWorkflowException = new WorkflowException("An error occurred", cause);
+
+    // Assert
+    assertEquals("An error occurred", actualWorkflowException.getLocalizedMessage());
+    assertEquals("An error occurred", actualWorkflowException.getMessage());
+    assertNull(actualWorkflowException.getRootCauseMessage());
+    assertEquals(0, actualWorkflowException.getSuppressed().length);
+    assertSame(cause, actualWorkflowException.getCause());
+    assertSame(cause, actualWorkflowException.getRootCause());
+  }
+
+  /**
+   * Method under test:
+   * {@link WorkflowException#WorkflowException(String, Throwable)}
+   */
+  @Test
+  public void testNewWorkflowException7() {
+    // Arrange and Act
+    WorkflowException actualWorkflowException = new WorkflowException("An error occurred", null);
+
+    // Assert
+    assertEquals("An error occurred", actualWorkflowException.getLocalizedMessage());
+    assertEquals("An error occurred", actualWorkflowException.getMessage());
+    assertEquals("An error occurred", actualWorkflowException.getRootCauseMessage());
+    assertNull(actualWorkflowException.getCause());
+    assertEquals(0, actualWorkflowException.getSuppressed().length);
+    assertSame(actualWorkflowException, actualWorkflowException.getRootCause());
+  }
+
+  /**
+   * Method under test:
+   * {@link WorkflowException#WorkflowException(String, Throwable)}
+   */
+  @Test
+  public void testNewWorkflowException8() {
+    // Arrange
+    Throwable throwable = new Throwable();
+    IOException cause = new IOException("foo", throwable);
+
+    // Act
+    WorkflowException actualWorkflowException = new WorkflowException("An error occurred", cause);
+
+    // Assert
+    assertEquals("An error occurred", actualWorkflowException.getLocalizedMessage());
+    assertEquals("An error occurred", actualWorkflowException.getMessage());
+    assertNull(actualWorkflowException.getRootCauseMessage());
+    assertEquals(0, actualWorkflowException.getSuppressed().length);
+    assertSame(cause, actualWorkflowException.getCause());
+    assertSame(throwable, actualWorkflowException.getRootCause());
   }
 }

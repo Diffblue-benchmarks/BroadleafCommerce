@@ -20,108 +20,23 @@ package org.broadleafcommerce.common.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Set;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class BLResourceBundleMessageSourceDiffblueTest {
   /**
-   * Test {@link BLResourceBundleMessageSource#BLResourceBundleMessageSource(String[],
-   * ResourceBundleExtensionPoint)}.
-   *
-   * <ul>
-   *   <li>Given {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * BLResourceBundleMessageSource#BLResourceBundleMessageSource(String[],
-   * ResourceBundleExtensionPoint)}
+   * Method under test:
+   * {@link BLResourceBundleMessageSource#BLResourceBundleMessageSource(String[], ResourceBundleExtensionPoint)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void BLResourceBundleMessageSource.<init>(String[], ResourceBundleExtensionPoint)"
-  })
-  public void testNewBLResourceBundleMessageSource_givenNull() {
+  public void testNewBLResourceBundleMessageSource() {
     // Arrange
     ResourceBundleExtensionPoint resourceBundleExtensionPoint = new ResourceBundleExtensionPoint();
-    resourceBundleExtensionPoint.setBasenameExtensions(null);
+    resourceBundleExtensionPoint.setBasenameExtensions(new String[]{"Basename Extensions"});
 
     // Act
-    BLResourceBundleMessageSource actualBlResourceBundleMessageSource =
-        new BLResourceBundleMessageSource(null, resourceBundleExtensionPoint);
-
-    // Assert
-    assertNull(actualBlResourceBundleMessageSource.getParentMessageSource());
-    assertTrue(actualBlResourceBundleMessageSource.getBasenameSet().isEmpty());
-  }
-
-  /**
-   * Test {@link BLResourceBundleMessageSource#BLResourceBundleMessageSource(String[],
-   * ResourceBundleExtensionPoint)}.
-   *
-   * <ul>
-   *   <li>Then return BasenameSet size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * BLResourceBundleMessageSource#BLResourceBundleMessageSource(String[],
-   * ResourceBundleExtensionPoint)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void BLResourceBundleMessageSource.<init>(String[], ResourceBundleExtensionPoint)"
-  })
-  public void testNewBLResourceBundleMessageSource_thenReturnBasenameSetSizeIsOne() {
-    // Arrange
-    ResourceBundleExtensionPoint resourceBundleExtensionPoint = new ResourceBundleExtensionPoint();
-    resourceBundleExtensionPoint.setBasenameExtensions(new String[] {"Basename Extensions"});
-
-    // Act
-    BLResourceBundleMessageSource actualBlResourceBundleMessageSource =
-        new BLResourceBundleMessageSource(null, resourceBundleExtensionPoint);
-
-    // Assert
-    assertNull(actualBlResourceBundleMessageSource.getParentMessageSource());
-    Set<String> basenameSet = actualBlResourceBundleMessageSource.getBasenameSet();
-    assertEquals(1, basenameSet.size());
-    assertTrue(basenameSet.contains("Basename Extensions"));
-  }
-
-  /**
-   * Test {@link BLResourceBundleMessageSource#BLResourceBundleMessageSource(String[],
-   * ResourceBundleExtensionPoint)}.
-   *
-   * <ul>
-   *   <li>Then return BasenameSet size is two.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * BLResourceBundleMessageSource#BLResourceBundleMessageSource(String[],
-   * ResourceBundleExtensionPoint)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void BLResourceBundleMessageSource.<init>(String[], ResourceBundleExtensionPoint)"
-  })
-  public void testNewBLResourceBundleMessageSource_thenReturnBasenameSetSizeIsTwo() {
-    // Arrange
-    String[] basenames = new String[] {"Basenames"};
-
-    ResourceBundleExtensionPoint resourceBundleExtensionPoint = new ResourceBundleExtensionPoint();
-    resourceBundleExtensionPoint.setBasenameExtensions(new String[] {"Basename Extensions"});
-
-    // Act
-    BLResourceBundleMessageSource actualBlResourceBundleMessageSource =
-        new BLResourceBundleMessageSource(basenames, resourceBundleExtensionPoint);
+    BLResourceBundleMessageSource actualBlResourceBundleMessageSource = new BLResourceBundleMessageSource(
+        new String[]{"Basenames"}, resourceBundleExtensionPoint);
 
     // Assert
     assertNull(actualBlResourceBundleMessageSource.getParentMessageSource());
@@ -132,28 +47,53 @@ public class BLResourceBundleMessageSourceDiffblueTest {
   }
 
   /**
-   * Test {@link BLResourceBundleMessageSource#BLResourceBundleMessageSource(String[],
-   * ResourceBundleExtensionPoint)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return BasenameSet Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * BLResourceBundleMessageSource#BLResourceBundleMessageSource(String[],
-   * ResourceBundleExtensionPoint)}
+   * Method under test:
+   * {@link BLResourceBundleMessageSource#BLResourceBundleMessageSource(String[], ResourceBundleExtensionPoint)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void BLResourceBundleMessageSource.<init>(String[], ResourceBundleExtensionPoint)"
-  })
-  public void testNewBLResourceBundleMessageSource_whenNull_thenReturnBasenameSetEmpty() {
+  public void testNewBLResourceBundleMessageSource2() {
     // Arrange and Act
-    BLResourceBundleMessageSource actualBlResourceBundleMessageSource =
-        new BLResourceBundleMessageSource(null, null);
+    BLResourceBundleMessageSource actualBlResourceBundleMessageSource = new BLResourceBundleMessageSource(null, null);
+
+    // Assert
+    assertNull(actualBlResourceBundleMessageSource.getParentMessageSource());
+    assertTrue(actualBlResourceBundleMessageSource.getBasenameSet().isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link BLResourceBundleMessageSource#BLResourceBundleMessageSource(String[], ResourceBundleExtensionPoint)}
+   */
+  @Test
+  public void testNewBLResourceBundleMessageSource3() {
+    // Arrange
+    ResourceBundleExtensionPoint resourceBundleExtensionPoint = new ResourceBundleExtensionPoint();
+    resourceBundleExtensionPoint.setBasenameExtensions(new String[]{"Basename Extensions"});
+
+    // Act
+    BLResourceBundleMessageSource actualBlResourceBundleMessageSource = new BLResourceBundleMessageSource(null,
+        resourceBundleExtensionPoint);
+
+    // Assert
+    assertNull(actualBlResourceBundleMessageSource.getParentMessageSource());
+    Set<String> basenameSet = actualBlResourceBundleMessageSource.getBasenameSet();
+    assertEquals(1, basenameSet.size());
+    assertTrue(basenameSet.contains("Basename Extensions"));
+  }
+
+  /**
+   * Method under test:
+   * {@link BLResourceBundleMessageSource#BLResourceBundleMessageSource(String[], ResourceBundleExtensionPoint)}
+   */
+  @Test
+  public void testNewBLResourceBundleMessageSource4() {
+    // Arrange
+    ResourceBundleExtensionPoint resourceBundleExtensionPoint = new ResourceBundleExtensionPoint();
+    resourceBundleExtensionPoint.setBasenameExtensions(null);
+
+    // Act
+    BLResourceBundleMessageSource actualBlResourceBundleMessageSource = new BLResourceBundleMessageSource(null,
+        resourceBundleExtensionPoint);
 
     // Assert
     assertNull(actualBlResourceBundleMessageSource.getParentMessageSource());

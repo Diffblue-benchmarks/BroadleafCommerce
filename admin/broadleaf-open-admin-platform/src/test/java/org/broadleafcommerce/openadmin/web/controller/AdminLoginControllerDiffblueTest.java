@@ -17,135 +17,40 @@
  */
 package org.broadleafcommerce.openadmin.web.controller;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.anyBoolean;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-import javax.servlet.http.HttpServletResponse;
-import org.broadleafcommerce.openadmin.server.security.domain.AdminMenu;
-import org.broadleafcommerce.openadmin.server.security.domain.AdminModule;
-import org.broadleafcommerce.openadmin.server.security.domain.AdminModuleDTO;
-import org.broadleafcommerce.openadmin.server.security.domain.AdminUser;
-import org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService;
+import org.broadleafcommerce.common.service.GenericResponse;
+import org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl;
 import org.broadleafcommerce.openadmin.web.compatibility.JSCompatibilityRequestWrapper;
 import org.broadleafcommerce.openadmin.web.form.ResetPasswordForm;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.ui.Model;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 
-@RunWith(MockitoJUnitRunner.class)
 public class AdminLoginControllerDiffblueTest {
-  @InjectMocks private AdminLoginController adminLoginController;
-
-  @Mock private AdminNavigationService adminNavigationService;
-
   /**
-   * Test {@link AdminLoginController#loginSuccess(HttpServletRequest, HttpServletResponse, Model)}.
-   *
-   * <p>Method under test: {@link AdminLoginController#loginSuccess(HttpServletRequest,
-   * HttpServletResponse, Model)}
+   * Method under test:
+   * {@link AdminLoginController#initResetPasswordForm(HttpServletRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.String AdminLoginController.loginSuccess(HttpServletRequest, HttpServletResponse, Model)"
-  })
-  public void testLoginSuccess() throws Exception {
+  public void testInitResetPasswordForm() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    AdminMenu adminMenu = new AdminMenu();
-    adminMenu.setAdminModule(new ArrayList<>());
-    when(adminNavigationService.buildMenu(Mockito.<AdminUser>any())).thenReturn(adminMenu);
+    AdminLoginController adminLoginController = new AdminLoginController();
 
-    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/");
-
-    // Act and Assert
-    MockMvcBuilders.standaloneSetup(adminLoginController)
-        .build()
-        .perform(requestBuilder)
-        .andExpect(status().isOk())
-        .andExpect(model().size(1))
-        .andExpect(model().attributeExists("resetPasswordForm"))
-        .andExpect(view().name("noAccess"))
-        .andExpect(forwardedUrl("noAccess"));
-  }
-
-  /**
-   * Test {@link AdminLoginController#loginSuccess(HttpServletRequest, HttpServletResponse, Model)}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link AdminModuleDTO} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminLoginController#loginSuccess(HttpServletRequest,
-   * HttpServletResponse, Model)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.String AdminLoginController.loginSuccess(HttpServletRequest, HttpServletResponse, Model)"
-  })
-  public void testLoginSuccess_givenArrayListAddAdminModuleDTO() throws Exception {
-    // Arrange
-    ArrayList<AdminModule> adminModules = new ArrayList<>();
-    adminModules.add(new AdminModuleDTO());
-
-    AdminMenu adminMenu = new AdminMenu();
-    adminMenu.setAdminModule(adminModules);
-    when(adminNavigationService.buildMenu(Mockito.<AdminUser>any())).thenReturn(adminMenu);
-
-    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/");
-
-    // Act and Assert
-    MockMvcBuilders.standaloneSetup(adminLoginController)
-        .build()
-        .perform(requestBuilder)
-        .andExpect(status().isOk())
-        .andExpect(model().size(1))
-        .andExpect(model().attributeExists("resetPasswordForm"))
-        .andExpect(view().name("noAccess"))
-        .andExpect(forwardedUrl("noAccess"));
-  }
-
-  /**
-   * Test {@link AdminLoginController#initResetPasswordForm(HttpServletRequest)}.
-   *
-   * <ul>
-   *   <li>Then return ConfirmPassword is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminLoginController#initResetPasswordForm(HttpServletRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ResetPasswordForm AdminLoginController.initResetPasswordForm(HttpServletRequest)"
-  })
-  public void testInitResetPasswordForm_thenReturnConfirmPasswordIsNull() {
-    // Arrange and Act
-    ResetPasswordForm actualInitResetPasswordFormResult =
-        adminLoginController.initResetPasswordForm(
-            new HttpServletRequestWrapper(
-                new JSCompatibilityRequestWrapper(new MockHttpServletRequest())));
+    // Act
+    ResetPasswordForm actualInitResetPasswordFormResult = adminLoginController
+        .initResetPasswordForm(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
 
     // Assert
     assertNull(actualInitResetPasswordFormResult.getConfirmPassword());
@@ -156,16 +61,78 @@ public class AdminLoginControllerDiffblueTest {
   }
 
   /**
-   * Test {@link AdminLoginController#getPersistentAdminUser()}.
-   *
-   * <p>Method under test: {@link AdminLoginController#getPersistentAdminUser()}
+   * Method under test:
+   * {@link AdminLoginController#initResetPasswordForm(HttpServletRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"AdminUser AdminLoginController.getPersistentAdminUser()"})
+  public void testInitResetPasswordForm2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AdminLoginController adminLoginController = new AdminLoginController();
+    DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
+    when(request.getParameter(Mockito.<String>any())).thenReturn("https://example.org/example");
+    when(request.getSession(anyBoolean())).thenReturn(new MockHttpSession());
+
+    // Act
+    ResetPasswordForm actualInitResetPasswordFormResult = adminLoginController.initResetPasswordForm(request);
+
+    // Assert
+    verify(request).getSession(eq(true));
+    verify(request).getParameter(eq("token"));
+    assertEquals("https://example.org/example", actualInitResetPasswordFormResult.getToken());
+    assertNull(actualInitResetPasswordFormResult.getConfirmPassword());
+    assertNull(actualInitResetPasswordFormResult.getOldPassword());
+    assertNull(actualInitResetPasswordFormResult.getPassword());
+    assertNull(actualInitResetPasswordFormResult.getUsername());
+  }
+
+  /**
+   * Method under test:
+   * {@link AdminLoginController#setErrors(GenericResponse, HttpServletRequest)}
+   */
+  @Test
+  public void testSetErrors() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AdminLoginController adminLoginController = new AdminLoginController();
+
+    ArrayList<String> stringList = new ArrayList<>();
+    stringList.add("foo");
+    GenericResponse response = mock(GenericResponse.class);
+    when(response.getErrorCodesList()).thenReturn(stringList);
+
+    // Act
+    adminLoginController.setErrors(response, new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+
+    // Assert
+    verify(response).getErrorCodesList();
+  }
+
+  /**
+   * Method under test: {@link AdminLoginController#getPersistentAdminUser()}
+   */
+  @Test
   public void testGetPersistentAdminUser() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
+    assertNull((new AdminLoginController()).getPersistentAdminUser());
+  }
+
+  /**
+   * Method under test: {@link AdminLoginController#getPersistentAdminUser()}
+   */
+  @Test
+  public void testGetPersistentAdminUser2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AdminLoginController adminLoginController = new AdminLoginController();
+    adminLoginController.setAdminSecurityService(mock(AdminSecurityServiceImpl.class));
+
+    // Act and Assert
     assertNull(adminLoginController.getPersistentAdminUser());
   }
 }

@@ -21,204 +21,80 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Map;
-import org.broadleafcommerce.common.currency.service.BroadleafCurrencyService;
-import org.broadleafcommerce.common.event.OrderSubmittedEvent;
-import org.broadleafcommerce.common.exception.ServiceException;
-import org.broadleafcommerce.common.locale.service.LocaleService;
-import org.broadleafcommerce.common.notification.service.NotificationDispatcher;
-import org.broadleafcommerce.common.notification.service.type.Notification;
-import org.broadleafcommerce.common.site.service.SiteService;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
-import org.broadleafcommerce.core.order.service.OrderService;
+import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = {NotificationOrderSubmittedEventListener.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class NotificationOrderSubmittedEventListenerDiffblueTest {
-  @MockBean(name = "blCurrencyService")
-  private BroadleafCurrencyService broadleafCurrencyService;
-
-  @MockBean(name = "blLocaleService")
-  private LocaleService localeService;
-
-  @MockBean(name = "blNotificationDispatcher")
-  private NotificationDispatcher notificationDispatcher;
-
-  @Autowired
-  private NotificationOrderSubmittedEventListener notificationOrderSubmittedEventListener;
-
-  @MockBean(name = "blOrderService")
-  private OrderService orderService;
-
-  @MockBean(name = "blSiteService")
-  private SiteService siteService;
-
   /**
-   * Test {@link
-   * NotificationOrderSubmittedEventListener#handleApplicationEvent(OrderSubmittedEvent)} with
-   * {@code OrderSubmittedEvent}.
-   *
-   * <p>Method under test: {@link
-   * NotificationOrderSubmittedEventListener#handleApplicationEvent(OrderSubmittedEvent)}
+   * Method under test:
+   * {@link NotificationOrderSubmittedEventListener#createContext(Order)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void NotificationOrderSubmittedEventListener.handleApplicationEvent(OrderSubmittedEvent)"
-  })
-  public void testHandleApplicationEventWithOrderSubmittedEvent() throws ServiceException {
+  public void testCreateContext() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    doThrow(new ServiceException("An error occurred"))
-        .when(notificationDispatcher)
-        .dispatchNotification(Mockito.<Notification>any());
-    when(orderService.findOrderById(Mockito.<Long>any())).thenReturn(new NullOrderImpl());
-
-    // Act
-    notificationOrderSubmittedEventListener.handleApplicationEvent(
-        new OrderSubmittedEvent("Source", 1L, "42"));
-
-    // Assert
-    verify(notificationDispatcher, atLeast(1)).dispatchNotification(Mockito.<Notification>any());
-    verify(orderService).findOrderById(1L);
-  }
-
-  /**
-   * Test {@link
-   * NotificationOrderSubmittedEventListener#handleApplicationEvent(OrderSubmittedEvent)} with
-   * {@code OrderSubmittedEvent}.
-   *
-   * <p>Method under test: {@link
-   * NotificationOrderSubmittedEventListener#handleApplicationEvent(OrderSubmittedEvent)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void NotificationOrderSubmittedEventListener.handleApplicationEvent(OrderSubmittedEvent)"
-  })
-  public void testHandleApplicationEventWithOrderSubmittedEvent2() {
-    // Arrange
-    when(orderService.findOrderById(Mockito.<Long>any())).thenReturn(null);
-
-    // Act
-    notificationOrderSubmittedEventListener.handleApplicationEvent(
-        new OrderSubmittedEvent("Source", 1L, "42"));
-
-    // Assert
-    verify(orderService).findOrderById(1L);
-  }
-
-  /**
-   * Test {@link
-   * NotificationOrderSubmittedEventListener#handleApplicationEvent(OrderSubmittedEvent)} with
-   * {@code OrderSubmittedEvent}.
-   *
-   * <ul>
-   *   <li>Then calls {@link NotificationDispatcher#dispatchNotification(Notification)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * NotificationOrderSubmittedEventListener#handleApplicationEvent(OrderSubmittedEvent)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void NotificationOrderSubmittedEventListener.handleApplicationEvent(OrderSubmittedEvent)"
-  })
-  public void testHandleApplicationEventWithOrderSubmittedEvent_thenCallsDispatchNotification()
-      throws ServiceException {
-    // Arrange
-    doNothing().when(notificationDispatcher).dispatchNotification(Mockito.<Notification>any());
-    when(orderService.findOrderById(Mockito.<Long>any())).thenReturn(new NullOrderImpl());
-
-    // Act
-    notificationOrderSubmittedEventListener.handleApplicationEvent(
-        new OrderSubmittedEvent("Source", 1L, "42"));
-
-    // Assert
-    verify(notificationDispatcher, atLeast(1)).dispatchNotification(Mockito.<Notification>any());
-    verify(orderService).findOrderById(1L);
-  }
-
-  /**
-   * Test {@link NotificationOrderSubmittedEventListener#createContext(Order)}.
-   *
-   * <ul>
-   *   <li>When {@link NullOrderImpl} (default constructor).
-   *   <li>Then return size is two.
-   * </ul>
-   *
-   * <p>Method under test: {@link NotificationOrderSubmittedEventListener#createContext(Order)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map NotificationOrderSubmittedEventListener.createContext(Order)"})
-  public void testCreateContext_whenNullOrderImpl_thenReturnSizeIsTwo() {
-    // Arrange
+    NotificationOrderSubmittedEventListener notificationOrderSubmittedEventListener = new NotificationOrderSubmittedEventListener();
     NullOrderImpl order = new NullOrderImpl();
 
     // Act
-    Map<String, Object> actualCreateContextResult =
-        notificationOrderSubmittedEventListener.createContext(order);
+    Map<String, Object> actualCreateContextResult = notificationOrderSubmittedEventListener.createContext(order);
 
     // Assert
     assertEquals(2, actualCreateContextResult.size());
-    Object getResult = actualCreateContextResult.get("order");
-    assertTrue(getResult instanceof NullOrderImpl);
     assertNull(actualCreateContextResult.get("customer"));
-    assertSame(order, getResult);
+    assertSame(order, actualCreateContextResult.get("order"));
   }
 
   /**
-   * Test {@link NotificationOrderSubmittedEventListener#createContext(Order)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link NotificationOrderSubmittedEventListener#createContext(Order)}
+   * Method under test:
+   * {@link NotificationOrderSubmittedEventListener#createContext(Order)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map NotificationOrderSubmittedEventListener.createContext(Order)"})
-  public void testCreateContext_whenNull_thenReturnEmpty() {
+  public void testCreateContext2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertTrue(notificationOrderSubmittedEventListener.createContext(null).isEmpty());
+    assertTrue((new NotificationOrderSubmittedEventListener()).createContext(null).isEmpty());
   }
 
   /**
-   * Test {@link NotificationOrderSubmittedEventListener#isAsynchronous()}.
-   *
-   * <p>Method under test: {@link NotificationOrderSubmittedEventListener#isAsynchronous()}
+   * Method under test:
+   * {@link NotificationOrderSubmittedEventListener#createContext(Order)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean NotificationOrderSubmittedEventListener.isAsynchronous()"})
+  public void testCreateContext3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    NotificationOrderSubmittedEventListener notificationOrderSubmittedEventListener = new NotificationOrderSubmittedEventListener();
+    NullOrderImpl order = mock(NullOrderImpl.class);
+    CustomerImpl customerImpl = new CustomerImpl();
+    when(order.getCustomer()).thenReturn(customerImpl);
+
+    // Act
+    Map<String, Object> actualCreateContextResult = notificationOrderSubmittedEventListener.createContext(order);
+
+    // Assert
+    verify(order).getCustomer();
+    assertEquals(2, actualCreateContextResult.size());
+    assertSame(customerImpl, actualCreateContextResult.get("customer"));
+    assertSame(order, actualCreateContextResult.get("order"));
+  }
+
+  /**
+   * Method under test:
+   * {@link NotificationOrderSubmittedEventListener#isAsynchronous()}
+   */
+  @Test
   public void testIsAsynchronous() {
     // Arrange, Act and Assert
-    assertTrue(new NotificationOrderSubmittedEventListener().isAsynchronous());
+    assertTrue((new NotificationOrderSubmittedEventListener()).isAsynchronous());
   }
 }

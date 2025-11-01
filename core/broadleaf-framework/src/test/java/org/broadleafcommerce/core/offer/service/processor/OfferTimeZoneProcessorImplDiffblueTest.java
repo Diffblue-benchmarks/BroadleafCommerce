@@ -18,56 +18,52 @@
 package org.broadleafcommerce.core.offer.service.processor;
 
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
+import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.core.offer.domain.Offer;
 import org.broadleafcommerce.core.offer.domain.OfferImpl;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = {OfferTimeZoneProcessorImpl.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class OfferTimeZoneProcessorImplDiffblueTest {
-  @Autowired private OfferTimeZoneProcessorImpl offerTimeZoneProcessorImpl;
-
   /**
-   * Test {@link OfferTimeZoneProcessorImpl#getTimeZone(Offer)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OfferTimeZoneProcessorImpl#getTimeZone(Offer)}
+   * Method under test: {@link OfferTimeZoneProcessorImpl#getTimeZone(Offer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.util.TimeZone OfferTimeZoneProcessorImpl.getTimeZone(Offer)"})
-  public void testGetTimeZone_whenNull() {
-    // Arrange, Act and Assert
-    assertNull(offerTimeZoneProcessorImpl.getTimeZone(null));
+  public void testGetTimeZone() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    OfferTimeZoneProcessorImpl offerTimeZoneProcessorImpl = new OfferTimeZoneProcessorImpl();
+
+    // Act and Assert
+    assertNull(offerTimeZoneProcessorImpl.getTimeZone(new OfferImpl()));
   }
 
   /**
-   * Test {@link OfferTimeZoneProcessorImpl#getTimeZone(Offer)}.
-   *
-   * <ul>
-   *   <li>When {@link OfferImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link OfferTimeZoneProcessorImpl#getTimeZone(Offer)}
+   * Method under test: {@link OfferTimeZoneProcessorImpl#getTimeZone(Offer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.util.TimeZone OfferTimeZoneProcessorImpl.getTimeZone(Offer)"})
-  public void testGetTimeZone_whenOfferImpl() {
+  public void testGetTimeZone2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertNull(offerTimeZoneProcessorImpl.getTimeZone(new OfferImpl()));
+    assertNull((new OfferTimeZoneProcessorImpl()).getTimeZone(mock(Offer.class)));
+  }
+
+  /**
+   * Method under test: {@link OfferTimeZoneProcessorImpl#getTimeZone(Offer)}
+   */
+  @Test
+  public void testGetTimeZone3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    OfferTimeZoneProcessorImpl offerTimeZoneProcessorImpl = new OfferTimeZoneProcessorImpl();
+
+    OfferImpl offer = new OfferImpl();
+    offer.setQualifyingItemSubTotal(new Money());
+
+    // Act and Assert
+    assertNull(offerTimeZoneProcessorImpl.getTimeZone(offer));
   }
 }

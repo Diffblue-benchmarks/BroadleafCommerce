@@ -21,20 +21,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.order.domain.PersonalMessage;
 import org.broadleafcommerce.core.order.domain.PersonalMessageImpl;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 class MultiShipInstructionFormDiffblueTest {
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link MultiShipInstructionForm#setDeliveryMessage(String)}
    *   <li>{@link MultiShipInstructionForm#setFulfillmentGroupId(Long)}
@@ -45,17 +38,6 @@ class MultiShipInstructionFormDiffblueTest {
    * </ul>
    */
   @Test
-  @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String MultiShipInstructionForm.getDeliveryMessage()",
-    "Long MultiShipInstructionForm.getFulfillmentGroupId()",
-    "PersonalMessage MultiShipInstructionForm.getPersonalMessage()",
-    "void MultiShipInstructionForm.setDeliveryMessage(String)",
-    "void MultiShipInstructionForm.setFulfillmentGroupId(Long)",
-    "void MultiShipInstructionForm.setPersonalMessage(PersonalMessage)"
-  })
   void testGettersAndSetters() {
     // Arrange
     MultiShipInstructionForm multiShipInstructionForm = new MultiShipInstructionForm();
@@ -69,22 +51,17 @@ class MultiShipInstructionFormDiffblueTest {
     Long actualFulfillmentGroupId = multiShipInstructionForm.getFulfillmentGroupId();
     PersonalMessage actualPersonalMessage = multiShipInstructionForm.getPersonalMessage();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("Delivery Message", actualDeliveryMessage);
     assertEquals(1L, actualFulfillmentGroupId.longValue());
     assertSame(personalMessage, actualPersonalMessage);
   }
 
   /**
-   * Test new {@link MultiShipInstructionForm} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link MultiShipInstructionForm}
+   * Method under test: default or parameterless constructor of
+   * {@link MultiShipInstructionForm}
    */
   @Test
-  @DisplayName("Test new MultiShipInstructionForm (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void MultiShipInstructionForm.<init>()"})
   void testNewMultiShipInstructionForm() {
     // Arrange and Act
     MultiShipInstructionForm actualMultiShipInstructionForm = new MultiShipInstructionForm();

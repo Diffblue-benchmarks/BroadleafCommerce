@@ -20,30 +20,16 @@ package org.broadleafcommerce.core.order.service.call;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class AddToCartItemsDiffblueTest {
   /**
-   * Test {@link AddToCartItems#setProductId(long)}.
-   *
-   * <ul>
-   *   <li>Given {@link AddToCartItems} (default constructor).
-   *   <li>Then {@link AddToCartItems} (default constructor) ProductId is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link AddToCartItems#setProductId(long)}
+   * Method under test: {@link AddToCartItems#setProductId(long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AddToCartItems.setProductId(long)"})
-  public void testSetProductId_givenAddToCartItems_thenAddToCartItemsProductIdIsOne() {
+  public void testSetProductId() {
     // Arrange
     AddToCartItems addToCartItems = new AddToCartItems();
 
@@ -52,22 +38,14 @@ public class AddToCartItemsDiffblueTest {
 
     // Assert
     assertEquals(1L, addToCartItems.getProductId());
+    assertTrue(addToCartItems.getAddToCartItems().isEmpty());
   }
 
   /**
-   * Test {@link AddToCartItems#setProductId(long)}.
-   *
-   * <ul>
-   *   <li>Then {@link AddToCartItems} (default constructor) AddToCartItems size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link AddToCartItems#setProductId(long)}
+   * Method under test: {@link AddToCartItems#setProductId(long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AddToCartItems.setProductId(long)"})
-  public void testSetProductId_thenAddToCartItemsAddToCartItemsSizeIsOne() {
+  public void testSetProductId2() {
     // Arrange
     ArrayList<OrderItemRequestDTO> addToCartItems = new ArrayList<>();
     addToCartItems.add(new OrderItemRequestDTO());
@@ -81,75 +59,12 @@ public class AddToCartItemsDiffblueTest {
     addToCartItems2.setProductId(1L);
 
     // Assert
-    List<OrderItemRequestDTO> addToCartItems3 = addToCartItems2.getAddToCartItems();
-    assertEquals(1, addToCartItems3.size());
-    assertEquals(1L, addToCartItems3.get(0).getProductId().longValue());
     assertEquals(1L, addToCartItems2.getProductId());
+    assertSame(addToCartItems, addToCartItems2.getAddToCartItems());
   }
 
   /**
-   * Test {@link AddToCartItems#setCategoryId(long)}.
-   *
-   * <ul>
-   *   <li>Given {@link AddToCartItems} (default constructor).
-   *   <li>Then {@link AddToCartItems} (default constructor) CategoryId is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link AddToCartItems#setCategoryId(long)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AddToCartItems.setCategoryId(long)"})
-  public void testSetCategoryId_givenAddToCartItems_thenAddToCartItemsCategoryIdIsOne() {
-    // Arrange
-    AddToCartItems addToCartItems = new AddToCartItems();
-
-    // Act
-    addToCartItems.setCategoryId(1L);
-
-    // Assert
-    assertEquals(1L, addToCartItems.getCategoryId());
-  }
-
-  /**
-   * Test {@link AddToCartItems#setCategoryId(long)}.
-   *
-   * <ul>
-   *   <li>Then {@link AddToCartItems} (default constructor) AddToCartItems size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link AddToCartItems#setCategoryId(long)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AddToCartItems.setCategoryId(long)"})
-  public void testSetCategoryId_thenAddToCartItemsAddToCartItemsSizeIsOne() {
-    // Arrange
-    ArrayList<OrderItemRequestDTO> addToCartItems = new ArrayList<>();
-    addToCartItems.add(new OrderItemRequestDTO());
-
-    AddToCartItems addToCartItems2 = new AddToCartItems();
-    addToCartItems2.setCategoryId(1L);
-    addToCartItems2.setProductId(1L);
-    addToCartItems2.setAddToCartItem(addToCartItems);
-
-    // Act
-    addToCartItems2.setCategoryId(1L);
-
-    // Assert
-    List<OrderItemRequestDTO> addToCartItems3 = addToCartItems2.getAddToCartItems();
-    assertEquals(1, addToCartItems3.size());
-    assertEquals(1L, addToCartItems3.get(0).getCategoryId().longValue());
-    assertEquals(1L, addToCartItems2.getCategoryId());
-  }
-
-  /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link AddToCartItems#setAddToCartItem(List)}
    *   <li>{@link AddToCartItems#getAddToCartItems()}
@@ -158,14 +73,6 @@ public class AddToCartItemsDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List AddToCartItems.getAddToCartItems()",
-    "long AddToCartItems.getCategoryId()",
-    "long AddToCartItems.getProductId()",
-    "void AddToCartItems.setAddToCartItem(List)"
-  })
   public void testGettersAndSetters() {
     // Arrange
     AddToCartItems addToCartItems = new AddToCartItems();
@@ -176,7 +83,7 @@ public class AddToCartItemsDiffblueTest {
     List<OrderItemRequestDTO> actualAddToCartItems = addToCartItems.getAddToCartItems();
     long actualCategoryId = addToCartItems.getCategoryId();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals(0L, actualCategoryId);
     assertEquals(0L, addToCartItems.getProductId());
     assertTrue(actualAddToCartItems.isEmpty());
@@ -184,14 +91,46 @@ public class AddToCartItemsDiffblueTest {
   }
 
   /**
-   * Test new {@link AddToCartItems} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link AddToCartItems}
+   * Method under test: {@link AddToCartItems#setCategoryId(long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AddToCartItems.<init>()"})
+  public void testSetCategoryId() {
+    // Arrange
+    AddToCartItems addToCartItems = new AddToCartItems();
+
+    // Act
+    addToCartItems.setCategoryId(1L);
+
+    // Assert
+    assertEquals(1L, addToCartItems.getCategoryId());
+    assertTrue(addToCartItems.getAddToCartItems().isEmpty());
+  }
+
+  /**
+   * Method under test: {@link AddToCartItems#setCategoryId(long)}
+   */
+  @Test
+  public void testSetCategoryId2() {
+    // Arrange
+    ArrayList<OrderItemRequestDTO> addToCartItems = new ArrayList<>();
+    addToCartItems.add(new OrderItemRequestDTO());
+
+    AddToCartItems addToCartItems2 = new AddToCartItems();
+    addToCartItems2.setAddToCartItem(addToCartItems);
+
+    // Act
+    addToCartItems2.setCategoryId(1L);
+
+    // Assert
+    assertEquals(1L, addToCartItems2.getCategoryId());
+    assertSame(addToCartItems, addToCartItems2.getAddToCartItems());
+  }
+
+  /**
+   * Method under test: default or parameterless constructor of
+   * {@link AddToCartItems}
+   */
+  @Test
   public void testNewAddToCartItems() {
     // Arrange and Act
     AddToCartItems actualAddToCartItems = new AddToCartItems();

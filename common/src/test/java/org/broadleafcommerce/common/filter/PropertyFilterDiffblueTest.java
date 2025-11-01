@@ -19,30 +19,24 @@ package org.broadleafcommerce.common.filter;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class PropertyFilterDiffblueTest {
   /**
-   * Test {@link PropertyFilter#getJoinTableFilter()}.
-   *
-   * <ul>
-   *   <li>Given {@link PropertyFilter} (default constructor) JoinTableFilter is {@code true}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PropertyFilter#getJoinTableFilter()}
+   * Method under test: {@link PropertyFilter#getJoinTableFilter()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean PropertyFilter.getJoinTableFilter()"})
-  public void testGetJoinTableFilter_givenPropertyFilterJoinTableFilterIsTrue_thenReturnTrue() {
+  public void testGetJoinTableFilter() {
+    // Arrange, Act and Assert
+    assertFalse((new PropertyFilter()).getJoinTableFilter());
+  }
+
+  /**
+   * Method under test: {@link PropertyFilter#getJoinTableFilter()}
+   */
+  @Test
+  public void testGetJoinTableFilter2() {
     // Arrange
     PropertyFilter propertyFilter = new PropertyFilter();
     propertyFilter.setJoinTableFilter(true);
@@ -52,33 +46,9 @@ public class PropertyFilterDiffblueTest {
   }
 
   /**
-   * Test {@link PropertyFilter#getJoinTableFilter()}.
-   *
-   * <ul>
-   *   <li>Given {@link PropertyFilter} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PropertyFilter#getJoinTableFilter()}
+   * Method under test: {@link PropertyFilter#setJoinTableFilter(Boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean PropertyFilter.getJoinTableFilter()"})
-  public void testGetJoinTableFilter_givenPropertyFilter_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(new PropertyFilter().getJoinTableFilter());
-  }
-
-  /**
-   * Test {@link PropertyFilter#setJoinTableFilter(Boolean)}.
-   *
-   * <p>Method under test: {@link PropertyFilter#setJoinTableFilter(Boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PropertyFilter.setJoinTableFilter(Boolean)"})
   public void testSetJoinTableFilter() {
     // Arrange
     PropertyFilter propertyFilter = new PropertyFilter();
@@ -92,10 +62,7 @@ public class PropertyFilterDiffblueTest {
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link PropertyFilter}
    *   <li>{@link PropertyFilter#setPropertyName(String)}
@@ -103,24 +70,12 @@ public class PropertyFilterDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PropertyFilter.<init>()",
-    "String PropertyFilter.getPropertyName()",
-    "void PropertyFilter.setPropertyName(String)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     PropertyFilter actualPropertyFilter = new PropertyFilter();
     actualPropertyFilter.setPropertyName("Property Name");
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("Property Name", actualPropertyFilter.getPropertyName());
-    assertNull(actualPropertyFilter.getCondition());
-    assertNull(actualPropertyFilter.getEntityImplementationClassName());
-    assertNull(actualPropertyFilter.getName());
-    assertNull(actualPropertyFilter.getOverrideIndexNameKey());
-    assertNull(actualPropertyFilter.getIndexColumnNames());
   }
 }

@@ -19,18 +19,24 @@ package org.broadleafcommerce.core.order.dao;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import org.broadleafcommerce.common.audit.Auditable;
+import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
+import org.broadleafcommerce.common.locale.domain.LocaleImpl;
+import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
+import org.broadleafcommerce.core.order.domain.OrderImpl;
+import org.broadleafcommerce.core.order.service.type.OrderStatus;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -39,75 +45,167 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {AbstractOrderDaoExtensionHandler.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class AbstractOrderDaoExtensionHandlerDiffblueTest {
-  @Autowired private AbstractOrderDaoExtensionHandler abstractOrderDaoExtensionHandler;
+  @Autowired
+  private AbstractOrderDaoExtensionHandler abstractOrderDaoExtensionHandler;
 
   /**
-   * Test {@link AbstractOrderDaoExtensionHandler#attachAdditionalDataToNewCart(Customer, Order)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractOrderDaoExtensionHandler#attachAdditionalDataToNewCart(Customer, Order)}
+   * Method under test:
+   * {@link AbstractOrderDaoExtensionHandler#attachAdditionalDataToNewCart(Customer, Order)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractOrderDaoExtensionHandler.attachAdditionalDataToNewCart(Customer, Order)"
-  })
   public void testAttachAdditionalDataToNewCart() {
     // Arrange
-    AbstractOrderDaoExtensionHandler abstractOrderDaoExtensionHandler =
-        new AbstractOrderDaoExtensionHandler();
+    AbstractOrderDaoExtensionHandler abstractOrderDaoExtensionHandler = new AbstractOrderDaoExtensionHandler();
     CustomerImpl customer = new CustomerImpl();
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        abstractOrderDaoExtensionHandler.attachAdditionalDataToNewCart(
-            customer, new NullOrderImpl()));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        abstractOrderDaoExtensionHandler.attachAdditionalDataToNewCart(customer, new NullOrderImpl()));
   }
 
   /**
-   * Test {@link AbstractOrderDaoExtensionHandler#processPostSaveNewCart(Customer, Order)}.
-   *
-   * <p>Method under test: {@link AbstractOrderDaoExtensionHandler#processPostSaveNewCart(Customer,
-   * Order)}
+   * Method under test:
+   * {@link AbstractOrderDaoExtensionHandler#attachAdditionalDataToNewCart(Customer, Order)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractOrderDaoExtensionHandler.processPostSaveNewCart(Customer, Order)"
-  })
+  public void testAttachAdditionalDataToNewCart2() {
+    // Arrange
+    AbstractOrderDaoExtensionHandler abstractOrderDaoExtensionHandler = new AbstractOrderDaoExtensionHandler();
+    CustomerImpl customer = new CustomerImpl();
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(4L);
+    auditable.setDateCreated(mock(java.sql.Date.class));
+    auditable.setDateUpdated(
+        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(4L);
+
+    OrderImpl cart = new OrderImpl();
+    cart.setAdditionalOfferInformation(new HashMap<>());
+    cart.setAuditable(auditable);
+    cart.setCandidateOrderOffers(new ArrayList<>());
+    cart.setCurrency(new BroadleafCurrencyImpl());
+    cart.setCustomer(new CustomerImpl());
+    cart.setEmailAddress("42 Main St");
+    cart.setFulfillmentGroups(new ArrayList<>());
+    cart.setId(1L);
+    cart.setLocale(new LocaleImpl());
+    cart.setName("Name");
+    cart.setOrderAttributes(new HashMap<>());
+    cart.setOrderItems(new ArrayList<>());
+    cart.setOrderMessages(new ArrayList<>());
+    cart.setOrderNumber("42");
+    cart.setPayments(new ArrayList<>());
+    cart.setStatus(OrderStatus.ARCHIVED);
+    cart.setSubTotal(new Money());
+    cart.setSubmitDate(java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    cart.setTaxOverride(true);
+    cart.setTotal(new Money());
+    cart.setTotalFulfillmentCharges(new Money());
+    cart.setTotalShipping(new Money());
+    cart.setTotalTax(new Money());
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        abstractOrderDaoExtensionHandler.attachAdditionalDataToNewCart(customer, cart));
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractOrderDaoExtensionHandler#processPostSaveNewCart(Customer, Order)}
+   */
+  @Test
   public void testProcessPostSaveNewCart() {
     // Arrange
-    AbstractOrderDaoExtensionHandler abstractOrderDaoExtensionHandler =
-        new AbstractOrderDaoExtensionHandler();
+    AbstractOrderDaoExtensionHandler abstractOrderDaoExtensionHandler = new AbstractOrderDaoExtensionHandler();
     CustomerImpl customer = new CustomerImpl();
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
         abstractOrderDaoExtensionHandler.processPostSaveNewCart(customer, new NullOrderImpl()));
   }
 
   /**
-   * Test {@link AbstractOrderDaoExtensionHandler#applyAdditionalOrderLookupFilter(Customer, String,
-   * List)}.
-   *
-   * <ul>
-   *   <li>Given {@link NullOrderImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AbstractOrderDaoExtensionHandler#applyAdditionalOrderLookupFilter(Customer, String, List)}
+   * Method under test:
+   * {@link AbstractOrderDaoExtensionHandler#processPostSaveNewCart(Customer, Order)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractOrderDaoExtensionHandler.applyAdditionalOrderLookupFilter(Customer, String, List)"
-  })
-  public void testApplyAdditionalOrderLookupFilter_givenNullOrderImpl() {
+  public void testProcessPostSaveNewCart2() {
+    // Arrange
+    AbstractOrderDaoExtensionHandler abstractOrderDaoExtensionHandler = new AbstractOrderDaoExtensionHandler();
+    CustomerImpl customer = new CustomerImpl();
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(mock(java.sql.Date.class));
+    auditable.setDateUpdated(
+        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    OrderImpl cart = new OrderImpl();
+    cart.setAdditionalOfferInformation(new HashMap<>());
+    cart.setAuditable(auditable);
+    cart.setCandidateOrderOffers(new ArrayList<>());
+    cart.setCurrency(new BroadleafCurrencyImpl());
+    cart.setCustomer(new CustomerImpl());
+    cart.setEmailAddress("42 Main St");
+    cart.setFulfillmentGroups(new ArrayList<>());
+    cart.setId(1L);
+    cart.setLocale(new LocaleImpl());
+    cart.setName("Name");
+    cart.setOrderAttributes(new HashMap<>());
+    cart.setOrderItems(new ArrayList<>());
+    cart.setOrderMessages(new ArrayList<>());
+    cart.setOrderNumber("42");
+    cart.setPayments(new ArrayList<>());
+    cart.setStatus(OrderStatus.ARCHIVED);
+    cart.setSubTotal(new Money());
+    cart.setSubmitDate(java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    cart.setTaxOverride(true);
+    cart.setTotal(new Money());
+    cart.setTotalFulfillmentCharges(new Money());
+    cart.setTotalShipping(new Money());
+    cart.setTotalTax(new Money());
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        abstractOrderDaoExtensionHandler.processPostSaveNewCart(customer, cart));
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractOrderDaoExtensionHandler#applyAdditionalOrderLookupFilter(Customer, String, List)}
+   */
+  @Test
+  public void testApplyAdditionalOrderLookupFilter() {
+    // Arrange
+    CustomerImpl customer = new CustomerImpl();
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        abstractOrderDaoExtensionHandler.applyAdditionalOrderLookupFilter(customer, "Name", new ArrayList<>()));
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractOrderDaoExtensionHandler#applyAdditionalOrderLookupFilter(Customer, String, List)}
+   */
+  @Test
+  public void testApplyAdditionalOrderLookupFilter2() {
+    // Arrange
+    CustomerImpl customer = mock(CustomerImpl.class);
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        abstractOrderDaoExtensionHandler.applyAdditionalOrderLookupFilter(customer, "Name", new ArrayList<>()));
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractOrderDaoExtensionHandler#applyAdditionalOrderLookupFilter(Customer, String, List)}
+   */
+  @Test
+  public void testApplyAdditionalOrderLookupFilter3() {
     // Arrange
     CustomerImpl customer = new CustomerImpl();
 
@@ -115,30 +213,16 @@ public class AbstractOrderDaoExtensionHandlerDiffblueTest {
     orders.add(new NullOrderImpl());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        abstractOrderDaoExtensionHandler.applyAdditionalOrderLookupFilter(
-            customer, "Name", orders));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        abstractOrderDaoExtensionHandler.applyAdditionalOrderLookupFilter(customer, "Name", orders));
   }
 
   /**
-   * Test {@link AbstractOrderDaoExtensionHandler#applyAdditionalOrderLookupFilter(Customer, String,
-   * List)}.
-   *
-   * <ul>
-   *   <li>Given {@link NullOrderImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AbstractOrderDaoExtensionHandler#applyAdditionalOrderLookupFilter(Customer, String, List)}
+   * Method under test:
+   * {@link AbstractOrderDaoExtensionHandler#applyAdditionalOrderLookupFilter(Customer, String, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractOrderDaoExtensionHandler.applyAdditionalOrderLookupFilter(Customer, String, List)"
-  })
-  public void testApplyAdditionalOrderLookupFilter_givenNullOrderImpl2() {
+  public void testApplyAdditionalOrderLookupFilter4() {
     // Arrange
     CustomerImpl customer = new CustomerImpl();
 
@@ -147,54 +231,18 @@ public class AbstractOrderDaoExtensionHandlerDiffblueTest {
     orders.add(new NullOrderImpl());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        abstractOrderDaoExtensionHandler.applyAdditionalOrderLookupFilter(
-            customer, "Name", orders));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        abstractOrderDaoExtensionHandler.applyAdditionalOrderLookupFilter(customer, "Name", orders));
   }
 
   /**
-   * Test {@link AbstractOrderDaoExtensionHandler#applyAdditionalOrderLookupFilter(Customer, String,
-   * List)}.
-   *
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AbstractOrderDaoExtensionHandler#applyAdditionalOrderLookupFilter(Customer, String, List)}
+   * Method under test: default or parameterless constructor of
+   * {@link AbstractOrderDaoExtensionHandler}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractOrderDaoExtensionHandler.applyAdditionalOrderLookupFilter(Customer, String, List)"
-  })
-  public void testApplyAdditionalOrderLookupFilter_whenArrayList() {
-    // Arrange
-    CustomerImpl customer = new CustomerImpl();
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        abstractOrderDaoExtensionHandler.applyAdditionalOrderLookupFilter(
-            customer, "Name", new ArrayList<>()));
-  }
-
-  /**
-   * Test new {@link AbstractOrderDaoExtensionHandler} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * AbstractOrderDaoExtensionHandler}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AbstractOrderDaoExtensionHandler.<init>()"})
   public void testNewAbstractOrderDaoExtensionHandler() {
     // Arrange and Act
-    AbstractOrderDaoExtensionHandler actualAbstractOrderDaoExtensionHandler =
-        new AbstractOrderDaoExtensionHandler();
+    AbstractOrderDaoExtensionHandler actualAbstractOrderDaoExtensionHandler = new AbstractOrderDaoExtensionHandler();
 
     // Assert
     assertEquals(0, actualAbstractOrderDaoExtensionHandler.getPriority());

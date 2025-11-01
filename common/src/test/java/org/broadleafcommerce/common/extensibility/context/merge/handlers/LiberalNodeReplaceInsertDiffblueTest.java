@@ -26,15 +26,10 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.metadata.IIOMetadataNode;
-import org.broadleafcommerce.common.extensibility.context.merge.handlers.SchemaLocationMergeTest.DummyNode;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,66 +40,24 @@ import org.w3c.dom.Node;
 @ContextConfiguration(classes = {LiberalNodeReplaceInsert.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class LiberalNodeReplaceInsertDiffblueTest {
-  @Autowired private LiberalNodeReplaceInsert liberalNodeReplaceInsert;
+  @Autowired
+  private LiberalNodeReplaceInsert liberalNodeReplaceInsert;
 
   /**
-   * Test {@link LiberalNodeReplaceInsert#checkNode(List, Node[], Node)}.
-   *
-   * <ul>
-   *   <li>Given {@code false}.
-   *   <li>When {@link DummyNode} {@link DummyNode#isEqualNode(Node)} return {@code false}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link LiberalNodeReplaceInsert#checkNode(List, Node[], Node)}
+   * Method under test:
+   * {@link LiberalNodeReplaceInsert#checkNode(List, Node[], Node)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean LiberalNodeReplaceInsert.checkNode(List, Node[], Node)"})
-  public void testCheckNode_givenFalse_whenDummyNodeIsEqualNodeReturnFalse_thenReturnFalse() {
+  public void testCheckNode() {
     // Arrange
     ArrayList<Node> usedNodes = new ArrayList<>();
-
-    DummyNode dummyNode = mock(DummyNode.class);
-    when(dummyNode.isEqualNode(Mockito.<Node>any())).thenReturn(false);
-
-    // Act
-    boolean actualCheckNodeResult =
-        liberalNodeReplaceInsert.checkNode(
-            usedNodes, new Node[] {dummyNode}, new IIOMetadataNode());
-
-    // Assert
-    verify(dummyNode).isEqualNode(isA(Node.class));
-    assertFalse(actualCheckNodeResult);
-    assertTrue(usedNodes.isEmpty());
-  }
-
-  /**
-   * Test {@link LiberalNodeReplaceInsert#checkNode(List, Node[], Node)}.
-   *
-   * <ul>
-   *   <li>Given {@code true}.
-   *   <li>Then {@link ArrayList#ArrayList()} size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link LiberalNodeReplaceInsert#checkNode(List, Node[], Node)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean LiberalNodeReplaceInsert.checkNode(List, Node[], Node)"})
-  public void testCheckNode_givenTrue_thenArrayListSizeIsOne() {
-    // Arrange
-    ArrayList<Node> usedNodes = new ArrayList<>();
-
-    DummyNode dummyNode = mock(DummyNode.class);
+    SchemaLocationMergeTest.DummyNode dummyNode = mock(SchemaLocationMergeTest.DummyNode.class);
     when(dummyNode.isEqualNode(Mockito.<Node>any())).thenReturn(true);
-    Node[] primaryNodes = new Node[] {dummyNode};
+    Node[] primaryNodes = new Node[]{dummyNode};
 
     // Act
-    boolean actualCheckNodeResult =
-        liberalNodeReplaceInsert.checkNode(usedNodes, primaryNodes, new IIOMetadataNode());
+    boolean actualCheckNodeResult = liberalNodeReplaceInsert.checkNode(usedNodes, primaryNodes,
+        new IIOMetadataNode("foo"));
 
     // Assert
     verify(dummyNode).isEqualNode(isA(Node.class));
@@ -115,38 +68,33 @@ public class LiberalNodeReplaceInsertDiffblueTest {
   }
 
   /**
-   * Test {@link LiberalNodeReplaceInsert#checkNode(List, Node[], Node)}.
-   *
-   * <ul>
-   *   <li>When empty array of {@link Node}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link LiberalNodeReplaceInsert#checkNode(List, Node[], Node)}
+   * Method under test:
+   * {@link LiberalNodeReplaceInsert#checkNode(List, Node[], Node)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean LiberalNodeReplaceInsert.checkNode(List, Node[], Node)"})
-  public void testCheckNode_whenEmptyArrayOfNode_thenReturnFalse() {
+  public void testCheckNode2() {
     // Arrange
     ArrayList<Node> usedNodes = new ArrayList<>();
+    SchemaLocationMergeTest.DummyNode dummyNode = mock(SchemaLocationMergeTest.DummyNode.class);
+    when(dummyNode.isEqualNode(Mockito.<Node>any())).thenReturn(false);
+    Node[] primaryNodes = new Node[]{dummyNode};
 
-    // Act and Assert
-    assertFalse(
-        liberalNodeReplaceInsert.checkNode(usedNodes, new Node[] {}, new IIOMetadataNode()));
+    // Act
+    boolean actualCheckNodeResult = liberalNodeReplaceInsert.checkNode(usedNodes, primaryNodes,
+        new IIOMetadataNode("foo"));
+
+    // Assert
+    verify(dummyNode).isEqualNode(isA(Node.class));
+    assertEquals(1, primaryNodes.length);
+    assertFalse(actualCheckNodeResult);
     assertTrue(usedNodes.isEmpty());
   }
 
   /**
-   * Test new {@link LiberalNodeReplaceInsert} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link LiberalNodeReplaceInsert}
+   * Method under test: default or parameterless constructor of
+   * {@link LiberalNodeReplaceInsert}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void LiberalNodeReplaceInsert.<init>()"})
   public void testNewLiberalNodeReplaceInsert() {
     // Arrange and Act
     LiberalNodeReplaceInsert actualLiberalNodeReplaceInsert = new LiberalNodeReplaceInsert();

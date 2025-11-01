@@ -23,270 +23,160 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import org.broadleafcommerce.common.resource.GeneratedResource;
 import org.broadleafcommerce.common.web.resource.BroadleafDefaultResourceResolverChain;
 import org.broadleafcommerce.openadmin.web.compatibility.JSCompatibilityRequestWrapper;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.Mockito;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 import org.springframework.web.servlet.resource.ResourceResolver;
 import org.springframework.web.servlet.resource.ResourceResolverChain;
 
-@ContextConfiguration(classes = {MessagesResourceResolver.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class MessagesResourceResolverDiffblueTest {
-  @Autowired private MessagesResourceResolver messagesResourceResolver;
-
   /**
-   * Test {@link MessagesResourceResolver#resolveResource(HttpServletRequest, String, List,
-   * ResourceResolverChain)}.
-   *
-   * <ul>
-   *   <li>Given {@link GeneratedResource#GeneratedResource()}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@link GeneratedResource#GeneratedResource()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link MessagesResourceResolver#resolveResource(HttpServletRequest,
-   * String, List, ResourceResolverChain)}
+   * Method under test:
+   * {@link MessagesResourceResolver#resolveResource(HttpServletRequest, String, List, ResourceResolverChain)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Resource MessagesResourceResolver.resolveResource(HttpServletRequest, String, List, ResourceResolverChain)"
-  })
-  public void testResolveResource_givenGeneratedResource_whenArrayListAddGeneratedResource() {
-    // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+  public void testResolveResource() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    ArrayList<Resource> locations = new ArrayList<>();
-    locations.add(new GeneratedResource());
-
-    // Act and Assert
-    assertNull(
-        messagesResourceResolver.resolveResource(
-            request,
-            "Path",
-            locations,
-            new BroadleafDefaultResourceResolverChain(new ArrayList<>())));
-  }
-
-  /**
-   * Test {@link MessagesResourceResolver#resolveResource(HttpServletRequest, String, List,
-   * ResourceResolverChain)}.
-   *
-   * <ul>
-   *   <li>Given {@link GeneratedResource#GeneratedResource()}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@link GeneratedResource#GeneratedResource()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link MessagesResourceResolver#resolveResource(HttpServletRequest,
-   * String, List, ResourceResolverChain)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Resource MessagesResourceResolver.resolveResource(HttpServletRequest, String, List, ResourceResolverChain)"
-  })
-  public void testResolveResource_givenGeneratedResource_whenArrayListAddGeneratedResource2() {
-    // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-
-    ArrayList<Resource> locations = new ArrayList<>();
-    locations.add(new GeneratedResource());
-    locations.add(new GeneratedResource());
-
-    // Act and Assert
-    assertNull(
-        messagesResourceResolver.resolveResource(
-            request,
-            "Path",
-            locations,
-            new BroadleafDefaultResourceResolverChain(new ArrayList<>())));
-  }
-
-  /**
-   * Test {@link MessagesResourceResolver#resolveResource(HttpServletRequest, String, List,
-   * ResourceResolverChain)}.
-   *
-   * <ul>
-   *   <li>Given {@link MessagesResourceResolver} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link MessagesResourceResolver#resolveResource(HttpServletRequest,
-   * String, List, ResourceResolverChain)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Resource MessagesResourceResolver.resolveResource(HttpServletRequest, String, List, ResourceResolverChain)"
-  })
-  public void testResolveResource_givenMessagesResourceResolver() {
-    // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    ArrayList<Resource> locations = new ArrayList<>();
-
-    ArrayList<ResourceResolver> resolvers = new ArrayList<>();
-    resolvers.add(new MessagesResourceResolver());
-
-    // Act and Assert
-    assertNull(
-        messagesResourceResolver.resolveResource(
-            request, "Path", locations, new BroadleafDefaultResourceResolverChain(resolvers)));
-  }
-
-  /**
-   * Test {@link MessagesResourceResolver#resolveResource(HttpServletRequest, String, List,
-   * ResourceResolverChain)}.
-   *
-   * <ul>
-   *   <li>Given {@link MessagesResourceResolver} (default constructor).
-   *   <li>When {@code admin/ui/messages.js}.
-   * </ul>
-   *
-   * <p>Method under test: {@link MessagesResourceResolver#resolveResource(HttpServletRequest,
-   * String, List, ResourceResolverChain)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Resource MessagesResourceResolver.resolveResource(HttpServletRequest, String, List, ResourceResolverChain)"
-  })
-  public void testResolveResource_givenMessagesResourceResolver_whenAdminUiMessagesJs() {
     // Arrange
     MessagesResourceResolver messagesResourceResolver = new MessagesResourceResolver();
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
+    ArrayList<Resource> locations = new ArrayList<>();
+
+    // Act and Assert
+    assertNull(messagesResourceResolver.resolveResource(request, "Path", locations,
+        new BroadleafDefaultResourceResolverChain(new ArrayList<>())));
+  }
+
+  /**
+   * Method under test:
+   * {@link MessagesResourceResolver#resolveResource(HttpServletRequest, String, List, ResourceResolverChain)}
+   */
+  @Test
+  public void testResolveResource2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    MessagesResourceResolver messagesResourceResolver = new MessagesResourceResolver();
+    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
+    ArrayList<Resource> locations = new ArrayList<>();
+
+    // Act and Assert
+    assertNull(messagesResourceResolver.resolveResource(request, "admin/ui/messages.js", locations,
+        new BroadleafDefaultResourceResolverChain(new ArrayList<>())));
+  }
+
+  /**
+   * Method under test:
+   * {@link MessagesResourceResolver#resolveResource(HttpServletRequest, String, List, ResourceResolverChain)}
+   */
+  @Test
+  public void testResolveResource3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    MessagesResourceResolver messagesResourceResolver = new MessagesResourceResolver();
+    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(
+        mock(DefaultMultipartHttpServletRequest.class));
+    ArrayList<Resource> locations = new ArrayList<>();
+
+    // Act and Assert
+    assertNull(messagesResourceResolver.resolveResource(request, "Path", locations,
+        new BroadleafDefaultResourceResolverChain(new ArrayList<>())));
+  }
+
+  /**
+   * Method under test:
+   * {@link MessagesResourceResolver#resolveResource(HttpServletRequest, String, List, ResourceResolverChain)}
+   */
+  @Test
+  public void testResolveResource4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    MessagesResourceResolver messagesResourceResolver = new MessagesResourceResolver();
+    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
+
+    ArrayList<Resource> locations = new ArrayList<>();
+    locations.add(new GeneratedResource());
+
+    // Act and Assert
+    assertNull(messagesResourceResolver.resolveResource(request, "Path", locations,
+        new BroadleafDefaultResourceResolverChain(new ArrayList<>())));
+  }
+
+  /**
+   * Method under test:
+   * {@link MessagesResourceResolver#resolveResource(HttpServletRequest, String, List, ResourceResolverChain)}
+   */
+  @Test
+  public void testResolveResource5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    MessagesResourceResolver messagesResourceResolver = new MessagesResourceResolver();
+    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
+
+    ArrayList<Resource> locations = new ArrayList<>();
+    locations.add(new GeneratedResource());
+    locations.add(new GeneratedResource());
+
+    // Act and Assert
+    assertNull(messagesResourceResolver.resolveResource(request, "Path", locations,
+        new BroadleafDefaultResourceResolverChain(new ArrayList<>())));
+  }
+
+  /**
+   * Method under test:
+   * {@link MessagesResourceResolver#resolveResource(HttpServletRequest, String, List, ResourceResolverChain)}
+   */
+  @Test
+  public void testResolveResource6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    MessagesResourceResolver messagesResourceResolver = new MessagesResourceResolver();
+    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
     ArrayList<Resource> locations = new ArrayList<>();
 
     ArrayList<ResourceResolver> resolvers = new ArrayList<>();
     resolvers.add(new MessagesResourceResolver());
 
     // Act and Assert
-    assertNull(
-        messagesResourceResolver.resolveResource(
-            request,
-            "admin/ui/messages.js",
-            locations,
-            new BroadleafDefaultResourceResolverChain(resolvers)));
+    assertNull(messagesResourceResolver.resolveResource(request, "Path", locations,
+        new BroadleafDefaultResourceResolverChain(resolvers)));
   }
 
   /**
-   * Test {@link MessagesResourceResolver#resolveResource(HttpServletRequest, String, List,
-   * ResourceResolverChain)}.
-   *
-   * <ul>
-   *   <li>Given {@link MessagesResourceResolver}.
-   *   <li>When {@code Path}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link MessagesResourceResolver#resolveResource(HttpServletRequest,
-   * String, List, ResourceResolverChain)}
+   * Method under test:
+   * {@link MessagesResourceResolver#updateMessagesVariables(Resource, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Resource MessagesResourceResolver.resolveResource(HttpServletRequest, String, List, ResourceResolverChain)"
-  })
-  public void testResolveResource_givenMessagesResourceResolver_whenPath_thenReturnNull() {
-    // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    ArrayList<Resource> locations = new ArrayList<>();
-
-    // Act and Assert
-    assertNull(
-        messagesResourceResolver.resolveResource(
-            request,
-            "Path",
-            locations,
-            new BroadleafDefaultResourceResolverChain(new ArrayList<>())));
-  }
-
-  /**
-   * Test {@link MessagesResourceResolver#resolveResource(HttpServletRequest, String, List,
-   * ResourceResolverChain)}.
-   *
-   * <ul>
-   *   <li>When {@code admin/ui/messages.js}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link MessagesResourceResolver#resolveResource(HttpServletRequest,
-   * String, List, ResourceResolverChain)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Resource MessagesResourceResolver.resolveResource(HttpServletRequest, String, List, ResourceResolverChain)"
-  })
-  public void testResolveResource_whenAdminUiMessagesJs_thenReturnNull() {
-    // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
-    ArrayList<Resource> locations = new ArrayList<>();
-
-    // Act and Assert
-    assertNull(
-        messagesResourceResolver.resolveResource(
-            request,
-            "admin/ui/messages.js",
-            locations,
-            new BroadleafDefaultResourceResolverChain(new ArrayList<>())));
-  }
-
-  /**
-   * Test {@link MessagesResourceResolver#updateMessagesVariables(Resource, String)}.
-   *
-   * <p>Method under test: {@link MessagesResourceResolver#updateMessagesVariables(Resource,
-   * String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Resource MessagesResourceResolver.updateMessagesVariables(Resource, String)"})
   public void testUpdateMessagesVariables() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    GeneratedResource resource =
-        new GeneratedResource(
-            new byte[] {'A', 1, 'A', 1, 'A', 1, 'A', 1},
-            "The characteristics of someone or something");
+    MessagesResourceResolver messagesResourceResolver = new MessagesResourceResolver();
+    GeneratedResource resource = new GeneratedResource();
 
     // Act
-    Resource actualUpdateMessagesVariablesResult =
-        messagesResourceResolver.updateMessagesVariables(resource, "Path");
+    Resource actualUpdateMessagesVariablesResult = messagesResourceResolver.updateMessagesVariables(resource, "Path");
 
     // Assert
     assertTrue(actualUpdateMessagesVariablesResult instanceof GeneratedResource);
@@ -294,367 +184,304 @@ public class MessagesResourceResolverDiffblueTest {
   }
 
   /**
-   * Test {@link MessagesResourceResolver#updateMessagesVariables(Resource, String)}.
-   *
-   * <ul>
-   *   <li>Given {@link IOException#IOException()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link MessagesResourceResolver#updateMessagesVariables(Resource,
-   * String)}
+   * Method under test:
+   * {@link MessagesResourceResolver#updateMessagesVariables(Resource, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Resource MessagesResourceResolver.updateMessagesVariables(Resource, String)"})
-  public void testUpdateMessagesVariables_givenIOException() throws IOException {
-    // Arrange
-    Resource resource = mock(Resource.class);
-    when(resource.getInputStream()).thenThrow(new IOException());
+  public void testUpdateMessagesVariables2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () -> messagesResourceResolver.updateMessagesVariables(resource, "Path"));
-    verify(resource).getInputStream();
+    // Arrange, Act and Assert
+    assertNull((new MessagesResourceResolver()).updateMessagesVariables(null, "Path"));
   }
 
   /**
-   * Test {@link MessagesResourceResolver#updateMessagesVariables(Resource, String)}.
-   *
-   * <ul>
-   *   <li>Given {@link RuntimeException#RuntimeException()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link MessagesResourceResolver#updateMessagesVariables(Resource,
-   * String)}
+   * Method under test:
+   * {@link MessagesResourceResolver#updateMessagesVariables(Resource, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Resource MessagesResourceResolver.updateMessagesVariables(Resource, String)"})
-  public void testUpdateMessagesVariables_givenRuntimeException() throws IOException {
-    // Arrange
-    Resource resource = mock(Resource.class);
-    when(resource.getInputStream()).thenThrow(new RuntimeException());
+  public void testUpdateMessagesVariables3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () -> messagesResourceResolver.updateMessagesVariables(resource, "Path"));
-    verify(resource).getInputStream();
-  }
-
-  /**
-   * Test {@link MessagesResourceResolver#updateMessagesVariables(Resource, String)}.
-   *
-   * <ul>
-   *   <li>Then return Description is {@code Path}.
-   * </ul>
-   *
-   * <p>Method under test: {@link MessagesResourceResolver#updateMessagesVariables(Resource,
-   * String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Resource MessagesResourceResolver.updateMessagesVariables(Resource, String)"})
-  public void testUpdateMessagesVariables_thenReturnDescriptionIsPath() {
     // Arrange
-    ByteArrayResource resource = new ByteArrayResource(new byte[] {'A', 1, 'A', 1, 'A', 1, 'A', 1});
+    MessagesResourceResolver messagesResourceResolver = new MessagesResourceResolver();
+    GeneratedResource resource = new GeneratedResource(new byte[]{'A', 1, 'A', 1, 'A', 1, 'A', 1},
+        "The characteristics of someone or something");
 
     // Act
-    Resource actualUpdateMessagesVariablesResult =
-        messagesResourceResolver.updateMessagesVariables(resource, "Path");
+    Resource actualUpdateMessagesVariablesResult = messagesResourceResolver.updateMessagesVariables(resource, "Path");
+
+    // Assert
+    assertTrue(actualUpdateMessagesVariablesResult instanceof GeneratedResource);
+    assertEquals(resource, actualUpdateMessagesVariablesResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link MessagesResourceResolver#updateMessagesVariables(Resource, String)}
+   */
+  @Test
+  public void testUpdateMessagesVariables4() throws IOException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    MessagesResourceResolver messagesResourceResolver = new MessagesResourceResolver();
+
+    // Act
+    Resource actualUpdateMessagesVariablesResult = messagesResourceResolver
+        .updateMessagesVariables(new ByteArrayResource(new byte[]{'A', 1, 'A', 1, 'A', 1, 'A', 1}), "Path");
 
     // Assert
     assertTrue(actualUpdateMessagesVariablesResult instanceof GeneratedResource);
     assertEquals("Path", actualUpdateMessagesVariablesResult.getDescription());
     assertEquals("Path", actualUpdateMessagesVariablesResult.getFilename());
+    byte[] byteArray = new byte[8];
+    assertEquals(8, actualUpdateMessagesVariablesResult.getInputStream().read(byteArray));
     assertFalse(actualUpdateMessagesVariablesResult.isFile());
     assertFalse(actualUpdateMessagesVariablesResult.isOpen());
-    assertArrayEquals(
-        new byte[] {'A', 1, 'A', 1, 'A', 1, 'A', 1},
+    assertArrayEquals(new byte[]{'A', 1, 'A', 1, 'A', 1, 'A', 1},
         ((GeneratedResource) actualUpdateMessagesVariablesResult).getBytes());
+    assertArrayEquals(new byte[]{'A', 1, 'A', 1, 'A', 1, 'A', 1}, byteArray);
   }
 
   /**
-   * Test {@link MessagesResourceResolver#updateMessagesVariables(Resource, String)}.
-   *
-   * <ul>
-   *   <li>When {@link GeneratedResource#GeneratedResource()}.
-   *   <li>Then return {@link GeneratedResource#GeneratedResource()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link MessagesResourceResolver#updateMessagesVariables(Resource,
-   * String)}
+   * Method under test:
+   * {@link MessagesResourceResolver#updateMessagesVariables(Resource, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Resource MessagesResourceResolver.updateMessagesVariables(Resource, String)"})
-  public void testUpdateMessagesVariables_whenGeneratedResource_thenReturnGeneratedResource() {
+  public void testUpdateMessagesVariables5() throws IOException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    GeneratedResource resource = new GeneratedResource();
+    MessagesResourceResolver messagesResourceResolver = new MessagesResourceResolver();
+    Resource resource = mock(Resource.class);
+    when(resource.getInputStream()).thenReturn(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")));
 
     // Act
-    Resource actualUpdateMessagesVariablesResult =
-        messagesResourceResolver.updateMessagesVariables(resource, "Path");
+    Resource actualUpdateMessagesVariablesResult = messagesResourceResolver.updateMessagesVariables(resource, "Path");
 
     // Assert
+    verify(resource).getInputStream();
     assertTrue(actualUpdateMessagesVariablesResult instanceof GeneratedResource);
-    assertEquals(resource, actualUpdateMessagesVariablesResult);
+    assertEquals("Path", actualUpdateMessagesVariablesResult.getDescription());
+    assertEquals("Path", actualUpdateMessagesVariablesResult.getFilename());
+    byte[] byteArray = new byte[8];
+    assertEquals(8, actualUpdateMessagesVariablesResult.getInputStream().read(byteArray));
+    assertFalse(actualUpdateMessagesVariablesResult.isFile());
+    assertFalse(actualUpdateMessagesVariablesResult.isOpen());
+    byte[] expectedBytes = "AXAXAXAX".getBytes("UTF-8");
+    assertArrayEquals(expectedBytes, ((GeneratedResource) actualUpdateMessagesVariablesResult).getBytes());
+    assertArrayEquals("AXAXAXAX".getBytes("UTF-8"), byteArray);
   }
 
   /**
-   * Test {@link MessagesResourceResolver#updateMessagesVariables(Resource, String)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link MessagesResourceResolver#updateMessagesVariables(Resource,
-   * String)}
+   * Method under test:
+   * {@link MessagesResourceResolver#updateMessagesVariables(Resource, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Resource MessagesResourceResolver.updateMessagesVariables(Resource, String)"})
-  public void testUpdateMessagesVariables_whenNull_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(messagesResourceResolver.updateMessagesVariables(null, "Path"));
+  public void testUpdateMessagesVariables6() throws IOException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    MessagesResourceResolver messagesResourceResolver = new MessagesResourceResolver();
+    Resource resource = mock(Resource.class);
+    when(resource.getInputStream()).thenThrow(new IOException("UTF-8"));
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> messagesResourceResolver.updateMessagesVariables(resource, "Path"));
+    verify(resource).getInputStream();
   }
 
   /**
-   * Test {@link MessagesResourceResolver#getResourceContents(Resource)}.
-   *
-   * <ul>
-   *   <li>Then return {@code AXAXAXAX}.
-   * </ul>
-   *
-   * <p>Method under test: {@link MessagesResourceResolver#getResourceContents(Resource)}
+   * Method under test:
+   * {@link MessagesResourceResolver#getResourceContents(Resource)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String MessagesResourceResolver.getResourceContents(Resource)"})
-  public void testGetResourceContents_thenReturnAxaxaxax() throws IOException {
-    // Arrange, Act and Assert
-    assertEquals(
-        "AXAXAXAX",
-        messagesResourceResolver.getResourceContents(
-            new ByteArrayResource("AXAXAXAX".getBytes("UTF-8"))));
-  }
+  public void testGetResourceContents() throws IOException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-  /**
-   * Test {@link MessagesResourceResolver#getResourceContents(Resource)}.
-   *
-   * <ul>
-   *   <li>When {@link GeneratedResource#GeneratedResource()}.
-   *   <li>Then return empty string.
-   * </ul>
-   *
-   * <p>Method under test: {@link MessagesResourceResolver#getResourceContents(Resource)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String MessagesResourceResolver.getResourceContents(Resource)"})
-  public void testGetResourceContents_whenGeneratedResource_thenReturnEmptyString()
-      throws IOException {
-    // Arrange, Act and Assert
+    // Arrange
+    MessagesResourceResolver messagesResourceResolver = new MessagesResourceResolver();
+
+    // Act and Assert
     assertEquals("", messagesResourceResolver.getResourceContents(new GeneratedResource()));
   }
 
   /**
-   * Test {@link MessagesResourceResolver#replaceResourceContents(String)}.
-   *
-   * <ul>
-   *   <li>Then return {@code Not all who wander are lost}.
-   * </ul>
-   *
-   * <p>Method under test: {@link MessagesResourceResolver#replaceResourceContents(String)}
+   * Method under test:
+   * {@link MessagesResourceResolver#getResourceContents(Resource)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String MessagesResourceResolver.replaceResourceContents(String)"})
-  public void testReplaceResourceContents_thenReturnNotAllWhoWanderAreLost() throws IOException {
+  public void testGetResourceContents2() throws IOException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    MessagesResourceResolver messagesResourceResolver = new MessagesResourceResolver();
+
+    // Act and Assert
+    assertEquals("AXAXAXAX",
+        messagesResourceResolver.getResourceContents(new ByteArrayResource("AXAXAXAX".getBytes("UTF-8"))));
+  }
+
+  /**
+   * Method under test:
+   * {@link MessagesResourceResolver#getResourceContents(Resource)}
+   */
+  @Test
+  public void testGetResourceContents3() throws IOException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    MessagesResourceResolver messagesResourceResolver = new MessagesResourceResolver();
+    ByteArrayResource resource = mock(ByteArrayResource.class);
+    when(resource.getInputStream()).thenReturn(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")));
+
+    // Act
+    String actualResourceContents = messagesResourceResolver.getResourceContents(resource);
+
+    // Assert
+    verify(resource).getInputStream();
+    assertEquals("AXAXAXAX", actualResourceContents);
+  }
+
+  /**
+   * Method under test:
+   * {@link MessagesResourceResolver#replaceResourceContents(String)}
+   */
+  @Test
+  public void testReplaceResourceContents() throws IOException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertEquals(
-        "Not all who wander are lost",
-        messagesResourceResolver.replaceResourceContents("Not all who wander are lost"));
+    assertEquals("Not all who wander are lost",
+        (new MessagesResourceResolver()).replaceResourceContents("Not all who wander are lost"));
   }
 
   /**
-   * Test {@link MessagesResourceResolver#resolveUrlPath(String, List, ResourceResolverChain)}.
-   *
-   * <ul>
-   *   <li>Given {@link GeneratedResource#GeneratedResource()}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@link GeneratedResource#GeneratedResource()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link MessagesResourceResolver#resolveUrlPath(String, List,
-   * ResourceResolverChain)}
+   * Method under test:
+   * {@link MessagesResourceResolver#resolveUrlPath(String, List, ResourceResolverChain)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String MessagesResourceResolver.resolveUrlPath(String, List, ResourceResolverChain)"
-  })
-  public void testResolveUrlPath_givenGeneratedResource_whenArrayListAddGeneratedResource() {
+  public void testResolveUrlPath() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    MessagesResourceResolver messagesResourceResolver = new MessagesResourceResolver();
+    ArrayList<Resource> locations = new ArrayList<>();
+
+    // Act and Assert
+    assertNull(messagesResourceResolver.resolveUrlPath("https://example.org/example", locations,
+        new BroadleafDefaultResourceResolverChain(new ArrayList<>())));
+  }
+
+  /**
+   * Method under test:
+   * {@link MessagesResourceResolver#resolveUrlPath(String, List, ResourceResolverChain)}
+   */
+  @Test
+  public void testResolveUrlPath2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    MessagesResourceResolver messagesResourceResolver = new MessagesResourceResolver();
+    ArrayList<Resource> locations = new ArrayList<>();
+
+    // Act and Assert
+    assertEquals("admin/ui/messages.js", messagesResourceResolver.resolveUrlPath("admin/ui/messages.js", locations,
+        new BroadleafDefaultResourceResolverChain(new ArrayList<>())));
+  }
+
+  /**
+   * Method under test:
+   * {@link MessagesResourceResolver#resolveUrlPath(String, List, ResourceResolverChain)}
+   */
+  @Test
+  public void testResolveUrlPath3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    MessagesResourceResolver messagesResourceResolver = new MessagesResourceResolver();
+
     ArrayList<Resource> locations = new ArrayList<>();
     locations.add(new GeneratedResource());
 
     // Act and Assert
-    assertNull(
-        messagesResourceResolver.resolveUrlPath(
-            "https://example.org/example",
-            locations,
-            new BroadleafDefaultResourceResolverChain(new ArrayList<>())));
+    assertNull(messagesResourceResolver.resolveUrlPath("https://example.org/example", locations,
+        new BroadleafDefaultResourceResolverChain(new ArrayList<>())));
   }
 
   /**
-   * Test {@link MessagesResourceResolver#resolveUrlPath(String, List, ResourceResolverChain)}.
-   *
-   * <ul>
-   *   <li>Given {@link GeneratedResource#GeneratedResource()}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@link GeneratedResource#GeneratedResource()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link MessagesResourceResolver#resolveUrlPath(String, List,
-   * ResourceResolverChain)}
+   * Method under test:
+   * {@link MessagesResourceResolver#resolveUrlPath(String, List, ResourceResolverChain)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String MessagesResourceResolver.resolveUrlPath(String, List, ResourceResolverChain)"
-  })
-  public void testResolveUrlPath_givenGeneratedResource_whenArrayListAddGeneratedResource2() {
+  public void testResolveUrlPath4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    MessagesResourceResolver messagesResourceResolver = new MessagesResourceResolver();
+
     ArrayList<Resource> locations = new ArrayList<>();
     locations.add(new GeneratedResource());
     locations.add(new GeneratedResource());
 
     // Act and Assert
-    assertNull(
-        messagesResourceResolver.resolveUrlPath(
-            "https://example.org/example",
-            locations,
-            new BroadleafDefaultResourceResolverChain(new ArrayList<>())));
+    assertNull(messagesResourceResolver.resolveUrlPath("https://example.org/example", locations,
+        new BroadleafDefaultResourceResolverChain(new ArrayList<>())));
   }
 
   /**
-   * Test {@link MessagesResourceResolver#resolveUrlPath(String, List, ResourceResolverChain)}.
-   *
-   * <ul>
-   *   <li>Given {@link MessagesResourceResolver} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link MessagesResourceResolver#resolveUrlPath(String, List,
-   * ResourceResolverChain)}
+   * Method under test:
+   * {@link MessagesResourceResolver#resolveUrlPath(String, List, ResourceResolverChain)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String MessagesResourceResolver.resolveUrlPath(String, List, ResourceResolverChain)"
-  })
-  public void testResolveUrlPath_givenMessagesResourceResolver() {
+  public void testResolveUrlPath5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    MessagesResourceResolver messagesResourceResolver = new MessagesResourceResolver();
     ArrayList<Resource> locations = new ArrayList<>();
 
     ArrayList<ResourceResolver> resolvers = new ArrayList<>();
     resolvers.add(new MessagesResourceResolver());
 
     // Act and Assert
-    assertNull(
-        messagesResourceResolver.resolveUrlPath(
-            "https://example.org/example",
-            locations,
-            new BroadleafDefaultResourceResolverChain(resolvers)));
+    assertNull(messagesResourceResolver.resolveUrlPath("https://example.org/example", locations,
+        new BroadleafDefaultResourceResolverChain(resolvers)));
   }
 
   /**
-   * Test {@link MessagesResourceResolver#resolveUrlPath(String, List, ResourceResolverChain)}.
-   *
-   * <ul>
-   *   <li>When {@code admin/ui/messages.js}.
-   *   <li>Then return {@code admin/ui/messages.js}.
-   * </ul>
-   *
-   * <p>Method under test: {@link MessagesResourceResolver#resolveUrlPath(String, List,
-   * ResourceResolverChain)}
+   * Method under test:
+   * {@link MessagesResourceResolver#resolveUrlPath(String, List, ResourceResolverChain)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String MessagesResourceResolver.resolveUrlPath(String, List, ResourceResolverChain)"
-  })
-  public void testResolveUrlPath_whenAdminUiMessagesJs_thenReturnAdminUiMessagesJs() {
-    // Arrange
-    ArrayList<Resource> locations = new ArrayList<>();
+  public void testResolveUrlPath6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Act and Assert
-    assertEquals(
-        "admin/ui/messages.js",
-        messagesResourceResolver.resolveUrlPath(
-            "admin/ui/messages.js",
-            locations,
-            new BroadleafDefaultResourceResolverChain(new ArrayList<>())));
+    // Arrange
+    MessagesResourceResolver messagesResourceResolver = new MessagesResourceResolver();
+    ArrayList<Resource> locations = new ArrayList<>();
+    BroadleafDefaultResourceResolverChain chain = mock(BroadleafDefaultResourceResolverChain.class);
+    when(chain.resolveUrlPath(Mockito.<String>any(), Mockito.<List<Resource>>any()))
+        .thenReturn("https://example.org/example");
+
+    // Act
+    String actualResolveUrlPathResult = messagesResourceResolver.resolveUrlPath("https://example.org/example",
+        locations, chain);
+
+    // Assert
+    verify(chain).resolveUrlPath(eq("https://example.org/example"), isA(List.class));
+    assertEquals("https://example.org/example", actualResolveUrlPathResult);
   }
 
   /**
-   * Test {@link MessagesResourceResolver#resolveUrlPath(String, List, ResourceResolverChain)}.
-   *
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link MessagesResourceResolver#resolveUrlPath(String, List,
-   * ResourceResolverChain)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String MessagesResourceResolver.resolveUrlPath(String, List, ResourceResolverChain)"
-  })
-  public void testResolveUrlPath_whenArrayList_thenReturnNull() {
-    // Arrange
-    ArrayList<Resource> locations = new ArrayList<>();
-
-    // Act and Assert
-    assertNull(
-        messagesResourceResolver.resolveUrlPath(
-            "https://example.org/example",
-            locations,
-            new BroadleafDefaultResourceResolverChain(new ArrayList<>())));
-  }
-
-  /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link MessagesResourceResolver#getMessagesJsPath()}
    *   <li>{@link MessagesResourceResolver#getOpenAdminMessagesProperties()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String MessagesResourceResolver.getMessagesJsPath()",
-    "String MessagesResourceResolver.getOpenAdminMessagesProperties()"
-  })
   public void testGettersAndSetters() {
     // Arrange
     MessagesResourceResolver messagesResourceResolver = new MessagesResourceResolver();
@@ -664,8 +491,7 @@ public class MessagesResourceResolverDiffblueTest {
 
     // Assert
     assertEquals("admin/ui/messages.js", actualMessagesJsPath);
-    assertEquals(
-        "messages/OpenAdminJavascriptMessages.properties",
+    assertEquals("messages/OpenAdminJavascriptMessages.properties",
         messagesResourceResolver.getOpenAdminMessagesProperties());
   }
 }

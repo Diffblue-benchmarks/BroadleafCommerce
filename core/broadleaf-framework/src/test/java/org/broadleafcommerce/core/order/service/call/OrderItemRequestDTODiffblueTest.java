@@ -22,23 +22,38 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.broadleafcommerce.common.money.Money;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class OrderItemRequestDTODiffblueTest {
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Method under test: {@link OrderItemRequestDTO#getHasConfigurationError()}
+   */
+  @Test
+  public void testGetHasConfigurationError() {
+    // Arrange, Act and Assert
+    assertFalse((new OrderItemRequestDTO()).getHasConfigurationError());
+  }
+
+  /**
+   * Method under test: {@link OrderItemRequestDTO#getHasConfigurationError()}
+   */
+  @Test
+  public void testGetHasConfigurationError2() {
+    // Arrange
+    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO();
+    orderItemRequestDTO.setHasConfigurationError(true);
+
+    // Act and Assert
+    assertTrue(orderItemRequestDTO.getHasConfigurationError());
+  }
+
+  /**
+   * Methods under test:
    * <ul>
    *   <li>{@link OrderItemRequestDTO#OrderItemRequestDTO()}
    *   <li>{@link OrderItemRequestDTO#setAdditionalAttributes(Map)}
@@ -67,34 +82,6 @@ public class OrderItemRequestDTODiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OrderItemRequestDTO.<init>()",
-    "Map OrderItemRequestDTO.getAdditionalAttributes()",
-    "Long OrderItemRequestDTO.getCategoryId()",
-    "List OrderItemRequestDTO.getChildOrderItems()",
-    "Map OrderItemRequestDTO.getItemAttributes()",
-    "Long OrderItemRequestDTO.getOrderItemId()",
-    "Money OrderItemRequestDTO.getOverrideRetailPrice()",
-    "Money OrderItemRequestDTO.getOverrideSalePrice()",
-    "Long OrderItemRequestDTO.getParentOrderItemId()",
-    "Long OrderItemRequestDTO.getProductId()",
-    "Integer OrderItemRequestDTO.getQuantity()",
-    "Long OrderItemRequestDTO.getSkuId()",
-    "void OrderItemRequestDTO.setAdditionalAttributes(Map)",
-    "OrderItemRequestDTO OrderItemRequestDTO.setCategoryId(Long)",
-    "void OrderItemRequestDTO.setChildOrderItems(List)",
-    "void OrderItemRequestDTO.setHasConfigurationError(Boolean)",
-    "OrderItemRequestDTO OrderItemRequestDTO.setItemAttributes(Map)",
-    "OrderItemRequestDTO OrderItemRequestDTO.setOrderItemId(Long)",
-    "void OrderItemRequestDTO.setOverrideRetailPrice(Money)",
-    "void OrderItemRequestDTO.setOverrideSalePrice(Money)",
-    "void OrderItemRequestDTO.setParentOrderItemId(Long)",
-    "OrderItemRequestDTO OrderItemRequestDTO.setProductId(Long)",
-    "OrderItemRequestDTO OrderItemRequestDTO.setQuantity(Integer)",
-    "OrderItemRequestDTO OrderItemRequestDTO.setSkuId(Long)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     OrderItemRequestDTO actualOrderItemRequestDTO = new OrderItemRequestDTO();
@@ -105,8 +92,7 @@ public class OrderItemRequestDTODiffblueTest {
     actualOrderItemRequestDTO.setChildOrderItems(childOrderItems);
     actualOrderItemRequestDTO.setHasConfigurationError(true);
     HashMap<String, String> itemAttributes = new HashMap<>();
-    OrderItemRequestDTO actualSetItemAttributesResult =
-        actualOrderItemRequestDTO.setItemAttributes(itemAttributes);
+    OrderItemRequestDTO actualSetItemAttributesResult = actualOrderItemRequestDTO.setItemAttributes(itemAttributes);
     OrderItemRequestDTO actualSetOrderItemIdResult = actualOrderItemRequestDTO.setOrderItemId(1L);
     Money overrideRetailPrice = new Money();
     actualOrderItemRequestDTO.setOverrideRetailPrice(overrideRetailPrice);
@@ -116,11 +102,9 @@ public class OrderItemRequestDTODiffblueTest {
     OrderItemRequestDTO actualSetProductIdResult = actualOrderItemRequestDTO.setProductId(1L);
     OrderItemRequestDTO actualSetQuantityResult = actualOrderItemRequestDTO.setQuantity(1);
     OrderItemRequestDTO actualSetSkuIdResult = actualOrderItemRequestDTO.setSkuId(1L);
-    Map<String, String> actualAdditionalAttributes =
-        actualOrderItemRequestDTO.getAdditionalAttributes();
+    Map<String, String> actualAdditionalAttributes = actualOrderItemRequestDTO.getAdditionalAttributes();
     Long actualCategoryId = actualOrderItemRequestDTO.getCategoryId();
-    List<OrderItemRequestDTO> actualChildOrderItems =
-        actualOrderItemRequestDTO.getChildOrderItems();
+    List<OrderItemRequestDTO> actualChildOrderItems = actualOrderItemRequestDTO.getChildOrderItems();
     Map<String, String> actualItemAttributes = actualOrderItemRequestDTO.getItemAttributes();
     Long actualOrderItemId = actualOrderItemRequestDTO.getOrderItemId();
     Money actualOverrideRetailPrice = actualOrderItemRequestDTO.getOverrideRetailPrice();
@@ -130,7 +114,7 @@ public class OrderItemRequestDTODiffblueTest {
     Integer actualQuantity = actualOrderItemRequestDTO.getQuantity();
     Long actualSkuId = actualOrderItemRequestDTO.getSkuId();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals(1, actualQuantity.intValue());
     assertEquals(1L, actualCategoryId.longValue());
     assertEquals(1L, actualOrderItemId.longValue());
@@ -154,14 +138,10 @@ public class OrderItemRequestDTODiffblueTest {
   }
 
   /**
-   * Test {@link OrderItemRequestDTO#OrderItemRequestDTO(Long, Integer)}.
-   *
-   * <p>Method under test: {@link OrderItemRequestDTO#OrderItemRequestDTO(Long, Integer)}
+   * Method under test:
+   * {@link OrderItemRequestDTO#OrderItemRequestDTO(Long, Integer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void OrderItemRequestDTO.<init>(Long, Integer)"})
   public void testNewOrderItemRequestDTO() {
     // Arrange and Act
     OrderItemRequestDTO actualOrderItemRequestDTO = new OrderItemRequestDTO(1L, 1);
@@ -182,14 +162,10 @@ public class OrderItemRequestDTODiffblueTest {
   }
 
   /**
-   * Test {@link OrderItemRequestDTO#OrderItemRequestDTO(Long, Long, Integer)}.
-   *
-   * <p>Method under test: {@link OrderItemRequestDTO#OrderItemRequestDTO(Long, Long, Integer)}
+   * Method under test:
+   * {@link OrderItemRequestDTO#OrderItemRequestDTO(Long, Long, Integer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void OrderItemRequestDTO.<init>(Long, Long, Integer)"})
   public void testNewOrderItemRequestDTO2() {
     // Arrange and Act
     OrderItemRequestDTO actualOrderItemRequestDTO = new OrderItemRequestDTO(1L, 1L, 1);
@@ -210,15 +186,10 @@ public class OrderItemRequestDTODiffblueTest {
   }
 
   /**
-   * Test {@link OrderItemRequestDTO#OrderItemRequestDTO(Long, Long, Long, Integer)}.
-   *
-   * <p>Method under test: {@link OrderItemRequestDTO#OrderItemRequestDTO(Long, Long, Long,
-   * Integer)}
+   * Method under test:
+   * {@link OrderItemRequestDTO#OrderItemRequestDTO(Long, Long, Long, Integer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void OrderItemRequestDTO.<init>(Long, Long, Long, Integer)"})
   public void testNewOrderItemRequestDTO3() {
     // Arrange and Act
     OrderItemRequestDTO actualOrderItemRequestDTO = new OrderItemRequestDTO(1L, 1L, 1L, 1);
@@ -236,46 +207,5 @@ public class OrderItemRequestDTODiffblueTest {
     assertTrue(actualOrderItemRequestDTO.getChildOrderItems().isEmpty());
     assertTrue(actualOrderItemRequestDTO.getAdditionalAttributes().isEmpty());
     assertTrue(actualOrderItemRequestDTO.getItemAttributes().isEmpty());
-  }
-
-  /**
-   * Test {@link OrderItemRequestDTO#getHasConfigurationError()}.
-   *
-   * <ul>
-   *   <li>Given {@link OrderItemRequestDTO#OrderItemRequestDTO()}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderItemRequestDTO#getHasConfigurationError()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean OrderItemRequestDTO.getHasConfigurationError()"})
-  public void testGetHasConfigurationError_givenOrderItemRequestDTO_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(new OrderItemRequestDTO().getHasConfigurationError());
-  }
-
-  /**
-   * Test {@link OrderItemRequestDTO#getHasConfigurationError()}.
-   *
-   * <ul>
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderItemRequestDTO#getHasConfigurationError()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean OrderItemRequestDTO.getHasConfigurationError()"})
-  public void testGetHasConfigurationError_thenReturnTrue() {
-    // Arrange
-    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO(1L, 1);
-    orderItemRequestDTO.setHasConfigurationError(true);
-
-    // Act and Assert
-    assertTrue(orderItemRequestDTO.getHasConfigurationError());
   }
 }

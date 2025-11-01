@@ -18,61 +18,39 @@
 package org.broadleafcommerce.core.catalog.domain;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
-import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import org.broadleafcommerce.common.copy.CreateResponse;
 import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.broadleafcommerce.common.service.GenericEntityServiceImpl;
+import org.broadleafcommerce.common.site.domain.Catalog;
 import org.broadleafcommerce.common.site.domain.CatalogImpl;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.broadleafcommerce.common.util.DimensionUnitOfMeasureType;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.mockito.Mockito;
 
 public class DimensionDiffblueTest {
   /**
-   * Test {@link Dimension#getDimensionString()}.
-   *
-   * <p>Method under test: {@link Dimension#getDimensionString()}
+   * Method under test: {@link Dimension#getDimensionString()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.lang.String Dimension.getDimensionString()"})
   public void testGetDimensionString() {
     // Arrange, Act and Assert
-    assertEquals("nullHxnullWxnullD\"", new Dimension().getDimensionString());
+    assertEquals("nullHxnullWxnullD\"", (new Dimension()).getDimensionString());
   }
 
   /**
-   * Test {@link Dimension#setDimensionUnitOfMeasure(DimensionUnitOfMeasureType)}.
-   *
-   * <ul>
-   *   <li>Then {@link Dimension} (default constructor) {@link Dimension#dimensionUnitOfMeasure} is
-   *       {@code Type}.
-   * </ul>
-   *
-   * <p>Method under test: {@link Dimension#setDimensionUnitOfMeasure(DimensionUnitOfMeasureType)}
+   * Method under test:
+   * {@link Dimension#setDimensionUnitOfMeasure(DimensionUnitOfMeasureType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void Dimension.setDimensionUnitOfMeasure(DimensionUnitOfMeasureType)"})
-  public void testSetDimensionUnitOfMeasure_thenDimensionDimensionUnitOfMeasureIsType() {
+  public void testSetDimensionUnitOfMeasure() {
     // Arrange
     Dimension dimension = new Dimension();
-    DimensionUnitOfMeasureType dimensionUnitOfMeasure =
-        new DimensionUnitOfMeasureType("Type", "Friendly Type");
+    DimensionUnitOfMeasureType dimensionUnitOfMeasure = new DimensionUnitOfMeasureType("Type", "Friendly Type");
 
     // Act
     dimension.setDimensionUnitOfMeasure(dimensionUnitOfMeasure);
@@ -83,107 +61,55 @@ public class DimensionDiffblueTest {
   }
 
   /**
-   * Test {@link Dimension#setDimensionUnitOfMeasure(DimensionUnitOfMeasureType)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then {@link Dimension} (default constructor) {@link Dimension#dimensionUnitOfMeasure} is
-   *       {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link Dimension#setDimensionUnitOfMeasure(DimensionUnitOfMeasureType)}
+   * Method under test:
+   * {@link Dimension#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void Dimension.setDimensionUnitOfMeasure(DimensionUnitOfMeasureType)"})
-  public void testSetDimensionUnitOfMeasure_whenNull_thenDimensionDimensionUnitOfMeasureIsNull() {
-    // Arrange
-    Dimension dimension = new Dimension();
-
-    // Act
-    dimension.setDimensionUnitOfMeasure(null);
-
-    // Assert that nothing has changed
-    assertNull(dimension.dimensionUnitOfMeasure);
-  }
-
-  /**
-   * Test {@link Dimension#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link Dimension#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse Dimension.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
     Dimension dimension = new Dimension();
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(new Dimension(), true);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    CreateResponse<Dimension> actualCreateOrRetrieveCopyInstanceResult =
-        dimension.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
-  }
-
-  /**
-   * Test {@link Dimension#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <ul>
-   *   <li>Then return Clone {@link Dimension#dimensionUnitOfMeasure} is {@code Type}.
-   * </ul>
-   *
-   * <p>Method under test: {@link Dimension#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse Dimension.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance_thenReturnCloneDimensionUnitOfMeasureIsType()
-      throws CloneNotSupportedException {
-    // Arrange
-    Dimension dimension = new Dimension();
-    DimensionUnitOfMeasureType dimensionUnitOfMeasure =
-        new DimensionUnitOfMeasureType("Type", "Friendly Type");
-    dimension.setDimensionUnitOfMeasure(dimensionUnitOfMeasure);
     CatalogImpl fromCatalog = new CatalogImpl();
     CatalogImpl toCatalog = new CatalogImpl();
     SiteImpl fromSite = new SiteImpl();
     SiteImpl toSite = new SiteImpl();
     GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
 
-    MultiTenantCopyContext context =
-        new MultiTenantCopyContext(
-            fromCatalog,
-            toCatalog,
-            fromSite,
-            toSite,
-            genericEntityService,
-            new MultiTenantCopierExtensionManager());
+    // Act
+    CreateResponse<Dimension> actualCreateOrRetrieveCopyInstanceResult = dimension
+        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+            genericEntityService, new MultiTenantCopierExtensionManager()));
 
-    // Act and Assert
-    Dimension clone = dimension.createOrRetrieveCopyInstance(context).getClone();
-    assertEquals("Type", clone.dimensionUnitOfMeasure);
-    assertEquals(dimensionUnitOfMeasure, clone.getDimensionUnitOfMeasure());
+    // Assert
+    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
+    assertEquals(dimension, actualCreateOrRetrieveCopyInstanceResult.getClone());
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Method under test:
+   * {@link Dimension#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
+    // Arrange
+    Dimension dimension = new Dimension();
+    Catalog fromCatalog = mock(Catalog.class);
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
+    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
+
+    // Act
+    CreateResponse<Dimension> actualCreateOrRetrieveCopyInstanceResult = dimension
+        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+            genericEntityService, new MultiTenantCopierExtensionManager()));
+
+    // Assert
+    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
+    assertEquals(dimension, actualCreateOrRetrieveCopyInstanceResult.getClone());
+  }
+
+  /**
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link Dimension}
    *   <li>{@link Dimension#setDepth(BigDecimal)}
@@ -197,19 +123,6 @@ public class DimensionDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void Dimension.<init>()",
-    "BigDecimal Dimension.getDepth()",
-    "BigDecimal Dimension.getGirth()",
-    "BigDecimal Dimension.getHeight()",
-    "BigDecimal Dimension.getWidth()",
-    "void Dimension.setDepth(BigDecimal)",
-    "void Dimension.setGirth(BigDecimal)",
-    "void Dimension.setHeight(BigDecimal)",
-    "void Dimension.setWidth(BigDecimal)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     Dimension actualDimension = new Dimension();
@@ -226,7 +139,7 @@ public class DimensionDiffblueTest {
     BigDecimal actualHeight = actualDimension.getHeight();
     BigDecimal actualWidth = actualDimension.getWidth();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals(new BigDecimal("2.3"), actualDepth);
     assertEquals(new BigDecimal("2.3"), actualGirth);
     assertEquals(new BigDecimal("2.3"), actualHeight);

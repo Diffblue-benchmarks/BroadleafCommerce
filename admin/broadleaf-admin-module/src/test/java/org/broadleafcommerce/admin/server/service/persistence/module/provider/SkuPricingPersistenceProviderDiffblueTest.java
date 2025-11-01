@@ -21,25 +21,20 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.Locale;
-import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.common.persistence.EntityConfiguration;
-import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
-import org.broadleafcommerce.core.catalog.domain.SkuImpl;
 import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
 import org.broadleafcommerce.openadmin.dto.Property;
 import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceException;
@@ -48,825 +43,380 @@ import org.broadleafcommerce.openadmin.server.service.persistence.module.Adorned
 import org.broadleafcommerce.openadmin.server.service.persistence.module.FieldManager;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.ExtractValueRequest;
 import org.broadleafcommerce.openadmin.server.service.type.MetadataProviderResponse;
+import org.hibernate.BaseSessionEventListener;
+import org.hibernate.SessionEventListener;
+import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.Mockito;
 
-@ContextConfiguration(classes = {SkuPricingPersistenceProvider.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class SkuPricingPersistenceProviderDiffblueTest {
-  @Autowired private SkuPricingPersistenceProvider skuPricingPersistenceProvider;
-
   /**
-   * Test {@link SkuPricingPersistenceProvider#getOrder()}.
-   *
-   * <p>Method under test: {@link SkuPricingPersistenceProvider#getOrder()}
+   * Method under test: {@link SkuPricingPersistenceProvider#getOrder()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int SkuPricingPersistenceProvider.getOrder()"})
   public void testGetOrder() {
     // Arrange, Act and Assert
-    assertEquals(49000, new SkuPricingPersistenceProvider().getOrder());
+    assertEquals(49000, (new SkuPricingPersistenceProvider()).getOrder());
   }
 
   /**
-   * Test {@link SkuPricingPersistenceProvider#extractValue(ExtractValueRequest, Property)}.
-   *
-   * <ul>
-   *   <li>Given {@code Target Class}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuPricingPersistenceProvider#extractValue(ExtractValueRequest,
-   * Property)}
+   * Method under test:
+   * {@link SkuPricingPersistenceProvider#extractValue(ExtractValueRequest, Property)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "MetadataProviderResponse SkuPricingPersistenceProvider.extractValue(ExtractValueRequest, Property)"
-  })
-  public void testExtractValue_givenTargetClass() throws PersistenceException {
-    // Arrange
-    BasicFieldMetadata metadata = mock(BasicFieldMetadata.class);
-    when(metadata.getTargetClass()).thenReturn("Target Class");
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
+  public void testExtractValue() throws PersistenceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            "Requested Value",
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
+    // Arrange
+    SkuPricingPersistenceProvider skuPricingPersistenceProvider = new SkuPricingPersistenceProvider();
+
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setTargetClass("Target Class");
+    ExtractValueRequest extractValueRequest = mock(ExtractValueRequest.class);
+    when(extractValueRequest.getMetadata()).thenReturn(basicFieldMetadata);
 
     // Act
-    MetadataProviderResponse actualExtractValueResult =
-        skuPricingPersistenceProvider.extractValue(extractValueRequest, new Property());
+    MetadataProviderResponse actualExtractValueResult = skuPricingPersistenceProvider.extractValue(extractValueRequest,
+        new Property());
 
     // Assert
-    verify(metadata, atLeast(1)).getTargetClass();
+    verify(extractValueRequest, atLeast(1)).getMetadata();
     assertEquals(MetadataProviderResponse.NOT_HANDLED, actualExtractValueResult);
   }
 
   /**
-   * Test {@link SkuPricingPersistenceProvider#extractValue(ExtractValueRequest, Property)}.
-   *
-   * <ul>
-   *   <li>Given {@code UNKNOWN}.
-   *   <li>Then calls {@link BasicFieldMetadata#getFieldType()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuPricingPersistenceProvider#extractValue(ExtractValueRequest,
-   * Property)}
+   * Method under test:
+   * {@link SkuPricingPersistenceProvider#extractValue(ExtractValueRequest, Property)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "MetadataProviderResponse SkuPricingPersistenceProvider.extractValue(ExtractValueRequest, Property)"
-  })
-  public void testExtractValue_givenUnknown_thenCallsGetFieldType() throws PersistenceException {
-    // Arrange
-    BasicFieldMetadata metadata = mock(BasicFieldMetadata.class);
-    when(metadata.getFieldType()).thenReturn(SupportedFieldType.UNKNOWN);
-    when(metadata.getTargetClass()).thenReturn("org.broadleafcommerce.core.catalog.domain.SkuImpl");
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
+  public void testExtractValue2() throws PersistenceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            "Requested Value",
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
+    // Arrange
+    SkuPricingPersistenceProvider skuPricingPersistenceProvider = new SkuPricingPersistenceProvider();
+
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setTargetClass("org.broadleafcommerce.core.catalog.domain.SkuImpl");
+    ExtractValueRequest extractValueRequest = mock(ExtractValueRequest.class);
+    when(extractValueRequest.getMetadata()).thenReturn(basicFieldMetadata);
 
     // Act
-    MetadataProviderResponse actualExtractValueResult =
-        skuPricingPersistenceProvider.extractValue(
-            extractValueRequest, new Property("Target Class", "42"));
+    MetadataProviderResponse actualExtractValueResult = skuPricingPersistenceProvider.extractValue(extractValueRequest,
+        new Property("Name", "42"));
 
     // Assert
-    verify(metadata).getFieldType();
-    verify(metadata).getTargetClass();
+    verify(extractValueRequest, atLeast(1)).getMetadata();
     assertEquals(MetadataProviderResponse.NOT_HANDLED, actualExtractValueResult);
   }
 
   /**
-   * Test {@link SkuPricingPersistenceProvider#extractValue(ExtractValueRequest, Property)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link PersistenceException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuPricingPersistenceProvider#extractValue(ExtractValueRequest,
-   * Property)}
+   * Method under test:
+   * {@link SkuPricingPersistenceProvider#extractValue(ExtractValueRequest, Property)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "MetadataProviderResponse SkuPricingPersistenceProvider.extractValue(ExtractValueRequest, Property)"
-  })
-  public void testExtractValue_thenThrowPersistenceException() throws PersistenceException {
+  public void testExtractValue3() throws PersistenceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    BasicFieldMetadata metadata = mock(BasicFieldMetadata.class);
-    when(metadata.getFieldType()).thenThrow(new PersistenceException("An error occurred"));
-    when(metadata.getTargetClass()).thenReturn("org.broadleafcommerce.core.catalog.domain.SkuImpl");
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
+    SkuPricingPersistenceProvider skuPricingPersistenceProvider = new SkuPricingPersistenceProvider();
 
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            "Requested Value",
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
-
-    // Act and Assert
-    assertThrows(
-        PersistenceException.class,
-        () ->
-            skuPricingPersistenceProvider.extractValue(
-                extractValueRequest, new Property("Target Class", "42")));
-    verify(metadata).getFieldType();
-    verify(metadata).getTargetClass();
-  }
-
-  /**
-   * Test {@link SkuPricingPersistenceProvider#extractValue(ExtractValueRequest, Property)}.
-   *
-   * <ul>
-   *   <li>When {@link Property#Property(String, String)} with name is {@code ---} and value is
-   *       {@code 42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuPricingPersistenceProvider#extractValue(ExtractValueRequest,
-   * Property)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "MetadataProviderResponse SkuPricingPersistenceProvider.extractValue(ExtractValueRequest, Property)"
-  })
-  public void testExtractValue_whenPropertyWithNameIsDashDashDashAndValueIs42()
-      throws PersistenceException {
-    // Arrange
-    BasicFieldMetadata metadata = mock(BasicFieldMetadata.class);
-    when(metadata.getTargetClass()).thenReturn("org.broadleafcommerce.core.catalog.domain.SkuImpl");
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            "Requested Value",
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setTargetClass("org.broadleafcommerce.core.catalog.domain.SkuImpl");
+    ExtractValueRequest extractValueRequest = mock(ExtractValueRequest.class);
+    when(extractValueRequest.getMetadata()).thenReturn(basicFieldMetadata);
 
     // Act
-    MetadataProviderResponse actualExtractValueResult =
-        skuPricingPersistenceProvider.extractValue(extractValueRequest, new Property("---", "42"));
+    MetadataProviderResponse actualExtractValueResult = skuPricingPersistenceProvider.extractValue(extractValueRequest,
+        new Property("---", "42"));
 
     // Assert
-    verify(metadata).getTargetClass();
+    verify(extractValueRequest).getMetadata();
     assertEquals(MetadataProviderResponse.NOT_HANDLED, actualExtractValueResult);
   }
 
   /**
-   * Test {@link SkuPricingPersistenceProvider#formatValue(Object, ExtractValueRequest, Property)}
-   * with {@code Object}, {@code ExtractValueRequest}, {@code Property}.
-   *
-   * <ul>
-   *   <li>Then return {@code 2.30}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuPricingPersistenceProvider#formatValue(Object,
-   * ExtractValueRequest, Property)}
+   * Method under test:
+   * {@link SkuPricingPersistenceProvider#formatValue(Object, ExtractValueRequest, Property)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String SkuPricingPersistenceProvider.formatValue(Object, ExtractValueRequest, Property)"
-  })
-  public void testFormatValueWithObjectExtractValueRequestProperty_thenReturn230() {
+  public void testFormatValue() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    BigDecimal bigDecimal = new BigDecimal("2.3");
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            "Requested Value",
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
-
-    // Act and Assert
-    assertEquals(
-        "2.30",
-        skuPricingPersistenceProvider.formatValue(
-            (Object) bigDecimal, extractValueRequest, new Property()));
-  }
-
-  /**
-   * Test {@link SkuPricingPersistenceProvider#formatValue(Object, ExtractValueRequest, Property)}
-   * with {@code Object}, {@code ExtractValueRequest}, {@code Property}.
-   *
-   * <ul>
-   *   <li>When {@link Money#Money()}.
-   *   <li>Then return {@code 0.00}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuPricingPersistenceProvider#formatValue(Object,
-   * ExtractValueRequest, Property)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String SkuPricingPersistenceProvider.formatValue(Object, ExtractValueRequest, Property)"
-  })
-  public void testFormatValueWithObjectExtractValueRequestProperty_whenMoney_thenReturn000() {
-    // Arrange
+    SkuPricingPersistenceProvider skuPricingPersistenceProvider = new SkuPricingPersistenceProvider();
     Money money = new Money();
+    SessionDelegatorBaseImpl entityManager = mock(SessionDelegatorBaseImpl.class);
+    doNothing().when(entityManager).addEventListeners((SessionEventListener[]) any());
+    entityManager.addEventListeners(new BaseSessionEventListener());
+    FieldManager fieldManager = new FieldManager(mock(EntityConfiguration.class), entityManager);
+
     ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
     AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            "Requested Value",
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
-
-    // Act and Assert
-    assertEquals(
-        "0.00",
-        skuPricingPersistenceProvider.formatValue(money, extractValueRequest, new Property()));
-  }
-
-  /**
-   * Test {@link SkuPricingPersistenceProvider#formatValue(Object, ExtractValueRequest, Property)}
-   * with {@code Object}, {@code ExtractValueRequest}, {@code Property}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuPricingPersistenceProvider#formatValue(Object,
-   * ExtractValueRequest, Property)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String SkuPricingPersistenceProvider.formatValue(Object, ExtractValueRequest, Property)"
-  })
-  public void testFormatValueWithObjectExtractValueRequestProperty_whenNull_thenReturnNull() {
-    // Arrange
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            "Requested Value",
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
-
-    // Act and Assert
-    assertNull(
-        skuPricingPersistenceProvider.formatValue(
-            (Object) null, extractValueRequest, new Property()));
-  }
-
-  /**
-   * Test {@link SkuPricingPersistenceProvider#formatDisplayValue(Object, ExtractValueRequest,
-   * Property)} with {@code Object}, {@code ExtractValueRequest}, {@code Property}.
-   *
-   * <ul>
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuPricingPersistenceProvider#formatDisplayValue(Object,
-   * ExtractValueRequest, Property)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String SkuPricingPersistenceProvider.formatDisplayValue(Object, ExtractValueRequest, Property)"
-  })
-  public void testFormatDisplayValueWithObjectExtractValueRequestProperty_thenReturnNull() {
-    // Arrange
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            "Requested Value",
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
-
-    // Act and Assert
-    assertNull(
-        skuPricingPersistenceProvider.formatDisplayValue(
-            (Object) null, extractValueRequest, new Property()));
-  }
-
-  /**
-   * Test {@link SkuPricingPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}.
-   *
-   * <ul>
-   *   <li>Given {@code Target Class}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SkuPricingPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SkuPricingPersistenceProvider.canHandleExtraction(ExtractValueRequest, Property)"
-  })
-  public void testCanHandleExtraction_givenTargetClass() {
-    // Arrange
-    BasicFieldMetadata metadata = mock(BasicFieldMetadata.class);
-    when(metadata.getTargetClass()).thenReturn("Target Class");
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            "Requested Value",
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
+    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
+        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
+        new String[]{"Custom Criteria"});
 
     // Act
-    boolean actualCanHandleExtractionResult =
-        skuPricingPersistenceProvider.canHandleExtraction(extractValueRequest, new Property());
+    String actualFormatValueResult = skuPricingPersistenceProvider.formatValue(money, extractValueRequest,
+        new Property());
 
     // Assert
-    verify(metadata, atLeast(1)).getTargetClass();
-    assertFalse(actualCanHandleExtractionResult);
+    verify(entityManager).addEventListeners((SessionEventListener[]) any());
+    assertEquals("0.00", actualFormatValueResult);
   }
 
   /**
-   * Test {@link SkuPricingPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}.
-   *
-   * <ul>
-   *   <li>Given {@code UNKNOWN}.
-   *   <li>Then calls {@link BasicFieldMetadata#getFieldType()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SkuPricingPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}
+   * Method under test:
+   * {@link SkuPricingPersistenceProvider#formatValue(Object, ExtractValueRequest, Property)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SkuPricingPersistenceProvider.canHandleExtraction(ExtractValueRequest, Property)"
-  })
-  public void testCanHandleExtraction_givenUnknown_thenCallsGetFieldType() {
+  public void testFormatValue2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    BasicFieldMetadata metadata = mock(BasicFieldMetadata.class);
-    when(metadata.getFieldType()).thenReturn(SupportedFieldType.UNKNOWN);
-    when(metadata.getTargetClass()).thenReturn("org.broadleafcommerce.core.catalog.domain.SkuImpl");
+    SkuPricingPersistenceProvider skuPricingPersistenceProvider = new SkuPricingPersistenceProvider();
+    BigDecimal bigDecimal = new BigDecimal("2.3");
+    SessionDelegatorBaseImpl entityManager = mock(SessionDelegatorBaseImpl.class);
+    doNothing().when(entityManager).addEventListeners((SessionEventListener[]) any());
+    entityManager.addEventListeners(new BaseSessionEventListener());
+    FieldManager fieldManager = new FieldManager(mock(EntityConfiguration.class), entityManager);
+
     ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            "Requested Value",
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
-
-    // Act
-    boolean actualCanHandleExtractionResult =
-        skuPricingPersistenceProvider.canHandleExtraction(
-            extractValueRequest, new Property("Target Class", "42"));
-
-    // Assert
-    verify(metadata).getFieldType();
-    verify(metadata).getTargetClass();
-    assertFalse(actualCanHandleExtractionResult);
-  }
-
-  /**
-   * Test {@link SkuPricingPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link PersistenceException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SkuPricingPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SkuPricingPersistenceProvider.canHandleExtraction(ExtractValueRequest, Property)"
-  })
-  public void testCanHandleExtraction_thenThrowPersistenceException() {
-    // Arrange
-    BasicFieldMetadata metadata = mock(BasicFieldMetadata.class);
-    when(metadata.getFieldType()).thenThrow(new PersistenceException("An error occurred"));
-    when(metadata.getTargetClass()).thenReturn("org.broadleafcommerce.core.catalog.domain.SkuImpl");
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            "Requested Value",
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
-
-    // Act and Assert
-    assertThrows(
-        PersistenceException.class,
-        () ->
-            skuPricingPersistenceProvider.canHandleExtraction(
-                extractValueRequest, new Property("Target Class", "42")));
-    verify(metadata).getFieldType();
-    verify(metadata).getTargetClass();
-  }
-
-  /**
-   * Test {@link SkuPricingPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}.
-   *
-   * <ul>
-   *   <li>When {@link Property#Property(String, String)} with name is {@code ---} and value is
-   *       {@code 42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SkuPricingPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SkuPricingPersistenceProvider.canHandleExtraction(ExtractValueRequest, Property)"
-  })
-  public void testCanHandleExtraction_whenPropertyWithNameIsDashDashDashAndValueIs42() {
-    // Arrange
-    BasicFieldMetadata metadata = mock(BasicFieldMetadata.class);
-    when(metadata.getTargetClass()).thenReturn("org.broadleafcommerce.core.catalog.domain.SkuImpl");
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            "Requested Value",
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
-
-    // Act
-    boolean actualCanHandleExtractionResult =
-        skuPricingPersistenceProvider.canHandleExtraction(
-            extractValueRequest, new Property("---", "42"));
-
-    // Assert
-    verify(metadata).getTargetClass();
-    assertFalse(actualCanHandleExtractionResult);
-  }
-
-  /**
-   * Test {@link SkuPricingPersistenceProvider#isDefaultSkuProperty(ExtractValueRequest, Property)}.
-   *
-   * <ul>
-   *   <li>Given {@code Name}.
-   *   <li>When {@link Property} {@link Property#getName()} return {@code Name}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SkuPricingPersistenceProvider#isDefaultSkuProperty(ExtractValueRequest, Property)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SkuPricingPersistenceProvider.isDefaultSkuProperty(ExtractValueRequest, Property)"
-  })
-  public void testIsDefaultSkuProperty_givenName_whenPropertyGetNameReturnName_thenReturnFalse() {
-    // Arrange
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
     AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            "Requested Value",
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
-
-    Property property = mock(Property.class);
-    when(property.getName()).thenReturn("Name");
+    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
+        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
+        new String[]{"Custom Criteria"});
 
     // Act
-    boolean actualIsDefaultSkuPropertyResult =
-        skuPricingPersistenceProvider.isDefaultSkuProperty(extractValueRequest, property);
+    String actualFormatValueResult = skuPricingPersistenceProvider.formatValue((Object) bigDecimal, extractValueRequest,
+        new Property());
 
     // Assert
-    verify(property).getName();
-    assertFalse(actualIsDefaultSkuPropertyResult);
+    verify(entityManager).addEventListeners((SessionEventListener[]) any());
+    assertEquals("2.30", actualFormatValueResult);
   }
 
   /**
-   * Test {@link SkuPricingPersistenceProvider#isDefaultSkuProperty(ExtractValueRequest, Property)}.
-   *
-   * <ul>
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SkuPricingPersistenceProvider#isDefaultSkuProperty(ExtractValueRequest, Property)}
+   * Method under test:
+   * {@link SkuPricingPersistenceProvider#formatValue(Object, ExtractValueRequest, Property)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SkuPricingPersistenceProvider.isDefaultSkuProperty(ExtractValueRequest, Property)"
-  })
-  public void testIsDefaultSkuProperty_thenReturnTrue() {
+  public void testFormatValue3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    SkuPricingPersistenceProvider skuPricingPersistenceProvider = new SkuPricingPersistenceProvider();
+    SessionDelegatorBaseImpl entityManager = mock(SessionDelegatorBaseImpl.class);
+    doNothing().when(entityManager).addEventListeners((SessionEventListener[]) any());
+    entityManager.addEventListeners(new BaseSessionEventListener());
+    FieldManager fieldManager = new FieldManager(mock(EntityConfiguration.class), entityManager);
+
     ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
     AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            "Requested Value",
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
+    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
+        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
+        new String[]{"Custom Criteria"});
 
     // Act
-    boolean actualIsDefaultSkuPropertyResult =
-        skuPricingPersistenceProvider.isDefaultSkuProperty(
-            extractValueRequest, new Property("defaultSku", "42"));
+    String actualFormatValueResult = skuPricingPersistenceProvider.formatValue((Object) null, extractValueRequest,
+        new Property());
 
     // Assert
-    assertTrue(actualIsDefaultSkuPropertyResult);
+    verify(entityManager).addEventListeners((SessionEventListener[]) any());
+    assertNull(actualFormatValueResult);
   }
 
   /**
-   * Test {@link SkuPricingPersistenceProvider#getLocale(ExtractValueRequest, Property)}.
-   *
-   * <ul>
-   *   <li>Then return {@link Locale#ENGLISH}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuPricingPersistenceProvider#getLocale(ExtractValueRequest,
-   * Property)}
+   * Method under test:
+   * {@link SkuPricingPersistenceProvider#formatDisplayValue(Object, ExtractValueRequest, Property)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Locale SkuPricingPersistenceProvider.getLocale(ExtractValueRequest, Property)"
-  })
-  public void testGetLocale_thenReturnEnglish() {
+  public void testFormatDisplayValue() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    SkuPricingPersistenceProvider skuPricingPersistenceProvider = new SkuPricingPersistenceProvider();
+    SessionDelegatorBaseImpl entityManager = mock(SessionDelegatorBaseImpl.class);
+    doNothing().when(entityManager).addEventListeners((SessionEventListener[]) any());
+    entityManager.addEventListeners(new BaseSessionEventListener());
+    FieldManager fieldManager = new FieldManager(mock(EntityConfiguration.class), entityManager);
+
     ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
     AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    String[] customCriteria = new String[] {"Custom Criteria"};
+    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
+        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
+        new String[]{"Custom Criteria"});
 
-    ExtractValueRequest extractValueRequest =
-        new ExtractValueRequest(
-            props,
-            fieldManager,
-            metadata,
-            "Requested Value",
-            "Display Val",
-            persistenceManager,
-            recordHelper,
-            new SimpleDateFormat("yyyy/mm/dd"),
-            customCriteria);
+    // Act
+    String actualFormatDisplayValueResult = skuPricingPersistenceProvider.formatDisplayValue((Object) null,
+        extractValueRequest, new Property());
 
-    // Act and Assert
-    assertSame(
-        Locale.ENGLISH,
-        skuPricingPersistenceProvider.getLocale(extractValueRequest, new Property()));
+    // Assert
+    verify(entityManager).addEventListeners((SessionEventListener[]) any());
+    assertNull(actualFormatDisplayValueResult);
   }
 
   /**
-   * Test {@link SkuPricingPersistenceProvider#getCurrency(ExtractValueRequest, Property)}.
-   *
-   * <ul>
-   *   <li>Then return DisplayName is {@code British Pound}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuPricingPersistenceProvider#getCurrency(ExtractValueRequest,
-   * Property)}
+   * Method under test:
+   * {@link SkuPricingPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Currency SkuPricingPersistenceProvider.getCurrency(ExtractValueRequest, Property)"
-  })
-  public void testGetCurrency_thenReturnDisplayNameIsBritishPound() {
+  public void testCanHandleExtraction() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    SkuPricingPersistenceProvider skuPricingPersistenceProvider =
-        new SkuPricingPersistenceProvider();
+    SkuPricingPersistenceProvider skuPricingPersistenceProvider = new SkuPricingPersistenceProvider();
 
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setCurrency(currency);
-
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setTargetClass("Target Class");
     ExtractValueRequest extractValueRequest = mock(ExtractValueRequest.class);
-    when(extractValueRequest.getEntity()).thenReturn(skuImpl);
+    when(extractValueRequest.getMetadata()).thenReturn(basicFieldMetadata);
 
     // Act
-    Currency actualCurrency =
-        skuPricingPersistenceProvider.getCurrency(extractValueRequest, new Property());
+    boolean actualCanHandleExtractionResult = skuPricingPersistenceProvider.canHandleExtraction(extractValueRequest,
+        new Property());
 
     // Assert
-    verify(currency).getCurrencyCode();
-    verify(extractValueRequest, atLeast(1)).getEntity();
-    assertEquals("British Pound", actualCurrency.getDisplayName());
-    assertEquals("GBP", actualCurrency.getCurrencyCode());
-    assertEquals("GBP", actualCurrency.toString());
-    assertEquals("£", actualCurrency.getSymbol());
-    assertEquals(2, actualCurrency.getDefaultFractionDigits());
-    assertEquals(826, actualCurrency.getNumericCode());
+    verify(extractValueRequest, atLeast(1)).getMetadata();
+    assertFalse(actualCanHandleExtractionResult);
   }
 
   /**
-   * Test {@link SkuPricingPersistenceProvider#getCurrency(ExtractValueRequest, Property)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link PersistenceException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuPricingPersistenceProvider#getCurrency(ExtractValueRequest,
-   * Property)}
+   * Method under test:
+   * {@link SkuPricingPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Currency SkuPricingPersistenceProvider.getCurrency(ExtractValueRequest, Property)"
-  })
-  public void testGetCurrency_thenThrowPersistenceException() {
+  public void testCanHandleExtraction2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    SkuPricingPersistenceProvider skuPricingPersistenceProvider =
-        new SkuPricingPersistenceProvider();
+    SkuPricingPersistenceProvider skuPricingPersistenceProvider = new SkuPricingPersistenceProvider();
 
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenThrow(new PersistenceException("An error occurred"));
-
-    SkuImpl skuImpl = new SkuImpl();
-    skuImpl.setCurrency(currency);
-
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setTargetClass("org.broadleafcommerce.core.catalog.domain.SkuImpl");
     ExtractValueRequest extractValueRequest = mock(ExtractValueRequest.class);
-    when(extractValueRequest.getEntity()).thenReturn(skuImpl);
+    when(extractValueRequest.getMetadata()).thenReturn(basicFieldMetadata);
+
+    // Act
+    boolean actualCanHandleExtractionResult = skuPricingPersistenceProvider.canHandleExtraction(extractValueRequest,
+        new Property("Name", "42"));
+
+    // Assert
+    verify(extractValueRequest, atLeast(1)).getMetadata();
+    assertFalse(actualCanHandleExtractionResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link SkuPricingPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}
+   */
+  @Test
+  public void testCanHandleExtraction3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuPricingPersistenceProvider skuPricingPersistenceProvider = new SkuPricingPersistenceProvider();
+
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setTargetClass("org.broadleafcommerce.core.catalog.domain.SkuImpl");
+    ExtractValueRequest extractValueRequest = mock(ExtractValueRequest.class);
+    when(extractValueRequest.getMetadata()).thenReturn(basicFieldMetadata);
+
+    // Act
+    boolean actualCanHandleExtractionResult = skuPricingPersistenceProvider.canHandleExtraction(extractValueRequest,
+        new Property("---", "42"));
+
+    // Assert
+    verify(extractValueRequest).getMetadata();
+    assertFalse(actualCanHandleExtractionResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link SkuPricingPersistenceProvider#isDefaultSkuProperty(ExtractValueRequest, Property)}
+   */
+  @Test
+  public void testIsDefaultSkuProperty() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuPricingPersistenceProvider skuPricingPersistenceProvider = new SkuPricingPersistenceProvider();
+    ArrayList<Property> props = new ArrayList<>();
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
+    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
+        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
+        new String[]{"Custom Criteria"});
+
+    Property property = new Property();
+    property.setName("defaultSku");
 
     // Act and Assert
-    assertThrows(
-        PersistenceException.class,
-        () -> skuPricingPersistenceProvider.getCurrency(extractValueRequest, new Property()));
-    verify(currency).getCurrencyCode();
-    verify(extractValueRequest, atLeast(1)).getEntity();
+    assertTrue(skuPricingPersistenceProvider.isDefaultSkuProperty(extractValueRequest, property));
+  }
+
+  /**
+   * Method under test:
+   * {@link SkuPricingPersistenceProvider#isDefaultSkuProperty(ExtractValueRequest, Property)}
+   */
+  @Test
+  public void testIsDefaultSkuProperty2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuPricingPersistenceProvider skuPricingPersistenceProvider = new SkuPricingPersistenceProvider();
+    ArrayList<Property> props = new ArrayList<>();
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
+    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
+        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
+        new String[]{"Custom Criteria"});
+
+    Property property = new Property();
+    property.setName("Name");
+
+    // Act and Assert
+    assertFalse(skuPricingPersistenceProvider.isDefaultSkuProperty(extractValueRequest, property));
+  }
+
+  /**
+   * Method under test:
+   * {@link SkuPricingPersistenceProvider#getLocale(ExtractValueRequest, Property)}
+   */
+  @Test
+  public void testGetLocale() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuPricingPersistenceProvider skuPricingPersistenceProvider = new SkuPricingPersistenceProvider();
+    ArrayList<Property> props = new ArrayList<>();
+    FieldManager fieldManager = new FieldManager(mock(EntityConfiguration.class), null);
+
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
+    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
+        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
+        new String[]{"Custom Criteria"});
+
+    // Act
+    Locale actualLocale = skuPricingPersistenceProvider.getLocale(extractValueRequest, new Property());
+
+    // Assert
+    assertSame(actualLocale.ENGLISH, actualLocale);
   }
 }

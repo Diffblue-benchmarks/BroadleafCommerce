@@ -22,44 +22,109 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import java.util.Set;
 import javax.cache.configuration.CacheEntryListenerConfiguration;
 import javax.cache.configuration.Configuration;
 import javax.cache.configuration.MutableConfiguration;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.mockito.Mockito;
 
 public class DefaultJCacheConfigurationBuilderDiffblueTest {
   /**
-   * Test {@link DefaultJCacheConfigurationBuilder#buildConfiguration(JCacheRegionConfiguration)}
-   * with {@code regionInformation}.
-   *
-   * <p>Method under test: {@link
-   * DefaultJCacheConfigurationBuilder#buildConfiguration(JCacheRegionConfiguration)}
+   * Method under test:
+   * {@link DefaultJCacheConfigurationBuilder#buildConfiguration(int, int, Class, Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Configuration DefaultJCacheConfigurationBuilder.buildConfiguration(JCacheRegionConfiguration)"
-  })
-  public void testBuildConfigurationWithRegionInformation() {
+  public void testBuildConfiguration() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    DefaultJCacheConfigurationBuilder defaultJCacheConfigurationBuilder =
-        new DefaultJCacheConfigurationBuilder();
+    DefaultJCacheConfigurationBuilder defaultJCacheConfigurationBuilder = new DefaultJCacheConfigurationBuilder();
+    Class<Object> keyClass = Object.class;
+    Class<Object> valueClass = Object.class;
 
     // Act
-    Configuration actualBuildConfigurationResult =
-        defaultJCacheConfigurationBuilder.buildConfiguration(
-            new JCacheRegionConfiguration("Cache Name"));
+    Configuration<Object, Object> actualBuildConfigurationResult = defaultJCacheConfigurationBuilder
+        .buildConfiguration(1, 3, keyClass, valueClass);
 
     // Assert
-    Iterable<CacheEntryListenerConfiguration> cacheEntryListenerConfigurations =
-        ((MutableConfiguration) actualBuildConfigurationResult)
-            .getCacheEntryListenerConfigurations();
+    Iterable<CacheEntryListenerConfiguration<Object, Object>> cacheEntryListenerConfigurations = ((MutableConfiguration<Object, Object>) actualBuildConfigurationResult)
+        .getCacheEntryListenerConfigurations();
+    assertTrue(cacheEntryListenerConfigurations instanceof Set);
+    assertTrue(actualBuildConfigurationResult instanceof MutableConfiguration);
+    assertNull(((MutableConfiguration<Object, Object>) actualBuildConfigurationResult).getCacheLoaderFactory());
+    assertNull(((MutableConfiguration<Object, Object>) actualBuildConfigurationResult).getCacheWriterFactory());
+    assertFalse(((MutableConfiguration<Object, Object>) actualBuildConfigurationResult).isManagementEnabled());
+    assertFalse(((MutableConfiguration<Object, Object>) actualBuildConfigurationResult).isReadThrough());
+    assertFalse(((MutableConfiguration<Object, Object>) actualBuildConfigurationResult).isStatisticsEnabled());
+    assertFalse(((MutableConfiguration<Object, Object>) actualBuildConfigurationResult).isWriteThrough());
+    assertTrue(((Set<CacheEntryListenerConfiguration<Object, Object>>) cacheEntryListenerConfigurations).isEmpty());
+    assertTrue(actualBuildConfigurationResult.isStoreByValue());
+    Class<Object> expectedKeyType = Object.class;
+    Class<Object> keyType = actualBuildConfigurationResult.getKeyType();
+    assertEquals(expectedKeyType, keyType);
+    assertSame(valueClass, keyType);
+    assertSame(valueClass, actualBuildConfigurationResult.getValueType());
+  }
+
+  /**
+   * Method under test:
+   * {@link DefaultJCacheConfigurationBuilder#buildConfiguration(int, int, Class, Class)}
+   */
+  @Test
+  public void testBuildConfiguration2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    DefaultJCacheConfigurationBuilder defaultJCacheConfigurationBuilder = new DefaultJCacheConfigurationBuilder();
+    Class<Object> keyClass = Object.class;
+    Class<Object> valueClass = Object.class;
+
+    // Act
+    Configuration<Object, Object> actualBuildConfigurationResult = defaultJCacheConfigurationBuilder
+        .buildConfiguration(-1, 3, keyClass, valueClass);
+
+    // Assert
+    Iterable<CacheEntryListenerConfiguration<Object, Object>> cacheEntryListenerConfigurations = ((MutableConfiguration<Object, Object>) actualBuildConfigurationResult)
+        .getCacheEntryListenerConfigurations();
+    assertTrue(cacheEntryListenerConfigurations instanceof Set);
+    assertTrue(actualBuildConfigurationResult instanceof MutableConfiguration);
+    assertNull(((MutableConfiguration<Object, Object>) actualBuildConfigurationResult).getCacheLoaderFactory());
+    assertNull(((MutableConfiguration<Object, Object>) actualBuildConfigurationResult).getCacheWriterFactory());
+    assertFalse(((MutableConfiguration<Object, Object>) actualBuildConfigurationResult).isManagementEnabled());
+    assertFalse(((MutableConfiguration<Object, Object>) actualBuildConfigurationResult).isReadThrough());
+    assertFalse(((MutableConfiguration<Object, Object>) actualBuildConfigurationResult).isStatisticsEnabled());
+    assertFalse(((MutableConfiguration<Object, Object>) actualBuildConfigurationResult).isWriteThrough());
+    assertTrue(((Set<CacheEntryListenerConfiguration<Object, Object>>) cacheEntryListenerConfigurations).isEmpty());
+    assertTrue(actualBuildConfigurationResult.isStoreByValue());
+    Class<Object> expectedKeyType = Object.class;
+    Class<Object> keyType = actualBuildConfigurationResult.getKeyType();
+    assertEquals(expectedKeyType, keyType);
+    assertSame(valueClass, keyType);
+    assertSame(valueClass, actualBuildConfigurationResult.getValueType());
+  }
+
+  /**
+   * Method under test:
+   * {@link DefaultJCacheConfigurationBuilder#buildConfiguration(JCacheRegionConfiguration)}
+   */
+  @Test
+  public void testBuildConfiguration3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    DefaultJCacheConfigurationBuilder defaultJCacheConfigurationBuilder = new DefaultJCacheConfigurationBuilder();
+
+    // Act
+    Configuration actualBuildConfigurationResult = defaultJCacheConfigurationBuilder
+        .buildConfiguration(new JCacheRegionConfiguration("Cache Name"));
+
+    // Assert
+    Iterable<CacheEntryListenerConfiguration> cacheEntryListenerConfigurations = ((MutableConfiguration) actualBuildConfigurationResult)
+        .getCacheEntryListenerConfigurations();
     assertTrue(cacheEntryListenerConfigurations instanceof Set);
     assertTrue(actualBuildConfigurationResult instanceof MutableConfiguration);
     assertNull(((MutableConfiguration) actualBuildConfigurationResult).getCacheLoaderFactory());
@@ -77,38 +142,26 @@ public class DefaultJCacheConfigurationBuilderDiffblueTest {
   }
 
   /**
-   * Test {@link DefaultJCacheConfigurationBuilder#buildConfiguration(JCacheRegionConfiguration)}
-   * with {@code regionInformation}.
-   *
-   * <ul>
-   *   <li>Given zero.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * DefaultJCacheConfigurationBuilder#buildConfiguration(JCacheRegionConfiguration)}
+   * Method under test:
+   * {@link DefaultJCacheConfigurationBuilder#buildConfiguration(JCacheRegionConfiguration)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Configuration DefaultJCacheConfigurationBuilder.buildConfiguration(JCacheRegionConfiguration)"
-  })
-  public void testBuildConfigurationWithRegionInformation_givenZero() {
+  public void testBuildConfiguration4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    DefaultJCacheConfigurationBuilder defaultJCacheConfigurationBuilder =
-        new DefaultJCacheConfigurationBuilder();
+    DefaultJCacheConfigurationBuilder defaultJCacheConfigurationBuilder = new DefaultJCacheConfigurationBuilder();
 
     JCacheRegionConfiguration regionInformation = new JCacheRegionConfiguration("Cache Name");
     regionInformation.setTtlSeconds(0);
 
     // Act
-    Configuration actualBuildConfigurationResult =
-        defaultJCacheConfigurationBuilder.buildConfiguration(regionInformation);
+    Configuration actualBuildConfigurationResult = defaultJCacheConfigurationBuilder
+        .buildConfiguration(regionInformation);
 
     // Assert
-    Iterable<CacheEntryListenerConfiguration> cacheEntryListenerConfigurations =
-        ((MutableConfiguration) actualBuildConfigurationResult)
-            .getCacheEntryListenerConfigurations();
+    Iterable<CacheEntryListenerConfiguration> cacheEntryListenerConfigurations = ((MutableConfiguration) actualBuildConfigurationResult)
+        .getCacheEntryListenerConfigurations();
     assertTrue(cacheEntryListenerConfigurations instanceof Set);
     assertTrue(actualBuildConfigurationResult instanceof MutableConfiguration);
     assertNull(((MutableConfiguration) actualBuildConfigurationResult).getCacheLoaderFactory());
@@ -126,112 +179,48 @@ public class DefaultJCacheConfigurationBuilderDiffblueTest {
   }
 
   /**
-   * Test {@link DefaultJCacheConfigurationBuilder#buildConfiguration(int, int, Class, Class)} with
-   * {@code ttlSeconds}, {@code maxElementsInMemory}, {@code keyClass}, {@code valueClass}.
-   *
-   * <p>Method under test: {@link DefaultJCacheConfigurationBuilder#buildConfiguration(int, int,
-   * Class, Class)}
+   * Method under test:
+   * {@link DefaultJCacheConfigurationBuilder#buildConfiguration(JCacheRegionConfiguration)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Configuration DefaultJCacheConfigurationBuilder.buildConfiguration(int, int, Class, Class)"
-  })
-  public void testBuildConfigurationWithTtlSecondsMaxElementsInMemoryKeyClassValueClass() {
+  public void testBuildConfiguration5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    DefaultJCacheConfigurationBuilder defaultJCacheConfigurationBuilder =
-        new DefaultJCacheConfigurationBuilder();
-    Class<Object> keyClass = Object.class;
-    Class<Object> valueClass = Object.class;
+    DefaultJCacheConfigurationBuilder defaultJCacheConfigurationBuilder = new DefaultJCacheConfigurationBuilder();
+    JCacheRegionConfiguration regionInformation = mock(JCacheRegionConfiguration.class);
+    when(regionInformation.getMaxElementsInMemory()).thenReturn(3);
+    when(regionInformation.getTtlSeconds()).thenReturn(1);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(regionInformation.getKey()).thenReturn(forNameResult);
+    Class<Object> forNameResult2 = Object.class;
+    Mockito.<Class<?>>when(regionInformation.getValue()).thenReturn(forNameResult2);
 
     // Act
-    Configuration<Object, Object> actualBuildConfigurationResult =
-        defaultJCacheConfigurationBuilder.buildConfiguration(1, 3, keyClass, valueClass);
+    Configuration actualBuildConfigurationResult = defaultJCacheConfigurationBuilder
+        .buildConfiguration(regionInformation);
 
     // Assert
-    Iterable<CacheEntryListenerConfiguration<Object, Object>> cacheEntryListenerConfigurations =
-        ((MutableConfiguration<Object, Object>) actualBuildConfigurationResult)
-            .getCacheEntryListenerConfigurations();
+    verify(regionInformation).getKey();
+    verify(regionInformation).getMaxElementsInMemory();
+    verify(regionInformation).getTtlSeconds();
+    verify(regionInformation).getValue();
+    Iterable<CacheEntryListenerConfiguration> cacheEntryListenerConfigurations = ((MutableConfiguration) actualBuildConfigurationResult)
+        .getCacheEntryListenerConfigurations();
     assertTrue(cacheEntryListenerConfigurations instanceof Set);
     assertTrue(actualBuildConfigurationResult instanceof MutableConfiguration);
-    assertNull(
-        ((MutableConfiguration<Object, Object>) actualBuildConfigurationResult)
-            .getCacheLoaderFactory());
-    assertNull(
-        ((MutableConfiguration<Object, Object>) actualBuildConfigurationResult)
-            .getCacheWriterFactory());
-    assertFalse(
-        ((MutableConfiguration<Object, Object>) actualBuildConfigurationResult)
-            .isManagementEnabled());
-    assertFalse(
-        ((MutableConfiguration<Object, Object>) actualBuildConfigurationResult).isReadThrough());
-    assertFalse(
-        ((MutableConfiguration<Object, Object>) actualBuildConfigurationResult)
-            .isStatisticsEnabled());
-    assertFalse(
-        ((MutableConfiguration<Object, Object>) actualBuildConfigurationResult).isWriteThrough());
-    assertTrue(
-        ((Set<CacheEntryListenerConfiguration<Object, Object>>) cacheEntryListenerConfigurations)
-            .isEmpty());
+    assertNull(((MutableConfiguration) actualBuildConfigurationResult).getCacheLoaderFactory());
+    assertNull(((MutableConfiguration) actualBuildConfigurationResult).getCacheWriterFactory());
+    assertFalse(((MutableConfiguration) actualBuildConfigurationResult).isManagementEnabled());
+    assertFalse(((MutableConfiguration) actualBuildConfigurationResult).isReadThrough());
+    assertFalse(((MutableConfiguration) actualBuildConfigurationResult).isStatisticsEnabled());
+    assertFalse(((MutableConfiguration) actualBuildConfigurationResult).isWriteThrough());
+    assertTrue(((Set<CacheEntryListenerConfiguration>) cacheEntryListenerConfigurations).isEmpty());
     assertTrue(actualBuildConfigurationResult.isStoreByValue());
     Class<Object> expectedKeyType = Object.class;
-    assertEquals(expectedKeyType, actualBuildConfigurationResult.getKeyType());
-    assertSame(valueClass, actualBuildConfigurationResult.getValueType());
-  }
-
-  /**
-   * Test {@link DefaultJCacheConfigurationBuilder#buildConfiguration(int, int, Class, Class)} with
-   * {@code ttlSeconds}, {@code maxElementsInMemory}, {@code keyClass}, {@code valueClass}.
-   *
-   * <p>Method under test: {@link DefaultJCacheConfigurationBuilder#buildConfiguration(int, int,
-   * Class, Class)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Configuration DefaultJCacheConfigurationBuilder.buildConfiguration(int, int, Class, Class)"
-  })
-  public void testBuildConfigurationWithTtlSecondsMaxElementsInMemoryKeyClassValueClass2() {
-    // Arrange
-    DefaultJCacheConfigurationBuilder defaultJCacheConfigurationBuilder =
-        new DefaultJCacheConfigurationBuilder();
-    Class<Object> keyClass = Object.class;
-    Class<Object> valueClass = Object.class;
-
-    // Act
-    Configuration<Object, Object> actualBuildConfigurationResult =
-        defaultJCacheConfigurationBuilder.buildConfiguration(-1, 3, keyClass, valueClass);
-
-    // Assert
-    Iterable<CacheEntryListenerConfiguration<Object, Object>> cacheEntryListenerConfigurations =
-        ((MutableConfiguration<Object, Object>) actualBuildConfigurationResult)
-            .getCacheEntryListenerConfigurations();
-    assertTrue(cacheEntryListenerConfigurations instanceof Set);
-    assertTrue(actualBuildConfigurationResult instanceof MutableConfiguration);
-    assertNull(
-        ((MutableConfiguration<Object, Object>) actualBuildConfigurationResult)
-            .getCacheLoaderFactory());
-    assertNull(
-        ((MutableConfiguration<Object, Object>) actualBuildConfigurationResult)
-            .getCacheWriterFactory());
-    assertFalse(
-        ((MutableConfiguration<Object, Object>) actualBuildConfigurationResult)
-            .isManagementEnabled());
-    assertFalse(
-        ((MutableConfiguration<Object, Object>) actualBuildConfigurationResult).isReadThrough());
-    assertFalse(
-        ((MutableConfiguration<Object, Object>) actualBuildConfigurationResult)
-            .isStatisticsEnabled());
-    assertFalse(
-        ((MutableConfiguration<Object, Object>) actualBuildConfigurationResult).isWriteThrough());
-    assertTrue(
-        ((Set<CacheEntryListenerConfiguration<Object, Object>>) cacheEntryListenerConfigurations)
-            .isEmpty());
-    assertTrue(actualBuildConfigurationResult.isStoreByValue());
-    Class<Object> expectedKeyType = Object.class;
-    assertEquals(expectedKeyType, actualBuildConfigurationResult.getKeyType());
-    assertSame(valueClass, actualBuildConfigurationResult.getValueType());
+    Class keyType = actualBuildConfigurationResult.getKeyType();
+    assertEquals(expectedKeyType, keyType);
+    assertSame(forNameResult2, keyType);
+    assertSame(forNameResult2, actualBuildConfigurationResult.getValueType());
   }
 }

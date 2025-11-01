@@ -24,34 +24,25 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanInitializationException;
-import org.springframework.beans.factory.UnsatisfiedDependencyException;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-import org.springframework.beans.factory.support.StaticListableBeanFactory;
-import org.springframework.context.ApplicationContext;
+import org.springframework.boot.web.reactive.context.AnnotationConfigReactiveWebApplicationContext;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.util.StringValueResolver;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class BaseProcessorDiffblueTest {
   /**
-   * Test {@link BaseProcessor#setBeanName(String)}.
-   *
-   * <p>Method under test: {@link BaseProcessor#setBeanName(String)}
+   * Method under test: {@link BaseProcessor#setBeanName(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BaseProcessor.setBeanName(String)"})
   public void testSetBeanName() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     EmptySequenceProcessor emptySequenceProcessor = new EmptySequenceProcessor();
 
@@ -64,15 +55,31 @@ public class BaseProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link BaseProcessor#setBeanFactory(BeanFactory)}.
-   *
-   * <p>Method under test: {@link BaseProcessor#setBeanFactory(BeanFactory)}
+   * Method under test: {@link BaseProcessor#setBeanName(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BaseProcessor.setBeanFactory(BeanFactory)"})
+  public void testSetBeanName2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EmptySequenceProcessor emptySequenceProcessor = new EmptySequenceProcessor();
+    emptySequenceProcessor.setProcessContextFactory(mock(ProcessContextFactory.class));
+
+    // Act
+    emptySequenceProcessor.setBeanName("Bean Name");
+
+    // Assert
+    assertEquals("Bean Name", emptySequenceProcessor.getBeanName());
+    assertEquals("Workflow Processor: Bean Name", emptySequenceProcessor.getBeanDesc());
+  }
+
+  /**
+   * Method under test: {@link BaseProcessor#setBeanFactory(BeanFactory)}
+   */
+  @Test
   public void testSetBeanFactory() throws BeansException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     EmptySequenceProcessor emptySequenceProcessor = new EmptySequenceProcessor();
     DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
@@ -85,52 +92,84 @@ public class BaseProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link BaseProcessor#getAutoRollbackOnError()}.
-   *
-   * <p>Method under test: {@link BaseProcessor#getAutoRollbackOnError()}
+   * Method under test: {@link BaseProcessor#setBeanFactory(BeanFactory)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean BaseProcessor.getAutoRollbackOnError()"})
+  public void testSetBeanFactory2() throws BeansException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EmptySequenceProcessor emptySequenceProcessor = new EmptySequenceProcessor();
+
+    DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+    beanFactory.addEmbeddedValueResolver(mock(StringValueResolver.class));
+
+    // Act
+    emptySequenceProcessor.setBeanFactory(beanFactory);
+
+    // Assert
+    assertSame(beanFactory, emptySequenceProcessor.getBeanFactory());
+  }
+
+  /**
+   * Method under test: {@link BaseProcessor#getAutoRollbackOnError()}
+   */
+  @Test
   public void testGetAutoRollbackOnError() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertTrue(new EmptySequenceProcessor().getAutoRollbackOnError());
+    assertTrue((new EmptySequenceProcessor()).getAutoRollbackOnError());
   }
 
   /**
-   * Test {@link BaseProcessor#isAllowEmptyActivities()}.
-   *
-   * <ul>
-   *   <li>Given {@link EmptySequenceProcessor} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BaseProcessor#isAllowEmptyActivities()}
+   * Method under test: {@link BaseProcessor#getAutoRollbackOnError()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean BaseProcessor.isAllowEmptyActivities()"})
-  public void testIsAllowEmptyActivities_givenEmptySequenceProcessor_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(new EmptySequenceProcessor().isAllowEmptyActivities());
+  public void testGetAutoRollbackOnError2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EmptySequenceProcessor emptySequenceProcessor = new EmptySequenceProcessor();
+    emptySequenceProcessor.setProcessContextFactory(mock(ProcessContextFactory.class));
+
+    // Act and Assert
+    assertTrue(emptySequenceProcessor.getAutoRollbackOnError());
   }
 
   /**
-   * Test {@link BaseProcessor#isAllowEmptyActivities()}.
-   *
-   * <ul>
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BaseProcessor#isAllowEmptyActivities()}
+   * Method under test: {@link BaseProcessor#isAllowEmptyActivities()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean BaseProcessor.isAllowEmptyActivities()"})
-  public void testIsAllowEmptyActivities_thenReturnTrue() {
+  public void testIsAllowEmptyActivities() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertFalse((new EmptySequenceProcessor()).isAllowEmptyActivities());
+  }
+
+  /**
+   * Method under test: {@link BaseProcessor#isAllowEmptyActivities()}
+   */
+  @Test
+  public void testIsAllowEmptyActivities2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EmptySequenceProcessor emptySequenceProcessor = new EmptySequenceProcessor();
+    emptySequenceProcessor.setProcessContextFactory(mock(ProcessContextFactory.class));
+
+    // Act and Assert
+    assertFalse(emptySequenceProcessor.isAllowEmptyActivities());
+  }
+
+  /**
+   * Method under test: {@link BaseProcessor#isAllowEmptyActivities()}
+   */
+  @Test
+  public void testIsAllowEmptyActivities3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     EmptySequenceProcessor emptySequenceProcessor = new EmptySequenceProcessor();
     emptySequenceProcessor.setAllowEmptyActivities(true);
@@ -140,15 +179,12 @@ public class BaseProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link BaseProcessor#setAllowEmptyActivities(boolean)}.
-   *
-   * <p>Method under test: {@link BaseProcessor#setAllowEmptyActivities(boolean)}
+   * Method under test: {@link BaseProcessor#setAllowEmptyActivities(boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BaseProcessor.setAllowEmptyActivities(boolean)"})
   public void testSetAllowEmptyActivities() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     EmptySequenceProcessor emptySequenceProcessor = new EmptySequenceProcessor();
 
@@ -160,79 +196,109 @@ public class BaseProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link BaseProcessor#onApplicationEvent(ContextRefreshedEvent)} with {@code
-   * ContextRefreshedEvent}.
-   *
-   * <p>Method under test: {@link BaseProcessor#onApplicationEvent(ContextRefreshedEvent)}
+   * Method under test: {@link BaseProcessor#setAllowEmptyActivities(boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BaseProcessor.onApplicationEvent(ContextRefreshedEvent)"})
-  public void testOnApplicationEventWithContextRefreshedEvent() {
+  public void testSetAllowEmptyActivities2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EmptySequenceProcessor emptySequenceProcessor = new EmptySequenceProcessor();
+    emptySequenceProcessor.setProcessContextFactory(mock(ProcessContextFactory.class));
+
+    // Act
+    emptySequenceProcessor.setAllowEmptyActivities(true);
+
+    // Assert
+    assertTrue(emptySequenceProcessor.isAllowEmptyActivities());
+  }
+
+  /**
+   * Method under test:
+   * {@link BaseProcessor#onApplicationEvent(ContextRefreshedEvent)}
+   */
+  @Test
+  public void testOnApplicationEvent() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     EmptySequenceProcessor emptySequenceProcessor = new EmptySequenceProcessor();
 
     // Act and Assert
-    assertThrows(
-        BeanInitializationException.class,
-        () ->
-            emptySequenceProcessor.onApplicationEvent(
-                new ContextRefreshedEvent(mock(ApplicationContext.class))));
+    assertThrows(BeanInitializationException.class, () -> emptySequenceProcessor
+        .onApplicationEvent(new ContextRefreshedEvent(new AnnotationConfigReactiveWebApplicationContext())));
   }
 
   /**
-   * Test {@link BaseProcessor#onApplicationEvent(ContextRefreshedEvent)} with {@code
-   * ContextRefreshedEvent}.
-   *
-   * <p>Method under test: {@link BaseProcessor#onApplicationEvent(ContextRefreshedEvent)}
+   * Method under test: {@link BaseProcessor#getBeanDesc()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BaseProcessor.onApplicationEvent(ContextRefreshedEvent)"})
-  public void testOnApplicationEventWithContextRefreshedEvent2() throws BeansException {
-    // Arrange
-    EmptySequenceProcessor emptySequenceProcessor = new EmptySequenceProcessor();
-    emptySequenceProcessor.setBeanFactory(new StaticListableBeanFactory());
+  public void testGetBeanDesc() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Act and Assert
-    assertThrows(
-        UnsatisfiedDependencyException.class,
-        () ->
-            emptySequenceProcessor.onApplicationEvent(
-                new ContextRefreshedEvent(mock(ApplicationContext.class))));
-  }
-
-  /**
-   * Test {@link BaseProcessor#getBeanDesc()}.
-   *
-   * <ul>
-   *   <li>Given {@link EmptySequenceProcessor} (default constructor).
-   *   <li>Then return {@code Workflow Processor: null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BaseProcessor#getBeanDesc()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String BaseProcessor.getBeanDesc()"})
-  public void testGetBeanDesc_givenEmptySequenceProcessor_thenReturnWorkflowProcessorNull() {
     // Arrange, Act and Assert
-    assertEquals("Workflow Processor: null", new EmptySequenceProcessor().getBeanDesc());
+    assertEquals("Workflow Processor: null", (new EmptySequenceProcessor()).getBeanDesc());
   }
 
   /**
-   * Test {@link BaseProcessor#setDefaultErrorHandler(ErrorHandler)}.
-   *
-   * <p>Method under test: {@link BaseProcessor#setDefaultErrorHandler(ErrorHandler)}
+   * Method under test: {@link BaseProcessor#getBeanDesc()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BaseProcessor.setDefaultErrorHandler(ErrorHandler)"})
+  public void testGetBeanDesc2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EmptySequenceProcessor emptySequenceProcessor = new EmptySequenceProcessor();
+    emptySequenceProcessor.setProcessContextFactory(mock(ProcessContextFactory.class));
+
+    // Act and Assert
+    assertEquals("Workflow Processor: null", emptySequenceProcessor.getBeanDesc());
+  }
+
+  /**
+   * Method under test: {@link BaseProcessor#setActivities(List)}
+   */
+  @Test
+  public void testSetActivities() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EmptySequenceProcessor emptySequenceProcessor = new EmptySequenceProcessor();
+    ArrayList<Activity<ProcessContext<?>>> activities = new ArrayList<>();
+
+    // Act
+    emptySequenceProcessor.setActivities(activities);
+
+    // Assert
+    assertSame(activities, emptySequenceProcessor.getActivities());
+  }
+
+  /**
+   * Method under test: {@link BaseProcessor#setActivities(List)}
+   */
+  @Test
+  public void testSetActivities2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EmptySequenceProcessor emptySequenceProcessor = new EmptySequenceProcessor();
+    emptySequenceProcessor.setProcessContextFactory(mock(ProcessContextFactory.class));
+    ArrayList<Activity<ProcessContext<?>>> activities = new ArrayList<>();
+
+    // Act
+    emptySequenceProcessor.setActivities(activities);
+
+    // Assert
+    assertSame(activities, emptySequenceProcessor.getActivities());
+  }
+
+  /**
+   * Method under test: {@link BaseProcessor#setDefaultErrorHandler(ErrorHandler)}
+   */
+  @Test
   public void testSetDefaultErrorHandler() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     EmptySequenceProcessor emptySequenceProcessor = new EmptySequenceProcessor();
     DefaultErrorHandler defaultErrorHandler = new DefaultErrorHandler();
@@ -245,72 +311,172 @@ public class BaseProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link BaseProcessor#getActivities()}.
-   *
-   * <p>Method under test: {@link BaseProcessor#getActivities()}
+   * Method under test: {@link BaseProcessor#setDefaultErrorHandler(ErrorHandler)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.util.List BaseProcessor.getActivities()"})
+  public void testSetDefaultErrorHandler2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EmptySequenceProcessor emptySequenceProcessor = new EmptySequenceProcessor();
+    DefaultErrorHandler defaultErrorHandler = mock(DefaultErrorHandler.class);
+
+    // Act
+    emptySequenceProcessor.setDefaultErrorHandler(defaultErrorHandler);
+
+    // Assert
+    assertSame(defaultErrorHandler, emptySequenceProcessor.getDefaultErrorHandler());
+  }
+
+  /**
+   * Method under test: {@link BaseProcessor#getActivities()}
+   */
+  @Test
   public void testGetActivities() {
-    // Arrange, Act and Assert
-    assertTrue(new EmptySequenceProcessor().getActivities().isEmpty());
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EmptySequenceProcessor emptySequenceProcessor = new EmptySequenceProcessor();
+
+    // Act
+    List<Activity<ProcessContext<?>>> actualActivities = emptySequenceProcessor.getActivities();
+
+    // Assert
+    assertTrue(actualActivities.isEmpty());
+    assertSame(emptySequenceProcessor.activities, actualActivities);
   }
 
   /**
-   * Test {@link BaseProcessor#getModuleActivities()}.
-   *
-   * <p>Method under test: {@link BaseProcessor#getModuleActivities()}
+   * Method under test: {@link BaseProcessor#getActivities()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.util.List BaseProcessor.getModuleActivities()"})
+  public void testGetActivities2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EmptySequenceProcessor emptySequenceProcessor = new EmptySequenceProcessor();
+    emptySequenceProcessor.setProcessContextFactory(mock(ProcessContextFactory.class));
+
+    // Act
+    List<Activity<ProcessContext<?>>> actualActivities = emptySequenceProcessor.getActivities();
+
+    // Assert
+    assertTrue(actualActivities.isEmpty());
+    assertSame(emptySequenceProcessor.activities, actualActivities);
+  }
+
+  /**
+   * Method under test: {@link BaseProcessor#getModuleActivities()}
+   */
+  @Test
   public void testGetModuleActivities() {
-    // Arrange, Act and Assert
-    assertTrue(new EmptySequenceProcessor().getModuleActivities().isEmpty());
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EmptySequenceProcessor emptySequenceProcessor = new EmptySequenceProcessor();
+
+    // Act
+    List<ModuleActivity> actualModuleActivities = emptySequenceProcessor.getModuleActivities();
+
+    // Assert
+    assertTrue(actualModuleActivities.isEmpty());
+    assertSame(emptySequenceProcessor.moduleActivities, actualModuleActivities);
   }
 
   /**
-   * Test {@link BaseProcessor#getBeanName()}.
-   *
-   * <p>Method under test: {@link BaseProcessor#getBeanName()}
+   * Method under test: {@link BaseProcessor#getModuleActivities()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String BaseProcessor.getBeanName()"})
+  public void testGetModuleActivities2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EmptySequenceProcessor emptySequenceProcessor = new EmptySequenceProcessor();
+    emptySequenceProcessor.setProcessContextFactory(mock(ProcessContextFactory.class));
+
+    // Act
+    List<ModuleActivity> actualModuleActivities = emptySequenceProcessor.getModuleActivities();
+
+    // Assert
+    assertTrue(actualModuleActivities.isEmpty());
+    assertSame(emptySequenceProcessor.moduleActivities, actualModuleActivities);
+  }
+
+  /**
+   * Method under test: {@link BaseProcessor#getBeanName()}
+   */
+  @Test
   public void testGetBeanName() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertNull(new EmptySequenceProcessor().getBeanName());
+    assertNull((new EmptySequenceProcessor()).getBeanName());
   }
 
   /**
-   * Test {@link BaseProcessor#getDefaultErrorHandler()}.
-   *
-   * <p>Method under test: {@link BaseProcessor#getDefaultErrorHandler()}
+   * Method under test: {@link BaseProcessor#getBeanName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"ErrorHandler BaseProcessor.getDefaultErrorHandler()"})
+  public void testGetBeanName2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EmptySequenceProcessor emptySequenceProcessor = new EmptySequenceProcessor();
+    emptySequenceProcessor.setProcessContextFactory(mock(ProcessContextFactory.class));
+
+    // Act and Assert
+    assertNull(emptySequenceProcessor.getBeanName());
+  }
+
+  /**
+   * Method under test: {@link BaseProcessor#getDefaultErrorHandler()}
+   */
+  @Test
   public void testGetDefaultErrorHandler() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertNull(new EmptySequenceProcessor().getDefaultErrorHandler());
+    assertNull((new EmptySequenceProcessor()).getDefaultErrorHandler());
   }
 
   /**
-   * Test {@link BaseProcessor#getBeanFactory()}.
-   *
-   * <p>Method under test: {@link BaseProcessor#getBeanFactory()}
+   * Method under test: {@link BaseProcessor#getDefaultErrorHandler()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"BeanFactory BaseProcessor.getBeanFactory()"})
+  public void testGetDefaultErrorHandler2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EmptySequenceProcessor emptySequenceProcessor = new EmptySequenceProcessor();
+    emptySequenceProcessor.setProcessContextFactory(mock(ProcessContextFactory.class));
+
+    // Act and Assert
+    assertNull(emptySequenceProcessor.getDefaultErrorHandler());
+  }
+
+  /**
+   * Method under test: {@link BaseProcessor#getBeanFactory()}
+   */
+  @Test
   public void testGetBeanFactory() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertNull(new EmptySequenceProcessor().getBeanFactory());
+    assertNull((new EmptySequenceProcessor()).getBeanFactory());
+  }
+
+  /**
+   * Method under test: {@link BaseProcessor#getBeanFactory()}
+   */
+  @Test
+  public void testGetBeanFactory2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EmptySequenceProcessor emptySequenceProcessor = new EmptySequenceProcessor();
+    emptySequenceProcessor.setProcessContextFactory(mock(ProcessContextFactory.class));
+
+    // Act and Assert
+    assertNull(emptySequenceProcessor.getBeanFactory());
   }
 }

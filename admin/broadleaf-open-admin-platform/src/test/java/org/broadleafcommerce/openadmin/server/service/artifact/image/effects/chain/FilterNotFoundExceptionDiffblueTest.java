@@ -20,35 +20,31 @@ package org.broadleafcommerce.openadmin.server.service.artifact.image.effects.ch
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class FilterNotFoundExceptionDiffblueTest {
   /**
-   * Test {@link FilterNotFoundException#FilterNotFoundException(String)}.
-   *
-   * <ul>
-   *   <li>Then return Message is {@code An error occurred}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FilterNotFoundException#FilterNotFoundException(String)}
+   * Method under test: {@link FilterNotFoundException#FilterNotFoundException()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void FilterNotFoundException.<init>()",
-    "void FilterNotFoundException.<init>(String)",
-    "void FilterNotFoundException.<init>(String, Throwable)",
-    "void FilterNotFoundException.<init>(Throwable)"
-  })
-  public void testNewFilterNotFoundException_thenReturnMessageIsAnErrorOccurred() {
+  public void testNewFilterNotFoundException() {
     // Arrange and Act
-    FilterNotFoundException actualFilterNotFoundException =
-        new FilterNotFoundException("An error occurred");
+    FilterNotFoundException actualFilterNotFoundException = new FilterNotFoundException();
+
+    // Assert
+    assertNull(actualFilterNotFoundException.getMessage());
+    assertNull(actualFilterNotFoundException.getCause());
+    assertEquals(0, actualFilterNotFoundException.getSuppressed().length);
+  }
+
+  /**
+   * Method under test:
+   * {@link FilterNotFoundException#FilterNotFoundException(String)}
+   */
+  @Test
+  public void testNewFilterNotFoundException2() {
+    // Arrange and Act
+    FilterNotFoundException actualFilterNotFoundException = new FilterNotFoundException("An error occurred");
 
     // Assert
     assertEquals("An error occurred", actualFilterNotFoundException.getMessage());
@@ -57,31 +53,16 @@ public class FilterNotFoundExceptionDiffblueTest {
   }
 
   /**
-   * Test {@link FilterNotFoundException#FilterNotFoundException(String, Throwable)}.
-   *
-   * <ul>
-   *   <li>Then return Message is {@code An error occurred}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FilterNotFoundException#FilterNotFoundException(String,
-   * Throwable)}
+   * Method under test:
+   * {@link FilterNotFoundException#FilterNotFoundException(String, Throwable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void FilterNotFoundException.<init>()",
-    "void FilterNotFoundException.<init>(String)",
-    "void FilterNotFoundException.<init>(String, Throwable)",
-    "void FilterNotFoundException.<init>(Throwable)"
-  })
-  public void testNewFilterNotFoundException_thenReturnMessageIsAnErrorOccurred2() {
+  public void testNewFilterNotFoundException3() {
     // Arrange
     Throwable cause = new Throwable();
 
     // Act
-    FilterNotFoundException actualFilterNotFoundException =
-        new FilterNotFoundException("An error occurred", cause);
+    FilterNotFoundException actualFilterNotFoundException = new FilterNotFoundException("An error occurred", cause);
 
     // Assert
     assertEquals("An error occurred", actualFilterNotFoundException.getMessage());
@@ -90,24 +71,11 @@ public class FilterNotFoundExceptionDiffblueTest {
   }
 
   /**
-   * Test {@link FilterNotFoundException#FilterNotFoundException(Throwable)}.
-   *
-   * <ul>
-   *   <li>Then return Message is {@code Throwable}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FilterNotFoundException#FilterNotFoundException(Throwable)}
+   * Method under test:
+   * {@link FilterNotFoundException#FilterNotFoundException(Throwable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void FilterNotFoundException.<init>()",
-    "void FilterNotFoundException.<init>(String)",
-    "void FilterNotFoundException.<init>(String, Throwable)",
-    "void FilterNotFoundException.<init>(Throwable)"
-  })
-  public void testNewFilterNotFoundException_thenReturnMessageIsJavaLangThrowable() {
+  public void testNewFilterNotFoundException4() {
     // Arrange
     Throwable cause = new Throwable();
 
@@ -118,33 +86,5 @@ public class FilterNotFoundExceptionDiffblueTest {
     assertEquals("java.lang.Throwable", actualFilterNotFoundException.getMessage());
     assertEquals(0, actualFilterNotFoundException.getSuppressed().length);
     assertSame(cause, actualFilterNotFoundException.getCause());
-  }
-
-  /**
-   * Test {@link FilterNotFoundException#FilterNotFoundException()}.
-   *
-   * <ul>
-   *   <li>Then return Message is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FilterNotFoundException#FilterNotFoundException()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void FilterNotFoundException.<init>()",
-    "void FilterNotFoundException.<init>(String)",
-    "void FilterNotFoundException.<init>(String, Throwable)",
-    "void FilterNotFoundException.<init>(Throwable)"
-  })
-  public void testNewFilterNotFoundException_thenReturnMessageIsNull() {
-    // Arrange and Act
-    FilterNotFoundException actualFilterNotFoundException = new FilterNotFoundException();
-
-    // Assert
-    assertNull(actualFilterNotFoundException.getMessage());
-    assertNull(actualFilterNotFoundException.getCause());
-    assertEquals(0, actualFilterNotFoundException.getSuppressed().length);
   }
 }

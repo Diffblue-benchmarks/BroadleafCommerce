@@ -18,61 +18,24 @@
 package org.broadleafcommerce.common.web.controller;
 
 import static org.junit.Assert.assertFalse;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrapper;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
 public class BroadleafControllerUtilityDiffblueTest {
   /**
-   * Test {@link BroadleafControllerUtility#isAjaxRequest(HttpServletRequest)} with {@code
-   * HttpServletRequest}.
-   *
-   * <ul>
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BroadleafControllerUtility#isAjaxRequest(HttpServletRequest)}
+   * Method under test:
+   * {@link BroadleafControllerUtility#isAjaxRequest(HttpServletRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean BroadleafControllerUtility.isAjaxRequest(HttpServletRequest)"})
-  public void testIsAjaxRequestWithHttpServletRequest_thenReturnFalse() {
+  public void testIsAjaxRequest() {
     // Arrange, Act and Assert
-    assertFalse(
-        BroadleafControllerUtility.isAjaxRequest(
-            new HttpServletRequestWrapper(
-                new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()))));
-  }
-
-  /**
-   * Test {@link BroadleafControllerUtility#isAjaxRequest(WebRequest)} with {@code WebRequest}.
-   *
-   * <ul>
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BroadleafControllerUtility#isAjaxRequest(WebRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean BroadleafControllerUtility.isAjaxRequest(WebRequest)"})
-  public void testIsAjaxRequestWithWebRequest_thenReturnFalse() {
-    // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
-
-    // Act and Assert
-    assertFalse(BroadleafControllerUtility.isAjaxRequest(new ServletWebRequest(request)));
+    assertFalse(BroadleafControllerUtility
+        .isAjaxRequest(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest())));
+    assertFalse(BroadleafControllerUtility
+        .isAjaxRequest(new ServletWebRequest(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()))));
   }
 }

@@ -18,94 +18,83 @@
 package org.broadleafcommerce.common.util;
 
 import static org.junit.Assert.assertFalse;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.Date;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class DateUtilDiffblueTest {
   /**
-   * Test {@link DateUtil#isActive(Date, Date, boolean)}.
-   *
-   * <ul>
-   *   <li>When {@link Date#Date()}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link DateUtil#isActive(Date, Date, boolean)}
+   * Method under test: {@link DateUtil#isActive(Date, Date, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean DateUtil.isActive(Date, Date, boolean)"})
-  public void testIsActive_whenDate_thenReturnFalse() {
+  public void testIsActive() {
+    // Arrange
+    Date startDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+
+    // Act and Assert
+    assertFalse(DateUtil.isActive(startDate,
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()), true));
+  }
+
+  /**
+   * Method under test: {@link DateUtil#isActive(Date, Date, boolean)}
+   */
+  @Test
+  public void testIsActive2() {
+    // Arrange, Act and Assert
+    assertFalse(DateUtil.isActive(null, null, false));
+  }
+
+  /**
+   * Method under test: {@link DateUtil#isActive(Date, Date, boolean)}
+   */
+  @Test
+  public void testIsActive3() {
     // Arrange
     Date startDate = new Date();
 
-    // Act
-    boolean actualIsActiveResult =
-        DateUtil.isActive(
-            startDate,
-            Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()),
-            true);
-
-    // Assert
-    assertFalse(actualIsActiveResult);
+    // Act and Assert
+    assertFalse(DateUtil.isActive(startDate,
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()), true));
   }
 
   /**
-   * Test {@link DateUtil#isActive(Date, Date, boolean)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link DateUtil#isActive(Date, Date, boolean)}
+   * Method under test:
+   * {@link DateUtil#isActive(java.util.Date, java.util.Date, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean DateUtil.isActive(Date, Date, boolean)"})
-  public void testIsActive_whenNull_thenReturnFalse() {
-    // Arrange and Act
-    boolean actualIsActiveResult = DateUtil.isActive(null, null, false);
-
-    // Assert
-    assertFalse(actualIsActiveResult);
-  }
-
-  /**
-   * Test {@link DateUtil#isActive(Date, Date, boolean)}.
-   *
-   * <ul>
-   *   <li>When {@code true}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link DateUtil#isActive(Date, Date, boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean DateUtil.isActive(Date, Date, boolean)"})
-  public void testIsActive_whenTrue_thenReturnFalse() {
+  public void testIsActive4() {
     // Arrange
-    Date startDate =
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    java.sql.Date startDate = mock(java.sql.Date.class);
+    when(startDate.getTime()).thenReturn(10L);
 
     // Act
-    boolean actualIsActiveResult =
-        DateUtil.isActive(
-            startDate,
-            Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()),
-            true);
+    boolean actualIsActiveResult = DateUtil.isActive(startDate,
+        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()), true);
 
     // Assert
+    verify(startDate).getTime();
     assertFalse(actualIsActiveResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link DateUtil#getCurrentDateAfterFactoringInDateResolution(java.util.Date, Long)}
+   */
+  @Test
+  public void testGetCurrentDateAfterFactoringInDateResolution() {
+    // Arrange
+    java.sql.Date cachedDate = mock(java.sql.Date.class);
+    when(cachedDate.getTime()).thenReturn(10L);
+
+    // Act
+    DateUtil.getCurrentDateAfterFactoringInDateResolution(cachedDate, 1L);
+
+    // Assert
+    verify(cachedDate).getTime();
   }
 }

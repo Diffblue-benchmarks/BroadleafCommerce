@@ -18,24 +18,35 @@
 package org.broadleafcommerce.core.web.resolver;
 
 import static org.junit.Assert.assertFalse;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class DatabaseResourceResolverExtensionManagerDiffblueTest {
   /**
-   * Test {@link DatabaseResourceResolverExtensionManager#continueOnHandled()}.
-   *
-   * <p>Method under test: {@link DatabaseResourceResolverExtensionManager#continueOnHandled()}
+   * Method under test:
+   * {@link DatabaseResourceResolverExtensionManager#continueOnHandled()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean DatabaseResourceResolverExtensionManager.continueOnHandled()"})
   public void testContinueOnHandled() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertFalse(new DatabaseResourceResolverExtensionManager().continueOnHandled());
+    assertFalse((new DatabaseResourceResolverExtensionManager()).continueOnHandled());
+  }
+
+  /**
+   * Method under test:
+   * {@link DatabaseResourceResolverExtensionManager#continueOnHandled()}
+   */
+  @Test
+  public void testContinueOnHandled2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    DatabaseResourceResolverExtensionManager databaseResourceResolverExtensionManager = new DatabaseResourceResolverExtensionManager();
+    databaseResourceResolverExtensionManager.registerHandler(mock(DatabaseResourceResolverExtensionHandler.class));
+
+    // Act and Assert
+    assertFalse(databaseResourceResolverExtensionManager.continueOnHandled());
   }
 }

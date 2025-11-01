@@ -18,18 +18,11 @@
 package org.broadleafcommerce.core.web.checkout.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 class OrderInfoFormDiffblueTest {
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link OrderInfoForm}
    *   <li>{@link OrderInfoForm#setEmailAddress(String)}
@@ -37,20 +30,12 @@ class OrderInfoFormDiffblueTest {
    * </ul>
    */
   @Test
-  @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OrderInfoForm.<init>()",
-    "String OrderInfoForm.getEmailAddress()",
-    "void OrderInfoForm.setEmailAddress(String)"
-  })
   void testGettersAndSetters() {
     // Arrange and Act
     OrderInfoForm actualOrderInfoForm = new OrderInfoForm();
     actualOrderInfoForm.setEmailAddress("42 Main St");
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("42 Main St", actualOrderInfoForm.getEmailAddress());
   }
 }

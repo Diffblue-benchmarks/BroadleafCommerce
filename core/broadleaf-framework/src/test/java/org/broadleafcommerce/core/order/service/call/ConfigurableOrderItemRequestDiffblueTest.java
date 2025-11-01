@@ -19,57 +19,75 @@ package org.broadleafcommerce.core.order.service.call;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.BiFunction;
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.core.catalog.domain.Product;
 import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
 import org.broadleafcommerce.core.catalog.domain.Sku;
 import org.broadleafcommerce.core.catalog.domain.SkuImpl;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class ConfigurableOrderItemRequestDiffblueTest {
   /**
-   * Test {@link ConfigurableOrderItemRequest#getIsMultiSelect()}.
-   *
-   * <ul>
-   *   <li>Given {@link ConfigurableOrderItemRequest} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ConfigurableOrderItemRequest#getIsMultiSelect()}
+   * Method under test: {@link ConfigurableOrderItemRequest#setProduct(Product)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ConfigurableOrderItemRequest.getIsMultiSelect()"})
-  public void testGetIsMultiSelect_givenConfigurableOrderItemRequest_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(new ConfigurableOrderItemRequest().getIsMultiSelect());
+  public void testSetProduct() {
+    // Arrange
+    ConfigurableOrderItemRequest configurableOrderItemRequest = new ConfigurableOrderItemRequest();
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getId()).thenReturn(1L);
+
+    // Act
+    configurableOrderItemRequest.setProduct(product);
+
+    // Assert
+    verify(product).getId();
+    assertEquals(1L, configurableOrderItemRequest.getProductId().longValue());
+    assertSame(product, configurableOrderItemRequest.getProduct());
   }
 
   /**
-   * Test {@link ConfigurableOrderItemRequest#getIsMultiSelect()}.
-   *
-   * <ul>
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ConfigurableOrderItemRequest#getIsMultiSelect()}
+   * Method under test: {@link ConfigurableOrderItemRequest#setSku(Sku)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ConfigurableOrderItemRequest.getIsMultiSelect()"})
-  public void testGetIsMultiSelect_thenReturnTrue() {
+  public void testSetSku() {
+    // Arrange
+    ConfigurableOrderItemRequest configurableOrderItemRequest = new ConfigurableOrderItemRequest();
+    SkuImpl sku = mock(SkuImpl.class);
+    when(sku.getId()).thenReturn(1L);
+
+    // Act
+    configurableOrderItemRequest.setSku(sku);
+
+    // Assert
+    verify(sku).getId();
+    assertEquals(1L, configurableOrderItemRequest.getSkuId().longValue());
+    assertSame(sku, configurableOrderItemRequest.getSku());
+  }
+
+  /**
+   * Method under test: {@link ConfigurableOrderItemRequest#getIsMultiSelect()}
+   */
+  @Test
+  public void testGetIsMultiSelect() {
+    // Arrange, Act and Assert
+    assertFalse((new ConfigurableOrderItemRequest()).getIsMultiSelect());
+  }
+
+  /**
+   * Method under test: {@link ConfigurableOrderItemRequest#getIsMultiSelect()}
+   */
+  @Test
+  public void testGetIsMultiSelect2() {
     // Arrange
     ConfigurableOrderItemRequest configurableOrderItemRequest = new ConfigurableOrderItemRequest();
     configurableOrderItemRequest.setAdditionalAttributes(new HashMap<>());
@@ -91,11 +109,9 @@ public class ConfigurableOrderItemRequestDiffblueTest {
     configurableOrderItemRequest.setOverrideSalePrice(new Money());
     configurableOrderItemRequest.setParentOrderItemId(1L);
     configurableOrderItemRequest.setPricingModelType("Pricing Model Type");
-    configurableOrderItemRequest.setProduct(new ProductBundleImpl());
     configurableOrderItemRequest.setProductChoices(new ArrayList<>());
     configurableOrderItemRequest.setProductId(1L);
     configurableOrderItemRequest.setQuantity(1);
-    configurableOrderItemRequest.setSku(new SkuImpl());
     configurableOrderItemRequest.setSkuId(1L);
     configurableOrderItemRequest.setIsMultiSelect(true);
 
@@ -104,22 +120,16 @@ public class ConfigurableOrderItemRequestDiffblueTest {
   }
 
   /**
-   * Test {@link ConfigurableOrderItemRequest#getQuantity()}.
-   *
-   * <ul>
-   *   <li>Given {@link ConfigurableOrderItemRequest} (default constructor) MinQuantity is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link ConfigurableOrderItemRequest#getQuantity()}
+   * Method under test: {@link ConfigurableOrderItemRequest#getIsMultiSelect()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Integer ConfigurableOrderItemRequest.getQuantity()"})
-  public void testGetQuantity_givenConfigurableOrderItemRequestMinQuantityIsOne() {
+  public void testGetIsMultiSelect3() {
     // Arrange
+    HashMap<String, String> additionalAttributes = new HashMap<>();
+    additionalAttributes.computeIfPresent("foo", mock(BiFunction.class));
+
     ConfigurableOrderItemRequest configurableOrderItemRequest = new ConfigurableOrderItemRequest();
-    configurableOrderItemRequest.setAdditionalAttributes(new HashMap<>());
+    configurableOrderItemRequest.setAdditionalAttributes(additionalAttributes);
     configurableOrderItemRequest.setCategoryId(1L);
     configurableOrderItemRequest.setChildOrderItems(new ArrayList<>());
     configurableOrderItemRequest.setDiscountsAllowed(true);
@@ -128,7 +138,6 @@ public class ConfigurableOrderItemRequestDiffblueTest {
     configurableOrderItemRequest.setFirstExpandable(true);
     configurableOrderItemRequest.setHasConfigurationError(true);
     configurableOrderItemRequest.setHasOverridenPrice(true);
-    configurableOrderItemRequest.setIsMultiSelect(true);
     configurableOrderItemRequest.setItemAttributes(new HashMap<>());
     configurableOrderItemRequest.setLastExpandable(true);
     configurableOrderItemRequest.setMaxQuantity(3);
@@ -139,31 +148,30 @@ public class ConfigurableOrderItemRequestDiffblueTest {
     configurableOrderItemRequest.setOverrideSalePrice(new Money());
     configurableOrderItemRequest.setParentOrderItemId(1L);
     configurableOrderItemRequest.setPricingModelType("Pricing Model Type");
-    configurableOrderItemRequest.setProduct(new ProductBundleImpl());
     configurableOrderItemRequest.setProductChoices(new ArrayList<>());
     configurableOrderItemRequest.setProductId(1L);
-    configurableOrderItemRequest.setSku(new SkuImpl());
+    configurableOrderItemRequest.setQuantity(1);
     configurableOrderItemRequest.setSkuId(1L);
-    configurableOrderItemRequest.setQuantity(null);
+    configurableOrderItemRequest.setIsMultiSelect(true);
 
     // Act and Assert
-    assertEquals(1, configurableOrderItemRequest.getQuantity().intValue());
+    assertTrue(configurableOrderItemRequest.getIsMultiSelect());
   }
 
   /**
-   * Test {@link ConfigurableOrderItemRequest#getQuantity()}.
-   *
-   * <ul>
-   *   <li>Given {@link ConfigurableOrderItemRequest} (default constructor) Quantity is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link ConfigurableOrderItemRequest#getQuantity()}
+   * Method under test: {@link ConfigurableOrderItemRequest#getQuantity()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Integer ConfigurableOrderItemRequest.getQuantity()"})
-  public void testGetQuantity_givenConfigurableOrderItemRequestQuantityIsOne() {
+  public void testGetQuantity() {
+    // Arrange, Act and Assert
+    assertEquals(0, (new ConfigurableOrderItemRequest()).getQuantity().intValue());
+  }
+
+  /**
+   * Method under test: {@link ConfigurableOrderItemRequest#getQuantity()}
+   */
+  @Test
+  public void testGetQuantity2() {
     // Arrange
     ConfigurableOrderItemRequest configurableOrderItemRequest = new ConfigurableOrderItemRequest();
     configurableOrderItemRequest.setAdditionalAttributes(new HashMap<>());
@@ -185,11 +193,9 @@ public class ConfigurableOrderItemRequestDiffblueTest {
     configurableOrderItemRequest.setOverrideSalePrice(new Money());
     configurableOrderItemRequest.setParentOrderItemId(1L);
     configurableOrderItemRequest.setPricingModelType("Pricing Model Type");
-    configurableOrderItemRequest.setProduct(new ProductBundleImpl());
     configurableOrderItemRequest.setProductChoices(new ArrayList<>());
     configurableOrderItemRequest.setProductId(1L);
     configurableOrderItemRequest.setQuantity(1);
-    configurableOrderItemRequest.setSku(new SkuImpl());
     configurableOrderItemRequest.setSkuId(1L);
     configurableOrderItemRequest.setMinQuantity(null);
 
@@ -198,57 +204,55 @@ public class ConfigurableOrderItemRequestDiffblueTest {
   }
 
   /**
-   * Test {@link ConfigurableOrderItemRequest#getQuantity()}.
-   *
-   * <ul>
-   *   <li>Given {@link ConfigurableOrderItemRequest} (default constructor).
-   *   <li>Then return intValue is zero.
-   * </ul>
-   *
-   * <p>Method under test: {@link ConfigurableOrderItemRequest#getQuantity()}
+   * Method under test: {@link ConfigurableOrderItemRequest#getQuantity()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Integer ConfigurableOrderItemRequest.getQuantity()"})
-  public void testGetQuantity_givenConfigurableOrderItemRequest_thenReturnIntValueIsZero() {
-    // Arrange, Act and Assert
-    assertEquals(0, new ConfigurableOrderItemRequest().getQuantity().intValue());
+  public void testGetQuantity3() {
+    // Arrange
+    ConfigurableOrderItemRequest configurableOrderItemRequest = new ConfigurableOrderItemRequest();
+    configurableOrderItemRequest.setAdditionalAttributes(new HashMap<>());
+    configurableOrderItemRequest.setCategoryId(1L);
+    configurableOrderItemRequest.setChildOrderItems(new ArrayList<>());
+    configurableOrderItemRequest.setDiscountsAllowed(true);
+    configurableOrderItemRequest.setDisplayPrice(new Money());
+    configurableOrderItemRequest.setExpandable(true);
+    configurableOrderItemRequest.setFirstExpandable(true);
+    configurableOrderItemRequest.setHasConfigurationError(true);
+    configurableOrderItemRequest.setHasOverridenPrice(true);
+    configurableOrderItemRequest.setIsMultiSelect(true);
+    configurableOrderItemRequest.setItemAttributes(new HashMap<>());
+    configurableOrderItemRequest.setLastExpandable(true);
+    configurableOrderItemRequest.setMaxQuantity(3);
+    configurableOrderItemRequest.setMinQuantity(1);
+    configurableOrderItemRequest.setOrderItemId(1L);
+    configurableOrderItemRequest.setOrderItemIndex(1);
+    configurableOrderItemRequest.setOverrideRetailPrice(new Money());
+    configurableOrderItemRequest.setOverrideSalePrice(new Money());
+    configurableOrderItemRequest.setParentOrderItemId(1L);
+    configurableOrderItemRequest.setPricingModelType("Pricing Model Type");
+    configurableOrderItemRequest.setProductChoices(new ArrayList<>());
+    configurableOrderItemRequest.setProductId(1L);
+    configurableOrderItemRequest.setSkuId(1L);
+    configurableOrderItemRequest.setQuantity(null);
+
+    // Act and Assert
+    assertEquals(1, configurableOrderItemRequest.getQuantity().intValue());
   }
 
   /**
-   * Test {@link ConfigurableOrderItemRequest#getMinQuantity()}.
-   *
-   * <ul>
-   *   <li>Given {@link ConfigurableOrderItemRequest} (default constructor).
-   *   <li>Then return intValue is zero.
-   * </ul>
-   *
-   * <p>Method under test: {@link ConfigurableOrderItemRequest#getMinQuantity()}
+   * Method under test: {@link ConfigurableOrderItemRequest#getMinQuantity()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Integer ConfigurableOrderItemRequest.getMinQuantity()"})
-  public void testGetMinQuantity_givenConfigurableOrderItemRequest_thenReturnIntValueIsZero() {
+  public void testGetMinQuantity() {
     // Arrange, Act and Assert
-    assertEquals(0, new ConfigurableOrderItemRequest().getMinQuantity().intValue());
+    assertEquals(0, (new ConfigurableOrderItemRequest()).getMinQuantity().intValue());
   }
 
   /**
-   * Test {@link ConfigurableOrderItemRequest#getMinQuantity()}.
-   *
-   * <ul>
-   *   <li>Then return intValue is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link ConfigurableOrderItemRequest#getMinQuantity()}
+   * Method under test: {@link ConfigurableOrderItemRequest#getMinQuantity()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Integer ConfigurableOrderItemRequest.getMinQuantity()"})
-  public void testGetMinQuantity_thenReturnIntValueIsOne() {
+  public void testGetMinQuantity2() {
     // Arrange
     ConfigurableOrderItemRequest configurableOrderItemRequest = new ConfigurableOrderItemRequest();
     configurableOrderItemRequest.setAdditionalAttributes(new HashMap<>());
@@ -270,11 +274,9 @@ public class ConfigurableOrderItemRequestDiffblueTest {
     configurableOrderItemRequest.setOverrideSalePrice(new Money());
     configurableOrderItemRequest.setParentOrderItemId(1L);
     configurableOrderItemRequest.setPricingModelType("Pricing Model Type");
-    configurableOrderItemRequest.setProduct(new ProductBundleImpl());
     configurableOrderItemRequest.setProductChoices(new ArrayList<>());
     configurableOrderItemRequest.setProductId(1L);
     configurableOrderItemRequest.setQuantity(1);
-    configurableOrderItemRequest.setSku(new SkuImpl());
     configurableOrderItemRequest.setSkuId(1L);
     configurableOrderItemRequest.setMinQuantity(1);
 
@@ -283,38 +285,60 @@ public class ConfigurableOrderItemRequestDiffblueTest {
   }
 
   /**
-   * Test {@link ConfigurableOrderItemRequest#getHasOverridenPrice()}.
-   *
-   * <ul>
-   *   <li>Given {@link ConfigurableOrderItemRequest} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ConfigurableOrderItemRequest#getHasOverridenPrice()}
+   * Method under test: {@link ConfigurableOrderItemRequest#getMinQuantity()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ConfigurableOrderItemRequest.getHasOverridenPrice()"})
-  public void testGetHasOverridenPrice_givenConfigurableOrderItemRequest_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(new ConfigurableOrderItemRequest().getHasOverridenPrice());
+  public void testGetMinQuantity3() {
+    // Arrange
+    HashMap<String, String> additionalAttributes = new HashMap<>();
+    additionalAttributes.computeIfPresent("foo", mock(BiFunction.class));
+
+    ConfigurableOrderItemRequest configurableOrderItemRequest = new ConfigurableOrderItemRequest();
+    configurableOrderItemRequest.setAdditionalAttributes(additionalAttributes);
+    configurableOrderItemRequest.setCategoryId(1L);
+    configurableOrderItemRequest.setChildOrderItems(new ArrayList<>());
+    configurableOrderItemRequest.setDiscountsAllowed(true);
+    configurableOrderItemRequest.setDisplayPrice(new Money());
+    configurableOrderItemRequest.setExpandable(true);
+    configurableOrderItemRequest.setFirstExpandable(true);
+    configurableOrderItemRequest.setHasConfigurationError(true);
+    configurableOrderItemRequest.setHasOverridenPrice(true);
+    configurableOrderItemRequest.setIsMultiSelect(true);
+    configurableOrderItemRequest.setItemAttributes(new HashMap<>());
+    configurableOrderItemRequest.setLastExpandable(true);
+    configurableOrderItemRequest.setMaxQuantity(3);
+    configurableOrderItemRequest.setOrderItemId(1L);
+    configurableOrderItemRequest.setOrderItemIndex(1);
+    configurableOrderItemRequest.setOverrideRetailPrice(new Money());
+    configurableOrderItemRequest.setOverrideSalePrice(new Money());
+    configurableOrderItemRequest.setParentOrderItemId(1L);
+    configurableOrderItemRequest.setPricingModelType("Pricing Model Type");
+    configurableOrderItemRequest.setProductChoices(new ArrayList<>());
+    configurableOrderItemRequest.setProductId(1L);
+    configurableOrderItemRequest.setQuantity(1);
+    configurableOrderItemRequest.setSkuId(1L);
+    configurableOrderItemRequest.setMinQuantity(1);
+
+    // Act and Assert
+    assertEquals(1, configurableOrderItemRequest.getMinQuantity().intValue());
   }
 
   /**
-   * Test {@link ConfigurableOrderItemRequest#getHasOverridenPrice()}.
-   *
-   * <ul>
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ConfigurableOrderItemRequest#getHasOverridenPrice()}
+   * Method under test:
+   * {@link ConfigurableOrderItemRequest#getHasOverridenPrice()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ConfigurableOrderItemRequest.getHasOverridenPrice()"})
-  public void testGetHasOverridenPrice_thenReturnTrue() {
+  public void testGetHasOverridenPrice() {
+    // Arrange, Act and Assert
+    assertFalse((new ConfigurableOrderItemRequest()).getHasOverridenPrice());
+  }
+
+  /**
+   * Method under test:
+   * {@link ConfigurableOrderItemRequest#getHasOverridenPrice()}
+   */
+  @Test
+  public void testGetHasOverridenPrice2() {
     // Arrange
     ConfigurableOrderItemRequest configurableOrderItemRequest = new ConfigurableOrderItemRequest();
     configurableOrderItemRequest.setAdditionalAttributes(new HashMap<>());
@@ -336,11 +360,9 @@ public class ConfigurableOrderItemRequestDiffblueTest {
     configurableOrderItemRequest.setOverrideSalePrice(new Money());
     configurableOrderItemRequest.setParentOrderItemId(1L);
     configurableOrderItemRequest.setPricingModelType("Pricing Model Type");
-    configurableOrderItemRequest.setProduct(new ProductBundleImpl());
     configurableOrderItemRequest.setProductChoices(new ArrayList<>());
     configurableOrderItemRequest.setProductId(1L);
     configurableOrderItemRequest.setQuantity(1);
-    configurableOrderItemRequest.setSku(new SkuImpl());
     configurableOrderItemRequest.setSkuId(1L);
     configurableOrderItemRequest.setHasOverridenPrice(true);
 
@@ -349,38 +371,61 @@ public class ConfigurableOrderItemRequestDiffblueTest {
   }
 
   /**
-   * Test {@link ConfigurableOrderItemRequest#getHasConfigurationError()}.
-   *
-   * <ul>
-   *   <li>Given {@link ConfigurableOrderItemRequest} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ConfigurableOrderItemRequest#getHasConfigurationError()}
+   * Method under test:
+   * {@link ConfigurableOrderItemRequest#getHasOverridenPrice()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ConfigurableOrderItemRequest.getHasConfigurationError()"})
-  public void testGetHasConfigurationError_givenConfigurableOrderItemRequest_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(new ConfigurableOrderItemRequest().getHasConfigurationError());
+  public void testGetHasOverridenPrice3() {
+    // Arrange
+    HashMap<String, String> additionalAttributes = new HashMap<>();
+    additionalAttributes.computeIfPresent("foo", mock(BiFunction.class));
+
+    ConfigurableOrderItemRequest configurableOrderItemRequest = new ConfigurableOrderItemRequest();
+    configurableOrderItemRequest.setAdditionalAttributes(additionalAttributes);
+    configurableOrderItemRequest.setCategoryId(1L);
+    configurableOrderItemRequest.setChildOrderItems(new ArrayList<>());
+    configurableOrderItemRequest.setDiscountsAllowed(true);
+    configurableOrderItemRequest.setDisplayPrice(new Money());
+    configurableOrderItemRequest.setExpandable(true);
+    configurableOrderItemRequest.setFirstExpandable(true);
+    configurableOrderItemRequest.setHasConfigurationError(true);
+    configurableOrderItemRequest.setIsMultiSelect(true);
+    configurableOrderItemRequest.setItemAttributes(new HashMap<>());
+    configurableOrderItemRequest.setLastExpandable(true);
+    configurableOrderItemRequest.setMaxQuantity(3);
+    configurableOrderItemRequest.setMinQuantity(1);
+    configurableOrderItemRequest.setOrderItemId(1L);
+    configurableOrderItemRequest.setOrderItemIndex(1);
+    configurableOrderItemRequest.setOverrideRetailPrice(new Money());
+    configurableOrderItemRequest.setOverrideSalePrice(new Money());
+    configurableOrderItemRequest.setParentOrderItemId(1L);
+    configurableOrderItemRequest.setPricingModelType("Pricing Model Type");
+    configurableOrderItemRequest.setProductChoices(new ArrayList<>());
+    configurableOrderItemRequest.setProductId(1L);
+    configurableOrderItemRequest.setQuantity(1);
+    configurableOrderItemRequest.setSkuId(1L);
+    configurableOrderItemRequest.setHasOverridenPrice(true);
+
+    // Act and Assert
+    assertTrue(configurableOrderItemRequest.getHasOverridenPrice());
   }
 
   /**
-   * Test {@link ConfigurableOrderItemRequest#getHasConfigurationError()}.
-   *
-   * <ul>
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ConfigurableOrderItemRequest#getHasConfigurationError()}
+   * Method under test:
+   * {@link ConfigurableOrderItemRequest#getHasConfigurationError()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ConfigurableOrderItemRequest.getHasConfigurationError()"})
-  public void testGetHasConfigurationError_thenReturnTrue() {
+  public void testGetHasConfigurationError() {
+    // Arrange, Act and Assert
+    assertFalse((new ConfigurableOrderItemRequest()).getHasConfigurationError());
+  }
+
+  /**
+   * Method under test:
+   * {@link ConfigurableOrderItemRequest#getHasConfigurationError()}
+   */
+  @Test
+  public void testGetHasConfigurationError2() {
     // Arrange
     ConfigurableOrderItemRequest configurableOrderItemRequest = new ConfigurableOrderItemRequest();
     configurableOrderItemRequest.setAdditionalAttributes(new HashMap<>());
@@ -402,11 +447,9 @@ public class ConfigurableOrderItemRequestDiffblueTest {
     configurableOrderItemRequest.setOverrideSalePrice(new Money());
     configurableOrderItemRequest.setParentOrderItemId(1L);
     configurableOrderItemRequest.setPricingModelType("Pricing Model Type");
-    configurableOrderItemRequest.setProduct(new ProductBundleImpl());
     configurableOrderItemRequest.setProductChoices(new ArrayList<>());
     configurableOrderItemRequest.setProductId(1L);
     configurableOrderItemRequest.setQuantity(1);
-    configurableOrderItemRequest.setSku(new SkuImpl());
     configurableOrderItemRequest.setSkuId(1L);
     configurableOrderItemRequest.setHasConfigurationError(true);
 
@@ -415,38 +458,59 @@ public class ConfigurableOrderItemRequestDiffblueTest {
   }
 
   /**
-   * Test {@link ConfigurableOrderItemRequest#getDiscountsAllowed()}.
-   *
-   * <ul>
-   *   <li>Given {@link ConfigurableOrderItemRequest} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ConfigurableOrderItemRequest#getDiscountsAllowed()}
+   * Method under test:
+   * {@link ConfigurableOrderItemRequest#getHasConfigurationError()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ConfigurableOrderItemRequest.getDiscountsAllowed()"})
-  public void testGetDiscountsAllowed_givenConfigurableOrderItemRequest_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(new ConfigurableOrderItemRequest().getDiscountsAllowed());
+  public void testGetHasConfigurationError3() {
+    // Arrange
+    HashMap<String, String> additionalAttributes = new HashMap<>();
+    additionalAttributes.computeIfPresent("foo", mock(BiFunction.class));
+
+    ConfigurableOrderItemRequest configurableOrderItemRequest = new ConfigurableOrderItemRequest();
+    configurableOrderItemRequest.setAdditionalAttributes(additionalAttributes);
+    configurableOrderItemRequest.setCategoryId(1L);
+    configurableOrderItemRequest.setChildOrderItems(new ArrayList<>());
+    configurableOrderItemRequest.setDiscountsAllowed(true);
+    configurableOrderItemRequest.setDisplayPrice(new Money());
+    configurableOrderItemRequest.setExpandable(true);
+    configurableOrderItemRequest.setFirstExpandable(true);
+    configurableOrderItemRequest.setHasOverridenPrice(true);
+    configurableOrderItemRequest.setIsMultiSelect(true);
+    configurableOrderItemRequest.setItemAttributes(new HashMap<>());
+    configurableOrderItemRequest.setLastExpandable(true);
+    configurableOrderItemRequest.setMaxQuantity(3);
+    configurableOrderItemRequest.setMinQuantity(1);
+    configurableOrderItemRequest.setOrderItemId(1L);
+    configurableOrderItemRequest.setOrderItemIndex(1);
+    configurableOrderItemRequest.setOverrideRetailPrice(new Money());
+    configurableOrderItemRequest.setOverrideSalePrice(new Money());
+    configurableOrderItemRequest.setParentOrderItemId(1L);
+    configurableOrderItemRequest.setPricingModelType("Pricing Model Type");
+    configurableOrderItemRequest.setProductChoices(new ArrayList<>());
+    configurableOrderItemRequest.setProductId(1L);
+    configurableOrderItemRequest.setQuantity(1);
+    configurableOrderItemRequest.setSkuId(1L);
+    configurableOrderItemRequest.setHasConfigurationError(true);
+
+    // Act and Assert
+    assertTrue(configurableOrderItemRequest.getHasConfigurationError());
   }
 
   /**
-   * Test {@link ConfigurableOrderItemRequest#getDiscountsAllowed()}.
-   *
-   * <ul>
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ConfigurableOrderItemRequest#getDiscountsAllowed()}
+   * Method under test: {@link ConfigurableOrderItemRequest#getDiscountsAllowed()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean ConfigurableOrderItemRequest.getDiscountsAllowed()"})
-  public void testGetDiscountsAllowed_thenReturnTrue() {
+  public void testGetDiscountsAllowed() {
+    // Arrange, Act and Assert
+    assertFalse((new ConfigurableOrderItemRequest()).getDiscountsAllowed());
+  }
+
+  /**
+   * Method under test: {@link ConfigurableOrderItemRequest#getDiscountsAllowed()}
+   */
+  @Test
+  public void testGetDiscountsAllowed2() {
     // Arrange
     ConfigurableOrderItemRequest configurableOrderItemRequest = new ConfigurableOrderItemRequest();
     configurableOrderItemRequest.setAdditionalAttributes(new HashMap<>());
@@ -468,11 +532,9 @@ public class ConfigurableOrderItemRequestDiffblueTest {
     configurableOrderItemRequest.setOverrideSalePrice(new Money());
     configurableOrderItemRequest.setParentOrderItemId(1L);
     configurableOrderItemRequest.setPricingModelType("Pricing Model Type");
-    configurableOrderItemRequest.setProduct(new ProductBundleImpl());
     configurableOrderItemRequest.setProductChoices(new ArrayList<>());
     configurableOrderItemRequest.setProductId(1L);
     configurableOrderItemRequest.setQuantity(1);
-    configurableOrderItemRequest.setSku(new SkuImpl());
     configurableOrderItemRequest.setSkuId(1L);
     configurableOrderItemRequest.setDiscountsAllowed(true);
 
@@ -481,12 +543,49 @@ public class ConfigurableOrderItemRequestDiffblueTest {
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Method under test: {@link ConfigurableOrderItemRequest#getDiscountsAllowed()}
+   */
+  @Test
+  public void testGetDiscountsAllowed3() {
+    // Arrange
+    HashMap<String, String> additionalAttributes = new HashMap<>();
+    additionalAttributes.computeIfPresent("foo", mock(BiFunction.class));
+
+    ConfigurableOrderItemRequest configurableOrderItemRequest = new ConfigurableOrderItemRequest();
+    configurableOrderItemRequest.setAdditionalAttributes(additionalAttributes);
+    configurableOrderItemRequest.setCategoryId(1L);
+    configurableOrderItemRequest.setChildOrderItems(new ArrayList<>());
+    configurableOrderItemRequest.setDisplayPrice(new Money());
+    configurableOrderItemRequest.setExpandable(true);
+    configurableOrderItemRequest.setFirstExpandable(true);
+    configurableOrderItemRequest.setHasConfigurationError(true);
+    configurableOrderItemRequest.setHasOverridenPrice(true);
+    configurableOrderItemRequest.setIsMultiSelect(true);
+    configurableOrderItemRequest.setItemAttributes(new HashMap<>());
+    configurableOrderItemRequest.setLastExpandable(true);
+    configurableOrderItemRequest.setMaxQuantity(3);
+    configurableOrderItemRequest.setMinQuantity(1);
+    configurableOrderItemRequest.setOrderItemId(1L);
+    configurableOrderItemRequest.setOrderItemIndex(1);
+    configurableOrderItemRequest.setOverrideRetailPrice(new Money());
+    configurableOrderItemRequest.setOverrideSalePrice(new Money());
+    configurableOrderItemRequest.setParentOrderItemId(1L);
+    configurableOrderItemRequest.setPricingModelType("Pricing Model Type");
+    configurableOrderItemRequest.setProductChoices(new ArrayList<>());
+    configurableOrderItemRequest.setProductId(1L);
+    configurableOrderItemRequest.setQuantity(1);
+    configurableOrderItemRequest.setSkuId(1L);
+    configurableOrderItemRequest.setDiscountsAllowed(true);
+
+    // Act and Assert
+    assertTrue(configurableOrderItemRequest.getDiscountsAllowed());
+  }
+
+  /**
+   * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of {@link ConfigurableOrderItemRequest}
+   *   <li>default or parameterless constructor of
+   * {@link ConfigurableOrderItemRequest}
    *   <li>{@link ConfigurableOrderItemRequest#setDiscountsAllowed(Boolean)}
    *   <li>{@link ConfigurableOrderItemRequest#setDisplayPrice(Money)}
    *   <li>{@link ConfigurableOrderItemRequest#setExpandable(boolean)}
@@ -513,38 +612,9 @@ public class ConfigurableOrderItemRequestDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ConfigurableOrderItemRequest.<init>()",
-    "Money ConfigurableOrderItemRequest.getDisplayPrice()",
-    "Integer ConfigurableOrderItemRequest.getMaxQuantity()",
-    "Integer ConfigurableOrderItemRequest.getOrderItemIndex()",
-    "String ConfigurableOrderItemRequest.getPricingModelType()",
-    "Product ConfigurableOrderItemRequest.getProduct()",
-    "List ConfigurableOrderItemRequest.getProductChoices()",
-    "Sku ConfigurableOrderItemRequest.getSku()",
-    "boolean ConfigurableOrderItemRequest.isExpandable()",
-    "boolean ConfigurableOrderItemRequest.isFirstExpandable()",
-    "boolean ConfigurableOrderItemRequest.isLastExpandable()",
-    "void ConfigurableOrderItemRequest.setDiscountsAllowed(Boolean)",
-    "void ConfigurableOrderItemRequest.setDisplayPrice(Money)",
-    "void ConfigurableOrderItemRequest.setExpandable(boolean)",
-    "void ConfigurableOrderItemRequest.setFirstExpandable(boolean)",
-    "void ConfigurableOrderItemRequest.setHasConfigurationError(Boolean)",
-    "void ConfigurableOrderItemRequest.setHasOverridenPrice(Boolean)",
-    "void ConfigurableOrderItemRequest.setIsMultiSelect(Boolean)",
-    "void ConfigurableOrderItemRequest.setLastExpandable(boolean)",
-    "void ConfigurableOrderItemRequest.setMaxQuantity(Integer)",
-    "void ConfigurableOrderItemRequest.setMinQuantity(Integer)",
-    "void ConfigurableOrderItemRequest.setOrderItemIndex(Integer)",
-    "void ConfigurableOrderItemRequest.setPricingModelType(String)",
-    "void ConfigurableOrderItemRequest.setProductChoices(List)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
-    ConfigurableOrderItemRequest actualConfigurableOrderItemRequest =
-        new ConfigurableOrderItemRequest();
+    ConfigurableOrderItemRequest actualConfigurableOrderItemRequest = new ConfigurableOrderItemRequest();
     actualConfigurableOrderItemRequest.setDiscountsAllowed(true);
     Money displayPrice = new Money();
     actualConfigurableOrderItemRequest.setDisplayPrice(displayPrice);
@@ -564,25 +634,15 @@ public class ConfigurableOrderItemRequestDiffblueTest {
     Integer actualMaxQuantity = actualConfigurableOrderItemRequest.getMaxQuantity();
     Integer actualOrderItemIndex = actualConfigurableOrderItemRequest.getOrderItemIndex();
     String actualPricingModelType = actualConfigurableOrderItemRequest.getPricingModelType();
-    Product actualProduct = actualConfigurableOrderItemRequest.getProduct();
-    List<ConfigurableOrderItemRequest> actualProductChoices =
-        actualConfigurableOrderItemRequest.getProductChoices();
-    Sku actualSku = actualConfigurableOrderItemRequest.getSku();
+    actualConfigurableOrderItemRequest.getProduct();
+    List<ConfigurableOrderItemRequest> actualProductChoices = actualConfigurableOrderItemRequest.getProductChoices();
+    actualConfigurableOrderItemRequest.getSku();
     boolean actualIsExpandableResult = actualConfigurableOrderItemRequest.isExpandable();
     boolean actualIsFirstExpandableResult = actualConfigurableOrderItemRequest.isFirstExpandable();
     boolean actualIsLastExpandableResult = actualConfigurableOrderItemRequest.isLastExpandable();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("Pricing Model Type", actualPricingModelType);
-    assertNull(actualConfigurableOrderItemRequest.getCategoryId());
-    assertNull(actualConfigurableOrderItemRequest.getOrderItemId());
-    assertNull(actualConfigurableOrderItemRequest.getParentOrderItemId());
-    assertNull(actualConfigurableOrderItemRequest.getProductId());
-    assertNull(actualConfigurableOrderItemRequest.getSkuId());
-    assertNull(actualConfigurableOrderItemRequest.getOverrideRetailPrice());
-    assertNull(actualConfigurableOrderItemRequest.getOverrideSalePrice());
-    assertNull(actualProduct);
-    assertNull(actualSku);
     assertEquals(1, actualOrderItemIndex.intValue());
     assertEquals(1, actualConfigurableOrderItemRequest.getQuantity().intValue());
     assertEquals(1, actualConfigurableOrderItemRequest.minQuantity.intValue());

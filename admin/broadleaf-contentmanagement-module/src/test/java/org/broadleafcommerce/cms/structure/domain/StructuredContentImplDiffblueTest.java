@@ -23,70 +23,60 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import org.broadleafcommerce.common.copy.CreateResponse;
+import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.broadleafcommerce.common.locale.domain.Locale;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
+import org.broadleafcommerce.common.service.GenericEntityService;
+import org.broadleafcommerce.common.site.domain.CatalogImpl;
+import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(SpringJUnit4ClassRunner.class)
 public class StructuredContentImplDiffblueTest {
-  @Autowired private StructuredContentImpl structuredContentImpl;
-
   /**
-   * Test {@link StructuredContentImpl#getStructuredContentFields()}.
-   *
-   * <ul>
-   *   <li>Given {@link StructuredContentImpl}.
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentImpl#getStructuredContentFields()}
+   * Method under test: {@link StructuredContentImpl#getStructuredContentFields()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map StructuredContentImpl.getStructuredContentFields()"})
-  public void testGetStructuredContentFields_givenStructuredContentImpl_thenReturnEmpty() {
+  public void testGetStructuredContentFields() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
+    assertTrue((new StructuredContentImpl()).getStructuredContentFields().isEmpty());
+  }
+
+  /**
+   * Method under test: {@link StructuredContentImpl#getStructuredContentFields()}
+   */
+  @Test
+  public void testGetStructuredContentFields2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StructuredContentImpl structuredContentImpl = new StructuredContentImpl();
+    structuredContentImpl.setLocale(mock(LocaleImpl.class));
+
+    // Act and Assert
     assertTrue(structuredContentImpl.getStructuredContentFields().isEmpty());
   }
 
   /**
-   * Test {@link StructuredContentImpl#getStructuredContentFields()}.
-   *
-   * <ul>
-   *   <li>Then return size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentImpl#getStructuredContentFields()}
+   * Method under test: {@link StructuredContentImpl#getStructuredContentFields()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map StructuredContentImpl.getStructuredContentFields()"})
-  public void testGetStructuredContentFields_thenReturnSizeIsOne() {
+  public void testGetStructuredContentFields3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     HashMap<String, StructuredContentFieldXref> structuredContentFields = new HashMap<>();
     structuredContentFields.put("foo", new StructuredContentFieldXrefImpl());
@@ -95,8 +85,8 @@ public class StructuredContentImplDiffblueTest {
     structuredContentImpl.setStructuredContentFieldXrefs(structuredContentFields);
 
     // Act
-    Map<String, StructuredContentField> actualStructuredContentFields =
-        structuredContentImpl.getStructuredContentFields();
+    Map<String, StructuredContentField> actualStructuredContentFields = structuredContentImpl
+        .getStructuredContentFields();
 
     // Assert
     assertEquals(1, actualStructuredContentFields.size());
@@ -104,27 +94,21 @@ public class StructuredContentImplDiffblueTest {
   }
 
   /**
-   * Test {@link StructuredContentImpl#setStructuredContentFields(Map)}.
-   *
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()}.
-   *   <li>Then {@link HashMap#HashMap()} Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentImpl#setStructuredContentFields(Map)}
+   * Method under test:
+   * {@link StructuredContentImpl#setStructuredContentFields(Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void StructuredContentImpl.setStructuredContentFields(Map)"})
-  public void testSetStructuredContentFields_whenHashMap_thenHashMapEmpty() {
+  public void testSetStructuredContentFields() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    StructuredContentImpl structuredContentImpl = new StructuredContentImpl();
     HashMap<String, StructuredContentField> structuredContentFields = new HashMap<>();
 
     // Act
     structuredContentImpl.setStructuredContentFields(structuredContentFields);
 
-    // Assert that nothing has changed
+    // Assert
     assertTrue(structuredContentFields.isEmpty());
     assertTrue(structuredContentImpl.getFieldValues().isEmpty());
     assertTrue(structuredContentImpl.getStructuredContentFieldXrefs().isEmpty());
@@ -133,79 +117,146 @@ public class StructuredContentImplDiffblueTest {
   }
 
   /**
-   * Test {@link StructuredContentImpl#getFieldValue(String)}.
-   *
-   * <p>Method under test: {@link StructuredContentImpl#getFieldValue(String)}
+   * Method under test: {@link StructuredContentImpl#getFieldValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String StructuredContentImpl.getFieldValue(String)"})
   public void testGetFieldValue() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
+    assertNull((new StructuredContentImpl()).getFieldValue("Field Name"));
+  }
+
+  /**
+   * Method under test: {@link StructuredContentImpl#getFieldValue(String)}
+   */
+  @Test
+  public void testGetFieldValue2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StructuredContentImpl structuredContentImpl = new StructuredContentImpl();
+    structuredContentImpl.setLocale(mock(LocaleImpl.class));
+
+    // Act and Assert
     assertNull(structuredContentImpl.getFieldValue("Field Name"));
   }
 
   /**
-   * Test {@link StructuredContentImpl#getFieldValues()}.
-   *
-   * <ul>
-   *   <li>Given {@link StructuredContentImpl} FieldValues is {@link HashMap#HashMap()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentImpl#getFieldValues()}
+   * Method under test: {@link StructuredContentImpl#getFieldValues()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map StructuredContentImpl.getFieldValues()"})
-  public void testGetFieldValues_givenStructuredContentImplFieldValuesIsHashMap() {
+  public void testGetFieldValues() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    structuredContentImpl.setFieldValues(new HashMap<>());
+    StructuredContentImpl structuredContentImpl = new StructuredContentImpl();
 
-    // Act and Assert
-    assertTrue(structuredContentImpl.getFieldValues().isEmpty());
+    // Act
+    Map<String, String> actualFieldValues = structuredContentImpl.getFieldValues();
+
+    // Assert
+    assertTrue(actualFieldValues.isEmpty());
+    assertTrue(structuredContentImpl.getStructuredContentFieldXrefs().isEmpty());
+    assertTrue(structuredContentImpl.getStructuredContentFields().isEmpty());
+    assertTrue(structuredContentImpl.getStructuredContentMatchRules().isEmpty());
+    assertTrue(structuredContentImpl.legacyStructuredContentFields.isEmpty());
+    assertSame(structuredContentImpl.fieldValuesMap, actualFieldValues);
   }
 
   /**
-   * Test {@link StructuredContentImpl#getFieldValues()}.
-   *
-   * <ul>
-   *   <li>Given {@link StructuredContentImpl}.
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentImpl#getFieldValues()}
+   * Method under test: {@link StructuredContentImpl#getFieldValues()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map StructuredContentImpl.getFieldValues()"})
-  public void testGetFieldValues_givenStructuredContentImpl_thenReturnEmpty() {
-    // Arrange, Act and Assert
-    assertTrue(structuredContentImpl.getFieldValues().isEmpty());
+  public void testGetFieldValues2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StructuredContentImpl structuredContentImpl = new StructuredContentImpl();
+    structuredContentImpl.setContentName("Not all who wander are lost");
+    structuredContentImpl.setId(StructuredContentItemCriteriaImpl.serialVersionUID);
+    structuredContentImpl.setLocale(new LocaleImpl());
+    structuredContentImpl.setOfflineFlag(true);
+    structuredContentImpl.setPriority(1);
+    structuredContentImpl.setQualifyingItemCriteria(new HashSet<>());
+    HashMap<String, StructuredContentFieldXref> structuredContentFields = new HashMap<>();
+    structuredContentImpl.setStructuredContentFieldXrefs(structuredContentFields);
+    HashMap<String, StructuredContentRule> structuredContentMatchRules = new HashMap<>();
+    structuredContentImpl.setStructuredContentMatchRules(structuredContentMatchRules);
+    structuredContentImpl.setStructuredContentType(new StructuredContentTypeImpl());
+    HashMap<String, String> fieldValuesMap = new HashMap<>();
+    structuredContentImpl.setFieldValues(fieldValuesMap);
+
+    // Act
+    Map<String, String> actualFieldValues = structuredContentImpl.getFieldValues();
+
+    // Assert
+    assertTrue(actualFieldValues.isEmpty());
+    Map<String, StructuredContentFieldXref> structuredContentFieldXrefs = structuredContentImpl
+        .getStructuredContentFieldXrefs();
+    assertTrue(structuredContentFieldXrefs.isEmpty());
+    assertTrue(structuredContentImpl.getStructuredContentFields().isEmpty());
+    Map<String, StructuredContentRule> structuredContentMatchRules2 = structuredContentImpl
+        .getStructuredContentMatchRules();
+    assertTrue(structuredContentMatchRules2.isEmpty());
+    assertTrue(structuredContentImpl.legacyStructuredContentFields.isEmpty());
+    assertSame(fieldValuesMap, actualFieldValues);
+    assertSame(structuredContentFields, structuredContentFieldXrefs);
+    assertSame(structuredContentMatchRules, structuredContentMatchRules2);
   }
 
   /**
-   * Test {@link StructuredContentImpl#getFieldValues()}.
-   *
-   * <ul>
-   *   <li>Then return size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentImpl#getFieldValues()}
+   * Method under test: {@link StructuredContentImpl#getFieldValues()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map StructuredContentImpl.getFieldValues()"})
-  public void testGetFieldValues_thenReturnSizeIsOne() {
+  public void testGetFieldValues3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StructuredContentImpl structuredContentImpl = new StructuredContentImpl();
+    structuredContentImpl.setContentName("Not all who wander are lost");
+    structuredContentImpl.setId(StructuredContentItemCriteriaImpl.serialVersionUID);
+    structuredContentImpl.setLocale(mock(LocaleImpl.class));
+    structuredContentImpl.setOfflineFlag(true);
+    structuredContentImpl.setPriority(1);
+    structuredContentImpl.setQualifyingItemCriteria(new HashSet<>());
+    HashMap<String, StructuredContentFieldXref> structuredContentFields = new HashMap<>();
+    structuredContentImpl.setStructuredContentFieldXrefs(structuredContentFields);
+    HashMap<String, StructuredContentRule> structuredContentMatchRules = new HashMap<>();
+    structuredContentImpl.setStructuredContentMatchRules(structuredContentMatchRules);
+    structuredContentImpl.setStructuredContentType(new StructuredContentTypeImpl());
+    HashMap<String, String> fieldValuesMap = new HashMap<>();
+    structuredContentImpl.setFieldValues(fieldValuesMap);
+
+    // Act
+    Map<String, String> actualFieldValues = structuredContentImpl.getFieldValues();
+
+    // Assert
+    assertTrue(actualFieldValues.isEmpty());
+    Map<String, StructuredContentFieldXref> structuredContentFieldXrefs = structuredContentImpl
+        .getStructuredContentFieldXrefs();
+    assertTrue(structuredContentFieldXrefs.isEmpty());
+    assertTrue(structuredContentImpl.getStructuredContentFields().isEmpty());
+    Map<String, StructuredContentRule> structuredContentMatchRules2 = structuredContentImpl
+        .getStructuredContentMatchRules();
+    assertTrue(structuredContentMatchRules2.isEmpty());
+    assertTrue(structuredContentImpl.legacyStructuredContentFields.isEmpty());
+    assertSame(fieldValuesMap, actualFieldValues);
+    assertSame(structuredContentFields, structuredContentFieldXrefs);
+    assertSame(structuredContentMatchRules, structuredContentMatchRules2);
+  }
+
+  /**
+   * Method under test: {@link StructuredContentImpl#getFieldValues()}
+   */
+  @Test
+  public void testGetFieldValues4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     HashMap<String, StructuredContentFieldXref> structuredContentFields = new HashMap<>();
     StructuredContentImpl sc = new StructuredContentImpl();
-    StructuredContentFieldXrefImpl structuredContentFieldXrefImpl =
-        new StructuredContentFieldXrefImpl(sc, new StructuredContentFieldImpl(), "Key");
-    structuredContentFields.put("foo", structuredContentFieldXrefImpl);
+    structuredContentFields.put("foo", new StructuredContentFieldXrefImpl(sc, new StructuredContentFieldImpl(), "Key"));
 
     StructuredContentImpl structuredContentImpl = new StructuredContentImpl();
     structuredContentImpl.setStructuredContentFieldXrefs(structuredContentFields);
@@ -216,25 +267,50 @@ public class StructuredContentImplDiffblueTest {
     // Assert
     assertEquals(1, actualFieldValues.size());
     assertNull(actualFieldValues.get("foo"));
+    Map<String, StructuredContentFieldXref> structuredContentFieldXrefs = structuredContentImpl
+        .getStructuredContentFieldXrefs();
+    assertEquals(1, structuredContentFieldXrefs.size());
+    Map<String, StructuredContentField> structuredContentFields2 = structuredContentImpl.getStructuredContentFields();
+    assertEquals(1, structuredContentFields2.size());
+    Map<String, StructuredContentField> stringStructuredContentFieldMap = structuredContentImpl.legacyStructuredContentFields;
+    assertEquals(1, stringStructuredContentFieldMap.size());
+    assertTrue(structuredContentFieldXrefs.containsKey("foo"));
+    assertTrue(structuredContentFields2.containsKey("foo"));
+    assertTrue(stringStructuredContentFieldMap.containsKey("foo"));
+    assertTrue(structuredContentImpl.getStructuredContentMatchRules().isEmpty());
+    assertSame(structuredContentFields, structuredContentFieldXrefs);
     assertSame(structuredContentImpl.fieldValuesMap, actualFieldValues);
   }
 
   /**
-   * Test {@link StructuredContentImpl#getOfflineFlag()}.
-   *
-   * <ul>
-   *   <li>Given {@link StructuredContentImpl} OfflineFlag is {@code null}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentImpl#getOfflineFlag()}
+   * Method under test: {@link StructuredContentImpl#getOfflineFlag()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean StructuredContentImpl.getOfflineFlag()"})
-  public void testGetOfflineFlag_givenStructuredContentImplOfflineFlagIsNull_thenReturnFalse() {
+  public void testGetOfflineFlag() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertFalse((new StructuredContentImpl()).getOfflineFlag());
+  }
+
+  /**
+   * Method under test: {@link StructuredContentImpl#getOfflineFlag()}
+   */
+  @Test
+  public void testGetOfflineFlag2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    StructuredContentImpl structuredContentImpl = new StructuredContentImpl();
+    structuredContentImpl.setContentName("Not all who wander are lost");
+    structuredContentImpl.setFieldValues(new HashMap<>());
+    structuredContentImpl.setId(StructuredContentItemCriteriaImpl.serialVersionUID);
+    structuredContentImpl.setLocale(new LocaleImpl());
+    structuredContentImpl.setPriority(1);
+    structuredContentImpl.setQualifyingItemCriteria(new HashSet<>());
+    structuredContentImpl.setStructuredContentFieldXrefs(new HashMap<>());
+    structuredContentImpl.setStructuredContentMatchRules(new HashMap<>());
+    structuredContentImpl.setStructuredContentType(new StructuredContentTypeImpl());
     structuredContentImpl.setOfflineFlag(null);
 
     // Act and Assert
@@ -242,21 +318,23 @@ public class StructuredContentImplDiffblueTest {
   }
 
   /**
-   * Test {@link StructuredContentImpl#getOfflineFlag()}.
-   *
-   * <ul>
-   *   <li>Given {@link StructuredContentImpl} OfflineFlag is {@code true}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentImpl#getOfflineFlag()}
+   * Method under test: {@link StructuredContentImpl#getOfflineFlag()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean StructuredContentImpl.getOfflineFlag()"})
-  public void testGetOfflineFlag_givenStructuredContentImplOfflineFlagIsTrue_thenReturnTrue() {
+  public void testGetOfflineFlag3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    StructuredContentImpl structuredContentImpl = new StructuredContentImpl();
+    structuredContentImpl.setContentName("Not all who wander are lost");
+    structuredContentImpl.setFieldValues(new HashMap<>());
+    structuredContentImpl.setId(StructuredContentItemCriteriaImpl.serialVersionUID);
+    structuredContentImpl.setLocale(new LocaleImpl());
+    structuredContentImpl.setPriority(1);
+    structuredContentImpl.setQualifyingItemCriteria(new HashSet<>());
+    structuredContentImpl.setStructuredContentFieldXrefs(new HashMap<>());
+    structuredContentImpl.setStructuredContentMatchRules(new HashMap<>());
+    structuredContentImpl.setStructuredContentType(new StructuredContentTypeImpl());
     structuredContentImpl.setOfflineFlag(true);
 
     // Act and Assert
@@ -264,86 +342,120 @@ public class StructuredContentImplDiffblueTest {
   }
 
   /**
-   * Test {@link StructuredContentImpl#getOfflineFlag()}.
-   *
-   * <ul>
-   *   <li>Given {@link StructuredContentImpl}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentImpl#getOfflineFlag()}
+   * Method under test: {@link StructuredContentImpl#getOfflineFlag()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean StructuredContentImpl.getOfflineFlag()"})
-  public void testGetOfflineFlag_givenStructuredContentImpl_thenReturnFalse() {
-    // Arrange, Act and Assert
+  public void testGetOfflineFlag4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StructuredContentImpl structuredContentImpl = new StructuredContentImpl();
+    structuredContentImpl.setContentName("Not all who wander are lost");
+    structuredContentImpl.setFieldValues(new HashMap<>());
+    structuredContentImpl.setId(StructuredContentItemCriteriaImpl.serialVersionUID);
+    structuredContentImpl.setLocale(mock(LocaleImpl.class));
+    structuredContentImpl.setPriority(1);
+    structuredContentImpl.setQualifyingItemCriteria(new HashSet<>());
+    structuredContentImpl.setStructuredContentFieldXrefs(new HashMap<>());
+    structuredContentImpl.setStructuredContentMatchRules(new HashMap<>());
+    structuredContentImpl.setStructuredContentType(new StructuredContentTypeImpl());
+    structuredContentImpl.setOfflineFlag(null);
+
+    // Act and Assert
     assertFalse(structuredContentImpl.getOfflineFlag());
   }
 
   /**
-   * Test {@link StructuredContentImpl#getMainEntityName()}.
-   *
-   * <p>Method under test: {@link StructuredContentImpl#getMainEntityName()}
+   * Method under test: {@link StructuredContentImpl#getMainEntityName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String StructuredContentImpl.getMainEntityName()"})
   public void testGetMainEntityName() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
+    assertNull((new StructuredContentImpl()).getMainEntityName());
+  }
+
+  /**
+   * Method under test: {@link StructuredContentImpl#getMainEntityName()}
+   */
+  @Test
+  public void testGetMainEntityName2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StructuredContentImpl structuredContentImpl = new StructuredContentImpl();
+    structuredContentImpl.setLocale(mock(LocaleImpl.class));
+
+    // Act and Assert
     assertNull(structuredContentImpl.getMainEntityName());
   }
 
   /**
-   * Test {@link StructuredContentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * StructuredContentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test:
+   * {@link StructuredContentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse StructuredContentImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(new StructuredContentImpl(), true);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+    StructuredContentImpl structuredContentImpl = new StructuredContentImpl();
+    GenericEntityService genericEntityService = mock(GenericEntityService.class);
+    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
 
     // Act
-    CreateResponse<StructuredContent> actualCreateOrRetrieveCopyInstanceResult =
-        structuredContentImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<StructuredContent> actualCreateOrRetrieveCopyInstanceResult = structuredContentImpl
+        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+            genericEntityService, new MultiTenantCopierExtensionManager()));
 
     // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+    verify(genericEntityService)
+        .getCeilingImplClass(eq("org.broadleafcommerce.cms.structure.domain.StructuredContentImpl"));
+    verify(genericEntityService).getIdentifier(isA(Object.class));
+    StructuredContent clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
+    assertTrue(clone instanceof StructuredContentImpl);
+    assertNull(clone.getPriority());
+    assertNull(clone.getId());
+    assertNull(clone.getContentName());
+    assertNull(((StructuredContentImpl) clone).getMainEntityName());
+    assertNull(clone.getStructuredContentType());
+    assertNull(clone.getLocale());
+    assertFalse(clone.getOfflineFlag());
+    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
+    assertFalse(((StructuredContentImpl) clone).offlineFlag);
+    assertTrue(clone.getFieldValues().isEmpty());
+    assertTrue(clone.getStructuredContentFieldXrefs().isEmpty());
+    assertTrue(clone.getStructuredContentFields().isEmpty());
+    assertTrue(clone.getStructuredContentMatchRules().isEmpty());
+    assertTrue(((StructuredContentImpl) clone).legacyStructuredContentFields.isEmpty());
+    assertTrue(clone.getQualifyingItemCriteria().isEmpty());
   }
 
   /**
-   * Test {@link StructuredContentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * StructuredContentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test:
+   * {@link StructuredContentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse StructuredContentImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
   public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    StructuredContentImpl structuredContentImpl = new StructuredContentImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(structuredContentImpl, false);
+    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<StructuredContent> actualCreateOrRetrieveCopyInstanceResult =
-        structuredContentImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<StructuredContent> actualCreateOrRetrieveCopyInstanceResult = structuredContentImpl
+        .createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -351,18 +463,13 @@ public class StructuredContentImplDiffblueTest {
   }
 
   /**
-   * Test {@link StructuredContentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * StructuredContentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test:
+   * {@link StructuredContentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse StructuredContentImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
   public void testCreateOrRetrieveCopyInstance3() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     StructuredContentTypeImpl structuredContentType = mock(StructuredContentTypeImpl.class);
     when(structuredContentType.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
@@ -382,48 +489,36 @@ public class StructuredContentImplDiffblueTest {
     structuredContentImpl2.setStructuredContentFieldXrefs(new HashMap<>());
     structuredContentImpl2.setStructuredContentMatchRules(new HashMap<>());
     structuredContentImpl2.setStructuredContentType(new StructuredContentTypeImpl());
-    CreateResponse<Object> createResponse = new CreateResponse<>(structuredContentImpl2, false);
-
-    HashMap<String, String> stringStringMap = new HashMap<>();
-    stringStringMap.put(StructuredContentImpl.SC_DONT_DUPLICATE_SC_TYPE_HINT, "Copy Hints");
-
+    CreateResponse<Object> createResponse = mock(CreateResponse.class);
+    when(createResponse.isAlreadyPopulated()).thenReturn(false);
+    when(createResponse.getClone()).thenReturn(structuredContentImpl2);
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.getCopyHints()).thenReturn(stringStringMap);
+    when(context.getCopyHints()).thenReturn(new HashMap<>());
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<StructuredContent> actualCreateOrRetrieveCopyInstanceResult =
-        structuredContentImpl.createOrRetrieveCopyInstance(context);
+    structuredContentImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(structuredContentType).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
+    verify(createResponse).getClone();
+    verify(createResponse).isAlreadyPopulated();
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
     verify(context).getCopyHints();
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
   }
 
   /**
-   * Test {@link StructuredContentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link CloneNotSupportedException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * StructuredContentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test:
+   * {@link StructuredContentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse StructuredContentImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance_thenThrowCloneNotSupportedException()
-      throws CloneNotSupportedException {
+  public void testCreateOrRetrieveCopyInstance4() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     StructuredContentTypeImpl structuredContentType = mock(StructuredContentTypeImpl.class);
     when(structuredContentType.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
-        .thenThrow(new CloneNotSupportedException());
+        .thenThrow(new CloneNotSupportedException(StructuredContentImpl.SC_DONT_DUPLICATE_SC_TYPE_HINT));
 
     StructuredContentImpl structuredContentImpl = new StructuredContentImpl();
     structuredContentImpl.setStructuredContentType(structuredContentType);
@@ -439,29 +534,24 @@ public class StructuredContentImplDiffblueTest {
     structuredContentImpl2.setStructuredContentFieldXrefs(new HashMap<>());
     structuredContentImpl2.setStructuredContentMatchRules(new HashMap<>());
     structuredContentImpl2.setStructuredContentType(new StructuredContentTypeImpl());
-    CreateResponse<Object> createResponse = new CreateResponse<>(structuredContentImpl2, false);
-
-    HashMap<String, String> stringStringMap = new HashMap<>();
-    stringStringMap.put(StructuredContentImpl.SC_DONT_DUPLICATE_SC_TYPE_HINT, "Copy Hints");
-
+    CreateResponse<Object> createResponse = mock(CreateResponse.class);
+    when(createResponse.isAlreadyPopulated()).thenReturn(false);
+    when(createResponse.getClone()).thenReturn(structuredContentImpl2);
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.getCopyHints()).thenReturn(stringStringMap);
+    when(context.getCopyHints()).thenReturn(new HashMap<>());
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act and Assert
-    assertThrows(
-        CloneNotSupportedException.class,
-        () -> structuredContentImpl.createOrRetrieveCopyInstance(context));
+    assertThrows(CloneNotSupportedException.class, () -> structuredContentImpl.createOrRetrieveCopyInstance(context));
     verify(structuredContentType).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
+    verify(createResponse).getClone();
+    verify(createResponse).isAlreadyPopulated();
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
     verify(context).getCopyHints();
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link StructuredContentImpl}
    *   <li>{@link StructuredContentImpl#setContentName(String)}
@@ -473,7 +563,8 @@ public class StructuredContentImplDiffblueTest {
    *   <li>{@link StructuredContentImpl#setQualifyingItemCriteria(Set)}
    *   <li>{@link StructuredContentImpl#setStructuredContentFieldXrefs(Map)}
    *   <li>{@link StructuredContentImpl#setStructuredContentMatchRules(Map)}
-   *   <li>{@link StructuredContentImpl#setStructuredContentType(StructuredContentType)}
+   *   <li>
+   * {@link StructuredContentImpl#setStructuredContentType(StructuredContentType)}
    *   <li>{@link StructuredContentImpl#getContentName()}
    *   <li>{@link StructuredContentImpl#getId()}
    *   <li>{@link StructuredContentImpl#getLocale()}
@@ -485,29 +576,6 @@ public class StructuredContentImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void StructuredContentImpl.<init>()",
-    "String StructuredContentImpl.getContentName()",
-    "Long StructuredContentImpl.getId()",
-    "Locale StructuredContentImpl.getLocale()",
-    "Integer StructuredContentImpl.getPriority()",
-    "Set StructuredContentImpl.getQualifyingItemCriteria()",
-    "Map StructuredContentImpl.getStructuredContentFieldXrefs()",
-    "Map StructuredContentImpl.getStructuredContentMatchRules()",
-    "StructuredContentType StructuredContentImpl.getStructuredContentType()",
-    "void StructuredContentImpl.setContentName(String)",
-    "void StructuredContentImpl.setFieldValues(Map)",
-    "void StructuredContentImpl.setId(Long)",
-    "void StructuredContentImpl.setLocale(Locale)",
-    "void StructuredContentImpl.setOfflineFlag(Boolean)",
-    "void StructuredContentImpl.setPriority(Integer)",
-    "void StructuredContentImpl.setQualifyingItemCriteria(Set)",
-    "void StructuredContentImpl.setStructuredContentFieldXrefs(Map)",
-    "void StructuredContentImpl.setStructuredContentMatchRules(Map)",
-    "void StructuredContentImpl.setStructuredContentType(StructuredContentType)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     StructuredContentImpl actualStructuredContentImpl = new StructuredContentImpl();
@@ -530,16 +598,15 @@ public class StructuredContentImplDiffblueTest {
     Long actualId = actualStructuredContentImpl.getId();
     Locale actualLocale = actualStructuredContentImpl.getLocale();
     Integer actualPriority = actualStructuredContentImpl.getPriority();
-    Set<StructuredContentItemCriteria> actualQualifyingItemCriteria =
-        actualStructuredContentImpl.getQualifyingItemCriteria();
-    Map<String, StructuredContentFieldXref> actualStructuredContentFieldXrefs =
-        actualStructuredContentImpl.getStructuredContentFieldXrefs();
-    Map<String, StructuredContentRule> actualStructuredContentMatchRules =
-        actualStructuredContentImpl.getStructuredContentMatchRules();
-    StructuredContentType actualStructuredContentType =
-        actualStructuredContentImpl.getStructuredContentType();
+    Set<StructuredContentItemCriteria> actualQualifyingItemCriteria = actualStructuredContentImpl
+        .getQualifyingItemCriteria();
+    Map<String, StructuredContentFieldXref> actualStructuredContentFieldXrefs = actualStructuredContentImpl
+        .getStructuredContentFieldXrefs();
+    Map<String, StructuredContentRule> actualStructuredContentMatchRules = actualStructuredContentImpl
+        .getStructuredContentMatchRules();
+    StructuredContentType actualStructuredContentType = actualStructuredContentImpl.getStructuredContentType();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("Not all who wander are lost", actualContentName);
     assertEquals(1, actualPriority.intValue());
     assertTrue(actualStructuredContentFieldXrefs.isEmpty());

@@ -1,26 +1,26 @@
 {
   "meta" : {
-    "reportVersion" : "2.7"
+    "reportVersion" : "2.6"
   },
   "run" : {
-    "version" : "2025.09.01-44e352d-licensed",
-    "creationTimestamp" : "2025-10-15T16:07:16.260043423Z",
+    "version" : "2024.10.01-2ee2e3d-licensed",
+    "creationTimestamp" : "2025-10-30T14:59:37.0785035Z",
     "command" : "dcover create --coverage-reports --upload http://localhost:8080 --project-name BroadleafCommerce --name with-diffblue-tests",
-    "totalTime" : 11751.937,
-    "environmentDetectionTime" : 0.587,
-    "indexingTime" : 0.393,
-    "entryPointsTime" : 0.58,
-    "generationTime" : 111787.451,
-    "timeToFirstTest" : 87794.51,
-    "timeToLastTest" : 114829.931,
-    "indexQueryTime" : 11.200000000000001,
-    "verificationTime" : 2505.164,
-    "validationTime" : 40.466
+    "totalTime" : 95131.079,
+    "environmentDetectionTime" : 1.25,
+    "indexingTime" : 0.451,
+    "entryPointsTime" : 1.246,
+    "generationTime" : 91108.306,
+    "timeToFirstTest" : 115.595,
+    "timeToLastTest" : 22703.293,
+    "indexQueryTime" : 17.894000000000002,
+    "verificationTime" : 2465.109,
+    "validationTime" : 65.384
   },
   "codes" : {
-    "F009" : "Internal error",
     "R000" : "Success",
     "R002" : "Missing observers",
+    "R024" : "Analysis service shutdown unexpectedly",
     "R027" : "Missing beans when creating Spring context",
     "T000" : "Method eligible for test creation",
     "T001" : "Trivial getter",
@@ -32,7 +32,6 @@
     "T010" : "Abstract or interface method",
     "T012" : "Synthetic method",
     "T021" : "Empty method body",
-    "T023" : "Testability unknown",
     "V000" : "Validated successfully",
     "V003" : "Tests discarded during validation",
     "W002" : "Test compiled, but did not pass"
@@ -40,9 +39,9 @@
   "summary" : {
     "classesCount" : 110,
     "methodsCount" : 543,
-    "cumulativeDiffblueTestCount" : 792,
+    "cumulativeDiffblueTestCount" : 649,
     "cumulativeManualTestCount" : 23,
-    "completeTestCount" : 794,
+    "completeTestCount" : 654,
     "incompleteTestCount" : 0,
     "skeletonTestCount" : 0,
     "totalPhysicalLineCount" : 6766,
@@ -55,34 +54,31 @@
       "T005" : 63,
       "T009" : 9,
       "T010" : 28,
-      "T012" : 15,
-      "T021" : 1,
-      "T023" : 25
+      "T012" : 40,
+      "T021" : 1
     },
     "perMethodOutcome" : {
-      "F009" : 6,
-      "R000" : 286,
+      "R000" : 259,
       "R002" : 1,
-      "R027" : 33,
+      "R024" : 1,
+      "R027" : 72,
       "T003" : 15,
       "T004" : 34,
       "T005" : 76,
       "T009" : 9,
       "T010" : 28,
-      "T012" : 15,
-      "T023" : 25,
-      "W002" : 7
+      "T012" : 40,
+      "W002" : 1
     },
     "perTestOutcome" : {
-      "R000" : 794
+      "R000" : 654
     },
     "perTestValidation" : {
-      "V000" : 792,
-      "V003" : 2
+      "V000" : 653,
+      "V003" : 1
     },
     "warnings" : {
-      "F009" : 1,
-      "W002" : 40
+      "W002" : 15
     }
   },
   "classes" : {
@@ -103,24 +99,6 @@
     },
     "org.broadleafcommerce.admin.event.AdminNotificationForgotPasswordEventListener" : {
       "methodsCount" : 5,
-      "completeTestCount" : 6,
-      "incompleteTestCount" : 0,
-      "perMethodTestability" : {
-        "T000" : 3,
-        "T001" : 1,
-        "T012" : 1
-      },
-      "perMethodOutcome" : {
-        "R000" : 3,
-        "T005" : 1,
-        "T012" : 1
-      },
-      "perTestOutcome" : {
-        "R000" : 6
-      }
-    },
-    "org.broadleafcommerce.admin.event.AdminNotificationForgotUsernameEventListener" : {
-      "methodsCount" : 5,
       "completeTestCount" : 4,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
@@ -129,7 +107,8 @@
         "T012" : 1
       },
       "perMethodOutcome" : {
-        "R000" : 3,
+        "R000" : 2,
+        "R027" : 1,
         "T005" : 1,
         "T012" : 1
       },
@@ -137,9 +116,28 @@
         "R000" : 4
       }
     },
+    "org.broadleafcommerce.admin.event.AdminNotificationForgotUsernameEventListener" : {
+      "methodsCount" : 5,
+      "completeTestCount" : 3,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 3,
+        "T001" : 1,
+        "T012" : 1
+      },
+      "perMethodOutcome" : {
+        "R000" : 2,
+        "R027" : 1,
+        "T005" : 1,
+        "T012" : 1
+      },
+      "perTestOutcome" : {
+        "R000" : 3
+      }
+    },
     "org.broadleafcommerce.admin.persistence.validation.OfferQualifyingCriteriaValidator" : {
       "methodsCount" : 2,
-      "completeTestCount" : 9,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 1,
@@ -150,12 +148,12 @@
         "T005" : 1
       },
       "perTestOutcome" : {
-        "R000" : 9
+        "R000" : 3
       }
     },
     "org.broadleafcommerce.admin.persistence.validation.OfferTargetItemCriteriaValidator" : {
       "methodsCount" : 2,
-      "completeTestCount" : 6,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 1,
@@ -166,50 +164,50 @@
         "T005" : 1
       },
       "perTestOutcome" : {
-        "R000" : 6
+        "R000" : 2
       }
     },
     "org.broadleafcommerce.admin.persistence.validation.ProductBundleSkuBundleItemValidator" : {
       "methodsCount" : 3,
-      "completeTestCount" : 5,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 1,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perMethodOutcome" : {
         "R000" : 1,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perTestOutcome" : {
-        "R000" : 5
+        "R000" : 2
       }
     },
     "org.broadleafcommerce.admin.persistence.validation.SystemPropertyAttributeNameValidator" : {
       "methodsCount" : 11,
-      "completeTestCount" : 8,
+      "completeTestCount" : 7,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 1,
         "T003" : 8,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perMethodOutcome" : {
         "R000" : 1,
         "T003" : 8,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perTestOutcome" : {
-        "R000" : 8
+        "R000" : 7
       }
     },
     "org.broadleafcommerce.admin.server.provider.metadata.CustomerUsernameFieldMetadataProvider" : {
       "methodsCount" : 9,
-      "completeTestCount" : 1,
+      "completeTestCount" : 13,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 6,
@@ -218,13 +216,12 @@
         "T005" : 1
       },
       "perMethodOutcome" : {
-        "F009" : 6,
-        "R000" : 1,
+        "R000" : 7,
         "T003" : 1,
         "T005" : 1
       },
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 13
       }
     },
     "org.broadleafcommerce.admin.server.service.AdminCatalogService" : {
@@ -239,18 +236,17 @@
       }
     },
     "org.broadleafcommerce.admin.server.service.AdminCatalogServiceImpl" : {
-      "methodsCount" : 3,
+      "methodsCount" : 4,
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 7,
         "T005" : 1,
-        "T012" : 2,
-        "T023" : 1
+        "T012" : 3
       },
       "perMethodOutcome" : {
-        "T012" : 2,
-        "T023" : 1
+        "R024" : 1,
+        "T012" : 3
       }
     },
     "org.broadleafcommerce.admin.server.service.SkuMetadataCacheService" : {
@@ -266,26 +262,26 @@
     },
     "org.broadleafcommerce.admin.server.service.SkuMetadataCacheServiceImpl" : {
       "methodsCount" : 8,
-      "completeTestCount" : 6,
+      "completeTestCount" : 10,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 6,
         "T001" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perMethodOutcome" : {
         "R000" : 5,
         "R027" : 1,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perTestOutcome" : {
-        "R000" : 6
+        "R000" : 10
       }
     },
     "org.broadleafcommerce.admin.server.service.extension.AbstractOfferCustomServiceExtensionHandler" : {
       "methodsCount" : 2,
-      "completeTestCount" : 2,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 1,
@@ -295,7 +291,7 @@
         "R000" : 2
       },
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 3
       }
     },
     "org.broadleafcommerce.admin.server.service.extension.AbstractProductCustomPersistenceHandlerExtensionHandler" : {
@@ -364,7 +360,8 @@
         "T005" : 1
       },
       "perMethodOutcome" : {
-        "R000" : 3,
+        "R000" : 2,
+        "R027" : 1,
         "T005" : 1
       },
       "perTestOutcome" : {
@@ -389,12 +386,12 @@
       "perMethodTestability" : {
         "T000" : 2,
         "T001" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perMethodOutcome" : {
         "R000" : 2,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perTestOutcome" : {
         "R000" : 10
@@ -448,149 +445,148 @@
     },
     "org.broadleafcommerce.admin.server.service.handler.CategoryCustomPersistenceHandler" : {
       "methodsCount" : 21,
-      "completeTestCount" : 76,
+      "completeTestCount" : 65,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 18,
         "T003" : 1,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perMethodOutcome" : {
-        "R000" : 16,
-        "R027" : 2,
+        "R000" : 14,
+        "R027" : 4,
         "T003" : 1,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perTestOutcome" : {
-        "R000" : 76
+        "R000" : 65
       }
     },
     "org.broadleafcommerce.admin.server.service.handler.ChildCategoriesCustomPersistenceHandler" : {
       "methodsCount" : 11,
-      "completeTestCount" : 29,
+      "completeTestCount" : 16,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 8,
         "T005" : 1,
-        "T012" : 1,
-        "T023" : 1
-      },
-      "perMethodOutcome" : {
-        "R000" : 8,
-        "T005" : 1,
-        "T012" : 1,
-        "T023" : 1
-      },
-      "perTestOutcome" : {
-        "R000" : 29
-      }
-    },
-    "org.broadleafcommerce.admin.server.service.handler.CrossSaleProductCustomPersistenceHandler" : {
-      "methodsCount" : 11,
-      "completeTestCount" : 19,
-      "incompleteTestCount" : 0,
-      "perMethodTestability" : {
-        "T000" : 9,
-        "T012" : 1,
-        "T023" : 1
-      },
-      "perMethodOutcome" : {
-        "R000" : 8,
-        "T005" : 1,
-        "T012" : 1,
-        "T023" : 1
-      },
-      "perTestOutcome" : {
-        "R000" : 19
-      }
-    },
-    "org.broadleafcommerce.admin.server.service.handler.CustomerCustomPersistenceHandler" : {
-      "methodsCount" : 9,
-      "completeTestCount" : 17,
-      "incompleteTestCount" : 0,
-      "perMethodTestability" : {
-        "T000" : 7,
-        "T005" : 1,
-        "T023" : 1
+        "T012" : 2
       },
       "perMethodOutcome" : {
         "R000" : 7,
+        "R027" : 1,
         "T005" : 1,
-        "T023" : 1
-      },
-      "perTestOutcome" : {
-        "R000" : 17
-      }
-    },
-    "org.broadleafcommerce.admin.server.service.handler.CustomerPasswordCustomPersistenceHandler" : {
-      "methodsCount" : 3,
-      "completeTestCount" : 8,
-      "incompleteTestCount" : 0,
-      "perMethodTestability" : {
-        "T000" : 2,
-        "T005" : 1
-      },
-      "perMethodOutcome" : {
-        "R000" : 2,
-        "T005" : 1
-      },
-      "perTestOutcome" : {
-        "R000" : 8
-      }
-    },
-    "org.broadleafcommerce.admin.server.service.handler.CustomerPaymentCustomPersistenceHandler" : {
-      "methodsCount" : 8,
-      "completeTestCount" : 16,
-      "incompleteTestCount" : 0,
-      "perMethodTestability" : {
-        "T000" : 7,
-        "T023" : 1
-      },
-      "perMethodOutcome" : {
-        "R000" : 6,
-        "T005" : 1,
-        "T023" : 1
+        "T012" : 2
       },
       "perTestOutcome" : {
         "R000" : 16
       }
     },
+    "org.broadleafcommerce.admin.server.service.handler.CrossSaleProductCustomPersistenceHandler" : {
+      "methodsCount" : 11,
+      "completeTestCount" : 14,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 9,
+        "T012" : 2
+      },
+      "perMethodOutcome" : {
+        "R000" : 6,
+        "R027" : 2,
+        "T005" : 1,
+        "T012" : 2
+      },
+      "perTestOutcome" : {
+        "R000" : 14
+      }
+    },
+    "org.broadleafcommerce.admin.server.service.handler.CustomerCustomPersistenceHandler" : {
+      "methodsCount" : 9,
+      "completeTestCount" : 10,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 7,
+        "T005" : 1,
+        "T012" : 1
+      },
+      "perMethodOutcome" : {
+        "R000" : 7,
+        "T005" : 1,
+        "T012" : 1
+      },
+      "perTestOutcome" : {
+        "R000" : 10
+      }
+    },
+    "org.broadleafcommerce.admin.server.service.handler.CustomerPasswordCustomPersistenceHandler" : {
+      "methodsCount" : 3,
+      "completeTestCount" : 5,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 2,
+        "T005" : 1
+      },
+      "perMethodOutcome" : {
+        "R000" : 1,
+        "R027" : 1,
+        "T005" : 1
+      },
+      "perTestOutcome" : {
+        "R000" : 5
+      }
+    },
+    "org.broadleafcommerce.admin.server.service.handler.CustomerPaymentCustomPersistenceHandler" : {
+      "methodsCount" : 8,
+      "completeTestCount" : 19,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 7,
+        "T012" : 1
+      },
+      "perMethodOutcome" : {
+        "R000" : 6,
+        "T005" : 1,
+        "T012" : 1
+      },
+      "perTestOutcome" : {
+        "R000" : 19
+      }
+    },
     "org.broadleafcommerce.admin.server.service.handler.FieldOnlyPropertiesCustomPersistenceHandler" : {
       "methodsCount" : 4,
-      "completeTestCount" : 7,
+      "completeTestCount" : 8,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 2,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perMethodOutcome" : {
         "R000" : 2,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perTestOutcome" : {
-        "R000" : 7
+        "R000" : 8
       }
     },
     "org.broadleafcommerce.admin.server.service.handler.ISOCountryPersistenceHandler" : {
       "methodsCount" : 4,
-      "completeTestCount" : 2,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 2,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perMethodOutcome" : {
         "R000" : 2,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 3
       }
     },
     "org.broadleafcommerce.admin.server.service.handler.ISOCountryPersistenceHandler$1" : {
@@ -617,21 +613,21 @@
     },
     "org.broadleafcommerce.admin.server.service.handler.IndexFieldCustomPersistenceHandler" : {
       "methodsCount" : 11,
-      "completeTestCount" : 8,
+      "completeTestCount" : 15,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 9,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perMethodOutcome" : {
         "R000" : 8,
         "R027" : 1,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perTestOutcome" : {
-        "R000" : 8
+        "R000" : 15
       }
     },
     "org.broadleafcommerce.admin.server.service.handler.IndexFieldCustomPersistenceHandler$1" : {
@@ -669,64 +665,60 @@
     },
     "org.broadleafcommerce.admin.server.service.handler.OfferCodeCustomPersistenceHandler" : {
       "methodsCount" : 8,
-      "completeTestCount" : 11,
+      "completeTestCount" : 8,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 7,
-        "T023" : 1
+        "T012" : 1
       },
       "perMethodOutcome" : {
         "R000" : 6,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perTestOutcome" : {
-        "R000" : 11
+        "R000" : 8
       }
     },
     "org.broadleafcommerce.admin.server.service.handler.OfferCustomPersistenceHandler" : {
       "methodsCount" : 28,
-      "completeTestCount" : 57,
+      "completeTestCount" : 55,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 26,
-        "T012" : 1,
-        "T023" : 1
+        "T012" : 2
       },
       "perMethodOutcome" : {
-        "R000" : 21,
+        "R000" : 20,
         "R027" : 4,
         "T005" : 1,
-        "T012" : 1,
-        "T023" : 1
+        "T012" : 2,
+        "W002" : 1
       },
       "perTestOutcome" : {
-        "R000" : 57
+        "R000" : 55
       },
       "warnings" : {
-        "F009" : 1,
         "W002" : 9
       }
     },
     "org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler" : {
       "methodsCount" : 25,
-      "completeTestCount" : 74,
+      "completeTestCount" : 66,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 22,
         "T005" : 1,
-        "T012" : 1,
-        "T023" : 1
+        "T012" : 2
       },
       "perMethodOutcome" : {
-        "R000" : 17,
-        "R027" : 5,
+        "R000" : 16,
+        "R027" : 6,
         "T005" : 1,
-        "T012" : 1,
-        "T023" : 1
+        "T012" : 2
       },
       "perTestOutcome" : {
-        "R000" : 74
+        "R000" : 66
       }
     },
     "org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler$1" : {
@@ -775,7 +767,7 @@
     },
     "org.broadleafcommerce.admin.server.service.handler.ProductOptionValuesCustomPersistenceHandler" : {
       "methodsCount" : 4,
-      "completeTestCount" : 3,
+      "completeTestCount" : 4,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 3,
@@ -786,7 +778,7 @@
         "T005" : 1
       },
       "perTestOutcome" : {
-        "R000" : 3
+        "R000" : 4
       }
     },
     "org.broadleafcommerce.admin.server.service.handler.ProductOptionValuesCustomPersistenceHandler$1" : {
@@ -802,7 +794,7 @@
     },
     "org.broadleafcommerce.admin.server.service.handler.ProductOptionsCustomPersistenceHandler" : {
       "methodsCount" : 6,
-      "completeTestCount" : 19,
+      "completeTestCount" : 14,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 5,
@@ -813,90 +805,90 @@
         "T005" : 1
       },
       "perTestOutcome" : {
-        "R000" : 19
+        "R000" : 14
       }
     },
     "org.broadleafcommerce.admin.server.service.handler.SearchFacetCustomPersistenceHandler" : {
       "methodsCount" : 5,
-      "completeTestCount" : 4,
+      "completeTestCount" : 5,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 3,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perMethodOutcome" : {
         "R000" : 2,
         "R027" : 1,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 5
       }
     },
     "org.broadleafcommerce.admin.server.service.handler.SearchFacetRangeCustomPersistenceHandler" : {
       "methodsCount" : 9,
-      "completeTestCount" : 10,
+      "completeTestCount" : 14,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 7,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perMethodOutcome" : {
         "R000" : 6,
         "R027" : 1,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perTestOutcome" : {
-        "R000" : 10
+        "R000" : 14
       }
     },
     "org.broadleafcommerce.admin.server.service.handler.SkuBundleItemCustomPersistenceHandler" : {
       "methodsCount" : 7,
-      "completeTestCount" : 9,
+      "completeTestCount" : 6,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 5,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perMethodOutcome" : {
-        "R000" : 4,
-        "R027" : 1,
+        "R000" : 3,
+        "R027" : 2,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perTestOutcome" : {
-        "R000" : 9
+        "R000" : 6
       }
     },
     "org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler" : {
       "methodsCount" : 31,
-      "completeTestCount" : 93,
+      "completeTestCount" : 61,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 24,
         "T003" : 4,
         "T005" : 1,
-        "T021" : 1,
-        "T023" : 1
+        "T012" : 1,
+        "T021" : 1
       },
       "perMethodOutcome" : {
-        "R000" : 21,
+        "R000" : 17,
         "R002" : 1,
-        "R027" : 3,
+        "R027" : 7,
         "T003" : 4,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perTestOutcome" : {
-        "R000" : 93
+        "R000" : 61
       },
       "warnings" : {
-        "W002" : 5
+        "W002" : 4
       }
     },
     "org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler$1" : {
@@ -1000,26 +992,27 @@
     },
     "org.broadleafcommerce.admin.server.service.handler.SkuLookupByProductCustomPersistenceHandler" : {
       "methodsCount" : 6,
-      "completeTestCount" : 10,
+      "completeTestCount" : 7,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 3,
         "T001" : 1,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perMethodOutcome" : {
-        "R000" : 4,
+        "R000" : 3,
+        "R027" : 1,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perTestOutcome" : {
-        "R000" : 10
+        "R000" : 7
       }
     },
     "org.broadleafcommerce.admin.server.service.handler.SkuRestrictionFactoryImpl" : {
       "methodsCount" : 7,
-      "completeTestCount" : 7,
+      "completeTestCount" : 8,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 3,
@@ -1033,7 +1026,7 @@
         "T005" : 1
       },
       "perTestOutcome" : {
-        "R000" : 7
+        "R000" : 8
       }
     },
     "org.broadleafcommerce.admin.server.service.handler.SkuRestrictionFactoryImpl$1" : {
@@ -1049,26 +1042,25 @@
     },
     "org.broadleafcommerce.admin.server.service.handler.UpSaleProductCustomPersistenceHandler" : {
       "methodsCount" : 11,
-      "completeTestCount" : 18,
+      "completeTestCount" : 14,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 9,
-        "T012" : 1,
-        "T023" : 1
+        "T012" : 2
       },
       "perMethodOutcome" : {
-        "R000" : 8,
+        "R000" : 6,
+        "R027" : 2,
         "T005" : 1,
-        "T012" : 1,
-        "T023" : 1
+        "T012" : 2
       },
       "perTestOutcome" : {
-        "R000" : 18
+        "R000" : 14
       }
     },
     "org.broadleafcommerce.admin.server.service.persistence.module.provider.CategoryParentCategoryFieldPersistenceProvider" : {
       "methodsCount" : 8,
-      "completeTestCount" : 24,
+      "completeTestCount" : 21,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 6,
@@ -1080,12 +1072,12 @@
         "T005" : 1
       },
       "perTestOutcome" : {
-        "R000" : 24
+        "R000" : 21
       }
     },
     "org.broadleafcommerce.admin.server.service.persistence.module.provider.ForeignSkuFieldPersistenceProvider" : {
       "methodsCount" : 3,
-      "completeTestCount" : 4,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 2,
@@ -1096,12 +1088,12 @@
         "T005" : 1
       },
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 2
       }
     },
     "org.broadleafcommerce.admin.server.service.persistence.module.provider.ProductParentCategoryFieldPersistenceProvider" : {
       "methodsCount" : 8,
-      "completeTestCount" : 24,
+      "completeTestCount" : 21,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 6,
@@ -1113,12 +1105,12 @@
         "T005" : 1
       },
       "perTestOutcome" : {
-        "R000" : 24
+        "R000" : 21
       }
     },
     "org.broadleafcommerce.admin.server.service.persistence.module.provider.ProductUrlFieldPersistenceProvider" : {
       "methodsCount" : 2,
-      "completeTestCount" : 2,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 1,
@@ -1129,7 +1121,7 @@
         "T005" : 1
       },
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 1
       }
     },
     "org.broadleafcommerce.admin.server.service.persistence.module.provider.SkuFieldsPersistenceProvider" : {
@@ -1150,21 +1142,22 @@
     },
     "org.broadleafcommerce.admin.server.service.persistence.module.provider.SkuPricingPersistenceProvider" : {
       "methodsCount" : 10,
-      "completeTestCount" : 18,
+      "completeTestCount" : 14,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 7,
         "T001" : 1,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perMethodOutcome" : {
-        "R000" : 8,
+        "R000" : 7,
+        "R027" : 1,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perTestOutcome" : {
-        "R000" : 18
+        "R000" : 14
       },
       "warnings" : {
         "W002" : 2
@@ -1255,23 +1248,20 @@
     },
     "org.broadleafcommerce.admin.server.service.persistence.validation.TargetItemRulesValidator" : {
       "methodsCount" : 2,
-      "completeTestCount" : 2,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 1,
         "T005" : 1
       },
       "perMethodOutcome" : {
-        "R000" : 1,
+        "R027" : 1,
         "T005" : 1
-      },
-      "perTestOutcome" : {
-        "R000" : 2
       }
     },
     "org.broadleafcommerce.admin.web.config.AdminWebConfig" : {
       "methodsCount" : 2,
-      "completeTestCount" : 3,
+      "completeTestCount" : 4,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 1,
@@ -1282,43 +1272,33 @@
         "T005" : 1
       },
       "perTestOutcome" : {
-        "R000" : 3
+        "R000" : 4
       }
     },
     "org.broadleafcommerce.admin.web.controller.action.AdminCatalogActionsController" : {
       "methodsCount" : 2,
-      "completeTestCount" : 1,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 1,
         "T005" : 1
       },
       "perMethodOutcome" : {
-        "R000" : 1,
+        "R027" : 1,
         "T005" : 1
-      },
-      "perTestOutcome" : {
-        "R000" : 1
       }
     },
     "org.broadleafcommerce.admin.web.controller.entity.AdminBaseProductController" : {
       "methodsCount" : 3,
-      "completeTestCount" : 5,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 2,
         "T005" : 1
       },
       "perMethodOutcome" : {
-        "R000" : 1,
-        "T005" : 1,
-        "W002" : 1
-      },
-      "perTestOutcome" : {
-        "R000" : 5
-      },
-      "warnings" : {
-        "W002" : 4
+        "R027" : 2,
+        "T005" : 1
       }
     },
     "org.broadleafcommerce.admin.web.controller.entity.AdminBundleProductController" : {
@@ -1330,16 +1310,13 @@
         "T005" : 1
       },
       "perMethodOutcome" : {
-        "T005" : 1,
-        "W002" : 1
-      },
-      "warnings" : {
-        "W002" : 4
+        "R027" : 1,
+        "T005" : 1
       }
     },
     "org.broadleafcommerce.admin.web.controller.entity.AdminCategoryController" : {
       "methodsCount" : 3,
-      "completeTestCount" : 7,
+      "completeTestCount" : 8,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 2,
@@ -1350,31 +1327,27 @@
         "T005" : 1
       },
       "perTestOutcome" : {
-        "R000" : 7
+        "R000" : 8
       }
     },
     "org.broadleafcommerce.admin.web.controller.entity.AdminOfferController" : {
       "methodsCount" : 10,
-      "completeTestCount" : 15,
+      "completeTestCount" : 6,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 7,
         "T001" : 1,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perMethodOutcome" : {
-        "R000" : 6,
-        "R027" : 1,
+        "R000" : 3,
+        "R027" : 5,
         "T005" : 1,
-        "T023" : 1,
-        "W002" : 1
+        "T012" : 1
       },
       "perTestOutcome" : {
-        "R000" : 15
-      },
-      "warnings" : {
-        "W002" : 8
+        "R000" : 6
       }
     },
     "org.broadleafcommerce.admin.web.controller.entity.AdminOrderController" : {
@@ -1386,7 +1359,8 @@
         "T005" : 1
       },
       "perMethodOutcome" : {
-        "R000" : 2,
+        "R000" : 1,
+        "R027" : 1,
         "T005" : 1
       },
       "perTestOutcome" : {
@@ -1395,7 +1369,7 @@
     },
     "org.broadleafcommerce.admin.web.controller.entity.AdminProductController" : {
       "methodsCount" : 16,
-      "completeTestCount" : 47,
+      "completeTestCount" : 17,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 14,
@@ -1403,22 +1377,18 @@
         "T012" : 1
       },
       "perMethodOutcome" : {
-        "R000" : 8,
-        "R027" : 5,
+        "R000" : 4,
+        "R027" : 10,
         "T005" : 1,
-        "T012" : 1,
-        "W002" : 1
+        "T012" : 1
       },
       "perTestOutcome" : {
-        "R000" : 47
-      },
-      "warnings" : {
-        "W002" : 5
+        "R000" : 17
       }
     },
     "org.broadleafcommerce.admin.web.controller.extension.AdminOfferControllerExtensionHandler" : {
       "methodsCount" : 3,
-      "completeTestCount" : 2,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 2,
@@ -1426,36 +1396,29 @@
       },
       "perMethodOutcome" : {
         "R000" : 1,
-        "T005" : 1,
-        "W002" : 1
+        "R027" : 1,
+        "T005" : 1
       },
       "perTestOutcome" : {
-        "R000" : 2
-      },
-      "warnings" : {
-        "W002" : 1
+        "R000" : 3
       }
     },
     "org.broadleafcommerce.admin.web.controller.extension.AdminProductTranslationExtensionHandler" : {
       "methodsCount" : 4,
-      "completeTestCount" : 1,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 3,
         "T005" : 1
       },
       "perMethodOutcome" : {
-        "R000" : 1,
-        "R027" : 2,
+        "R027" : 3,
         "T005" : 1
-      },
-      "perTestOutcome" : {
-        "R000" : 1
       }
     },
     "org.broadleafcommerce.admin.web.controller.extension.ParentCategorySortExtensionHandler" : {
       "methodsCount" : 3,
-      "completeTestCount" : 4,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 2,
@@ -1463,38 +1426,35 @@
       },
       "perMethodOutcome" : {
         "R000" : 1,
-        "T005" : 1,
-        "W002" : 1
+        "R027" : 1,
+        "T005" : 1
       },
       "perTestOutcome" : {
-        "R000" : 4
-      },
-      "warnings" : {
-        "W002" : 1
+        "R000" : 3
       }
     },
     "org.broadleafcommerce.admin.web.controller.extension.TypedEntityBasicEntityExtensionHandler" : {
       "methodsCount" : 7,
-      "completeTestCount" : 7,
+      "completeTestCount" : 6,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 5,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perMethodOutcome" : {
-        "R000" : 3,
-        "R027" : 2,
+        "R000" : 2,
+        "R027" : 3,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perTestOutcome" : {
-        "R000" : 7
+        "R000" : 6
       }
     },
     "org.broadleafcommerce.admin.web.controller.inventory.AdminInventoryBasicOperationsController" : {
       "methodsCount" : 9,
-      "completeTestCount" : 7,
+      "completeTestCount" : 6,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 2,
@@ -1510,7 +1470,7 @@
         "T012" : 5
       },
       "perTestOutcome" : {
-        "R000" : 7
+        "R000" : 6
       }
     },
     "org.broadleafcommerce.admin.web.rulebuilder.service.CategoryFieldServiceImpl" : {
@@ -1685,7 +1645,7 @@
     },
     "org.broadleafcommerce.admin.web.rulebuilder.service.extension.CookieFieldServiceExtensionHandler" : {
       "methodsCount" : 3,
-      "completeTestCount" : 5,
+      "completeTestCount" : 6,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 2,
@@ -1695,7 +1655,7 @@
         "R000" : 3
       },
       "perTestOutcome" : {
-        "R000" : 5
+        "R000" : 6
       }
     },
     "org.broadleafcommerce.admin.web.rulebuilder.service.extension.GeolocationFieldServiceExtensionHandler" : {
@@ -1707,12 +1667,8 @@
         "T005" : 1
       },
       "perMethodOutcome" : {
-        "R027" : 2,
-        "T005" : 1,
-        "W002" : 1
-      },
-      "warnings" : {
-        "W002" : 1
+        "R027" : 3,
+        "T005" : 1
       }
     },
     "org.broadleafcommerce.admin.web.rulebuilder.service.options.FulfillmentTypeEnumOptionsExtensionListener" : {
@@ -1832,12 +1788,12 @@
       ]
     },
     "org.broadleafcommerce.admin.event.AdminNotificationForgotPasswordEventListener.createContext:(Lorg/broadleafcommerce/openadmin/server/security/event/AdminForgotPasswordEvent;Lorg/broadleafcommerce/openadmin/server/security/domain/AdminUser;)Ljava/util/Map;" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 3
       },
       "lineNumbers" : [
         83,
@@ -1859,13 +1815,10 @@
       ]
     },
     "org.broadleafcommerce.admin.event.AdminNotificationForgotPasswordEventListener.handleApplicationEvent:(Lorg/broadleafcommerce/openadmin/server/security/event/AdminForgotPasswordEvent;)V" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 3
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         59,
         61,
@@ -1906,12 +1859,12 @@
       ]
     },
     "org.broadleafcommerce.admin.event.AdminNotificationForgotUsernameEventListener.createContext:(Lorg/broadleafcommerce/openadmin/server/security/event/AdminForgotUsernameEvent;)Ljava/util/Map;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 2
       },
       "lineNumbers" : [
         72,
@@ -1929,13 +1882,10 @@
       ]
     },
     "org.broadleafcommerce.admin.event.AdminNotificationForgotUsernameEventListener.handleApplicationEvent:(Lorg/broadleafcommerce/openadmin/server/security/event/AdminForgotUsernameEvent;)V" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 2
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         52,
         55,
@@ -1973,12 +1923,12 @@
       ]
     },
     "org.broadleafcommerce.admin.persistence.validation.OfferQualifyingCriteriaValidator.validate:(Lorg/broadleafcommerce/openadmin/dto/Entity;Ljava/io/Serializable;Ljava/util/Map;Ljava/util/Map;Lorg/broadleafcommerce/openadmin/dto/BasicFieldMetadata;Ljava/lang/String;Ljava/lang/String;)Lorg/broadleafcommerce/openadmin/server/service/persistence/validation/PropertyValidationResult;" : {
-      "completeTestCount" : 9,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 9
+        "R000" : 3
       },
       "lineNumbers" : [
         52,
@@ -2003,12 +1953,12 @@
       ]
     },
     "org.broadleafcommerce.admin.persistence.validation.OfferTargetItemCriteriaValidator.validate:(Lorg/broadleafcommerce/openadmin/dto/Entity;Ljava/io/Serializable;Ljava/util/Map;Ljava/util/Map;Lorg/broadleafcommerce/openadmin/dto/BasicFieldMetadata;Ljava/lang/String;Ljava/lang/String;)Lorg/broadleafcommerce/openadmin/server/service/persistence/validation/PropertyValidationResult;" : {
-      "completeTestCount" : 6,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 6
+        "R000" : 2
       },
       "lineNumbers" : [
         59,
@@ -2026,8 +1976,11 @@
     "org.broadleafcommerce.admin.persistence.validation.ProductBundleSkuBundleItemValidator.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        47
+      ]
     },
     "org.broadleafcommerce.admin.persistence.validation.ProductBundleSkuBundleItemValidator.<init>:()V" : {
       "completeTestCount" : 0,
@@ -2039,12 +1992,12 @@
       ]
     },
     "org.broadleafcommerce.admin.persistence.validation.ProductBundleSkuBundleItemValidator.validate:(Lorg/broadleafcommerce/openadmin/dto/Entity;Ljava/io/Serializable;Ljava/util/Map;Ljava/util/Map;Lorg/broadleafcommerce/openadmin/dto/BasicFieldMetadata;Ljava/lang/String;Ljava/lang/String;)Lorg/broadleafcommerce/openadmin/server/service/persistence/validation/PropertyValidationResult;" : {
-      "completeTestCount" : 5,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 5
+        "R000" : 2
       },
       "lineNumbers" : [
         60,
@@ -2060,8 +2013,12 @@
     "org.broadleafcommerce.admin.persistence.validation.SystemPropertyAttributeNameValidator.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        51,
+        53
+      ]
     },
     "org.broadleafcommerce.admin.persistence.validation.SystemPropertyAttributeNameValidator.<init>:()V" : {
       "completeTestCount" : 0,
@@ -2155,12 +2112,12 @@
       ]
     },
     "org.broadleafcommerce.admin.persistence.validation.SystemPropertyAttributeNameValidator.validate:(Lorg/broadleafcommerce/openadmin/dto/Entity;Ljava/io/Serializable;Ljava/util/Map;Ljava/util/Map;Lorg/broadleafcommerce/openadmin/dto/BasicFieldMetadata;Ljava/lang/String;Ljava/lang/String;)Lorg/broadleafcommerce/openadmin/server/service/persistence/validation/PropertyValidationResult;" : {
-      "completeTestCount" : 8,
+      "completeTestCount" : 7,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 8
+        "R000" : 7
       },
       "lineNumbers" : [
         61,
@@ -2183,28 +2140,37 @@
       ]
     },
     "org.broadleafcommerce.admin.server.provider.metadata.CustomerUsernameFieldMetadataProvider.addMetadata:(Lorg/broadleafcommerce/openadmin/server/dao/provider/metadata/request/AddFieldMetadataRequest;Ljava/util/Map;)Lorg/broadleafcommerce/openadmin/server/service/type/MetadataProviderResponse;" : {
-      "completeTestCount" : 0,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "F009",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 2
+      },
       "lineNumbers" : [
         86
       ]
     },
     "org.broadleafcommerce.admin.server.provider.metadata.CustomerUsernameFieldMetadataProvider.addMetadataFromFieldType:(Lorg/broadleafcommerce/openadmin/server/dao/provider/metadata/request/AddMetadataFromFieldTypeRequest;Ljava/util/Map;)Lorg/broadleafcommerce/openadmin/server/service/type/MetadataProviderResponse;" : {
-      "completeTestCount" : 0,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "F009",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 2
+      },
       "lineNumbers" : [
         81
       ]
     },
     "org.broadleafcommerce.admin.server.provider.metadata.CustomerUsernameFieldMetadataProvider.addMetadataFromMappingData:(Lorg/broadleafcommerce/openadmin/server/dao/provider/metadata/request/AddMetadataFromMappingDataRequest;Lorg/broadleafcommerce/openadmin/dto/FieldMetadata;)Lorg/broadleafcommerce/openadmin/server/service/type/MetadataProviderResponse;" : {
-      "completeTestCount" : 0,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "F009",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
       "lineNumbers" : [
         101
       ]
@@ -2231,10 +2197,13 @@
       ]
     },
     "org.broadleafcommerce.admin.server.provider.metadata.CustomerUsernameFieldMetadataProvider.lateStageAddMetadata:(Lorg/broadleafcommerce/openadmin/server/dao/provider/metadata/request/LateStageAddMetadataRequest;Ljava/util/Map;)Lorg/broadleafcommerce/openadmin/server/service/type/MetadataProviderResponse;" : {
-      "completeTestCount" : 0,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "F009",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 3
+      },
       "lineNumbers" : [
         63,
         64,
@@ -2248,19 +2217,25 @@
       ]
     },
     "org.broadleafcommerce.admin.server.provider.metadata.CustomerUsernameFieldMetadataProvider.overrideViaAnnotation:(Lorg/broadleafcommerce/openadmin/server/dao/provider/metadata/request/OverrideViaAnnotationRequest;Ljava/util/Map;)Lorg/broadleafcommerce/openadmin/server/service/type/MetadataProviderResponse;" : {
-      "completeTestCount" : 0,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "F009",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 2
+      },
       "lineNumbers" : [
         91
       ]
     },
     "org.broadleafcommerce.admin.server.provider.metadata.CustomerUsernameFieldMetadataProvider.overrideViaXml:(Lorg/broadleafcommerce/openadmin/server/dao/provider/metadata/request/OverrideViaXmlRequest;Ljava/util/Map;)Lorg/broadleafcommerce/openadmin/server/service/type/MetadataProviderResponse;" : {
-      "completeTestCount" : 0,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "F009",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 2
+      },
       "lineNumbers" : [
         96
       ]
@@ -2286,14 +2261,23 @@
     "org.broadleafcommerce.admin.server.service.AdminCatalogServiceImpl.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        55,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62
+      ]
     },
     "org.broadleafcommerce.admin.server.service.AdminCatalogServiceImpl.<init>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T005",
-      "perMethodOutcome" : "F009",
+      "perMethodOutcome" : "R024",
       "lineNumbers" : [
         53
       ]
@@ -2564,8 +2548,12 @@
     "org.broadleafcommerce.admin.server.service.SkuMetadataCacheServiceImpl.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        37,
+        44
+      ]
     },
     "org.broadleafcommerce.admin.server.service.SkuMetadataCacheServiceImpl.<init>:()V" : {
       "completeTestCount" : 0,
@@ -2578,12 +2566,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.SkuMetadataCacheServiceImpl.addToCache:(Ljava/lang/String;Ljava/util/Map;)Z" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 2
       },
       "lineNumbers" : [
         80,
@@ -2593,12 +2581,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.SkuMetadataCacheServiceImpl.buildCacheKey:(Ljava/lang/String;)Ljava/lang/String;" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 3
       },
       "lineNumbers" : [
         96,
@@ -2620,12 +2608,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.SkuMetadataCacheServiceImpl.getFromCache:(Ljava/lang/String;)Ljava/util/Map;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 2
       },
       "lineNumbers" : [
         71,
@@ -2645,12 +2633,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.SkuMetadataCacheServiceImpl.useCache:()Z" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 2
       },
       "lineNumbers" : [
         53,
@@ -2677,12 +2665,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.extension.AbstractOfferCustomServiceExtensionHandler.clearHiddenQualifiers:(Lorg/broadleafcommerce/openadmin/dto/Entity;)Lorg/broadleafcommerce/common/extension/ExtensionResultStatusType;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 2
       },
       "lineNumbers" : [
         28
@@ -2829,13 +2817,10 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.extension.DefaultAdminCatalogExtensionHandler.init:()V" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 1
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         51,
         52,
@@ -2843,12 +2828,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.extension.DefaultAdminCatalogExtensionHandler.persistSkuPermutation:(Lorg/broadleafcommerce/core/catalog/domain/Product;Ljava/util/List;Lorg/broadleafcommerce/common/extension/ExtensionResultHolder;)Lorg/broadleafcommerce/common/extension/ExtensionResultStatusType;" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 4,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 3
+        "R000" : 4
       },
       "lineNumbers" : [
         68,
@@ -2894,8 +2879,11 @@
     "org.broadleafcommerce.admin.server.service.extension.OfferCustomServiceExtensionManager.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        36
+      ]
     },
     "org.broadleafcommerce.admin.server.service.extension.OfferCustomServiceExtensionManager.<init>:()V" : {
       "completeTestCount" : 0,
@@ -3010,8 +2998,11 @@
     "org.broadleafcommerce.admin.server.service.handler.CategoryCustomPersistenceHandler.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        67
+      ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CategoryCustomPersistenceHandler.<init>:()V" : {
       "completeTestCount" : 0,
@@ -3023,12 +3014,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CategoryCustomPersistenceHandler.add:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;Lorg/broadleafcommerce/openadmin/server/dao/DynamicEntityDao;Lorg/broadleafcommerce/openadmin/server/service/persistence/module/RecordHelper;)Lorg/broadleafcommerce/openadmin/dto/Entity;" : {
-      "completeTestCount" : 6,
+      "completeTestCount" : 4,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 6
+        "R000" : 4
       },
       "lineNumbers" : [
         123,
@@ -3067,12 +3058,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CategoryCustomPersistenceHandler.canHandleAdd:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 5,
+      "completeTestCount" : 6,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 5
+        "R000" : 6
       },
       "lineNumbers" : [
         86,
@@ -3081,24 +3072,24 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CategoryCustomPersistenceHandler.canHandleInspect:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 5,
+      "completeTestCount" : 6,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 5
+        "R000" : 6
       },
       "lineNumbers" : [
         93
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CategoryCustomPersistenceHandler.canHandleRemove:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 3
       },
       "lineNumbers" : [
         103,
@@ -3106,12 +3097,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CategoryCustomPersistenceHandler.canHandleUpdate:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 5,
+      "completeTestCount" : 6,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 5
+        "R000" : 6
       },
       "lineNumbers" : [
         98
@@ -3131,12 +3122,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CategoryCustomPersistenceHandler.getCurrentDefaultXref:(Lorg/broadleafcommerce/core/catalog/domain/Category;)Lorg/broadleafcommerce/core/catalog/domain/CategoryXref;" : {
-      "completeTestCount" : 8,
+      "completeTestCount" : 7,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 8
+        "R000" : 7
       },
       "lineNumbers" : [
         304,
@@ -3151,12 +3142,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CategoryCustomPersistenceHandler.getExistingDefaultCategory:(Lorg/broadleafcommerce/core/catalog/domain/Category;)Lorg/broadleafcommerce/core/catalog/domain/Category;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 2
       },
       "lineNumbers" : [
         271,
@@ -3198,13 +3189,10 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CategoryCustomPersistenceHandler.remove:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;Lorg/broadleafcommerce/openadmin/server/dao/DynamicEntityDao;Lorg/broadleafcommerce/openadmin/server/service/persistence/module/RecordHelper;)V" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 3
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         179,
         180,
@@ -3218,12 +3206,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CategoryCustomPersistenceHandler.removeOldDefault:(Lorg/broadleafcommerce/core/catalog/domain/Category;Lorg/broadleafcommerce/core/catalog/domain/CategoryXref;Lorg/broadleafcommerce/openadmin/dto/Entity;)V" : {
-      "completeTestCount" : 20,
+      "completeTestCount" : 18,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 20
+        "R000" : 18
       },
       "lineNumbers" : [
         281,
@@ -3251,12 +3239,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CategoryCustomPersistenceHandler.update:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;Lorg/broadleafcommerce/openadmin/server/dao/DynamicEntityDao;Lorg/broadleafcommerce/openadmin/server/service/persistence/module/RecordHelper;)Lorg/broadleafcommerce/openadmin/dto/Entity;" : {
-      "completeTestCount" : 5,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 5
+        "R000" : 3
       },
       "lineNumbers" : [
         150,
@@ -3283,13 +3271,10 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CategoryCustomPersistenceHandler.validateCategories:(Lorg/broadleafcommerce/openadmin/dto/Entity;Lorg/broadleafcommerce/core/catalog/domain/Category;Ljava/lang/Long;Ljava/lang/StringBuilder;)V" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 3
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         227,
         228,
@@ -3320,12 +3305,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CategoryCustomPersistenceHandler.validateRecursiveRelationship:(Lorg/broadleafcommerce/openadmin/dto/Entity;)V" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 1
       },
       "lineNumbers" : [
         210,
@@ -3344,12 +3329,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CategoryCustomPersistenceHandler.validateSelfLink:(Lorg/broadleafcommerce/openadmin/dto/Entity;)V" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 3
       },
       "lineNumbers" : [
         196,
@@ -3366,8 +3351,11 @@
     "org.broadleafcommerce.admin.server.service.handler.ChildCategoriesCustomPersistenceHandler.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        50
+      ]
     },
     "org.broadleafcommerce.admin.server.service.handler.ChildCategoriesCustomPersistenceHandler.<init>:()V" : {
       "completeTestCount" : 0,
@@ -3379,12 +3367,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.ChildCategoriesCustomPersistenceHandler.add:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;Lorg/broadleafcommerce/openadmin/server/dao/DynamicEntityDao;Lorg/broadleafcommerce/openadmin/server/service/persistence/module/RecordHelper;)Lorg/broadleafcommerce/openadmin/dto/Entity;" : {
-      "completeTestCount" : 7,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 7
+        "R000" : 3
       },
       "lineNumbers" : [
         69,
@@ -3409,12 +3397,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.ChildCategoriesCustomPersistenceHandler.canHandleAdd:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 3
       },
       "lineNumbers" : [
         64
@@ -3430,13 +3418,10 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.ChildCategoriesCustomPersistenceHandler.validateChildCategories:(Lorg/broadleafcommerce/openadmin/dto/Entity;Lorg/broadleafcommerce/core/catalog/domain/Category;Ljava/lang/Long;Ljava/lang/StringBuilder;)V" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 3
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         135,
         136,
@@ -3471,12 +3456,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.ChildCategoriesCustomPersistenceHandler.validateDuplicateChild:(Lorg/broadleafcommerce/openadmin/dto/Entity;)V" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 1
       },
       "lineNumbers" : [
         99,
@@ -3497,12 +3482,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.ChildCategoriesCustomPersistenceHandler.validateRecursiveRelationship:(Lorg/broadleafcommerce/openadmin/dto/Entity;)V" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 1
       },
       "lineNumbers" : [
         118,
@@ -3521,12 +3506,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.ChildCategoriesCustomPersistenceHandler.validateSelfLink:(Lorg/broadleafcommerce/openadmin/dto/Entity;)V" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 3
       },
       "lineNumbers" : [
         85,
@@ -3543,8 +3528,11 @@
     "org.broadleafcommerce.admin.server.service.handler.CrossSaleProductCustomPersistenceHandler.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        47
+      ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CrossSaleProductCustomPersistenceHandler.<init>:()V" : {
       "completeTestCount" : 0,
@@ -3557,12 +3545,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CrossSaleProductCustomPersistenceHandler.add:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;Lorg/broadleafcommerce/openadmin/server/dao/DynamicEntityDao;Lorg/broadleafcommerce/openadmin/server/service/persistence/module/RecordHelper;)Lorg/broadleafcommerce/openadmin/dto/Entity;" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 2
       },
       "lineNumbers" : [
         66,
@@ -3588,12 +3576,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CrossSaleProductCustomPersistenceHandler.canHandleAdd:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 3
       },
       "lineNumbers" : [
         61
@@ -3609,12 +3597,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CrossSaleProductCustomPersistenceHandler.validateCrossSaleProduct:(Lorg/broadleafcommerce/openadmin/dto/Entity;)V" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 3
       },
       "lineNumbers" : [
         77,
@@ -3632,13 +3620,10 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CrossSaleProductCustomPersistenceHandler.validateCrossSaleProducts:(Lorg/broadleafcommerce/openadmin/dto/Entity;Lorg/broadleafcommerce/core/catalog/domain/Product;Ljava/lang/Long;Ljava/lang/StringBuilder;)V" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 3
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         120,
         121,
@@ -3657,13 +3642,10 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CrossSaleProductCustomPersistenceHandler.validateDuplicateChild:(Lorg/broadleafcommerce/openadmin/dto/Entity;Lorg/broadleafcommerce/core/catalog/domain/Product;Lorg/broadleafcommerce/core/catalog/domain/Product;)V" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 1
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         101,
         102,
@@ -3675,12 +3657,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CrossSaleProductCustomPersistenceHandler.validateRecursiveRelationship:(Lorg/broadleafcommerce/openadmin/dto/Entity;Lorg/broadleafcommerce/core/catalog/domain/Product;Lorg/broadleafcommerce/core/catalog/domain/Product;)V" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 3
       },
       "lineNumbers" : [
         112,
@@ -3691,12 +3673,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CrossSaleProductCustomPersistenceHandler.validateSelfLink:(Lorg/broadleafcommerce/openadmin/dto/Entity;Ljava/lang/String;Ljava/lang/String;)V" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 2
       },
       "lineNumbers" : [
         93,
@@ -3708,8 +3690,11 @@
     "org.broadleafcommerce.admin.server.service.handler.CustomerCustomPersistenceHandler.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        52
+      ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CustomerCustomPersistenceHandler.<init>:()V" : {
       "completeTestCount" : 0,
@@ -3750,48 +3735,48 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CustomerCustomPersistenceHandler.canHandleAdd:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 2
       },
       "lineNumbers" : [
         65
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CustomerCustomPersistenceHandler.canHandleRemove:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 2
       },
       "lineNumbers" : [
         75
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CustomerCustomPersistenceHandler.canHandleUpdate:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 2
       },
       "lineNumbers" : [
         70
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CustomerCustomPersistenceHandler.remove:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;Lorg/broadleafcommerce/openadmin/server/dao/DynamicEntityDao;Lorg/broadleafcommerce/openadmin/server/service/persistence/module/RecordHelper;)V" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 1
       },
       "lineNumbers" : [
         162,
@@ -3815,12 +3800,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CustomerCustomPersistenceHandler.update:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;Lorg/broadleafcommerce/openadmin/server/dao/DynamicEntityDao;Lorg/broadleafcommerce/openadmin/server/service/persistence/module/RecordHelper;)Lorg/broadleafcommerce/openadmin/dto/Entity;" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 1
       },
       "lineNumbers" : [
         111,
@@ -3845,12 +3830,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CustomerCustomPersistenceHandler.validateUniqueUsername:(Lorg/broadleafcommerce/openadmin/dto/Entity;Lorg/broadleafcommerce/profile/core/domain/Customer;Z)Lorg/broadleafcommerce/openadmin/dto/Entity;" : {
-      "completeTestCount" : 7,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 7
+        "R000" : 1
       },
       "lineNumbers" : [
         150,
@@ -3871,12 +3856,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CustomerPasswordCustomPersistenceHandler.canHandleUpdate:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 5,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 5
       },
       "lineNumbers" : [
         47,
@@ -3884,13 +3869,10 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CustomerPasswordCustomPersistenceHandler.update:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;Lorg/broadleafcommerce/openadmin/server/dao/DynamicEntityDao;Lorg/broadleafcommerce/openadmin/server/service/persistence/module/RecordHelper;)Lorg/broadleafcommerce/openadmin/dto/Entity;" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 4
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         53,
         54,
@@ -3909,8 +3891,11 @@
     "org.broadleafcommerce.admin.server.service.handler.CustomerPaymentCustomPersistenceHandler.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        62
+      ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CustomerPaymentCustomPersistenceHandler.<init>:()V" : {
       "completeTestCount" : 0,
@@ -3937,12 +3922,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CustomerPaymentCustomPersistenceHandler.buildSavedPaymentDisplayValue:(Lorg/broadleafcommerce/profile/core/domain/CustomerPayment;)Ljava/lang/String;" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 4,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 4
       },
       "lineNumbers" : [
         146,
@@ -3956,36 +3941,36 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CustomerPaymentCustomPersistenceHandler.canHandleFetch:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 4,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 4
       },
       "lineNumbers" : [
         84
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CustomerPaymentCustomPersistenceHandler.canHandleInspect:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 4,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 4
       },
       "lineNumbers" : [
         79
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.CustomerPaymentCustomPersistenceHandler.fetch:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;Lorg/broadleafcommerce/openadmin/dto/CriteriaTransferObject;Lorg/broadleafcommerce/openadmin/server/dao/DynamicEntityDao;Lorg/broadleafcommerce/openadmin/server/service/persistence/module/RecordHelper;)Lorg/broadleafcommerce/openadmin/dto/DynamicResultSet;" : {
-      "completeTestCount" : 7,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 7
+        "R000" : 2
       },
       "lineNumbers" : [
         123,
@@ -4040,8 +4025,11 @@
     "org.broadleafcommerce.admin.server.service.handler.FieldOnlyPropertiesCustomPersistenceHandler.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        44
+      ]
     },
     "org.broadleafcommerce.admin.server.service.handler.FieldOnlyPropertiesCustomPersistenceHandler.<init>:()V" : {
       "completeTestCount" : 0,
@@ -4053,12 +4041,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.FieldOnlyPropertiesCustomPersistenceHandler.canHandleInspect:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 5,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 5
       },
       "lineNumbers" : [
         48
@@ -4133,8 +4121,11 @@
     "org.broadleafcommerce.admin.server.service.handler.ISOCountryPersistenceHandler.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        60
+      ]
     },
     "org.broadleafcommerce.admin.server.service.handler.ISOCountryPersistenceHandler.<init>:()V" : {
       "completeTestCount" : 0,
@@ -4146,12 +4137,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.ISOCountryPersistenceHandler.canHandleFetch:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 2
       },
       "lineNumbers" : [
         64,
@@ -4206,8 +4197,11 @@
     "org.broadleafcommerce.admin.server.service.handler.IndexFieldCustomPersistenceHandler.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        64
+      ]
     },
     "org.broadleafcommerce.admin.server.service.handler.IndexFieldCustomPersistenceHandler.<init>:()V" : {
       "completeTestCount" : 0,
@@ -4237,12 +4231,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.IndexFieldCustomPersistenceHandler.canHandleAdd:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 3
       },
       "lineNumbers" : [
         71,
@@ -4250,24 +4244,24 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.IndexFieldCustomPersistenceHandler.canHandleFetch:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 3
       },
       "lineNumbers" : [
         93
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.IndexFieldCustomPersistenceHandler.canHandleRemove:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 2
       },
       "lineNumbers" : [
         82,
@@ -4278,12 +4272,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.IndexFieldCustomPersistenceHandler.canHandleUpdate:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 3
       },
       "lineNumbers" : [
         77
@@ -4398,8 +4392,11 @@
     "org.broadleafcommerce.admin.server.service.handler.OfferCodeCustomPersistenceHandler.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        51
+      ]
     },
     "org.broadleafcommerce.admin.server.service.handler.OfferCodeCustomPersistenceHandler.<init>:()V" : {
       "completeTestCount" : 0,
@@ -4510,12 +4507,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.OfferCodeCustomPersistenceHandler.validateOfferCode:(Lorg/broadleafcommerce/openadmin/dto/Entity;Lorg/broadleafcommerce/core/offer/domain/OfferCode;)Lorg/broadleafcommerce/openadmin/dto/Entity;" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 1
       },
       "lineNumbers" : [
         123,
@@ -4532,8 +4529,11 @@
     "org.broadleafcommerce.admin.server.service.handler.OfferCustomPersistenceHandler.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        80
+      ]
     },
     "org.broadleafcommerce.admin.server.service.handler.OfferCustomPersistenceHandler.<init>:()V" : {
       "completeTestCount" : 0,
@@ -4587,12 +4587,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.OfferCustomPersistenceHandler.buildAdvancedVisibilityOptionsFieldMetaData:()Lorg/broadleafcommerce/openadmin/dto/FieldMetadata;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 2
       },
       "lineNumbers" : [
         148,
@@ -4623,12 +4623,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.OfferCustomPersistenceHandler.buildIsActiveFieldMetaData:()Lorg/broadleafcommerce/openadmin/dto/FieldMetadata;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 2
       },
       "lineNumbers" : [
         161,
@@ -4642,12 +4642,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.OfferCustomPersistenceHandler.buildIsActiveProperty:(Z)Lorg/broadleafcommerce/openadmin/dto/Property;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 2
       },
       "lineNumbers" : [
         343,
@@ -4665,7 +4665,7 @@
         "R000" : 5
       },
       "warnings" : {
-        "W002" : 2
+        "W002" : 1
       },
       "lineNumbers" : [
         465,
@@ -4684,12 +4684,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.OfferCustomPersistenceHandler.buildOfferItemTargetRuleTypeProperty:(Lorg/broadleafcommerce/openadmin/dto/Property;)Lorg/broadleafcommerce/openadmin/dto/Property;" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 3
       },
       "warnings" : {
         "W002" : 1
@@ -4706,12 +4706,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.OfferCustomPersistenceHandler.buildQualifiersCanBeQualifiersFieldMetaData:()Lorg/broadleafcommerce/openadmin/dto/FieldMetadata;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 2
       },
       "lineNumbers" : [
         172,
@@ -4744,12 +4744,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.OfferCustomPersistenceHandler.buildQualifiersCanBeTargetsFieldMetaData:()Lorg/broadleafcommerce/openadmin/dto/FieldMetadata;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 2
       },
       "lineNumbers" : [
         183,
@@ -4782,12 +4782,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.OfferCustomPersistenceHandler.buildStackableFieldMetaData:()Lorg/broadleafcommerce/openadmin/dto/FieldMetadata;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 2
       },
       "lineNumbers" : [
         194,
@@ -4821,36 +4821,36 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.OfferCustomPersistenceHandler.canHandleFetch:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 2
       },
       "lineNumbers" : [
         114
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.OfferCustomPersistenceHandler.canHandleInspect:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 2
       },
       "lineNumbers" : [
         109
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.OfferCustomPersistenceHandler.canHandleUpdate:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 2
       },
       "lineNumbers" : [
         119
@@ -4919,7 +4919,10 @@
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R027",
+      "perMethodOutcome" : "W002",
+      "warnings" : {
+        "W002" : 1
+      },
       "lineNumbers" : [
         124,
         126,
@@ -5007,12 +5010,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.OfferCustomPersistenceHandler.stripTrailingZeros:(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 2
       },
       "lineNumbers" : [
         279,
@@ -5022,16 +5025,10 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.OfferCustomPersistenceHandler.update:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;Lorg/broadleafcommerce/openadmin/server/dao/DynamicEntityDao;Lorg/broadleafcommerce/openadmin/server/service/persistence/module/RecordHelper;)Lorg/broadleafcommerce/openadmin/dto/Entity;" : {
-      "completeTestCount" : 9,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 9
-      },
-      "warnings" : {
-        "F009" : 1
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         397,
         400,
@@ -5064,12 +5061,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.OfferCustomPersistenceHandler.validateOfferValue:(Lorg/broadleafcommerce/openadmin/dto/Entity;)V" : {
-      "completeTestCount" : 8,
+      "completeTestCount" : 6,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 8
+        "R000" : 6
       },
       "lineNumbers" : [
         443,
@@ -5165,8 +5162,11 @@
     "org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        110
+      ]
     },
     "org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler.<init>:()V" : {
       "completeTestCount" : 0,
@@ -5216,12 +5216,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler.canHandleAdd:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 5,
+      "completeTestCount" : 6,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 5
+        "R000" : 6
       },
       "lineNumbers" : [
         114,
@@ -5230,48 +5230,48 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler.canHandleFetch:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 5,
+      "completeTestCount" : 6,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 5
+        "R000" : 6
       },
       "lineNumbers" : [
         131
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler.canHandleInspect:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 5,
+      "completeTestCount" : 6,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 5
+        "R000" : 6
       },
       "lineNumbers" : [
         136
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler.canHandleRemove:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 5,
+      "completeTestCount" : 6,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 5
+        "R000" : 6
       },
       "lineNumbers" : [
         126
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler.canHandleUpdate:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 5,
+      "completeTestCount" : 6,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 5
+        "R000" : 6
       },
       "lineNumbers" : [
         121
@@ -5297,10 +5297,13 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler.fetch:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;Lorg/broadleafcommerce/openadmin/dto/CriteriaTransferObject;Lorg/broadleafcommerce/openadmin/server/dao/DynamicEntityDao;Lorg/broadleafcommerce/openadmin/server/service/persistence/module/RecordHelper;)Lorg/broadleafcommerce/openadmin/dto/DynamicResultSet;" : {
-      "completeTestCount" : 0,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R027",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
       "lineNumbers" : [
         154,
         155,
@@ -5368,12 +5371,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler.getCurrentDefaultXref:(Lorg/broadleafcommerce/core/catalog/domain/Product;)Lorg/broadleafcommerce/core/catalog/domain/CategoryProductXref;" : {
-      "completeTestCount" : 9,
+      "completeTestCount" : 7,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 9
+        "R000" : 7
       },
       "lineNumbers" : [
         463,
@@ -5408,12 +5411,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler.getFilteredDynamicResultSet:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;Lorg/broadleafcommerce/openadmin/dto/CriteriaTransferObject;Lorg/broadleafcommerce/openadmin/server/service/persistence/module/RecordHelper;)Lorg/broadleafcommerce/openadmin/dto/DynamicResultSet;" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 3
+        "R000" : 1
       },
       "lineNumbers" : [
         495,
@@ -5453,12 +5456,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler.isRecursiveProductSelection:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Z" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 3
       },
       "lineNumbers" : [
         477,
@@ -5493,12 +5496,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler.remove:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;Lorg/broadleafcommerce/openadmin/server/dao/DynamicEntityDao;Lorg/broadleafcommerce/openadmin/server/service/persistence/module/RecordHelper;)V" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 1
       },
       "lineNumbers" : [
         362,
@@ -5528,12 +5531,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler.removeOldDefault:(Lorg/broadleafcommerce/core/catalog/domain/Product;Lorg/broadleafcommerce/core/catalog/domain/CategoryProductXref;Lorg/broadleafcommerce/openadmin/dto/Entity;)V" : {
-      "completeTestCount" : 20,
+      "completeTestCount" : 18,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 20
+        "R000" : 18
       },
       "lineNumbers" : [
         440,
@@ -5546,13 +5549,10 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler.removeProduct:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;Lorg/broadleafcommerce/core/catalog/domain/Product;Lorg/broadleafcommerce/openadmin/server/service/persistence/module/RecordHelper;)V" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 1
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         387,
         388
@@ -5574,13 +5574,10 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler.update:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;Lorg/broadleafcommerce/openadmin/server/dao/DynamicEntityDao;Lorg/broadleafcommerce/openadmin/server/service/persistence/module/RecordHelper;)Lorg/broadleafcommerce/openadmin/dto/Entity;" : {
-      "completeTestCount" : 7,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 7
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         311,
         313,
@@ -5640,12 +5637,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.ProductOptionValuesCustomPersistenceHandler.canHandleFetch:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 2
       },
       "lineNumbers" : [
         58,
@@ -5706,12 +5703,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.ProductOptionsCustomPersistenceHandler.canHandleFetch:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 2
       },
       "lineNumbers" : [
         76,
@@ -5720,12 +5717,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.ProductOptionsCustomPersistenceHandler.canHandleUpdate:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 2
       },
       "lineNumbers" : [
         65,
@@ -5754,12 +5751,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.ProductOptionsCustomPersistenceHandler.update:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;Lorg/broadleafcommerce/openadmin/server/dao/DynamicEntityDao;Lorg/broadleafcommerce/openadmin/server/service/persistence/module/RecordHelper;)Lorg/broadleafcommerce/openadmin/dto/Entity;" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 1
       },
       "lineNumbers" : [
         95,
@@ -5777,12 +5774,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.ProductOptionsCustomPersistenceHandler.validateProductOption:(Lorg/broadleafcommerce/core/catalog/domain/ProductOption;Lorg/broadleafcommerce/openadmin/dto/Entity;)Z" : {
-      "completeTestCount" : 8,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 8
+        "R000" : 2
       },
       "lineNumbers" : [
         130,
@@ -5802,8 +5799,11 @@
     "org.broadleafcommerce.admin.server.service.handler.SearchFacetCustomPersistenceHandler.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        46
+      ]
     },
     "org.broadleafcommerce.admin.server.service.handler.SearchFacetCustomPersistenceHandler.<init>:()V" : {
       "completeTestCount" : 0,
@@ -5815,12 +5815,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.SearchFacetCustomPersistenceHandler.canHandleRemove:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 4,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 3
+        "R000" : 4
       },
       "lineNumbers" : [
         50,
@@ -5865,8 +5865,12 @@
     "org.broadleafcommerce.admin.server.service.handler.SearchFacetRangeCustomPersistenceHandler.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        48,
+        50
+      ]
     },
     "org.broadleafcommerce.admin.server.service.handler.SearchFacetRangeCustomPersistenceHandler.<init>:()V" : {
       "completeTestCount" : 0,
@@ -5905,12 +5909,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.SearchFacetRangeCustomPersistenceHandler.canHandle:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 3
       },
       "lineNumbers" : [
         63,
@@ -5918,36 +5922,36 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.SearchFacetRangeCustomPersistenceHandler.canHandleFetch:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 1,
-      "incompleteTestCount" : 0,
-      "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 1
-      },
-      "lineNumbers" : [
-        54
-      ]
-    },
-    "org.broadleafcommerce.admin.server.service.handler.SearchFacetRangeCustomPersistenceHandler.canHandleRemove:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 1,
-      "incompleteTestCount" : 0,
-      "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 1
-      },
-      "lineNumbers" : [
-        59
-      ]
-    },
-    "org.broadleafcommerce.admin.server.service.handler.SearchFacetRangeCustomPersistenceHandler.fetch:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;Lorg/broadleafcommerce/openadmin/dto/CriteriaTransferObject;Lorg/broadleafcommerce/openadmin/server/dao/DynamicEntityDao;Lorg/broadleafcommerce/openadmin/server/service/persistence/module/RecordHelper;)Lorg/broadleafcommerce/openadmin/dto/DynamicResultSet;" : {
       "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
         "R000" : 3
+      },
+      "lineNumbers" : [
+        54
+      ]
+    },
+    "org.broadleafcommerce.admin.server.service.handler.SearchFacetRangeCustomPersistenceHandler.canHandleRemove:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
+      "completeTestCount" : 3,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 3
+      },
+      "lineNumbers" : [
+        59
+      ]
+    },
+    "org.broadleafcommerce.admin.server.service.handler.SearchFacetRangeCustomPersistenceHandler.fetch:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;Lorg/broadleafcommerce/openadmin/dto/CriteriaTransferObject;Lorg/broadleafcommerce/openadmin/server/dao/DynamicEntityDao;Lorg/broadleafcommerce/openadmin/server/service/persistence/module/RecordHelper;)Lorg/broadleafcommerce/openadmin/dto/DynamicResultSet;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
       },
       "lineNumbers" : [
         69,
@@ -5993,8 +5997,11 @@
     "org.broadleafcommerce.admin.server.service.handler.SkuBundleItemCustomPersistenceHandler.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        63
+      ]
     },
     "org.broadleafcommerce.admin.server.service.handler.SkuBundleItemCustomPersistenceHandler.<init>:()V" : {
       "completeTestCount" : 0,
@@ -6081,13 +6088,10 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.SkuBundleItemCustomPersistenceHandler.inspect:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;Lorg/broadleafcommerce/openadmin/server/dao/DynamicEntityDao;Lorg/broadleafcommerce/openadmin/server/service/persistence/module/InspectHelper;)Lorg/broadleafcommerce/openadmin/dto/DynamicResultSet;" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 3
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         91,
         92,
@@ -6260,8 +6264,15 @@
     "org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        112,
+        114,
+        115,
+        138,
+        139
+      ]
     },
     "org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler.<init>:()V" : {
       "completeTestCount" : 0,
@@ -6275,13 +6286,10 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler.add:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;Lorg/broadleafcommerce/openadmin/server/dao/DynamicEntityDao;Lorg/broadleafcommerce/openadmin/server/service/persistence/module/RecordHelper;)Lorg/broadleafcommerce/openadmin/dto/Entity;" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 2
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         734,
         736,
@@ -6320,12 +6328,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler.applyInventoryRestictions:(Ljava/util/List;Lorg/broadleafcommerce/openadmin/dto/CriteriaTransferObject;Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)V" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 1
       },
       "lineNumbers" : [
         534,
@@ -6338,12 +6346,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler.applyProductOptionValueCriteria:(Ljava/util/List;Lorg/broadleafcommerce/openadmin/dto/CriteriaTransferObject;Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;Ljava/lang/String;)V" : {
-      "completeTestCount" : 8,
+      "completeTestCount" : 10,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 8
+        "R000" : 10
       },
       "lineNumbers" : [
         670,
@@ -6440,12 +6448,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler.canHandleAdd:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 3
+        "R000" : 2
       },
       "warnings" : {
         "W002" : 1
@@ -6456,12 +6464,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler.canHandleFetch:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 3
+        "R000" : 2
       },
       "warnings" : {
         "W002" : 1
@@ -6472,12 +6480,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler.canHandleInspect:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 3
+        "R000" : 2
       },
       "warnings" : {
         "W002" : 1
@@ -6489,12 +6497,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler.canHandleUpdate:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 3
+        "R000" : 2
       },
       "warnings" : {
         "W002" : 1
@@ -6505,13 +6513,10 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler.createConsolidatedOptionField:(Ljava/lang/Class;)Lorg/broadleafcommerce/openadmin/dto/FieldMetadata;" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 3
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         319,
         320,
@@ -6534,12 +6539,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler.createExplicitEnumerationIndividualOptionField:(Lorg/broadleafcommerce/core/catalog/domain/ProductOption;I)Lorg/broadleafcommerce/openadmin/dto/FieldMetadata;" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 3
+        "R000" : 2
       },
       "lineNumbers" : [
         407,
@@ -6574,12 +6579,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler.createIndividualOptionField:(Lorg/broadleafcommerce/core/catalog/domain/ProductOption;I)Lorg/broadleafcommerce/openadmin/dto/FieldMetadata;" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 3
+        "R000" : 2
       },
       "lineNumbers" : [
         399,
@@ -6637,12 +6642,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler.fetch:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;Lorg/broadleafcommerce/openadmin/dto/CriteriaTransferObject;Lorg/broadleafcommerce/openadmin/server/dao/DynamicEntityDao;Lorg/broadleafcommerce/openadmin/server/service/persistence/module/RecordHelper;)Lorg/broadleafcommerce/openadmin/dto/DynamicResultSet;" : {
-      "completeTestCount" : 14,
+      "completeTestCount" : 13,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 14
+        "R000" : 13
       },
       "lineNumbers" : [
         503,
@@ -6663,12 +6668,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler.filterOutProductMetadata:(Ljava/util/Map;)V" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 5,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 5
       },
       "lineNumbers" : [
         294,
@@ -6698,12 +6703,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler.getConsolidatedOptionProperty:(Ljava/util/Collection;)Lorg/broadleafcommerce/openadmin/dto/Property;" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 4,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 3
+        "R000" : 4
       },
       "lineNumbers" : [
         351,
@@ -6728,12 +6733,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler.getOwningProductId:([Lorg/broadleafcommerce/openadmin/dto/SectionCrumb;)Ljava/lang/String;" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 5,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 3
+        "R000" : 5
       },
       "lineNumbers" : [
         284,
@@ -6743,13 +6748,10 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler.getPolymorphicClasses:(Ljava/lang/Class;Ljavax/persistence/EntityManager;Z)[Ljava/lang/String;" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 4
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         833,
         834,
@@ -6778,13 +6780,10 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler.inspect:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;Lorg/broadleafcommerce/openadmin/server/dao/DynamicEntityDao;Lorg/broadleafcommerce/openadmin/server/service/persistence/module/InspectHelper;)Lorg/broadleafcommerce/openadmin/dto/DynamicResultSet;" : {
-      "completeTestCount" : 16,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 16
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         205,
         206,
@@ -6936,15 +6935,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.SkuCustomPersistenceHandler.validateUniqueProductOptionValueCombination:(Lorg/broadleafcommerce/core/catalog/domain/Product;Ljava/util/List;Lorg/broadleafcommerce/core/catalog/domain/Sku;)Lorg/broadleafcommerce/openadmin/dto/Entity;" : {
-      "completeTestCount" : 7,
+      "completeTestCount" : 4,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 7
-      },
-      "warnings" : {
-        "W002" : 1
+        "R000" : 4
       },
       "lineNumbers" : [
         904,
@@ -6993,8 +6989,11 @@
     "org.broadleafcommerce.admin.server.service.handler.SkuLookupByProductCustomPersistenceHandler.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        58
+      ]
     },
     "org.broadleafcommerce.admin.server.service.handler.SkuLookupByProductCustomPersistenceHandler.<init>:()V" : {
       "completeTestCount" : 0,
@@ -7027,13 +7026,10 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.SkuLookupByProductCustomPersistenceHandler.fetch:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;Lorg/broadleafcommerce/openadmin/dto/CriteriaTransferObject;Lorg/broadleafcommerce/openadmin/server/dao/DynamicEntityDao;Lorg/broadleafcommerce/openadmin/server/service/persistence/module/RecordHelper;)Lorg/broadleafcommerce/openadmin/dto/DynamicResultSet;" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 3
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         91,
         92,
@@ -7228,12 +7224,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.SkuRestrictionFactoryImpl.setSkuPropertyPrefix:(Ljava/lang/String;)V" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 5,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 5
       },
       "lineNumbers" : [
         168,
@@ -7245,8 +7241,11 @@
     "org.broadleafcommerce.admin.server.service.handler.UpSaleProductCustomPersistenceHandler.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        47
+      ]
     },
     "org.broadleafcommerce.admin.server.service.handler.UpSaleProductCustomPersistenceHandler.<init>:()V" : {
       "completeTestCount" : 0,
@@ -7259,12 +7258,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.UpSaleProductCustomPersistenceHandler.add:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;Lorg/broadleafcommerce/openadmin/server/dao/DynamicEntityDao;Lorg/broadleafcommerce/openadmin/server/service/persistence/module/RecordHelper;)Lorg/broadleafcommerce/openadmin/dto/Entity;" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 2
       },
       "lineNumbers" : [
         66,
@@ -7290,12 +7289,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.UpSaleProductCustomPersistenceHandler.canHandleAdd:(Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 3
       },
       "lineNumbers" : [
         61
@@ -7311,13 +7310,10 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.UpSaleProductCustomPersistenceHandler.validateDuplicateChild:(Lorg/broadleafcommerce/openadmin/dto/Entity;Lorg/broadleafcommerce/core/catalog/domain/Product;Lorg/broadleafcommerce/core/catalog/domain/Product;)V" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 1
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         101,
         102,
@@ -7345,12 +7341,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.UpSaleProductCustomPersistenceHandler.validateSelfLink:(Lorg/broadleafcommerce/openadmin/dto/Entity;Ljava/lang/String;Ljava/lang/String;)V" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 2
       },
       "lineNumbers" : [
         93,
@@ -7360,12 +7356,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.UpSaleProductCustomPersistenceHandler.validateUpSaleProduct:(Lorg/broadleafcommerce/openadmin/dto/Entity;)V" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 3
       },
       "lineNumbers" : [
         77,
@@ -7383,13 +7379,10 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.handler.UpSaleProductCustomPersistenceHandler.validateUpSaleProducts:(Lorg/broadleafcommerce/openadmin/dto/Entity;Lorg/broadleafcommerce/core/catalog/domain/Product;Ljava/lang/Long;Ljava/lang/StringBuilder;)V" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 3
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         120,
         121,
@@ -7417,12 +7410,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.persistence.module.provider.CategoryParentCategoryFieldPersistenceProvider.canHandleExtraction:(Lorg/broadleafcommerce/openadmin/server/service/persistence/module/provider/request/ExtractValueRequest;Lorg/broadleafcommerce/openadmin/dto/Property;)Z" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 1
       },
       "lineNumbers" : [
         132,
@@ -7431,12 +7424,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.persistence.module.provider.CategoryParentCategoryFieldPersistenceProvider.canHandlePersistence:(Lorg/broadleafcommerce/openadmin/server/service/persistence/module/provider/request/PopulateValueRequest;Ljava/io/Serializable;)Z" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 1
       },
       "lineNumbers" : [
         126,
@@ -7446,12 +7439,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.persistence.module.provider.CategoryParentCategoryFieldPersistenceProvider.checkDirtyState:(Lorg/broadleafcommerce/core/catalog/domain/Category;Ljava/lang/Long;)Z" : {
-      "completeTestCount" : 11,
+      "completeTestCount" : 10,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 11
+        "R000" : 10
       },
       "lineNumbers" : [
         99,
@@ -7554,12 +7547,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.persistence.module.provider.ForeignSkuFieldPersistenceProvider.canHandleExtraction:(Lorg/broadleafcommerce/openadmin/server/service/persistence/module/provider/request/ExtractValueRequest;Lorg/broadleafcommerce/openadmin/dto/Property;)Z" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 1
       },
       "lineNumbers" : [
         65,
@@ -7573,12 +7566,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.persistence.module.provider.ForeignSkuFieldPersistenceProvider.extractValue:(Lorg/broadleafcommerce/openadmin/server/service/persistence/module/provider/request/ExtractValueRequest;Lorg/broadleafcommerce/openadmin/dto/Property;)Lorg/broadleafcommerce/openadmin/server/service/type/MetadataProviderResponse;" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 1
       },
       "lineNumbers" : [
         38,
@@ -7611,12 +7604,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.persistence.module.provider.ProductParentCategoryFieldPersistenceProvider.canHandleExtraction:(Lorg/broadleafcommerce/openadmin/server/service/persistence/module/provider/request/ExtractValueRequest;Lorg/broadleafcommerce/openadmin/dto/Property;)Z" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 1
       },
       "lineNumbers" : [
         134,
@@ -7625,12 +7618,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.persistence.module.provider.ProductParentCategoryFieldPersistenceProvider.canHandlePersistence:(Lorg/broadleafcommerce/openadmin/server/service/persistence/module/provider/request/PopulateValueRequest;Ljava/io/Serializable;)Z" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 1
       },
       "lineNumbers" : [
         128,
@@ -7640,12 +7633,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.persistence.module.provider.ProductParentCategoryFieldPersistenceProvider.checkDirtyState:(Lorg/broadleafcommerce/core/catalog/domain/Product;Ljava/lang/Long;)Z" : {
-      "completeTestCount" : 11,
+      "completeTestCount" : 10,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 11
+        "R000" : 10
       },
       "lineNumbers" : [
         101,
@@ -7748,12 +7741,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.persistence.module.provider.ProductUrlFieldPersistenceProvider.populateValue:(Lorg/broadleafcommerce/openadmin/server/service/persistence/module/provider/request/PopulateValueRequest;Ljava/io/Serializable;)Lorg/broadleafcommerce/openadmin/server/service/type/MetadataProviderResponse;" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 1
       },
       "lineNumbers" : [
         43,
@@ -7778,12 +7771,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.persistence.module.provider.SkuFieldsPersistenceProvider.canHandleExtraction:(Lorg/broadleafcommerce/openadmin/server/service/persistence/module/provider/request/ExtractValueRequest;Lorg/broadleafcommerce/openadmin/dto/Property;)Z" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 3
       },
       "lineNumbers" : [
         85,
@@ -7794,12 +7787,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.persistence.module.provider.SkuFieldsPersistenceProvider.extractValue:(Lorg/broadleafcommerce/openadmin/server/service/persistence/module/provider/request/ExtractValueRequest;Lorg/broadleafcommerce/openadmin/dto/Property;)Lorg/broadleafcommerce/openadmin/server/service/type/MetadataProviderResponse;" : {
-      "completeTestCount" : 6,
+      "completeTestCount" : 7,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 6
+        "R000" : 7
       },
       "lineNumbers" : [
         53,
@@ -7837,8 +7830,11 @@
     "org.broadleafcommerce.admin.server.service.persistence.module.provider.SkuPricingPersistenceProvider.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        52
+      ]
     },
     "org.broadleafcommerce.admin.server.service.persistence.module.provider.SkuPricingPersistenceProvider.<init>:()V" : {
       "completeTestCount" : 0,
@@ -7850,12 +7846,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.persistence.module.provider.SkuPricingPersistenceProvider.canHandleExtraction:(Lorg/broadleafcommerce/openadmin/server/service/persistence/module/provider/request/ExtractValueRequest;Lorg/broadleafcommerce/openadmin/dto/Property;)Z" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 3
       },
       "lineNumbers" : [
         107,
@@ -7867,12 +7863,12 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.persistence.module.provider.SkuPricingPersistenceProvider.extractValue:(Lorg/broadleafcommerce/openadmin/server/service/persistence/module/provider/request/ExtractValueRequest;Lorg/broadleafcommerce/openadmin/dto/Property;)Lorg/broadleafcommerce/openadmin/server/service/type/MetadataProviderResponse;" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 3
       },
       "lineNumbers" : [
         61,
@@ -7926,13 +7922,10 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.persistence.module.provider.SkuPricingPersistenceProvider.getCurrency:(Lorg/broadleafcommerce/openadmin/server/service/persistence/module/provider/request/ExtractValueRequest;Lorg/broadleafcommerce/openadmin/dto/Property;)Ljava/util/Currency;" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 2
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         127,
         128,
@@ -8118,13 +8111,10 @@
       ]
     },
     "org.broadleafcommerce.admin.server.service.persistence.validation.TargetItemRulesValidator.validate:(Lorg/broadleafcommerce/openadmin/dto/Entity;Ljava/io/Serializable;Ljava/util/Map;Ljava/util/Map;Lorg/broadleafcommerce/openadmin/dto/BasicFieldMetadata;Ljava/lang/String;Ljava/lang/String;)Lorg/broadleafcommerce/openadmin/server/service/persistence/validation/PropertyValidationResult;" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 2
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         45,
         46,
@@ -8142,12 +8132,12 @@
       ]
     },
     "org.broadleafcommerce.admin.web.config.AdminWebConfig.blCookieFieldServiceExtensionHandler:(Ljava/util/List;Lorg/broadleafcommerce/openadmin/web/rulebuilder/service/RuleBuilderFieldServiceExtensionManager;)Lorg/broadleafcommerce/admin/web/rulebuilder/service/extension/CookieFieldServiceExtensionHandler;" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 4,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 3
+        "R000" : 4
       },
       "lineNumbers" : [
         39,
@@ -8164,13 +8154,10 @@
       ]
     },
     "org.broadleafcommerce.admin.web.controller.action.AdminCatalogActionsController.generateSkus:(Ljavax/servlet/http/HttpServletRequest;Ljavax/servlet/http/HttpServletResponse;Lorg/springframework/ui/Model;Ljava/lang/Long;Ljava/lang/String;)Ljava/util/Map;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 1
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         65,
         67,
@@ -8192,23 +8179,17 @@
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "W002",
-      "warnings" : {
-        "W002" : 4
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         54,
         55
       ]
     },
     "org.broadleafcommerce.admin.web.controller.entity.AdminBaseProductController.viewEntityList:(Ljavax/servlet/http/HttpServletRequest;Ljavax/servlet/http/HttpServletResponse;Lorg/springframework/ui/Model;Ljava/util/Map;Lorg/springframework/util/MultiValueMap;)Ljava/lang/String;" : {
-      "completeTestCount" : 5,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 5
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         61,
         62,
@@ -8243,10 +8224,7 @@
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "W002",
-      "warnings" : {
-        "W002" : 4
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         41,
         42
@@ -8262,12 +8240,12 @@
       ]
     },
     "org.broadleafcommerce.admin.web.controller.entity.AdminCategoryController.getSectionKey:(Ljava/util/Map;)Ljava/lang/String;" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 3
       },
       "lineNumbers" : [
         49,
@@ -8298,8 +8276,11 @@
     "org.broadleafcommerce.admin.web.controller.entity.AdminOfferController.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        53
+      ]
     },
     "org.broadleafcommerce.admin.web.controller.entity.AdminOfferController.<init>:()V" : {
       "completeTestCount" : 0,
@@ -8323,16 +8304,10 @@
       ]
     },
     "org.broadleafcommerce.admin.web.controller.entity.AdminOfferController.duplicateEntity:(Ljavax/servlet/http/HttpServletRequest;Ljavax/servlet/http/HttpServletResponse;Lorg/springframework/ui/Model;Ljava/util/Map;Ljava/lang/String;Lorg/broadleafcommerce/openadmin/web/form/entity/EntityForm;Lorg/springframework/validation/BindingResult;)Ljava/lang/String;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 1
-      },
-      "warnings" : {
-        "W002" : 3
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         125
       ]
@@ -8350,12 +8325,12 @@
       ]
     },
     "org.broadleafcommerce.admin.web.controller.entity.AdminOfferController.getSectionKey:(Ljava/util/Map;)Ljava/lang/String;" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 3
       },
       "lineNumbers" : [
         61,
@@ -8364,12 +8339,12 @@
       ]
     },
     "org.broadleafcommerce.admin.web.controller.entity.AdminOfferController.modifyModelAttributes:(Lorg/springframework/ui/Model;)V" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 2
       },
       "lineNumbers" : [
         136,
@@ -8380,16 +8355,10 @@
       ]
     },
     "org.broadleafcommerce.admin.web.controller.entity.AdminOfferController.viewAddEntityForm:(Ljavax/servlet/http/HttpServletRequest;Ljavax/servlet/http/HttpServletResponse;Lorg/springframework/ui/Model;Ljava/util/Map;Ljava/lang/String;)Ljava/lang/String;" : {
-      "completeTestCount" : 5,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 5
-      },
-      "warnings" : {
-        "W002" : 1
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         98,
         99,
@@ -8400,10 +8369,7 @@
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "W002",
-      "warnings" : {
-        "W002" : 4
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         87,
         88,
@@ -8412,13 +8378,10 @@
       ]
     },
     "org.broadleafcommerce.admin.web.controller.entity.AdminOfferController.viewEntityList:(Ljavax/servlet/http/HttpServletRequest;Ljavax/servlet/http/HttpServletResponse;Lorg/springframework/ui/Model;Ljava/util/Map;Lorg/springframework/util/MultiValueMap;)Ljava/lang/String;" : {
-      "completeTestCount" : 5,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 5
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         77,
         78,
@@ -8435,12 +8398,12 @@
       ]
     },
     "org.broadleafcommerce.admin.web.controller.entity.AdminOrderController.getSectionKey:(Ljava/util/Map;)Ljava/lang/String;" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 3
       },
       "lineNumbers" : [
         47,
@@ -8449,13 +8412,10 @@
       ]
     },
     "org.broadleafcommerce.admin.web.controller.entity.AdminOrderController.showViewUpdateCollection:(Ljavax/servlet/http/HttpServletRequest;Lorg/springframework/ui/Model;Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 1
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         56,
         59,
@@ -8479,13 +8439,10 @@
       ]
     },
     "org.broadleafcommerce.admin.web.controller.entity.AdminProductController.addCollectionItem:(Ljavax/servlet/http/HttpServletRequest;Ljavax/servlet/http/HttpServletResponse;Lorg/springframework/ui/Model;Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Lorg/broadleafcommerce/openadmin/web/form/entity/EntityForm;Lorg/springframework/validation/BindingResult;)Ljava/lang/String;" : {
-      "completeTestCount" : 7,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 7
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         401,
         402,
@@ -8512,13 +8469,10 @@
       ]
     },
     "org.broadleafcommerce.admin.web.controller.entity.AdminProductController.buildAddCollectionItemModel:(Ljavax/servlet/http/HttpServletRequest;Ljavax/servlet/http/HttpServletResponse;Lorg/springframework/ui/Model;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/broadleafcommerce/openadmin/dto/Property;Lorg/broadleafcommerce/openadmin/dto/FieldMetadata;Lorg/broadleafcommerce/openadmin/server/domain/PersistencePackageRequest;Lorg/broadleafcommerce/openadmin/web/form/entity/EntityForm;Lorg/broadleafcommerce/openadmin/dto/Entity;)Ljava/lang/String;" : {
-      "completeTestCount" : 16,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 16
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         200,
         201,
@@ -8551,12 +8505,12 @@
       ]
     },
     "org.broadleafcommerce.admin.web.controller.entity.AdminProductController.getSectionKey:(Ljava/util/Map;)Ljava/lang/String;" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 3
       },
       "lineNumbers" : [
         95,
@@ -8574,12 +8528,12 @@
       ]
     },
     "org.broadleafcommerce.admin.web.controller.entity.AdminProductController.modifyAddEntityForm:(Lorg/broadleafcommerce/openadmin/web/form/entity/EntityForm;Ljava/util/Map;)V" : {
-      "completeTestCount" : 10,
+      "completeTestCount" : 7,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 10
+        "R000" : 7
       },
       "lineNumbers" : [
         103,
@@ -8620,12 +8574,12 @@
       ]
     },
     "org.broadleafcommerce.admin.web.controller.entity.AdminProductController.modifyEntityForm:(Lorg/broadleafcommerce/openadmin/web/form/entity/EntityForm;Ljava/util/Map;)V" : {
-      "completeTestCount" : 5,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 5
+        "R000" : 2
       },
       "lineNumbers" : [
         129,
@@ -8690,13 +8644,10 @@
       ]
     },
     "org.broadleafcommerce.admin.web.controller.entity.AdminProductController.showUpdateAdditionalSku:(Ljavax/servlet/http/HttpServletRequest;Lorg/springframework/ui/Model;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Lorg/broadleafcommerce/openadmin/web/form/entity/EntityForm;)Ljava/lang/String;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 1
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         208,
         211,
@@ -8758,10 +8709,7 @@
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "W002",
-      "warnings" : {
-        "W002" : 5
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         352,
         355,
@@ -8785,13 +8733,10 @@
       ]
     },
     "org.broadleafcommerce.admin.web.controller.entity.AdminProductController.viewEntityListSelectize:(Ljavax/servlet/http/HttpServletRequest;Ljavax/servlet/http/HttpServletResponse;Lorg/springframework/ui/Model;Ljava/util/Map;Lorg/springframework/util/MultiValueMap;)Ljava/util/Map;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 1
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         260,
         261,
@@ -8826,10 +8771,7 @@
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "W002",
-      "warnings" : {
-        "W002" : 1
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         45,
         46,
@@ -8837,12 +8779,12 @@
       ]
     },
     "org.broadleafcommerce.admin.web.controller.extension.AdminOfferControllerExtensionHandler.setAdditionalModelAttributes:(Lorg/springframework/ui/Model;Ljava/lang/String;)Lorg/broadleafcommerce/common/extension/ExtensionResultStatusType;" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 3
       },
       "lineNumbers" : [
         52,
@@ -8908,13 +8850,10 @@
       ]
     },
     "org.broadleafcommerce.admin.web.controller.extension.AdminProductTranslationExtensionHandler.init:()V" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 1
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         48,
         49,
@@ -8935,10 +8874,7 @@
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "W002",
-      "warnings" : {
-        "W002" : 1
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         44,
         45,
@@ -8946,12 +8882,12 @@
       ]
     },
     "org.broadleafcommerce.admin.web.controller.extension.ParentCategorySortExtensionHandler.modifyListGrid:(Ljava/lang/String;Lorg/broadleafcommerce/openadmin/web/form/component/ListGrid;)Lorg/broadleafcommerce/common/extension/ExtensionResultStatusType;" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 3
       },
       "lineNumbers" : [
         51,
@@ -8966,8 +8902,11 @@
     "org.broadleafcommerce.admin.web.controller.extension.TypedEntityBasicEntityExtensionHandler.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        44
+      ]
     },
     "org.broadleafcommerce.admin.web.controller.extension.TypedEntityBasicEntityExtensionHandler.<init>:()V" : {
       "completeTestCount" : 0,
@@ -9016,13 +8955,10 @@
       ]
     },
     "org.broadleafcommerce.admin.web.controller.extension.TypedEntityBasicEntityExtensionHandler.init:()V" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 1
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         51,
         52,
@@ -9115,12 +9051,12 @@
       ]
     },
     "org.broadleafcommerce.admin.web.controller.inventory.AdminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest:(Lorg/broadleafcommerce/openadmin/server/domain/PersistencePackageRequest;Ljava/util/Map;)V" : {
-      "completeTestCount" : 7,
+      "completeTestCount" : 6,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 7
+        "R000" : 6
       },
       "lineNumbers" : [
         82,
@@ -10126,12 +10062,12 @@
       ]
     },
     "org.broadleafcommerce.admin.web.rulebuilder.service.extension.CookieFieldServiceExtensionHandler.addFields:(Ljava/util/List;Ljava/lang/String;Ljava/lang/String;)Lorg/broadleafcommerce/common/extension/ExtensionResultStatusType;" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 4,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 3
+        "R000" : 4
       },
       "lineNumbers" : [
         72,
@@ -10249,10 +10185,7 @@
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "W002",
-      "warnings" : {
-        "W002" : 1
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         49,
         50,
@@ -10390,89 +10323,8 @@
   },
   "validationMetrics" : {
     "failingTests" : [
-      "org.broadleafcommerce.core.catalog.service.CatalogTest.testSkus",
-      "org.broadleafcommerce.core.catalog.dao.ProductDaoTest.testReadProductsById",
-      "org.broadleafcommerce.core.catalog.dao.ProductDaoTest.testReadProductsByName",
-      "org.broadleafcommerce.core.catalog.dao.ProductDaoTest.testFeaturedProduct",
-      "org.broadleafcommerce.core.catalog.dao.ProductDaoTest.testReadArchivedProductsByName",
-      "org.broadleafcommerce.core.order.dao.FulfillmentGroupDaoTest.readFulfillmentGroupsForId",
-      "org.broadleafcommerce.core.order.dao.FulfillmentGroupDaoTest.readDefaultFulfillmentGroupForOrder",
-      "org.broadleafcommerce.core.order.dao.FulfillmentGroupDaoTest.readDefaultFulfillmentGroupForId",
-      "org.broadleafcommerce.test.translation.sitejvm.TranslationServiceTest.testTranslation",
-      "org.broadleafcommerce.security.service.AdminUserTest.testAdminUserSave",
-      "org.broadleafcommerce.common.workflow.WorkflowTest.testFrameworkOrderingChanged",
-      "org.broadleafcommerce.common.workflow.WorkflowTest.testMergedOrderedActivities",
-      "org.broadleafcommerce.common.workflow.WorkflowTest.testDetectedModuleActivity",
-      "org.broadleafcommerce.common.workflow.WorkflowTest.testSameOrderingConfiguredActivity",
-      "org.broadleafcommerce.common.workflow.WorkflowTest.testNonExplicitOrdering",
-      "org.broadleafcommerce.common.workflow.WorkflowTest.testInBetweenActivity",
-      "org.broadleafcommerce.core.offer.service.MVELTest.testOfferAppliesToSpecificItems",
-      "org.broadleafcommerce.core.offer.service.MVELTest.testOfferAppliesToFulfillmentGroup",
-      "org.broadleafcommerce.core.offer.service.MVELTest.testBasicMVELFunctions",
-      "org.broadleafcommerce.core.offer.service.MVELTest.testOfferAppliesToItemsInCategoryAndOrderValueGreaterThanFifty",
-      "org.broadleafcommerce.core.payment.service.PaymentInfoServiceTest.readPaymentInfoByOrder",
-      "org.broadleafcommerce.core.payment.service.PaymentInfoServiceTest.createPayment",
-      "org.broadleafcommerce.core.payment.service.PaymentInfoServiceTest.createTestPayment",
-      "org.broadleafcommerce.core.payment.service.PaymentInfoServiceTest.readPaymentInfoById",
-      "org.broadleafcommerce.core.checkout.service.CheckoutTest.testCheckout",
-      "org.broadleafcommerce.core.order.dao.OrderDaoTest.readOrderById",
       "org.broadleafcommerce.core.order.dao.OrderDaoTest.createOrder",
-      "org.broadleafcommerce.core.order.dao.OrderDaoTest.readOrdersForCustomer",
-      "org.broadleafcommerce.core.order.service.OrderTest.getOrdersForCustomer",
-      "org.broadleafcommerce.core.order.service.OrderTest.testOrderPaymentInfos",
-      "org.broadleafcommerce.core.order.service.OrderTest.findOrderByOrderNumber",
-      "org.broadleafcommerce.core.order.service.OrderTest.testReadOrdersForCustomer",
-      "org.broadleafcommerce.core.order.service.OrderTest.createCartForCustomer",
-      "org.broadleafcommerce.core.order.service.OrderTest.testNamedOrderForCustomer",
-      "org.broadleafcommerce.core.order.service.OrderTest.testManyToOneFGItemToOrderItem",
-      "org.broadleafcommerce.core.order.service.OrderTest.getItemsForOrder",
-      "org.broadleafcommerce.core.order.service.OrderTest.addBundleToOrder",
-      "org.broadleafcommerce.core.order.service.OrderTest.addAnotherItemToOrder",
-      "org.broadleafcommerce.core.order.service.OrderTest.addPaymentToOrder",
-      "org.broadleafcommerce.core.order.service.OrderTest.addItemToOrder",
-      "org.broadleafcommerce.core.order.service.OrderTest.updateItemsInOrder",
-      "org.broadleafcommerce.core.order.service.OrderTest.testIllegalAddScenarios",
-      "org.broadleafcommerce.core.order.service.OrderTest.checkOrderItems",
-      "org.broadleafcommerce.core.order.service.OrderTest.findNamedOrderForCustomer",
-      "org.broadleafcommerce.core.order.service.OrderTest.findCurrentCartForCustomer",
-      "org.broadleafcommerce.core.order.service.OrderTest.testSubmitOrder",
-      "org.broadleafcommerce.core.order.service.OrderTest.findCartForNullCustomerId",
-      "org.broadleafcommerce.core.order.service.OrderTest.removeBundleFromOrder",
-      "org.broadleafcommerce.core.order.service.OrderTest.testOrderProperties",
-      "org.broadleafcommerce.core.order.service.OrderTest.testIllegalUpdateScenarios",
-      "org.broadleafcommerce.core.order.service.OrderTest.removeItemFromOrder",
-      "org.broadleafcommerce.core.order.service.OrderTest.findCartForAnonymousCustomer",
-      "org.broadleafcommerce.profile.web.core.service.PhoneTest.readPhoneById",
-      "org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDaoTest.readFulfillmentGroupItemsForFulfillmentGroup",
-      "org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDaoTest.createFulfillmentGroupItem",
-      "org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDaoTest.readFulfillmentGroupItemsById",
-      "org.broadleafcommerce.security.service.AdminPermissionTest.testAdminPermissionSave",
-      "org.broadleafcommerce.core.order.dao.OrderItemDaoTest.deleteGiftWrapOrderItemsById",
-      "org.broadleafcommerce.core.order.dao.OrderItemDaoTest.readOrderItemsByIdAfterGiftWrapDeletion",
-      "org.broadleafcommerce.core.order.dao.OrderItemDaoTest.readGiftWrapOrderItemsById",
-      "org.broadleafcommerce.core.order.dao.OrderItemDaoTest.readOrderItemsById",
-      "org.broadleafcommerce.core.order.dao.OrderItemDaoTest.createDiscreteOrderItem",
-      "org.broadleafcommerce.core.order.dao.OrderItemDaoTest.createGiftWrapOrderItem",
-      "org.broadleafcommerce.common.email.service.EmailTest.testSynchronousEmail",
-      "org.broadleafcommerce.common.config.SystemPropertiesTest.testOverridesPropertyFiles",
-      "org.broadleafcommerce.common.config.SystemPropertiesTest.testEnvironmentResolvedFromDatabase",
-      "org.broadleafcommerce.security.service.AdminRoleTest.testAdminRoleSave",
-      "org.broadleafcommerce.core.order.service.CartTest.testMergeWithInactiveAnonymousCart",
-      "org.broadleafcommerce.core.order.service.CartTest.testMoveItemToCartFromNamedOrderWithoutExistingCart",
-      "org.broadleafcommerce.core.order.service.CartTest.testAddItemToCartFromNamedOrder",
-      "org.broadleafcommerce.core.order.service.CartTest.testMergeWithNoCustomerCart",
-      "org.broadleafcommerce.core.order.service.CartTest.testMoveItemToCartFromNamedOrder",
-      "org.broadleafcommerce.core.order.service.CartTest.testMoveAllItemsToCartFromNamedOrder",
-      "org.broadleafcommerce.core.order.service.CartTest.testAddAllItemsToCartFromNamedOrder",
-      "org.broadleafcommerce.core.order.service.CartTest.testMergeWithBothCarts",
-      "org.broadleafcommerce.core.order.service.CartTest.testMergeWithNoAnonymousCart",
-      "org.broadleafcommerce.core.order.service.CartTest.testAddAllItemsToCartFromNamedOrderWithoutExistingCart",
-      "org.broadleafcommerce.core.catalog.dao.SkuDaoTest.readFirstSku",
-      "org.broadleafcommerce.core.catalog.dao.SkuDaoTest.createSku",
-      "org.broadleafcommerce.core.catalog.dao.SkuDaoTest.readSkuById",
-      "org.broadleafcommerce.common.workflow.RollbackTest.testRollbackOrder",
-      "org.broadleafcommerce.core.catalog.dao.CategoryDaoTest.testSetFeaturedProducts",
-      "org.broadleafcommerce.profile.web.core.service.CustomerTest.readCustomersById"
+      "org.broadleafcommerce.core.order.dao.OrderDaoTest.springTestContextAfterTestMethod"
     ]
   }
 }

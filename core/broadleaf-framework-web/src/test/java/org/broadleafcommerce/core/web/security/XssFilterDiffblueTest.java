@@ -28,135 +28,97 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.Set;
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterChain;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.SessionCookieConfig;
+import javax.servlet.SessionTrackingMode;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
+import org.springframework.core.env.StandardEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.mock.web.MockServletContext;
+import org.springframework.mock.web.MockSessionCookieConfig;
 
-@ExtendWith(MockitoExtension.class)
 class XssFilterDiffblueTest {
-  @InjectMocks private XssFilter xssFilter;
-
   /**
-   * Test {@link XssFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}.
-   *
-   * <ul>
-   *   <li>Given {@link IOException#IOException()}.
-   *   <li>Then throw {@link IOException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link XssFilter#doFilterInternalUnlessIgnored(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}
+   * Method under test:
+   * {@link XssFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}
    */
   @Test
-  @DisplayName(
-      "Test doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain); given IOException(); then throw IOException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void XssFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
-  void testDoFilterInternalUnlessIgnored_givenIOException_thenThrowIOException()
-      throws IOException, ServletException {
+  void testDoFilterInternalUnlessIgnored() throws IOException, ServletException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    HttpServletRequestWrapper httpServletRequest =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
+    XssFilter xssFilter = new XssFilter();
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper httpServletRequest = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
     MockHttpServletResponse httpServletResponse = new MockHttpServletResponse();
-
     FilterChain filterChain = mock(FilterChain.class);
-    doThrow(new IOException())
-        .when(filterChain)
-        .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
-
-    // Act and Assert
-    assertThrows(
-        IOException.class,
-        () ->
-            xssFilter.doFilterInternalUnlessIgnored(
-                httpServletRequest, httpServletResponse, filterChain));
-    verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
-  }
-
-  /**
-   * Test {@link XssFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}.
-   *
-   * <ul>
-   *   <li>When {@link FilterChain} {@link FilterChain#doFilter(ServletRequest, ServletResponse)}
-   *       does nothing.
-   * </ul>
-   *
-   * <p>Method under test: {@link XssFilter#doFilterInternalUnlessIgnored(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}
-   */
-  @Test
-  @DisplayName(
-      "Test doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain); when FilterChain doFilter(ServletRequest, ServletResponse) does nothing")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void XssFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
-  void testDoFilterInternalUnlessIgnored_whenFilterChainDoFilterDoesNothing()
-      throws IOException, ServletException {
-    // Arrange
-    HttpServletRequestWrapper httpServletRequest =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
-    MockHttpServletResponse httpServletResponse = new MockHttpServletResponse();
-
-    FilterChain filterChain = mock(FilterChain.class);
-    doNothing()
-        .when(filterChain)
-        .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
+    doNothing().when(filterChain).doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
 
     // Act
     xssFilter.doFilterInternalUnlessIgnored(httpServletRequest, httpServletResponse, filterChain);
 
-    // Assert
+    // Assert that nothing has changed
     verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
   }
 
   /**
-   * Test {@link XssFilter#wrapRequest(HttpServletRequest)}.
-   *
-   * <ul>
-   *   <li>Then Parts return {@link List}.
-   * </ul>
-   *
-   * <p>Method under test: {@link XssFilter#wrapRequest(HttpServletRequest)}
+   * Method under test:
+   * {@link XssFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}
    */
   @Test
-  @DisplayName("Test wrapRequest(HttpServletRequest); then Parts return List")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"XssRequestWrapper XssFilter.wrapRequest(HttpServletRequest)"})
-  void testWrapRequest_thenPartsReturnList() throws IOException, ServletException {
+  void testDoFilterInternalUnlessIgnored2() throws IOException, ServletException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    HttpServletRequestWrapper httpServletRequest =
-        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
+    XssFilter xssFilter = new XssFilter();
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper httpServletRequest = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
+    MockHttpServletResponse httpServletResponse = new MockHttpServletResponse();
+    FilterChain filterChain = mock(FilterChain.class);
+    doThrow(new IOException("foo")).when(filterChain)
+        .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
+
+    // Act and Assert
+    assertThrows(IOException.class,
+        () -> xssFilter.doFilterInternalUnlessIgnored(httpServletRequest, httpServletResponse, filterChain));
+    verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
+  }
+
+  /**
+   * Method under test: {@link XssFilter#wrapRequest(HttpServletRequest)}
+   */
+  @Test
+  void testWrapRequest() throws IOException, MissingResourceException, ServletException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    XssFilter xssFilter = new XssFilter();
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper httpServletRequest = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
 
     // Act
     XssRequestWrapper actualWrapRequestResult = xssFilter.wrapRequest(httpServletRequest);
@@ -164,21 +126,47 @@ class XssFilterDiffblueTest {
     // Assert
     Collection<Part> parts = actualWrapRequestResult.getParts();
     assertTrue(parts instanceof List);
-    ServletRequest request = actualWrapRequestResult.getRequest();
-    assertTrue(request instanceof HttpServletRequestWrapper);
-    assertTrue(actualWrapRequestResult.getSession() instanceof MockHttpSession);
-    assertTrue(actualWrapRequestResult.getServletContext() instanceof MockServletContext);
+    HttpSession session = actualWrapRequestResult.getSession();
+    assertTrue(session instanceof MockHttpSession);
+    ServletContext servletContext = actualWrapRequestResult.getServletContext();
+    assertTrue(servletContext instanceof MockServletContext);
+    SessionCookieConfig sessionCookieConfig = servletContext.getSessionCookieConfig();
+    assertTrue(sessionCookieConfig instanceof MockSessionCookieConfig);
+    Locale locale = actualWrapRequestResult.getLocale();
+    assertEquals("", locale.getCountry());
+    assertEquals("", locale.getDisplayCountry());
+    assertEquals("", locale.getDisplayScript());
+    assertEquals("", locale.getDisplayVariant());
+    assertEquals("", locale.getISO3Country());
+    assertEquals("", locale.getScript());
+    assertEquals("", locale.getVariant());
+    assertEquals("", servletContext.getContextPath());
     assertEquals("", actualWrapRequestResult.getContextPath());
     assertEquals("", actualWrapRequestResult.getMethod());
     assertEquals("", actualWrapRequestResult.getRequestURI());
     assertEquals("", actualWrapRequestResult.getServletPath());
+    assertEquals("English", locale.getDisplayLanguage());
+    assertEquals("English", locale.getDisplayName());
     assertEquals("HTTP/1.1", actualWrapRequestResult.getProtocol());
+    assertEquals("MockServletContext", servletContext.getServerInfo());
+    assertEquals("MockServletContext", servletContext.getServletContextName());
+    assertEquals("default", ((MockServletContext) servletContext).getDefaultServletName());
+    assertEquals("en", locale.getLanguage());
+    assertEquals("eng", locale.getISO3Language());
     assertEquals("http", actualWrapRequestResult.getScheme());
+    assertEquals("http://localhost", actualWrapRequestResult.getRequestURL().toString());
     assertEquals("localhost", actualWrapRequestResult.getLocalName());
     assertEquals("localhost", actualWrapRequestResult.getRemoteHost());
     assertEquals("localhost", actualWrapRequestResult.getServerName());
+    assertNull(actualWrapRequestResult.getCookies());
+    assertNull(servletContext.getRequestCharacterEncoding());
+    assertNull(servletContext.getResponseCharacterEncoding());
     assertNull(actualWrapRequestResult.getCharacterEncoding());
     assertNull(actualWrapRequestResult.getContentType());
+    assertNull(sessionCookieConfig.getComment());
+    assertNull(sessionCookieConfig.getDomain());
+    assertNull(sessionCookieConfig.getName());
+    assertNull(sessionCookieConfig.getPath());
     assertNull(actualWrapRequestResult.getAuthType());
     assertNull(actualWrapRequestResult.getPathInfo());
     assertNull(actualWrapRequestResult.getPathTranslated());
@@ -187,37 +175,144 @@ class XssFilterDiffblueTest {
     assertNull(actualWrapRequestResult.getRequestedSessionId());
     assertNull(actualWrapRequestResult.getUserPrincipal());
     assertNull(actualWrapRequestResult.getAsyncContext());
-    assertNull(actualWrapRequestResult.getCookies());
     assertNull(actualWrapRequestResult.environment);
     assertEquals(-1, actualWrapRequestResult.getContentLength());
+    assertEquals(-1, sessionCookieConfig.getMaxAge());
     assertEquals(-1L, actualWrapRequestResult.getContentLengthLong());
+    assertEquals(0, servletContext.getSessionTimeout());
+    assertEquals(0, session.getMaxInactiveInterval());
+    assertEquals(0, session.getValueNames().length);
+    assertEquals(1, servletContext.getEffectiveMinorVersion());
+    assertEquals(1, servletContext.getMinorVersion());
+    Set<SessionTrackingMode> defaultSessionTrackingModes = servletContext.getDefaultSessionTrackingModes();
+    assertEquals(3, defaultSessionTrackingModes.size());
+    assertEquals(3, servletContext.getEffectiveMajorVersion());
+    assertEquals(3, servletContext.getMajorVersion());
     assertEquals(80, actualWrapRequestResult.getLocalPort());
     assertEquals(80, actualWrapRequestResult.getRemotePort());
     assertEquals(80, actualWrapRequestResult.getServerPort());
     assertEquals(DispatcherType.REQUEST, actualWrapRequestResult.getDispatcherType());
+    assertFalse(locale.hasExtensions());
     assertFalse(actualWrapRequestResult.isAsyncStarted());
     assertFalse(actualWrapRequestResult.isAsyncSupported());
     assertFalse(actualWrapRequestResult.isSecure());
+    assertFalse(sessionCookieConfig.isHttpOnly());
+    assertFalse(sessionCookieConfig.isSecure());
+    assertFalse(((MockHttpSession) session).isInvalid());
+    assertFalse(actualWrapRequestResult.customStripXssEnabled);
+    assertTrue(parts.isEmpty());
+    assertTrue(actualWrapRequestResult.getParameterMap().isEmpty());
+    Map<String, String> trailerFields = actualWrapRequestResult.getTrailerFields();
+    assertTrue(trailerFields.isEmpty());
+    assertTrue(defaultSessionTrackingModes.contains(SessionTrackingMode.COOKIE));
+    assertTrue(defaultSessionTrackingModes.contains(SessionTrackingMode.SSL));
+    assertTrue(defaultSessionTrackingModes.contains(SessionTrackingMode.URL));
+    Set<Character> extensionKeys = locale.getExtensionKeys();
+    assertTrue(extensionKeys.isEmpty());
+    assertTrue(((MockServletContext) servletContext).getDeclaredRoles().isEmpty());
+    assertTrue(actualWrapRequestResult.isTrailerFieldsReady());
+    assertSame(httpServletRequest, actualWrapRequestResult.getRequest());
+    assertSame(extensionKeys, locale.getUnicodeLocaleAttributes());
+    assertSame(extensionKeys, locale.getUnicodeLocaleKeys());
+    assertSame(defaultSessionTrackingModes, servletContext.getEffectiveSessionTrackingModes());
+    assertSame(trailerFields, servletContext.getFilterRegistrations());
+    assertSame(trailerFields, servletContext.getServletRegistrations());
+    assertSame(servletContext, session.getServletContext());
+  }
+
+  /**
+   * Method under test: {@link XssFilter#wrapRequest(HttpServletRequest)}
+   */
+  @Test
+  void testWrapRequest2() throws IOException, ServletException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    XssFilter xssFilter = new XssFilter();
+    XssRequestWrapper servletRequest = mock(XssRequestWrapper.class);
+    SearchRequestWrapper httpServletRequest = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
+
+    // Act
+    XssRequestWrapper actualWrapRequestResult = xssFilter.wrapRequest(httpServletRequest);
+
+    // Assert
+    Collection<Part> parts = actualWrapRequestResult.getParts();
+    assertTrue(parts instanceof List);
+    assertNull(actualWrapRequestResult.getCookies());
+    assertNull(actualWrapRequestResult.getReader());
+    assertNull(actualWrapRequestResult.getCharacterEncoding());
+    assertNull(actualWrapRequestResult.getContentType());
+    assertNull(actualWrapRequestResult.getLocalAddr());
+    assertNull(actualWrapRequestResult.getLocalName());
+    assertNull(actualWrapRequestResult.getProtocol());
+    assertNull(actualWrapRequestResult.getRemoteAddr());
+    assertNull(actualWrapRequestResult.getRemoteHost());
+    assertNull(actualWrapRequestResult.getScheme());
+    assertNull(actualWrapRequestResult.getServerName());
+    assertNull(actualWrapRequestResult.getAuthType());
+    assertNull(actualWrapRequestResult.getContextPath());
+    assertNull(actualWrapRequestResult.getMethod());
+    assertNull(actualWrapRequestResult.getPathInfo());
+    assertNull(actualWrapRequestResult.getPathTranslated());
+    assertNull(actualWrapRequestResult.getQueryString());
+    assertNull(actualWrapRequestResult.getRemoteUser());
+    assertNull(actualWrapRequestResult.getRequestURI());
+    assertNull(actualWrapRequestResult.getRequestedSessionId());
+    assertNull(actualWrapRequestResult.getServletPath());
+    assertNull(actualWrapRequestResult.getRequestURL());
+    assertNull(actualWrapRequestResult.getUserPrincipal());
+    assertNull(actualWrapRequestResult.getAttributeNames());
+    assertNull(actualWrapRequestResult.getParameterNames());
+    assertNull(actualWrapRequestResult.getHeaderNames());
+    assertNull(actualWrapRequestResult.getLocales());
+    assertNull(actualWrapRequestResult.getLocale());
+    assertNull(actualWrapRequestResult.getAsyncContext());
+    assertNull(actualWrapRequestResult.getDispatcherType());
+    assertNull(actualWrapRequestResult.getServletContext());
+    assertNull(actualWrapRequestResult.getInputStream());
+    assertNull(actualWrapRequestResult.getHttpServletMapping());
+    assertNull(actualWrapRequestResult.getSession());
+    assertNull(actualWrapRequestResult.environment);
+    assertEquals(0, actualWrapRequestResult.getContentLength());
+    assertEquals(0, actualWrapRequestResult.getLocalPort());
+    assertEquals(0, actualWrapRequestResult.getRemotePort());
+    assertEquals(0, actualWrapRequestResult.getServerPort());
+    assertEquals(0L, actualWrapRequestResult.getContentLengthLong());
+    assertFalse(actualWrapRequestResult.isAsyncStarted());
+    assertFalse(actualWrapRequestResult.isAsyncSupported());
+    assertFalse(actualWrapRequestResult.isSecure());
+    assertFalse(actualWrapRequestResult.isTrailerFieldsReady());
     assertFalse(actualWrapRequestResult.customStripXssEnabled);
     assertTrue(parts.isEmpty());
     assertTrue(actualWrapRequestResult.getParameterMap().isEmpty());
     assertTrue(actualWrapRequestResult.getTrailerFields().isEmpty());
-    assertTrue(actualWrapRequestResult.isTrailerFieldsReady());
-    assertSame(httpServletRequest, request);
+    assertSame(httpServletRequest, actualWrapRequestResult.getRequest());
   }
 
   /**
-   * Test {@link XssFilter#getOrder()}.
-   *
-   * <p>Method under test: {@link XssFilter#getOrder()}
+   * Method under test: {@link XssFilter#getOrder()}
    */
   @Test
-  @DisplayName("Test getOrder()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int XssFilter.getOrder()"})
   void testGetOrder() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
+    assertEquals(10000, (new XssFilter()).getOrder());
+  }
+
+  /**
+   * Method under test: {@link XssFilter#getOrder()}
+   */
+  @Test
+  void testGetOrder2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    XssFilter xssFilter = new XssFilter();
+    xssFilter.setEnvironment(mock(StandardEnvironment.class));
+
+    // Act and Assert
     assertEquals(10000, xssFilter.getOrder());
   }
 }

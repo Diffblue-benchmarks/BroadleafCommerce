@@ -20,98 +20,74 @@ package org.broadleafcommerce.cms.web.processor;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.anyBoolean;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
+import java.util.function.BiFunction;
 import javax.servlet.http.HttpServletRequest;
-import org.broadleafcommerce.cms.structure.domain.StructuredContentType;
-import org.broadleafcommerce.cms.structure.domain.StructuredContentTypeImpl;
-import org.broadleafcommerce.cms.structure.service.StructuredContentService;
 import org.broadleafcommerce.common.TimeDTO;
-import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
-import org.broadleafcommerce.common.locale.domain.Locale;
-import org.broadleafcommerce.common.locale.domain.LocaleImpl;
-import org.broadleafcommerce.common.sandbox.domain.SandBox;
-import org.broadleafcommerce.common.sandbox.domain.SandBoxImpl;
-import org.broadleafcommerce.common.structure.dto.StructuredContentDTO;
+import org.broadleafcommerce.common.web.BroadleafRequestContext;
 import org.broadleafcommerce.presentation.model.BroadleafTemplateContext;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 
-@RunWith(MockitoJUnitRunner.class)
 public class ContentProcessorDiffblueTest {
-  @InjectMocks private ContentProcessor contentProcessor;
-
-  @Mock private ContentProcessorExtensionManager contentProcessorExtensionManager;
-
-  @Mock private StructuredContentService structuredContentService;
-
   /**
-   * Test {@link ContentProcessor#getName()}.
-   *
-   * <p>Method under test: {@link ContentProcessor#getName()}
+   * Method under test: {@link ContentProcessor#getName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ContentProcessor.getName()"})
   public void testGetName() {
     // Arrange, Act and Assert
-    assertEquals("content", new ContentProcessor().getName());
+    assertEquals("content", (new ContentProcessor()).getName());
   }
 
   /**
-   * Test {@link ContentProcessor#getPrecedence()}.
-   *
-   * <p>Method under test: {@link ContentProcessor#getPrecedence()}
+   * Method under test: {@link ContentProcessor#getPrecedence()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int ContentProcessor.getPrecedence()"})
   public void testGetPrecedence() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertEquals(10000, contentProcessor.getPrecedence());
+    assertEquals(10000, (new ContentProcessor()).getPrecedence());
   }
 
   /**
-   * Test {@link ContentProcessor#getAttributeValue(Map, String, String)}.
-   *
-   * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>When {@link HashMap#HashMap()} {@code 42} is {@code foo}.
-   *   <li>Then return {@code foo}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ContentProcessor#getAttributeValue(Map, String, String)}
+   * Method under test:
+   * {@link ContentProcessor#getAttributeValue(Map, String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ContentProcessor.getAttributeValue(Map, String, String)"})
-  public void testGetAttributeValue_given42_whenHashMap42IsFoo_thenReturnFoo() {
+  public void testGetAttributeValue() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    ContentProcessor contentProcessor = new ContentProcessor();
+
+    // Act and Assert
+    assertEquals("42", contentProcessor.getAttributeValue(new HashMap<>(), "42", "42"));
+  }
+
+  /**
+   * Method under test:
+   * {@link ContentProcessor#getAttributeValue(Map, String, String)}
+   */
+  @Test
+  public void testGetAttributeValue2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ContentProcessor contentProcessor = new ContentProcessor();
+
     HashMap<String, String> tagAttributes = new HashMap<>();
     tagAttributes.put("42", "foo");
 
@@ -120,877 +96,73 @@ public class ContentProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link ContentProcessor#getAttributeValue(Map, String, String)}.
-   *
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()}.
-   *   <li>Then return {@code 42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ContentProcessor#getAttributeValue(Map, String, String)}
+   * Method under test:
+   * {@link ContentProcessor#getAttributeValue(Map, String, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String ContentProcessor.getAttributeValue(Map, String, String)"})
-  public void testGetAttributeValue_whenHashMap_thenReturn42() {
-    // Arrange, Act and Assert
-    assertEquals("42", contentProcessor.getAttributeValue(new HashMap<>(), "42", "42"));
+  public void testGetAttributeValue3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ContentProcessor contentProcessor = new ContentProcessor();
+
+    HashMap<String, String> tagAttributes = new HashMap<>();
+    tagAttributes.computeIfPresent("foo", mock(BiFunction.class));
+
+    // Act and Assert
+    assertEquals("42", contentProcessor.getAttributeValue(tagAttributes, "42", "42"));
   }
 
   /**
-   * Test {@link ContentProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}.
-   *
-   * <ul>
-   *   <li>Given empty string.
-   *   <li>When {@link HashMap#HashMap()} {@code contentType} is empty string.
-   * </ul>
-   *
-   * <p>Method under test: {@link ContentProcessor#populateModelVariables(String, Map,
-   * BroadleafTemplateContext)}
+   * Method under test:
+   * {@link ContentProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map ContentProcessor.populateModelVariables(String, Map, BroadleafTemplateContext)"
-  })
-  public void testPopulateModelVariables_givenEmptyString_whenHashMapContentTypeIsEmptyString() {
+  public void testPopulateModelVariables() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    ContentProcessor contentProcessor = new ContentProcessor();
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> contentProcessor.populateModelVariables("Tag Name",
+        new HashMap<>(), mock(BroadleafTemplateContext.class)));
+  }
+
+  /**
+   * Method under test:
+   * {@link ContentProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}
+   */
+  @Test
+  public void testPopulateModelVariables2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ContentProcessor contentProcessor = new ContentProcessor();
+
     HashMap<String, String> tagAttributes = new HashMap<>();
     tagAttributes.put("contentType", "");
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            contentProcessor.populateModelVariables(
-                "Tag Name", tagAttributes, mock(BroadleafTemplateContext.class)));
+    assertThrows(IllegalArgumentException.class,
+        () -> contentProcessor.populateModelVariables("Tag Name", tagAttributes, mock(BroadleafTemplateContext.class)));
   }
 
   /**
-   * Test {@link ContentProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}.
-   *
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()}.
-   *   <li>Then throw {@link IllegalArgumentException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ContentProcessor#populateModelVariables(String, Map,
-   * BroadleafTemplateContext)}
+   * Method under test:
+   * {@link ContentProcessor#buildMvelParameters(HttpServletRequest, Map, BroadleafTemplateContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map ContentProcessor.populateModelVariables(String, Map, BroadleafTemplateContext)"
-  })
-  public void testPopulateModelVariables_whenHashMap_thenThrowIllegalArgumentException() {
-    // Arrange, Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            contentProcessor.populateModelVariables(
-                "Tag Name", new HashMap<>(), mock(BroadleafTemplateContext.class)));
-  }
+  public void testBuildMvelParameters() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-  /**
-   * Test {@link ContentProcessor#getContentItems(String, Integer, HttpServletRequest, Map, SandBox,
-   * StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)}.
-   *
-   * <p>Method under test: {@link ContentProcessor#getContentItems(String, Integer,
-   * HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map,
-   * BroadleafTemplateContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List ContentProcessor.getContentItems(String, Integer, HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)"
-  })
-  public void testGetContentItems() {
     // Arrange
-    ContentProcessorExtensionHandler contentProcessorExtensionHandler =
-        mock(ContentProcessorExtensionHandler.class);
-    when(contentProcessorExtensionHandler.addAdditionalFieldsToModel(
-            Mockito.<String>any(),
-            Mockito.<Map<String, String>>any(),
-            Mockito.<Map<String, Object>>any(),
-            Mockito.<BroadleafTemplateContext>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(contentProcessorExtensionManager.getProxy()).thenReturn(contentProcessorExtensionHandler);
-    when(structuredContentService.lookupStructuredContentItemsByName(
-            Mockito.<StructuredContentType>any(),
-            Mockito.<String>any(),
-            Mockito.<Locale>any(),
-            Mockito.<Integer>any(),
-            Mockito.<Map<String, Object>>any(),
-            anyBoolean()))
-        .thenReturn(new ArrayList<>());
-    MockHttpServletRequest request = new MockHttpServletRequest();
-    HashMap<String, Object> mvelParameters = new HashMap<>();
-    SandBoxImpl currentSandbox = new SandBoxImpl();
-    StructuredContentTypeImpl structuredContentType = new StructuredContentTypeImpl();
-    LocaleImpl locale = new LocaleImpl();
-    HashMap<String, String> tagAttributes = new HashMap<>();
-
-    // Act
-    List<StructuredContentDTO> actualContentItems =
-        contentProcessor.getContentItems(
-            "Not all who wander are lost",
-            3,
-            request,
-            mvelParameters,
-            currentSandbox,
-            structuredContentType,
-            locale,
-            "Tag Name",
-            tagAttributes,
-            new HashMap<>(),
-            mock(BroadleafTemplateContext.class));
-
-    // Assert
-    verify(structuredContentService)
-        .lookupStructuredContentItemsByName(
-            isA(StructuredContentType.class),
-            eq("Not all who wander are lost"),
-            isA(Locale.class),
-            eq(3),
-            isA(Map.class),
-            eq(false));
-    verify(contentProcessorExtensionHandler)
-        .addAdditionalFieldsToModel(
-            eq("Tag Name"), isA(Map.class), isA(Map.class), isA(BroadleafTemplateContext.class));
-    verify(contentProcessorExtensionManager).getProxy();
-    assertTrue(actualContentItems.isEmpty());
-  }
-
-  /**
-   * Test {@link ContentProcessor#getContentItems(String, Integer, HttpServletRequest, Map, SandBox,
-   * StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)}.
-   *
-   * <p>Method under test: {@link ContentProcessor#getContentItems(String, Integer,
-   * HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map,
-   * BroadleafTemplateContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List ContentProcessor.getContentItems(String, Integer, HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)"
-  })
-  public void testGetContentItems2() {
-    // Arrange
-    when(structuredContentService.lookupStructuredContentItemsByName(
-            Mockito.<StructuredContentType>any(),
-            Mockito.<String>any(),
-            Mockito.<Locale>any(),
-            Mockito.<Integer>any(),
-            Mockito.<Map<String, Object>>any(),
-            anyBoolean()))
-        .thenThrow(new IllegalArgumentException());
-    MockHttpServletRequest request = new MockHttpServletRequest();
-    HashMap<String, Object> mvelParameters = new HashMap<>();
-    SandBoxImpl currentSandbox = new SandBoxImpl();
-    StructuredContentTypeImpl structuredContentType = new StructuredContentTypeImpl();
-    LocaleImpl locale = new LocaleImpl();
-    HashMap<String, String> tagAttributes = new HashMap<>();
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            contentProcessor.getContentItems(
-                "Not all who wander are lost",
-                3,
-                request,
-                mvelParameters,
-                currentSandbox,
-                structuredContentType,
-                locale,
-                "Tag Name",
-                tagAttributes,
-                new HashMap<>(),
-                mock(BroadleafTemplateContext.class)));
-    verify(structuredContentService)
-        .lookupStructuredContentItemsByName(
-            isA(StructuredContentType.class),
-            eq("Not all who wander are lost"),
-            isA(Locale.class),
-            eq(3),
-            isA(Map.class),
-            eq(false));
-  }
-
-  /**
-   * Test {@link ContentProcessor#getContentItems(String, Integer, HttpServletRequest, Map, SandBox,
-   * StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)}.
-   *
-   * <p>Method under test: {@link ContentProcessor#getContentItems(String, Integer,
-   * HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map,
-   * BroadleafTemplateContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List ContentProcessor.getContentItems(String, Integer, HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)"
-  })
-  public void testGetContentItems3() {
-    // Arrange
-    ContentProcessorExtensionHandler contentProcessorExtensionHandler =
-        mock(ContentProcessorExtensionHandler.class);
-    when(contentProcessorExtensionHandler.addAdditionalFieldsToModel(
-            Mockito.<String>any(),
-            Mockito.<Map<String, String>>any(),
-            Mockito.<Map<String, Object>>any(),
-            Mockito.<BroadleafTemplateContext>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(contentProcessorExtensionManager.getProxy()).thenReturn(contentProcessorExtensionHandler);
-    when(structuredContentService.lookupStructuredContentItemsByName(
-            Mockito.<StructuredContentType>any(),
-            Mockito.<String>any(),
-            Mockito.<Locale>any(),
-            Mockito.<Integer>any(),
-            Mockito.<Map<String, Object>>any(),
-            anyBoolean()))
-        .thenReturn(new ArrayList<>());
-    HashMap<String, Object> mvelParameters = new HashMap<>();
-    SandBoxImpl currentSandbox = new SandBoxImpl();
-    StructuredContentTypeImpl structuredContentType = new StructuredContentTypeImpl();
-    LocaleImpl locale = new LocaleImpl();
-    HashMap<String, String> tagAttributes = new HashMap<>();
-
-    // Act
-    List<StructuredContentDTO> actualContentItems =
-        contentProcessor.getContentItems(
-            "Not all who wander are lost",
-            3,
-            null,
-            mvelParameters,
-            currentSandbox,
-            structuredContentType,
-            locale,
-            "Tag Name",
-            tagAttributes,
-            new HashMap<>(),
-            mock(BroadleafTemplateContext.class));
-
-    // Assert
-    verify(structuredContentService)
-        .lookupStructuredContentItemsByName(
-            isA(StructuredContentType.class),
-            eq("Not all who wander are lost"),
-            isA(Locale.class),
-            eq(3),
-            isA(Map.class),
-            eq(false));
-    verify(contentProcessorExtensionHandler)
-        .addAdditionalFieldsToModel(
-            eq("Tag Name"), isA(Map.class), isA(Map.class), isA(BroadleafTemplateContext.class));
-    verify(contentProcessorExtensionManager).getProxy();
-    assertTrue(actualContentItems.isEmpty());
-  }
-
-  /**
-   * Test {@link ContentProcessor#getContentItems(String, Integer, HttpServletRequest, Map, SandBox,
-   * StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)}.
-   *
-   * <p>Method under test: {@link ContentProcessor#getContentItems(String, Integer,
-   * HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map,
-   * BroadleafTemplateContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List ContentProcessor.getContentItems(String, Integer, HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)"
-  })
-  public void testGetContentItems4() {
-    // Arrange
-    when(structuredContentService.lookupStructuredContentItemsByName(
-            Mockito.<StructuredContentType>any(),
-            Mockito.<String>any(),
-            Mockito.<Locale>any(),
-            Mockito.<Integer>any(),
-            Mockito.<Map<String, Object>>any(),
-            anyBoolean()))
-        .thenThrow(new IllegalArgumentException());
-
-    DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
-    when(request.isSecure()).thenReturn(true);
-    when(request.getScheme()).thenReturn("Scheme");
-    HashMap<String, Object> mvelParameters = new HashMap<>();
-    SandBoxImpl currentSandbox = new SandBoxImpl();
-    StructuredContentTypeImpl structuredContentType = new StructuredContentTypeImpl();
-    LocaleImpl locale = new LocaleImpl();
-    HashMap<String, String> tagAttributes = new HashMap<>();
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            contentProcessor.getContentItems(
-                "Not all who wander are lost",
-                3,
-                request,
-                mvelParameters,
-                currentSandbox,
-                structuredContentType,
-                locale,
-                "Tag Name",
-                tagAttributes,
-                new HashMap<>(),
-                mock(BroadleafTemplateContext.class)));
-    verify(request).getScheme();
-    verify(request).isSecure();
-    verify(structuredContentService)
-        .lookupStructuredContentItemsByName(
-            isA(StructuredContentType.class),
-            eq("Not all who wander are lost"),
-            isA(Locale.class),
-            eq(3),
-            isA(Map.class),
-            eq(true));
-  }
-
-  /**
-   * Test {@link ContentProcessor#getContentItems(String, Integer, HttpServletRequest, Map, SandBox,
-   * StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)}.
-   *
-   * <p>Method under test: {@link ContentProcessor#getContentItems(String, Integer,
-   * HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map,
-   * BroadleafTemplateContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List ContentProcessor.getContentItems(String, Integer, HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)"
-  })
-  public void testGetContentItems5() {
-    // Arrange
-    ContentProcessorExtensionHandler contentProcessorExtensionHandler =
-        mock(ContentProcessorExtensionHandler.class);
-    when(contentProcessorExtensionHandler.addAdditionalFieldsToModel(
-            Mockito.<String>any(),
-            Mockito.<Map<String, String>>any(),
-            Mockito.<Map<String, Object>>any(),
-            Mockito.<BroadleafTemplateContext>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(contentProcessorExtensionManager.getProxy()).thenReturn(contentProcessorExtensionHandler);
-    when(structuredContentService.lookupStructuredContentItemsByType(
-            Mockito.<StructuredContentType>any(),
-            Mockito.<Locale>any(),
-            Mockito.<Integer>any(),
-            Mockito.<Map<String, Object>>any(),
-            anyBoolean()))
-        .thenReturn(new ArrayList<>());
-
-    DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
-    when(request.isSecure()).thenReturn(true);
-    when(request.getScheme()).thenReturn("Scheme");
-    HashMap<String, Object> mvelParameters = new HashMap<>();
-    SandBoxImpl currentSandbox = new SandBoxImpl();
-    StructuredContentTypeImpl structuredContentType = new StructuredContentTypeImpl();
-    LocaleImpl locale = new LocaleImpl();
-    HashMap<String, String> tagAttributes = new HashMap<>();
-
-    // Act
-    List<StructuredContentDTO> actualContentItems =
-        contentProcessor.getContentItems(
-            "",
-            3,
-            request,
-            mvelParameters,
-            currentSandbox,
-            structuredContentType,
-            locale,
-            "Tag Name",
-            tagAttributes,
-            new HashMap<>(),
-            mock(BroadleafTemplateContext.class));
-
-    // Assert
-    verify(request).getScheme();
-    verify(request).isSecure();
-    verify(structuredContentService)
-        .lookupStructuredContentItemsByType(
-            isA(StructuredContentType.class), isA(Locale.class), eq(3), isA(Map.class), eq(true));
-    verify(contentProcessorExtensionHandler)
-        .addAdditionalFieldsToModel(
-            eq("Tag Name"), isA(Map.class), isA(Map.class), isA(BroadleafTemplateContext.class));
-    verify(contentProcessorExtensionManager).getProxy();
-    assertTrue(actualContentItems.isEmpty());
-  }
-
-  /**
-   * Test {@link ContentProcessor#getContentItems(String, Integer, HttpServletRequest, Map, SandBox,
-   * StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)}.
-   *
-   * <p>Method under test: {@link ContentProcessor#getContentItems(String, Integer,
-   * HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map,
-   * BroadleafTemplateContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List ContentProcessor.getContentItems(String, Integer, HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)"
-  })
-  public void testGetContentItems6() {
-    // Arrange
-    when(structuredContentService.lookupStructuredContentItemsByType(
-            Mockito.<StructuredContentType>any(),
-            Mockito.<Locale>any(),
-            Mockito.<Integer>any(),
-            Mockito.<Map<String, Object>>any(),
-            anyBoolean()))
-        .thenThrow(new IllegalArgumentException());
-
-    DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
-    when(request.isSecure()).thenReturn(true);
-    when(request.getScheme()).thenReturn("Scheme");
-    HashMap<String, Object> mvelParameters = new HashMap<>();
-    SandBoxImpl currentSandbox = new SandBoxImpl();
-    StructuredContentTypeImpl structuredContentType = new StructuredContentTypeImpl();
-    LocaleImpl locale = new LocaleImpl();
-    HashMap<String, String> tagAttributes = new HashMap<>();
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            contentProcessor.getContentItems(
-                "",
-                3,
-                request,
-                mvelParameters,
-                currentSandbox,
-                structuredContentType,
-                locale,
-                "Tag Name",
-                tagAttributes,
-                new HashMap<>(),
-                mock(BroadleafTemplateContext.class)));
-    verify(request).getScheme();
-    verify(request).isSecure();
-    verify(structuredContentService)
-        .lookupStructuredContentItemsByType(
-            isA(StructuredContentType.class), isA(Locale.class), eq(3), isA(Map.class), eq(true));
-  }
-
-  /**
-   * Test {@link ContentProcessor#getContentItems(String, Integer, HttpServletRequest, Map, SandBox,
-   * StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)}.
-   *
-   * <p>Method under test: {@link ContentProcessor#getContentItems(String, Integer,
-   * HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map,
-   * BroadleafTemplateContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List ContentProcessor.getContentItems(String, Integer, HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)"
-  })
-  public void testGetContentItems7() {
-    // Arrange
-    ContentProcessorExtensionHandler contentProcessorExtensionHandler =
-        mock(ContentProcessorExtensionHandler.class);
-    when(contentProcessorExtensionHandler.addAdditionalFieldsToModel(
-            Mockito.<String>any(),
-            Mockito.<Map<String, String>>any(),
-            Mockito.<Map<String, Object>>any(),
-            Mockito.<BroadleafTemplateContext>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(contentProcessorExtensionManager.getProxy()).thenReturn(contentProcessorExtensionHandler);
-    when(structuredContentService.lookupStructuredContentItemsByType(
-            Mockito.<StructuredContentType>any(),
-            Mockito.<Locale>any(),
-            Mockito.<Integer>any(),
-            Mockito.<Map<String, Object>>any(),
-            anyBoolean()))
-        .thenReturn(new ArrayList<>());
-
-    DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
-    when(request.isSecure()).thenReturn(true);
-    when(request.getScheme()).thenReturn("Scheme");
-    HashMap<String, Object> mvelParameters = new HashMap<>();
-    SandBoxImpl currentSandbox = new SandBoxImpl();
-    StructuredContentTypeImpl structuredContentType = new StructuredContentTypeImpl();
-    LocaleImpl locale = new LocaleImpl();
-    HashMap<String, String> tagAttributes = new HashMap<>();
-
-    // Act
-    List<StructuredContentDTO> actualContentItems =
-        contentProcessor.getContentItems(
-            null,
-            3,
-            request,
-            mvelParameters,
-            currentSandbox,
-            structuredContentType,
-            locale,
-            "Tag Name",
-            tagAttributes,
-            new HashMap<>(),
-            mock(BroadleafTemplateContext.class));
-
-    // Assert
-    verify(request).getScheme();
-    verify(request).isSecure();
-    verify(structuredContentService)
-        .lookupStructuredContentItemsByType(
-            isA(StructuredContentType.class), isA(Locale.class), eq(3), isA(Map.class), eq(true));
-    verify(contentProcessorExtensionHandler)
-        .addAdditionalFieldsToModel(
-            eq("Tag Name"), isA(Map.class), isA(Map.class), isA(BroadleafTemplateContext.class));
-    verify(contentProcessorExtensionManager).getProxy();
-    assertTrue(actualContentItems.isEmpty());
-  }
-
-  /**
-   * Test {@link ContentProcessor#getContentItems(String, Integer, HttpServletRequest, Map, SandBox,
-   * StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)}.
-   *
-   * <p>Method under test: {@link ContentProcessor#getContentItems(String, Integer,
-   * HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map,
-   * BroadleafTemplateContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List ContentProcessor.getContentItems(String, Integer, HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)"
-  })
-  public void testGetContentItems8() {
-    // Arrange
-    ContentProcessorExtensionHandler contentProcessorExtensionHandler =
-        mock(ContentProcessorExtensionHandler.class);
-    when(contentProcessorExtensionHandler.addAdditionalFieldsToModel(
-            Mockito.<String>any(),
-            Mockito.<Map<String, String>>any(),
-            Mockito.<Map<String, Object>>any(),
-            Mockito.<BroadleafTemplateContext>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(contentProcessorExtensionManager.getProxy()).thenReturn(contentProcessorExtensionHandler);
-    when(structuredContentService.lookupStructuredContentItemsByName(
-            Mockito.<String>any(),
-            Mockito.<Locale>any(),
-            Mockito.<Integer>any(),
-            Mockito.<Map<String, Object>>any(),
-            anyBoolean()))
-        .thenReturn(new ArrayList<>());
-
-    DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
-    when(request.isSecure()).thenReturn(true);
-    when(request.getScheme()).thenReturn("Scheme");
-    HashMap<String, Object> mvelParameters = new HashMap<>();
-    SandBoxImpl currentSandbox = new SandBoxImpl();
-    LocaleImpl locale = new LocaleImpl();
-    HashMap<String, String> tagAttributes = new HashMap<>();
-
-    // Act
-    List<StructuredContentDTO> actualContentItems =
-        contentProcessor.getContentItems(
-            "",
-            3,
-            request,
-            mvelParameters,
-            currentSandbox,
-            null,
-            locale,
-            "Tag Name",
-            tagAttributes,
-            new HashMap<>(),
-            mock(BroadleafTemplateContext.class));
-
-    // Assert
-    verify(request).getScheme();
-    verify(request).isSecure();
-    verify(structuredContentService)
-        .lookupStructuredContentItemsByName(
-            eq(""), isA(Locale.class), eq(3), isA(Map.class), eq(true));
-    verify(contentProcessorExtensionHandler)
-        .addAdditionalFieldsToModel(
-            eq("Tag Name"), isA(Map.class), isA(Map.class), isA(BroadleafTemplateContext.class));
-    verify(contentProcessorExtensionManager).getProxy();
-    assertTrue(actualContentItems.isEmpty());
-  }
-
-  /**
-   * Test {@link ContentProcessor#getContentItems(String, Integer, HttpServletRequest, Map, SandBox,
-   * StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)}.
-   *
-   * <p>Method under test: {@link ContentProcessor#getContentItems(String, Integer,
-   * HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map,
-   * BroadleafTemplateContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List ContentProcessor.getContentItems(String, Integer, HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)"
-  })
-  public void testGetContentItems9() {
-    // Arrange
-    when(structuredContentService.lookupStructuredContentItemsByName(
-            Mockito.<String>any(),
-            Mockito.<Locale>any(),
-            Mockito.<Integer>any(),
-            Mockito.<Map<String, Object>>any(),
-            anyBoolean()))
-        .thenThrow(new IllegalArgumentException());
-
-    DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
-    when(request.isSecure()).thenReturn(true);
-    when(request.getScheme()).thenReturn("Scheme");
-    HashMap<String, Object> mvelParameters = new HashMap<>();
-    SandBoxImpl currentSandbox = new SandBoxImpl();
-    LocaleImpl locale = new LocaleImpl();
-    HashMap<String, String> tagAttributes = new HashMap<>();
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            contentProcessor.getContentItems(
-                "",
-                3,
-                request,
-                mvelParameters,
-                currentSandbox,
-                null,
-                locale,
-                "Tag Name",
-                tagAttributes,
-                new HashMap<>(),
-                mock(BroadleafTemplateContext.class)));
-    verify(request).getScheme();
-    verify(request).isSecure();
-    verify(structuredContentService)
-        .lookupStructuredContentItemsByName(
-            eq(""), isA(Locale.class), eq(3), isA(Map.class), eq(true));
-  }
-
-  /**
-   * Test {@link ContentProcessor#getContentItems(String, Integer, HttpServletRequest, Map, SandBox,
-   * StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)}.
-   *
-   * <p>Method under test: {@link ContentProcessor#getContentItems(String, Integer,
-   * HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map,
-   * BroadleafTemplateContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List ContentProcessor.getContentItems(String, Integer, HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)"
-  })
-  public void testGetContentItems10() {
-    // Arrange
-    ContentProcessorExtensionHandler contentProcessorExtensionHandler =
-        mock(ContentProcessorExtensionHandler.class);
-    when(contentProcessorExtensionHandler.addAdditionalFieldsToModel(
-            Mockito.<String>any(),
-            Mockito.<Map<String, String>>any(),
-            Mockito.<Map<String, Object>>any(),
-            Mockito.<BroadleafTemplateContext>any()))
-        .thenThrow(new IllegalArgumentException());
-    when(contentProcessorExtensionManager.getProxy()).thenReturn(contentProcessorExtensionHandler);
-    when(structuredContentService.lookupStructuredContentItemsByName(
-            Mockito.<String>any(),
-            Mockito.<Locale>any(),
-            Mockito.<Integer>any(),
-            Mockito.<Map<String, Object>>any(),
-            anyBoolean()))
-        .thenReturn(new ArrayList<>());
-    HashMap<String, Object> mvelParameters = new HashMap<>();
-    SandBoxImpl currentSandbox = new SandBoxImpl();
-    LocaleImpl locale = new LocaleImpl();
-    HashMap<String, String> tagAttributes = new HashMap<>();
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            contentProcessor.getContentItems(
-                null,
-                3,
-                null,
-                mvelParameters,
-                currentSandbox,
-                null,
-                locale,
-                "Tag Name",
-                tagAttributes,
-                new HashMap<>(),
-                mock(BroadleafTemplateContext.class)));
-    verify(structuredContentService)
-        .lookupStructuredContentItemsByName(
-            isNull(), isA(Locale.class), eq(3), isA(Map.class), eq(false));
-    verify(contentProcessorExtensionHandler)
-        .addAdditionalFieldsToModel(
-            eq("Tag Name"), isA(Map.class), isA(Map.class), isA(BroadleafTemplateContext.class));
-    verify(contentProcessorExtensionManager).getProxy();
-  }
-
-  /**
-   * Test {@link ContentProcessor#getContentItems(String, Integer, HttpServletRequest, Map, SandBox,
-   * StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)}.
-   *
-   * <p>Method under test: {@link ContentProcessor#getContentItems(String, Integer,
-   * HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map,
-   * BroadleafTemplateContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List ContentProcessor.getContentItems(String, Integer, HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)"
-  })
-  public void testGetContentItems11() {
-    // Arrange
-    when(contentProcessorExtensionManager.getProxy()).thenThrow(new IllegalArgumentException());
-    when(structuredContentService.lookupStructuredContentItemsByType(
-            Mockito.<StructuredContentType>any(),
-            Mockito.<Locale>any(),
-            Mockito.<Integer>any(),
-            Mockito.<Map<String, Object>>any(),
-            anyBoolean()))
-        .thenReturn(new ArrayList<>());
-    HashMap<String, Object> mvelParameters = new HashMap<>();
-    SandBoxImpl currentSandbox = new SandBoxImpl();
-    StructuredContentTypeImpl structuredContentType = new StructuredContentTypeImpl();
-    LocaleImpl locale = new LocaleImpl();
-    HashMap<String, String> tagAttributes = new HashMap<>();
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            contentProcessor.getContentItems(
-                null,
-                3,
-                null,
-                mvelParameters,
-                currentSandbox,
-                structuredContentType,
-                locale,
-                "Tag Name",
-                tagAttributes,
-                new HashMap<>(),
-                mock(BroadleafTemplateContext.class)));
-    verify(structuredContentService)
-        .lookupStructuredContentItemsByType(
-            isA(StructuredContentType.class), isA(Locale.class), eq(3), isA(Map.class), eq(false));
-    verify(contentProcessorExtensionManager).getProxy();
-  }
-
-  /**
-   * Test {@link ContentProcessor#getContentItems(String, Integer, HttpServletRequest, Map, SandBox,
-   * StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)}.
-   *
-   * <ul>
-   *   <li>Given {@code HTTPS}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ContentProcessor#getContentItems(String, Integer,
-   * HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map,
-   * BroadleafTemplateContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List ContentProcessor.getContentItems(String, Integer, HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)"
-  })
-  public void testGetContentItems_givenHttps() {
-    // Arrange
-    ContentProcessorExtensionHandler contentProcessorExtensionHandler =
-        mock(ContentProcessorExtensionHandler.class);
-    when(contentProcessorExtensionHandler.addAdditionalFieldsToModel(
-            Mockito.<String>any(),
-            Mockito.<Map<String, String>>any(),
-            Mockito.<Map<String, Object>>any(),
-            Mockito.<BroadleafTemplateContext>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(contentProcessorExtensionManager.getProxy()).thenReturn(contentProcessorExtensionHandler);
-    when(structuredContentService.lookupStructuredContentItemsByType(
-            Mockito.<StructuredContentType>any(),
-            Mockito.<Locale>any(),
-            Mockito.<Integer>any(),
-            Mockito.<Map<String, Object>>any(),
-            anyBoolean()))
-        .thenReturn(new ArrayList<>());
-
-    DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
-    when(request.getScheme()).thenReturn("HTTPS");
-    HashMap<String, Object> mvelParameters = new HashMap<>();
-    SandBoxImpl currentSandbox = new SandBoxImpl();
-    StructuredContentTypeImpl structuredContentType = new StructuredContentTypeImpl();
-    LocaleImpl locale = new LocaleImpl();
-    HashMap<String, String> tagAttributes = new HashMap<>();
-
-    // Act
-    List<StructuredContentDTO> actualContentItems =
-        contentProcessor.getContentItems(
-            "",
-            3,
-            request,
-            mvelParameters,
-            currentSandbox,
-            structuredContentType,
-            locale,
-            "Tag Name",
-            tagAttributes,
-            new HashMap<>(),
-            mock(BroadleafTemplateContext.class));
-
-    // Assert
-    verify(request).getScheme();
-    verify(structuredContentService)
-        .lookupStructuredContentItemsByType(
-            isA(StructuredContentType.class), isA(Locale.class), eq(3), isA(Map.class), eq(true));
-    verify(contentProcessorExtensionHandler)
-        .addAdditionalFieldsToModel(
-            eq("Tag Name"), isA(Map.class), isA(Map.class), isA(BroadleafTemplateContext.class));
-    verify(contentProcessorExtensionManager).getProxy();
-    assertTrue(actualContentItems.isEmpty());
-  }
-
-  /**
-   * Test {@link ContentProcessor#buildMvelParameters(HttpServletRequest, Map,
-   * BroadleafTemplateContext)}.
-   *
-   * <ul>
-   *   <li>Given {@code null}.
-   *   <li>When {@link HashMap#HashMap()} {@code category} is {@code null}.
-   *   <li>Then return size is two.
-   * </ul>
-   *
-   * <p>Method under test: {@link ContentProcessor#buildMvelParameters(HttpServletRequest, Map,
-   * BroadleafTemplateContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map ContentProcessor.buildMvelParameters(HttpServletRequest, Map, BroadleafTemplateContext)"
-  })
-  public void testBuildMvelParameters_givenNull_whenHashMapCategoryIsNull_thenReturnSizeIsTwo() {
-    // Arrange
+    ContentProcessor contentProcessor = new ContentProcessor();
     MockHttpServletRequest request = new MockHttpServletRequest();
 
-    HashMap<String, String> tagAttributes = new HashMap<>();
-    tagAttributes.put("product", null);
-    tagAttributes.put("category", null);
-
     // Act
-    Map<String, Object> actualBuildMvelParametersResult =
-        contentProcessor.buildMvelParameters(
-            request, tagAttributes, mock(BroadleafTemplateContext.class));
+    Map<String, Object> actualBuildMvelParametersResult = contentProcessor.buildMvelParameters(request, new HashMap<>(),
+        mock(BroadleafTemplateContext.class));
 
     // Assert
     assertEquals(2, actualBuildMvelParametersResult.size());
@@ -999,82 +171,29 @@ public class ContentProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link ContentProcessor#buildMvelParameters(HttpServletRequest, Map,
-   * BroadleafTemplateContext)}.
-   *
-   * <ul>
-   *   <li>Given {@code Parse Expression}.
-   *   <li>Then return size is four.
-   * </ul>
-   *
-   * <p>Method under test: {@link ContentProcessor#buildMvelParameters(HttpServletRequest, Map,
-   * BroadleafTemplateContext)}
+   * Method under test:
+   * {@link ContentProcessor#buildMvelParameters(HttpServletRequest, Map, BroadleafTemplateContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map ContentProcessor.buildMvelParameters(HttpServletRequest, Map, BroadleafTemplateContext)"
-  })
-  public void testBuildMvelParameters_givenParseExpression_thenReturnSizeIsFour() {
+  public void testBuildMvelParameters2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    MockHttpServletRequest request = new MockHttpServletRequest();
-
-    HashMap<String, String> tagAttributes = new HashMap<>();
-    tagAttributes.put("product", ContentProcessor.REQUEST_DTO);
-    tagAttributes.put("category", "Tag Attributes");
-
-    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
-    when(context.parseExpression(Mockito.<String>any())).thenReturn("Parse Expression");
-
-    // Act
-    Map<String, Object> actualBuildMvelParametersResult =
-        contentProcessor.buildMvelParameters(request, tagAttributes, context);
-
-    // Assert
-    verify(context, atLeast(1)).parseExpression(Mockito.<String>any());
-    assertEquals(4, actualBuildMvelParametersResult.size());
-    assertEquals("Parse Expression", actualBuildMvelParametersResult.get("category"));
-    assertEquals("Parse Expression", actualBuildMvelParametersResult.get("product"));
-    assertTrue(actualBuildMvelParametersResult.containsKey("request"));
-    assertTrue(actualBuildMvelParametersResult.containsKey("time"));
-  }
-
-  /**
-   * Test {@link ContentProcessor#buildMvelParameters(HttpServletRequest, Map,
-   * BroadleafTemplateContext)}.
-   *
-   * <ul>
-   *   <li>Given {@code Parse Expression}.
-   *   <li>Then return size is three.
-   * </ul>
-   *
-   * <p>Method under test: {@link ContentProcessor#buildMvelParameters(HttpServletRequest, Map,
-   * BroadleafTemplateContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map ContentProcessor.buildMvelParameters(HttpServletRequest, Map, BroadleafTemplateContext)"
-  })
-  public void testBuildMvelParameters_givenParseExpression_thenReturnSizeIsThree() {
-    // Arrange
+    ContentProcessor contentProcessor = new ContentProcessor();
     MockHttpServletRequest request = new MockHttpServletRequest();
 
     HashMap<String, String> tagAttributes = new HashMap<>();
     tagAttributes.put("product", null);
     tagAttributes.put("category", "Tag Attributes");
-
     BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
     when(context.parseExpression(Mockito.<String>any())).thenReturn("Parse Expression");
 
     // Act
-    Map<String, Object> actualBuildMvelParametersResult =
-        contentProcessor.buildMvelParameters(request, tagAttributes, context);
+    Map<String, Object> actualBuildMvelParametersResult = contentProcessor.buildMvelParameters(request, tagAttributes,
+        context);
 
     // Assert
-    verify(context).parseExpression("Tag Attributes");
+    verify(context).parseExpression(eq("Tag Attributes"));
     assertEquals(3, actualBuildMvelParametersResult.size());
     assertTrue(actualBuildMvelParametersResult.get("time") instanceof TimeDTO);
     assertEquals("Parse Expression", actualBuildMvelParametersResult.get("category"));
@@ -1082,147 +201,167 @@ public class ContentProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link ContentProcessor#buildMvelParameters(HttpServletRequest, Map,
-   * BroadleafTemplateContext)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link IllegalArgumentException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ContentProcessor#buildMvelParameters(HttpServletRequest, Map,
-   * BroadleafTemplateContext)}
+   * Method under test:
+   * {@link ContentProcessor#buildMvelParameters(HttpServletRequest, Map, BroadleafTemplateContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map ContentProcessor.buildMvelParameters(HttpServletRequest, Map, BroadleafTemplateContext)"
-  })
-  public void testBuildMvelParameters_thenThrowIllegalArgumentException() {
+  public void testBuildMvelParameters3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    ContentProcessor contentProcessor = new ContentProcessor();
+    MockHttpServletRequest request = new MockHttpServletRequest();
+
+    HashMap<String, String> tagAttributes = new HashMap<>();
+    tagAttributes.put("product", "ThreadLocalManager.notify.orphans");
+    tagAttributes.put("category", "Tag Attributes");
+    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
+    when(context.parseExpression(Mockito.<String>any())).thenReturn("Parse Expression");
+
+    // Act
+    Map<String, Object> actualBuildMvelParametersResult = contentProcessor.buildMvelParameters(request, tagAttributes,
+        context);
+
+    // Assert
+    verify(context, atLeast(1)).parseExpression(Mockito.<String>any());
+    assertEquals(4, actualBuildMvelParametersResult.size());
+    assertTrue(actualBuildMvelParametersResult.get("time") instanceof TimeDTO);
+    assertEquals("Parse Expression", actualBuildMvelParametersResult.get("category"));
+    assertEquals("Parse Expression", actualBuildMvelParametersResult.get("product"));
+    assertNull(actualBuildMvelParametersResult.get("request"));
+  }
+
+  /**
+   * Method under test:
+   * {@link ContentProcessor#buildMvelParameters(HttpServletRequest, Map, BroadleafTemplateContext)}
+   */
+  @Test
+  public void testBuildMvelParameters4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ContentProcessor contentProcessor = new ContentProcessor();
     MockHttpServletRequest request = new MockHttpServletRequest();
 
     HashMap<String, String> tagAttributes = new HashMap<>();
     tagAttributes.put("product", null);
     tagAttributes.put("category", "Tag Attributes");
-
-    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
-    when(context.parseExpression(Mockito.<String>any())).thenThrow(new IllegalArgumentException());
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> contentProcessor.buildMvelParameters(request, tagAttributes, context));
-    verify(context).parseExpression("Tag Attributes");
-  }
-
-  /**
-   * Test {@link ContentProcessor#buildMvelParameters(HttpServletRequest, Map,
-   * BroadleafTemplateContext)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link IllegalArgumentException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ContentProcessor#buildMvelParameters(HttpServletRequest, Map,
-   * BroadleafTemplateContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map ContentProcessor.buildMvelParameters(HttpServletRequest, Map, BroadleafTemplateContext)"
-  })
-  public void testBuildMvelParameters_thenThrowIllegalArgumentException2() {
-    // Arrange
-    MockHttpServletRequest request = new MockHttpServletRequest();
-
-    HashMap<String, String> tagAttributes = new HashMap<>();
-    tagAttributes.put("product", ContentProcessor.REQUEST_DTO);
-    tagAttributes.put("category", "Tag Attributes");
-
-    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
-    when(context.parseExpression(Mockito.<String>any())).thenThrow(new IllegalArgumentException());
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> contentProcessor.buildMvelParameters(request, tagAttributes, context));
-    verify(context).parseExpression("blRequestDTO");
-  }
-
-  /**
-   * Test {@link ContentProcessor#buildMvelParameters(HttpServletRequest, Map,
-   * BroadleafTemplateContext)}.
-   *
-   * <ul>
-   *   <li>When {@link BroadleafTemplateContext} {@link
-   *       BroadleafTemplateContext#parseExpression(String)} return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ContentProcessor#buildMvelParameters(HttpServletRequest, Map,
-   * BroadleafTemplateContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map ContentProcessor.buildMvelParameters(HttpServletRequest, Map, BroadleafTemplateContext)"
-  })
-  public void testBuildMvelParameters_whenBroadleafTemplateContextParseExpressionReturnNull() {
-    // Arrange
-    MockHttpServletRequest request = new MockHttpServletRequest();
-
-    HashMap<String, String> tagAttributes = new HashMap<>();
-    tagAttributes.put("product", null);
-    tagAttributes.put("category", "Tag Attributes");
-
     BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
     when(context.parseExpression(Mockito.<String>any())).thenReturn(null);
 
     // Act
-    Map<String, Object> actualBuildMvelParametersResult =
-        contentProcessor.buildMvelParameters(request, tagAttributes, context);
+    Map<String, Object> actualBuildMvelParametersResult = contentProcessor.buildMvelParameters(request, tagAttributes,
+        context);
 
     // Assert
-    verify(context).parseExpression("Tag Attributes");
+    verify(context).parseExpression(eq("Tag Attributes"));
     assertEquals(2, actualBuildMvelParametersResult.size());
     assertTrue(actualBuildMvelParametersResult.get("time") instanceof TimeDTO);
     assertNull(actualBuildMvelParametersResult.get("request"));
   }
 
   /**
-   * Test {@link ContentProcessor#buildMvelParameters(HttpServletRequest, Map,
-   * BroadleafTemplateContext)}.
-   *
-   * <ul>
-   *   <li>When {@link BroadleafTemplateContext} {@link
-   *       BroadleafTemplateContext#parseExpression(String)} return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ContentProcessor#buildMvelParameters(HttpServletRequest, Map,
-   * BroadleafTemplateContext)}
+   * Method under test:
+   * {@link ContentProcessor#buildMvelParameters(HttpServletRequest, Map, BroadleafTemplateContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map ContentProcessor.buildMvelParameters(HttpServletRequest, Map, BroadleafTemplateContext)"
-  })
-  public void testBuildMvelParameters_whenBroadleafTemplateContextParseExpressionReturnNull2() {
+  public void testBuildMvelParameters5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    ContentProcessor contentProcessor = new ContentProcessor();
     MockHttpServletRequest request = new MockHttpServletRequest();
 
     HashMap<String, String> tagAttributes = new HashMap<>();
-    tagAttributes.put("product", ContentProcessor.REQUEST_DTO);
+    tagAttributes.put("product", null);
     tagAttributes.put("category", "Tag Attributes");
+    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
+    BroadleafRequestContext broadleafRequestContext = BroadleafRequestContext.getBroadleafRequestContext(true);
+    when(context.parseExpression(Mockito.<String>any())).thenReturn(broadleafRequestContext);
 
+    // Act
+    Map<String, Object> actualBuildMvelParametersResult = contentProcessor.buildMvelParameters(request, tagAttributes,
+        context);
+
+    // Assert
+    verify(context).parseExpression(eq("Tag Attributes"));
+    assertEquals(3, actualBuildMvelParametersResult.size());
+    assertTrue(actualBuildMvelParametersResult.get("time") instanceof TimeDTO);
+    assertNull(actualBuildMvelParametersResult.get("request"));
+    assertSame(broadleafRequestContext, actualBuildMvelParametersResult.get("category"));
+  }
+
+  /**
+   * Method under test:
+   * {@link ContentProcessor#buildMvelParameters(HttpServletRequest, Map, BroadleafTemplateContext)}
+   */
+  @Test
+  public void testBuildMvelParameters6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ContentProcessor contentProcessor = new ContentProcessor();
+    MockHttpServletRequest request = new MockHttpServletRequest();
+
+    HashMap<String, String> tagAttributes = new HashMap<>();
+    tagAttributes.put("product", null);
+    tagAttributes.put("category", "Tag Attributes");
+    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
+    when(context.parseExpression(Mockito.<String>any()))
+        .thenThrow(new IllegalArgumentException("ThreadLocalManager.notify.orphans"));
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> contentProcessor.buildMvelParameters(request, tagAttributes, context));
+    verify(context).parseExpression(eq("Tag Attributes"));
+  }
+
+  /**
+   * Method under test:
+   * {@link ContentProcessor#buildMvelParameters(HttpServletRequest, Map, BroadleafTemplateContext)}
+   */
+  @Test
+  public void testBuildMvelParameters7() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ContentProcessor contentProcessor = new ContentProcessor();
+    MockHttpServletRequest request = new MockHttpServletRequest();
+
+    HashMap<String, String> tagAttributes = new HashMap<>();
+    tagAttributes.put("product", "ThreadLocalManager.notify.orphans");
+    tagAttributes.put("category", "Tag Attributes");
+    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
+    when(context.parseExpression(Mockito.<String>any()))
+        .thenThrow(new IllegalArgumentException("ThreadLocalManager.notify.orphans"));
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> contentProcessor.buildMvelParameters(request, tagAttributes, context));
+    verify(context).parseExpression(eq("ThreadLocalManager.notify.orphans"));
+  }
+
+  /**
+   * Method under test:
+   * {@link ContentProcessor#buildMvelParameters(HttpServletRequest, Map, BroadleafTemplateContext)}
+   */
+  @Test
+  public void testBuildMvelParameters8() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ContentProcessor contentProcessor = new ContentProcessor();
+    MockHttpServletRequest request = new MockHttpServletRequest();
+
+    HashMap<String, String> tagAttributes = new HashMap<>();
+    tagAttributes.put("product", "ThreadLocalManager.notify.orphans");
+    tagAttributes.put("category", "Tag Attributes");
     BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
     when(context.parseExpression(Mockito.<String>any())).thenReturn(null);
 
     // Act
-    Map<String, Object> actualBuildMvelParametersResult =
-        contentProcessor.buildMvelParameters(request, tagAttributes, context);
+    Map<String, Object> actualBuildMvelParametersResult = contentProcessor.buildMvelParameters(request, tagAttributes,
+        context);
 
     // Assert
     verify(context, atLeast(1)).parseExpression(Mockito.<String>any());
@@ -1232,80 +371,71 @@ public class ContentProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link ContentProcessor#buildMvelParameters(HttpServletRequest, Map,
-   * BroadleafTemplateContext)}.
-   *
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()}.
-   *   <li>Then return size is two.
-   * </ul>
-   *
-   * <p>Method under test: {@link ContentProcessor#buildMvelParameters(HttpServletRequest, Map,
-   * BroadleafTemplateContext)}
+   * Method under test:
+   * {@link ContentProcessor#buildMvelParameters(HttpServletRequest, Map, BroadleafTemplateContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map ContentProcessor.buildMvelParameters(HttpServletRequest, Map, BroadleafTemplateContext)"
-  })
-  public void testBuildMvelParameters_whenHashMap_thenReturnSizeIsTwo() {
+  public void testBuildMvelParameters9() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    ContentProcessor contentProcessor = new ContentProcessor();
     MockHttpServletRequest request = new MockHttpServletRequest();
 
+    HashMap<String, String> tagAttributes = new HashMap<>();
+    tagAttributes.put("product", null);
+    tagAttributes.put("category", "Tag Attributes");
+    BroadleafRequestContext broadleafRequestContext = BroadleafRequestContext.getBroadleafRequestContext(true);
+    broadleafRequestContext.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
+    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
+    when(context.parseExpression(Mockito.<String>any())).thenReturn(broadleafRequestContext);
+
     // Act
-    Map<String, Object> actualBuildMvelParametersResult =
-        contentProcessor.buildMvelParameters(
-            request, new HashMap<>(), mock(BroadleafTemplateContext.class));
+    Map<String, Object> actualBuildMvelParametersResult = contentProcessor.buildMvelParameters(request, tagAttributes,
+        context);
 
     // Assert
-    assertEquals(2, actualBuildMvelParametersResult.size());
+    verify(context).parseExpression(eq("Tag Attributes"));
+    assertEquals(3, actualBuildMvelParametersResult.size());
     assertTrue(actualBuildMvelParametersResult.get("time") instanceof TimeDTO);
     assertNull(actualBuildMvelParametersResult.get("request"));
+    assertSame(broadleafRequestContext, actualBuildMvelParametersResult.get("category"));
   }
 
   /**
-   * Test {@link ContentProcessor#isSecure(HttpServletRequest)}.
-   *
-   * <ul>
-   *   <li>Given {@code HTTPS}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ContentProcessor#isSecure(HttpServletRequest)}
+   * Method under test: {@link ContentProcessor#isSecure(HttpServletRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ContentProcessor.isSecure(HttpServletRequest)"})
-  public void testIsSecure_givenHttps() {
+  public void testIsSecure() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
-    when(request.getScheme()).thenReturn("HTTPS");
+    ContentProcessor contentProcessor = new ContentProcessor();
 
-    // Act
-    boolean actualIsSecureResult = contentProcessor.isSecure(request);
-
-    // Assert
-    verify(request).getScheme();
-    assertTrue(actualIsSecureResult);
+    // Act and Assert
+    assertFalse(contentProcessor.isSecure(new MockHttpServletRequest()));
   }
 
   /**
-   * Test {@link ContentProcessor#isSecure(HttpServletRequest)}.
-   *
-   * <ul>
-   *   <li>Given {@code true}.
-   *   <li>Then calls {@link DefaultMultipartHttpServletRequest#isSecure()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ContentProcessor#isSecure(HttpServletRequest)}
+   * Method under test: {@link ContentProcessor#isSecure(HttpServletRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ContentProcessor.isSecure(HttpServletRequest)"})
-  public void testIsSecure_givenTrue_thenCallsIsSecure() {
+  public void testIsSecure2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertFalse((new ContentProcessor()).isSecure(null));
+  }
+
+  /**
+   * Method under test: {@link ContentProcessor#isSecure(HttpServletRequest)}
+   */
+  @Test
+  public void testIsSecure3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    ContentProcessor contentProcessor = new ContentProcessor();
     DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
     when(request.isSecure()).thenReturn(true);
     when(request.getScheme()).thenReturn("Scheme");
@@ -1320,40 +450,22 @@ public class ContentProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link ContentProcessor#isSecure(HttpServletRequest)}.
-   *
-   * <ul>
-   *   <li>When {@link MockHttpServletRequest#MockHttpServletRequest()}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ContentProcessor#isSecure(HttpServletRequest)}
+   * Method under test: {@link ContentProcessor#isSecure(HttpServletRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ContentProcessor.isSecure(HttpServletRequest)"})
-  public void testIsSecure_whenMockHttpServletRequest_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(contentProcessor.isSecure(new MockHttpServletRequest()));
-  }
+  public void testIsSecure4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-  /**
-   * Test {@link ContentProcessor#isSecure(HttpServletRequest)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ContentProcessor#isSecure(HttpServletRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ContentProcessor.isSecure(HttpServletRequest)"})
-  public void testIsSecure_whenNull_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(contentProcessor.isSecure(null));
+    // Arrange
+    ContentProcessor contentProcessor = new ContentProcessor();
+    DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
+    when(request.getScheme()).thenReturn("HTTPS");
+
+    // Act
+    boolean actualIsSecureResult = contentProcessor.isSecure(request);
+
+    // Assert
+    verify(request).getScheme();
+    assertTrue(actualIsSecureResult);
   }
 }

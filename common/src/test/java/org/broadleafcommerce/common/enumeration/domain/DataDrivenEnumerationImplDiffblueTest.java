@@ -19,51 +19,51 @@ package org.broadleafcommerce.common.enumeration.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.broadleafcommerce.common.copy.CreateResponse;
+import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
+import org.broadleafcommerce.common.service.GenericEntityService;
+import org.broadleafcommerce.common.site.domain.CatalogImpl;
+import org.broadleafcommerce.common.site.domain.SiteImpl;
+import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-common-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(SpringJUnit4ClassRunner.class)
 public class DataDrivenEnumerationImplDiffblueTest {
-  @Autowired private DataDrivenEnumerationImpl dataDrivenEnumerationImpl;
-
   /**
-   * Test {@link DataDrivenEnumerationImpl#getModifiable()}.
-   *
-   * <ul>
-   *   <li>Given {@link DataDrivenEnumerationImpl} Modifiable is {@code null}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link DataDrivenEnumerationImpl#getModifiable()}
+   * Method under test: {@link DataDrivenEnumerationImpl#getModifiable()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean DataDrivenEnumerationImpl.getModifiable()"})
-  public void testGetModifiable_givenDataDrivenEnumerationImplModifiableIsNull_thenReturnFalse() {
+  public void testGetModifiable() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertFalse((new DataDrivenEnumerationImpl()).getModifiable());
+  }
+
+  /**
+   * Method under test: {@link DataDrivenEnumerationImpl#getModifiable()}
+   */
+  @Test
+  public void testGetModifiable2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    DataDrivenEnumerationImpl dataDrivenEnumerationImpl = new DataDrivenEnumerationImpl();
+    dataDrivenEnumerationImpl.setEnumValues(new ArrayList<>());
+    dataDrivenEnumerationImpl.setId(1L);
+    dataDrivenEnumerationImpl.setKey("Key");
+    dataDrivenEnumerationImpl.setOrderItems(new ArrayList<>());
     dataDrivenEnumerationImpl.setModifiable(null);
 
     // Act and Assert
@@ -71,21 +71,18 @@ public class DataDrivenEnumerationImplDiffblueTest {
   }
 
   /**
-   * Test {@link DataDrivenEnumerationImpl#getModifiable()}.
-   *
-   * <ul>
-   *   <li>Given {@link DataDrivenEnumerationImpl} Modifiable is {@code true}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link DataDrivenEnumerationImpl#getModifiable()}
+   * Method under test: {@link DataDrivenEnumerationImpl#getModifiable()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean DataDrivenEnumerationImpl.getModifiable()"})
-  public void testGetModifiable_givenDataDrivenEnumerationImplModifiableIsTrue_thenReturnTrue() {
+  public void testGetModifiable3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    DataDrivenEnumerationImpl dataDrivenEnumerationImpl = new DataDrivenEnumerationImpl();
+    dataDrivenEnumerationImpl.setEnumValues(new ArrayList<>());
+    dataDrivenEnumerationImpl.setId(1L);
+    dataDrivenEnumerationImpl.setKey("Key");
+    dataDrivenEnumerationImpl.setOrderItems(new ArrayList<>());
     dataDrivenEnumerationImpl.setModifiable(true);
 
     // Act and Assert
@@ -93,87 +90,45 @@ public class DataDrivenEnumerationImplDiffblueTest {
   }
 
   /**
-   * Test {@link DataDrivenEnumerationImpl#getModifiable()}.
-   *
-   * <ul>
-   *   <li>Given {@link DataDrivenEnumerationImpl}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link DataDrivenEnumerationImpl#getModifiable()}
+   * Method under test: {@link DataDrivenEnumerationImpl#getModifiable()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean DataDrivenEnumerationImpl.getModifiable()"})
-  public void testGetModifiable_givenDataDrivenEnumerationImpl_thenReturnFalse() {
-    // Arrange, Act and Assert
+  public void testGetModifiable4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ArrayList<DataDrivenEnumerationValue> enumValues = new ArrayList<>();
+    enumValues.add(mock(DataDrivenEnumerationValueImpl.class));
+
+    DataDrivenEnumerationImpl dataDrivenEnumerationImpl = new DataDrivenEnumerationImpl();
+    dataDrivenEnumerationImpl.setEnumValues(enumValues);
+    dataDrivenEnumerationImpl.setId(1L);
+    dataDrivenEnumerationImpl.setKey("Key");
+    dataDrivenEnumerationImpl.setOrderItems(new ArrayList<>());
+    dataDrivenEnumerationImpl.setModifiable(null);
+
+    // Act and Assert
     assertFalse(dataDrivenEnumerationImpl.getModifiable());
   }
 
   /**
-   * Test {@link DataDrivenEnumerationImpl#getEnumValues()}.
-   *
-   * <ul>
-   *   <li>Given {@link DataDrivenEnumerationImpl}.
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link DataDrivenEnumerationImpl#getEnumValues()}
+   * Method under test: {@link DataDrivenEnumerationImpl#getEnumValues()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List DataDrivenEnumerationImpl.getEnumValues()"})
-  public void testGetEnumValues_givenDataDrivenEnumerationImpl_thenReturnEmpty() {
+  public void testGetEnumValues() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertTrue(dataDrivenEnumerationImpl.getEnumValues().isEmpty());
+    assertTrue((new DataDrivenEnumerationImpl()).getEnumValues().isEmpty());
   }
 
   /**
-   * Test {@link DataDrivenEnumerationImpl#getEnumValues()}.
-   *
-   * <ul>
-   *   <li>Given {@link DataDrivenEnumerationValueImpl} (default constructor) Hidden is {@code
-   *       true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link DataDrivenEnumerationImpl#getEnumValues()}
+   * Method under test: {@link DataDrivenEnumerationImpl#getEnumValues()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List DataDrivenEnumerationImpl.getEnumValues()"})
-  public void testGetEnumValues_givenDataDrivenEnumerationValueImplHiddenIsTrue() {
-    // Arrange
-    DataDrivenEnumerationValueImpl dataDrivenEnumerationValueImpl =
-        new DataDrivenEnumerationValueImpl();
-    dataDrivenEnumerationValueImpl.setHidden(true);
+  public void testGetEnumValues2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    ArrayList<DataDrivenEnumerationValue> enumValues = new ArrayList<>();
-    enumValues.add(dataDrivenEnumerationValueImpl);
-
-    DataDrivenEnumerationImpl dataDrivenEnumerationImpl = new DataDrivenEnumerationImpl();
-    dataDrivenEnumerationImpl.setEnumValues(enumValues);
-
-    // Act and Assert
-    assertTrue(dataDrivenEnumerationImpl.getEnumValues().isEmpty());
-  }
-
-  /**
-   * Test {@link DataDrivenEnumerationImpl#getEnumValues()}.
-   *
-   * <ul>
-   *   <li>Then return {@link ArrayList#ArrayList()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link DataDrivenEnumerationImpl#getEnumValues()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List DataDrivenEnumerationImpl.getEnumValues()"})
-  public void testGetEnumValues_thenReturnArrayList() {
     // Arrange
     ArrayList<DataDrivenEnumerationValue> enumValues = new ArrayList<>();
     enumValues.add(new DataDrivenEnumerationValueImpl());
@@ -186,25 +141,37 @@ public class DataDrivenEnumerationImplDiffblueTest {
   }
 
   /**
-   * Test {@link DataDrivenEnumerationImpl#getEnumValues()}.
-   *
-   * <ul>
-   *   <li>Then return size is two.
-   * </ul>
-   *
-   * <p>Method under test: {@link DataDrivenEnumerationImpl#getEnumValues()}
+   * Method under test: {@link DataDrivenEnumerationImpl#getEnumValues()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List DataDrivenEnumerationImpl.getEnumValues()"})
-  public void testGetEnumValues_thenReturnSizeIsTwo() {
+  public void testGetEnumValues3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     ArrayList<DataDrivenEnumerationValue> enumValues = new ArrayList<>();
     enumValues.add(new DataDrivenEnumerationValueImpl());
-    DataDrivenEnumerationValueImpl dataDrivenEnumerationValueImpl =
-        new DataDrivenEnumerationValueImpl();
-    enumValues.add(dataDrivenEnumerationValueImpl);
+    enumValues.add(new DataDrivenEnumerationValueImpl());
+
+    DataDrivenEnumerationImpl dataDrivenEnumerationImpl = new DataDrivenEnumerationImpl();
+    dataDrivenEnumerationImpl.setEnumValues(enumValues);
+
+    // Act and Assert
+    assertEquals(enumValues, dataDrivenEnumerationImpl.getEnumValues());
+  }
+
+  /**
+   * Method under test: {@link DataDrivenEnumerationImpl#getEnumValues()}
+   */
+  @Test
+  public void testGetEnumValues4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    DataDrivenEnumerationValue dataDrivenEnumerationValue = mock(DataDrivenEnumerationValue.class);
+    when(dataDrivenEnumerationValue.getHidden()).thenReturn(true);
+
+    ArrayList<DataDrivenEnumerationValue> enumValues = new ArrayList<>();
+    enumValues.add(dataDrivenEnumerationValue);
 
     DataDrivenEnumerationImpl dataDrivenEnumerationImpl = new DataDrivenEnumerationImpl();
     dataDrivenEnumerationImpl.setEnumValues(enumValues);
@@ -213,59 +180,67 @@ public class DataDrivenEnumerationImplDiffblueTest {
     List<DataDrivenEnumerationValue> actualEnumValues = dataDrivenEnumerationImpl.getEnumValues();
 
     // Assert
-    assertEquals(2, actualEnumValues.size());
-    assertSame(dataDrivenEnumerationValueImpl, actualEnumValues.get(1));
+    verify(dataDrivenEnumerationValue).getHidden();
+    assertTrue(actualEnumValues.isEmpty());
   }
 
   /**
-   * Test {@link DataDrivenEnumerationImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * DataDrivenEnumerationImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test:
+   * {@link DataDrivenEnumerationImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse DataDrivenEnumerationImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse =
-        new CreateResponse<>(new DataDrivenEnumerationImpl(), true);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+    DataDrivenEnumerationImpl dataDrivenEnumerationImpl = new DataDrivenEnumerationImpl();
+    GenericEntityService genericEntityService = mock(GenericEntityService.class);
+    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
 
     // Act
-    CreateResponse<DataDrivenEnumeration> actualCreateOrRetrieveCopyInstanceResult =
-        dataDrivenEnumerationImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<DataDrivenEnumeration> actualCreateOrRetrieveCopyInstanceResult = dataDrivenEnumerationImpl
+        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+            genericEntityService, new MultiTenantCopierExtensionManager()));
 
     // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+    verify(genericEntityService)
+        .getCeilingImplClass(eq("org.broadleafcommerce.common.enumeration.domain.DataDrivenEnumerationImpl"));
+    verify(genericEntityService).getIdentifier(isA(Object.class));
+    DataDrivenEnumeration clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
+    assertTrue(clone instanceof DataDrivenEnumerationImpl);
+    assertNull(clone.getId());
+    assertNull(clone.getKey());
+    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
+    assertFalse(clone.getModifiable());
+    assertFalse(((DataDrivenEnumerationImpl) clone).modifiable);
+    assertTrue(clone.getEnumValues().isEmpty());
+    assertTrue(clone.getOrderItems().isEmpty());
   }
 
   /**
-   * Test {@link DataDrivenEnumerationImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * DataDrivenEnumerationImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test:
+   * {@link DataDrivenEnumerationImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse DataDrivenEnumerationImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
   public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    DataDrivenEnumerationImpl dataDrivenEnumerationImpl = new DataDrivenEnumerationImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(dataDrivenEnumerationImpl, false);
+    CreateResponse<Object> createResponse = new CreateResponse<>(BLCFieldUtils.NULL_FIELD, true);
+
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<DataDrivenEnumeration> actualCreateOrRetrieveCopyInstanceResult =
-        dataDrivenEnumerationImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<DataDrivenEnumeration> actualCreateOrRetrieveCopyInstanceResult = dataDrivenEnumerationImpl
+        .createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -273,10 +248,7 @@ public class DataDrivenEnumerationImplDiffblueTest {
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link DataDrivenEnumerationImpl}
    *   <li>{@link DataDrivenEnumerationImpl#setEnumValues(List)}
@@ -290,19 +262,6 @@ public class DataDrivenEnumerationImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void DataDrivenEnumerationImpl.<init>()",
-    "Long DataDrivenEnumerationImpl.getId()",
-    "String DataDrivenEnumerationImpl.getKey()",
-    "List DataDrivenEnumerationImpl.getOrderItems()",
-    "void DataDrivenEnumerationImpl.setEnumValues(List)",
-    "void DataDrivenEnumerationImpl.setId(Long)",
-    "void DataDrivenEnumerationImpl.setKey(String)",
-    "void DataDrivenEnumerationImpl.setModifiable(Boolean)",
-    "void DataDrivenEnumerationImpl.setOrderItems(List)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     DataDrivenEnumerationImpl actualDataDrivenEnumerationImpl = new DataDrivenEnumerationImpl();
@@ -314,10 +273,9 @@ public class DataDrivenEnumerationImplDiffblueTest {
     actualDataDrivenEnumerationImpl.setOrderItems(orderItems);
     Long actualId = actualDataDrivenEnumerationImpl.getId();
     String actualKey = actualDataDrivenEnumerationImpl.getKey();
-    List<DataDrivenEnumerationValue> actualOrderItems =
-        actualDataDrivenEnumerationImpl.getOrderItems();
+    List<DataDrivenEnumerationValue> actualOrderItems = actualDataDrivenEnumerationImpl.getOrderItems();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("Key", actualKey);
     assertEquals(1L, actualId.longValue());
     assertTrue(actualOrderItems.isEmpty());

@@ -18,61 +18,38 @@
 package org.broadleafcommerce.core.web.processor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Date;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 class DateProcessorDiffblueTest {
   /**
-   * Test {@link DateProcessor#getName()}.
-   *
-   * <p>Method under test: {@link DateProcessor#getName()}
+   * Method under test: {@link DateProcessor#getName()}
    */
   @Test
-  @DisplayName("Test getName()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.lang.String DateProcessor.getName()"})
   void testGetName() {
     // Arrange, Act and Assert
-    assertEquals("date", new DateProcessor().getName());
+    assertEquals("date", (new DateProcessor()).getName());
   }
 
   /**
-   * Test {@link DateProcessor#getPrecedence()}.
-   *
-   * <p>Method under test: {@link DateProcessor#getPrecedence()}
+   * Method under test: {@link DateProcessor#getPrecedence()}
    */
   @Test
-  @DisplayName("Test getPrecedence()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int DateProcessor.getPrecedence()"})
   void testGetPrecedence() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertEquals(10000, new DateProcessor().getPrecedence());
+    assertEquals(10000, (new DateProcessor()).getPrecedence());
   }
 
   /**
-   * Test {@link DateProcessor#renderWithContextTimeZone(Date)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return empty string.
-   * </ul>
-   *
-   * <p>Method under test: {@link DateProcessor#renderWithContextTimeZone(Date)}
+   * Method under test: {@link DateProcessor#renderWithContextTimeZone(Date)}
    */
   @Test
-  @DisplayName("Test renderWithContextTimeZone(Date); when 'null'; then return empty string")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.lang.String DateProcessor.renderWithContextTimeZone(Date)"})
-  void testRenderWithContextTimeZone_whenNull_thenReturnEmptyString() {
+  void testRenderWithContextTimeZone() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertEquals("", new DateProcessor().renderWithContextTimeZone(null));
+    assertEquals("", (new DateProcessor()).renderWithContextTimeZone(null));
   }
 }

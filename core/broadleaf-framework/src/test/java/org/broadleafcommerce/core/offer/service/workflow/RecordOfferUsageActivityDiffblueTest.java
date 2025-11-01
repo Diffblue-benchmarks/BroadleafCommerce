@@ -18,9 +18,7 @@
 package org.broadleafcommerce.core.offer.service.workflow;
 
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -30,38 +28,41 @@ import org.broadleafcommerce.core.offer.domain.OfferCode;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
 public class RecordOfferUsageActivityDiffblueTest {
-  @InjectMocks private RecordOfferUsageActivity recordOfferUsageActivity;
-
   /**
-   * Test {@link RecordOfferUsageActivity#saveOfferIds(Set, Map, Order)}.
-   *
-   * <ul>
-   *   <li>When {@link HashSet#HashSet()}.
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link RecordOfferUsageActivity#saveOfferIds(Set, Map, Order)}
+   * Method under test:
+   * {@link RecordOfferUsageActivity#saveOfferIds(Set, Map, Order)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.util.List RecordOfferUsageActivity.saveOfferIds(Set, Map, Order)"})
-  public void testSaveOfferIds_whenHashSet_thenReturnEmpty() {
+  public void testSaveOfferIds() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    RecordOfferUsageActivity recordOfferUsageActivity = new RecordOfferUsageActivity(
+        new RecordOfferUsageRollbackHandler());
     HashSet<Offer> offers = new HashSet<>();
     HashMap<Offer, OfferCode> offerToCodeMapping = new HashMap<>();
 
     // Act and Assert
-    assertTrue(
-        recordOfferUsageActivity
-            .saveOfferIds(offers, offerToCodeMapping, new NullOrderImpl())
-            .isEmpty());
+    assertTrue(recordOfferUsageActivity.saveOfferIds(offers, offerToCodeMapping, new NullOrderImpl()).isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link RecordOfferUsageActivity#saveOfferIds(Set, Map, Order)}
+   */
+  @Test
+  public void testSaveOfferIds2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    RecordOfferUsageActivity recordOfferUsageActivity = new RecordOfferUsageActivity(
+        mock(RecordOfferUsageRollbackHandler.class));
+    HashSet<Offer> offers = new HashSet<>();
+    HashMap<Offer, OfferCode> offerToCodeMapping = new HashMap<>();
+
+    // Act and Assert
+    assertTrue(recordOfferUsageActivity.saveOfferIds(offers, offerToCodeMapping, new NullOrderImpl()).isEmpty());
   }
 }

@@ -21,18 +21,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrRequest;
-import org.apache.solr.client.solrj.SolrRequest.METHOD;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.broadleafcommerce.core.search.domain.IndexField;
 import org.broadleafcommerce.core.search.domain.IndexFieldImpl;
@@ -42,24 +39,34 @@ import org.broadleafcommerce.core.search.domain.SearchFacetImpl;
 import org.broadleafcommerce.core.search.domain.SearchFacetResultDTO;
 import org.broadleafcommerce.core.search.domain.SearchResult;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.mockito.Mockito;
 
 public class SolrSearchServiceImplDiffblueTest {
   /**
-   * Test {@link SolrSearchServiceImpl#filterEmptyFacets(List)}.
-   *
-   * <ul>
-   *   <li>Given {@link SearchFacetResultDTO} (default constructor) Quantity is {@code null}.
-   *   <li>Then {@link ArrayList#ArrayList()} Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link SolrSearchServiceImpl#filterEmptyFacets(List)}
+   * Method under test: {@link SolrSearchServiceImpl#filterEmptyFacets(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SolrSearchServiceImpl.filterEmptyFacets(List)"})
-  public void testFilterEmptyFacets_givenSearchFacetResultDTOQuantityIsNull_thenArrayListEmpty() {
+  public void testFilterEmptyFacets() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SolrSearchServiceImpl solrSearchServiceImpl = new SolrSearchServiceImpl();
+    ArrayList<SearchFacetDTO> facets = new ArrayList<>();
+
+    // Act
+    solrSearchServiceImpl.filterEmptyFacets(facets);
+
+    // Assert that nothing has changed
+    assertTrue(facets.isEmpty());
+  }
+
+  /**
+   * Method under test: {@link SolrSearchServiceImpl#filterEmptyFacets(List)}
+   */
+  @Test
+  public void testFilterEmptyFacets2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     SolrSearchServiceImpl solrSearchServiceImpl = new SolrSearchServiceImpl();
 
@@ -92,20 +99,12 @@ public class SolrSearchServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link SolrSearchServiceImpl#filterEmptyFacets(List)}.
-   *
-   * <ul>
-   *   <li>Given {@link SearchFacetResultDTO} (default constructor) Quantity is zero.
-   *   <li>Then {@link ArrayList#ArrayList()} Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link SolrSearchServiceImpl#filterEmptyFacets(List)}
+   * Method under test: {@link SolrSearchServiceImpl#filterEmptyFacets(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SolrSearchServiceImpl.filterEmptyFacets(List)"})
-  public void testFilterEmptyFacets_givenSearchFacetResultDTOQuantityIsZero_thenArrayListEmpty() {
+  public void testFilterEmptyFacets3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     SolrSearchServiceImpl solrSearchServiceImpl = new SolrSearchServiceImpl();
 
@@ -138,19 +137,12 @@ public class SolrSearchServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link SolrSearchServiceImpl#filterEmptyFacets(List)}.
-   *
-   * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link SolrSearchServiceImpl#filterEmptyFacets(List)}
+   * Method under test: {@link SolrSearchServiceImpl#filterEmptyFacets(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SolrSearchServiceImpl.filterEmptyFacets(List)"})
-  public void testFilterEmptyFacets_thenArrayListSizeIsOne() {
+  public void testFilterEmptyFacets4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     SolrSearchServiceImpl solrSearchServiceImpl = new SolrSearchServiceImpl();
 
@@ -183,46 +175,13 @@ public class SolrSearchServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link SolrSearchServiceImpl#filterEmptyFacets(List)}.
-   *
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then {@link ArrayList#ArrayList()} Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link SolrSearchServiceImpl#filterEmptyFacets(List)}
+   * Method under test:
+   * {@link SolrSearchServiceImpl#getDefaultSort(SearchCriteria)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SolrSearchServiceImpl.filterEmptyFacets(List)"})
-  public void testFilterEmptyFacets_whenArrayList_thenArrayListEmpty() {
-    // Arrange
-    SolrSearchServiceImpl solrSearchServiceImpl = new SolrSearchServiceImpl();
-    ArrayList<SearchFacetDTO> facets = new ArrayList<>();
+  public void testGetDefaultSort() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Act
-    solrSearchServiceImpl.filterEmptyFacets(facets);
-
-    // Assert that nothing has changed
-    assertTrue(facets.isEmpty());
-  }
-
-  /**
-   * Test {@link SolrSearchServiceImpl#getDefaultSort(SearchCriteria)}.
-   *
-   * <ul>
-   *   <li>When {@link SearchCriteria} (default constructor).
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SolrSearchServiceImpl#getDefaultSort(SearchCriteria)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SolrSearchServiceImpl.getDefaultSort(SearchCriteria)"})
-  public void testGetDefaultSort_whenSearchCriteria_thenReturnNull() {
     // Arrange
     SolrSearchServiceImpl solrSearchServiceImpl = new SolrSearchServiceImpl();
 
@@ -231,119 +190,126 @@ public class SolrSearchServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link SolrSearchServiceImpl#getLocalePrefix()}.
-   *
-   * <p>Method under test: {@link SolrSearchServiceImpl#getLocalePrefix()}
+   * Method under test: {@link SolrSearchServiceImpl#getLocalePrefix()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SolrSearchServiceImpl.getLocalePrefix()"})
   public void testGetLocalePrefix() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertEquals("", new SolrSearchServiceImpl().getLocalePrefix());
+    assertEquals("", (new SolrSearchServiceImpl()).getLocalePrefix());
   }
 
   /**
-   * Test {@link SolrSearchServiceImpl#getQueryFields(SolrQuery, List, IndexField, SearchCriteria)}.
-   *
-   * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.
-   *   <li>Then calls {@link IndexFieldImpl#getFieldTypes()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SolrSearchServiceImpl#getQueryFields(SolrQuery, List, IndexField,
-   * SearchCriteria)}
+   * Method under test:
+   * {@link SolrSearchServiceImpl#getQueryFields(SolrQuery, List, IndexField, SearchCriteria)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SolrSearchServiceImpl.getQueryFields(SolrQuery, List, IndexField, SearchCriteria)"
-  })
-  public void testGetQueryFields_given42_whenArrayListAdd42_thenCallsGetFieldTypes() {
+  public void testGetQueryFields() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     SolrSearchServiceImpl solrSearchServiceImpl = new SolrSearchServiceImpl();
-    SolrQuery query = new SolrQuery("foo");
+    SolrQuery query = mock(SolrQuery.class);
+    when(query.addTermsField(Mockito.<String>any())).thenReturn(new SolrQuery("foo"));
+    query.addTermsField("42");
+    ArrayList<String> queryFields = new ArrayList<>();
+    IndexFieldImpl indexField = new IndexFieldImpl();
+
+    // Act
+    solrSearchServiceImpl.getQueryFields(query, queryFields, indexField, new SearchCriteria());
+
+    // Assert that nothing has changed
+    verify(query).addTermsField(eq("42"));
+  }
+
+  /**
+   * Method under test:
+   * {@link SolrSearchServiceImpl#getQueryFields(SolrQuery, List, IndexField, SearchCriteria)}
+   */
+  @Test
+  public void testGetQueryFields2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SolrSearchServiceImpl solrSearchServiceImpl = new SolrSearchServiceImpl();
+    SolrQuery query = mock(SolrQuery.class);
+    when(query.addTermsField(Mockito.<String>any())).thenReturn(new SolrQuery("foo"));
+    query.addTermsField("42");
+
+    ArrayList<String> queryFields = new ArrayList<>();
+    queryFields.add("foo");
+    IndexFieldImpl indexField = new IndexFieldImpl();
+
+    // Act
+    solrSearchServiceImpl.getQueryFields(query, queryFields, indexField, new SearchCriteria());
+
+    // Assert that nothing has changed
+    verify(query).addTermsField(eq("42"));
+  }
+
+  /**
+   * Method under test:
+   * {@link SolrSearchServiceImpl#getQueryFields(SolrQuery, List, IndexField, SearchCriteria)}
+   */
+  @Test
+  public void testGetQueryFields3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SolrSearchServiceImpl solrSearchServiceImpl = new SolrSearchServiceImpl();
+    SolrQuery query = mock(SolrQuery.class);
+    when(query.addTermsField(Mockito.<String>any())).thenReturn(new SolrQuery("foo"));
+    query.addTermsField("42");
 
     ArrayList<String> queryFields = new ArrayList<>();
     queryFields.add("42");
     queryFields.add("foo");
-
-    IndexFieldImpl indexField = mock(IndexFieldImpl.class);
-    when(indexField.getFieldTypes()).thenReturn(new ArrayList<>());
-    when(indexField.getSearchable()).thenReturn(true);
+    IndexFieldImpl indexField = new IndexFieldImpl();
 
     // Act
     solrSearchServiceImpl.getQueryFields(query, queryFields, indexField, new SearchCriteria());
 
-    // Assert
-    verify(indexField).getFieldTypes();
-    verify(indexField).getSearchable();
+    // Assert that nothing has changed
+    verify(query).addTermsField(eq("42"));
   }
 
   /**
-   * Test {@link SolrSearchServiceImpl#getQueryFields(SolrQuery, List, IndexField, SearchCriteria)}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.
-   *   <li>Then calls {@link IndexFieldImpl#getFieldTypes()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SolrSearchServiceImpl#getQueryFields(SolrQuery, List, IndexField,
-   * SearchCriteria)}
+   * Method under test:
+   * {@link SolrSearchServiceImpl#getQueryFields(SolrQuery, List, IndexField, SearchCriteria)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SolrSearchServiceImpl.getQueryFields(SolrQuery, List, IndexField, SearchCriteria)"
-  })
-  public void testGetQueryFields_givenArrayList_thenCallsGetFieldTypes() {
+  public void testGetQueryFields4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     SolrSearchServiceImpl solrSearchServiceImpl = new SolrSearchServiceImpl();
-    SolrQuery query = new SolrQuery("foo");
+    SolrQuery query = mock(SolrQuery.class);
+    when(query.addTermsField(Mockito.<String>any())).thenReturn(new SolrQuery("foo"));
+    query.addTermsField("42");
     ArrayList<String> queryFields = new ArrayList<>();
 
-    IndexFieldImpl indexField = mock(IndexFieldImpl.class);
-    when(indexField.getFieldTypes()).thenReturn(new ArrayList<>());
-    when(indexField.getSearchable()).thenReturn(true);
-
     // Act
-    solrSearchServiceImpl.getQueryFields(query, queryFields, indexField, new SearchCriteria());
+    solrSearchServiceImpl.getQueryFields(query, queryFields, null, new SearchCriteria());
 
-    // Assert
-    verify(indexField).getFieldTypes();
-    verify(indexField).getSearchable();
+    // Assert that nothing has changed
+    verify(query).addTermsField(eq("42"));
   }
 
   /**
-   * Test {@link SolrSearchServiceImpl#getQueryFields(SolrQuery, List, IndexField, SearchCriteria)}.
-   *
-   * <ul>
-   *   <li>Given {@code foo}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@code foo}.
-   *   <li>Then calls {@link IndexFieldImpl#getFieldTypes()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SolrSearchServiceImpl#getQueryFields(SolrQuery, List, IndexField,
-   * SearchCriteria)}
+   * Method under test:
+   * {@link SolrSearchServiceImpl#getQueryFields(SolrQuery, List, IndexField, SearchCriteria)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SolrSearchServiceImpl.getQueryFields(SolrQuery, List, IndexField, SearchCriteria)"
-  })
-  public void testGetQueryFields_givenFoo_whenArrayListAddFoo_thenCallsGetFieldTypes() {
+  public void testGetQueryFields5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     SolrSearchServiceImpl solrSearchServiceImpl = new SolrSearchServiceImpl();
-    SolrQuery query = new SolrQuery("foo");
-
+    SolrQuery query = mock(SolrQuery.class);
+    when(query.addTermsField(Mockito.<String>any())).thenReturn(new SolrQuery("foo"));
+    query.addTermsField("42");
     ArrayList<String> queryFields = new ArrayList<>();
-    queryFields.add("foo");
-
     IndexFieldImpl indexField = mock(IndexFieldImpl.class);
     when(indexField.getFieldTypes()).thenReturn(new ArrayList<>());
     when(indexField.getSearchable()).thenReturn(true);
@@ -352,44 +318,30 @@ public class SolrSearchServiceImplDiffblueTest {
     solrSearchServiceImpl.getQueryFields(query, queryFields, indexField, new SearchCriteria());
 
     // Assert
+    verify(query).addTermsField(eq("42"));
     verify(indexField).getFieldTypes();
     verify(indexField).getSearchable();
   }
 
   /**
-   * Test {@link SolrSearchServiceImpl#createSearchContextDTO()}.
-   *
-   * <p>Method under test: {@link SolrSearchServiceImpl#createSearchContextDTO()}
+   * Method under test: {@link SolrSearchServiceImpl#createSearchContextDTO()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.core.search.service.solr.SearchContextDTO SolrSearchServiceImpl.createSearchContextDTO()"
-  })
   public void testCreateSearchContextDTO() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertTrue(new SolrSearchServiceImpl().createSearchContextDTO().getAttributes().isEmpty());
+    assertTrue((new SolrSearchServiceImpl()).createSearchContextDTO().getAttributes().isEmpty());
   }
 
   /**
-   * Test {@link SolrSearchServiceImpl#setPagingAttributes(SearchResult, int, SearchCriteria)}.
-   *
-   * <ul>
-   *   <li>When {@link SearchCriteria} (default constructor).
-   *   <li>Then {@link SearchResult} (default constructor) PageSize is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SolrSearchServiceImpl#setPagingAttributes(SearchResult, int,
-   * SearchCriteria)}
+   * Method under test:
+   * {@link SolrSearchServiceImpl#setPagingAttributes(SearchResult, int, SearchCriteria)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SolrSearchServiceImpl.setPagingAttributes(SearchResult, int, SearchCriteria)"
-  })
-  public void testSetPagingAttributes_whenSearchCriteria_thenSearchResultPageSizeIsNull() {
+  public void testSetPagingAttributes() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     SolrSearchServiceImpl solrSearchServiceImpl = new SolrSearchServiceImpl();
 
@@ -410,24 +362,18 @@ public class SolrSearchServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link SolrSearchServiceImpl#isActive()}.
-   *
-   * <p>Method under test: {@link SolrSearchServiceImpl#isActive()}
+   * Method under test: {@link SolrSearchServiceImpl#isActive()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SolrSearchServiceImpl.isActive()"})
   public void testIsActive() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertFalse(new SolrSearchServiceImpl().isActive());
+    assertFalse((new SolrSearchServiceImpl()).isActive());
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link SolrSearchServiceImpl}
    *   <li>{@link SolrSearchServiceImpl#getSolrQueryMethod()}
@@ -435,17 +381,10 @@ public class SolrSearchServiceImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SolrSearchServiceImpl.<init>()",
-    "SolrRequest.METHOD SolrSearchServiceImpl.getSolrQueryMethod()",
-    "boolean SolrSearchServiceImpl.shouldShowDebugQuery()"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     SolrSearchServiceImpl actualSolrSearchServiceImpl = new SolrSearchServiceImpl();
-    METHOD actualSolrQueryMethod = actualSolrSearchServiceImpl.getSolrQueryMethod();
+    SolrRequest.METHOD actualSolrQueryMethod = actualSolrSearchServiceImpl.getSolrQueryMethod();
 
     // Assert
     assertNull(actualSolrQueryMethod);

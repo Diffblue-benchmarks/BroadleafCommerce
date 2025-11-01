@@ -22,39 +22,37 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
 import org.hibernate.jdbc.ReturningWork;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 
 public class OracleSessionIdTransactionInfoModifierDiffblueTest {
   /**
-   * Test {@link OracleSessionIdTransactionInfoModifier#modify(TransactionInfo)}.
-   *
+   * Methods under test:
    * <ul>
-   *   <li>Given {@code null}.
-   *   <li>When {@link TransactionInfo} {@link TransactionInfo#getEntityManager()} return {@code
-   *       null}.
+   *   <li>default or parameterless constructor of
+   * {@link OracleSessionIdTransactionInfoModifier}
+   *   <li>{@link OracleSessionIdTransactionInfoModifier#getOrder()}
    * </ul>
-   *
-   * <p>Method under test: {@link OracleSessionIdTransactionInfoModifier#modify(TransactionInfo)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void OracleSessionIdTransactionInfoModifier.modify(TransactionInfo)"})
-  public void testModify_givenNull_whenTransactionInfoGetEntityManagerReturnNull() {
-    // Arrange
-    OracleSessionIdTransactionInfoModifier oracleSessionIdTransactionInfoModifier =
-        new OracleSessionIdTransactionInfoModifier();
+  public void testGettersAndSetters() {
+    // Arrange, Act and Assert
+    assertEquals(0, (new OracleSessionIdTransactionInfoModifier()).getOrder());
+  }
 
+  /**
+   * Method under test:
+   * {@link OracleSessionIdTransactionInfoModifier#modify(TransactionInfo)}
+   */
+  @Test
+  public void testModify() {
+    // Arrange
+    OracleSessionIdTransactionInfoModifier oracleSessionIdTransactionInfoModifier = new OracleSessionIdTransactionInfoModifier();
     TransactionInfo info = mock(TransactionInfo.class);
     when(info.getEntityManager()).thenReturn(null);
 
@@ -66,38 +64,19 @@ public class OracleSessionIdTransactionInfoModifierDiffblueTest {
   }
 
   /**
-   * Test {@link OracleSessionIdTransactionInfoModifier#modify(TransactionInfo)}.
-   *
-   * <ul>
-   *   <li>Given {@link SessionDelegatorBaseImpl} {@link
-   *       SessionDelegatorBaseImpl#doReturningWork(ReturningWork)} return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OracleSessionIdTransactionInfoModifier#modify(TransactionInfo)}
+   * Method under test:
+   * {@link OracleSessionIdTransactionInfoModifier#modify(TransactionInfo)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void OracleSessionIdTransactionInfoModifier.modify(TransactionInfo)"})
-  public void testModify_givenSessionDelegatorBaseImplDoReturningWorkReturnNull()
-      throws HibernateException {
+  public void testModify2() throws HibernateException {
     // Arrange
-    OracleSessionIdTransactionInfoModifier oracleSessionIdTransactionInfoModifier =
-        new OracleSessionIdTransactionInfoModifier();
-
+    OracleSessionIdTransactionInfoModifier oracleSessionIdTransactionInfoModifier = new OracleSessionIdTransactionInfoModifier();
     SessionDelegatorBaseImpl sessionDelegatorBaseImpl = mock(SessionDelegatorBaseImpl.class);
-    when(sessionDelegatorBaseImpl.doReturningWork(Mockito.<ReturningWork<Integer>>any()))
-        .thenReturn(null);
-
+    when(sessionDelegatorBaseImpl.doReturningWork(Mockito.<ReturningWork<Integer>>any())).thenReturn(1);
     SessionDelegatorBaseImpl sessionDelegatorBaseImpl2 = mock(SessionDelegatorBaseImpl.class);
-    when(sessionDelegatorBaseImpl2.unwrap(Mockito.<Class<Session>>any()))
-        .thenReturn(sessionDelegatorBaseImpl);
-
-    HashMap<String, String> stringStringMap = new HashMap<>();
-    stringStringMap.put("sessionid", "UNKNOWN");
-
+    when(sessionDelegatorBaseImpl2.unwrap(Mockito.<Class<Session>>any())).thenReturn(sessionDelegatorBaseImpl);
     TransactionInfo info = mock(TransactionInfo.class);
-    when(info.getAdditionalParams()).thenReturn(stringStringMap);
+    when(info.getAdditionalParams()).thenReturn(new HashMap<>());
     when(info.getEntityManager()).thenReturn(sessionDelegatorBaseImpl2);
 
     // Act
@@ -111,38 +90,19 @@ public class OracleSessionIdTransactionInfoModifierDiffblueTest {
   }
 
   /**
-   * Test {@link OracleSessionIdTransactionInfoModifier#modify(TransactionInfo)}.
-   *
-   * <ul>
-   *   <li>Given {@link SessionDelegatorBaseImpl} {@link
-   *       SessionDelegatorBaseImpl#doReturningWork(ReturningWork)} return one.
-   * </ul>
-   *
-   * <p>Method under test: {@link OracleSessionIdTransactionInfoModifier#modify(TransactionInfo)}
+   * Method under test:
+   * {@link OracleSessionIdTransactionInfoModifier#modify(TransactionInfo)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void OracleSessionIdTransactionInfoModifier.modify(TransactionInfo)"})
-  public void testModify_givenSessionDelegatorBaseImplDoReturningWorkReturnOne()
-      throws HibernateException {
+  public void testModify3() throws HibernateException {
     // Arrange
-    OracleSessionIdTransactionInfoModifier oracleSessionIdTransactionInfoModifier =
-        new OracleSessionIdTransactionInfoModifier();
-
+    OracleSessionIdTransactionInfoModifier oracleSessionIdTransactionInfoModifier = new OracleSessionIdTransactionInfoModifier();
     SessionDelegatorBaseImpl sessionDelegatorBaseImpl = mock(SessionDelegatorBaseImpl.class);
-    when(sessionDelegatorBaseImpl.doReturningWork(Mockito.<ReturningWork<Integer>>any()))
-        .thenReturn(1);
-
+    when(sessionDelegatorBaseImpl.doReturningWork(Mockito.<ReturningWork<Integer>>any())).thenReturn(null);
     SessionDelegatorBaseImpl sessionDelegatorBaseImpl2 = mock(SessionDelegatorBaseImpl.class);
-    when(sessionDelegatorBaseImpl2.unwrap(Mockito.<Class<Session>>any()))
-        .thenReturn(sessionDelegatorBaseImpl);
-
-    HashMap<String, String> stringStringMap = new HashMap<>();
-    stringStringMap.put("sessionid", "UNKNOWN");
-
+    when(sessionDelegatorBaseImpl2.unwrap(Mockito.<Class<Session>>any())).thenReturn(sessionDelegatorBaseImpl);
     TransactionInfo info = mock(TransactionInfo.class);
-    when(info.getAdditionalParams()).thenReturn(stringStringMap);
+    when(info.getAdditionalParams()).thenReturn(new HashMap<>());
     when(info.getEntityManager()).thenReturn(sessionDelegatorBaseImpl2);
 
     // Act
@@ -153,27 +113,5 @@ public class OracleSessionIdTransactionInfoModifierDiffblueTest {
     verify(info).getEntityManager();
     verify(sessionDelegatorBaseImpl).doReturningWork(isA(ReturningWork.class));
     verify(sessionDelegatorBaseImpl2).unwrap(isA(Class.class));
-  }
-
-  /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>default or parameterless constructor of {@link OracleSessionIdTransactionInfoModifier}
-   *   <li>{@link OracleSessionIdTransactionInfoModifier#getOrder()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OracleSessionIdTransactionInfoModifier.<init>()",
-    "int OracleSessionIdTransactionInfoModifier.getOrder()"
-  })
-  public void testGettersAndSetters() {
-    // Arrange, Act and Assert
-    assertEquals(0, new OracleSessionIdTransactionInfoModifier().getOrder());
   }
 }

@@ -19,27 +19,43 @@ package org.broadleafcommerce.common.web.resource.resolver;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
+import java.util.function.BiFunction;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.springframework.web.servlet.resource.ContentVersionStrategy;
+import org.springframework.web.servlet.resource.VersionStrategy;
 
 public class BLVersionResourceResolverDefaultStrategyMapDiffblueTest {
   /**
-   * Test {@link BLVersionResourceResolverDefaultStrategyMap#initIt()}.
-   *
-   * <p>Method under test: {@link BLVersionResourceResolverDefaultStrategyMap#initIt()}
+   * Method under test:
+   * {@link BLVersionResourceResolverDefaultStrategyMap#initIt()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BLVersionResourceResolverDefaultStrategyMap.initIt()"})
   public void testInitIt() throws Exception {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    BLVersionResourceResolverDefaultStrategyMap<Object, Object> objectObjectMap =
-        new BLVersionResourceResolverDefaultStrategyMap<>();
+    BLVersionResourceResolverDefaultStrategyMap<Object, Object> objectObjectMap = new BLVersionResourceResolverDefaultStrategyMap<>();
+
+    // Act
+    objectObjectMap.initIt();
+
+    // Assert
+    assertEquals(1, objectObjectMap.size());
+    assertTrue(objectObjectMap.get("/**") instanceof ContentVersionStrategy);
+  }
+
+  /**
+   * Method under test:
+   * {@link BLVersionResourceResolverDefaultStrategyMap#initIt()}
+   */
+  @Test
+  public void testInitIt2() throws Exception {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    BLVersionResourceResolverDefaultStrategyMap<Object, Object> objectObjectMap = new BLVersionResourceResolverDefaultStrategyMap<>();
+    objectObjectMap.computeIfPresent("/**", mock(BiFunction.class));
 
     // Act
     objectObjectMap.initIt();

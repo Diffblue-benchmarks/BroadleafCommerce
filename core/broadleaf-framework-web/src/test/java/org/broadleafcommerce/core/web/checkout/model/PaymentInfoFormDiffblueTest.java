@@ -22,52 +22,205 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import org.broadleafcommerce.common.i18n.domain.ISOCountryImpl;
 import org.broadleafcommerce.profile.core.domain.Address;
 import org.broadleafcommerce.profile.core.domain.AddressImpl;
+import org.broadleafcommerce.profile.core.domain.Country;
 import org.broadleafcommerce.profile.core.domain.CountryImpl;
+import org.broadleafcommerce.profile.core.domain.Phone;
 import org.broadleafcommerce.profile.core.domain.PhoneImpl;
 import org.broadleafcommerce.profile.core.domain.StateImpl;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 class PaymentInfoFormDiffblueTest {
   /**
-   * Test new {@link PaymentInfoForm} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link PaymentInfoForm}
+   * Method under test: {@link PaymentInfoForm#hasCustomerPaymentId()}
    */
   @Test
-  @DisplayName("Test new PaymentInfoForm (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PaymentInfoForm.<init>()"})
-  void testNewPaymentInfoForm() {
-    // Arrange and Act
-    PaymentInfoForm actualPaymentInfoForm = new PaymentInfoForm();
-
-    // Assert
-    assertTrue(actualPaymentInfoForm.getAddress() instanceof AddressImpl);
-    assertNull(actualPaymentInfoForm.getCustomerPaymentId());
-    assertNull(actualPaymentInfoForm.getEmailAddress());
-    assertNull(actualPaymentInfoForm.getPaymentName());
-    assertNull(actualPaymentInfoForm.getPaymentToken());
-    assertFalse(actualPaymentInfoForm.getIsDefault());
-    assertFalse(actualPaymentInfoForm.getShouldUseCustomerPayment());
-    assertFalse(actualPaymentInfoForm.getShouldUseShippingAddress());
-    assertFalse(actualPaymentInfoForm.hasCustomerPaymentId());
-    assertFalse(actualPaymentInfoForm.hasValidAddress());
-    assertTrue(actualPaymentInfoForm.getShouldSaveNewPayment());
+  void testHasCustomerPaymentId() {
+    // Arrange, Act and Assert
+    assertFalse((new PaymentInfoForm()).hasCustomerPaymentId());
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Method under test: {@link PaymentInfoForm#hasCustomerPaymentId()}
+   */
+  @Test
+  void testHasCustomerPaymentId2() {
+    // Arrange
+    PaymentInfoForm paymentInfoForm = new PaymentInfoForm();
+    paymentInfoForm.setCustomerPaymentId(1L);
+
+    // Act and Assert
+    assertTrue(paymentInfoForm.hasCustomerPaymentId());
+  }
+
+  /**
+   * Method under test: {@link PaymentInfoForm#hasValidAddress()}
+   */
+  @Test
+  void testHasValidAddress() {
+    // Arrange, Act and Assert
+    assertFalse((new PaymentInfoForm()).hasValidAddress());
+  }
+
+  /**
+   * Method under test: {@link PaymentInfoForm#hasValidAddress()}
+   */
+  @Test
+  void testHasValidAddress2() {
+    // Arrange
+    PaymentInfoForm paymentInfoForm = new PaymentInfoForm();
+    paymentInfoForm.setAddress(null);
+
+    // Act and Assert
+    assertFalse(paymentInfoForm.hasValidAddress());
+  }
+
+  /**
+   * Method under test: {@link PaymentInfoForm#hasValidAddress()}
+   */
+  @Test
+  void testHasValidAddress3() {
+    // Arrange
+    AddressImpl address = new AddressImpl();
+    address.setActive(true);
+    address.setAddressLine2("42 Main St");
+    address.setAddressLine3("42 Main St");
+    address.setBusiness(true);
+    address.setCompanyName("Company Name");
+    address.setCountry(new CountryImpl());
+    address.setCounty("3");
+    address.setDefault(true);
+    address.setEmailAddress("42 Main St");
+    address.setFax("Fax");
+    address.setFirstName("Jane");
+    address.setFullName("Dr Jane Doe");
+    address.setId(1L);
+    address.setIsoCountryAlpha2(new ISOCountryImpl());
+    address.setIsoCountrySubdivision("GB");
+    address.setLastName("Doe");
+    address.setMailing(true);
+    address.setPhoneFax(new PhoneImpl());
+    address.setPhonePrimary(new PhoneImpl());
+    address.setPhoneSecondary(new PhoneImpl());
+    address.setPostalCode("Postal Code");
+    address.setPrimaryPhone("6625550144");
+    address.setSecondaryPhone("6625550144");
+    address.setStandardized(true);
+    address.setState(new StateImpl());
+    address.setStateProvinceRegion("us-east-2");
+    address.setStreet(true);
+    address.setTokenizedAddress("42 Main St");
+    address.setVerificationLevel("Verification Level");
+    address.setZipFour("21654");
+    address.setAddressLine1("foo");
+    address.setCity(null);
+
+    PaymentInfoForm paymentInfoForm = new PaymentInfoForm();
+    paymentInfoForm.setAddress(address);
+
+    // Act and Assert
+    assertFalse(paymentInfoForm.hasValidAddress());
+  }
+
+  /**
+   * Method under test: {@link PaymentInfoForm#hasValidAddress()}
+   */
+  @Test
+  void testHasValidAddress4() {
+    // Arrange
+    AddressImpl address = new AddressImpl();
+    address.setActive(true);
+    address.setAddressLine2("42 Main St");
+    address.setAddressLine3("42 Main St");
+    address.setBusiness(true);
+    address.setCompanyName("Company Name");
+    address.setCountry(new CountryImpl());
+    address.setCounty("3");
+    address.setDefault(true);
+    address.setEmailAddress("42 Main St");
+    address.setFax("Fax");
+    address.setFirstName("Jane");
+    address.setFullName("Dr Jane Doe");
+    address.setId(1L);
+    address.setIsoCountryAlpha2(new ISOCountryImpl());
+    address.setIsoCountrySubdivision("GB");
+    address.setLastName("Doe");
+    address.setMailing(true);
+    address.setPhoneFax(new PhoneImpl());
+    address.setPhonePrimary(new PhoneImpl());
+    address.setPhoneSecondary(new PhoneImpl());
+    address.setPostalCode("Postal Code");
+    address.setPrimaryPhone("6625550144");
+    address.setSecondaryPhone("6625550144");
+    address.setStandardized(true);
+    address.setState(new StateImpl());
+    address.setStateProvinceRegion("us-east-2");
+    address.setStreet(true);
+    address.setTokenizedAddress("42 Main St");
+    address.setVerificationLevel("Verification Level");
+    address.setZipFour("21654");
+    address.setAddressLine1("foo");
+    address.setCity("foo");
+
+    PaymentInfoForm paymentInfoForm = new PaymentInfoForm();
+    paymentInfoForm.setAddress(address);
+
+    // Act and Assert
+    assertTrue(paymentInfoForm.hasValidAddress());
+  }
+
+  /**
+   * Method under test: {@link PaymentInfoForm#hasValidAddress()}
+   */
+  @Test
+  void testHasValidAddress5() {
+    // Arrange
+    AddressImpl address = new AddressImpl();
+    address.setActive(true);
+    address.setAddressLine2("42 Main St");
+    address.setAddressLine3("42 Main St");
+    address.setBusiness(true);
+    address.setCompanyName("Company Name");
+    address.setCountry(mock(Country.class));
+    address.setCounty("3");
+    address.setDefault(true);
+    address.setEmailAddress("42 Main St");
+    address.setFax("Fax");
+    address.setFirstName("Jane");
+    address.setFullName("Dr Jane Doe");
+    address.setId(1L);
+    address.setIsoCountryAlpha2(new ISOCountryImpl());
+    address.setIsoCountrySubdivision("GB");
+    address.setLastName("Doe");
+    address.setMailing(true);
+    address.setPhoneFax(new PhoneImpl());
+    address.setPhonePrimary(new PhoneImpl());
+    address.setPhoneSecondary(new PhoneImpl());
+    address.setPostalCode("Postal Code");
+    address.setPrimaryPhone("6625550144");
+    address.setSecondaryPhone("6625550144");
+    address.setStandardized(true);
+    address.setState(new StateImpl());
+    address.setStateProvinceRegion("us-east-2");
+    address.setStreet(true);
+    address.setTokenizedAddress("42 Main St");
+    address.setVerificationLevel("Verification Level");
+    address.setZipFour("21654");
+    address.setAddressLine1("foo");
+    address.setCity(null);
+
+    PaymentInfoForm paymentInfoForm = new PaymentInfoForm();
+    paymentInfoForm.setAddress(address);
+
+    // Act and Assert
+    assertFalse(paymentInfoForm.hasValidAddress());
+  }
+
+  /**
+   * Methods under test:
    * <ul>
    *   <li>{@link PaymentInfoForm#setAddress(Address)}
    *   <li>{@link PaymentInfoForm#setCustomerPaymentId(Long)}
@@ -90,29 +243,6 @@ class PaymentInfoFormDiffblueTest {
    * </ul>
    */
   @Test
-  @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Address PaymentInfoForm.getAddress()",
-    "Long PaymentInfoForm.getCustomerPaymentId()",
-    "String PaymentInfoForm.getEmailAddress()",
-    "boolean PaymentInfoForm.getIsDefault()",
-    "String PaymentInfoForm.getPaymentName()",
-    "String PaymentInfoForm.getPaymentToken()",
-    "boolean PaymentInfoForm.getShouldSaveNewPayment()",
-    "boolean PaymentInfoForm.getShouldUseCustomerPayment()",
-    "boolean PaymentInfoForm.getShouldUseShippingAddress()",
-    "void PaymentInfoForm.setAddress(Address)",
-    "void PaymentInfoForm.setCustomerPaymentId(Long)",
-    "void PaymentInfoForm.setEmailAddress(String)",
-    "void PaymentInfoForm.setIsDefault(boolean)",
-    "void PaymentInfoForm.setPaymentName(String)",
-    "void PaymentInfoForm.setPaymentToken(String)",
-    "void PaymentInfoForm.setShouldSaveNewPayment(boolean)",
-    "void PaymentInfoForm.setShouldUseCustomerPayment(boolean)",
-    "void PaymentInfoForm.setShouldUseShippingAddress(boolean)"
-  })
   void testGettersAndSetters() {
     // Arrange
     PaymentInfoForm paymentInfoForm = new PaymentInfoForm();
@@ -138,7 +268,7 @@ class PaymentInfoFormDiffblueTest {
     boolean actualShouldUseCustomerPayment = paymentInfoForm.getShouldUseCustomerPayment();
     boolean actualShouldUseShippingAddress = paymentInfoForm.getShouldUseShippingAddress();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("42 Main St", actualEmailAddress);
     assertEquals("ABC123", actualPaymentToken);
     assertEquals("Payment Name", actualPaymentName);
@@ -151,210 +281,69 @@ class PaymentInfoFormDiffblueTest {
   }
 
   /**
-   * Test {@link PaymentInfoForm#hasCustomerPaymentId()}.
-   *
-   * <ul>
-   *   <li>Given {@link PaymentInfoForm} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PaymentInfoForm#hasCustomerPaymentId()}
+   * Method under test: default or parameterless constructor of
+   * {@link PaymentInfoForm}
    */
   @Test
-  @DisplayName(
-      "Test hasCustomerPaymentId(); given PaymentInfoForm (default constructor); then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PaymentInfoForm.hasCustomerPaymentId()"})
-  void testHasCustomerPaymentId_givenPaymentInfoForm_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(new PaymentInfoForm().hasCustomerPaymentId());
-  }
+  void testNewPaymentInfoForm() {
+    // Arrange and Act
+    PaymentInfoForm actualPaymentInfoForm = new PaymentInfoForm();
 
-  /**
-   * Test {@link PaymentInfoForm#hasCustomerPaymentId()}.
-   *
-   * <ul>
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PaymentInfoForm#hasCustomerPaymentId()}
-   */
-  @Test
-  @DisplayName("Test hasCustomerPaymentId(); then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PaymentInfoForm.hasCustomerPaymentId()"})
-  void testHasCustomerPaymentId_thenReturnTrue() {
-    // Arrange
-    PaymentInfoForm paymentInfoForm = new PaymentInfoForm();
-    paymentInfoForm.setCustomerPaymentId(1L);
-
-    // Act and Assert
-    assertTrue(paymentInfoForm.hasCustomerPaymentId());
-  }
-
-  /**
-   * Test {@link PaymentInfoForm#hasValidAddress()}.
-   *
-   * <ul>
-   *   <li>Given {@link AddressImpl} (default constructor) City is {@code not blank}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PaymentInfoForm#hasValidAddress()}
-   */
-  @Test
-  @DisplayName(
-      "Test hasValidAddress(); given AddressImpl (default constructor) City is 'not blank'; then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PaymentInfoForm.hasValidAddress()"})
-  void testHasValidAddress_givenAddressImplCityIsNotBlank_thenReturnTrue() {
-    // Arrange
-    AddressImpl address = new AddressImpl();
-    address.setActive(true);
-    address.setAddressLine2("42 Main St");
-    address.setAddressLine3("42 Main St");
-    address.setBusiness(true);
-    address.setCompanyName("Company Name");
-    address.setCountry(new CountryImpl());
-    address.setCounty("3");
-    address.setDefault(true);
-    address.setEmailAddress("42 Main St");
-    address.setFax("Fax");
-    address.setFirstName("Jane");
-    address.setFullName("Dr Jane Doe");
-    address.setId(1L);
-    address.setIsoCountryAlpha2(new ISOCountryImpl());
-    address.setIsoCountrySubdivision("GB");
-    address.setLastName("Doe");
-    address.setMailing(true);
-    address.setPhoneFax(new PhoneImpl());
-    address.setPhonePrimary(new PhoneImpl());
-    address.setPhoneSecondary(new PhoneImpl());
-    address.setPostalCode("Postal Code");
-    address.setPrimaryPhone("6625550144");
-    address.setSecondaryPhone("6625550144");
-    address.setStandardized(true);
-    address.setState(new StateImpl());
-    address.setStateProvinceRegion("us-east-2");
-    address.setStreet(true);
-    address.setTokenizedAddress("42 Main St");
-    address.setVerificationLevel("Verification Level");
-    address.setZipFour("21654");
-    address.setAddressLine1("not blank");
-    address.setCity("not blank");
-
-    PaymentInfoForm paymentInfoForm = new PaymentInfoForm();
-    paymentInfoForm.setAddress(address);
-
-    // Act and Assert
-    assertTrue(paymentInfoForm.hasValidAddress());
-  }
-
-  /**
-   * Test {@link PaymentInfoForm#hasValidAddress()}.
-   *
-   * <ul>
-   *   <li>Given {@link AddressImpl} (default constructor) City is space.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PaymentInfoForm#hasValidAddress()}
-   */
-  @Test
-  @DisplayName(
-      "Test hasValidAddress(); given AddressImpl (default constructor) City is space; then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PaymentInfoForm.hasValidAddress()"})
-  void testHasValidAddress_givenAddressImplCityIsSpace_thenReturnFalse() {
-    // Arrange
-    AddressImpl address = new AddressImpl();
-    address.setActive(true);
-    address.setAddressLine2("42 Main St");
-    address.setAddressLine3("42 Main St");
-    address.setBusiness(true);
-    address.setCompanyName("Company Name");
-    address.setCountry(new CountryImpl());
-    address.setCounty("3");
-    address.setDefault(true);
-    address.setEmailAddress("42 Main St");
-    address.setFax("Fax");
-    address.setFirstName("Jane");
-    address.setFullName("Dr Jane Doe");
-    address.setId(1L);
-    address.setIsoCountryAlpha2(new ISOCountryImpl());
-    address.setIsoCountrySubdivision("GB");
-    address.setLastName("Doe");
-    address.setMailing(true);
-    address.setPhoneFax(new PhoneImpl());
-    address.setPhonePrimary(new PhoneImpl());
-    address.setPhoneSecondary(new PhoneImpl());
-    address.setPostalCode("Postal Code");
-    address.setPrimaryPhone("6625550144");
-    address.setSecondaryPhone("6625550144");
-    address.setStandardized(true);
-    address.setState(new StateImpl());
-    address.setStateProvinceRegion("us-east-2");
-    address.setStreet(true);
-    address.setTokenizedAddress("42 Main St");
-    address.setVerificationLevel("Verification Level");
-    address.setZipFour("21654");
-    address.setAddressLine1("not blank");
-    address.setCity(" ");
-
-    PaymentInfoForm paymentInfoForm = new PaymentInfoForm();
-    paymentInfoForm.setAddress(address);
-
-    // Act and Assert
-    assertFalse(paymentInfoForm.hasValidAddress());
-  }
-
-  /**
-   * Test {@link PaymentInfoForm#hasValidAddress()}.
-   *
-   * <ul>
-   *   <li>Given {@link PaymentInfoForm} (default constructor) Address is {@code null}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PaymentInfoForm#hasValidAddress()}
-   */
-  @Test
-  @DisplayName(
-      "Test hasValidAddress(); given PaymentInfoForm (default constructor) Address is 'null'; then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PaymentInfoForm.hasValidAddress()"})
-  void testHasValidAddress_givenPaymentInfoFormAddressIsNull_thenReturnFalse() {
-    // Arrange
-    PaymentInfoForm paymentInfoForm = new PaymentInfoForm();
-    paymentInfoForm.setAddress(null);
-
-    // Act and Assert
-    assertFalse(paymentInfoForm.hasValidAddress());
-  }
-
-  /**
-   * Test {@link PaymentInfoForm#hasValidAddress()}.
-   *
-   * <ul>
-   *   <li>Given {@link PaymentInfoForm} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PaymentInfoForm#hasValidAddress()}
-   */
-  @Test
-  @DisplayName(
-      "Test hasValidAddress(); given PaymentInfoForm (default constructor); then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PaymentInfoForm.hasValidAddress()"})
-  void testHasValidAddress_givenPaymentInfoForm_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(new PaymentInfoForm().hasValidAddress());
+    // Assert
+    Address address = actualPaymentInfoForm.getAddress();
+    assertTrue(address instanceof AddressImpl);
+    Phone phoneFax = address.getPhoneFax();
+    assertTrue(phoneFax instanceof PhoneImpl);
+    Phone phonePrimary = address.getPhonePrimary();
+    assertTrue(phonePrimary instanceof PhoneImpl);
+    Phone phoneSecondary = address.getPhoneSecondary();
+    assertTrue(phoneSecondary instanceof PhoneImpl);
+    assertNull(actualPaymentInfoForm.getCustomerPaymentId());
+    assertNull(address.getId());
+    assertNull(phoneFax.getId());
+    assertNull(actualPaymentInfoForm.getEmailAddress());
+    assertNull(actualPaymentInfoForm.getPaymentName());
+    assertNull(actualPaymentInfoForm.getPaymentToken());
+    assertNull(address.getAddressLine1());
+    assertNull(address.getAddressLine2());
+    assertNull(address.getAddressLine3());
+    assertNull(address.getCity());
+    assertNull(address.getCompanyName());
+    assertNull(address.getCounty());
+    assertNull(address.getEmailAddress());
+    assertNull(address.getFax());
+    assertNull(address.getFirstName());
+    assertNull(address.getFullName());
+    assertNull(address.getIsoCountrySubdivision());
+    assertNull(address.getLastName());
+    assertNull(address.getPostalCode());
+    assertNull(address.getPrimaryPhone());
+    assertNull(address.getSecondaryPhone());
+    assertNull(address.getStateProvinceRegion());
+    assertNull(address.getTokenizedAddress());
+    assertNull(address.getVerificationLevel());
+    assertNull(address.getZipFour());
+    assertNull(phoneFax.getCountryCode());
+    assertNull(phoneFax.getExtension());
+    assertNull(phoneFax.getPhoneNumber());
+    assertNull(address.getIsoCountryAlpha2());
+    assertNull(address.getCountry());
+    assertNull(address.getState());
+    assertFalse(actualPaymentInfoForm.getIsDefault());
+    assertFalse(actualPaymentInfoForm.getShouldUseCustomerPayment());
+    assertFalse(actualPaymentInfoForm.getShouldUseShippingAddress());
+    assertFalse(actualPaymentInfoForm.hasCustomerPaymentId());
+    assertFalse(actualPaymentInfoForm.hasValidAddress());
+    assertFalse(address.getStandardized());
+    assertFalse(address.isBusiness());
+    assertFalse(address.isDefault());
+    assertFalse(address.isMailing());
+    assertFalse(address.isStreet());
+    assertFalse(phoneFax.isDefault());
+    assertTrue(actualPaymentInfoForm.getShouldSaveNewPayment());
+    assertTrue(address.isActive());
+    assertTrue(phoneFax.isActive());
+    assertEquals(phoneFax, phonePrimary);
+    assertEquals(phoneFax, phoneSecondary);
   }
 }

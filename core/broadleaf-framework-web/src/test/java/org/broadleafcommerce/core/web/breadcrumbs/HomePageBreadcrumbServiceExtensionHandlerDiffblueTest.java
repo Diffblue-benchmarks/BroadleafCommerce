@@ -19,51 +19,32 @@ package org.broadleafcommerce.core.web.breadcrumbs;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.broadleafcommerce.common.breadcrumbs.dto.BreadcrumbDTO;
-import org.broadleafcommerce.common.breadcrumbs.service.BreadcrumbServiceExtensionManager;
 import org.broadleafcommerce.common.extension.ExtensionResultHolder;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.Mockito;
 
-@ContextConfiguration(classes = {HomePageBreadcrumbServiceExtensionHandler.class})
-@ExtendWith(SpringExtension.class)
 class HomePageBreadcrumbServiceExtensionHandlerDiffblueTest {
-  @MockBean(name = "blBreadcrumbServiceExtensionManager")
-  private BreadcrumbServiceExtensionManager breadcrumbServiceExtensionManager;
-
-  @Autowired
-  private HomePageBreadcrumbServiceExtensionHandler homePageBreadcrumbServiceExtensionHandler;
-
   /**
-   * Test {@link HomePageBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * HomePageBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link HomePageBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map, ExtensionResultHolder)}
    */
   @Test
-  @DisplayName("Test modifyBreadcrumbList(String, Map, ExtensionResultHolder)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType HomePageBreadcrumbServiceExtensionHandler.modifyBreadcrumbList(String, Map, ExtensionResultHolder)"
-  })
   void testModifyBreadcrumbList() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    HomePageBreadcrumbServiceExtensionHandler homePageBreadcrumbServiceExtensionHandler = new HomePageBreadcrumbServiceExtensionHandler();
     HashMap<String, String[]> params = new HashMap<>();
 
     ExtensionResultHolder<List<BreadcrumbDTO>> holder = new ExtensionResultHolder<>();
@@ -72,25 +53,49 @@ class HomePageBreadcrumbServiceExtensionHandlerDiffblueTest {
     holder.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.HANDLED_CONTINUE,
-        homePageBreadcrumbServiceExtensionHandler.modifyBreadcrumbList(
-            "https://example.org/example", params, holder));
+    assertEquals(ExtensionResultStatusType.HANDLED_CONTINUE,
+        homePageBreadcrumbServiceExtensionHandler.modifyBreadcrumbList("https://example.org/example", params, holder));
     assertSame(breadcrumbDTOList, holder.getResult());
   }
 
   /**
-   * Test {@link HomePageBreadcrumbServiceExtensionHandler#getDefaultPriority()}.
-   *
-   * <p>Method under test: {@link HomePageBreadcrumbServiceExtensionHandler#getDefaultPriority()}
+   * Method under test:
+   * {@link HomePageBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map, ExtensionResultHolder)}
    */
   @Test
-  @DisplayName("Test getDefaultPriority()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int HomePageBreadcrumbServiceExtensionHandler.getDefaultPriority()"})
+  void testModifyBreadcrumbList2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    HomePageBreadcrumbServiceExtensionHandler homePageBreadcrumbServiceExtensionHandler = new HomePageBreadcrumbServiceExtensionHandler();
+    HashMap<String, String[]> params = new HashMap<>();
+    ExtensionResultHolder<List<BreadcrumbDTO>> holder = mock(ExtensionResultHolder.class);
+    when(holder.getResult()).thenReturn(new ArrayList<>());
+    doNothing().when(holder).setResult(Mockito.<List<BreadcrumbDTO>>any());
+    doNothing().when(holder).setThrowable(Mockito.<Throwable>any());
+    holder.setResult(new ArrayList<>());
+    holder.setThrowable(new Throwable());
+
+    // Act
+    ExtensionResultStatusType actualModifyBreadcrumbListResult = homePageBreadcrumbServiceExtensionHandler
+        .modifyBreadcrumbList("https://example.org/example", params, holder);
+
+    // Assert
+    verify(holder).getResult();
+    verify(holder).setResult(isA(List.class));
+    verify(holder).setThrowable(isA(Throwable.class));
+    assertEquals(ExtensionResultStatusType.HANDLED_CONTINUE, actualModifyBreadcrumbListResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link HomePageBreadcrumbServiceExtensionHandler#getDefaultPriority()}
+   */
+  @Test
   void testGetDefaultPriority() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertEquals(-1000, homePageBreadcrumbServiceExtensionHandler.getDefaultPriority());
+    assertEquals(-1000, (new HomePageBreadcrumbServiceExtensionHandler()).getDefaultPriority());
   }
 }

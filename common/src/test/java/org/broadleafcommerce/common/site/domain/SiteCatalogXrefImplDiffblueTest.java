@@ -18,90 +18,49 @@
 package org.broadleafcommerce.common.site.domain;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-common-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(SpringJUnit4ClassRunner.class)
 public class SiteCatalogXrefImplDiffblueTest {
-  @Autowired private SiteCatalogXrefImpl siteCatalogXrefImpl;
-
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link SiteCatalogXrefImpl#setCatalog(Catalog)}
-   *   <li>{@link SiteCatalogXrefImpl#setId(Long)}
-   *   <li>{@link SiteCatalogXrefImpl#setSite(Site)}
-   *   <li>{@link SiteCatalogXrefImpl#getCatalog()}
-   *   <li>{@link SiteCatalogXrefImpl#getId()}
-   *   <li>{@link SiteCatalogXrefImpl#getSite()}
-   * </ul>
+   * Method under test: {@link SiteCatalogXrefImpl#getMainEntityName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Catalog SiteCatalogXrefImpl.getCatalog()",
-    "Long SiteCatalogXrefImpl.getId()",
-    "Site SiteCatalogXrefImpl.getSite()",
-    "void SiteCatalogXrefImpl.setCatalog(Catalog)",
-    "void SiteCatalogXrefImpl.setId(Long)",
-    "void SiteCatalogXrefImpl.setSite(Site)"
-  })
-  public void testGettersAndSetters() {
-    // Arrange
-    SiteCatalogXrefImpl siteCatalogXrefImpl = new SiteCatalogXrefImpl();
-    CatalogImpl catalog = new CatalogImpl();
+  public void testGetMainEntityName() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Act
-    siteCatalogXrefImpl.setCatalog(catalog);
-    siteCatalogXrefImpl.setId(1L);
-    SiteImpl site = new SiteImpl();
-    siteCatalogXrefImpl.setSite(site);
-    Catalog actualCatalog = siteCatalogXrefImpl.getCatalog();
-    Long actualId = siteCatalogXrefImpl.getId();
-    Site actualSite = siteCatalogXrefImpl.getSite();
-
-    // Assert
-    assertEquals(1L, actualId.longValue());
-    assertSame(catalog, actualCatalog);
-    assertSame(site, actualSite);
+    // Arrange, Act and Assert
+    assertNull((new SiteCatalogXrefImpl()).getMainEntityName());
   }
 
   /**
-   * Test {@link SiteCatalogXrefImpl#getMainEntityName()}.
-   *
-   * <ul>
-   *   <li>Given {@link CatalogImpl} {@link CatalogImpl#getName()} return {@code Name}.
-   *   <li>Then return {@code Name}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteCatalogXrefImpl#getMainEntityName()}
+   * Method under test: {@link SiteCatalogXrefImpl#getMainEntityName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SiteCatalogXrefImpl.getMainEntityName()"})
-  public void testGetMainEntityName_givenCatalogImplGetNameReturnName_thenReturnName() {
+  public void testGetMainEntityName2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteCatalogXrefImpl siteCatalogXrefImpl = new SiteCatalogXrefImpl();
+    siteCatalogXrefImpl.setSite(mock(SiteImpl.class));
+
+    // Act and Assert
+    assertNull(siteCatalogXrefImpl.getMainEntityName());
+  }
+
+  /**
+   * Method under test: {@link SiteCatalogXrefImpl#getMainEntityName()}
+   */
+  @Test
+  public void testGetMainEntityName3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     CatalogImpl catalog = mock(CatalogImpl.class);
     when(catalog.getName()).thenReturn("Name");
@@ -118,41 +77,76 @@ public class SiteCatalogXrefImplDiffblueTest {
   }
 
   /**
-   * Test {@link SiteCatalogXrefImpl#getMainEntityName()}.
-   *
+   * Methods under test:
    * <ul>
-   *   <li>Given {@link SiteCatalogXrefImpl}.
-   *   <li>Then return {@code null}.
+   *   <li>{@link SiteCatalogXrefImpl#setCatalog(Catalog)}
+   *   <li>{@link SiteCatalogXrefImpl#setId(Long)}
+   *   <li>{@link SiteCatalogXrefImpl#setSite(Site)}
+   *   <li>{@link SiteCatalogXrefImpl#getCatalog()}
+   *   <li>{@link SiteCatalogXrefImpl#getId()}
+   *   <li>{@link SiteCatalogXrefImpl#getSite()}
    * </ul>
-   *
-   * <p>Method under test: {@link SiteCatalogXrefImpl#getMainEntityName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SiteCatalogXrefImpl.getMainEntityName()"})
-  public void testGetMainEntityName_givenSiteCatalogXrefImpl_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(siteCatalogXrefImpl.getMainEntityName());
+  public void testGettersAndSetters() {
+    // Arrange
+    SiteCatalogXrefImpl siteCatalogXrefImpl = new SiteCatalogXrefImpl();
+    CatalogImpl catalog = new CatalogImpl();
+
+    // Act
+    siteCatalogXrefImpl.setCatalog(catalog);
+    siteCatalogXrefImpl.setId(1L);
+    SiteImpl site = new SiteImpl();
+    siteCatalogXrefImpl.setSite(site);
+    Catalog actualCatalog = siteCatalogXrefImpl.getCatalog();
+    Long actualId = siteCatalogXrefImpl.getId();
+    Site actualSite = siteCatalogXrefImpl.getSite();
+
+    // Assert that nothing has changed
+    assertEquals(1L, actualId.longValue());
+    assertSame(catalog, actualCatalog);
+    assertSame(site, actualSite);
   }
 
   /**
-   * Test new {@link SiteCatalogXrefImpl} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link SiteCatalogXrefImpl}
+   * Method under test: default or parameterless constructor of
+   * {@link SiteCatalogXrefImpl}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SiteCatalogXrefImpl.<init>()"})
   public void testNewSiteCatalogXrefImpl() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange and Act
     SiteCatalogXrefImpl actualSiteCatalogXrefImpl = new SiteCatalogXrefImpl();
 
     // Assert
-    assertTrue(actualSiteCatalogXrefImpl.getCatalog() instanceof CatalogImpl);
-    assertTrue(actualSiteCatalogXrefImpl.getSite() instanceof SiteImpl);
+    Catalog catalog = actualSiteCatalogXrefImpl.getCatalog();
+    assertTrue(catalog instanceof CatalogImpl);
+    Site site = actualSiteCatalogXrefImpl.getSite();
+    assertTrue(site instanceof SiteImpl);
+    assertEquals('N', site.getArchiveStatus().getArchived().charValue());
+    assertEquals('N', ((CatalogImpl) catalog).archiveStatus.getArchived().charValue());
+    assertEquals('N', catalog.getArchived().charValue());
+    assertEquals('N', site.getArchived().charValue());
+    assertNull(catalog.getId());
+    assertNull(site.getId());
     assertNull(actualSiteCatalogXrefImpl.getId());
+    assertNull(catalog.getName());
+    assertNull(((CatalogImpl) catalog).getMainEntityName());
+    assertNull(site.getName());
+    assertNull(site.getSiteIdentifierType());
+    assertNull(site.getSiteIdentifierValue());
     assertNull(actualSiteCatalogXrefImpl.getMainEntityName());
+    assertNull(((SiteImpl) site).getMainEntityName());
+    assertNull(((CatalogImpl) catalog).name);
+    assertNull(((SiteImpl) site).name);
+    assertNull(site.getDefaultLocale());
+    assertNull(site.getSiteResolutionType());
+    assertFalse(site.isTemplateSite());
+    assertFalse(((SiteImpl) site).deactivated);
+    assertTrue(catalog.getSiteXrefs().isEmpty());
+    assertTrue(catalog.getSites().isEmpty());
+    assertTrue(site.getCatalogs().isEmpty());
+    assertTrue(((CatalogImpl) catalog).sites.isEmpty());
   }
 }

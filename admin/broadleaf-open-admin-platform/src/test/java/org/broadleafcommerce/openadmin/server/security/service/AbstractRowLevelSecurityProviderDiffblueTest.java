@@ -20,9 +20,7 @@ package org.broadleafcommerce.openadmin.server.security.service;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +35,6 @@ import org.broadleafcommerce.openadmin.server.security.domain.AdminUserImpl;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.FilterMapping;
 import org.broadleafcommerce.openadmin.server.service.persistence.validation.GlobalValidationResult;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -46,26 +43,43 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {AbstractRowLevelSecurityProvider.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class AbstractRowLevelSecurityProviderDiffblueTest {
-  @Autowired private AbstractRowLevelSecurityProvider abstractRowLevelSecurityProvider;
+  @Autowired
+  private AbstractRowLevelSecurityProvider abstractRowLevelSecurityProvider;
 
   /**
-   * Test {@link AbstractRowLevelSecurityProvider#getFetchRestrictionRoot(AdminUser, Class, List)}.
-   *
-   * <ul>
-   *   <li>Given {@link FilterMapping} (default constructor).
-   *   <li>When {@link ArrayList#ArrayList()} add {@link FilterMapping} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AbstractRowLevelSecurityProvider#getFetchRestrictionRoot(AdminUser, Class, List)}
+   * Method under test:
+   * {@link AbstractRowLevelSecurityProvider#getFetchRestrictionRoot(AdminUser, Class, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Class AbstractRowLevelSecurityProvider.getFetchRestrictionRoot(AdminUser, Class, List)"
-  })
-  public void testGetFetchRestrictionRoot_givenFilterMapping_whenArrayListAddFilterMapping() {
+  public void testGetFetchRestrictionRoot() {
+    // Arrange
+    AdminUserImpl currentUser = new AdminUserImpl();
+    Class<Serializable> ceilingEntity = Serializable.class;
+
+    // Act and Assert
+    assertNull(abstractRowLevelSecurityProvider.getFetchRestrictionRoot(currentUser, ceilingEntity, new ArrayList<>()));
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractRowLevelSecurityProvider#getFetchRestrictionRoot(AdminUser, Class, List)}
+   */
+  @Test
+  public void testGetFetchRestrictionRoot2() {
+    // Arrange
+    AdminUserImpl currentUser = mock(AdminUserImpl.class);
+    Class<Serializable> ceilingEntity = Serializable.class;
+
+    // Act and Assert
+    assertNull(abstractRowLevelSecurityProvider.getFetchRestrictionRoot(currentUser, ceilingEntity, new ArrayList<>()));
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractRowLevelSecurityProvider#getFetchRestrictionRoot(AdminUser, Class, List)}
+   */
+  @Test
+  public void testGetFetchRestrictionRoot3() {
     // Arrange
     AdminUserImpl currentUser = new AdminUserImpl();
     Class<Serializable> ceilingEntity = Serializable.class;
@@ -74,29 +88,15 @@ public class AbstractRowLevelSecurityProviderDiffblueTest {
     filterMappings.add(new FilterMapping());
 
     // Act and Assert
-    assertNull(
-        abstractRowLevelSecurityProvider.getFetchRestrictionRoot(
-            currentUser, ceilingEntity, filterMappings));
+    assertNull(abstractRowLevelSecurityProvider.getFetchRestrictionRoot(currentUser, ceilingEntity, filterMappings));
   }
 
   /**
-   * Test {@link AbstractRowLevelSecurityProvider#getFetchRestrictionRoot(AdminUser, Class, List)}.
-   *
-   * <ul>
-   *   <li>Given {@link FilterMapping} (default constructor).
-   *   <li>When {@link ArrayList#ArrayList()} add {@link FilterMapping} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AbstractRowLevelSecurityProvider#getFetchRestrictionRoot(AdminUser, Class, List)}
+   * Method under test:
+   * {@link AbstractRowLevelSecurityProvider#getFetchRestrictionRoot(AdminUser, Class, List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Class AbstractRowLevelSecurityProvider.getFetchRestrictionRoot(AdminUser, Class, List)"
-  })
-  public void testGetFetchRestrictionRoot_givenFilterMapping_whenArrayListAddFilterMapping2() {
+  public void testGetFetchRestrictionRoot4() {
     // Arrange
     AdminUserImpl currentUser = new AdminUserImpl();
     Class<Serializable> ceilingEntity = Serializable.class;
@@ -106,51 +106,17 @@ public class AbstractRowLevelSecurityProviderDiffblueTest {
     filterMappings.add(new FilterMapping());
 
     // Act and Assert
-    assertNull(
-        abstractRowLevelSecurityProvider.getFetchRestrictionRoot(
-            currentUser, ceilingEntity, filterMappings));
+    assertNull(abstractRowLevelSecurityProvider.getFetchRestrictionRoot(currentUser, ceilingEntity, filterMappings));
   }
 
   /**
-   * Test {@link AbstractRowLevelSecurityProvider#getFetchRestrictionRoot(AdminUser, Class, List)}.
-   *
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AbstractRowLevelSecurityProvider#getFetchRestrictionRoot(AdminUser, Class, List)}
+   * Method under test:
+   * {@link AbstractRowLevelSecurityProvider#canUpdate(AdminUser, Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Class AbstractRowLevelSecurityProvider.getFetchRestrictionRoot(AdminUser, Class, List)"
-  })
-  public void testGetFetchRestrictionRoot_whenArrayList() {
-    // Arrange
-    AdminUserImpl currentUser = new AdminUserImpl();
-    Class<Serializable> ceilingEntity = Serializable.class;
-
-    // Act and Assert
-    assertNull(
-        abstractRowLevelSecurityProvider.getFetchRestrictionRoot(
-            currentUser, ceilingEntity, new ArrayList<>()));
-  }
-
-  /**
-   * Test {@link AbstractRowLevelSecurityProvider#canUpdate(AdminUser, Entity)}.
-   *
-   * <p>Method under test: {@link AbstractRowLevelSecurityProvider#canUpdate(AdminUser, Entity)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AbstractRowLevelSecurityProvider.canUpdate(AdminUser, Entity)"})
   public void testCanUpdate() {
     // Arrange
-    AbstractRowLevelSecurityProvider abstractRowLevelSecurityProvider =
-        new AbstractRowLevelSecurityProvider();
+    AbstractRowLevelSecurityProvider abstractRowLevelSecurityProvider = new AbstractRowLevelSecurityProvider();
     AdminUserImpl currentUser = new AdminUserImpl();
 
     // Act and Assert
@@ -158,18 +124,27 @@ public class AbstractRowLevelSecurityProviderDiffblueTest {
   }
 
   /**
-   * Test {@link AbstractRowLevelSecurityProvider#canRemove(AdminUser, Entity)}.
-   *
-   * <p>Method under test: {@link AbstractRowLevelSecurityProvider#canRemove(AdminUser, Entity)}
+   * Method under test:
+   * {@link AbstractRowLevelSecurityProvider#canUpdate(AdminUser, Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AbstractRowLevelSecurityProvider.canRemove(AdminUser, Entity)"})
+  public void testCanUpdate2() {
+    // Arrange
+    AbstractRowLevelSecurityProvider abstractRowLevelSecurityProvider = new AbstractRowLevelSecurityProvider();
+    AdminUser currentUser = mock(AdminUser.class);
+
+    // Act and Assert
+    assertTrue(abstractRowLevelSecurityProvider.canUpdate(currentUser, new Entity()));
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractRowLevelSecurityProvider#canRemove(AdminUser, Entity)}
+   */
+  @Test
   public void testCanRemove() {
     // Arrange
-    AbstractRowLevelSecurityProvider abstractRowLevelSecurityProvider =
-        new AbstractRowLevelSecurityProvider();
+    AbstractRowLevelSecurityProvider abstractRowLevelSecurityProvider = new AbstractRowLevelSecurityProvider();
     AdminUserImpl currentUser = new AdminUserImpl();
 
     // Act and Assert
@@ -177,17 +152,24 @@ public class AbstractRowLevelSecurityProviderDiffblueTest {
   }
 
   /**
-   * Test {@link AbstractRowLevelSecurityProvider#canAdd(AdminUser, String, ClassMetadata)}.
-   *
-   * <p>Method under test: {@link AbstractRowLevelSecurityProvider#canAdd(AdminUser, String,
-   * ClassMetadata)}
+   * Method under test:
+   * {@link AbstractRowLevelSecurityProvider#canRemove(AdminUser, Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean AbstractRowLevelSecurityProvider.canAdd(AdminUser, String, ClassMetadata)"
-  })
+  public void testCanRemove2() {
+    // Arrange
+    AbstractRowLevelSecurityProvider abstractRowLevelSecurityProvider = new AbstractRowLevelSecurityProvider();
+    AdminUser currentUser = mock(AdminUser.class);
+
+    // Act and Assert
+    assertTrue(abstractRowLevelSecurityProvider.canRemove(currentUser, new Entity()));
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractRowLevelSecurityProvider#canAdd(AdminUser, String, ClassMetadata)}
+   */
+  @Test
   public void testCanAdd() {
     // Arrange
     AdminUserImpl currentUser = new AdminUserImpl();
@@ -196,7 +178,7 @@ public class AbstractRowLevelSecurityProviderDiffblueTest {
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[] {new Property()});
+    cmd.setProperties(new Property[]{new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
 
@@ -205,29 +187,40 @@ public class AbstractRowLevelSecurityProviderDiffblueTest {
   }
 
   /**
-   * Test {@link AbstractRowLevelSecurityProvider#validateAddRequest(AdminUser, Entity,
-   * PersistencePackage)}.
-   *
-   * <p>Method under test: {@link AbstractRowLevelSecurityProvider#validateAddRequest(AdminUser,
-   * Entity, PersistencePackage)}
+   * Method under test:
+   * {@link AbstractRowLevelSecurityProvider#canAdd(AdminUser, String, ClassMetadata)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "GlobalValidationResult AbstractRowLevelSecurityProvider.validateAddRequest(AdminUser, Entity, PersistencePackage)"
-  })
+  public void testCanAdd2() {
+    // Arrange
+    AdminUserImpl currentUser = mock(AdminUserImpl.class);
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act and Assert
+    assertTrue(abstractRowLevelSecurityProvider.canAdd(currentUser, "Section Class Name", cmd));
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractRowLevelSecurityProvider#validateAddRequest(AdminUser, Entity, PersistencePackage)}
+   */
+  @Test
   public void testValidateAddRequest() {
     // Arrange
-    AbstractRowLevelSecurityProvider abstractRowLevelSecurityProvider =
-        new AbstractRowLevelSecurityProvider();
+    AbstractRowLevelSecurityProvider abstractRowLevelSecurityProvider = new AbstractRowLevelSecurityProvider();
     AdminUserImpl currentUser = new AdminUserImpl();
     Entity entity = new Entity();
 
     // Act
-    GlobalValidationResult actualValidateAddRequestResult =
-        abstractRowLevelSecurityProvider.validateAddRequest(
-            currentUser, entity, new PersistencePackage());
+    GlobalValidationResult actualValidateAddRequestResult = abstractRowLevelSecurityProvider
+        .validateAddRequest(currentUser, entity, new PersistencePackage());
 
     // Assert
     assertNull(actualValidateAddRequestResult.getErrorMessage());
@@ -237,29 +230,41 @@ public class AbstractRowLevelSecurityProviderDiffblueTest {
   }
 
   /**
-   * Test {@link AbstractRowLevelSecurityProvider#validateUpdateRequest(AdminUser, Entity,
-   * PersistencePackage)}.
-   *
-   * <p>Method under test: {@link AbstractRowLevelSecurityProvider#validateUpdateRequest(AdminUser,
-   * Entity, PersistencePackage)}
+   * Method under test:
+   * {@link AbstractRowLevelSecurityProvider#validateAddRequest(AdminUser, Entity, PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "GlobalValidationResult AbstractRowLevelSecurityProvider.validateUpdateRequest(AdminUser, Entity, PersistencePackage)"
-  })
+  public void testValidateAddRequest2() {
+    // Arrange
+    AbstractRowLevelSecurityProvider abstractRowLevelSecurityProvider = new AbstractRowLevelSecurityProvider();
+    AdminUser currentUser = mock(AdminUser.class);
+    Entity entity = new Entity();
+
+    // Act
+    GlobalValidationResult actualValidateAddRequestResult = abstractRowLevelSecurityProvider
+        .validateAddRequest(currentUser, entity, new PersistencePackage());
+
+    // Assert
+    assertNull(actualValidateAddRequestResult.getErrorMessage());
+    assertFalse(actualValidateAddRequestResult.isNotValid());
+    assertTrue(actualValidateAddRequestResult.getErrorMessages().isEmpty());
+    assertTrue(actualValidateAddRequestResult.isValid());
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractRowLevelSecurityProvider#validateUpdateRequest(AdminUser, Entity, PersistencePackage)}
+   */
+  @Test
   public void testValidateUpdateRequest() {
     // Arrange
-    AbstractRowLevelSecurityProvider abstractRowLevelSecurityProvider =
-        new AbstractRowLevelSecurityProvider();
+    AbstractRowLevelSecurityProvider abstractRowLevelSecurityProvider = new AbstractRowLevelSecurityProvider();
     AdminUserImpl currentUser = new AdminUserImpl();
     Entity entity = new Entity();
 
     // Act
-    GlobalValidationResult actualValidateUpdateRequestResult =
-        abstractRowLevelSecurityProvider.validateUpdateRequest(
-            currentUser, entity, new PersistencePackage());
+    GlobalValidationResult actualValidateUpdateRequestResult = abstractRowLevelSecurityProvider
+        .validateUpdateRequest(currentUser, entity, new PersistencePackage());
 
     // Assert
     assertNull(actualValidateUpdateRequestResult.getErrorMessage());
@@ -269,29 +274,63 @@ public class AbstractRowLevelSecurityProviderDiffblueTest {
   }
 
   /**
-   * Test {@link AbstractRowLevelSecurityProvider#validateRemoveRequest(AdminUser, Entity,
-   * PersistencePackage)}.
-   *
-   * <p>Method under test: {@link AbstractRowLevelSecurityProvider#validateRemoveRequest(AdminUser,
-   * Entity, PersistencePackage)}
+   * Method under test:
+   * {@link AbstractRowLevelSecurityProvider#validateUpdateRequest(AdminUser, Entity, PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "GlobalValidationResult AbstractRowLevelSecurityProvider.validateRemoveRequest(AdminUser, Entity, PersistencePackage)"
-  })
+  public void testValidateUpdateRequest2() {
+    // Arrange
+    AbstractRowLevelSecurityProvider abstractRowLevelSecurityProvider = new AbstractRowLevelSecurityProvider();
+    AdminUser currentUser = mock(AdminUser.class);
+    Entity entity = new Entity();
+
+    // Act
+    GlobalValidationResult actualValidateUpdateRequestResult = abstractRowLevelSecurityProvider
+        .validateUpdateRequest(currentUser, entity, new PersistencePackage());
+
+    // Assert
+    assertNull(actualValidateUpdateRequestResult.getErrorMessage());
+    assertFalse(actualValidateUpdateRequestResult.isNotValid());
+    assertTrue(actualValidateUpdateRequestResult.getErrorMessages().isEmpty());
+    assertTrue(actualValidateUpdateRequestResult.isValid());
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractRowLevelSecurityProvider#validateRemoveRequest(AdminUser, Entity, PersistencePackage)}
+   */
+  @Test
   public void testValidateRemoveRequest() {
     // Arrange
-    AbstractRowLevelSecurityProvider abstractRowLevelSecurityProvider =
-        new AbstractRowLevelSecurityProvider();
+    AbstractRowLevelSecurityProvider abstractRowLevelSecurityProvider = new AbstractRowLevelSecurityProvider();
     AdminUserImpl currentUser = new AdminUserImpl();
     Entity entity = new Entity();
 
     // Act
-    GlobalValidationResult actualValidateRemoveRequestResult =
-        abstractRowLevelSecurityProvider.validateRemoveRequest(
-            currentUser, entity, new PersistencePackage());
+    GlobalValidationResult actualValidateRemoveRequestResult = abstractRowLevelSecurityProvider
+        .validateRemoveRequest(currentUser, entity, new PersistencePackage());
+
+    // Assert
+    assertNull(actualValidateRemoveRequestResult.getErrorMessage());
+    assertFalse(actualValidateRemoveRequestResult.isNotValid());
+    assertTrue(actualValidateRemoveRequestResult.getErrorMessages().isEmpty());
+    assertTrue(actualValidateRemoveRequestResult.isValid());
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractRowLevelSecurityProvider#validateRemoveRequest(AdminUser, Entity, PersistencePackage)}
+   */
+  @Test
+  public void testValidateRemoveRequest2() {
+    // Arrange
+    AbstractRowLevelSecurityProvider abstractRowLevelSecurityProvider = new AbstractRowLevelSecurityProvider();
+    AdminUser currentUser = mock(AdminUser.class);
+    Entity entity = new Entity();
+
+    // Act
+    GlobalValidationResult actualValidateRemoveRequestResult = abstractRowLevelSecurityProvider
+        .validateRemoveRequest(currentUser, entity, new PersistencePackage());
 
     // Assert
     assertNull(actualValidateRemoveRequestResult.getErrorMessage());

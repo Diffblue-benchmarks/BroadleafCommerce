@@ -20,60 +20,33 @@ package org.broadleafcommerce.openadmin.server.service.artifact.image.effects.ch
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
 import org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.ConverterNotFoundException;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-open-admin-contentClient-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class ConversionManagerDiffblueTest {
-  @Autowired private ConversionManager conversionManager;
-
   /**
-   * Test {@link ConversionManager#convertParameter(String, String, Double, boolean)}.
-   *
-   * <p>Method under test: {@link ConversionManager#convertParameter(String, String, Double,
-   * boolean)}
+   * Method under test:
+   * {@link ConversionManager#convertParameter(String, String, Double, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.conversion.Parameter ConversionManager.convertParameter(String, String, Double, boolean)"
-  })
   public void testConvertParameter() throws ConverterNotFoundException, ConversionException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertThrows(
-        ConverterNotFoundException.class,
-        () -> conversionManager.convertParameter("42", "Type", 10.0d, true));
+    assertThrows(ConverterNotFoundException.class,
+        () -> (new ConversionManager()).convertParameter("42", "Type", 10.0d, true));
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link ConversionManager#setConverters(Map)}
    *   <li>{@link ConversionManager#getConverters()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map ConversionManager.getConverters()",
-    "void ConversionManager.setConverters(Map)"
-  })
   public void testGettersAndSetters() {
     // Arrange
     ConversionManager conversionManager = new ConversionManager();
@@ -83,7 +56,7 @@ public class ConversionManagerDiffblueTest {
     conversionManager.setConverters(converters);
     Map<String, ParameterConverter> actualConverters = conversionManager.getConverters();
 
-    // Assert
+    // Assert that nothing has changed
     assertTrue(actualConverters.isEmpty());
     assertSame(converters, actualConverters);
   }

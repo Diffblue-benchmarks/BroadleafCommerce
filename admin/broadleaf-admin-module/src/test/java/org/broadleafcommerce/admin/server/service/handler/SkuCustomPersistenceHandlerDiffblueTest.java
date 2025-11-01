@@ -31,22 +31,16 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.persistence.EntityManager;
-import org.broadleafcommerce.admin.server.service.SkuMetadataCacheService;
+import java.util.function.BiFunction;
 import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.common.presentation.client.OperationType;
-import org.broadleafcommerce.common.presentation.client.PersistencePerspectiveItemType;
 import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
-import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
 import org.broadleafcommerce.core.catalog.domain.Product;
 import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
 import org.broadleafcommerce.core.catalog.domain.ProductOption;
@@ -55,133 +49,73 @@ import org.broadleafcommerce.core.catalog.domain.ProductOptionValue;
 import org.broadleafcommerce.core.catalog.domain.ProductOptionValueImpl;
 import org.broadleafcommerce.core.catalog.domain.Sku;
 import org.broadleafcommerce.core.catalog.domain.SkuImpl;
-import org.broadleafcommerce.core.catalog.service.CatalogService;
-import org.broadleafcommerce.core.catalog.service.type.ProductOptionType;
-import org.broadleafcommerce.core.catalog.service.type.ProductOptionValidationStrategyType;
-import org.broadleafcommerce.core.catalog.service.type.ProductOptionValidationType;
 import org.broadleafcommerce.openadmin.dto.AdornedTargetCollectionMetadata;
 import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
-import org.broadleafcommerce.openadmin.dto.ClassMetadata;
-import org.broadleafcommerce.openadmin.dto.ClassTree;
 import org.broadleafcommerce.openadmin.dto.CriteriaTransferObject;
 import org.broadleafcommerce.openadmin.dto.DynamicResultSet;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
 import org.broadleafcommerce.openadmin.dto.FilterAndSortCriteria;
-import org.broadleafcommerce.openadmin.dto.ForeignKey;
-import org.broadleafcommerce.openadmin.dto.MergedPropertyType;
 import org.broadleafcommerce.openadmin.dto.OperationTypes;
 import org.broadleafcommerce.openadmin.dto.PersistencePackage;
 import org.broadleafcommerce.openadmin.dto.PersistencePerspective;
-import org.broadleafcommerce.openadmin.dto.PersistencePerspectiveItem;
 import org.broadleafcommerce.openadmin.dto.Property;
 import org.broadleafcommerce.openadmin.dto.SectionCrumb;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
-import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceManager;
-import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceManagerImpl;
-import org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule;
-import org.broadleafcommerce.openadmin.server.service.persistence.module.InspectHelper;
-import org.broadleafcommerce.openadmin.server.service.persistence.module.PersistenceModule;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.RecordHelper;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.FieldPath;
+import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.FieldPathBuilder;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.FilterMapping;
-import org.hibernate.BaseSessionEventListener;
-import org.hibernate.SessionEventListener;
-import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
+import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.Restriction;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(MockitoJUnitRunner.class)
 public class SkuCustomPersistenceHandlerDiffblueTest {
-  @Mock private CatalogService catalogService;
-
-  @Mock private PersistenceModule persistenceModule;
-
-  @InjectMocks private SkuCustomPersistenceHandler skuCustomPersistenceHandler;
-
-  @Mock private SkuMetadataCacheService skuMetadataCacheService;
-
   /**
-   * Test {@link SkuCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuCustomPersistenceHandler.canHandleInspect(PersistencePackage)"})
   public void testCanHandleInspect() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    HashMap<PersistencePerspectiveItemType, PersistencePerspectiveItem>
-        persistencePerspectiveItems = new HashMap<>();
-    persistencePerspectiveItems.put(PersistencePerspectiveItemType.ADORNEDTARGETLIST, null);
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
+    when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
+    Entity entity = new Entity();
 
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
-    persistencePerspective.setPersistencePerspectiveItems(persistencePerspectiveItems);
-    String[] customCriteria = new String[] {"Custom Criteria"};
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"Custom Criteria"}, "ABC123");
+    persistencePackage.setPersistencePerspective(persistencePerspective);
 
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", new Entity(), persistencePerspective, customCriteria, "ABC123");
+    // Act
+    Boolean actualCanHandleInspectResult = skuCustomPersistenceHandler.canHandleInspect(persistencePackage);
 
-    // Act and Assert
-    assertFalse(skuCustomPersistenceHandler.canHandleInspect(persistencePackage));
+    // Assert
+    verify(persistencePerspective).getOperationTypes();
+    assertFalse(actualCanHandleInspectResult);
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
-   *
-   * <ul>
-   *   <li>Given {@code Dr Jane Doe}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuCustomPersistenceHandler.canHandleInspect(PersistencePackage)"})
-  public void testCanHandleInspect_givenDrJaneDoe() {
+  public void testCanHandleInspect2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    HashMap<PersistencePerspectiveItemType, PersistencePerspectiveItem>
-        persistencePerspectiveItems = new HashMap<>();
-    persistencePerspectiveItems.put(PersistencePerspectiveItemType.ADORNEDTARGETLIST, null);
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
-
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
-    persistencePerspective.setPersistencePerspectiveItems(persistencePerspectiveItems);
-
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     PersistencePackage persistencePackage = mock(PersistencePackage.class);
     when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getPersistencePerspective()).thenReturn(persistencePerspective);
-    doNothing()
-        .when(persistencePackage)
-        .setPersistencePerspective(Mockito.<PersistencePerspective>any());
+    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
+    doNothing().when(persistencePackage).setPersistencePerspective(Mockito.<PersistencePerspective>any());
     persistencePackage.setPersistencePerspective(mock(PersistencePerspective.class));
 
     // Act
-    Boolean actualCanHandleInspectResult =
-        skuCustomPersistenceHandler.canHandleInspect(persistencePackage);
+    Boolean actualCanHandleInspectResult = skuCustomPersistenceHandler.canHandleInspect(persistencePackage);
 
     // Assert
     verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
@@ -191,111 +125,49 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link PersistencePerspective#getOperationTypes()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuCustomPersistenceHandler.canHandleInspect(PersistencePackage)"})
-  public void testCanHandleInspect_thenCallsGetOperationTypes() {
-    // Arrange
-    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
-    when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
-    Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
-    persistencePackage.setPersistencePerspective(persistencePerspective);
-
-    // Act
-    Boolean actualCanHandleInspectResult =
-        skuCustomPersistenceHandler.canHandleInspect(persistencePackage);
-
-    // Assert
-    verify(persistencePerspective).getOperationTypes();
-    assertFalse(actualCanHandleInspectResult);
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuCustomPersistenceHandler.canHandleFetch(PersistencePackage)"})
   public void testCanHandleFetch() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    HashMap<PersistencePerspectiveItemType, PersistencePerspectiveItem>
-        persistencePerspectiveItems = new HashMap<>();
-    persistencePerspectiveItems.put(PersistencePerspectiveItemType.ADORNEDTARGETLIST, null);
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
+    when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
+    Entity entity = new Entity();
 
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
-    persistencePerspective.setPersistencePerspectiveItems(persistencePerspectiveItems);
-    String[] customCriteria = new String[] {"Custom Criteria"};
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"Custom Criteria"}, "ABC123");
+    persistencePackage.setPersistencePerspective(persistencePerspective);
 
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", new Entity(), persistencePerspective, customCriteria, "ABC123");
+    // Act
+    Boolean actualCanHandleFetchResult = skuCustomPersistenceHandler.canHandleFetch(persistencePackage);
 
-    // Act and Assert
-    assertFalse(skuCustomPersistenceHandler.canHandleFetch(persistencePackage));
+    // Assert
+    verify(persistencePerspective).getOperationTypes();
+    assertFalse(actualCanHandleFetchResult);
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
-   *
-   * <ul>
-   *   <li>Given {@code Dr Jane Doe}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuCustomPersistenceHandler.canHandleFetch(PersistencePackage)"})
-  public void testCanHandleFetch_givenDrJaneDoe() {
+  public void testCanHandleFetch2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    HashMap<PersistencePerspectiveItemType, PersistencePerspectiveItem>
-        persistencePerspectiveItems = new HashMap<>();
-    persistencePerspectiveItems.put(PersistencePerspectiveItemType.ADORNEDTARGETLIST, null);
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
-
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
-    persistencePerspective.setPersistencePerspectiveItems(persistencePerspectiveItems);
-
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     PersistencePackage persistencePackage = mock(PersistencePackage.class);
     when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getPersistencePerspective()).thenReturn(persistencePerspective);
-    doNothing()
-        .when(persistencePackage)
-        .setPersistencePerspective(Mockito.<PersistencePerspective>any());
+    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
+    doNothing().when(persistencePackage).setPersistencePerspective(Mockito.<PersistencePerspective>any());
     persistencePackage.setPersistencePerspective(mock(PersistencePerspective.class));
 
     // Act
-    Boolean actualCanHandleFetchResult =
-        skuCustomPersistenceHandler.canHandleFetch(persistencePackage);
+    Boolean actualCanHandleFetchResult = skuCustomPersistenceHandler.canHandleFetch(persistencePackage);
 
     // Assert
     verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
@@ -305,106 +177,45 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link PersistencePerspective#getOperationTypes()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuCustomPersistenceHandler.canHandleFetch(PersistencePackage)"})
-  public void testCanHandleFetch_thenCallsGetOperationTypes() {
-    // Arrange
-    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
-    when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
-    Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
-    persistencePackage.setPersistencePerspective(persistencePerspective);
-
-    // Act
-    Boolean actualCanHandleFetchResult =
-        skuCustomPersistenceHandler.canHandleFetch(persistencePackage);
-
-    // Assert
-    verify(persistencePerspective).getOperationTypes();
-    assertFalse(actualCanHandleFetchResult);
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
   public void testCanHandleAdd() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    HashMap<PersistencePerspectiveItemType, PersistencePerspectiveItem>
-        persistencePerspectiveItems = new HashMap<>();
-    persistencePerspectiveItems.put(PersistencePerspectiveItemType.ADORNEDTARGETLIST, null);
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
+    when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
+    Entity entity = new Entity();
 
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
-    persistencePerspective.setPersistencePerspectiveItems(persistencePerspectiveItems);
-    String[] customCriteria = new String[] {"Custom Criteria"};
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"Custom Criteria"}, "ABC123");
+    persistencePackage.setPersistencePerspective(persistencePerspective);
 
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", new Entity(), persistencePerspective, customCriteria, "ABC123");
+    // Act
+    Boolean actualCanHandleAddResult = skuCustomPersistenceHandler.canHandleAdd(persistencePackage);
 
-    // Act and Assert
-    assertFalse(skuCustomPersistenceHandler.canHandleAdd(persistencePackage));
+    // Assert
+    verify(persistencePerspective).getOperationTypes();
+    assertFalse(actualCanHandleAddResult);
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   *
-   * <ul>
-   *   <li>Given {@code Dr Jane Doe}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
-  public void testCanHandleAdd_givenDrJaneDoe() {
+  public void testCanHandleAdd2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    HashMap<PersistencePerspectiveItemType, PersistencePerspectiveItem>
-        persistencePerspectiveItems = new HashMap<>();
-    persistencePerspectiveItems.put(PersistencePerspectiveItemType.ADORNEDTARGETLIST, null);
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
-
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
-    persistencePerspective.setPersistencePerspectiveItems(persistencePerspectiveItems);
-
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     PersistencePackage persistencePackage = mock(PersistencePackage.class);
     when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getPersistencePerspective()).thenReturn(persistencePerspective);
-    doNothing()
-        .when(persistencePackage)
-        .setPersistencePerspective(Mockito.<PersistencePerspective>any());
+    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
+    doNothing().when(persistencePackage).setPersistencePerspective(Mockito.<PersistencePerspective>any());
     persistencePackage.setPersistencePerspective(mock(PersistencePerspective.class));
 
     // Act
@@ -418,110 +229,49 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link PersistencePerspective#getOperationTypes()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
-  public void testCanHandleAdd_thenCallsGetOperationTypes() {
-    // Arrange
-    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
-    when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
-    Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
-    persistencePackage.setPersistencePerspective(persistencePerspective);
-
-    // Act
-    Boolean actualCanHandleAddResult = skuCustomPersistenceHandler.canHandleAdd(persistencePackage);
-
-    // Assert
-    verify(persistencePerspective).getOperationTypes();
-    assertFalse(actualCanHandleAddResult);
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
   public void testCanHandleUpdate() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    HashMap<PersistencePerspectiveItemType, PersistencePerspectiveItem>
-        persistencePerspectiveItems = new HashMap<>();
-    persistencePerspectiveItems.put(PersistencePerspectiveItemType.ADORNEDTARGETLIST, null);
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
+    when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
+    Entity entity = new Entity();
 
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
-    persistencePerspective.setPersistencePerspectiveItems(persistencePerspectiveItems);
-    String[] customCriteria = new String[] {"Custom Criteria"};
+    PersistencePackage persistencePackage = new PersistencePackage("Dr Jane Doe", entity, new PersistencePerspective(),
+        new String[]{"Custom Criteria"}, "ABC123");
+    persistencePackage.setPersistencePerspective(persistencePerspective);
 
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", new Entity(), persistencePerspective, customCriteria, "ABC123");
+    // Act
+    Boolean actualCanHandleUpdateResult = skuCustomPersistenceHandler.canHandleUpdate(persistencePackage);
 
-    // Act and Assert
-    assertFalse(skuCustomPersistenceHandler.canHandleUpdate(persistencePackage));
+    // Assert
+    verify(persistencePerspective).getOperationTypes();
+    assertFalse(actualCanHandleUpdateResult);
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   *
-   * <ul>
-   *   <li>Given {@code Dr Jane Doe}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
-  public void testCanHandleUpdate_givenDrJaneDoe() {
+  public void testCanHandleUpdate2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    HashMap<PersistencePerspectiveItemType, PersistencePerspectiveItem>
-        persistencePerspectiveItems = new HashMap<>();
-    persistencePerspectiveItems.put(PersistencePerspectiveItemType.ADORNEDTARGETLIST, null);
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
-
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
-    persistencePerspective.setPersistencePerspectiveItems(persistencePerspectiveItems);
-
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     PersistencePackage persistencePackage = mock(PersistencePackage.class);
     when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getPersistencePerspective()).thenReturn(persistencePerspective);
-    doNothing()
-        .when(persistencePackage)
-        .setPersistencePerspective(Mockito.<PersistencePerspective>any());
+    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
+    doNothing().when(persistencePackage).setPersistencePerspective(Mockito.<PersistencePerspective>any());
     persistencePackage.setPersistencePerspective(mock(PersistencePerspective.class));
 
     // Act
-    Boolean actualCanHandleUpdateResult =
-        skuCustomPersistenceHandler.canHandleUpdate(persistencePackage);
+    Boolean actualCanHandleUpdateResult = skuCustomPersistenceHandler.canHandleUpdate(persistencePackage);
 
     // Assert
     verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
@@ -531,65 +281,38 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link PersistencePerspective#getOperationTypes()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#canHandle(PersistencePackage, OperationType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean SkuCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
-  public void testCanHandleUpdate_thenCallsGetOperationTypes() {
+  public void testCanHandle() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
-    when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
 
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
-    persistencePackage.setPersistencePerspective(persistencePerspective);
-
-    // Act
-    Boolean actualCanHandleUpdateResult =
-        skuCustomPersistenceHandler.canHandleUpdate(persistencePackage);
-
-    // Assert
-    verify(persistencePerspective).getOperationTypes();
-    assertFalse(actualCanHandleUpdateResult);
+    // Act and Assert
+    assertFalse(skuCustomPersistenceHandler.canHandle(new PersistencePackage("Dr Jane Doe", entity,
+        new PersistencePerspective(), new String[]{"Custom Criteria"}, "ABC123"), OperationType.NONDESTRUCTIVEREMOVE));
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#canHandle(PersistencePackage, OperationType)}.
-   *
-   * <ul>
-   *   <li>Given {@code Dr Jane Doe}.
-   *   <li>Then calls {@link PersistencePackage#getCeilingEntityFullyQualifiedClassname()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#canHandle(PersistencePackage,
-   * OperationType)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#canHandle(PersistencePackage, OperationType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Boolean SkuCustomPersistenceHandler.canHandle(PersistencePackage, OperationType)"
-  })
-  public void testCanHandle_givenDrJaneDoe_thenCallsGetCeilingEntityFullyQualifiedClassname() {
+  public void testCanHandle2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     PersistencePackage persistencePackage = mock(PersistencePackage.class);
     when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
 
     // Act
-    Boolean actualCanHandleResult =
-        skuCustomPersistenceHandler.canHandle(
-            persistencePackage, OperationType.NONDESTRUCTIVEREMOVE);
+    Boolean actualCanHandleResult = skuCustomPersistenceHandler.canHandle(persistencePackage,
+        OperationType.NONDESTRUCTIVEREMOVE);
 
     // Assert
     verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
@@ -597,1257 +320,164 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#canHandle(PersistencePackage, OperationType)}.
-   *
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@link PersistencePerspectiveItemType#ADORNEDTARGETLIST}
-   *       is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#canHandle(PersistencePackage,
-   * OperationType)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#getOwningProductId(SectionCrumb[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Boolean SkuCustomPersistenceHandler.canHandle(PersistencePackage, OperationType)"
-  })
-  public void testCanHandle_givenHashMapAdornedtargetlistIsNull() {
+  public void testGetOwningProductId() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    HashMap<PersistencePerspectiveItemType, PersistencePerspectiveItem>
-        persistencePerspectiveItems = new HashMap<>();
-    persistencePerspectiveItems.put(PersistencePerspectiveItemType.ADORNEDTARGETLIST, null);
-    OperationTypes operationTypes = new OperationTypes();
-    String[] additionalNonPersistentProperties =
-        new String[] {"Additional Non Persistent Properties"};
-    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
-
-    PersistencePerspective persistencePerspective =
-        new PersistencePerspective(
-            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
-    persistencePerspective.setPersistencePerspectiveItems(persistencePerspectiveItems);
-    String[] customCriteria = new String[] {"Custom Criteria"};
-
-    PersistencePackage persistencePackage =
-        new PersistencePackage(
-            "Dr Jane Doe", new Entity(), persistencePerspective, customCriteria, "ABC123");
-
-    // Act and Assert
-    assertFalse(
-        skuCustomPersistenceHandler.canHandle(
-            persistencePackage, OperationType.NONDESTRUCTIVEREMOVE));
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao,
-   * InspectHelper)}.
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#inspect(PersistencePackage,
-   * DynamicEntityDao, InspectHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SkuCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"
-  })
-  public void testInspect() throws ServiceException {
-    // Arrange
-    when(skuMetadataCacheService.useCache()).thenReturn(false);
-    when(skuMetadataCacheService.buildCacheKey(Mockito.<String>any()))
-        .thenReturn("Build Cache Key");
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
 
     SectionCrumb sectionCrumb = new SectionCrumb();
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
     sectionCrumb.setSectionIdentifier("42");
 
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[] {sectionCrumb});
-    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
-
-    PersistenceManagerImpl helper = mock(PersistenceManagerImpl.class);
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
-        .thenThrow(new NumberFormatException());
-
     // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () -> skuCustomPersistenceHandler.inspect(persistencePackage, dynamicEntityDao, helper));
-    verify(skuMetadataCacheService).buildCacheKey(null);
-    verify(skuMetadataCacheService).useCache();
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getPersistencePerspective();
-    verify(persistencePackage).getSectionCrumbs();
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.SkuImpl"),
-            isA(PersistencePerspective.class));
+    assertNull(skuCustomPersistenceHandler.getOwningProductId(new SectionCrumb[]{sectionCrumb}));
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao,
-   * InspectHelper)}.
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#inspect(PersistencePackage,
-   * DynamicEntityDao, InspectHelper)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#getOwningProductId(SectionCrumb[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SkuCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"
-  })
-  public void testInspect2() throws ServiceException {
+  public void testGetOwningProductId2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    doNothing().when(persistenceModule).setPersistenceManager(Mockito.<PersistenceManager>any());
-    doNothing()
-        .when(persistenceModule)
-        .updateMergedProperties(
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any());
-    when(skuMetadataCacheService.useCache()).thenReturn(false);
-    when(skuMetadataCacheService.buildCacheKey(Mockito.<String>any()))
-        .thenReturn("Build Cache Key");
-
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("org.broadleafcommerce.core.catalog.domain.ProductImpl");
-    sectionCrumb.setSectionIdentifier("org.broadleafcommerce.core.catalog.domain.ProductImpl");
-
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[] {sectionCrumb});
-
-    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
-    Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>[]>when(
-            dynamicEntityDao.getAllPolymorphicEntitiesFromCeiling(Mockito.<Class<?>>any()))
-        .thenReturn(new Class[] {forNameResult});
-
-    PersistenceManagerImpl helper = mock(PersistenceManagerImpl.class);
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
-        .thenReturn(new HashMap<>());
-    when(helper.buildClassMetadata(
-            Mockito.<Class<Object>[]>any(),
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any()))
-        .thenThrow(new NumberFormatException());
-
-    // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () -> skuCustomPersistenceHandler.inspect(persistencePackage, dynamicEntityDao, helper));
-    verify(skuMetadataCacheService)
-        .buildCacheKey("org.broadleafcommerce.core.catalog.domain.ProductImpl");
-    verify(skuMetadataCacheService, atLeast(1)).useCache();
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getPersistencePerspective();
-    verify(persistencePackage).getSectionCrumbs();
-    verify(dynamicEntityDao).getAllPolymorphicEntitiesFromCeiling(isA(Class.class));
-    verify(helper)
-        .buildClassMetadata(isA(Class[].class), isA(PersistencePackage.class), isA(Map.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.SkuImpl"),
-            isA(PersistencePerspective.class));
-    verify(persistenceModule).setPersistenceManager(isA(PersistenceManager.class));
-    verify(persistenceModule).updateMergedProperties(isA(PersistencePackage.class), isA(Map.class));
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao,
-   * InspectHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link ProductOptionImpl} (default constructor).
-   *   <li>Then calls {@link CatalogService#readAllProductOptions()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#inspect(PersistencePackage,
-   * DynamicEntityDao, InspectHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SkuCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"
-  })
-  public void testInspect_givenArrayListAddProductOptionImpl_thenCallsReadAllProductOptions()
-      throws ServiceException {
-    // Arrange
-    doNothing().when(persistenceModule).setPersistenceManager(Mockito.<PersistenceManager>any());
-    doNothing()
-        .when(persistenceModule)
-        .updateMergedProperties(
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any());
-
-    ArrayList<ProductOption> productOptionList = new ArrayList<>();
-    productOptionList.add(new ProductOptionImpl());
-    when(catalogService.readAllProductOptions()).thenReturn(productOptionList);
-    when(skuMetadataCacheService.useCache()).thenReturn(false);
-    when(skuMetadataCacheService.buildCacheKey(Mockito.<String>any()))
-        .thenReturn("Build Cache Key");
-
-    SectionCrumb sectionCrumb = new SectionCrumb();
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+    SectionCrumb sectionCrumb = mock(SectionCrumb.class);
+    when(sectionCrumb.getSectionIdentifier()).thenReturn("42");
+    doNothing().when(sectionCrumb).setOriginalSectionIdentifier(Mockito.<String>any());
+    doNothing().when(sectionCrumb).setSectionId(Mockito.<String>any());
+    doNothing().when(sectionCrumb).setSectionIdentifier(Mockito.<String>any());
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
     sectionCrumb.setSectionIdentifier("42");
-
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[] {sectionCrumb});
-
-    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
-    Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>[]>when(
-            dynamicEntityDao.getAllPolymorphicEntitiesFromCeiling(Mockito.<Class<?>>any()))
-        .thenReturn(new Class[] {forNameResult});
-
-    PersistenceManagerImpl helper = mock(PersistenceManagerImpl.class);
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
-        .thenReturn(new HashMap<>());
-    when(helper.buildClassMetadata(
-            Mockito.<Class<Object>[]>any(),
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any()))
-        .thenThrow(new NumberFormatException());
-
-    // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () -> skuCustomPersistenceHandler.inspect(persistencePackage, dynamicEntityDao, helper));
-    verify(skuMetadataCacheService).buildCacheKey(null);
-    verify(skuMetadataCacheService, atLeast(1)).useCache();
-    verify(catalogService).readAllProductOptions();
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getPersistencePerspective();
-    verify(persistencePackage).getSectionCrumbs();
-    verify(dynamicEntityDao).getAllPolymorphicEntitiesFromCeiling(isA(Class.class));
-    verify(helper)
-        .buildClassMetadata(isA(Class[].class), isA(PersistencePackage.class), isA(Map.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.SkuImpl"),
-            isA(PersistencePerspective.class));
-    verify(persistenceModule).setPersistenceManager(isA(PersistenceManager.class));
-    verify(persistenceModule).updateMergedProperties(isA(PersistencePackage.class), isA(Map.class));
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao,
-   * InspectHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link CatalogService} {@link CatalogService#findProductById(Long)} return {@link
-   *       ProductBundleImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#inspect(PersistencePackage,
-   * DynamicEntityDao, InspectHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SkuCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"
-  })
-  public void testInspect_givenCatalogServiceFindProductByIdReturnProductBundleImpl()
-      throws ServiceException {
-    // Arrange
-    doNothing().when(persistenceModule).setPersistenceManager(Mockito.<PersistenceManager>any());
-    doNothing()
-        .when(persistenceModule)
-        .updateMergedProperties(
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any());
-    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(new ProductBundleImpl());
-    when(skuMetadataCacheService.useCache()).thenReturn(false);
-    when(skuMetadataCacheService.buildCacheKey(Mockito.<String>any()))
-        .thenReturn("Build Cache Key");
-
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("org.broadleafcommerce.core.catalog.domain.ProductImpl");
-
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[] {sectionCrumb});
-
-    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
-    Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>[]>when(
-            dynamicEntityDao.getAllPolymorphicEntitiesFromCeiling(Mockito.<Class<?>>any()))
-        .thenReturn(new Class[] {forNameResult});
-
-    PersistenceManagerImpl helper = mock(PersistenceManagerImpl.class);
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
-        .thenReturn(new HashMap<>());
-    when(helper.buildClassMetadata(
-            Mockito.<Class<Object>[]>any(),
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any()))
-        .thenThrow(new NumberFormatException());
-
-    // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () -> skuCustomPersistenceHandler.inspect(persistencePackage, dynamicEntityDao, helper));
-    verify(skuMetadataCacheService).buildCacheKey("42");
-    verify(skuMetadataCacheService, atLeast(1)).useCache();
-    verify(catalogService).findProductById(42L);
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getPersistencePerspective();
-    verify(persistencePackage).getSectionCrumbs();
-    verify(dynamicEntityDao).getAllPolymorphicEntitiesFromCeiling(isA(Class.class));
-    verify(helper)
-        .buildClassMetadata(isA(Class[].class), isA(PersistencePackage.class), isA(Map.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.SkuImpl"),
-            isA(PersistencePerspective.class));
-    verify(persistenceModule).setPersistenceManager(isA(PersistenceManager.class));
-    verify(persistenceModule).updateMergedProperties(isA(PersistencePackage.class), isA(Map.class));
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao,
-   * InspectHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link CatalogService} {@link CatalogService#findProductById(Long)} throw {@link
-   *       NumberFormatException#NumberFormatException()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#inspect(PersistencePackage,
-   * DynamicEntityDao, InspectHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SkuCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"
-  })
-  public void testInspect_givenCatalogServiceFindProductByIdThrowNumberFormatException()
-      throws ServiceException {
-    // Arrange
-    doNothing().when(persistenceModule).setPersistenceManager(Mockito.<PersistenceManager>any());
-    doNothing()
-        .when(persistenceModule)
-        .updateMergedProperties(
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any());
-    when(catalogService.findProductById(Mockito.<Long>any()))
-        .thenThrow(new NumberFormatException());
-    when(skuMetadataCacheService.useCache()).thenReturn(false);
-    when(skuMetadataCacheService.buildCacheKey(Mockito.<String>any()))
-        .thenReturn("Build Cache Key");
-
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("org.broadleafcommerce.core.catalog.domain.ProductImpl");
-
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[] {sectionCrumb});
-
-    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
-    Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>[]>when(
-            dynamicEntityDao.getAllPolymorphicEntitiesFromCeiling(Mockito.<Class<?>>any()))
-        .thenReturn(new Class[] {forNameResult});
-
-    PersistenceManagerImpl helper = mock(PersistenceManagerImpl.class);
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
-        .thenReturn(new HashMap<>());
-    when(helper.buildClassMetadata(
-            Mockito.<Class<Object>[]>any(),
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any()))
-        .thenThrow(new NumberFormatException());
-
-    // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () -> skuCustomPersistenceHandler.inspect(persistencePackage, dynamicEntityDao, helper));
-    verify(skuMetadataCacheService).buildCacheKey("42");
-    verify(skuMetadataCacheService, atLeast(1)).useCache();
-    verify(catalogService).findProductById(42L);
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getPersistencePerspective();
-    verify(persistencePackage).getSectionCrumbs();
-    verify(dynamicEntityDao).getAllPolymorphicEntitiesFromCeiling(isA(Class.class));
-    verify(helper)
-        .buildClassMetadata(isA(Class[].class), isA(PersistencePackage.class), isA(Map.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.SkuImpl"),
-            isA(PersistencePerspective.class));
-    verify(persistenceModule).setPersistenceManager(isA(PersistenceManager.class));
-    verify(persistenceModule).updateMergedProperties(isA(PersistencePackage.class), isA(Map.class));
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao,
-   * InspectHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link CatalogService} {@link CatalogService#readAllProductOptions()} throw {@link
-   *       NumberFormatException#NumberFormatException()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#inspect(PersistencePackage,
-   * DynamicEntityDao, InspectHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SkuCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"
-  })
-  public void testInspect_givenCatalogServiceReadAllProductOptionsThrowNumberFormatException()
-      throws ServiceException {
-    // Arrange
-    when(catalogService.readAllProductOptions()).thenThrow(new NumberFormatException());
-    when(skuMetadataCacheService.useCache()).thenReturn(false);
-    when(skuMetadataCacheService.buildCacheKey(Mockito.<String>any()))
-        .thenReturn("Build Cache Key");
-
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("42");
-
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[] {sectionCrumb});
-    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
-
-    PersistenceManagerImpl helper = mock(PersistenceManagerImpl.class);
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
-        .thenReturn(new HashMap<>());
-
-    // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () -> skuCustomPersistenceHandler.inspect(persistencePackage, dynamicEntityDao, helper));
-    verify(skuMetadataCacheService).buildCacheKey(null);
-    verify(skuMetadataCacheService).useCache();
-    verify(catalogService).readAllProductOptions();
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getPersistencePerspective();
-    verify(persistencePackage).getSectionCrumbs();
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.SkuImpl"),
-            isA(PersistencePerspective.class));
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao,
-   * InspectHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link ClassMetadata} (default constructor) CeilingType is {@code Type}.
-   *   <li>Then return PromptSearch is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#inspect(PersistencePackage,
-   * DynamicEntityDao, InspectHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SkuCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"
-  })
-  public void testInspect_givenClassMetadataCeilingTypeIsType_thenReturnPromptSearchIsNull()
-      throws ServiceException {
-    // Arrange
-    doNothing().when(persistenceModule).setPersistenceManager(Mockito.<PersistenceManager>any());
-    doNothing()
-        .when(persistenceModule)
-        .updateMergedProperties(
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any());
-    when(skuMetadataCacheService.getFromCache(Mockito.<String>any())).thenReturn(new HashMap<>());
-    when(skuMetadataCacheService.useCache()).thenReturn(true);
-    when(skuMetadataCacheService.buildCacheKey(Mockito.<String>any()))
-        .thenReturn("Build Cache Key");
-    PersistencePackage persistencePackage = new PersistencePackage();
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    ClassMetadata classMetadata = new ClassMetadata();
-    classMetadata.setCeilingType("Type");
-    classMetadata.setCurrencyCode("GBP");
-    classMetadata.setPolymorphicEntities(new ClassTree());
-    classMetadata.setProperties(new Property[] {new Property()});
-    classMetadata.setSecurityCeilingType("Security Ceiling Type");
-    classMetadata.setTabAndGroupMetadata(new HashMap<>());
-
-    PersistenceManagerImpl helper = mock(PersistenceManagerImpl.class);
-    when(helper.buildClassMetadata(
-            Mockito.<Class<Object>[]>any(),
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any()))
-        .thenReturn(classMetadata);
 
     // Act
-    DynamicResultSet actualInspectResult =
-        skuCustomPersistenceHandler.inspect(persistencePackage, dynamicEntityDao, helper);
+    String actualOwningProductId = skuCustomPersistenceHandler.getOwningProductId(new SectionCrumb[]{sectionCrumb});
 
     // Assert
-    verify(skuMetadataCacheService).buildCacheKey(null);
-    verify(skuMetadataCacheService).getFromCache("Build Cache Key");
-    verify(skuMetadataCacheService).useCache();
-    verify(helper)
-        .buildClassMetadata(isA(Class[].class), isA(PersistencePackage.class), isA(Map.class));
-    verify(persistenceModule).setPersistenceManager(isA(PersistenceManager.class));
-    verify(persistenceModule).updateMergedProperties(isA(PersistencePackage.class), isA(Map.class));
-    assertNull(actualInspectResult.getPromptSearch());
-    assertNull(actualInspectResult.getTotalCountLessThanPageSize());
-    assertNull(actualInspectResult.getBatchId());
-    assertNull(actualInspectResult.getLowerCount());
-    assertNull(actualInspectResult.getUpperCount());
-    assertNull(actualInspectResult.getFirstId());
-    assertNull(actualInspectResult.getLastId());
-    assertNull(actualInspectResult.getFetchType());
-    assertEquals(0, actualInspectResult.getPageSize().intValue());
-    assertEquals(0, actualInspectResult.getStartIndex().intValue());
-    assertEquals(0, actualInspectResult.getTotalRecords().intValue());
-    assertEquals(0, actualInspectResult.getRecords().length);
-    assertTrue(actualInspectResult.getUnselectedTabMetadata().isEmpty());
-    assertSame(classMetadata, actualInspectResult.getClassMetaData());
+    verify(sectionCrumb).getSectionIdentifier();
+    verify(sectionCrumb).setOriginalSectionIdentifier(eq("42"));
+    verify(sectionCrumb).setSectionId(eq("42"));
+    verify(sectionCrumb).setSectionIdentifier(eq("42"));
+    assertNull(actualOwningProductId);
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao,
-   * InspectHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code defaultProduct.} is {@link
-   *       AdornedTargetCollectionMetadata} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#inspect(PersistencePackage,
-   * DynamicEntityDao, InspectHelper)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#getOwningProductId(SectionCrumb[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SkuCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"
-  })
-  public void testInspect_givenHashMapDefaultProductIsAdornedTargetCollectionMetadata()
-      throws ServiceException {
-    // Arrange
-    doNothing().when(persistenceModule).setPersistenceManager(Mockito.<PersistenceManager>any());
-    doNothing()
-        .when(persistenceModule)
-        .updateMergedProperties(
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any());
-    when(catalogService.findProductById(Mockito.<Long>any()))
-        .thenThrow(new NumberFormatException());
-    when(skuMetadataCacheService.useCache()).thenReturn(false);
-    when(skuMetadataCacheService.buildCacheKey(Mockito.<String>any()))
-        .thenReturn("Build Cache Key");
+  public void testGetOwningProductId3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    SectionCrumb sectionCrumb = new SectionCrumb();
+    // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+    SectionCrumb sectionCrumb = mock(SectionCrumb.class);
+    when(sectionCrumb.getSectionId()).thenReturn("42");
+    when(sectionCrumb.getSectionIdentifier()).thenReturn("org.broadleafcommerce.core.catalog.domain.ProductImpl");
+    doNothing().when(sectionCrumb).setOriginalSectionIdentifier(Mockito.<String>any());
+    doNothing().when(sectionCrumb).setSectionId(Mockito.<String>any());
+    doNothing().when(sectionCrumb).setSectionIdentifier(Mockito.<String>any());
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("org.broadleafcommerce.core.catalog.domain.ProductImpl");
-
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[] {sectionCrumb});
-
-    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
-    Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>[]>when(
-            dynamicEntityDao.getAllPolymorphicEntitiesFromCeiling(Mockito.<Class<?>>any()))
-        .thenReturn(new Class[] {forNameResult});
-
-    HashMap<String, FieldMetadata> stringFieldMetadataMap = new HashMap<>();
-    stringFieldMetadataMap.put("defaultProduct.", new AdornedTargetCollectionMetadata());
-
-    PersistenceManagerImpl helper = mock(PersistenceManagerImpl.class);
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
-        .thenReturn(stringFieldMetadataMap);
-    when(helper.buildClassMetadata(
-            Mockito.<Class<Object>[]>any(),
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any()))
-        .thenThrow(new NumberFormatException());
-
-    // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () -> skuCustomPersistenceHandler.inspect(persistencePackage, dynamicEntityDao, helper));
-    verify(skuMetadataCacheService).buildCacheKey("42");
-    verify(skuMetadataCacheService, atLeast(1)).useCache();
-    verify(catalogService).findProductById(42L);
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getPersistencePerspective();
-    verify(persistencePackage).getSectionCrumbs();
-    verify(dynamicEntityDao).getAllPolymorphicEntitiesFromCeiling(isA(Class.class));
-    verify(helper)
-        .buildClassMetadata(isA(Class[].class), isA(PersistencePackage.class), isA(Map.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.SkuImpl"),
-            isA(PersistencePerspective.class));
-    verify(persistenceModule).setPersistenceManager(isA(PersistenceManager.class));
-    verify(persistenceModule).updateMergedProperties(isA(PersistencePackage.class), isA(Map.class));
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao,
-   * InspectHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} empty string is {@link AdornedTargetCollectionMetadata}
-   *       (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#inspect(PersistencePackage,
-   * DynamicEntityDao, InspectHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SkuCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"
-  })
-  public void testInspect_givenHashMapEmptyStringIsAdornedTargetCollectionMetadata()
-      throws ServiceException {
-    // Arrange
-    doNothing().when(persistenceModule).setPersistenceManager(Mockito.<PersistenceManager>any());
-    doNothing()
-        .when(persistenceModule)
-        .updateMergedProperties(
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any());
-
-    HashMap<String, FieldMetadata> stringFieldMetadataMap = new HashMap<>();
-    stringFieldMetadataMap.put("", new AdornedTargetCollectionMetadata());
-    when(skuMetadataCacheService.getFromCache(Mockito.<String>any()))
-        .thenReturn(stringFieldMetadataMap);
-    when(skuMetadataCacheService.useCache()).thenReturn(true);
-    when(skuMetadataCacheService.buildCacheKey(Mockito.<String>any()))
-        .thenReturn("Build Cache Key");
-    PersistencePackage persistencePackage = new PersistencePackage();
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    ClassMetadata classMetadata = new ClassMetadata();
-    classMetadata.setCeilingType("Type");
-    classMetadata.setCurrencyCode("GBP");
-    classMetadata.setPolymorphicEntities(new ClassTree());
-    classMetadata.setProperties(new Property[] {new Property()});
-    classMetadata.setSecurityCeilingType("Security Ceiling Type");
-    classMetadata.setTabAndGroupMetadata(new HashMap<>());
-
-    PersistenceManagerImpl helper = mock(PersistenceManagerImpl.class);
-    when(helper.buildClassMetadata(
-            Mockito.<Class<Object>[]>any(),
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any()))
-        .thenReturn(classMetadata);
+    sectionCrumb.setSectionIdentifier("42");
 
     // Act
-    DynamicResultSet actualInspectResult =
-        skuCustomPersistenceHandler.inspect(persistencePackage, dynamicEntityDao, helper);
+    String actualOwningProductId = skuCustomPersistenceHandler.getOwningProductId(new SectionCrumb[]{sectionCrumb});
 
     // Assert
-    verify(skuMetadataCacheService).buildCacheKey(null);
-    verify(skuMetadataCacheService).getFromCache("Build Cache Key");
-    verify(skuMetadataCacheService).useCache();
-    verify(helper)
-        .buildClassMetadata(isA(Class[].class), isA(PersistencePackage.class), isA(Map.class));
-    verify(persistenceModule).setPersistenceManager(isA(PersistenceManager.class));
-    verify(persistenceModule).updateMergedProperties(isA(PersistencePackage.class), isA(Map.class));
-    assertNull(actualInspectResult.getPromptSearch());
-    assertNull(actualInspectResult.getTotalCountLessThanPageSize());
-    assertNull(actualInspectResult.getBatchId());
-    assertNull(actualInspectResult.getLowerCount());
-    assertNull(actualInspectResult.getUpperCount());
-    assertNull(actualInspectResult.getFirstId());
-    assertNull(actualInspectResult.getLastId());
-    assertNull(actualInspectResult.getFetchType());
-    assertEquals(0, actualInspectResult.getPageSize().intValue());
-    assertEquals(0, actualInspectResult.getStartIndex().intValue());
-    assertEquals(0, actualInspectResult.getTotalRecords().intValue());
-    assertEquals(0, actualInspectResult.getRecords().length);
-    assertTrue(actualInspectResult.getUnselectedTabMetadata().isEmpty());
-    assertSame(classMetadata, actualInspectResult.getClassMetaData());
+    verify(sectionCrumb).getSectionId();
+    verify(sectionCrumb).getSectionIdentifier();
+    verify(sectionCrumb).setOriginalSectionIdentifier(eq("42"));
+    verify(sectionCrumb).setSectionId(eq("42"));
+    verify(sectionCrumb).setSectionIdentifier(eq("42"));
+    assertEquals("42", actualOwningProductId);
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao,
-   * InspectHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link SectionCrumb} (default constructor) SectionIdentifier is {@code 42}.
-   *   <li>Then calls {@link SkuMetadataCacheService#getFromCache(String)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#inspect(PersistencePackage,
-   * DynamicEntityDao, InspectHelper)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#getOwningProductId(SectionCrumb[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SkuCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"
-  })
-  public void testInspect_givenSectionCrumbSectionIdentifierIs42_thenCallsGetFromCache()
-      throws ServiceException {
-    // Arrange
-    doNothing().when(persistenceModule).setPersistenceManager(Mockito.<PersistenceManager>any());
-    doNothing()
-        .when(persistenceModule)
-        .updateMergedProperties(
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any());
-    when(skuMetadataCacheService.getFromCache(Mockito.<String>any())).thenReturn(new HashMap<>());
-    when(skuMetadataCacheService.useCache()).thenReturn(true);
-    when(skuMetadataCacheService.buildCacheKey(Mockito.<String>any()))
-        .thenReturn("Build Cache Key");
+  public void testGetOwningProductId4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("42");
-
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[] {sectionCrumb});
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    PersistenceManagerImpl helper = mock(PersistenceManagerImpl.class);
-    when(helper.buildClassMetadata(
-            Mockito.<Class<Object>[]>any(),
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any()))
-        .thenThrow(new NumberFormatException());
-
-    // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () -> skuCustomPersistenceHandler.inspect(persistencePackage, dynamicEntityDao, helper));
-    verify(skuMetadataCacheService).buildCacheKey(null);
-    verify(skuMetadataCacheService).getFromCache("Build Cache Key");
-    verify(skuMetadataCacheService).useCache();
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getPersistencePerspective();
-    verify(persistencePackage).getSectionCrumbs();
-    verify(helper)
-        .buildClassMetadata(isA(Class[].class), isA(PersistencePackage.class), isA(Map.class));
-    verify(persistenceModule).setPersistenceManager(isA(PersistenceManager.class));
-    verify(persistenceModule).updateMergedProperties(isA(PersistencePackage.class), isA(Map.class));
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao,
-   * InspectHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link SectionCrumb} (default constructor) SectionIdentifier is {@code 42}.
-   *   <li>Then calls {@link SkuMetadataCacheService#getFromCache(String)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#inspect(PersistencePackage,
-   * DynamicEntityDao, InspectHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SkuCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"
-  })
-  public void testInspect_givenSectionCrumbSectionIdentifierIs42_thenCallsGetFromCache2()
-      throws ServiceException {
-    // Arrange
-    doNothing().when(persistenceModule).setPersistenceManager(Mockito.<PersistenceManager>any());
-    doNothing()
-        .when(persistenceModule)
-        .updateMergedProperties(
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any());
-    when(skuMetadataCacheService.getFromCache(Mockito.<String>any())).thenReturn(new HashMap<>());
-    when(skuMetadataCacheService.useCache()).thenReturn(true);
-    when(skuMetadataCacheService.buildCacheKey(Mockito.<String>any()))
-        .thenReturn("Build Cache Key");
-
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("42");
-
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[] {sectionCrumb});
-
-    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
-    Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>[]>when(
-            dynamicEntityDao.getAllPolymorphicEntitiesFromCeiling(Mockito.<Class<?>>any()))
-        .thenReturn(new Class[] {forNameResult});
-
-    PersistenceManagerImpl helper = mock(PersistenceManagerImpl.class);
-    when(helper.buildClassMetadata(
-            Mockito.<Class<Object>[]>any(),
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any()))
-        .thenThrow(new NumberFormatException());
-
-    // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () -> skuCustomPersistenceHandler.inspect(persistencePackage, dynamicEntityDao, helper));
-    verify(skuMetadataCacheService).buildCacheKey(null);
-    verify(skuMetadataCacheService).getFromCache("Build Cache Key");
-    verify(skuMetadataCacheService).useCache();
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getPersistencePerspective();
-    verify(persistencePackage).getSectionCrumbs();
-    verify(dynamicEntityDao).getAllPolymorphicEntitiesFromCeiling(isA(Class.class));
-    verify(helper)
-        .buildClassMetadata(isA(Class[].class), isA(PersistencePackage.class), isA(Map.class));
-    verify(persistenceModule).setPersistenceManager(isA(PersistenceManager.class));
-    verify(persistenceModule).updateMergedProperties(isA(PersistencePackage.class), isA(Map.class));
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao,
-   * InspectHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuMetadataCacheService} {@link
-   *       SkuMetadataCacheService#buildCacheKey(String)} throw {@link
-   *       NumberFormatException#NumberFormatException()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#inspect(PersistencePackage,
-   * DynamicEntityDao, InspectHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SkuCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"
-  })
-  public void testInspect_givenSkuMetadataCacheServiceBuildCacheKeyThrowNumberFormatException()
-      throws ServiceException {
-    // Arrange
-    when(skuMetadataCacheService.buildCacheKey(Mockito.<String>any()))
-        .thenThrow(new NumberFormatException());
-    PersistencePackage persistencePackage = new PersistencePackage();
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () ->
-            skuCustomPersistenceHandler.inspect(
-                persistencePackage, dynamicEntityDao, new PersistenceManagerImpl()));
-    verify(skuMetadataCacheService).buildCacheKey(null);
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao,
-   * InspectHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuMetadataCacheService} {@link
-   *       SkuMetadataCacheService#getFromCache(String)} throw {@link
-   *       NumberFormatException#NumberFormatException()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#inspect(PersistencePackage,
-   * DynamicEntityDao, InspectHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SkuCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"
-  })
-  public void testInspect_givenSkuMetadataCacheServiceGetFromCacheThrowNumberFormatException()
-      throws ServiceException {
-    // Arrange
-    when(skuMetadataCacheService.getFromCache(Mockito.<String>any()))
-        .thenThrow(new NumberFormatException());
-    when(skuMetadataCacheService.useCache()).thenReturn(true);
-    when(skuMetadataCacheService.buildCacheKey(Mockito.<String>any()))
-        .thenReturn("Build Cache Key");
-    PersistencePackage persistencePackage = new PersistencePackage();
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () ->
-            skuCustomPersistenceHandler.inspect(
-                persistencePackage, dynamicEntityDao, new PersistenceManagerImpl()));
-    verify(skuMetadataCacheService).buildCacheKey(null);
-    verify(skuMetadataCacheService).getFromCache("Build Cache Key");
-    verify(skuMetadataCacheService).useCache();
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao,
-   * InspectHelper)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link SkuMetadataCacheService#getFromCache(String)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#inspect(PersistencePackage,
-   * DynamicEntityDao, InspectHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SkuCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"
-  })
-  public void testInspect_thenCallsGetFromCache() throws ServiceException {
-    // Arrange
-    doNothing().when(persistenceModule).setPersistenceManager(Mockito.<PersistenceManager>any());
-    doNothing()
-        .when(persistenceModule)
-        .updateMergedProperties(
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any());
-    when(skuMetadataCacheService.getFromCache(Mockito.<String>any())).thenReturn(new HashMap<>());
-    when(skuMetadataCacheService.useCache()).thenReturn(true);
-    when(skuMetadataCacheService.buildCacheKey(Mockito.<String>any()))
-        .thenReturn("Build Cache Key");
-
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("org.broadleafcommerce.core.catalog.domain.ProductImpl");
-
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[] {sectionCrumb});
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    PersistenceManagerImpl helper = mock(PersistenceManagerImpl.class);
-    when(helper.buildClassMetadata(
-            Mockito.<Class<Object>[]>any(),
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any()))
-        .thenThrow(new NumberFormatException());
-
-    // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () -> skuCustomPersistenceHandler.inspect(persistencePackage, dynamicEntityDao, helper));
-    verify(skuMetadataCacheService).buildCacheKey("42");
-    verify(skuMetadataCacheService).getFromCache("Build Cache Key");
-    verify(skuMetadataCacheService).useCache();
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getPersistencePerspective();
-    verify(persistencePackage).getSectionCrumbs();
-    verify(helper)
-        .buildClassMetadata(isA(Class[].class), isA(PersistencePackage.class), isA(Map.class));
-    verify(persistenceModule).setPersistenceManager(isA(PersistenceManager.class));
-    verify(persistenceModule).updateMergedProperties(isA(PersistencePackage.class), isA(Map.class));
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao,
-   * InspectHelper)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link Product#getProductOptions()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#inspect(PersistencePackage,
-   * DynamicEntityDao, InspectHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SkuCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"
-  })
-  public void testInspect_thenCallsGetProductOptions() throws ServiceException {
-    // Arrange
-    doNothing().when(persistenceModule).setPersistenceManager(Mockito.<PersistenceManager>any());
-    doNothing()
-        .when(persistenceModule)
-        .updateMergedProperties(
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any());
-
-    Product product = mock(Product.class);
-    when(product.getProductOptions()).thenThrow(new NumberFormatException());
-    when(catalogService.findProductById(Mockito.<Long>any())).thenReturn(product);
-    when(skuMetadataCacheService.useCache()).thenReturn(false);
-    when(skuMetadataCacheService.buildCacheKey(Mockito.<String>any()))
-        .thenReturn("Build Cache Key");
-
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("org.broadleafcommerce.core.catalog.domain.ProductImpl");
-
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[] {sectionCrumb});
-
-    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
-    Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>[]>when(
-            dynamicEntityDao.getAllPolymorphicEntitiesFromCeiling(Mockito.<Class<?>>any()))
-        .thenReturn(new Class[] {forNameResult});
-
-    PersistenceManagerImpl helper = mock(PersistenceManagerImpl.class);
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
-        .thenReturn(new HashMap<>());
-    when(helper.buildClassMetadata(
-            Mockito.<Class<Object>[]>any(),
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any()))
-        .thenThrow(new NumberFormatException());
-
-    // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () -> skuCustomPersistenceHandler.inspect(persistencePackage, dynamicEntityDao, helper));
-    verify(skuMetadataCacheService).buildCacheKey("42");
-    verify(skuMetadataCacheService, atLeast(1)).useCache();
-    verify(product).getProductOptions();
-    verify(catalogService).findProductById(42L);
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getPersistencePerspective();
-    verify(persistencePackage).getSectionCrumbs();
-    verify(dynamicEntityDao).getAllPolymorphicEntitiesFromCeiling(isA(Class.class));
-    verify(helper)
-        .buildClassMetadata(isA(Class[].class), isA(PersistencePackage.class), isA(Map.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.SkuImpl"),
-            isA(PersistencePerspective.class));
-    verify(persistenceModule).setPersistenceManager(isA(PersistenceManager.class));
-    verify(persistenceModule).updateMergedProperties(isA(PersistencePackage.class), isA(Map.class));
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao,
-   * InspectHelper)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link CatalogService#readAllProductOptions()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#inspect(PersistencePackage,
-   * DynamicEntityDao, InspectHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SkuCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"
-  })
-  public void testInspect_thenCallsReadAllProductOptions() throws ServiceException {
-    // Arrange
-    doNothing().when(persistenceModule).setPersistenceManager(Mockito.<PersistenceManager>any());
-    doNothing()
-        .when(persistenceModule)
-        .updateMergedProperties(
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any());
-    when(catalogService.readAllProductOptions()).thenReturn(new ArrayList<>());
-    when(skuMetadataCacheService.useCache()).thenReturn(false);
-    when(skuMetadataCacheService.buildCacheKey(Mockito.<String>any()))
-        .thenReturn("Build Cache Key");
-
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("42");
-
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[] {sectionCrumb});
-
-    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
-    Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>[]>when(
-            dynamicEntityDao.getAllPolymorphicEntitiesFromCeiling(Mockito.<Class<?>>any()))
-        .thenReturn(new Class[] {forNameResult});
-
-    PersistenceManagerImpl helper = mock(PersistenceManagerImpl.class);
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
-        .thenReturn(new HashMap<>());
-    when(helper.buildClassMetadata(
-            Mockito.<Class<Object>[]>any(),
-            Mockito.<PersistencePackage>any(),
-            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any()))
-        .thenThrow(new NumberFormatException());
-
-    // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () -> skuCustomPersistenceHandler.inspect(persistencePackage, dynamicEntityDao, helper));
-    verify(skuMetadataCacheService).buildCacheKey(null);
-    verify(skuMetadataCacheService, atLeast(1)).useCache();
-    verify(catalogService).readAllProductOptions();
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getPersistencePerspective();
-    verify(persistencePackage).getSectionCrumbs();
-    verify(dynamicEntityDao).getAllPolymorphicEntitiesFromCeiling(isA(Class.class));
-    verify(helper)
-        .buildClassMetadata(isA(Class[].class), isA(PersistencePackage.class), isA(Map.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.SkuImpl"),
-            isA(PersistencePerspective.class));
-    verify(persistenceModule).setPersistenceManager(isA(PersistenceManager.class));
-    verify(persistenceModule).updateMergedProperties(isA(PersistencePackage.class), isA(Map.class));
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#getOwningProductId(SectionCrumb[])}.
-   *
-   * <ul>
-   *   <li>Then return {@code 42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#getOwningProductId(SectionCrumb[])}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SkuCustomPersistenceHandler.getOwningProductId(SectionCrumb[])"})
-  public void testGetOwningProductId_thenReturn42() {
-    // Arrange
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("org.broadleafcommerce.core.catalog.domain.ProductImpl");
-
-    // Act and Assert
-    assertEquals(
-        "42", skuCustomPersistenceHandler.getOwningProductId(new SectionCrumb[] {sectionCrumb}));
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#getOwningProductId(SectionCrumb[])}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#getOwningProductId(SectionCrumb[])}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SkuCustomPersistenceHandler.getOwningProductId(SectionCrumb[])"})
-  public void testGetOwningProductId_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(skuCustomPersistenceHandler.getOwningProductId(null));
+    assertNull((new SkuCustomPersistenceHandler()).getOwningProductId(new SectionCrumb[]{}));
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#getOwningProductId(SectionCrumb[])}.
-   *
-   * <ul>
-   *   <li>When {@link SectionCrumb} (default constructor) SectionIdentifier is {@code 42}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#getOwningProductId(SectionCrumb[])}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#getOwningProductId(SectionCrumb[])}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SkuCustomPersistenceHandler.getOwningProductId(SectionCrumb[])"})
-  public void testGetOwningProductId_whenSectionCrumbSectionIdentifierIs42_thenReturnNull() {
+  public void testGetOwningProductId5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    SectionCrumb sectionCrumb = new SectionCrumb();
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+    SectionCrumb sectionCrumb = mock(SectionCrumb.class);
+    when(sectionCrumb.getSectionId())
+        .thenThrow(new NumberFormatException("org.broadleafcommerce.core.catalog.domain.ProductImpl"));
+    when(sectionCrumb.getSectionIdentifier()).thenReturn("org.broadleafcommerce.core.catalog.domain.ProductImpl");
+    doNothing().when(sectionCrumb).setOriginalSectionIdentifier(Mockito.<String>any());
+    doNothing().when(sectionCrumb).setSectionId(Mockito.<String>any());
+    doNothing().when(sectionCrumb).setSectionIdentifier(Mockito.<String>any());
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
     sectionCrumb.setSectionIdentifier("42");
 
     // Act and Assert
-    assertNull(skuCustomPersistenceHandler.getOwningProductId(new SectionCrumb[] {sectionCrumb}));
+    assertThrows(NumberFormatException.class,
+        () -> skuCustomPersistenceHandler.getOwningProductId(new SectionCrumb[]{sectionCrumb}));
+    verify(sectionCrumb).getSectionId();
+    verify(sectionCrumb).getSectionIdentifier();
+    verify(sectionCrumb).setOriginalSectionIdentifier(eq("42"));
+    verify(sectionCrumb).setSectionId(eq("42"));
+    verify(sectionCrumb).setSectionIdentifier(eq("42"));
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#filterOutProductMetadata(Map)}.
-   *
-   * <ul>
-   *   <li>Given {@code defaultProduct.}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#filterOutProductMetadata(Map)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#filterOutProductMetadata(Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SkuCustomPersistenceHandler.filterOutProductMetadata(Map)"})
-  public void testFilterOutProductMetadata_givenDefaultProduct() {
+  public void testFilterOutProductMetadata() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     HashMap<String, FieldMetadata> map = new HashMap<>();
-    map.put("defaultProduct.", new AdornedTargetCollectionMetadata());
 
     // Act
     skuCustomPersistenceHandler.filterOutProductMetadata(map);
 
-    // Assert
+    // Assert that nothing has changed
+    FieldMetadata metadata = skuCustomPersistenceHandler.getBlankConsolidatedOptionProperty().getMetadata();
+    assertTrue(metadata instanceof BasicFieldMetadata);
     assertTrue(map.isEmpty());
+    assertTrue(((BasicFieldMetadata) metadata).getValidationConfigurations().isEmpty());
+    assertTrue(metadata.getAdditionalMetadata().isEmpty());
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#filterOutProductMetadata(Map)}.
-   *
-   * <ul>
-   *   <li>Given {@code foo}.
-   *   <li>Then {@link HashMap#HashMap()} size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#filterOutProductMetadata(Map)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#filterOutProductMetadata(Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SkuCustomPersistenceHandler.filterOutProductMetadata(Map)"})
-  public void testFilterOutProductMetadata_givenFoo_thenHashMapSizeIsOne() {
+  public void testFilterOutProductMetadata2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+
     HashMap<String, FieldMetadata> map = new HashMap<>();
     map.put("foo", new AdornedTargetCollectionMetadata());
 
@@ -1855,25 +485,25 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
     skuCustomPersistenceHandler.filterOutProductMetadata(map);
 
     // Assert that nothing has changed
+    FieldMetadata metadata = skuCustomPersistenceHandler.getBlankConsolidatedOptionProperty().getMetadata();
+    assertTrue(metadata instanceof BasicFieldMetadata);
     assertEquals(1, map.size());
     assertTrue(map.containsKey("foo"));
+    assertTrue(((BasicFieldMetadata) metadata).getValidationConfigurations().isEmpty());
+    assertTrue(metadata.getAdditionalMetadata().isEmpty());
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#filterOutProductMetadata(Map)}.
-   *
-   * <ul>
-   *   <li>Given {@code product.}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#filterOutProductMetadata(Map)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#filterOutProductMetadata(Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SkuCustomPersistenceHandler.filterOutProductMetadata(Map)"})
-  public void testFilterOutProductMetadata_givenProduct() {
+  public void testFilterOutProductMetadata3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+
     HashMap<String, FieldMetadata> map = new HashMap<>();
     map.put("product.", new AdornedTargetCollectionMetadata());
     map.put("foo", new AdornedTargetCollectionMetadata());
@@ -1882,939 +512,770 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
     skuCustomPersistenceHandler.filterOutProductMetadata(map);
 
     // Assert
+    FieldMetadata metadata = skuCustomPersistenceHandler.getBlankConsolidatedOptionProperty().getMetadata();
+    assertTrue(metadata instanceof BasicFieldMetadata);
     assertEquals(1, map.size());
     assertTrue(map.containsKey("foo"));
+    assertTrue(((BasicFieldMetadata) metadata).getValidationConfigurations().isEmpty());
+    assertTrue(metadata.getAdditionalMetadata().isEmpty());
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#filterOutProductMetadata(Map)}.
-   *
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()}.
-   *   <li>Then {@link HashMap#HashMap()} Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#filterOutProductMetadata(Map)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#filterOutProductMetadata(Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SkuCustomPersistenceHandler.filterOutProductMetadata(Map)"})
-  public void testFilterOutProductMetadata_whenHashMap_thenHashMapEmpty() {
+  public void testFilterOutProductMetadata4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+
     HashMap<String, FieldMetadata> map = new HashMap<>();
+    map.computeIfPresent("defaultProduct.", mock(BiFunction.class));
+    map.put("foo", new AdornedTargetCollectionMetadata());
 
     // Act
     skuCustomPersistenceHandler.filterOutProductMetadata(map);
 
     // Assert that nothing has changed
+    FieldMetadata metadata = skuCustomPersistenceHandler.getBlankConsolidatedOptionProperty().getMetadata();
+    assertTrue(metadata instanceof BasicFieldMetadata);
+    assertEquals(1, map.size());
+    assertTrue(map.containsKey("foo"));
+    assertTrue(((BasicFieldMetadata) metadata).getValidationConfigurations().isEmpty());
+    assertTrue(metadata.getAdditionalMetadata().isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#filterOutProductMetadata(Map)}
+   */
+  @Test
+  public void testFilterOutProductMetadata5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+
+    HashMap<String, FieldMetadata> map = new HashMap<>();
+    map.put("defaultProduct.", new AdornedTargetCollectionMetadata());
+
+    // Act
+    skuCustomPersistenceHandler.filterOutProductMetadata(map);
+
+    // Assert
+    FieldMetadata metadata = skuCustomPersistenceHandler.getBlankConsolidatedOptionProperty().getMetadata();
+    assertTrue(metadata instanceof BasicFieldMetadata);
     assertTrue(map.isEmpty());
+    assertTrue(((BasicFieldMetadata) metadata).getValidationConfigurations().isEmpty());
+    assertTrue(metadata.getAdditionalMetadata().isEmpty());
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#createConsolidatedOptionField(Class)}.
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#createConsolidatedOptionField(Class)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#getConsolidatedOptionProperty(Collection)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "FieldMetadata SkuCustomPersistenceHandler.createConsolidatedOptionField(Class)"
-  })
-  public void testCreateConsolidatedOptionField() {
+  public void testGetConsolidatedOptionProperty() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    when(skuMetadataCacheService.useCache()).thenReturn(false);
-    Class<Object> inheritedFromType = Object.class;
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
 
     // Act
-    FieldMetadata actualCreateConsolidatedOptionFieldResult =
-        skuCustomPersistenceHandler.createConsolidatedOptionField(inheritedFromType);
+    Property actualConsolidatedOptionProperty = skuCustomPersistenceHandler
+        .getConsolidatedOptionProperty(new ArrayList<>());
 
     // Assert
-    verify(skuMetadataCacheService).useCache();
-    assertTrue(actualCreateConsolidatedOptionFieldResult instanceof BasicFieldMetadata);
-    assertEquals(
-        "",
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getBroadleafEnumeration());
-    assertEquals("", actualCreateConsolidatedOptionFieldResult.getGroup());
-    assertEquals(
-        "consolidatedProductOptions",
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getName());
-    assertEquals(
-        "consolidatedProductOptions", actualCreateConsolidatedOptionFieldResult.getFriendlyName());
-    assertEquals(
-        "java.lang.Object", actualCreateConsolidatedOptionFieldResult.getInheritedFromType());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult)
-            .getCanLinkToExternalEntity());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult)
-            .getEnableTypeaheadLookup());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult)
-            .getForcePopulateChildProperties());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getGroupCollapsed());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult)
-            .getHideEnumerationIfEmpty());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getIsDerived());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getIsFilter());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getOptionCanEditValues());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getOptionHideIfEmpty());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getSearchable());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult)
-            .getToOneLookupCreatedViaAnnotation());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getTranslatable());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getUnique());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult)
-            .getUseServerSideInspectionCache());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).isLargeEntry());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getChildrenExcluded());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getExcluded());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getLazyFetch());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getLength());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getPrecision());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getScale());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getGroupOrder());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getOrder());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getTabOrder());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getAssociatedFieldName());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getColumnWidth());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getDefaultValue());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getEnumerationClass());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult)
-            .getFieldComponentRendererTemplate());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getForeignKeyClass());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult)
-            .getForeignKeyDisplayValueProperty());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getForeignKeyProperty());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult)
-            .getGridFieldComponentRendererTemplate());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getHelpText());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getHint());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult)
-            .getLookupDisplayProperty());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getManyToField());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getMapFieldValueClass());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getMapKeyValueProperty());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult)
-            .getOptionDisplayFieldName());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getOptionListEntity());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getOptionValueFieldName());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getRuleIdentifier());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getToOneParentProperty());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getToOneTargetProperty());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getTooltip());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getAddFriendlyName());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getCurrencyCodeField());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getFieldName());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getOwningClass());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getOwningClassFriendlyName());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getPrefix());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getSecurityLevel());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getShowIfProperty());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getTab());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getTargetClass());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getCustomCriteria());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getEnumerationValues());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getOptionFilterParams());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getShowIfFieldEquals());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getLookupType());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getDisplayType());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult)
-            .getFieldComponentRenderer());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult)
-            .getGridFieldComponentRenderer());
-    assertEquals(0, actualCreateConsolidatedOptionFieldResult.getAvailableToTypes().length);
-    assertEquals(
-        SupportedFieldType.INTEGER,
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getSecondaryType());
-    assertEquals(
-        SupportedFieldType.STRING,
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getFieldType());
-    assertEquals(
-        SupportedFieldType.UNKNOWN,
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getExplicitFieldType());
-    assertEquals(
-        VisibilityEnum.FORM_HIDDEN,
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getVisibility());
-    assertEquals(
-        MergedPropertyType.PRIMARY,
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getMergedPropertyType());
-    assertFalse(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getForeignKeyCollection());
-    assertFalse(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getMutable());
-    assertFalse(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getRequired());
-    assertFalse(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getRequiredOverride());
-    assertFalse(actualCreateConsolidatedOptionFieldResult.getManualFetch());
-    assertTrue(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult)
-            .getValidationConfigurations()
-            .isEmpty());
-    assertTrue(actualCreateConsolidatedOptionFieldResult.getAdditionalMetadata().isEmpty());
-    assertTrue(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult)
-            .getAllowNoValueEnumOption());
-    assertTrue(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getReadOnly());
-    assertTrue(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).isProminent());
-    assertEquals(
-        SkuCustomPersistenceHandlerExtensionHandler.DEFAULT_PRIORITY,
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getGridOrder().intValue());
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#createConsolidatedOptionField(Class)}.
-   *
-   * <ul>
-   *   <li>Then return {@link BasicFieldMetadata}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#createConsolidatedOptionField(Class)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "FieldMetadata SkuCustomPersistenceHandler.createConsolidatedOptionField(Class)"
-  })
-  public void testCreateConsolidatedOptionField_thenReturnBasicFieldMetadata() {
-    // Arrange
-    when(skuMetadataCacheService.useCache()).thenReturn(true);
-    Class<Object> inheritedFromType = Object.class;
-
-    // Act
-    FieldMetadata actualCreateConsolidatedOptionFieldResult =
-        skuCustomPersistenceHandler.createConsolidatedOptionField(inheritedFromType);
-
-    // Assert
-    verify(skuMetadataCacheService).useCache();
-    assertTrue(actualCreateConsolidatedOptionFieldResult instanceof BasicFieldMetadata);
-    assertEquals(
-        "",
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getBroadleafEnumeration());
-    assertEquals("", actualCreateConsolidatedOptionFieldResult.getGroup());
-    assertEquals(
-        "consolidatedProductOptions",
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getName());
-    assertEquals(
-        "consolidatedProductOptions", actualCreateConsolidatedOptionFieldResult.getFriendlyName());
-    assertEquals(
-        "java.lang.Object", actualCreateConsolidatedOptionFieldResult.getInheritedFromType());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult)
-            .getCanLinkToExternalEntity());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult)
-            .getEnableTypeaheadLookup());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult)
-            .getForcePopulateChildProperties());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getGroupCollapsed());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult)
-            .getHideEnumerationIfEmpty());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getIsDerived());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getIsFilter());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getOptionCanEditValues());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getOptionHideIfEmpty());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getSearchable());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult)
-            .getToOneLookupCreatedViaAnnotation());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getTranslatable());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getUnique());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult)
-            .getUseServerSideInspectionCache());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).isLargeEntry());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getChildrenExcluded());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getExcluded());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getLazyFetch());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getLength());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getPrecision());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getScale());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getGroupOrder());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getOrder());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getTabOrder());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getAssociatedFieldName());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getColumnWidth());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getDefaultValue());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getEnumerationClass());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult)
-            .getFieldComponentRendererTemplate());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getForeignKeyClass());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult)
-            .getForeignKeyDisplayValueProperty());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getForeignKeyProperty());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult)
-            .getGridFieldComponentRendererTemplate());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getHelpText());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getHint());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult)
-            .getLookupDisplayProperty());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getManyToField());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getMapFieldValueClass());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getMapKeyValueProperty());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult)
-            .getOptionDisplayFieldName());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getOptionListEntity());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getOptionValueFieldName());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getRuleIdentifier());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getToOneParentProperty());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getToOneTargetProperty());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getTooltip());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getAddFriendlyName());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getCurrencyCodeField());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getFieldName());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getOwningClass());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getOwningClassFriendlyName());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getPrefix());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getSecurityLevel());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getShowIfProperty());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getTab());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getTargetClass());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getCustomCriteria());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getEnumerationValues());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getOptionFilterParams());
-    assertNull(actualCreateConsolidatedOptionFieldResult.getShowIfFieldEquals());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getLookupType());
-    assertNull(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getDisplayType());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult)
-            .getFieldComponentRenderer());
-    assertNull(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult)
-            .getGridFieldComponentRenderer());
-    assertEquals(0, actualCreateConsolidatedOptionFieldResult.getAvailableToTypes().length);
-    assertEquals(
-        SupportedFieldType.INTEGER,
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getSecondaryType());
-    assertEquals(
-        SupportedFieldType.STRING,
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getFieldType());
-    assertEquals(
-        SupportedFieldType.UNKNOWN,
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getExplicitFieldType());
-    assertEquals(
-        VisibilityEnum.FORM_HIDDEN,
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getVisibility());
-    assertEquals(
-        MergedPropertyType.PRIMARY,
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getMergedPropertyType());
-    assertFalse(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getForeignKeyCollection());
-    assertFalse(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getMutable());
-    assertFalse(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getRequired());
-    assertFalse(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getRequiredOverride());
-    assertFalse(actualCreateConsolidatedOptionFieldResult.getManualFetch());
-    assertTrue(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult)
-            .getValidationConfigurations()
-            .isEmpty());
-    assertTrue(actualCreateConsolidatedOptionFieldResult.getAdditionalMetadata().isEmpty());
-    assertTrue(
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult)
-            .getAllowNoValueEnumOption());
-    assertTrue(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getReadOnly());
-    assertTrue(((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).isProminent());
-    assertEquals(
-        SkuCustomPersistenceHandlerExtensionHandler.DEFAULT_PRIORITY,
-        ((BasicFieldMetadata) actualCreateConsolidatedOptionFieldResult).getGridOrder().intValue());
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#createConsolidatedOptionField(Class)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link NumberFormatException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#createConsolidatedOptionField(Class)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "FieldMetadata SkuCustomPersistenceHandler.createConsolidatedOptionField(Class)"
-  })
-  public void testCreateConsolidatedOptionField_thenThrowNumberFormatException() {
-    // Arrange
-    when(skuMetadataCacheService.useCache()).thenThrow(new NumberFormatException());
-    Class<Object> inheritedFromType = Object.class;
-
-    // Act and Assert
-    assertThrows(
-        NumberFormatException.class,
-        () -> skuCustomPersistenceHandler.createConsolidatedOptionField(inheritedFromType));
-    verify(skuMetadataCacheService).useCache();
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#getConsolidatedOptionProperty(Collection)}.
-   *
-   * <ul>
-   *   <li>Then return RawValue is empty string.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SkuCustomPersistenceHandler#getConsolidatedOptionProperty(Collection)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Property SkuCustomPersistenceHandler.getConsolidatedOptionProperty(Collection)"
-  })
-  public void testGetConsolidatedOptionProperty_thenReturnRawValueIsEmptyString() {
-    // Arrange
-    ArrayList<ProductOptionValue> values = new ArrayList<>();
-    values.add(new ProductOptionValueImpl());
-
-    // Act
-    Property actualConsolidatedOptionProperty =
-        skuCustomPersistenceHandler.getConsolidatedOptionProperty(values);
-
-    // Assert
-    assertTrue(actualConsolidatedOptionProperty.getMetadata() instanceof BasicFieldMetadata);
+    FieldMetadata metadata = actualConsolidatedOptionProperty.getMetadata();
+    assertTrue(metadata instanceof BasicFieldMetadata);
     assertEquals("", actualConsolidatedOptionProperty.getRawValue());
     assertEquals("", actualConsolidatedOptionProperty.getUnHtmlEncodedValue());
     assertEquals("", actualConsolidatedOptionProperty.getValue());
     assertEquals("consolidatedProductOptions", actualConsolidatedOptionProperty.getName());
+    assertNull(((BasicFieldMetadata) metadata).getCustomCriteria());
+    assertNull(metadata.getAvailableToTypes());
+    assertNull(((BasicFieldMetadata) metadata).getEnumerationValues());
+    assertNull(((BasicFieldMetadata) metadata).getOptionFilterParams());
+    assertNull(((BasicFieldMetadata) metadata).getCanLinkToExternalEntity());
+    assertNull(((BasicFieldMetadata) metadata).getEnableTypeaheadLookup());
+    assertNull(((BasicFieldMetadata) metadata).getForcePopulateChildProperties());
+    assertNull(((BasicFieldMetadata) metadata).getGroupCollapsed());
+    assertNull(((BasicFieldMetadata) metadata).getHideEnumerationIfEmpty());
+    assertNull(((BasicFieldMetadata) metadata).getIsDerived());
+    assertNull(((BasicFieldMetadata) metadata).getIsFilter());
+    assertNull(((BasicFieldMetadata) metadata).getMutable());
+    assertNull(((BasicFieldMetadata) metadata).getOptionCanEditValues());
+    assertNull(((BasicFieldMetadata) metadata).getOptionHideIfEmpty());
+    assertNull(((BasicFieldMetadata) metadata).getReadOnly());
+    assertNull(((BasicFieldMetadata) metadata).getRequiredOverride());
+    assertNull(((BasicFieldMetadata) metadata).getSearchable());
+    assertNull(((BasicFieldMetadata) metadata).getToOneLookupCreatedViaAnnotation());
+    assertNull(((BasicFieldMetadata) metadata).getTranslatable());
+    assertNull(((BasicFieldMetadata) metadata).getUnique());
+    assertNull(((BasicFieldMetadata) metadata).getUseServerSideInspectionCache());
+    assertNull(((BasicFieldMetadata) metadata).isLargeEntry());
+    assertNull(((BasicFieldMetadata) metadata).isProminent());
+    assertNull(metadata.getChildrenExcluded());
+    assertNull(metadata.getExcluded());
+    assertNull(metadata.getLazyFetch());
+    assertNull(((BasicFieldMetadata) metadata).getGridOrder());
+    assertNull(((BasicFieldMetadata) metadata).getLength());
+    assertNull(((BasicFieldMetadata) metadata).getPrecision());
+    assertNull(((BasicFieldMetadata) metadata).getScale());
+    assertNull(metadata.getGroupOrder());
+    assertNull(metadata.getOrder());
+    assertNull(metadata.getTabOrder());
+    assertNull(((BasicFieldMetadata) metadata).getAssociatedFieldName());
+    assertNull(((BasicFieldMetadata) metadata).getBroadleafEnumeration());
+    assertNull(((BasicFieldMetadata) metadata).getColumnWidth());
+    assertNull(((BasicFieldMetadata) metadata).getDefaultValue());
+    assertNull(((BasicFieldMetadata) metadata).getEnumerationClass());
+    assertNull(((BasicFieldMetadata) metadata).getFieldComponentRendererTemplate());
+    assertNull(((BasicFieldMetadata) metadata).getForeignKeyClass());
+    assertNull(((BasicFieldMetadata) metadata).getForeignKeyDisplayValueProperty());
+    assertNull(((BasicFieldMetadata) metadata).getForeignKeyProperty());
+    assertNull(((BasicFieldMetadata) metadata).getGridFieldComponentRendererTemplate());
+    assertNull(((BasicFieldMetadata) metadata).getHelpText());
+    assertNull(((BasicFieldMetadata) metadata).getHint());
+    assertNull(((BasicFieldMetadata) metadata).getLookupDisplayProperty());
+    assertNull(((BasicFieldMetadata) metadata).getManyToField());
+    assertNull(((BasicFieldMetadata) metadata).getMapFieldValueClass());
+    assertNull(((BasicFieldMetadata) metadata).getMapKeyValueProperty());
+    assertNull(((BasicFieldMetadata) metadata).getName());
+    assertNull(((BasicFieldMetadata) metadata).getOptionDisplayFieldName());
+    assertNull(((BasicFieldMetadata) metadata).getOptionListEntity());
+    assertNull(((BasicFieldMetadata) metadata).getOptionValueFieldName());
+    assertNull(((BasicFieldMetadata) metadata).getRuleIdentifier());
+    assertNull(((BasicFieldMetadata) metadata).getToOneParentProperty());
+    assertNull(((BasicFieldMetadata) metadata).getToOneTargetProperty());
+    assertNull(((BasicFieldMetadata) metadata).getTooltip());
+    assertNull(metadata.getAddFriendlyName());
+    assertNull(metadata.getCurrencyCodeField());
+    assertNull(metadata.getFieldName());
+    assertNull(metadata.getFriendlyName());
+    assertNull(metadata.getGroup());
+    assertNull(metadata.getInheritedFromType());
+    assertNull(metadata.getOwningClass());
+    assertNull(metadata.getOwningClassFriendlyName());
+    assertNull(metadata.getPrefix());
+    assertNull(metadata.getSecurityLevel());
+    assertNull(metadata.getShowIfProperty());
+    assertNull(metadata.getTab());
+    assertNull(metadata.getTargetClass());
     assertNull(actualConsolidatedOptionProperty.getDisplayValue());
     assertNull(actualConsolidatedOptionProperty.getOriginalDisplayValue());
     assertNull(actualConsolidatedOptionProperty.getOriginalValue());
     assertNull(actualConsolidatedOptionProperty.getDeployDate());
+    assertNull(metadata.getShowIfFieldEquals());
+    assertNull(((BasicFieldMetadata) metadata).getLookupType());
+    assertNull(((BasicFieldMetadata) metadata).getDisplayType());
+    assertNull(((BasicFieldMetadata) metadata).getExplicitFieldType());
+    assertNull(((BasicFieldMetadata) metadata).getFieldComponentRenderer());
+    assertNull(((BasicFieldMetadata) metadata).getFieldType());
+    assertNull(((BasicFieldMetadata) metadata).getGridFieldComponentRenderer());
+    assertNull(((BasicFieldMetadata) metadata).getVisibility());
+    assertNull(((BasicFieldMetadata) metadata).getMergedPropertyType());
+    assertEquals(SupportedFieldType.INTEGER, ((BasicFieldMetadata) metadata).getSecondaryType());
+    assertFalse(((BasicFieldMetadata) metadata).getForeignKeyCollection());
+    assertFalse(((BasicFieldMetadata) metadata).getRequired());
+    assertFalse(metadata.getManualFetch());
     assertFalse(actualConsolidatedOptionProperty.getIsDirty());
     assertFalse(actualConsolidatedOptionProperty.isAdvancedCollection());
+    assertTrue(((BasicFieldMetadata) metadata).getValidationConfigurations().isEmpty());
+    assertTrue(metadata.getAdditionalMetadata().isEmpty());
+    assertTrue(((BasicFieldMetadata) metadata).getAllowNoValueEnumOption());
     assertTrue(actualConsolidatedOptionProperty.getEnabled());
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#getConsolidatedOptionProperty(Collection)}.
-   *
-   * <ul>
-   *   <li>Then return RawValue is {@code ;}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SkuCustomPersistenceHandler#getConsolidatedOptionProperty(Collection)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#getConsolidatedOptionProperty(Collection)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Property SkuCustomPersistenceHandler.getConsolidatedOptionProperty(Collection)"
-  })
-  public void testGetConsolidatedOptionProperty_thenReturnRawValueIsSemicolon() {
+  public void testGetConsolidatedOptionProperty2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+
+    ArrayList<ProductOptionValue> values = new ArrayList<>();
+    values.add(new ProductOptionValueImpl());
+
+    // Act
+    Property actualConsolidatedOptionProperty = skuCustomPersistenceHandler.getConsolidatedOptionProperty(values);
+
+    // Assert
+    FieldMetadata metadata = actualConsolidatedOptionProperty.getMetadata();
+    assertTrue(metadata instanceof BasicFieldMetadata);
+    assertEquals("", actualConsolidatedOptionProperty.getRawValue());
+    assertEquals("", actualConsolidatedOptionProperty.getUnHtmlEncodedValue());
+    assertEquals("", actualConsolidatedOptionProperty.getValue());
+    assertEquals("consolidatedProductOptions", actualConsolidatedOptionProperty.getName());
+    assertNull(((BasicFieldMetadata) metadata).getCustomCriteria());
+    assertNull(metadata.getAvailableToTypes());
+    assertNull(((BasicFieldMetadata) metadata).getEnumerationValues());
+    assertNull(((BasicFieldMetadata) metadata).getOptionFilterParams());
+    assertNull(((BasicFieldMetadata) metadata).getCanLinkToExternalEntity());
+    assertNull(((BasicFieldMetadata) metadata).getEnableTypeaheadLookup());
+    assertNull(((BasicFieldMetadata) metadata).getForcePopulateChildProperties());
+    assertNull(((BasicFieldMetadata) metadata).getGroupCollapsed());
+    assertNull(((BasicFieldMetadata) metadata).getHideEnumerationIfEmpty());
+    assertNull(((BasicFieldMetadata) metadata).getIsDerived());
+    assertNull(((BasicFieldMetadata) metadata).getIsFilter());
+    assertNull(((BasicFieldMetadata) metadata).getMutable());
+    assertNull(((BasicFieldMetadata) metadata).getOptionCanEditValues());
+    assertNull(((BasicFieldMetadata) metadata).getOptionHideIfEmpty());
+    assertNull(((BasicFieldMetadata) metadata).getReadOnly());
+    assertNull(((BasicFieldMetadata) metadata).getRequiredOverride());
+    assertNull(((BasicFieldMetadata) metadata).getSearchable());
+    assertNull(((BasicFieldMetadata) metadata).getToOneLookupCreatedViaAnnotation());
+    assertNull(((BasicFieldMetadata) metadata).getTranslatable());
+    assertNull(((BasicFieldMetadata) metadata).getUnique());
+    assertNull(((BasicFieldMetadata) metadata).getUseServerSideInspectionCache());
+    assertNull(((BasicFieldMetadata) metadata).isLargeEntry());
+    assertNull(((BasicFieldMetadata) metadata).isProminent());
+    assertNull(metadata.getChildrenExcluded());
+    assertNull(metadata.getExcluded());
+    assertNull(metadata.getLazyFetch());
+    assertNull(((BasicFieldMetadata) metadata).getGridOrder());
+    assertNull(((BasicFieldMetadata) metadata).getLength());
+    assertNull(((BasicFieldMetadata) metadata).getPrecision());
+    assertNull(((BasicFieldMetadata) metadata).getScale());
+    assertNull(metadata.getGroupOrder());
+    assertNull(metadata.getOrder());
+    assertNull(metadata.getTabOrder());
+    assertNull(((BasicFieldMetadata) metadata).getAssociatedFieldName());
+    assertNull(((BasicFieldMetadata) metadata).getBroadleafEnumeration());
+    assertNull(((BasicFieldMetadata) metadata).getColumnWidth());
+    assertNull(((BasicFieldMetadata) metadata).getDefaultValue());
+    assertNull(((BasicFieldMetadata) metadata).getEnumerationClass());
+    assertNull(((BasicFieldMetadata) metadata).getFieldComponentRendererTemplate());
+    assertNull(((BasicFieldMetadata) metadata).getForeignKeyClass());
+    assertNull(((BasicFieldMetadata) metadata).getForeignKeyDisplayValueProperty());
+    assertNull(((BasicFieldMetadata) metadata).getForeignKeyProperty());
+    assertNull(((BasicFieldMetadata) metadata).getGridFieldComponentRendererTemplate());
+    assertNull(((BasicFieldMetadata) metadata).getHelpText());
+    assertNull(((BasicFieldMetadata) metadata).getHint());
+    assertNull(((BasicFieldMetadata) metadata).getLookupDisplayProperty());
+    assertNull(((BasicFieldMetadata) metadata).getManyToField());
+    assertNull(((BasicFieldMetadata) metadata).getMapFieldValueClass());
+    assertNull(((BasicFieldMetadata) metadata).getMapKeyValueProperty());
+    assertNull(((BasicFieldMetadata) metadata).getName());
+    assertNull(((BasicFieldMetadata) metadata).getOptionDisplayFieldName());
+    assertNull(((BasicFieldMetadata) metadata).getOptionListEntity());
+    assertNull(((BasicFieldMetadata) metadata).getOptionValueFieldName());
+    assertNull(((BasicFieldMetadata) metadata).getRuleIdentifier());
+    assertNull(((BasicFieldMetadata) metadata).getToOneParentProperty());
+    assertNull(((BasicFieldMetadata) metadata).getToOneTargetProperty());
+    assertNull(((BasicFieldMetadata) metadata).getTooltip());
+    assertNull(metadata.getAddFriendlyName());
+    assertNull(metadata.getCurrencyCodeField());
+    assertNull(metadata.getFieldName());
+    assertNull(metadata.getFriendlyName());
+    assertNull(metadata.getGroup());
+    assertNull(metadata.getInheritedFromType());
+    assertNull(metadata.getOwningClass());
+    assertNull(metadata.getOwningClassFriendlyName());
+    assertNull(metadata.getPrefix());
+    assertNull(metadata.getSecurityLevel());
+    assertNull(metadata.getShowIfProperty());
+    assertNull(metadata.getTab());
+    assertNull(metadata.getTargetClass());
+    assertNull(actualConsolidatedOptionProperty.getDisplayValue());
+    assertNull(actualConsolidatedOptionProperty.getOriginalDisplayValue());
+    assertNull(actualConsolidatedOptionProperty.getOriginalValue());
+    assertNull(actualConsolidatedOptionProperty.getDeployDate());
+    assertNull(metadata.getShowIfFieldEquals());
+    assertNull(((BasicFieldMetadata) metadata).getLookupType());
+    assertNull(((BasicFieldMetadata) metadata).getDisplayType());
+    assertNull(((BasicFieldMetadata) metadata).getExplicitFieldType());
+    assertNull(((BasicFieldMetadata) metadata).getFieldComponentRenderer());
+    assertNull(((BasicFieldMetadata) metadata).getFieldType());
+    assertNull(((BasicFieldMetadata) metadata).getGridFieldComponentRenderer());
+    assertNull(((BasicFieldMetadata) metadata).getVisibility());
+    assertNull(((BasicFieldMetadata) metadata).getMergedPropertyType());
+    assertEquals(SupportedFieldType.INTEGER, ((BasicFieldMetadata) metadata).getSecondaryType());
+    assertFalse(((BasicFieldMetadata) metadata).getForeignKeyCollection());
+    assertFalse(((BasicFieldMetadata) metadata).getRequired());
+    assertFalse(metadata.getManualFetch());
+    assertFalse(actualConsolidatedOptionProperty.getIsDirty());
+    assertFalse(actualConsolidatedOptionProperty.isAdvancedCollection());
+    assertTrue(((BasicFieldMetadata) metadata).getValidationConfigurations().isEmpty());
+    assertTrue(metadata.getAdditionalMetadata().isEmpty());
+    assertTrue(((BasicFieldMetadata) metadata).getAllowNoValueEnumOption());
+    assertTrue(actualConsolidatedOptionProperty.getEnabled());
+  }
+
+  /**
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#getConsolidatedOptionProperty(Collection)}
+   */
+  @Test
+  public void testGetConsolidatedOptionProperty3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+
     ArrayList<ProductOptionValue> values = new ArrayList<>();
     values.add(new ProductOptionValueImpl());
     values.add(new ProductOptionValueImpl());
 
     // Act
-    Property actualConsolidatedOptionProperty =
-        skuCustomPersistenceHandler.getConsolidatedOptionProperty(values);
+    Property actualConsolidatedOptionProperty = skuCustomPersistenceHandler.getConsolidatedOptionProperty(values);
 
     // Assert
-    assertTrue(actualConsolidatedOptionProperty.getMetadata() instanceof BasicFieldMetadata);
+    FieldMetadata metadata = actualConsolidatedOptionProperty.getMetadata();
+    assertTrue(metadata instanceof BasicFieldMetadata);
     assertEquals("; ", actualConsolidatedOptionProperty.getRawValue());
     assertEquals("; ", actualConsolidatedOptionProperty.getUnHtmlEncodedValue());
     assertEquals("; ", actualConsolidatedOptionProperty.getValue());
     assertEquals("consolidatedProductOptions", actualConsolidatedOptionProperty.getName());
+    assertNull(((BasicFieldMetadata) metadata).getCustomCriteria());
+    assertNull(metadata.getAvailableToTypes());
+    assertNull(((BasicFieldMetadata) metadata).getEnumerationValues());
+    assertNull(((BasicFieldMetadata) metadata).getOptionFilterParams());
+    assertNull(((BasicFieldMetadata) metadata).getCanLinkToExternalEntity());
+    assertNull(((BasicFieldMetadata) metadata).getEnableTypeaheadLookup());
+    assertNull(((BasicFieldMetadata) metadata).getForcePopulateChildProperties());
+    assertNull(((BasicFieldMetadata) metadata).getGroupCollapsed());
+    assertNull(((BasicFieldMetadata) metadata).getHideEnumerationIfEmpty());
+    assertNull(((BasicFieldMetadata) metadata).getIsDerived());
+    assertNull(((BasicFieldMetadata) metadata).getIsFilter());
+    assertNull(((BasicFieldMetadata) metadata).getMutable());
+    assertNull(((BasicFieldMetadata) metadata).getOptionCanEditValues());
+    assertNull(((BasicFieldMetadata) metadata).getOptionHideIfEmpty());
+    assertNull(((BasicFieldMetadata) metadata).getReadOnly());
+    assertNull(((BasicFieldMetadata) metadata).getRequiredOverride());
+    assertNull(((BasicFieldMetadata) metadata).getSearchable());
+    assertNull(((BasicFieldMetadata) metadata).getToOneLookupCreatedViaAnnotation());
+    assertNull(((BasicFieldMetadata) metadata).getTranslatable());
+    assertNull(((BasicFieldMetadata) metadata).getUnique());
+    assertNull(((BasicFieldMetadata) metadata).getUseServerSideInspectionCache());
+    assertNull(((BasicFieldMetadata) metadata).isLargeEntry());
+    assertNull(((BasicFieldMetadata) metadata).isProminent());
+    assertNull(metadata.getChildrenExcluded());
+    assertNull(metadata.getExcluded());
+    assertNull(metadata.getLazyFetch());
+    assertNull(((BasicFieldMetadata) metadata).getGridOrder());
+    assertNull(((BasicFieldMetadata) metadata).getLength());
+    assertNull(((BasicFieldMetadata) metadata).getPrecision());
+    assertNull(((BasicFieldMetadata) metadata).getScale());
+    assertNull(metadata.getGroupOrder());
+    assertNull(metadata.getOrder());
+    assertNull(metadata.getTabOrder());
+    assertNull(((BasicFieldMetadata) metadata).getAssociatedFieldName());
+    assertNull(((BasicFieldMetadata) metadata).getBroadleafEnumeration());
+    assertNull(((BasicFieldMetadata) metadata).getColumnWidth());
+    assertNull(((BasicFieldMetadata) metadata).getDefaultValue());
+    assertNull(((BasicFieldMetadata) metadata).getEnumerationClass());
+    assertNull(((BasicFieldMetadata) metadata).getFieldComponentRendererTemplate());
+    assertNull(((BasicFieldMetadata) metadata).getForeignKeyClass());
+    assertNull(((BasicFieldMetadata) metadata).getForeignKeyDisplayValueProperty());
+    assertNull(((BasicFieldMetadata) metadata).getForeignKeyProperty());
+    assertNull(((BasicFieldMetadata) metadata).getGridFieldComponentRendererTemplate());
+    assertNull(((BasicFieldMetadata) metadata).getHelpText());
+    assertNull(((BasicFieldMetadata) metadata).getHint());
+    assertNull(((BasicFieldMetadata) metadata).getLookupDisplayProperty());
+    assertNull(((BasicFieldMetadata) metadata).getManyToField());
+    assertNull(((BasicFieldMetadata) metadata).getMapFieldValueClass());
+    assertNull(((BasicFieldMetadata) metadata).getMapKeyValueProperty());
+    assertNull(((BasicFieldMetadata) metadata).getName());
+    assertNull(((BasicFieldMetadata) metadata).getOptionDisplayFieldName());
+    assertNull(((BasicFieldMetadata) metadata).getOptionListEntity());
+    assertNull(((BasicFieldMetadata) metadata).getOptionValueFieldName());
+    assertNull(((BasicFieldMetadata) metadata).getRuleIdentifier());
+    assertNull(((BasicFieldMetadata) metadata).getToOneParentProperty());
+    assertNull(((BasicFieldMetadata) metadata).getToOneTargetProperty());
+    assertNull(((BasicFieldMetadata) metadata).getTooltip());
+    assertNull(metadata.getAddFriendlyName());
+    assertNull(metadata.getCurrencyCodeField());
+    assertNull(metadata.getFieldName());
+    assertNull(metadata.getFriendlyName());
+    assertNull(metadata.getGroup());
+    assertNull(metadata.getInheritedFromType());
+    assertNull(metadata.getOwningClass());
+    assertNull(metadata.getOwningClassFriendlyName());
+    assertNull(metadata.getPrefix());
+    assertNull(metadata.getSecurityLevel());
+    assertNull(metadata.getShowIfProperty());
+    assertNull(metadata.getTab());
+    assertNull(metadata.getTargetClass());
     assertNull(actualConsolidatedOptionProperty.getDisplayValue());
     assertNull(actualConsolidatedOptionProperty.getOriginalDisplayValue());
     assertNull(actualConsolidatedOptionProperty.getOriginalValue());
     assertNull(actualConsolidatedOptionProperty.getDeployDate());
+    assertNull(metadata.getShowIfFieldEquals());
+    assertNull(((BasicFieldMetadata) metadata).getLookupType());
+    assertNull(((BasicFieldMetadata) metadata).getDisplayType());
+    assertNull(((BasicFieldMetadata) metadata).getExplicitFieldType());
+    assertNull(((BasicFieldMetadata) metadata).getFieldComponentRenderer());
+    assertNull(((BasicFieldMetadata) metadata).getFieldType());
+    assertNull(((BasicFieldMetadata) metadata).getGridFieldComponentRenderer());
+    assertNull(((BasicFieldMetadata) metadata).getVisibility());
+    assertNull(((BasicFieldMetadata) metadata).getMergedPropertyType());
+    assertEquals(SupportedFieldType.INTEGER, ((BasicFieldMetadata) metadata).getSecondaryType());
+    assertFalse(((BasicFieldMetadata) metadata).getForeignKeyCollection());
+    assertFalse(((BasicFieldMetadata) metadata).getRequired());
+    assertFalse(metadata.getManualFetch());
     assertFalse(actualConsolidatedOptionProperty.getIsDirty());
     assertFalse(actualConsolidatedOptionProperty.isAdvancedCollection());
+    assertTrue(((BasicFieldMetadata) metadata).getValidationConfigurations().isEmpty());
+    assertTrue(metadata.getAdditionalMetadata().isEmpty());
+    assertTrue(((BasicFieldMetadata) metadata).getAllowNoValueEnumOption());
     assertTrue(actualConsolidatedOptionProperty.getEnabled());
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#getConsolidatedOptionProperty(Collection)}.
-   *
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then return RawValue is empty string.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SkuCustomPersistenceHandler#getConsolidatedOptionProperty(Collection)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#getConsolidatedOptionProperty(Collection)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Property SkuCustomPersistenceHandler.getConsolidatedOptionProperty(Collection)"
-  })
-  public void testGetConsolidatedOptionProperty_whenArrayList_thenReturnRawValueIsEmptyString() {
-    // Arrange and Act
-    Property actualConsolidatedOptionProperty =
-        skuCustomPersistenceHandler.getConsolidatedOptionProperty(new ArrayList<>());
+  public void testGetConsolidatedOptionProperty4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+    ProductOptionValueImpl productOptionValueImpl = mock(ProductOptionValueImpl.class);
+    when(productOptionValueImpl.getAttributeValue()).thenReturn("42");
+
+    ArrayList<ProductOptionValue> values = new ArrayList<>();
+    values.add(productOptionValueImpl);
+
+    // Act
+    Property actualConsolidatedOptionProperty = skuCustomPersistenceHandler.getConsolidatedOptionProperty(values);
 
     // Assert
-    assertTrue(actualConsolidatedOptionProperty.getMetadata() instanceof BasicFieldMetadata);
-    assertEquals("", actualConsolidatedOptionProperty.getRawValue());
-    assertEquals("", actualConsolidatedOptionProperty.getUnHtmlEncodedValue());
-    assertEquals("", actualConsolidatedOptionProperty.getValue());
+    verify(productOptionValueImpl).getAttributeValue();
+    FieldMetadata metadata = actualConsolidatedOptionProperty.getMetadata();
+    assertTrue(metadata instanceof BasicFieldMetadata);
+    assertEquals("42", actualConsolidatedOptionProperty.getRawValue());
+    assertEquals("42", actualConsolidatedOptionProperty.getUnHtmlEncodedValue());
+    assertEquals("42", actualConsolidatedOptionProperty.getValue());
     assertEquals("consolidatedProductOptions", actualConsolidatedOptionProperty.getName());
+    assertNull(((BasicFieldMetadata) metadata).getCustomCriteria());
+    assertNull(metadata.getAvailableToTypes());
+    assertNull(((BasicFieldMetadata) metadata).getEnumerationValues());
+    assertNull(((BasicFieldMetadata) metadata).getOptionFilterParams());
+    assertNull(((BasicFieldMetadata) metadata).getCanLinkToExternalEntity());
+    assertNull(((BasicFieldMetadata) metadata).getEnableTypeaheadLookup());
+    assertNull(((BasicFieldMetadata) metadata).getForcePopulateChildProperties());
+    assertNull(((BasicFieldMetadata) metadata).getGroupCollapsed());
+    assertNull(((BasicFieldMetadata) metadata).getHideEnumerationIfEmpty());
+    assertNull(((BasicFieldMetadata) metadata).getIsDerived());
+    assertNull(((BasicFieldMetadata) metadata).getIsFilter());
+    assertNull(((BasicFieldMetadata) metadata).getMutable());
+    assertNull(((BasicFieldMetadata) metadata).getOptionCanEditValues());
+    assertNull(((BasicFieldMetadata) metadata).getOptionHideIfEmpty());
+    assertNull(((BasicFieldMetadata) metadata).getReadOnly());
+    assertNull(((BasicFieldMetadata) metadata).getRequiredOverride());
+    assertNull(((BasicFieldMetadata) metadata).getSearchable());
+    assertNull(((BasicFieldMetadata) metadata).getToOneLookupCreatedViaAnnotation());
+    assertNull(((BasicFieldMetadata) metadata).getTranslatable());
+    assertNull(((BasicFieldMetadata) metadata).getUnique());
+    assertNull(((BasicFieldMetadata) metadata).getUseServerSideInspectionCache());
+    assertNull(((BasicFieldMetadata) metadata).isLargeEntry());
+    assertNull(((BasicFieldMetadata) metadata).isProminent());
+    assertNull(metadata.getChildrenExcluded());
+    assertNull(metadata.getExcluded());
+    assertNull(metadata.getLazyFetch());
+    assertNull(((BasicFieldMetadata) metadata).getGridOrder());
+    assertNull(((BasicFieldMetadata) metadata).getLength());
+    assertNull(((BasicFieldMetadata) metadata).getPrecision());
+    assertNull(((BasicFieldMetadata) metadata).getScale());
+    assertNull(metadata.getGroupOrder());
+    assertNull(metadata.getOrder());
+    assertNull(metadata.getTabOrder());
+    assertNull(((BasicFieldMetadata) metadata).getAssociatedFieldName());
+    assertNull(((BasicFieldMetadata) metadata).getBroadleafEnumeration());
+    assertNull(((BasicFieldMetadata) metadata).getColumnWidth());
+    assertNull(((BasicFieldMetadata) metadata).getDefaultValue());
+    assertNull(((BasicFieldMetadata) metadata).getEnumerationClass());
+    assertNull(((BasicFieldMetadata) metadata).getFieldComponentRendererTemplate());
+    assertNull(((BasicFieldMetadata) metadata).getForeignKeyClass());
+    assertNull(((BasicFieldMetadata) metadata).getForeignKeyDisplayValueProperty());
+    assertNull(((BasicFieldMetadata) metadata).getForeignKeyProperty());
+    assertNull(((BasicFieldMetadata) metadata).getGridFieldComponentRendererTemplate());
+    assertNull(((BasicFieldMetadata) metadata).getHelpText());
+    assertNull(((BasicFieldMetadata) metadata).getHint());
+    assertNull(((BasicFieldMetadata) metadata).getLookupDisplayProperty());
+    assertNull(((BasicFieldMetadata) metadata).getManyToField());
+    assertNull(((BasicFieldMetadata) metadata).getMapFieldValueClass());
+    assertNull(((BasicFieldMetadata) metadata).getMapKeyValueProperty());
+    assertNull(((BasicFieldMetadata) metadata).getName());
+    assertNull(((BasicFieldMetadata) metadata).getOptionDisplayFieldName());
+    assertNull(((BasicFieldMetadata) metadata).getOptionListEntity());
+    assertNull(((BasicFieldMetadata) metadata).getOptionValueFieldName());
+    assertNull(((BasicFieldMetadata) metadata).getRuleIdentifier());
+    assertNull(((BasicFieldMetadata) metadata).getToOneParentProperty());
+    assertNull(((BasicFieldMetadata) metadata).getToOneTargetProperty());
+    assertNull(((BasicFieldMetadata) metadata).getTooltip());
+    assertNull(metadata.getAddFriendlyName());
+    assertNull(metadata.getCurrencyCodeField());
+    assertNull(metadata.getFieldName());
+    assertNull(metadata.getFriendlyName());
+    assertNull(metadata.getGroup());
+    assertNull(metadata.getInheritedFromType());
+    assertNull(metadata.getOwningClass());
+    assertNull(metadata.getOwningClassFriendlyName());
+    assertNull(metadata.getPrefix());
+    assertNull(metadata.getSecurityLevel());
+    assertNull(metadata.getShowIfProperty());
+    assertNull(metadata.getTab());
+    assertNull(metadata.getTargetClass());
     assertNull(actualConsolidatedOptionProperty.getDisplayValue());
     assertNull(actualConsolidatedOptionProperty.getOriginalDisplayValue());
     assertNull(actualConsolidatedOptionProperty.getOriginalValue());
     assertNull(actualConsolidatedOptionProperty.getDeployDate());
+    assertNull(metadata.getShowIfFieldEquals());
+    assertNull(((BasicFieldMetadata) metadata).getLookupType());
+    assertNull(((BasicFieldMetadata) metadata).getDisplayType());
+    assertNull(((BasicFieldMetadata) metadata).getExplicitFieldType());
+    assertNull(((BasicFieldMetadata) metadata).getFieldComponentRenderer());
+    assertNull(((BasicFieldMetadata) metadata).getFieldType());
+    assertNull(((BasicFieldMetadata) metadata).getGridFieldComponentRenderer());
+    assertNull(((BasicFieldMetadata) metadata).getVisibility());
+    assertNull(((BasicFieldMetadata) metadata).getMergedPropertyType());
+    assertEquals(SupportedFieldType.INTEGER, ((BasicFieldMetadata) metadata).getSecondaryType());
+    assertFalse(((BasicFieldMetadata) metadata).getForeignKeyCollection());
+    assertFalse(((BasicFieldMetadata) metadata).getRequired());
+    assertFalse(metadata.getManualFetch());
     assertFalse(actualConsolidatedOptionProperty.getIsDirty());
     assertFalse(actualConsolidatedOptionProperty.isAdvancedCollection());
+    assertTrue(((BasicFieldMetadata) metadata).getValidationConfigurations().isEmpty());
+    assertTrue(metadata.getAdditionalMetadata().isEmpty());
+    assertTrue(((BasicFieldMetadata) metadata).getAllowNoValueEnumOption());
     assertTrue(actualConsolidatedOptionProperty.getEnabled());
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#getBlankConsolidatedOptionProperty()}.
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#getBlankConsolidatedOptionProperty()}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#getBlankConsolidatedOptionProperty()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Property SkuCustomPersistenceHandler.getBlankConsolidatedOptionProperty()"})
   public void testGetBlankConsolidatedOptionProperty() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange and Act
-    Property actualBlankConsolidatedOptionProperty =
-        skuCustomPersistenceHandler.getBlankConsolidatedOptionProperty();
+    Property actualBlankConsolidatedOptionProperty = (new SkuCustomPersistenceHandler())
+        .getBlankConsolidatedOptionProperty();
 
     // Assert
-    assertTrue(actualBlankConsolidatedOptionProperty.getMetadata() instanceof BasicFieldMetadata);
+    FieldMetadata metadata = actualBlankConsolidatedOptionProperty.getMetadata();
+    assertTrue(metadata instanceof BasicFieldMetadata);
     assertEquals("", actualBlankConsolidatedOptionProperty.getRawValue());
     assertEquals("", actualBlankConsolidatedOptionProperty.getUnHtmlEncodedValue());
     assertEquals("", actualBlankConsolidatedOptionProperty.getValue());
     assertEquals("consolidatedProductOptions", actualBlankConsolidatedOptionProperty.getName());
+    assertNull(((BasicFieldMetadata) metadata).getCustomCriteria());
+    assertNull(metadata.getAvailableToTypes());
+    assertNull(((BasicFieldMetadata) metadata).getEnumerationValues());
+    assertNull(((BasicFieldMetadata) metadata).getOptionFilterParams());
+    assertNull(((BasicFieldMetadata) metadata).getCanLinkToExternalEntity());
+    assertNull(((BasicFieldMetadata) metadata).getEnableTypeaheadLookup());
+    assertNull(((BasicFieldMetadata) metadata).getForcePopulateChildProperties());
+    assertNull(((BasicFieldMetadata) metadata).getGroupCollapsed());
+    assertNull(((BasicFieldMetadata) metadata).getHideEnumerationIfEmpty());
+    assertNull(((BasicFieldMetadata) metadata).getIsDerived());
+    assertNull(((BasicFieldMetadata) metadata).getIsFilter());
+    assertNull(((BasicFieldMetadata) metadata).getMutable());
+    assertNull(((BasicFieldMetadata) metadata).getOptionCanEditValues());
+    assertNull(((BasicFieldMetadata) metadata).getOptionHideIfEmpty());
+    assertNull(((BasicFieldMetadata) metadata).getReadOnly());
+    assertNull(((BasicFieldMetadata) metadata).getRequiredOverride());
+    assertNull(((BasicFieldMetadata) metadata).getSearchable());
+    assertNull(((BasicFieldMetadata) metadata).getToOneLookupCreatedViaAnnotation());
+    assertNull(((BasicFieldMetadata) metadata).getTranslatable());
+    assertNull(((BasicFieldMetadata) metadata).getUnique());
+    assertNull(((BasicFieldMetadata) metadata).getUseServerSideInspectionCache());
+    assertNull(((BasicFieldMetadata) metadata).isLargeEntry());
+    assertNull(((BasicFieldMetadata) metadata).isProminent());
+    assertNull(metadata.getChildrenExcluded());
+    assertNull(metadata.getExcluded());
+    assertNull(metadata.getLazyFetch());
+    assertNull(((BasicFieldMetadata) metadata).getGridOrder());
+    assertNull(((BasicFieldMetadata) metadata).getLength());
+    assertNull(((BasicFieldMetadata) metadata).getPrecision());
+    assertNull(((BasicFieldMetadata) metadata).getScale());
+    assertNull(metadata.getGroupOrder());
+    assertNull(metadata.getOrder());
+    assertNull(metadata.getTabOrder());
+    assertNull(((BasicFieldMetadata) metadata).getAssociatedFieldName());
+    assertNull(((BasicFieldMetadata) metadata).getBroadleafEnumeration());
+    assertNull(((BasicFieldMetadata) metadata).getColumnWidth());
+    assertNull(((BasicFieldMetadata) metadata).getDefaultValue());
+    assertNull(((BasicFieldMetadata) metadata).getEnumerationClass());
+    assertNull(((BasicFieldMetadata) metadata).getFieldComponentRendererTemplate());
+    assertNull(((BasicFieldMetadata) metadata).getForeignKeyClass());
+    assertNull(((BasicFieldMetadata) metadata).getForeignKeyDisplayValueProperty());
+    assertNull(((BasicFieldMetadata) metadata).getForeignKeyProperty());
+    assertNull(((BasicFieldMetadata) metadata).getGridFieldComponentRendererTemplate());
+    assertNull(((BasicFieldMetadata) metadata).getHelpText());
+    assertNull(((BasicFieldMetadata) metadata).getHint());
+    assertNull(((BasicFieldMetadata) metadata).getLookupDisplayProperty());
+    assertNull(((BasicFieldMetadata) metadata).getManyToField());
+    assertNull(((BasicFieldMetadata) metadata).getMapFieldValueClass());
+    assertNull(((BasicFieldMetadata) metadata).getMapKeyValueProperty());
+    assertNull(((BasicFieldMetadata) metadata).getName());
+    assertNull(((BasicFieldMetadata) metadata).getOptionDisplayFieldName());
+    assertNull(((BasicFieldMetadata) metadata).getOptionListEntity());
+    assertNull(((BasicFieldMetadata) metadata).getOptionValueFieldName());
+    assertNull(((BasicFieldMetadata) metadata).getRuleIdentifier());
+    assertNull(((BasicFieldMetadata) metadata).getToOneParentProperty());
+    assertNull(((BasicFieldMetadata) metadata).getToOneTargetProperty());
+    assertNull(((BasicFieldMetadata) metadata).getTooltip());
+    assertNull(metadata.getAddFriendlyName());
+    assertNull(metadata.getCurrencyCodeField());
+    assertNull(metadata.getFieldName());
+    assertNull(metadata.getFriendlyName());
+    assertNull(metadata.getGroup());
+    assertNull(metadata.getInheritedFromType());
+    assertNull(metadata.getOwningClass());
+    assertNull(metadata.getOwningClassFriendlyName());
+    assertNull(metadata.getPrefix());
+    assertNull(metadata.getSecurityLevel());
+    assertNull(metadata.getShowIfProperty());
+    assertNull(metadata.getTab());
+    assertNull(metadata.getTargetClass());
     assertNull(actualBlankConsolidatedOptionProperty.getDisplayValue());
     assertNull(actualBlankConsolidatedOptionProperty.getOriginalDisplayValue());
     assertNull(actualBlankConsolidatedOptionProperty.getOriginalValue());
     assertNull(actualBlankConsolidatedOptionProperty.getDeployDate());
+    assertNull(metadata.getShowIfFieldEquals());
+    assertNull(((BasicFieldMetadata) metadata).getLookupType());
+    assertNull(((BasicFieldMetadata) metadata).getDisplayType());
+    assertNull(((BasicFieldMetadata) metadata).getExplicitFieldType());
+    assertNull(((BasicFieldMetadata) metadata).getFieldComponentRenderer());
+    assertNull(((BasicFieldMetadata) metadata).getFieldType());
+    assertNull(((BasicFieldMetadata) metadata).getGridFieldComponentRenderer());
+    assertNull(((BasicFieldMetadata) metadata).getVisibility());
+    assertNull(((BasicFieldMetadata) metadata).getMergedPropertyType());
+    assertEquals(SupportedFieldType.INTEGER, ((BasicFieldMetadata) metadata).getSecondaryType());
+    assertFalse(((BasicFieldMetadata) metadata).getForeignKeyCollection());
+    assertFalse(((BasicFieldMetadata) metadata).getRequired());
+    assertFalse(metadata.getManualFetch());
     assertFalse(actualBlankConsolidatedOptionProperty.getIsDirty());
     assertFalse(actualBlankConsolidatedOptionProperty.isAdvancedCollection());
+    assertTrue(((BasicFieldMetadata) metadata).getValidationConfigurations().isEmpty());
+    assertTrue(metadata.getAdditionalMetadata().isEmpty());
+    assertTrue(((BasicFieldMetadata) metadata).getAllowNoValueEnumOption());
     assertTrue(actualBlankConsolidatedOptionProperty.getEnabled());
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#createIndividualOptionField(ProductOption, int)}.
-   *
-   * <p>Method under test: {@link
-   * SkuCustomPersistenceHandler#createIndividualOptionField(ProductOption, int)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#createIndividualOptionField(ProductOption, int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "FieldMetadata SkuCustomPersistenceHandler.createIndividualOptionField(ProductOption, int)"
-  })
   public void testCreateIndividualOptionField() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    when(skuMetadataCacheService.useCache()).thenThrow(new NumberFormatException());
-
-    ArrayList<ProductOptionValue> allowedValues = new ArrayList<>();
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-
-    ProductOptionImpl option = new ProductOptionImpl();
-    option.setAttributeName("Attribute Name");
-    option.setDisplayOrder(1);
-    option.setErrorCode("An error occurred");
-    option.setErrorMessage("An error occurred");
-    option.setId(1L);
-    option.setLabel("Label");
-    option.setName("Name");
-    option.setProductOptionValidationStrategyType(new ProductOptionValidationStrategyType());
-    option.setProductOptionValidationType(new ProductOptionValidationType("Type", "Friendly Type"));
-    option.setProductXrefs(new ArrayList<>());
-    option.setRequired(true);
-    option.setType(new ProductOptionType("Type", "Friendly Type"));
-    option.setUseInSkuGeneration(true);
-    option.setValidationString("Validation String");
-    option.setAllowedValues(allowedValues);
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
 
     // Act and Assert
-    assertThrows(
-        NumberFormatException.class,
-        () -> skuCustomPersistenceHandler.createIndividualOptionField(option, 1));
-    verify(skuMetadataCacheService).useCache();
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#createIndividualOptionField(ProductOption, int)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link ProductOptionValueImpl#getId()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SkuCustomPersistenceHandler#createIndividualOptionField(ProductOption, int)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "FieldMetadata SkuCustomPersistenceHandler.createIndividualOptionField(ProductOption, int)"
-  })
-  public void testCreateIndividualOptionField_thenCallsGetId() {
-    // Arrange
-    when(skuMetadataCacheService.useCache()).thenReturn(false);
-
-    ProductOptionValueImpl productOptionValueImpl = mock(ProductOptionValueImpl.class);
-    when(productOptionValueImpl.getId()).thenThrow(new NumberFormatException());
-
-    ArrayList<ProductOptionValue> allowedValues = new ArrayList<>();
-    allowedValues.add(productOptionValueImpl);
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-
-    ProductOptionImpl option = new ProductOptionImpl();
-    option.setAttributeName("Attribute Name");
-    option.setDisplayOrder(1);
-    option.setErrorCode("An error occurred");
-    option.setErrorMessage("An error occurred");
-    option.setId(1L);
-    option.setLabel("Label");
-    option.setName("Name");
-    option.setProductOptionValidationStrategyType(new ProductOptionValidationStrategyType());
-    option.setProductOptionValidationType(new ProductOptionValidationType("Type", "Friendly Type"));
-    option.setProductXrefs(new ArrayList<>());
-    option.setRequired(true);
-    option.setType(new ProductOptionType("Type", "Friendly Type"));
-    option.setUseInSkuGeneration(true);
-    option.setValidationString("Validation String");
-    option.setAllowedValues(allowedValues);
-
-    // Act and Assert
-    assertThrows(
-        NumberFormatException.class,
-        () -> skuCustomPersistenceHandler.createIndividualOptionField(option, 1));
-    verify(skuMetadataCacheService).useCache();
-    verify(productOptionValueImpl).getId();
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#createIndividualOptionField(ProductOption, int)}.
-   *
-   * <ul>
-   *   <li>When {@link ProductOptionImpl} (default constructor).
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SkuCustomPersistenceHandler#createIndividualOptionField(ProductOption, int)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "FieldMetadata SkuCustomPersistenceHandler.createIndividualOptionField(ProductOption, int)"
-  })
-  public void testCreateIndividualOptionField_whenProductOptionImpl_thenReturnNull() {
-    // Arrange, Act and Assert
     assertNull(skuCustomPersistenceHandler.createIndividualOptionField(new ProductOptionImpl(), 1));
   }
 
   /**
-   * Test {@link
-   * SkuCustomPersistenceHandler#createExplicitEnumerationIndividualOptionField(ProductOption,
-   * int)}.
-   *
-   * <p>Method under test: {@link
-   * SkuCustomPersistenceHandler#createExplicitEnumerationIndividualOptionField(ProductOption, int)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#createIndividualOptionField(ProductOption, int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "FieldMetadata SkuCustomPersistenceHandler.createExplicitEnumerationIndividualOptionField(ProductOption, int)"
-  })
+  public void testCreateIndividualOptionField2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+    ProductOptionImpl option = mock(ProductOptionImpl.class);
+    when(option.getAllowedValues()).thenReturn(new ArrayList<>());
+
+    // Act
+    FieldMetadata actualCreateIndividualOptionFieldResult = skuCustomPersistenceHandler
+        .createIndividualOptionField(option, 1);
+
+    // Assert
+    verify(option).getAllowedValues();
+    assertNull(actualCreateIndividualOptionFieldResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#createExplicitEnumerationIndividualOptionField(ProductOption, int)}
+   */
+  @Test
   public void testCreateExplicitEnumerationIndividualOptionField() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    when(skuMetadataCacheService.useCache()).thenThrow(new NumberFormatException());
-
-    ArrayList<ProductOptionValue> allowedValues = new ArrayList<>();
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-
-    ProductOptionImpl option = new ProductOptionImpl();
-    option.setAttributeName("Attribute Name");
-    option.setDisplayOrder(1);
-    option.setErrorCode("An error occurred");
-    option.setErrorMessage("An error occurred");
-    option.setId(1L);
-    option.setLabel("Label");
-    option.setName("Name");
-    option.setProductOptionValidationStrategyType(new ProductOptionValidationStrategyType());
-    option.setProductOptionValidationType(new ProductOptionValidationType("Type", "Friendly Type"));
-    option.setProductXrefs(new ArrayList<>());
-    option.setRequired(true);
-    option.setType(new ProductOptionType("Type", "Friendly Type"));
-    option.setUseInSkuGeneration(true);
-    option.setValidationString("Validation String");
-    option.setAllowedValues(allowedValues);
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
 
     // Act and Assert
-    assertThrows(
-        NumberFormatException.class,
-        () ->
-            skuCustomPersistenceHandler.createExplicitEnumerationIndividualOptionField(option, 1));
-    verify(skuMetadataCacheService).useCache();
+    assertNull(skuCustomPersistenceHandler.createExplicitEnumerationIndividualOptionField(new ProductOptionImpl(), 1));
   }
 
   /**
-   * Test {@link
-   * SkuCustomPersistenceHandler#createExplicitEnumerationIndividualOptionField(ProductOption,
-   * int)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link ProductOptionValueImpl#getId()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SkuCustomPersistenceHandler#createExplicitEnumerationIndividualOptionField(ProductOption, int)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#createExplicitEnumerationIndividualOptionField(ProductOption, int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "FieldMetadata SkuCustomPersistenceHandler.createExplicitEnumerationIndividualOptionField(ProductOption, int)"
-  })
-  public void testCreateExplicitEnumerationIndividualOptionField_thenCallsGetId() {
+  public void testCreateExplicitEnumerationIndividualOptionField2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    when(skuMetadataCacheService.useCache()).thenReturn(false);
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+    ProductOptionImpl option = mock(ProductOptionImpl.class);
+    when(option.getAllowedValues()).thenReturn(new ArrayList<>());
 
-    ProductOptionValueImpl productOptionValueImpl = mock(ProductOptionValueImpl.class);
-    when(productOptionValueImpl.getId()).thenThrow(new NumberFormatException());
+    // Act
+    FieldMetadata actualCreateExplicitEnumerationIndividualOptionFieldResult = skuCustomPersistenceHandler
+        .createExplicitEnumerationIndividualOptionField(option, 1);
 
-    ArrayList<ProductOptionValue> allowedValues = new ArrayList<>();
-    allowedValues.add(productOptionValueImpl);
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-    allowedValues.add(new ProductOptionValueImpl());
-
-    ProductOptionImpl option = new ProductOptionImpl();
-    option.setAttributeName("Attribute Name");
-    option.setDisplayOrder(1);
-    option.setErrorCode("An error occurred");
-    option.setErrorMessage("An error occurred");
-    option.setId(1L);
-    option.setLabel("Label");
-    option.setName("Name");
-    option.setProductOptionValidationStrategyType(new ProductOptionValidationStrategyType());
-    option.setProductOptionValidationType(new ProductOptionValidationType("Type", "Friendly Type"));
-    option.setProductXrefs(new ArrayList<>());
-    option.setRequired(true);
-    option.setType(new ProductOptionType("Type", "Friendly Type"));
-    option.setUseInSkuGeneration(true);
-    option.setValidationString("Validation String");
-    option.setAllowedValues(allowedValues);
-
-    // Act and Assert
-    assertThrows(
-        NumberFormatException.class,
-        () ->
-            skuCustomPersistenceHandler.createExplicitEnumerationIndividualOptionField(option, 1));
-    verify(skuMetadataCacheService).useCache();
-    verify(productOptionValueImpl).getId();
+    // Assert
+    verify(option).getAllowedValues();
+    assertNull(actualCreateExplicitEnumerationIndividualOptionFieldResult);
   }
 
   /**
-   * Test {@link
-   * SkuCustomPersistenceHandler#createExplicitEnumerationIndividualOptionField(ProductOption,
-   * int)}.
-   *
-   * <ul>
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SkuCustomPersistenceHandler#createExplicitEnumerationIndividualOptionField(ProductOption, int)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "FieldMetadata SkuCustomPersistenceHandler.createExplicitEnumerationIndividualOptionField(ProductOption, int)"
-  })
-  public void testCreateExplicitEnumerationIndividualOptionField_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(
-        skuCustomPersistenceHandler.createExplicitEnumerationIndividualOptionField(
-            new ProductOptionImpl(), 1));
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject,
-   * DynamicEntityDao, RecordHelper)}.
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SkuCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
-  })
   public void testFetch() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+
     SectionCrumb sectionCrumb = new SectionCrumb();
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
     sectionCrumb.setSectionIdentifier("42");
-
     PersistencePackage persistencePackage = mock(PersistencePackage.class);
     when(persistencePackage.containsCriteria(Mockito.<String>any())).thenReturn(true);
-    when(persistencePackage.getCustomCriteria())
-        .thenReturn(
-            new String[] {
-              "owningClass=org.broadleafcommerce.core.catalog.domain.SkuBundleItemImpl",
-              "Custom Criteria"
-            });
-    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[] {sectionCrumb});
+    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"Custom Criteria"});
+    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
     when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
     when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
     CriteriaTransferObject cto = new CriteriaTransferObject();
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
     RecordHelper helper = mock(RecordHelper.class);
-    when(helper.getTotalRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any()))
-        .thenReturn(1);
-    when(helper.getFilterMappings(
-            Mockito.<PersistencePerspective>any(),
-            Mockito.<CriteriaTransferObject>any(),
-            Mockito.<String>any(),
-            Mockito.<Map<String, FieldMetadata>>any()))
-        .thenReturn(new ArrayList<>());
-    when(helper.getPersistentRecords(
-            Mockito.<String>any(),
-            Mockito.<List<FilterMapping>>any(),
-            Mockito.<Integer>any(),
-            Mockito.<Integer>any()))
-        .thenReturn(new ArrayList<>());
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+    when(helper.getTotalRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any())).thenReturn(1);
+    when(helper.getFilterMappings(Mockito.<PersistencePerspective>any(), Mockito.<CriteriaTransferObject>any(),
+        Mockito.<String>any(), Mockito.<Map<String, FieldMetadata>>any())).thenReturn(new ArrayList<>());
+    when(helper.getPersistentRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any(), Mockito.<Integer>any(),
+        Mockito.<Integer>any())).thenReturn(new ArrayList<>());
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
         .thenReturn(new HashMap<>());
-    when(helper.getRecords(
-            Mockito.<Map<String, FieldMetadata>>any(), Mockito.<List<Serializable>>any()))
-        .thenReturn(new Entity[] {new Entity()});
+    Entity entity = new Entity();
+    when(helper.getRecords(Mockito.<Map<String, FieldMetadata>>any(), Mockito.<List<Serializable>>any()))
+        .thenReturn(new Entity[]{entity});
 
     // Act
-    DynamicResultSet actualFetchResult =
-        skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao, helper);
+    DynamicResultSet actualFetchResult = skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao,
+        helper);
 
     // Assert
     verify(persistencePackage, atLeast(1)).containsCriteria(Mockito.<String>any());
@@ -2822,97 +1283,580 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
     verify(persistencePackage, atLeast(1)).getCustomCriteria();
     verify(persistencePackage).getPersistencePerspective();
     verify(persistencePackage).getSectionCrumbs();
-    verify(helper)
-        .getFilterMappings(
-            isA(PersistencePerspective.class),
-            isA(CriteriaTransferObject.class),
-            eq("Dr Jane Doe"),
-            isA(Map.class));
+    verify(helper).getFilterMappings(isA(PersistencePerspective.class), isA(CriteriaTransferObject.class),
+        eq("Dr Jane Doe"), isA(Map.class));
     verify(helper).getPersistentRecords(eq("Dr Jane Doe"), isA(List.class), isNull(), isNull());
     verify(helper).getRecords(isA(Map.class), isA(List.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.Sku"), isA(PersistencePerspective.class));
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.Sku"),
+        isA(PersistencePerspective.class));
     verify(helper).getTotalRecords(eq("Dr Jane Doe"), isA(List.class));
     Map<String, FilterAndSortCriteria> criteriaMap = cto.getCriteriaMap();
     assertEquals(1, criteriaMap.size());
     FilterAndSortCriteria getResult = criteriaMap.get("consolidatedProductOptions");
     assertEquals("consolidatedProductOptions", getResult.getPropertyId());
+    assertNull(actualFetchResult.getPromptSearch());
+    assertNull(actualFetchResult.getTotalCountLessThanPageSize());
     assertNull(getResult.getSortAscending());
+    assertNull(actualFetchResult.getBatchId());
+    assertNull(actualFetchResult.getLowerCount());
+    assertNull(actualFetchResult.getUpperCount());
     assertNull(getResult.getOrder());
+    assertNull(actualFetchResult.getFirstId());
+    assertNull(actualFetchResult.getLastId());
+    assertNull(actualFetchResult.getClassMetaData());
     assertNull(getResult.getSortDirection());
     assertNull(getResult.getRestrictionType());
-    assertEquals(1, actualFetchResult.getRecords().length);
+    assertNull(actualFetchResult.getFetchType());
+    assertEquals(0, actualFetchResult.getPageSize().intValue());
+    assertEquals(0, actualFetchResult.getStartIndex().intValue());
+    assertEquals(1, actualFetchResult.getTotalRecords().intValue());
+    Entity[] records = actualFetchResult.getRecords();
+    assertEquals(1, records.length);
     assertTrue(getResult.getFilterValues().isEmpty());
     assertTrue(getResult.getSpecialFilterValues().isEmpty());
+    assertTrue(dynamicEntityDao.getFieldMetadataProviders().isEmpty());
+    assertTrue(actualFetchResult.getUnselectedTabMetadata().isEmpty());
     assertTrue(getResult.isNullsLast());
+    assertSame(entity, records[0]);
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject,
-   * DynamicEntityDao, RecordHelper)}.
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SkuCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
-  })
   public void testFetch2() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+
     SectionCrumb sectionCrumb = new SectionCrumb();
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
     sectionCrumb.setSectionIdentifier("42");
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.containsCriteria(Mockito.<String>any())).thenReturn(false);
+    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"Custom Criteria"});
+    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
+    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
+    CriteriaTransferObject cto = new CriteriaTransferObject();
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+    RecordHelper helper = mock(RecordHelper.class);
+    when(helper.getTotalRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any())).thenReturn(1);
+    when(helper.getFilterMappings(Mockito.<PersistencePerspective>any(), Mockito.<CriteriaTransferObject>any(),
+        Mockito.<String>any(), Mockito.<Map<String, FieldMetadata>>any())).thenReturn(new ArrayList<>());
+    when(helper.getPersistentRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any(), Mockito.<Integer>any(),
+        Mockito.<Integer>any())).thenReturn(new ArrayList<>());
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+        .thenReturn(new HashMap<>());
+    Entity entity = new Entity();
+    when(helper.getRecords(Mockito.<Map<String, FieldMetadata>>any(), Mockito.<List<Serializable>>any()))
+        .thenReturn(new Entity[]{entity});
 
+    // Act
+    DynamicResultSet actualFetchResult = skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao,
+        helper);
+
+    // Assert
+    verify(persistencePackage)
+        .containsCriteria(eq("owningClass=com.broadleafcommerce.inventory.advanced.domain.InventoryImpl"));
+    verify(persistencePackage, atLeast(1)).getCeilingEntityFullyQualifiedClassname();
+    verify(persistencePackage, atLeast(1)).getCustomCriteria();
+    verify(persistencePackage).getPersistencePerspective();
+    verify(persistencePackage).getSectionCrumbs();
+    verify(helper).getFilterMappings(isA(PersistencePerspective.class), isA(CriteriaTransferObject.class),
+        eq("Dr Jane Doe"), isA(Map.class));
+    verify(helper).getPersistentRecords(eq("Dr Jane Doe"), isA(List.class), isNull(), isNull());
+    verify(helper).getRecords(isA(Map.class), isA(List.class));
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.Sku"),
+        isA(PersistencePerspective.class));
+    verify(helper).getTotalRecords(eq("Dr Jane Doe"), isA(List.class));
+    Map<String, FilterAndSortCriteria> criteriaMap = cto.getCriteriaMap();
+    assertEquals(1, criteriaMap.size());
+    FilterAndSortCriteria getResult = criteriaMap.get("consolidatedProductOptions");
+    assertEquals("consolidatedProductOptions", getResult.getPropertyId());
+    assertNull(actualFetchResult.getPromptSearch());
+    assertNull(actualFetchResult.getTotalCountLessThanPageSize());
+    assertNull(getResult.getSortAscending());
+    assertNull(actualFetchResult.getBatchId());
+    assertNull(actualFetchResult.getLowerCount());
+    assertNull(actualFetchResult.getUpperCount());
+    assertNull(getResult.getOrder());
+    assertNull(actualFetchResult.getFirstId());
+    assertNull(actualFetchResult.getLastId());
+    assertNull(actualFetchResult.getClassMetaData());
+    assertNull(getResult.getSortDirection());
+    assertNull(getResult.getRestrictionType());
+    assertNull(actualFetchResult.getFetchType());
+    assertEquals(0, actualFetchResult.getPageSize().intValue());
+    assertEquals(0, actualFetchResult.getStartIndex().intValue());
+    assertEquals(1, actualFetchResult.getTotalRecords().intValue());
+    Entity[] records = actualFetchResult.getRecords();
+    assertEquals(1, records.length);
+    assertTrue(getResult.getFilterValues().isEmpty());
+    assertTrue(getResult.getSpecialFilterValues().isEmpty());
+    assertTrue(dynamicEntityDao.getFieldMetadataProviders().isEmpty());
+    assertTrue(actualFetchResult.getUnselectedTabMetadata().isEmpty());
+    assertTrue(getResult.isNullsLast());
+    assertSame(entity, records[0]);
+  }
+
+  /**
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   */
+  @Test
+  public void testFetch3() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
     PersistencePackage persistencePackage = mock(PersistencePackage.class);
     when(persistencePackage.containsCriteria(Mockito.<String>any())).thenReturn(true);
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[] {"Custom Criteria"});
-    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[] {sectionCrumb});
+    when(persistencePackage.getCustomCriteria())
+        .thenReturn(new String[]{"owningClass=org.broadleafcommerce.core.catalog.domain.SkuBundleItemImpl"});
+    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
+    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
+    CriteriaTransferObject cto = new CriteriaTransferObject();
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+    RecordHelper helper = mock(RecordHelper.class);
+    when(helper.getTotalRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any())).thenReturn(1);
+    when(helper.getFilterMappings(Mockito.<PersistencePerspective>any(), Mockito.<CriteriaTransferObject>any(),
+        Mockito.<String>any(), Mockito.<Map<String, FieldMetadata>>any())).thenReturn(new ArrayList<>());
+    when(helper.getPersistentRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any(), Mockito.<Integer>any(),
+        Mockito.<Integer>any())).thenReturn(new ArrayList<>());
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+        .thenReturn(new HashMap<>());
+    Entity entity = new Entity();
+    when(helper.getRecords(Mockito.<Map<String, FieldMetadata>>any(), Mockito.<List<Serializable>>any()))
+        .thenReturn(new Entity[]{entity});
+
+    // Act
+    DynamicResultSet actualFetchResult = skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao,
+        helper);
+
+    // Assert
+    verify(persistencePackage, atLeast(1)).containsCriteria(Mockito.<String>any());
+    verify(persistencePackage, atLeast(1)).getCeilingEntityFullyQualifiedClassname();
+    verify(persistencePackage, atLeast(1)).getCustomCriteria();
+    verify(persistencePackage).getPersistencePerspective();
+    verify(persistencePackage).getSectionCrumbs();
+    verify(helper).getFilterMappings(isA(PersistencePerspective.class), isA(CriteriaTransferObject.class),
+        eq("Dr Jane Doe"), isA(Map.class));
+    verify(helper).getPersistentRecords(eq("Dr Jane Doe"), isA(List.class), isNull(), isNull());
+    verify(helper).getRecords(isA(Map.class), isA(List.class));
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.Sku"),
+        isA(PersistencePerspective.class));
+    verify(helper).getTotalRecords(eq("Dr Jane Doe"), isA(List.class));
+    Map<String, FilterAndSortCriteria> criteriaMap = cto.getCriteriaMap();
+    assertEquals(1, criteriaMap.size());
+    FilterAndSortCriteria getResult = criteriaMap.get("consolidatedProductOptions");
+    assertEquals("consolidatedProductOptions", getResult.getPropertyId());
+    assertNull(actualFetchResult.getPromptSearch());
+    assertNull(actualFetchResult.getTotalCountLessThanPageSize());
+    assertNull(getResult.getSortAscending());
+    assertNull(actualFetchResult.getBatchId());
+    assertNull(actualFetchResult.getLowerCount());
+    assertNull(actualFetchResult.getUpperCount());
+    assertNull(getResult.getOrder());
+    assertNull(actualFetchResult.getFirstId());
+    assertNull(actualFetchResult.getLastId());
+    assertNull(actualFetchResult.getClassMetaData());
+    assertNull(getResult.getSortDirection());
+    assertNull(getResult.getRestrictionType());
+    assertNull(actualFetchResult.getFetchType());
+    assertEquals(0, actualFetchResult.getPageSize().intValue());
+    assertEquals(0, actualFetchResult.getStartIndex().intValue());
+    assertEquals(1, actualFetchResult.getTotalRecords().intValue());
+    Entity[] records = actualFetchResult.getRecords();
+    assertEquals(1, records.length);
+    assertTrue(getResult.getFilterValues().isEmpty());
+    assertTrue(getResult.getSpecialFilterValues().isEmpty());
+    assertTrue(dynamicEntityDao.getFieldMetadataProviders().isEmpty());
+    assertTrue(actualFetchResult.getUnselectedTabMetadata().isEmpty());
+    assertTrue(getResult.isNullsLast());
+    assertSame(entity, records[0]);
+  }
+
+  /**
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   */
+  @Test
+  public void testFetch4() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.containsCriteria(Mockito.<String>any())).thenReturn(true);
+    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"requestingField=sku"});
+    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
+    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
+    CriteriaTransferObject cto = new CriteriaTransferObject();
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+    RecordHelper helper = mock(RecordHelper.class);
+    when(helper.getTotalRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any())).thenReturn(1);
+    when(helper.getFilterMappings(Mockito.<PersistencePerspective>any(), Mockito.<CriteriaTransferObject>any(),
+        Mockito.<String>any(), Mockito.<Map<String, FieldMetadata>>any())).thenReturn(new ArrayList<>());
+    when(helper.getPersistentRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any(), Mockito.<Integer>any(),
+        Mockito.<Integer>any())).thenReturn(new ArrayList<>());
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+        .thenReturn(new HashMap<>());
+    Entity entity = new Entity();
+    when(helper.getRecords(Mockito.<Map<String, FieldMetadata>>any(), Mockito.<List<Serializable>>any()))
+        .thenReturn(new Entity[]{entity});
+
+    // Act
+    DynamicResultSet actualFetchResult = skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao,
+        helper);
+
+    // Assert
+    verify(persistencePackage, atLeast(1)).containsCriteria(Mockito.<String>any());
+    verify(persistencePackage, atLeast(1)).getCeilingEntityFullyQualifiedClassname();
+    verify(persistencePackage, atLeast(1)).getCustomCriteria();
+    verify(persistencePackage).getPersistencePerspective();
+    verify(persistencePackage).getSectionCrumbs();
+    verify(helper).getFilterMappings(isA(PersistencePerspective.class), isA(CriteriaTransferObject.class),
+        eq("Dr Jane Doe"), isA(Map.class));
+    verify(helper).getPersistentRecords(eq("Dr Jane Doe"), isA(List.class), isNull(), isNull());
+    verify(helper).getRecords(isA(Map.class), isA(List.class));
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.Sku"),
+        isA(PersistencePerspective.class));
+    verify(helper).getTotalRecords(eq("Dr Jane Doe"), isA(List.class));
+    Map<String, FilterAndSortCriteria> criteriaMap = cto.getCriteriaMap();
+    assertEquals(1, criteriaMap.size());
+    FilterAndSortCriteria getResult = criteriaMap.get("consolidatedProductOptions");
+    assertEquals("consolidatedProductOptions", getResult.getPropertyId());
+    assertNull(actualFetchResult.getPromptSearch());
+    assertNull(actualFetchResult.getTotalCountLessThanPageSize());
+    assertNull(getResult.getSortAscending());
+    assertNull(actualFetchResult.getBatchId());
+    assertNull(actualFetchResult.getLowerCount());
+    assertNull(actualFetchResult.getUpperCount());
+    assertNull(getResult.getOrder());
+    assertNull(actualFetchResult.getFirstId());
+    assertNull(actualFetchResult.getLastId());
+    assertNull(actualFetchResult.getClassMetaData());
+    assertNull(getResult.getSortDirection());
+    assertNull(getResult.getRestrictionType());
+    assertNull(actualFetchResult.getFetchType());
+    assertEquals(0, actualFetchResult.getPageSize().intValue());
+    assertEquals(0, actualFetchResult.getStartIndex().intValue());
+    assertEquals(1, actualFetchResult.getTotalRecords().intValue());
+    Entity[] records = actualFetchResult.getRecords();
+    assertEquals(1, records.length);
+    assertTrue(getResult.getFilterValues().isEmpty());
+    assertTrue(getResult.getSpecialFilterValues().isEmpty());
+    assertTrue(dynamicEntityDao.getFieldMetadataProviders().isEmpty());
+    assertTrue(actualFetchResult.getUnselectedTabMetadata().isEmpty());
+    assertTrue(getResult.isNullsLast());
+    assertSame(entity, records[0]);
+  }
+
+  /**
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   */
+  @Test
+  public void testFetch5() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.containsCriteria(Mockito.<String>any())).thenReturn(true);
+    when(persistencePackage.getCustomCriteria()).thenReturn(null);
+    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
+    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
+    CriteriaTransferObject cto = new CriteriaTransferObject();
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+    RecordHelper helper = mock(RecordHelper.class);
+    when(helper.getTotalRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any())).thenReturn(1);
+    when(helper.getFilterMappings(Mockito.<PersistencePerspective>any(), Mockito.<CriteriaTransferObject>any(),
+        Mockito.<String>any(), Mockito.<Map<String, FieldMetadata>>any())).thenReturn(new ArrayList<>());
+    when(helper.getPersistentRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any(), Mockito.<Integer>any(),
+        Mockito.<Integer>any())).thenReturn(new ArrayList<>());
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+        .thenReturn(new HashMap<>());
+    Entity entity = new Entity();
+    when(helper.getRecords(Mockito.<Map<String, FieldMetadata>>any(), Mockito.<List<Serializable>>any()))
+        .thenReturn(new Entity[]{entity});
+
+    // Act
+    DynamicResultSet actualFetchResult = skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao,
+        helper);
+
+    // Assert
+    verify(persistencePackage, atLeast(1)).containsCriteria(Mockito.<String>any());
+    verify(persistencePackage, atLeast(1)).getCeilingEntityFullyQualifiedClassname();
+    verify(persistencePackage).getCustomCriteria();
+    verify(persistencePackage).getPersistencePerspective();
+    verify(persistencePackage).getSectionCrumbs();
+    verify(helper).getFilterMappings(isA(PersistencePerspective.class), isA(CriteriaTransferObject.class),
+        eq("Dr Jane Doe"), isA(Map.class));
+    verify(helper).getPersistentRecords(eq("Dr Jane Doe"), isA(List.class), isNull(), isNull());
+    verify(helper).getRecords(isA(Map.class), isA(List.class));
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.Sku"),
+        isA(PersistencePerspective.class));
+    verify(helper).getTotalRecords(eq("Dr Jane Doe"), isA(List.class));
+    Map<String, FilterAndSortCriteria> criteriaMap = cto.getCriteriaMap();
+    assertEquals(1, criteriaMap.size());
+    FilterAndSortCriteria getResult = criteriaMap.get("consolidatedProductOptions");
+    assertEquals("consolidatedProductOptions", getResult.getPropertyId());
+    assertNull(actualFetchResult.getPromptSearch());
+    assertNull(actualFetchResult.getTotalCountLessThanPageSize());
+    assertNull(getResult.getSortAscending());
+    assertNull(actualFetchResult.getBatchId());
+    assertNull(actualFetchResult.getLowerCount());
+    assertNull(actualFetchResult.getUpperCount());
+    assertNull(getResult.getOrder());
+    assertNull(actualFetchResult.getFirstId());
+    assertNull(actualFetchResult.getLastId());
+    assertNull(actualFetchResult.getClassMetaData());
+    assertNull(getResult.getSortDirection());
+    assertNull(getResult.getRestrictionType());
+    assertNull(actualFetchResult.getFetchType());
+    assertEquals(0, actualFetchResult.getPageSize().intValue());
+    assertEquals(0, actualFetchResult.getStartIndex().intValue());
+    assertEquals(1, actualFetchResult.getTotalRecords().intValue());
+    Entity[] records = actualFetchResult.getRecords();
+    assertEquals(1, records.length);
+    assertTrue(getResult.getFilterValues().isEmpty());
+    assertTrue(getResult.getSpecialFilterValues().isEmpty());
+    assertTrue(dynamicEntityDao.getFieldMetadataProviders().isEmpty());
+    assertTrue(actualFetchResult.getUnselectedTabMetadata().isEmpty());
+    assertTrue(getResult.isNullsLast());
+    assertSame(entity, records[0]);
+  }
+
+  /**
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   */
+  @Test
+  public void testFetch6() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.containsCriteria(Mockito.<String>any())).thenReturn(true);
+    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"Custom Criteria"});
+    when(persistencePackage.getSectionCrumbs()).thenReturn(null);
+    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
+    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
+    CriteriaTransferObject cto = new CriteriaTransferObject();
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+    RecordHelper helper = mock(RecordHelper.class);
+    when(helper.getTotalRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any())).thenReturn(1);
+    when(helper.getFilterMappings(Mockito.<PersistencePerspective>any(), Mockito.<CriteriaTransferObject>any(),
+        Mockito.<String>any(), Mockito.<Map<String, FieldMetadata>>any())).thenReturn(new ArrayList<>());
+    when(helper.getPersistentRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any(), Mockito.<Integer>any(),
+        Mockito.<Integer>any())).thenReturn(new ArrayList<>());
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+        .thenReturn(new HashMap<>());
+    Entity entity = new Entity();
+    when(helper.getRecords(Mockito.<Map<String, FieldMetadata>>any(), Mockito.<List<Serializable>>any()))
+        .thenReturn(new Entity[]{entity});
+
+    // Act
+    DynamicResultSet actualFetchResult = skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao,
+        helper);
+
+    // Assert
+    verify(persistencePackage, atLeast(1)).containsCriteria(Mockito.<String>any());
+    verify(persistencePackage, atLeast(1)).getCeilingEntityFullyQualifiedClassname();
+    verify(persistencePackage).getCustomCriteria();
+    verify(persistencePackage).getPersistencePerspective();
+    verify(persistencePackage).getSectionCrumbs();
+    verify(helper).getFilterMappings(isA(PersistencePerspective.class), isA(CriteriaTransferObject.class),
+        eq("Dr Jane Doe"), isA(Map.class));
+    verify(helper).getPersistentRecords(eq("Dr Jane Doe"), isA(List.class), isNull(), isNull());
+    verify(helper).getRecords(isA(Map.class), isA(List.class));
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.Sku"),
+        isA(PersistencePerspective.class));
+    verify(helper).getTotalRecords(eq("Dr Jane Doe"), isA(List.class));
+    Map<String, FilterAndSortCriteria> criteriaMap = cto.getCriteriaMap();
+    assertEquals(1, criteriaMap.size());
+    FilterAndSortCriteria getResult = criteriaMap.get("consolidatedProductOptions");
+    assertEquals("consolidatedProductOptions", getResult.getPropertyId());
+    assertNull(actualFetchResult.getPromptSearch());
+    assertNull(actualFetchResult.getTotalCountLessThanPageSize());
+    assertNull(getResult.getSortAscending());
+    assertNull(actualFetchResult.getBatchId());
+    assertNull(actualFetchResult.getLowerCount());
+    assertNull(actualFetchResult.getUpperCount());
+    assertNull(getResult.getOrder());
+    assertNull(actualFetchResult.getFirstId());
+    assertNull(actualFetchResult.getLastId());
+    assertNull(actualFetchResult.getClassMetaData());
+    assertNull(getResult.getSortDirection());
+    assertNull(getResult.getRestrictionType());
+    assertNull(actualFetchResult.getFetchType());
+    assertEquals(0, actualFetchResult.getPageSize().intValue());
+    assertEquals(0, actualFetchResult.getStartIndex().intValue());
+    assertEquals(1, actualFetchResult.getTotalRecords().intValue());
+    Entity[] records = actualFetchResult.getRecords();
+    assertEquals(1, records.length);
+    assertTrue(getResult.getFilterValues().isEmpty());
+    assertTrue(getResult.getSpecialFilterValues().isEmpty());
+    assertTrue(dynamicEntityDao.getFieldMetadataProviders().isEmpty());
+    assertTrue(actualFetchResult.getUnselectedTabMetadata().isEmpty());
+    assertTrue(getResult.isNullsLast());
+    assertSame(entity, records[0]);
+  }
+
+  /**
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   */
+  @Test
+  public void testFetch7() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.containsCriteria(Mockito.<String>any())).thenReturn(true);
+    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"Custom Criteria"});
+    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
     when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
     when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
 
+    CriteriaTransferObject cto = new CriteriaTransferObject();
+    cto.add(new FilterAndSortCriteria("42"));
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+    RecordHelper helper = mock(RecordHelper.class);
+    when(helper.getTotalRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any())).thenReturn(1);
+    when(helper.getFilterMappings(Mockito.<PersistencePerspective>any(), Mockito.<CriteriaTransferObject>any(),
+        Mockito.<String>any(), Mockito.<Map<String, FieldMetadata>>any())).thenReturn(new ArrayList<>());
+    when(helper.getPersistentRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any(), Mockito.<Integer>any(),
+        Mockito.<Integer>any())).thenReturn(new ArrayList<>());
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+        .thenReturn(new HashMap<>());
+    Entity entity = new Entity();
+    when(helper.getRecords(Mockito.<Map<String, FieldMetadata>>any(), Mockito.<List<Serializable>>any()))
+        .thenReturn(new Entity[]{entity});
+
+    // Act
+    DynamicResultSet actualFetchResult = skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao,
+        helper);
+
+    // Assert
+    verify(persistencePackage, atLeast(1)).containsCriteria(Mockito.<String>any());
+    verify(persistencePackage, atLeast(1)).getCeilingEntityFullyQualifiedClassname();
+    verify(persistencePackage, atLeast(1)).getCustomCriteria();
+    verify(persistencePackage).getPersistencePerspective();
+    verify(persistencePackage).getSectionCrumbs();
+    verify(helper).getFilterMappings(isA(PersistencePerspective.class), isA(CriteriaTransferObject.class),
+        eq("Dr Jane Doe"), isA(Map.class));
+    verify(helper).getPersistentRecords(eq("Dr Jane Doe"), isA(List.class), isNull(), isNull());
+    verify(helper).getRecords(isA(Map.class), isA(List.class));
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.Sku"),
+        isA(PersistencePerspective.class));
+    verify(helper).getTotalRecords(eq("Dr Jane Doe"), isA(List.class));
+    Map<String, FilterAndSortCriteria> criteriaMap = cto.getCriteriaMap();
+    assertEquals(2, criteriaMap.size());
+    FilterAndSortCriteria getResult = criteriaMap.get("consolidatedProductOptions");
+    assertEquals("consolidatedProductOptions", getResult.getPropertyId());
+    assertNull(actualFetchResult.getPromptSearch());
+    assertNull(actualFetchResult.getTotalCountLessThanPageSize());
+    assertNull(getResult.getSortAscending());
+    assertNull(actualFetchResult.getBatchId());
+    assertNull(actualFetchResult.getLowerCount());
+    assertNull(actualFetchResult.getUpperCount());
+    assertNull(getResult.getOrder());
+    assertNull(actualFetchResult.getFirstId());
+    assertNull(actualFetchResult.getLastId());
+    assertNull(actualFetchResult.getClassMetaData());
+    assertNull(getResult.getSortDirection());
+    assertNull(getResult.getRestrictionType());
+    assertNull(actualFetchResult.getFetchType());
+    assertEquals(0, actualFetchResult.getPageSize().intValue());
+    assertEquals(0, actualFetchResult.getStartIndex().intValue());
+    assertEquals(1, actualFetchResult.getTotalRecords().intValue());
+    Entity[] records = actualFetchResult.getRecords();
+    assertEquals(1, records.length);
+    assertTrue(getResult.getFilterValues().isEmpty());
+    assertTrue(getResult.getSpecialFilterValues().isEmpty());
+    assertTrue(dynamicEntityDao.getFieldMetadataProviders().isEmpty());
+    assertTrue(criteriaMap.containsKey("42"));
+    assertTrue(actualFetchResult.getUnselectedTabMetadata().isEmpty());
+    assertTrue(getResult.isNullsLast());
+    assertSame(entity, records[0]);
+  }
+
+  /**
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   */
+  @Test
+  public void testFetch8() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.containsCriteria(Mockito.<String>any())).thenReturn(true);
+    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"Custom Criteria"});
+    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
+    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
     CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
     when(cto.getFirstResult()).thenReturn(1);
     when(cto.getMaxResults()).thenReturn(3);
     when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
     when(cto.get(Mockito.<String>any())).thenReturn(new FilterAndSortCriteria("42"));
-    doNothing().when(cto).add(Mockito.<FilterAndSortCriteria>any());
-    cto.add(new FilterAndSortCriteria("42"));
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
     RecordHelper helper = mock(RecordHelper.class);
-    when(helper.getTotalRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any()))
-        .thenReturn(1);
-    when(helper.getFilterMappings(
-            Mockito.<PersistencePerspective>any(),
-            Mockito.<CriteriaTransferObject>any(),
-            Mockito.<String>any(),
-            Mockito.<Map<String, FieldMetadata>>any()))
-        .thenReturn(new ArrayList<>());
-    when(helper.getPersistentRecords(
-            Mockito.<String>any(),
-            Mockito.<List<FilterMapping>>any(),
-            Mockito.<Integer>any(),
-            Mockito.<Integer>any()))
-        .thenReturn(new ArrayList<>());
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+    when(helper.getTotalRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any())).thenReturn(1);
+    when(helper.getFilterMappings(Mockito.<PersistencePerspective>any(), Mockito.<CriteriaTransferObject>any(),
+        Mockito.<String>any(), Mockito.<Map<String, FieldMetadata>>any())).thenReturn(new ArrayList<>());
+    when(helper.getPersistentRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any(), Mockito.<Integer>any(),
+        Mockito.<Integer>any())).thenReturn(new ArrayList<>());
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
         .thenReturn(new HashMap<>());
-    when(helper.getRecords(
-            Mockito.<Map<String, FieldMetadata>>any(), Mockito.<List<Serializable>>any()))
-        .thenReturn(new Entity[] {new Entity()});
+    Entity entity = new Entity();
+    when(helper.getRecords(Mockito.<Map<String, FieldMetadata>>any(), Mockito.<List<Serializable>>any()))
+        .thenReturn(new Entity[]{entity});
 
     // Act
-    DynamicResultSet actualFetchResult =
-        skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao, helper);
+    DynamicResultSet actualFetchResult = skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao,
+        helper);
 
     // Assert
-    verify(cto).add(isA(FilterAndSortCriteria.class));
-    verify(cto).get("consolidatedProductOptions");
+    verify(cto).get(eq("consolidatedProductOptions"));
     verify(cto).getCriteriaMap();
     verify(cto).getFirstResult();
     verify(cto).getMaxResults();
@@ -2921,17 +1865,12 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
     verify(persistencePackage, atLeast(1)).getCustomCriteria();
     verify(persistencePackage).getPersistencePerspective();
     verify(persistencePackage).getSectionCrumbs();
-    verify(helper)
-        .getFilterMappings(
-            isA(PersistencePerspective.class),
-            isA(CriteriaTransferObject.class),
-            eq("Dr Jane Doe"),
-            isA(Map.class));
+    verify(helper).getFilterMappings(isA(PersistencePerspective.class), isA(CriteriaTransferObject.class),
+        eq("Dr Jane Doe"), isA(Map.class));
     verify(helper).getPersistentRecords(eq("Dr Jane Doe"), isA(List.class), eq(1), eq(3));
     verify(helper).getRecords(isA(Map.class), isA(List.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.Sku"), isA(PersistencePerspective.class));
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.Sku"),
+        isA(PersistencePerspective.class));
     verify(helper).getTotalRecords(eq("Dr Jane Doe"), isA(List.class));
     assertNull(actualFetchResult.getPromptSearch());
     assertNull(actualFetchResult.getTotalCountLessThanPageSize());
@@ -2945,80 +1884,274 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
     assertEquals(0, actualFetchResult.getPageSize().intValue());
     assertEquals(0, actualFetchResult.getStartIndex().intValue());
     assertEquals(1, actualFetchResult.getTotalRecords().intValue());
+    Entity[] records = actualFetchResult.getRecords();
+    assertEquals(1, records.length);
+    assertTrue(dynamicEntityDao.getFieldMetadataProviders().isEmpty());
     assertTrue(actualFetchResult.getUnselectedTabMetadata().isEmpty());
+    assertSame(entity, records[0]);
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject,
-   * DynamicEntityDao, RecordHelper)}.
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SkuCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
-  })
-  public void testFetch3() throws ServiceException {
+  public void testFetch9() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+
     SectionCrumb sectionCrumb = new SectionCrumb();
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
     sectionCrumb.setSectionIdentifier("42");
-
     PersistencePackage persistencePackage = mock(PersistencePackage.class);
     when(persistencePackage.containsCriteria(Mockito.<String>any())).thenReturn(true);
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[] {"Custom Criteria"});
-    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[] {sectionCrumb});
+    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"Custom Criteria"});
+    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
     when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
     when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
+    CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
+    when(cto.getFirstResult()).thenThrow(
+        new NumberFormatException("owningClass=org.broadleafcommerce.core.catalog.domain.SkuBundleItemImpl"));
+    when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
+    when(cto.get(Mockito.<String>any())).thenReturn(new FilterAndSortCriteria("42"));
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+    RecordHelper helper = mock(RecordHelper.class);
+    when(helper.getFilterMappings(Mockito.<PersistencePerspective>any(), Mockito.<CriteriaTransferObject>any(),
+        Mockito.<String>any(), Mockito.<Map<String, FieldMetadata>>any())).thenReturn(new ArrayList<>());
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+        .thenReturn(new HashMap<>());
 
-    ArrayList<String> stringList = new ArrayList<>();
-    stringList.add("owningClass=org.broadleafcommerce.core.catalog.domain.SkuBundleItemImpl");
+    // Act and Assert
+    assertThrows(ServiceException.class,
+        () -> skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao, helper));
+    verify(cto).get(eq("consolidatedProductOptions"));
+    verify(cto).getCriteriaMap();
+    verify(cto).getFirstResult();
+    verify(persistencePackage, atLeast(1)).containsCriteria(Mockito.<String>any());
+    verify(persistencePackage, atLeast(1)).getCeilingEntityFullyQualifiedClassname();
+    verify(persistencePackage, atLeast(1)).getCustomCriteria();
+    verify(persistencePackage).getPersistencePerspective();
+    verify(persistencePackage).getSectionCrumbs();
+    verify(helper).getFilterMappings(isA(PersistencePerspective.class), isA(CriteriaTransferObject.class),
+        eq("Dr Jane Doe"), isA(Map.class));
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.Sku"),
+        isA(PersistencePerspective.class));
+  }
 
+  /**
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   */
+  @Test
+  public void testFetch10() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.containsCriteria(Mockito.<String>any())).thenReturn(true);
+    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"Custom Criteria"});
+    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
+    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
+    CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
+    when(cto.getFirstResult()).thenReturn(1);
+    when(cto.getMaxResults()).thenReturn(3);
+    when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
+    when(cto.get(Mockito.<String>any())).thenReturn(new FilterAndSortCriteria("42", "42"));
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+    RecordHelper helper = mock(RecordHelper.class);
+    when(helper.getTotalRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any())).thenReturn(1);
+    when(helper.getFilterMappings(Mockito.<PersistencePerspective>any(), Mockito.<CriteriaTransferObject>any(),
+        Mockito.<String>any(), Mockito.<Map<String, FieldMetadata>>any())).thenReturn(new ArrayList<>());
+    when(helper.getPersistentRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any(), Mockito.<Integer>any(),
+        Mockito.<Integer>any())).thenReturn(new ArrayList<>());
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+        .thenReturn(new HashMap<>());
+    Entity entity = new Entity();
+    when(helper.getRecords(Mockito.<Map<String, FieldMetadata>>any(), Mockito.<List<Serializable>>any()))
+        .thenReturn(new Entity[]{entity});
+
+    // Act
+    DynamicResultSet actualFetchResult = skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao,
+        helper);
+
+    // Assert
+    verify(cto).get(eq("consolidatedProductOptions"));
+    verify(cto).getCriteriaMap();
+    verify(cto).getFirstResult();
+    verify(cto).getMaxResults();
+    verify(persistencePackage, atLeast(1)).containsCriteria(Mockito.<String>any());
+    verify(persistencePackage, atLeast(1)).getCeilingEntityFullyQualifiedClassname();
+    verify(persistencePackage, atLeast(1)).getCustomCriteria();
+    verify(persistencePackage).getPersistencePerspective();
+    verify(persistencePackage).getSectionCrumbs();
+    verify(helper).getFilterMappings(isA(PersistencePerspective.class), isA(CriteriaTransferObject.class),
+        eq("Dr Jane Doe"), isA(Map.class));
+    verify(helper).getPersistentRecords(eq("Dr Jane Doe"), isA(List.class), eq(1), eq(3));
+    verify(helper).getRecords(isA(Map.class), isA(List.class));
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.Sku"),
+        isA(PersistencePerspective.class));
+    verify(helper).getTotalRecords(eq("Dr Jane Doe"), isA(List.class));
+    assertNull(actualFetchResult.getPromptSearch());
+    assertNull(actualFetchResult.getTotalCountLessThanPageSize());
+    assertNull(actualFetchResult.getBatchId());
+    assertNull(actualFetchResult.getLowerCount());
+    assertNull(actualFetchResult.getUpperCount());
+    assertNull(actualFetchResult.getFirstId());
+    assertNull(actualFetchResult.getLastId());
+    assertNull(actualFetchResult.getClassMetaData());
+    assertNull(actualFetchResult.getFetchType());
+    assertEquals(0, actualFetchResult.getPageSize().intValue());
+    assertEquals(0, actualFetchResult.getStartIndex().intValue());
+    assertEquals(1, actualFetchResult.getTotalRecords().intValue());
+    Entity[] records = actualFetchResult.getRecords();
+    assertEquals(1, records.length);
+    assertTrue(dynamicEntityDao.getFieldMetadataProviders().isEmpty());
+    assertTrue(actualFetchResult.getUnselectedTabMetadata().isEmpty());
+    assertSame(entity, records[0]);
+  }
+
+  /**
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   */
+  @Test
+  public void testFetch11() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.containsCriteria(Mockito.<String>any())).thenReturn(true);
+    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"Custom Criteria"});
+    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
+    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
     FilterAndSortCriteria filterAndSortCriteria = mock(FilterAndSortCriteria.class);
-    when(filterAndSortCriteria.getFilterValues()).thenReturn(stringList);
-
+    when(filterAndSortCriteria.getFilterValues()).thenReturn(new ArrayList<>());
     CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
     when(cto.getFirstResult()).thenReturn(1);
     when(cto.getMaxResults()).thenReturn(3);
     when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
     when(cto.get(Mockito.<String>any())).thenReturn(filterAndSortCriteria);
-    doNothing().when(cto).add(Mockito.<FilterAndSortCriteria>any());
-    cto.add(new FilterAndSortCriteria("42"));
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
     RecordHelper helper = mock(RecordHelper.class);
-    when(helper.getTotalRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any()))
-        .thenReturn(1);
-    when(helper.getFilterMappings(
-            Mockito.<PersistencePerspective>any(),
-            Mockito.<CriteriaTransferObject>any(),
-            Mockito.<String>any(),
-            Mockito.<Map<String, FieldMetadata>>any()))
-        .thenReturn(new ArrayList<>());
-    when(helper.getPersistentRecords(
-            Mockito.<String>any(),
-            Mockito.<List<FilterMapping>>any(),
-            Mockito.<Integer>any(),
-            Mockito.<Integer>any()))
-        .thenReturn(new ArrayList<>());
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+    when(helper.getTotalRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any())).thenReturn(1);
+    when(helper.getFilterMappings(Mockito.<PersistencePerspective>any(), Mockito.<CriteriaTransferObject>any(),
+        Mockito.<String>any(), Mockito.<Map<String, FieldMetadata>>any())).thenReturn(new ArrayList<>());
+    when(helper.getPersistentRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any(), Mockito.<Integer>any(),
+        Mockito.<Integer>any())).thenReturn(new ArrayList<>());
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
         .thenReturn(new HashMap<>());
-    when(helper.getRecords(
-            Mockito.<Map<String, FieldMetadata>>any(), Mockito.<List<Serializable>>any()))
-        .thenReturn(new Entity[] {new Entity()});
+    Entity entity = new Entity();
+    when(helper.getRecords(Mockito.<Map<String, FieldMetadata>>any(), Mockito.<List<Serializable>>any()))
+        .thenReturn(new Entity[]{entity});
 
     // Act
-    DynamicResultSet actualFetchResult =
-        skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao, helper);
+    DynamicResultSet actualFetchResult = skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao,
+        helper);
 
     // Assert
-    verify(cto).add(isA(FilterAndSortCriteria.class));
-    verify(cto).get("consolidatedProductOptions");
+    verify(cto).get(eq("consolidatedProductOptions"));
+    verify(cto).getCriteriaMap();
+    verify(cto).getFirstResult();
+    verify(cto).getMaxResults();
+    verify(filterAndSortCriteria).getFilterValues();
+    verify(persistencePackage, atLeast(1)).containsCriteria(Mockito.<String>any());
+    verify(persistencePackage, atLeast(1)).getCeilingEntityFullyQualifiedClassname();
+    verify(persistencePackage, atLeast(1)).getCustomCriteria();
+    verify(persistencePackage).getPersistencePerspective();
+    verify(persistencePackage).getSectionCrumbs();
+    verify(helper).getFilterMappings(isA(PersistencePerspective.class), isA(CriteriaTransferObject.class),
+        eq("Dr Jane Doe"), isA(Map.class));
+    verify(helper).getPersistentRecords(eq("Dr Jane Doe"), isA(List.class), eq(1), eq(3));
+    verify(helper).getRecords(isA(Map.class), isA(List.class));
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.Sku"),
+        isA(PersistencePerspective.class));
+    verify(helper).getTotalRecords(eq("Dr Jane Doe"), isA(List.class));
+    assertNull(actualFetchResult.getPromptSearch());
+    assertNull(actualFetchResult.getTotalCountLessThanPageSize());
+    assertNull(actualFetchResult.getBatchId());
+    assertNull(actualFetchResult.getLowerCount());
+    assertNull(actualFetchResult.getUpperCount());
+    assertNull(actualFetchResult.getFirstId());
+    assertNull(actualFetchResult.getLastId());
+    assertNull(actualFetchResult.getClassMetaData());
+    assertNull(actualFetchResult.getFetchType());
+    assertEquals(0, actualFetchResult.getPageSize().intValue());
+    assertEquals(0, actualFetchResult.getStartIndex().intValue());
+    assertEquals(1, actualFetchResult.getTotalRecords().intValue());
+    Entity[] records = actualFetchResult.getRecords();
+    assertEquals(1, records.length);
+    assertTrue(dynamicEntityDao.getFieldMetadataProviders().isEmpty());
+    assertTrue(actualFetchResult.getUnselectedTabMetadata().isEmpty());
+    assertSame(entity, records[0]);
+  }
+
+  /**
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   */
+  @Test
+  public void testFetch12() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.containsCriteria(Mockito.<String>any())).thenReturn(true);
+    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"Custom Criteria"});
+    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
+    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
+
+    ArrayList<String> stringList = new ArrayList<>();
+    stringList.add("owningClass=org.broadleafcommerce.core.catalog.domain.SkuBundleItemImpl");
+    FilterAndSortCriteria filterAndSortCriteria = mock(FilterAndSortCriteria.class);
+    when(filterAndSortCriteria.getFilterValues()).thenReturn(stringList);
+    CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
+    when(cto.getFirstResult()).thenReturn(1);
+    when(cto.getMaxResults()).thenReturn(3);
+    when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
+    when(cto.get(Mockito.<String>any())).thenReturn(filterAndSortCriteria);
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+    RecordHelper helper = mock(RecordHelper.class);
+    when(helper.getTotalRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any())).thenReturn(1);
+    when(helper.getFilterMappings(Mockito.<PersistencePerspective>any(), Mockito.<CriteriaTransferObject>any(),
+        Mockito.<String>any(), Mockito.<Map<String, FieldMetadata>>any())).thenReturn(new ArrayList<>());
+    when(helper.getPersistentRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any(), Mockito.<Integer>any(),
+        Mockito.<Integer>any())).thenReturn(new ArrayList<>());
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+        .thenReturn(new HashMap<>());
+    Entity entity = new Entity();
+    when(helper.getRecords(Mockito.<Map<String, FieldMetadata>>any(), Mockito.<List<Serializable>>any()))
+        .thenReturn(new Entity[]{entity});
+
+    // Act
+    DynamicResultSet actualFetchResult = skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao,
+        helper);
+
+    // Assert
+    verify(cto).get(eq("consolidatedProductOptions"));
     verify(cto).getCriteriaMap();
     verify(cto).getFirstResult();
     verify(cto).getMaxResults();
@@ -3028,17 +2161,12 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
     verify(persistencePackage, atLeast(1)).getCustomCriteria();
     verify(persistencePackage).getPersistencePerspective();
     verify(persistencePackage).getSectionCrumbs();
-    verify(helper)
-        .getFilterMappings(
-            isA(PersistencePerspective.class),
-            isA(CriteriaTransferObject.class),
-            eq("Dr Jane Doe"),
-            isA(Map.class));
+    verify(helper).getFilterMappings(isA(PersistencePerspective.class), isA(CriteriaTransferObject.class),
+        eq("Dr Jane Doe"), isA(Map.class));
     verify(helper).getPersistentRecords(eq("Dr Jane Doe"), isA(List.class), eq(1), eq(3));
     verify(helper).getRecords(isA(Map.class), isA(List.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.Sku"), isA(PersistencePerspective.class));
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.Sku"),
+        isA(PersistencePerspective.class));
     verify(helper).getTotalRecords(eq("Dr Jane Doe"), isA(List.class));
     assertNull(actualFetchResult.getPromptSearch());
     assertNull(actualFetchResult.getTotalCountLessThanPageSize());
@@ -3052,87 +2180,64 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
     assertEquals(0, actualFetchResult.getPageSize().intValue());
     assertEquals(0, actualFetchResult.getStartIndex().intValue());
     assertEquals(1, actualFetchResult.getTotalRecords().intValue());
+    Entity[] records = actualFetchResult.getRecords();
+    assertEquals(1, records.length);
+    assertTrue(dynamicEntityDao.getFieldMetadataProviders().isEmpty());
     assertTrue(actualFetchResult.getUnselectedTabMetadata().isEmpty());
+    assertSame(entity, records[0]);
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject,
-   * DynamicEntityDao, RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@code Custom Criteria}.
-   *   <li>Then calls {@link FilterAndSortCriteria#getFilterValues()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SkuCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
-  })
-  public void testFetch_givenArrayListAddCustomCriteria_thenCallsGetFilterValues()
-      throws ServiceException {
+  public void testFetch13() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+
     SectionCrumb sectionCrumb = new SectionCrumb();
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
     sectionCrumb.setSectionIdentifier("42");
-
     PersistencePackage persistencePackage = mock(PersistencePackage.class);
     when(persistencePackage.containsCriteria(Mockito.<String>any())).thenReturn(true);
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[] {"Custom Criteria"});
-    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[] {sectionCrumb});
+    when(persistencePackage.getCustomCriteria()).thenReturn(new String[]{"Custom Criteria"});
+    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
     when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
     when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
 
     ArrayList<String> stringList = new ArrayList<>();
     stringList.add("Custom Criteria");
     stringList.add("owningClass=org.broadleafcommerce.core.catalog.domain.SkuBundleItemImpl");
-
     FilterAndSortCriteria filterAndSortCriteria = mock(FilterAndSortCriteria.class);
     when(filterAndSortCriteria.getFilterValues()).thenReturn(stringList);
-
     CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
     when(cto.getFirstResult()).thenReturn(1);
     when(cto.getMaxResults()).thenReturn(3);
     when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
     when(cto.get(Mockito.<String>any())).thenReturn(filterAndSortCriteria);
-    doNothing().when(cto).add(Mockito.<FilterAndSortCriteria>any());
-    cto.add(new FilterAndSortCriteria("42"));
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
     RecordHelper helper = mock(RecordHelper.class);
-    when(helper.getTotalRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any()))
-        .thenReturn(1);
-    when(helper.getFilterMappings(
-            Mockito.<PersistencePerspective>any(),
-            Mockito.<CriteriaTransferObject>any(),
-            Mockito.<String>any(),
-            Mockito.<Map<String, FieldMetadata>>any()))
-        .thenReturn(new ArrayList<>());
-    when(helper.getPersistentRecords(
-            Mockito.<String>any(),
-            Mockito.<List<FilterMapping>>any(),
-            Mockito.<Integer>any(),
-            Mockito.<Integer>any()))
-        .thenReturn(new ArrayList<>());
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+    when(helper.getTotalRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any())).thenReturn(1);
+    when(helper.getFilterMappings(Mockito.<PersistencePerspective>any(), Mockito.<CriteriaTransferObject>any(),
+        Mockito.<String>any(), Mockito.<Map<String, FieldMetadata>>any())).thenReturn(new ArrayList<>());
+    when(helper.getPersistentRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any(), Mockito.<Integer>any(),
+        Mockito.<Integer>any())).thenReturn(new ArrayList<>());
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
         .thenReturn(new HashMap<>());
-    when(helper.getRecords(
-            Mockito.<Map<String, FieldMetadata>>any(), Mockito.<List<Serializable>>any()))
-        .thenReturn(new Entity[] {new Entity()});
+    Entity entity = new Entity();
+    when(helper.getRecords(Mockito.<Map<String, FieldMetadata>>any(), Mockito.<List<Serializable>>any()))
+        .thenReturn(new Entity[]{entity});
 
     // Act
-    DynamicResultSet actualFetchResult =
-        skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao, helper);
+    DynamicResultSet actualFetchResult = skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao,
+        helper);
 
     // Assert
-    verify(cto).add(isA(FilterAndSortCriteria.class));
-    verify(cto).get("consolidatedProductOptions");
+    verify(cto).get(eq("consolidatedProductOptions"));
     verify(cto).getCriteriaMap();
     verify(cto).getFirstResult();
     verify(cto).getMaxResults();
@@ -3142,17 +2247,12 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
     verify(persistencePackage, atLeast(1)).getCustomCriteria();
     verify(persistencePackage).getPersistencePerspective();
     verify(persistencePackage).getSectionCrumbs();
-    verify(helper)
-        .getFilterMappings(
-            isA(PersistencePerspective.class),
-            isA(CriteriaTransferObject.class),
-            eq("Dr Jane Doe"),
-            isA(Map.class));
+    verify(helper).getFilterMappings(isA(PersistencePerspective.class), isA(CriteriaTransferObject.class),
+        eq("Dr Jane Doe"), isA(Map.class));
     verify(helper).getPersistentRecords(eq("Dr Jane Doe"), isA(List.class), eq(1), eq(3));
     verify(helper).getRecords(isA(Map.class), isA(List.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.Sku"), isA(PersistencePerspective.class));
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.catalog.domain.Sku"),
+        isA(PersistencePerspective.class));
     verify(helper).getTotalRecords(eq("Dr Jane Doe"), isA(List.class));
     assertNull(actualFetchResult.getPromptSearch());
     assertNull(actualFetchResult.getTotalCountLessThanPageSize());
@@ -3166,1071 +2266,25 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
     assertEquals(0, actualFetchResult.getPageSize().intValue());
     assertEquals(0, actualFetchResult.getStartIndex().intValue());
     assertEquals(1, actualFetchResult.getTotalRecords().intValue());
+    Entity[] records = actualFetchResult.getRecords();
+    assertEquals(1, records.length);
+    assertTrue(dynamicEntityDao.getFieldMetadataProviders().isEmpty());
     assertTrue(actualFetchResult.getUnselectedTabMetadata().isEmpty());
+    assertSame(entity, records[0]);
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject,
-   * DynamicEntityDao, RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Given array of {@link String} with {@code requestingField=sku}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#applyInventoryRestictions(List, CriteriaTransferObject, PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SkuCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
-  })
-  public void testFetch_givenArrayOfStringWithRequestingFieldSku() throws ServiceException {
+  public void testApplyInventoryRestictions() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("42");
-
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.containsCriteria(Mockito.<String>any())).thenReturn(true);
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[] {"requestingField=sku"});
-    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[] {sectionCrumb});
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-
-    FilterAndSortCriteria filterAndSortCriteria = mock(FilterAndSortCriteria.class);
-    when(filterAndSortCriteria.getFilterValues()).thenReturn(new ArrayList<>());
-
-    CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
-    when(cto.getFirstResult()).thenReturn(1);
-    when(cto.getMaxResults()).thenReturn(3);
-    when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
-    when(cto.get(Mockito.<String>any())).thenReturn(filterAndSortCriteria);
-    doNothing().when(cto).add(Mockito.<FilterAndSortCriteria>any());
-    cto.add(new FilterAndSortCriteria("42"));
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    RecordHelper helper = mock(RecordHelper.class);
-    when(helper.getTotalRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any()))
-        .thenReturn(1);
-    when(helper.getFilterMappings(
-            Mockito.<PersistencePerspective>any(),
-            Mockito.<CriteriaTransferObject>any(),
-            Mockito.<String>any(),
-            Mockito.<Map<String, FieldMetadata>>any()))
-        .thenReturn(new ArrayList<>());
-    when(helper.getPersistentRecords(
-            Mockito.<String>any(),
-            Mockito.<List<FilterMapping>>any(),
-            Mockito.<Integer>any(),
-            Mockito.<Integer>any()))
-        .thenReturn(new ArrayList<>());
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
-        .thenReturn(new HashMap<>());
-    when(helper.getRecords(
-            Mockito.<Map<String, FieldMetadata>>any(), Mockito.<List<Serializable>>any()))
-        .thenReturn(new Entity[] {new Entity()});
-
-    // Act
-    DynamicResultSet actualFetchResult =
-        skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao, helper);
-
-    // Assert
-    verify(cto).add(isA(FilterAndSortCriteria.class));
-    verify(cto).get("consolidatedProductOptions");
-    verify(cto).getCriteriaMap();
-    verify(cto).getFirstResult();
-    verify(cto).getMaxResults();
-    verify(filterAndSortCriteria).getFilterValues();
-    verify(persistencePackage, atLeast(1)).containsCriteria(Mockito.<String>any());
-    verify(persistencePackage, atLeast(1)).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage, atLeast(1)).getCustomCriteria();
-    verify(persistencePackage).getPersistencePerspective();
-    verify(persistencePackage).getSectionCrumbs();
-    verify(helper)
-        .getFilterMappings(
-            isA(PersistencePerspective.class),
-            isA(CriteriaTransferObject.class),
-            eq("Dr Jane Doe"),
-            isA(Map.class));
-    verify(helper).getPersistentRecords(eq("Dr Jane Doe"), isA(List.class), eq(1), eq(3));
-    verify(helper).getRecords(isA(Map.class), isA(List.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.Sku"), isA(PersistencePerspective.class));
-    verify(helper).getTotalRecords(eq("Dr Jane Doe"), isA(List.class));
-    assertNull(actualFetchResult.getPromptSearch());
-    assertNull(actualFetchResult.getTotalCountLessThanPageSize());
-    assertNull(actualFetchResult.getBatchId());
-    assertNull(actualFetchResult.getLowerCount());
-    assertNull(actualFetchResult.getUpperCount());
-    assertNull(actualFetchResult.getFirstId());
-    assertNull(actualFetchResult.getLastId());
-    assertNull(actualFetchResult.getClassMetaData());
-    assertNull(actualFetchResult.getFetchType());
-    assertEquals(0, actualFetchResult.getPageSize().intValue());
-    assertEquals(0, actualFetchResult.getStartIndex().intValue());
-    assertEquals(1, actualFetchResult.getTotalRecords().intValue());
-    assertTrue(actualFetchResult.getUnselectedTabMetadata().isEmpty());
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject,
-   * DynamicEntityDao, RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@code false}.
-   *   <li>When {@link PersistencePackage} {@link PersistencePackage#containsCriteria(String)}
-   *       return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SkuCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
-  })
-  public void testFetch_givenFalse_whenPersistencePackageContainsCriteriaReturnFalse()
-      throws ServiceException {
-    // Arrange
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("42");
-
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.containsCriteria(Mockito.<String>any())).thenReturn(false);
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[] {"Custom Criteria"});
-    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[] {sectionCrumb});
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-
-    FilterAndSortCriteria filterAndSortCriteria = mock(FilterAndSortCriteria.class);
-    when(filterAndSortCriteria.getFilterValues()).thenReturn(new ArrayList<>());
-
-    CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
-    when(cto.getFirstResult()).thenReturn(1);
-    when(cto.getMaxResults()).thenReturn(3);
-    when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
-    when(cto.get(Mockito.<String>any())).thenReturn(filterAndSortCriteria);
-    doNothing().when(cto).add(Mockito.<FilterAndSortCriteria>any());
-    cto.add(new FilterAndSortCriteria("42"));
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    RecordHelper helper = mock(RecordHelper.class);
-    when(helper.getTotalRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any()))
-        .thenReturn(1);
-    when(helper.getFilterMappings(
-            Mockito.<PersistencePerspective>any(),
-            Mockito.<CriteriaTransferObject>any(),
-            Mockito.<String>any(),
-            Mockito.<Map<String, FieldMetadata>>any()))
-        .thenReturn(new ArrayList<>());
-    when(helper.getPersistentRecords(
-            Mockito.<String>any(),
-            Mockito.<List<FilterMapping>>any(),
-            Mockito.<Integer>any(),
-            Mockito.<Integer>any()))
-        .thenReturn(new ArrayList<>());
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
-        .thenReturn(new HashMap<>());
-    when(helper.getRecords(
-            Mockito.<Map<String, FieldMetadata>>any(), Mockito.<List<Serializable>>any()))
-        .thenReturn(new Entity[] {new Entity()});
-
-    // Act
-    DynamicResultSet actualFetchResult =
-        skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao, helper);
-
-    // Assert
-    verify(cto).add(isA(FilterAndSortCriteria.class));
-    verify(cto).get("consolidatedProductOptions");
-    verify(cto).getCriteriaMap();
-    verify(cto).getFirstResult();
-    verify(cto).getMaxResults();
-    verify(filterAndSortCriteria).getFilterValues();
-    verify(persistencePackage)
-        .containsCriteria(
-            "owningClass=com.broadleafcommerce.inventory.advanced.domain.InventoryImpl");
-    verify(persistencePackage, atLeast(1)).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage, atLeast(1)).getCustomCriteria();
-    verify(persistencePackage).getPersistencePerspective();
-    verify(persistencePackage).getSectionCrumbs();
-    verify(helper)
-        .getFilterMappings(
-            isA(PersistencePerspective.class),
-            isA(CriteriaTransferObject.class),
-            eq("Dr Jane Doe"),
-            isA(Map.class));
-    verify(helper).getPersistentRecords(eq("Dr Jane Doe"), isA(List.class), eq(1), eq(3));
-    verify(helper).getRecords(isA(Map.class), isA(List.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.Sku"), isA(PersistencePerspective.class));
-    verify(helper).getTotalRecords(eq("Dr Jane Doe"), isA(List.class));
-    assertNull(actualFetchResult.getPromptSearch());
-    assertNull(actualFetchResult.getTotalCountLessThanPageSize());
-    assertNull(actualFetchResult.getBatchId());
-    assertNull(actualFetchResult.getLowerCount());
-    assertNull(actualFetchResult.getUpperCount());
-    assertNull(actualFetchResult.getFirstId());
-    assertNull(actualFetchResult.getLastId());
-    assertNull(actualFetchResult.getClassMetaData());
-    assertNull(actualFetchResult.getFetchType());
-    assertEquals(0, actualFetchResult.getPageSize().intValue());
-    assertEquals(0, actualFetchResult.getStartIndex().intValue());
-    assertEquals(1, actualFetchResult.getTotalRecords().intValue());
-    assertTrue(actualFetchResult.getUnselectedTabMetadata().isEmpty());
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject,
-   * DynamicEntityDao, RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link FilterAndSortCriteria#FilterAndSortCriteria(String, String)} with propertyId
-   *       is {@code 42} and filterValue is {@code 42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SkuCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
-  })
-  public void testFetch_givenFilterAndSortCriteriaWithPropertyIdIs42AndFilterValueIs42()
-      throws ServiceException {
-    // Arrange
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("42");
-
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.containsCriteria(Mockito.<String>any())).thenReturn(true);
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[] {"Custom Criteria"});
-    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[] {sectionCrumb});
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-
-    CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
-    when(cto.getFirstResult()).thenReturn(1);
-    when(cto.getMaxResults()).thenReturn(3);
-    when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
-    when(cto.get(Mockito.<String>any())).thenReturn(new FilterAndSortCriteria("42", "42"));
-    doNothing().when(cto).add(Mockito.<FilterAndSortCriteria>any());
-    cto.add(new FilterAndSortCriteria("42"));
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    RecordHelper helper = mock(RecordHelper.class);
-    when(helper.getTotalRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any()))
-        .thenReturn(1);
-    when(helper.getFilterMappings(
-            Mockito.<PersistencePerspective>any(),
-            Mockito.<CriteriaTransferObject>any(),
-            Mockito.<String>any(),
-            Mockito.<Map<String, FieldMetadata>>any()))
-        .thenReturn(new ArrayList<>());
-    when(helper.getPersistentRecords(
-            Mockito.<String>any(),
-            Mockito.<List<FilterMapping>>any(),
-            Mockito.<Integer>any(),
-            Mockito.<Integer>any()))
-        .thenReturn(new ArrayList<>());
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
-        .thenReturn(new HashMap<>());
-    when(helper.getRecords(
-            Mockito.<Map<String, FieldMetadata>>any(), Mockito.<List<Serializable>>any()))
-        .thenReturn(new Entity[] {new Entity()});
-
-    // Act
-    DynamicResultSet actualFetchResult =
-        skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao, helper);
-
-    // Assert
-    verify(cto).add(isA(FilterAndSortCriteria.class));
-    verify(cto).get("consolidatedProductOptions");
-    verify(cto).getCriteriaMap();
-    verify(cto).getFirstResult();
-    verify(cto).getMaxResults();
-    verify(persistencePackage, atLeast(1)).containsCriteria(Mockito.<String>any());
-    verify(persistencePackage, atLeast(1)).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage, atLeast(1)).getCustomCriteria();
-    verify(persistencePackage).getPersistencePerspective();
-    verify(persistencePackage).getSectionCrumbs();
-    verify(helper)
-        .getFilterMappings(
-            isA(PersistencePerspective.class),
-            isA(CriteriaTransferObject.class),
-            eq("Dr Jane Doe"),
-            isA(Map.class));
-    verify(helper).getPersistentRecords(eq("Dr Jane Doe"), isA(List.class), eq(1), eq(3));
-    verify(helper).getRecords(isA(Map.class), isA(List.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.Sku"), isA(PersistencePerspective.class));
-    verify(helper).getTotalRecords(eq("Dr Jane Doe"), isA(List.class));
-    assertNull(actualFetchResult.getPromptSearch());
-    assertNull(actualFetchResult.getTotalCountLessThanPageSize());
-    assertNull(actualFetchResult.getBatchId());
-    assertNull(actualFetchResult.getLowerCount());
-    assertNull(actualFetchResult.getUpperCount());
-    assertNull(actualFetchResult.getFirstId());
-    assertNull(actualFetchResult.getLastId());
-    assertNull(actualFetchResult.getClassMetaData());
-    assertNull(actualFetchResult.getFetchType());
-    assertEquals(0, actualFetchResult.getPageSize().intValue());
-    assertEquals(0, actualFetchResult.getStartIndex().intValue());
-    assertEquals(1, actualFetchResult.getTotalRecords().intValue());
-    assertTrue(actualFetchResult.getUnselectedTabMetadata().isEmpty());
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject,
-   * DynamicEntityDao, RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link FilterAndSortCriteria#getFilterValues()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SkuCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
-  })
-  public void testFetch_thenCallsGetFilterValues() throws ServiceException {
-    // Arrange
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("42");
-
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.containsCriteria(Mockito.<String>any())).thenReturn(true);
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[] {"Custom Criteria"});
-    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[] {sectionCrumb});
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-
-    FilterAndSortCriteria filterAndSortCriteria = mock(FilterAndSortCriteria.class);
-    when(filterAndSortCriteria.getFilterValues()).thenReturn(new ArrayList<>());
-
-    CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
-    when(cto.getFirstResult()).thenReturn(1);
-    when(cto.getMaxResults()).thenReturn(3);
-    when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
-    when(cto.get(Mockito.<String>any())).thenReturn(filterAndSortCriteria);
-    doNothing().when(cto).add(Mockito.<FilterAndSortCriteria>any());
-    cto.add(new FilterAndSortCriteria("42"));
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    RecordHelper helper = mock(RecordHelper.class);
-    when(helper.getTotalRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any()))
-        .thenReturn(1);
-    when(helper.getFilterMappings(
-            Mockito.<PersistencePerspective>any(),
-            Mockito.<CriteriaTransferObject>any(),
-            Mockito.<String>any(),
-            Mockito.<Map<String, FieldMetadata>>any()))
-        .thenReturn(new ArrayList<>());
-    when(helper.getPersistentRecords(
-            Mockito.<String>any(),
-            Mockito.<List<FilterMapping>>any(),
-            Mockito.<Integer>any(),
-            Mockito.<Integer>any()))
-        .thenReturn(new ArrayList<>());
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
-        .thenReturn(new HashMap<>());
-    when(helper.getRecords(
-            Mockito.<Map<String, FieldMetadata>>any(), Mockito.<List<Serializable>>any()))
-        .thenReturn(new Entity[] {new Entity()});
-
-    // Act
-    DynamicResultSet actualFetchResult =
-        skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao, helper);
-
-    // Assert
-    verify(cto).add(isA(FilterAndSortCriteria.class));
-    verify(cto).get("consolidatedProductOptions");
-    verify(cto).getCriteriaMap();
-    verify(cto).getFirstResult();
-    verify(cto).getMaxResults();
-    verify(filterAndSortCriteria).getFilterValues();
-    verify(persistencePackage, atLeast(1)).containsCriteria(Mockito.<String>any());
-    verify(persistencePackage, atLeast(1)).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage, atLeast(1)).getCustomCriteria();
-    verify(persistencePackage).getPersistencePerspective();
-    verify(persistencePackage).getSectionCrumbs();
-    verify(helper)
-        .getFilterMappings(
-            isA(PersistencePerspective.class),
-            isA(CriteriaTransferObject.class),
-            eq("Dr Jane Doe"),
-            isA(Map.class));
-    verify(helper).getPersistentRecords(eq("Dr Jane Doe"), isA(List.class), eq(1), eq(3));
-    verify(helper).getRecords(isA(Map.class), isA(List.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.Sku"), isA(PersistencePerspective.class));
-    verify(helper).getTotalRecords(eq("Dr Jane Doe"), isA(List.class));
-    assertNull(actualFetchResult.getPromptSearch());
-    assertNull(actualFetchResult.getTotalCountLessThanPageSize());
-    assertNull(actualFetchResult.getBatchId());
-    assertNull(actualFetchResult.getLowerCount());
-    assertNull(actualFetchResult.getUpperCount());
-    assertNull(actualFetchResult.getFirstId());
-    assertNull(actualFetchResult.getLastId());
-    assertNull(actualFetchResult.getClassMetaData());
-    assertNull(actualFetchResult.getFetchType());
-    assertEquals(0, actualFetchResult.getPageSize().intValue());
-    assertEquals(0, actualFetchResult.getStartIndex().intValue());
-    assertEquals(1, actualFetchResult.getTotalRecords().intValue());
-    assertTrue(actualFetchResult.getUnselectedTabMetadata().isEmpty());
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject,
-   * DynamicEntityDao, RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SkuCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
-  })
-  public void testFetch_thenCriteriaTransferObjectCriteriaMapSizeIsOne() throws ServiceException {
-    // Arrange
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("42");
-
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.containsCriteria(Mockito.<String>any())).thenReturn(true);
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[] {"Custom Criteria"});
-    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[] {sectionCrumb});
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-    CriteriaTransferObject cto = new CriteriaTransferObject();
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    RecordHelper helper = mock(RecordHelper.class);
-    when(helper.getTotalRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any()))
-        .thenReturn(1);
-    when(helper.getFilterMappings(
-            Mockito.<PersistencePerspective>any(),
-            Mockito.<CriteriaTransferObject>any(),
-            Mockito.<String>any(),
-            Mockito.<Map<String, FieldMetadata>>any()))
-        .thenReturn(new ArrayList<>());
-    when(helper.getPersistentRecords(
-            Mockito.<String>any(),
-            Mockito.<List<FilterMapping>>any(),
-            Mockito.<Integer>any(),
-            Mockito.<Integer>any()))
-        .thenReturn(new ArrayList<>());
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
-        .thenReturn(new HashMap<>());
-    when(helper.getRecords(
-            Mockito.<Map<String, FieldMetadata>>any(), Mockito.<List<Serializable>>any()))
-        .thenReturn(new Entity[] {new Entity()});
-
-    // Act
-    DynamicResultSet actualFetchResult =
-        skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao, helper);
-
-    // Assert
-    verify(persistencePackage, atLeast(1)).containsCriteria(Mockito.<String>any());
-    verify(persistencePackage, atLeast(1)).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage, atLeast(1)).getCustomCriteria();
-    verify(persistencePackage).getPersistencePerspective();
-    verify(persistencePackage).getSectionCrumbs();
-    verify(helper)
-        .getFilterMappings(
-            isA(PersistencePerspective.class),
-            isA(CriteriaTransferObject.class),
-            eq("Dr Jane Doe"),
-            isA(Map.class));
-    verify(helper).getPersistentRecords(eq("Dr Jane Doe"), isA(List.class), isNull(), isNull());
-    verify(helper).getRecords(isA(Map.class), isA(List.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.Sku"), isA(PersistencePerspective.class));
-    verify(helper).getTotalRecords(eq("Dr Jane Doe"), isA(List.class));
-    Map<String, FilterAndSortCriteria> criteriaMap = cto.getCriteriaMap();
-    assertEquals(1, criteriaMap.size());
-    FilterAndSortCriteria getResult = criteriaMap.get("consolidatedProductOptions");
-    assertEquals("consolidatedProductOptions", getResult.getPropertyId());
-    assertNull(getResult.getSortAscending());
-    assertNull(getResult.getOrder());
-    assertNull(getResult.getSortDirection());
-    assertNull(getResult.getRestrictionType());
-    assertEquals(1, actualFetchResult.getRecords().length);
-    assertTrue(getResult.getFilterValues().isEmpty());
-    assertTrue(getResult.getSpecialFilterValues().isEmpty());
-    assertTrue(getResult.isNullsLast());
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject,
-   * DynamicEntityDao, RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is two.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SkuCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
-  })
-  public void testFetch_thenCriteriaTransferObjectCriteriaMapSizeIsTwo() throws ServiceException {
-    // Arrange
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("42");
-
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.containsCriteria(Mockito.<String>any())).thenReturn(true);
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[] {"Custom Criteria"});
-    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[] {sectionCrumb});
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-
-    CriteriaTransferObject cto = new CriteriaTransferObject();
-    cto.add(new FilterAndSortCriteria("42"));
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    RecordHelper helper = mock(RecordHelper.class);
-    when(helper.getTotalRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any()))
-        .thenReturn(1);
-    when(helper.getFilterMappings(
-            Mockito.<PersistencePerspective>any(),
-            Mockito.<CriteriaTransferObject>any(),
-            Mockito.<String>any(),
-            Mockito.<Map<String, FieldMetadata>>any()))
-        .thenReturn(new ArrayList<>());
-    when(helper.getPersistentRecords(
-            Mockito.<String>any(),
-            Mockito.<List<FilterMapping>>any(),
-            Mockito.<Integer>any(),
-            Mockito.<Integer>any()))
-        .thenReturn(new ArrayList<>());
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
-        .thenReturn(new HashMap<>());
-    when(helper.getRecords(
-            Mockito.<Map<String, FieldMetadata>>any(), Mockito.<List<Serializable>>any()))
-        .thenReturn(new Entity[] {new Entity()});
-
-    // Act
-    DynamicResultSet actualFetchResult =
-        skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao, helper);
-
-    // Assert
-    verify(persistencePackage, atLeast(1)).containsCriteria(Mockito.<String>any());
-    verify(persistencePackage, atLeast(1)).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage, atLeast(1)).getCustomCriteria();
-    verify(persistencePackage).getPersistencePerspective();
-    verify(persistencePackage).getSectionCrumbs();
-    verify(helper)
-        .getFilterMappings(
-            isA(PersistencePerspective.class),
-            isA(CriteriaTransferObject.class),
-            eq("Dr Jane Doe"),
-            isA(Map.class));
-    verify(helper).getPersistentRecords(eq("Dr Jane Doe"), isA(List.class), isNull(), isNull());
-    verify(helper).getRecords(isA(Map.class), isA(List.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.Sku"), isA(PersistencePerspective.class));
-    verify(helper).getTotalRecords(eq("Dr Jane Doe"), isA(List.class));
-    Map<String, FilterAndSortCriteria> criteriaMap = cto.getCriteriaMap();
-    assertEquals(2, criteriaMap.size());
-    FilterAndSortCriteria getResult = criteriaMap.get("consolidatedProductOptions");
-    assertEquals("consolidatedProductOptions", getResult.getPropertyId());
-    assertNull(getResult.getSortAscending());
-    assertNull(getResult.getOrder());
-    assertNull(getResult.getSortDirection());
-    assertNull(getResult.getRestrictionType());
-    assertEquals(1, actualFetchResult.getRecords().length);
-    assertTrue(getResult.getFilterValues().isEmpty());
-    assertTrue(getResult.getSpecialFilterValues().isEmpty());
-    assertTrue(criteriaMap.containsKey("42"));
-    assertTrue(getResult.isNullsLast());
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject,
-   * DynamicEntityDao, RecordHelper)}.
-   *
-   * <ul>
-   *   <li>When {@link CriteriaTransferObject} {@link CriteriaTransferObject#getFirstResult()} throw
-   *       {@link NumberFormatException#NumberFormatException()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SkuCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
-  })
-  public void testFetch_whenCriteriaTransferObjectGetFirstResultThrowNumberFormatException()
-      throws ServiceException {
-    // Arrange
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("42");
-
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.containsCriteria(Mockito.<String>any())).thenReturn(true);
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[] {"Custom Criteria"});
-    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[] {sectionCrumb});
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-
-    CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
-    when(cto.getFirstResult()).thenThrow(new NumberFormatException());
-    when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
-    when(cto.get(Mockito.<String>any())).thenReturn(new FilterAndSortCriteria("42"));
-    doNothing().when(cto).add(Mockito.<FilterAndSortCriteria>any());
-    cto.add(new FilterAndSortCriteria("42"));
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    RecordHelper helper = mock(RecordHelper.class);
-    when(helper.getFilterMappings(
-            Mockito.<PersistencePerspective>any(),
-            Mockito.<CriteriaTransferObject>any(),
-            Mockito.<String>any(),
-            Mockito.<Map<String, FieldMetadata>>any()))
-        .thenReturn(new ArrayList<>());
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
-        .thenReturn(new HashMap<>());
-
-    // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () -> skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao, helper));
-    verify(cto).add(isA(FilterAndSortCriteria.class));
-    verify(cto).get("consolidatedProductOptions");
-    verify(cto).getCriteriaMap();
-    verify(cto).getFirstResult();
-    verify(persistencePackage, atLeast(1)).containsCriteria(Mockito.<String>any());
-    verify(persistencePackage, atLeast(1)).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage, atLeast(1)).getCustomCriteria();
-    verify(persistencePackage).getPersistencePerspective();
-    verify(persistencePackage).getSectionCrumbs();
-    verify(helper)
-        .getFilterMappings(
-            isA(PersistencePerspective.class),
-            isA(CriteriaTransferObject.class),
-            eq("Dr Jane Doe"),
-            isA(Map.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.Sku"), isA(PersistencePerspective.class));
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject,
-   * DynamicEntityDao, RecordHelper)}.
-   *
-   * <ul>
-   *   <li>When {@link PersistencePackage} {@link PersistencePackage#getCustomCriteria()} return
-   *       {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SkuCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
-  })
-  public void testFetch_whenPersistencePackageGetCustomCriteriaReturnNull()
-      throws ServiceException {
-    // Arrange
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("42");
-
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.containsCriteria(Mockito.<String>any())).thenReturn(true);
-    when(persistencePackage.getCustomCriteria()).thenReturn(null);
-    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[] {sectionCrumb});
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-    CriteriaTransferObject cto = new CriteriaTransferObject();
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    RecordHelper helper = mock(RecordHelper.class);
-    when(helper.getTotalRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any()))
-        .thenReturn(1);
-    when(helper.getFilterMappings(
-            Mockito.<PersistencePerspective>any(),
-            Mockito.<CriteriaTransferObject>any(),
-            Mockito.<String>any(),
-            Mockito.<Map<String, FieldMetadata>>any()))
-        .thenReturn(new ArrayList<>());
-    when(helper.getPersistentRecords(
-            Mockito.<String>any(),
-            Mockito.<List<FilterMapping>>any(),
-            Mockito.<Integer>any(),
-            Mockito.<Integer>any()))
-        .thenReturn(new ArrayList<>());
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
-        .thenReturn(new HashMap<>());
-    when(helper.getRecords(
-            Mockito.<Map<String, FieldMetadata>>any(), Mockito.<List<Serializable>>any()))
-        .thenReturn(new Entity[] {new Entity()});
-
-    // Act
-    DynamicResultSet actualFetchResult =
-        skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao, helper);
-
-    // Assert
-    verify(persistencePackage, atLeast(1)).containsCriteria(Mockito.<String>any());
-    verify(persistencePackage, atLeast(1)).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getCustomCriteria();
-    verify(persistencePackage).getPersistencePerspective();
-    verify(persistencePackage).getSectionCrumbs();
-    verify(helper)
-        .getFilterMappings(
-            isA(PersistencePerspective.class),
-            isA(CriteriaTransferObject.class),
-            eq("Dr Jane Doe"),
-            isA(Map.class));
-    verify(helper).getPersistentRecords(eq("Dr Jane Doe"), isA(List.class), isNull(), isNull());
-    verify(helper).getRecords(isA(Map.class), isA(List.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.Sku"), isA(PersistencePerspective.class));
-    verify(helper).getTotalRecords(eq("Dr Jane Doe"), isA(List.class));
-    Map<String, FilterAndSortCriteria> criteriaMap = cto.getCriteriaMap();
-    assertEquals(1, criteriaMap.size());
-    FilterAndSortCriteria getResult = criteriaMap.get("consolidatedProductOptions");
-    assertEquals("consolidatedProductOptions", getResult.getPropertyId());
-    assertNull(getResult.getSortAscending());
-    assertNull(getResult.getOrder());
-    assertNull(getResult.getSortDirection());
-    assertNull(getResult.getRestrictionType());
-    assertEquals(1, actualFetchResult.getRecords().length);
-    assertTrue(getResult.getFilterValues().isEmpty());
-    assertTrue(getResult.getSpecialFilterValues().isEmpty());
-    assertTrue(getResult.isNullsLast());
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject,
-   * DynamicEntityDao, RecordHelper)}.
-   *
-   * <ul>
-   *   <li>When {@link PersistencePackage} {@link PersistencePackage#getSectionCrumbs()} return
-   *       {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SkuCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
-  })
-  public void testFetch_whenPersistencePackageGetSectionCrumbsReturnNull() throws ServiceException {
-    // Arrange
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.containsCriteria(Mockito.<String>any())).thenReturn(true);
-    when(persistencePackage.getCustomCriteria()).thenReturn(new String[] {"Custom Criteria"});
-    when(persistencePackage.getSectionCrumbs()).thenReturn(null);
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-    CriteriaTransferObject cto = new CriteriaTransferObject();
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    RecordHelper helper = mock(RecordHelper.class);
-    when(helper.getTotalRecords(Mockito.<String>any(), Mockito.<List<FilterMapping>>any()))
-        .thenReturn(1);
-    when(helper.getFilterMappings(
-            Mockito.<PersistencePerspective>any(),
-            Mockito.<CriteriaTransferObject>any(),
-            Mockito.<String>any(),
-            Mockito.<Map<String, FieldMetadata>>any()))
-        .thenReturn(new ArrayList<>());
-    when(helper.getPersistentRecords(
-            Mockito.<String>any(),
-            Mockito.<List<FilterMapping>>any(),
-            Mockito.<Integer>any(),
-            Mockito.<Integer>any()))
-        .thenReturn(new ArrayList<>());
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
-        .thenReturn(new HashMap<>());
-    when(helper.getRecords(
-            Mockito.<Map<String, FieldMetadata>>any(), Mockito.<List<Serializable>>any()))
-        .thenReturn(new Entity[] {new Entity()});
-
-    // Act
-    DynamicResultSet actualFetchResult =
-        skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao, helper);
-
-    // Assert
-    verify(persistencePackage, atLeast(1)).containsCriteria(Mockito.<String>any());
-    verify(persistencePackage, atLeast(1)).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getCustomCriteria();
-    verify(persistencePackage).getPersistencePerspective();
-    verify(persistencePackage).getSectionCrumbs();
-    verify(helper)
-        .getFilterMappings(
-            isA(PersistencePerspective.class),
-            isA(CriteriaTransferObject.class),
-            eq("Dr Jane Doe"),
-            isA(Map.class));
-    verify(helper).getPersistentRecords(eq("Dr Jane Doe"), isA(List.class), isNull(), isNull());
-    verify(helper).getRecords(isA(Map.class), isA(List.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.Sku"), isA(PersistencePerspective.class));
-    verify(helper).getTotalRecords(eq("Dr Jane Doe"), isA(List.class));
-    Map<String, FilterAndSortCriteria> criteriaMap = cto.getCriteriaMap();
-    assertEquals(1, criteriaMap.size());
-    FilterAndSortCriteria getResult = criteriaMap.get("consolidatedProductOptions");
-    assertEquals("consolidatedProductOptions", getResult.getPropertyId());
-    assertNull(getResult.getSortAscending());
-    assertNull(getResult.getOrder());
-    assertNull(getResult.getSortDirection());
-    assertNull(getResult.getRestrictionType());
-    assertEquals(1, actualFetchResult.getRecords().length);
-    assertTrue(getResult.getFilterValues().isEmpty());
-    assertTrue(getResult.getSpecialFilterValues().isEmpty());
-    assertTrue(getResult.isNullsLast());
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject,
-   * DynamicEntityDao, RecordHelper)}.
-   *
-   * <ul>
-   *   <li>When {@link PersistencePackage} {@link PersistencePackage#getSectionCrumbs()} throw
-   *       {@link NumberFormatException#NumberFormatException()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SkuCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
-  })
-  public void testFetch_whenPersistencePackageGetSectionCrumbsThrowNumberFormatException()
-      throws ServiceException {
-    // Arrange
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.getSectionCrumbs()).thenThrow(new NumberFormatException());
-    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
-    CriteriaTransferObject cto = new CriteriaTransferObject();
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    RecordHelper helper = mock(RecordHelper.class);
-    when(helper.getFilterMappings(
-            Mockito.<PersistencePerspective>any(),
-            Mockito.<CriteriaTransferObject>any(),
-            Mockito.<String>any(),
-            Mockito.<Map<String, FieldMetadata>>any()))
-        .thenReturn(new ArrayList<>());
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
-        .thenReturn(new HashMap<>());
-
-    // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () -> skuCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao, helper));
-    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
-    verify(persistencePackage).getPersistencePerspective();
-    verify(persistencePackage).getSectionCrumbs();
-    verify(helper)
-        .getFilterMappings(
-            isA(PersistencePerspective.class),
-            isA(CriteriaTransferObject.class),
-            eq("Dr Jane Doe"),
-            isA(Map.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.catalog.domain.Sku"), isA(PersistencePerspective.class));
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#applyInventoryRestictions(List, CriteriaTransferObject,
-   * PersistencePackage)}.
-   *
-   * <ul>
-   *   <li>Given {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#applyInventoryRestictions(List,
-   * CriteriaTransferObject, PersistencePackage)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SkuCustomPersistenceHandler.applyInventoryRestictions(List, CriteriaTransferObject, PersistencePackage)"
-  })
-  public void testApplyInventoryRestictions_givenFalse() {
-    // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     ArrayList<FilterMapping> filterMappings = new ArrayList<>();
     CriteriaTransferObject cto = new CriteriaTransferObject();
-
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.containsCriteria(Mockito.<String>any())).thenReturn(false);
-
-    // Act
-    skuCustomPersistenceHandler.applyInventoryRestictions(filterMappings, cto, persistencePackage);
-
-    // Assert
-    verify(persistencePackage)
-        .containsCriteria(
-            "owningClass=com.broadleafcommerce.inventory.advanced.domain.InventoryImpl");
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#applyInventoryRestictions(List, CriteriaTransferObject,
-   * PersistencePackage)}.
-   *
-   * <ul>
-   *   <li>Given {@link FilterMapping} (default constructor).
-   *   <li>When {@link ArrayList#ArrayList()} add {@link FilterMapping} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#applyInventoryRestictions(List,
-   * CriteriaTransferObject, PersistencePackage)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SkuCustomPersistenceHandler.applyInventoryRestictions(List, CriteriaTransferObject, PersistencePackage)"
-  })
-  public void testApplyInventoryRestictions_givenFilterMapping_whenArrayListAddFilterMapping() {
-    // Arrange
-    ArrayList<FilterMapping> filterMappings = new ArrayList<>();
-    filterMappings.add(new FilterMapping());
-    CriteriaTransferObject cto = new CriteriaTransferObject();
-
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.containsCriteria(Mockito.<String>any())).thenReturn(false);
-
-    // Act
-    skuCustomPersistenceHandler.applyInventoryRestictions(filterMappings, cto, persistencePackage);
-
-    // Assert
-    verify(persistencePackage)
-        .containsCriteria(
-            "owningClass=com.broadleafcommerce.inventory.advanced.domain.InventoryImpl");
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#applyInventoryRestictions(List, CriteriaTransferObject,
-   * PersistencePackage)}.
-   *
-   * <ul>
-   *   <li>Given {@link FilterMapping} (default constructor).
-   *   <li>When {@link ArrayList#ArrayList()} add {@link FilterMapping} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#applyInventoryRestictions(List,
-   * CriteriaTransferObject, PersistencePackage)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SkuCustomPersistenceHandler.applyInventoryRestictions(List, CriteriaTransferObject, PersistencePackage)"
-  })
-  public void testApplyInventoryRestictions_givenFilterMapping_whenArrayListAddFilterMapping2() {
-    // Arrange
-    ArrayList<FilterMapping> filterMappings = new ArrayList<>();
-    filterMappings.add(new FilterMapping());
-    filterMappings.add(new FilterMapping());
-    CriteriaTransferObject cto = new CriteriaTransferObject();
-
-    PersistencePackage persistencePackage = mock(PersistencePackage.class);
-    when(persistencePackage.containsCriteria(Mockito.<String>any())).thenReturn(false);
-
-    // Act
-    skuCustomPersistenceHandler.applyInventoryRestictions(filterMappings, cto, persistencePackage);
-
-    // Assert
-    verify(persistencePackage)
-        .containsCriteria(
-            "owningClass=com.broadleafcommerce.inventory.advanced.domain.InventoryImpl");
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#applyInventoryRestictions(List, CriteriaTransferObject,
-   * PersistencePackage)}.
-   *
-   * <ul>
-   *   <li>Given {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#applyInventoryRestictions(List,
-   * CriteriaTransferObject, PersistencePackage)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SkuCustomPersistenceHandler.applyInventoryRestictions(List, CriteriaTransferObject, PersistencePackage)"
-  })
-  public void testApplyInventoryRestictions_givenTrue() {
-    // Arrange
-    ArrayList<FilterMapping> filterMappings = new ArrayList<>();
-    CriteriaTransferObject cto = new CriteriaTransferObject();
-
     PersistencePackage persistencePackage = mock(PersistencePackage.class);
     when(persistencePackage.containsCriteria(Mockito.<String>any())).thenReturn(true);
 
@@ -4242,28 +2296,26 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List,
-   * CriteriaTransferObject, PersistencePackage, String)}.
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List,
-   * CriteriaTransferObject, PersistencePackage, String)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SkuCustomPersistenceHandler.applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)"
-  })
   public void testApplyProductOptionValueCriteria() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     ArrayList<FilterMapping> filterMappings = new ArrayList<>();
     CriteriaTransferObject cto = new CriteriaTransferObject();
+    PersistencePackage persistencePackage = new PersistencePackage();
 
     // Act
-    skuCustomPersistenceHandler.applyProductOptionValueCriteria(
-        filterMappings, cto, new PersistencePackage(), "Sku Property Prefix");
+    skuCustomPersistenceHandler.applyProductOptionValueCriteria(filterMappings, cto, persistencePackage,
+        "Sku Property Prefix");
 
     // Assert
+    FieldMetadata metadata = skuCustomPersistenceHandler.getBlankConsolidatedOptionProperty().getMetadata();
+    assertTrue(metadata instanceof BasicFieldMetadata);
     Map<String, FilterAndSortCriteria> criteriaMap = cto.getCriteriaMap();
     assertEquals(1, criteriaMap.size());
     FilterAndSortCriteria getResult = criteriaMap.get("consolidatedProductOptions");
@@ -4272,589 +2324,448 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
     assertNull(getResult.getOrder());
     assertNull(getResult.getSortDirection());
     assertNull(getResult.getRestrictionType());
+    assertTrue(filterMappings.isEmpty());
     assertTrue(getResult.getFilterValues().isEmpty());
     assertTrue(getResult.getSpecialFilterValues().isEmpty());
+    assertTrue(((BasicFieldMetadata) metadata).getValidationConfigurations().isEmpty());
+    assertTrue(metadata.getAdditionalMetadata().isEmpty());
+    assertTrue(persistencePackage.getPersistencePerspectiveItems().isEmpty());
+    assertTrue(persistencePackage.getSubPackages().isEmpty());
     assertTrue(getResult.isNullsLast());
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List,
-   * CriteriaTransferObject, PersistencePackage, String)}.
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List,
-   * CriteriaTransferObject, PersistencePackage, String)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SkuCustomPersistenceHandler.applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)"
-  })
   public void testApplyProductOptionValueCriteria2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     ArrayList<FilterMapping> filterMappings = new ArrayList<>();
 
     HashMap<String, FilterAndSortCriteria> criteriaMap = new HashMap<>();
-    criteriaMap.put(
-        SkuCustomPersistenceHandler.CONSOLIDATED_PRODUCT_OPTIONS_FIELD_NAME,
+    criteriaMap.put(SkuCustomPersistenceHandler.CONSOLIDATED_PRODUCT_OPTIONS_FIELD_NAME,
         new FilterAndSortCriteria("42"));
-    criteriaMap.put(
-        SkuCustomPersistenceHandler.CONSOLIDATED_PRODUCT_OPTIONS_FIELD_NAME,
+    criteriaMap.put(SkuCustomPersistenceHandler.CONSOLIDATED_PRODUCT_OPTIONS_FIELD_NAME,
         new FilterAndSortCriteria("42"));
 
     CriteriaTransferObject cto = new CriteriaTransferObject();
     cto.setCriteriaMap(criteriaMap);
+    PersistencePackage persistencePackage = new PersistencePackage();
 
     // Act
-    skuCustomPersistenceHandler.applyProductOptionValueCriteria(
-        filterMappings, cto, new PersistencePackage(), "");
+    skuCustomPersistenceHandler.applyProductOptionValueCriteria(filterMappings, cto, persistencePackage, null);
 
-    // Assert that nothing has changed
+    // Assert
+    FieldMetadata metadata = skuCustomPersistenceHandler.getBlankConsolidatedOptionProperty().getMetadata();
+    assertTrue(metadata instanceof BasicFieldMetadata);
     assertTrue(filterMappings.isEmpty());
+    assertTrue(((BasicFieldMetadata) metadata).getValidationConfigurations().isEmpty());
+    assertTrue(metadata.getAdditionalMetadata().isEmpty());
+    assertTrue(persistencePackage.getPersistencePerspectiveItems().isEmpty());
+    assertTrue(persistencePackage.getSubPackages().isEmpty());
     assertSame(criteriaMap, cto.getCriteriaMap());
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List,
-   * CriteriaTransferObject, PersistencePackage, String)}.
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List,
-   * CriteriaTransferObject, PersistencePackage, String)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SkuCustomPersistenceHandler.applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)"
-  })
   public void testApplyProductOptionValueCriteria3() {
-    // Arrange
-    ArrayList<FilterMapping> filterMappings = new ArrayList<>();
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
+    // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+
+    ArrayList<FilterMapping> filterMappings = new ArrayList<>();
+    FilterMapping filterMapping = new FilterMapping();
+    filterMappings.add(filterMapping);
+    CriteriaTransferObject cto = new CriteriaTransferObject();
+    PersistencePackage persistencePackage = new PersistencePackage();
+
+    // Act
+    skuCustomPersistenceHandler.applyProductOptionValueCriteria(filterMappings, cto, persistencePackage,
+        "Sku Property Prefix");
+
+    // Assert
+    FieldMetadata metadata = skuCustomPersistenceHandler.getBlankConsolidatedOptionProperty().getMetadata();
+    assertTrue(metadata instanceof BasicFieldMetadata);
+    Map<String, FilterAndSortCriteria> criteriaMap = cto.getCriteriaMap();
+    assertEquals(1, criteriaMap.size());
+    FilterAndSortCriteria getResult = criteriaMap.get("consolidatedProductOptions");
+    assertEquals("consolidatedProductOptions", getResult.getPropertyId());
+    assertNull(getResult.getSortAscending());
+    assertNull(getResult.getOrder());
+    assertNull(getResult.getSortDirection());
+    assertNull(getResult.getRestrictionType());
+    assertEquals(1, filterMappings.size());
+    assertTrue(getResult.getFilterValues().isEmpty());
+    assertTrue(getResult.getSpecialFilterValues().isEmpty());
+    assertTrue(((BasicFieldMetadata) metadata).getValidationConfigurations().isEmpty());
+    assertTrue(metadata.getAdditionalMetadata().isEmpty());
+    assertTrue(persistencePackage.getPersistencePerspectiveItems().isEmpty());
+    assertTrue(persistencePackage.getSubPackages().isEmpty());
+    assertTrue(getResult.isNullsLast());
+    assertSame(filterMapping, filterMappings.get(0));
+  }
+
+  /**
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}
+   */
+  @Test
+  public void testApplyProductOptionValueCriteria4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+
+    ArrayList<FilterMapping> filterMappings = new ArrayList<>();
+    FilterMapping filterMapping = new FilterMapping();
+    filterMappings.add(filterMapping);
+    filterMappings.add(new FilterMapping());
+    CriteriaTransferObject cto = new CriteriaTransferObject();
+    PersistencePackage persistencePackage = new PersistencePackage();
+
+    // Act
+    skuCustomPersistenceHandler.applyProductOptionValueCriteria(filterMappings, cto, persistencePackage,
+        "Sku Property Prefix");
+
+    // Assert
+    FieldMetadata metadata = skuCustomPersistenceHandler.getBlankConsolidatedOptionProperty().getMetadata();
+    assertTrue(metadata instanceof BasicFieldMetadata);
+    Map<String, FilterAndSortCriteria> criteriaMap = cto.getCriteriaMap();
+    assertEquals(1, criteriaMap.size());
+    FilterAndSortCriteria getResult = criteriaMap.get("consolidatedProductOptions");
+    assertEquals("consolidatedProductOptions", getResult.getPropertyId());
+    assertNull(getResult.getSortAscending());
+    assertNull(getResult.getOrder());
+    assertNull(getResult.getSortDirection());
+    assertNull(getResult.getRestrictionType());
+    assertEquals(2, filterMappings.size());
+    assertTrue(getResult.getFilterValues().isEmpty());
+    assertTrue(getResult.getSpecialFilterValues().isEmpty());
+    assertTrue(((BasicFieldMetadata) metadata).getValidationConfigurations().isEmpty());
+    assertTrue(metadata.getAdditionalMetadata().isEmpty());
+    assertTrue(persistencePackage.getPersistencePerspectiveItems().isEmpty());
+    assertTrue(persistencePackage.getSubPackages().isEmpty());
+    assertTrue(getResult.isNullsLast());
+    assertSame(filterMapping, filterMappings.get(0));
+  }
+
+  /**
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}
+   */
+  @Test
+  public void testApplyProductOptionValueCriteria5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+    ArrayList<FilterMapping> filterMappings = new ArrayList<>();
+    CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
+    when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
+    when(cto.get(Mockito.<String>any())).thenReturn(new FilterAndSortCriteria("42"));
+    PersistencePackage persistencePackage = new PersistencePackage();
+
+    // Act
+    skuCustomPersistenceHandler.applyProductOptionValueCriteria(filterMappings, cto, persistencePackage,
+        "Sku Property Prefix");
+
+    // Assert
+    verify(cto).get(eq("consolidatedProductOptions"));
+    verify(cto).getCriteriaMap();
+    FieldMetadata metadata = skuCustomPersistenceHandler.getBlankConsolidatedOptionProperty().getMetadata();
+    assertTrue(metadata instanceof BasicFieldMetadata);
+    assertTrue(filterMappings.isEmpty());
+    assertTrue(((BasicFieldMetadata) metadata).getValidationConfigurations().isEmpty());
+    assertTrue(metadata.getAdditionalMetadata().isEmpty());
+    assertTrue(persistencePackage.getPersistencePerspectiveItems().isEmpty());
+    assertTrue(persistencePackage.getSubPackages().isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}
+   */
+  @Test
+  public void testApplyProductOptionValueCriteria6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+    ArrayList<FilterMapping> filterMappings = new ArrayList<>();
     CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
     when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
     when(cto.get(Mockito.<String>any())).thenReturn(new FilterAndSortCriteria("42", "42"));
+    PersistencePackage persistencePackage = new PersistencePackage();
 
     // Act
-    skuCustomPersistenceHandler.applyProductOptionValueCriteria(
-        filterMappings, cto, new PersistencePackage(), "Sku Property Prefix");
+    skuCustomPersistenceHandler.applyProductOptionValueCriteria(filterMappings, cto, persistencePackage,
+        "Sku Property Prefix");
 
     // Assert
-    verify(cto).get("consolidatedProductOptions");
+    verify(cto).get(eq("consolidatedProductOptions"));
     verify(cto).getCriteriaMap();
+    FieldMetadata metadata = skuCustomPersistenceHandler.getBlankConsolidatedOptionProperty().getMetadata();
+    assertTrue(metadata instanceof BasicFieldMetadata);
     assertEquals(1, filterMappings.size());
     FilterMapping getResult = filterMappings.get(0);
     List directFilterValues = getResult.getDirectFilterValues();
     assertEquals(1, directFilterValues.size());
     assertEquals("42", directFilterValues.get(0));
     FieldPath fieldPath = getResult.getFieldPath();
-    assertEquals(
-        "Sku Property Prefix.productOptionValueXrefs.productOptionValue.attributeValue",
+    assertEquals("Sku Property Prefix.productOptionValueXrefs.productOptionValue.attributeValue",
         fieldPath.getTargetProperty());
     assertNull(getResult.getInheritedFromClass());
     assertNull(getResult.getOrder());
     assertNull(getResult.getFullPropertyName());
+    Restriction restriction = getResult.getRestriction();
+    FieldPathBuilder fieldPathBuilder = restriction.getFieldPathBuilder();
+    assertNull(fieldPathBuilder.getRestrictions());
+    assertNull(fieldPathBuilder.getCriteria());
     assertNull(getResult.getSortDirection());
-    assertNull(getResult.getRestriction().getFilterValueConverter());
+    assertNull(restriction.getFilterValueConverter());
     assertTrue(fieldPath.getAssociationPath().isEmpty());
     assertTrue(fieldPath.getTargetPropertyPieces().isEmpty());
     assertTrue(getResult.getFilterValues().isEmpty());
+    assertTrue(((BasicFieldMetadata) metadata).getValidationConfigurations().isEmpty());
+    assertTrue(metadata.getAdditionalMetadata().isEmpty());
+    assertTrue(persistencePackage.getPersistencePerspectiveItems().isEmpty());
+    assertTrue(persistencePackage.getSubPackages().isEmpty());
     assertTrue(getResult.getNullsLast());
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List,
-   * CriteriaTransferObject, PersistencePackage, String)}.
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List,
-   * CriteriaTransferObject, PersistencePackage, String)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SkuCustomPersistenceHandler.applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)"
-  })
-  public void testApplyProductOptionValueCriteria4() {
+  public void testApplyProductOptionValueCriteria7() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     ArrayList<FilterMapping> filterMappings = new ArrayList<>();
-
-    ArrayList<String> stringList = new ArrayList<>();
-    stringList.add("42");
-
     FilterAndSortCriteria filterAndSortCriteria = mock(FilterAndSortCriteria.class);
-    when(filterAndSortCriteria.getFilterValues()).thenReturn(stringList);
-
+    when(filterAndSortCriteria.getFilterValues()).thenReturn(new ArrayList<>());
     CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
     when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
     when(cto.get(Mockito.<String>any())).thenReturn(filterAndSortCriteria);
+    PersistencePackage persistencePackage = new PersistencePackage();
 
     // Act
-    skuCustomPersistenceHandler.applyProductOptionValueCriteria(
-        filterMappings, cto, new PersistencePackage(), "Sku Property Prefix");
+    skuCustomPersistenceHandler.applyProductOptionValueCriteria(filterMappings, cto, persistencePackage,
+        "Sku Property Prefix");
 
     // Assert
-    verify(cto).get("consolidatedProductOptions");
+    verify(cto).get(eq("consolidatedProductOptions"));
+    verify(cto).getCriteriaMap();
+    verify(filterAndSortCriteria).getFilterValues();
+    FieldMetadata metadata = skuCustomPersistenceHandler.getBlankConsolidatedOptionProperty().getMetadata();
+    assertTrue(metadata instanceof BasicFieldMetadata);
+    assertTrue(filterMappings.isEmpty());
+    assertTrue(((BasicFieldMetadata) metadata).getValidationConfigurations().isEmpty());
+    assertTrue(metadata.getAdditionalMetadata().isEmpty());
+    assertTrue(persistencePackage.getPersistencePerspectiveItems().isEmpty());
+    assertTrue(persistencePackage.getSubPackages().isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}
+   */
+  @Test
+  public void testApplyProductOptionValueCriteria8() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+    ArrayList<FilterMapping> filterMappings = new ArrayList<>();
+
+    ArrayList<String> stringList = new ArrayList<>();
+    stringList.add("foo");
+    FilterAndSortCriteria filterAndSortCriteria = mock(FilterAndSortCriteria.class);
+    when(filterAndSortCriteria.getFilterValues()).thenReturn(stringList);
+    CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
+    when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
+    when(cto.get(Mockito.<String>any())).thenReturn(filterAndSortCriteria);
+    PersistencePackage persistencePackage = new PersistencePackage();
+
+    // Act
+    skuCustomPersistenceHandler.applyProductOptionValueCriteria(filterMappings, cto, persistencePackage,
+        "Sku Property Prefix");
+
+    // Assert
+    verify(cto).get(eq("consolidatedProductOptions"));
     verify(cto).getCriteriaMap();
     verify(filterAndSortCriteria, atLeast(1)).getFilterValues();
+    FieldMetadata metadata = skuCustomPersistenceHandler.getBlankConsolidatedOptionProperty().getMetadata();
+    assertTrue(metadata instanceof BasicFieldMetadata);
     assertEquals(1, filterMappings.size());
     FilterMapping getResult = filterMappings.get(0);
+    FieldPath fieldPath = getResult.getFieldPath();
+    assertEquals("Sku Property Prefix.productOptionValueXrefs.productOptionValue.attributeValue",
+        fieldPath.getTargetProperty());
     List directFilterValues = getResult.getDirectFilterValues();
     assertEquals(1, directFilterValues.size());
-    assertEquals("42", directFilterValues.get(0));
-    FieldPath fieldPath = getResult.getFieldPath();
-    assertEquals(
-        "Sku Property Prefix.productOptionValueXrefs.productOptionValue.attributeValue",
-        fieldPath.getTargetProperty());
+    assertEquals("foo", directFilterValues.get(0));
     assertNull(getResult.getInheritedFromClass());
     assertNull(getResult.getOrder());
     assertNull(getResult.getFullPropertyName());
+    Restriction restriction = getResult.getRestriction();
+    FieldPathBuilder fieldPathBuilder = restriction.getFieldPathBuilder();
+    assertNull(fieldPathBuilder.getRestrictions());
+    assertNull(fieldPathBuilder.getCriteria());
     assertNull(getResult.getSortDirection());
-    assertNull(getResult.getRestriction().getFilterValueConverter());
+    assertNull(restriction.getFilterValueConverter());
     assertTrue(fieldPath.getAssociationPath().isEmpty());
     assertTrue(fieldPath.getTargetPropertyPieces().isEmpty());
     assertTrue(getResult.getFilterValues().isEmpty());
+    assertTrue(((BasicFieldMetadata) metadata).getValidationConfigurations().isEmpty());
+    assertTrue(metadata.getAdditionalMetadata().isEmpty());
+    assertTrue(persistencePackage.getPersistencePerspectiveItems().isEmpty());
+    assertTrue(persistencePackage.getSubPackages().isEmpty());
     assertTrue(getResult.getNullsLast());
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List,
-   * CriteriaTransferObject, PersistencePackage, String)}.
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List,
-   * CriteriaTransferObject, PersistencePackage, String)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SkuCustomPersistenceHandler.applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)"
-  })
-  public void testApplyProductOptionValueCriteria5() {
+  public void testApplyProductOptionValueCriteria9() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     ArrayList<FilterMapping> filterMappings = new ArrayList<>();
 
     ArrayList<String> stringList = new ArrayList<>();
-    stringList.add("42");
-
+    stringList.add("foo");
     FilterAndSortCriteria filterAndSortCriteria = mock(FilterAndSortCriteria.class);
     when(filterAndSortCriteria.getFilterValues()).thenReturn(stringList);
-
     CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
     when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
     when(cto.get(Mockito.<String>any())).thenReturn(filterAndSortCriteria);
+    PersistencePackage persistencePackage = new PersistencePackage();
 
     // Act
-    skuCustomPersistenceHandler.applyProductOptionValueCriteria(
-        filterMappings, cto, new PersistencePackage(), "");
+    skuCustomPersistenceHandler.applyProductOptionValueCriteria(filterMappings, cto, persistencePackage, "");
 
     // Assert
-    verify(cto).get("consolidatedProductOptions");
+    verify(cto).get(eq("consolidatedProductOptions"));
     verify(cto).getCriteriaMap();
     verify(filterAndSortCriteria, atLeast(1)).getFilterValues();
+    FieldMetadata metadata = skuCustomPersistenceHandler.getBlankConsolidatedOptionProperty().getMetadata();
+    assertTrue(metadata instanceof BasicFieldMetadata);
     assertEquals(1, filterMappings.size());
     FilterMapping getResult = filterMappings.get(0);
     FieldPath fieldPath = getResult.getFieldPath();
     assertEquals("", fieldPath.getTargetProperty());
     List directFilterValues = getResult.getDirectFilterValues();
     assertEquals(1, directFilterValues.size());
-    assertEquals("42", directFilterValues.get(0));
+    assertEquals("foo", directFilterValues.get(0));
     assertNull(getResult.getInheritedFromClass());
     assertNull(getResult.getOrder());
     assertNull(getResult.getFullPropertyName());
+    Restriction restriction = getResult.getRestriction();
+    FieldPathBuilder fieldPathBuilder = restriction.getFieldPathBuilder();
+    assertNull(fieldPathBuilder.getRestrictions());
+    assertNull(fieldPathBuilder.getCriteria());
     assertNull(getResult.getSortDirection());
-    assertNull(getResult.getRestriction().getFilterValueConverter());
+    assertNull(restriction.getFilterValueConverter());
     assertTrue(fieldPath.getAssociationPath().isEmpty());
     assertTrue(fieldPath.getTargetPropertyPieces().isEmpty());
     assertTrue(getResult.getFilterValues().isEmpty());
+    assertTrue(((BasicFieldMetadata) metadata).getValidationConfigurations().isEmpty());
+    assertTrue(metadata.getAdditionalMetadata().isEmpty());
+    assertTrue(persistencePackage.getPersistencePerspectiveItems().isEmpty());
+    assertTrue(persistencePackage.getSubPackages().isEmpty());
     assertTrue(getResult.getNullsLast());
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List,
-   * CriteriaTransferObject, PersistencePackage, String)}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add empty string.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List,
-   * CriteriaTransferObject, PersistencePackage, String)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SkuCustomPersistenceHandler.applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)"
-  })
-  public void testApplyProductOptionValueCriteria_givenArrayListAddEmptyString() {
+  public void testApplyProductOptionValueCriteria10() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     ArrayList<FilterMapping> filterMappings = new ArrayList<>();
 
     ArrayList<String> stringList = new ArrayList<>();
     stringList.add("");
-
     FilterAndSortCriteria filterAndSortCriteria = mock(FilterAndSortCriteria.class);
     when(filterAndSortCriteria.getFilterValues()).thenReturn(stringList);
-
     CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
     when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
     when(cto.get(Mockito.<String>any())).thenReturn(filterAndSortCriteria);
+    PersistencePackage persistencePackage = new PersistencePackage();
 
     // Act
-    skuCustomPersistenceHandler.applyProductOptionValueCriteria(
-        filterMappings, cto, new PersistencePackage(), "Sku Property Prefix");
-
-    // Assert that nothing has changed
-    verify(cto).get("consolidatedProductOptions");
-    verify(cto).getCriteriaMap();
-    verify(filterAndSortCriteria, atLeast(1)).getFilterValues();
-    assertTrue(filterMappings.isEmpty());
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List,
-   * CriteriaTransferObject, PersistencePackage, String)}.
-   *
-   * <ul>
-   *   <li>Given {@link FilterAndSortCriteria#FilterAndSortCriteria(String)} with propertyId is
-   *       {@code 42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List,
-   * CriteriaTransferObject, PersistencePackage, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SkuCustomPersistenceHandler.applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)"
-  })
-  public void testApplyProductOptionValueCriteria_givenFilterAndSortCriteriaWithPropertyIdIs42() {
-    // Arrange
-    ArrayList<FilterMapping> filterMappings = new ArrayList<>();
-
-    CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
-    when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
-    when(cto.get(Mockito.<String>any())).thenReturn(new FilterAndSortCriteria("42"));
-
-    // Act
-    skuCustomPersistenceHandler.applyProductOptionValueCriteria(
-        filterMappings, cto, new PersistencePackage(), "Sku Property Prefix");
-
-    // Assert that nothing has changed
-    verify(cto).get("consolidatedProductOptions");
-    verify(cto).getCriteriaMap();
-    assertTrue(filterMappings.isEmpty());
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List,
-   * CriteriaTransferObject, PersistencePackage, String)}.
-   *
-   * <ul>
-   *   <li>Given {@link FilterMapping} (default constructor).
-   *   <li>Then {@link ArrayList#ArrayList()} size is two.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#applyProductOptionValueCriteria(List,
-   * CriteriaTransferObject, PersistencePackage, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SkuCustomPersistenceHandler.applyProductOptionValueCriteria(List, CriteriaTransferObject, PersistencePackage, String)"
-  })
-  public void testApplyProductOptionValueCriteria_givenFilterMapping_thenArrayListSizeIsTwo() {
-    // Arrange
-    ArrayList<FilterMapping> filterMappings = new ArrayList<>();
-    filterMappings.add(new FilterMapping());
-
-    ArrayList<String> stringList = new ArrayList<>();
-    stringList.add("42");
-
-    FilterAndSortCriteria filterAndSortCriteria = mock(FilterAndSortCriteria.class);
-    when(filterAndSortCriteria.getFilterValues()).thenReturn(stringList);
-
-    CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
-    when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
-    when(cto.get(Mockito.<String>any())).thenReturn(filterAndSortCriteria);
-
-    // Act
-    skuCustomPersistenceHandler.applyProductOptionValueCriteria(
-        filterMappings, cto, new PersistencePackage(), "Sku Property Prefix");
+    skuCustomPersistenceHandler.applyProductOptionValueCriteria(filterMappings, cto, persistencePackage, "");
 
     // Assert
-    verify(cto).get("consolidatedProductOptions");
+    verify(cto).get(eq("consolidatedProductOptions"));
     verify(cto).getCriteriaMap();
     verify(filterAndSortCriteria, atLeast(1)).getFilterValues();
-    assertEquals(2, filterMappings.size());
-    FilterMapping getResult = filterMappings.get(1);
-    List directFilterValues = getResult.getDirectFilterValues();
-    assertEquals(1, directFilterValues.size());
-    assertEquals("42", directFilterValues.get(0));
-    FieldPath fieldPath = getResult.getFieldPath();
-    assertEquals(
-        "Sku Property Prefix.productOptionValueXrefs.productOptionValue.attributeValue",
-        fieldPath.getTargetProperty());
-    assertNull(getResult.getInheritedFromClass());
-    assertNull(getResult.getOrder());
-    assertNull(getResult.getFullPropertyName());
-    assertNull(getResult.getSortDirection());
-    assertNull(getResult.getRestriction().getFilterValueConverter());
-    assertTrue(fieldPath.getAssociationPath().isEmpty());
-    assertTrue(fieldPath.getTargetPropertyPieces().isEmpty());
-    assertTrue(getResult.getFilterValues().isEmpty());
-    assertTrue(getResult.getNullsLast());
+    FieldMetadata metadata = skuCustomPersistenceHandler.getBlankConsolidatedOptionProperty().getMetadata();
+    assertTrue(metadata instanceof BasicFieldMetadata);
+    assertTrue(filterMappings.isEmpty());
+    assertTrue(((BasicFieldMetadata) metadata).getValidationConfigurations().isEmpty());
+    assertTrue(metadata.getAdditionalMetadata().isEmpty());
+    assertTrue(persistencePackage.getPersistencePerspectiveItems().isEmpty());
+    assertTrue(persistencePackage.getSubPackages().isEmpty());
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link Entity} {@link Entity#getType()} return array of {@link String} with {@code
-   *       Type}.
-   *   <li>Then throw {@link ServiceException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#add(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#associateProductOptionValuesToSku(Entity, Sku, DynamicEntityDao)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity SkuCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testAdd_givenEntityGetTypeReturnArrayOfStringWithType_thenThrowServiceException()
-      throws ServiceException {
-    // Arrange
-    Entity entity = mock(Entity.class);
-    when(entity.getType()).thenReturn(new String[] {"Type"});
-    when(entity.getProperties())
-        .thenReturn(new Property[] {new Property("Unable to perform fetch for entity: ", "42")});
-
-    PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.setEntity(entity);
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () ->
-            skuCustomPersistenceHandler.add(
-                persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule()));
-    verify(entity).getProperties();
-    verify(entity).getType();
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Given {@link Entity} {@link Entity#getType()} throw {@link
-   *       NumberFormatException#NumberFormatException()}.
-   *   <li>Then throw {@link ServiceException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#add(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity SkuCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testAdd_givenEntityGetTypeThrowNumberFormatException_thenThrowServiceException()
-      throws ServiceException {
-    // Arrange
-    Entity entity = mock(Entity.class);
-    when(entity.getType()).thenThrow(new NumberFormatException());
-    when(entity.getProperties())
-        .thenReturn(new Property[] {new Property("Unable to perform fetch for entity: ", "42")});
-
-    PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.setEntity(entity);
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () ->
-            skuCustomPersistenceHandler.add(
-                persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule()));
-    verify(entity).getProperties();
-    verify(entity).getType();
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#getPolymorphicClasses(Class, EntityManager, boolean)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link SessionDelegatorBaseImpl#addEventListeners(SessionEventListener[])}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#getPolymorphicClasses(Class,
-   * EntityManager, boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String[] SkuCustomPersistenceHandler.getPolymorphicClasses(Class, EntityManager, boolean)"
-  })
-  public void testGetPolymorphicClasses_thenCallsAddEventListeners() {
-    // Arrange
-    Class<String> clazz = String.class;
-
-    SessionDelegatorBaseImpl em = mock(SessionDelegatorBaseImpl.class);
-    doNothing().when(em).addEventListeners((SessionEventListener[]) Mockito.any());
-    em.addEventListeners(new BaseSessionEventListener());
-
-    // Act
-    String[] actualPolymorphicClasses =
-        skuCustomPersistenceHandler.getPolymorphicClasses(clazz, em, true);
-
-    // Assert
-    verify(em).addEventListeners((SessionEventListener[]) Mockito.any());
-    assertEquals(0, actualPolymorphicClasses.length);
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#getPolymorphicClasses(Class, EntityManager, boolean)}.
-   *
-   * <ul>
-   *   <li>When {@code false}.
-   *   <li>Then return array length is zero.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#getPolymorphicClasses(Class,
-   * EntityManager, boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String[] SkuCustomPersistenceHandler.getPolymorphicClasses(Class, EntityManager, boolean)"
-  })
-  public void testGetPolymorphicClasses_whenFalse_thenReturnArrayLengthIsZero() {
-    // Arrange
-    Class<Object> clazz = Object.class;
-
-    // Act and Assert
-    assertEquals(0, skuCustomPersistenceHandler.getPolymorphicClasses(clazz, null, false).length);
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#getPolymorphicClasses(Class, EntityManager, boolean)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return array length is zero.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#getPolymorphicClasses(Class,
-   * EntityManager, boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String[] SkuCustomPersistenceHandler.getPolymorphicClasses(Class, EntityManager, boolean)"
-  })
-  public void testGetPolymorphicClasses_whenNull_thenReturnArrayLengthIsZero() {
-    // Arrange
-    Class<Object> clazz = Object.class;
-
-    // Act and Assert
-    assertEquals(0, skuCustomPersistenceHandler.getPolymorphicClasses(clazz, null, true).length);
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#getPolymorphicClasses(Class, EntityManager, boolean)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return array length is zero.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#getPolymorphicClasses(Class,
-   * EntityManager, boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String[] SkuCustomPersistenceHandler.getPolymorphicClasses(Class, EntityManager, boolean)"
-  })
-  public void testGetPolymorphicClasses_whenNull_thenReturnArrayLengthIsZero2() {
-    // Arrange
-    Class<Object> clazz = Object.class;
-
-    // Act and Assert
-    assertEquals(0, skuCustomPersistenceHandler.getPolymorphicClasses(clazz, null, true).length);
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#associateProductOptionValuesToSku(Entity, Sku,
-   * DynamicEntityDao)}.
-   *
-   * <p>Method under test: {@link
-   * SkuCustomPersistenceHandler#associateProductOptionValuesToSku(Entity, Sku, DynamicEntityDao)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SkuCustomPersistenceHandler.associateProductOptionValuesToSku(Entity, Sku, DynamicEntityDao)"
-  })
   public void testAssociateProductOptionValuesToSku() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     Entity entity = mock(Entity.class);
-    when(entity.getProperties()).thenReturn(new Property[] {new Property("Name", "42")});
+    when(entity.getProperties()).thenReturn(new Property[]{new Property("Name", "42")});
     SkuImpl adminInstance = new SkuImpl();
 
     // Act
-    skuCustomPersistenceHandler.associateProductOptionValuesToSku(
-        entity, adminInstance, new DynamicEntityDaoImpl());
+    skuCustomPersistenceHandler.associateProductOptionValuesToSku(entity, adminInstance, new DynamicEntityDaoImpl());
 
     // Assert
     verify(entity).getProperties();
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#associateProductOptionValuesToSku(Entity, Sku,
-   * DynamicEntityDao)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link Property#getName()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SkuCustomPersistenceHandler#associateProductOptionValuesToSku(Entity, Sku, DynamicEntityDao)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#associateProductOptionValuesToSku(Entity, Sku, DynamicEntityDao)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SkuCustomPersistenceHandler.associateProductOptionValuesToSku(Entity, Sku, DynamicEntityDao)"
-  })
-  public void testAssociateProductOptionValuesToSku_thenCallsGetName() {
+  public void testAssociateProductOptionValuesToSku2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     Property property = mock(Property.class);
     when(property.getName()).thenReturn("Name");
-
     Entity entity = mock(Entity.class);
-    when(entity.getProperties()).thenReturn(new Property[] {property});
+    when(entity.getProperties()).thenReturn(new Property[]{property});
     SkuImpl adminInstance = new SkuImpl();
 
     // Act
-    skuCustomPersistenceHandler.associateProductOptionValuesToSku(
-        entity, adminInstance, new DynamicEntityDaoImpl());
+    skuCustomPersistenceHandler.associateProductOptionValuesToSku(entity, adminInstance, new DynamicEntityDaoImpl());
 
     // Assert
     verify(entity).getProperties();
@@ -4862,22 +2773,20 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#getProductOptionProperties(Entity)}.
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#getProductOptionProperties(Entity)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#getProductOptionProperties(Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List SkuCustomPersistenceHandler.getProductOptionProperties(Entity)"})
   public void testGetProductOptionProperties() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     Entity entity = mock(Entity.class);
-    when(entity.getProperties()).thenReturn(new Property[] {new Property("Name", "42")});
+    when(entity.getProperties()).thenReturn(new Property[]{new Property("Name", "42")});
 
     // Act
-    List<Property> actualProductOptionProperties =
-        skuCustomPersistenceHandler.getProductOptionProperties(entity);
+    List<Property> actualProductOptionProperties = skuCustomPersistenceHandler.getProductOptionProperties(entity);
 
     // Assert
     verify(entity).getProperties();
@@ -4885,30 +2794,22 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#getProductOptionProperties(Entity)}.
-   *
-   * <ul>
-   *   <li>Given {@link Property} {@link Property#getName()} return {@code Name}.
-   *   <li>Then calls {@link Property#getName()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuCustomPersistenceHandler#getProductOptionProperties(Entity)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#getProductOptionProperties(Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List SkuCustomPersistenceHandler.getProductOptionProperties(Entity)"})
-  public void testGetProductOptionProperties_givenPropertyGetNameReturnName_thenCallsGetName() {
+  public void testGetProductOptionProperties2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     Property property = mock(Property.class);
     when(property.getName()).thenReturn("Name");
-
     Entity entity = mock(Entity.class);
-    when(entity.getProperties()).thenReturn(new Property[] {property});
+    when(entity.getProperties()).thenReturn(new Property[]{property});
 
     // Act
-    List<Property> actualProductOptionProperties =
-        skuCustomPersistenceHandler.getProductOptionProperties(entity);
+    List<Property> actualProductOptionProperties = skuCustomPersistenceHandler.getProductOptionProperties(entity);
 
     // Assert
     verify(entity).getProperties();
@@ -4917,197 +2818,72 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product,
-   * List, Sku)}.
-   *
-   * <p>Method under test: {@link
-   * SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product, List, Sku)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product, List, Sku)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity SkuCustomPersistenceHandler.validateUniqueProductOptionValueCombination(Product, List, Sku)"
-  })
   public void testValidateUniqueProductOptionValueCombination() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+    ProductBundleImpl product = new ProductBundleImpl();
+    ArrayList<Property> productOptionProperties = new ArrayList<>();
+
+    // Act and Assert
+    assertNull(skuCustomPersistenceHandler.validateUniqueProductOptionValueCombination(product, productOptionProperties,
+        new SkuImpl()));
+  }
+
+  /**
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product, List, Sku)}
+   */
+  @Test
+  public void testValidateUniqueProductOptionValueCombination2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    ArrayList<Property> productOptionProperties = new ArrayList<>();
+
+    // Act and Assert
+    assertNull(skuCustomPersistenceHandler.validateUniqueProductOptionValueCombination(product, productOptionProperties,
+        new SkuImpl()));
+  }
+
+  /**
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product, List, Sku)}
+   */
+  @Test
+  public void testValidateUniqueProductOptionValueCombination3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     ProductBundleImpl product = new ProductBundleImpl();
 
     ArrayList<Property> productOptionProperties = new ArrayList<>();
     productOptionProperties.add(new Property("Name", "42"));
 
     // Act and Assert
-    assertNull(
-        skuCustomPersistenceHandler.validateUniqueProductOptionValueCombination(
-            product, productOptionProperties, new SkuImpl()));
+    assertNull(skuCustomPersistenceHandler.validateUniqueProductOptionValueCombination(product, productOptionProperties,
+        new SkuImpl()));
   }
 
   /**
-   * Test {@link SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product,
-   * List, Sku)}.
-   *
-   * <p>Method under test: {@link
-   * SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product, List, Sku)}
+   * Method under test:
+   * {@link SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product, List, Sku)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity SkuCustomPersistenceHandler.validateUniqueProductOptionValueCombination(Product, List, Sku)"
-  })
-  public void testValidateUniqueProductOptionValueCombination2() {
+  public void testValidateUniqueProductOptionValueCombination4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    ArrayList<ProductOptionValue> productOptionValueList = new ArrayList<>();
-    productOptionValueList.add(new ProductOptionValueImpl());
-
-    SkuImpl skuImpl = mock(SkuImpl.class);
-    when(skuImpl.getId()).thenReturn(1L);
-    when(skuImpl.getProductOptionValues()).thenReturn(productOptionValueList);
-
-    ArrayList<Sku> skuList = new ArrayList<>();
-    skuList.add(skuImpl);
-
-    Product product = mock(Product.class);
-    when(product.getAdditionalSkus()).thenReturn(skuList);
-
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("42");
-
-    ArrayList<Property> productOptionProperties = new ArrayList<>();
-    productOptionProperties.add(property);
-
-    // Act
-    Entity actualValidateUniqueProductOptionValueCombinationResult =
-        skuCustomPersistenceHandler.validateUniqueProductOptionValueCombination(
-            product, productOptionProperties, new SkuImpl());
-
-    // Assert
-    verify(product).getAdditionalSkus();
-    verify(skuImpl).getId();
-    verify(skuImpl).getProductOptionValues();
-    verify(property).getValue();
-    assertNull(actualValidateUniqueProductOptionValueCombinationResult);
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product,
-   * List, Sku)}.
-   *
-   * <ul>
-   *   <li>Given one.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product, List, Sku)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity SkuCustomPersistenceHandler.validateUniqueProductOptionValueCombination(Product, List, Sku)"
-  })
-  public void testValidateUniqueProductOptionValueCombination_givenOne() {
-    // Arrange
-    SkuImpl skuImpl = mock(SkuImpl.class);
-    when(skuImpl.getId()).thenReturn(1L);
-
-    ArrayList<Sku> skuList = new ArrayList<>();
-    skuList.add(skuImpl);
-
-    Product product = mock(Product.class);
-    when(product.getAdditionalSkus()).thenReturn(skuList);
-
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("42");
-
-    ArrayList<Property> productOptionProperties = new ArrayList<>();
-    productOptionProperties.add(property);
-
-    SkuImpl currentSku = mock(SkuImpl.class);
-    when(currentSku.getId()).thenReturn(1L);
-
-    // Act
-    Entity actualValidateUniqueProductOptionValueCombinationResult =
-        skuCustomPersistenceHandler.validateUniqueProductOptionValueCombination(
-            product, productOptionProperties, currentSku);
-
-    // Assert
-    verify(product).getAdditionalSkus();
-    verify(skuImpl).getId();
-    verify(currentSku).getId();
-    verify(property).getValue();
-    assertNull(actualValidateUniqueProductOptionValueCombinationResult);
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product,
-   * List, Sku)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link SkuImpl#getProductOptionValues()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product, List, Sku)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity SkuCustomPersistenceHandler.validateUniqueProductOptionValueCombination(Product, List, Sku)"
-  })
-  public void testValidateUniqueProductOptionValueCombination_thenCallsGetProductOptionValues() {
-    // Arrange
-    SkuImpl skuImpl = mock(SkuImpl.class);
-    when(skuImpl.getId()).thenReturn(1L);
-    when(skuImpl.getProductOptionValues()).thenReturn(new ArrayList<>());
-
-    ArrayList<Sku> skuList = new ArrayList<>();
-    skuList.add(skuImpl);
-
-    Product product = mock(Product.class);
-    when(product.getAdditionalSkus()).thenReturn(skuList);
-
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("42");
-
-    ArrayList<Property> productOptionProperties = new ArrayList<>();
-    productOptionProperties.add(property);
-
-    // Act
-    Entity actualValidateUniqueProductOptionValueCombinationResult =
-        skuCustomPersistenceHandler.validateUniqueProductOptionValueCombination(
-            product, productOptionProperties, new SkuImpl());
-
-    // Assert
-    verify(product).getAdditionalSkus();
-    verify(skuImpl).getId();
-    verify(skuImpl).getProductOptionValues();
-    verify(property).getValue();
-    assertNull(actualValidateUniqueProductOptionValueCombinationResult);
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product,
-   * List, Sku)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link Property#getValue()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product, List, Sku)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity SkuCustomPersistenceHandler.validateUniqueProductOptionValueCombination(Product, List, Sku)"
-  })
-  public void testValidateUniqueProductOptionValueCombination_thenCallsGetValue() {
-    // Arrange
+    SkuCustomPersistenceHandler skuCustomPersistenceHandler = new SkuCustomPersistenceHandler();
     ProductBundleImpl product = new ProductBundleImpl();
-
     Property property = mock(Property.class);
     when(property.getValue()).thenReturn("42");
 
@@ -5115,86 +2891,10 @@ public class SkuCustomPersistenceHandlerDiffblueTest {
     productOptionProperties.add(property);
 
     // Act
-    Entity actualValidateUniqueProductOptionValueCombinationResult =
-        skuCustomPersistenceHandler.validateUniqueProductOptionValueCombination(
-            product, productOptionProperties, new SkuImpl());
+    Entity actualValidateUniqueProductOptionValueCombinationResult = skuCustomPersistenceHandler
+        .validateUniqueProductOptionValueCombination(product, productOptionProperties, new SkuImpl());
 
     // Assert
-    verify(property).getValue();
-    assertNull(actualValidateUniqueProductOptionValueCombinationResult);
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product,
-   * List, Sku)}.
-   *
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product, List, Sku)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity SkuCustomPersistenceHandler.validateUniqueProductOptionValueCombination(Product, List, Sku)"
-  })
-  public void testValidateUniqueProductOptionValueCombination_whenArrayList_thenReturnNull() {
-    // Arrange
-    ProductBundleImpl product = new ProductBundleImpl();
-    ArrayList<Property> productOptionProperties = new ArrayList<>();
-
-    // Act and Assert
-    assertNull(
-        skuCustomPersistenceHandler.validateUniqueProductOptionValueCombination(
-            product, productOptionProperties, new SkuImpl()));
-  }
-
-  /**
-   * Test {@link SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product,
-   * List, Sku)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SkuCustomPersistenceHandler#validateUniqueProductOptionValueCombination(Product, List, Sku)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Entity SkuCustomPersistenceHandler.validateUniqueProductOptionValueCombination(Product, List, Sku)"
-  })
-  public void testValidateUniqueProductOptionValueCombination_whenNull() {
-    // Arrange
-    SkuImpl skuImpl = mock(SkuImpl.class);
-    when(skuImpl.getProductOptionValues()).thenReturn(new ArrayList<>());
-
-    ArrayList<Sku> skuList = new ArrayList<>();
-    skuList.add(skuImpl);
-
-    Product product = mock(Product.class);
-    when(product.getAdditionalSkus()).thenReturn(skuList);
-
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("42");
-
-    ArrayList<Property> productOptionProperties = new ArrayList<>();
-    productOptionProperties.add(property);
-
-    // Act
-    Entity actualValidateUniqueProductOptionValueCombinationResult =
-        skuCustomPersistenceHandler.validateUniqueProductOptionValueCombination(
-            product, productOptionProperties, null);
-
-    // Assert
-    verify(product).getAdditionalSkus();
-    verify(skuImpl).getProductOptionValues();
     verify(property).getValue();
     assertNull(actualValidateUniqueProductOptionValueCombinationResult);
   }

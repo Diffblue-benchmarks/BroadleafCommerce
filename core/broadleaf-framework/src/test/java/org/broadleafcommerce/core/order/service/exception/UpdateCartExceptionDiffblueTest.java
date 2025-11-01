@@ -20,92 +20,14 @@ package org.broadleafcommerce.core.order.service.exception;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class UpdateCartExceptionDiffblueTest {
   /**
-   * Test {@link UpdateCartException#UpdateCartException(String)}.
-   *
-   * <ul>
-   *   <li>Then return Message is {@code An error occurred}.
-   * </ul>
-   *
-   * <p>Method under test: {@link UpdateCartException#UpdateCartException(String)}
+   * Method under test: {@link UpdateCartException#UpdateCartException()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void UpdateCartException.<init>()",
-    "void UpdateCartException.<init>(String)",
-    "void UpdateCartException.<init>(String, Throwable)",
-    "void UpdateCartException.<init>(Throwable)"
-  })
-  public void testNewUpdateCartException_thenReturnMessageIsAnErrorOccurred() {
-    // Arrange and Act
-    UpdateCartException actualUpdateCartException = new UpdateCartException("An error occurred");
-
-    // Assert
-    assertEquals("An error occurred", actualUpdateCartException.getMessage());
-    assertNull(actualUpdateCartException.getCause());
-    assertEquals(0, actualUpdateCartException.getSuppressed().length);
-  }
-
-  /**
-   * Test {@link UpdateCartException#UpdateCartException(String, Throwable)}.
-   *
-   * <ul>
-   *   <li>Then return Message is {@code An error occurred}.
-   * </ul>
-   *
-   * <p>Method under test: {@link UpdateCartException#UpdateCartException(String, Throwable)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void UpdateCartException.<init>()",
-    "void UpdateCartException.<init>(String)",
-    "void UpdateCartException.<init>(String, Throwable)",
-    "void UpdateCartException.<init>(Throwable)"
-  })
-  public void testNewUpdateCartException_thenReturnMessageIsAnErrorOccurred2() {
-    // Arrange
-    Throwable cause = new Throwable();
-
-    // Act
-    UpdateCartException actualUpdateCartException =
-        new UpdateCartException("An error occurred", cause);
-
-    // Assert
-    assertEquals("An error occurred", actualUpdateCartException.getMessage());
-    assertEquals(0, actualUpdateCartException.getSuppressed().length);
-    assertSame(cause, actualUpdateCartException.getCause());
-  }
-
-  /**
-   * Test {@link UpdateCartException#UpdateCartException()}.
-   *
-   * <ul>
-   *   <li>Then return Message is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link UpdateCartException#UpdateCartException()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void UpdateCartException.<init>()",
-    "void UpdateCartException.<init>(String)",
-    "void UpdateCartException.<init>(String, Throwable)",
-    "void UpdateCartException.<init>(Throwable)"
-  })
-  public void testNewUpdateCartException_thenReturnMessageIsNull() {
+  public void testNewUpdateCartException() {
     // Arrange and Act
     UpdateCartException actualUpdateCartException = new UpdateCartException();
 
@@ -116,25 +38,42 @@ public class UpdateCartExceptionDiffblueTest {
   }
 
   /**
-   * Test {@link UpdateCartException#UpdateCartException(Throwable)}.
-   *
-   * <ul>
-   *   <li>When {@link Throwable#Throwable()}.
-   *   <li>Then return Message is {@code Throwable}.
-   * </ul>
-   *
-   * <p>Method under test: {@link UpdateCartException#UpdateCartException(Throwable)}
+   * Method under test: {@link UpdateCartException#UpdateCartException(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void UpdateCartException.<init>()",
-    "void UpdateCartException.<init>(String)",
-    "void UpdateCartException.<init>(String, Throwable)",
-    "void UpdateCartException.<init>(Throwable)"
-  })
-  public void testNewUpdateCartException_whenThrowable_thenReturnMessageIsJavaLangThrowable() {
+  public void testNewUpdateCartException2() {
+    // Arrange and Act
+    UpdateCartException actualUpdateCartException = new UpdateCartException("An error occurred");
+
+    // Assert
+    assertEquals("An error occurred", actualUpdateCartException.getMessage());
+    assertNull(actualUpdateCartException.getCause());
+    assertEquals(0, actualUpdateCartException.getSuppressed().length);
+  }
+
+  /**
+   * Method under test:
+   * {@link UpdateCartException#UpdateCartException(String, Throwable)}
+   */
+  @Test
+  public void testNewUpdateCartException3() {
+    // Arrange
+    Throwable cause = new Throwable();
+
+    // Act
+    UpdateCartException actualUpdateCartException = new UpdateCartException("An error occurred", cause);
+
+    // Assert
+    assertEquals("An error occurred", actualUpdateCartException.getMessage());
+    assertEquals(0, actualUpdateCartException.getSuppressed().length);
+    assertSame(cause, actualUpdateCartException.getCause());
+  }
+
+  /**
+   * Method under test: {@link UpdateCartException#UpdateCartException(Throwable)}
+   */
+  @Test
+  public void testNewUpdateCartException4() {
     // Arrange
     Throwable cause = new Throwable();
 

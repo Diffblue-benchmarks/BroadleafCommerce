@@ -26,46 +26,47 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
+import org.broadleafcommerce.common.audit.Auditable;
 import org.broadleafcommerce.common.copy.CreateResponse;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(SpringJUnit4ClassRunner.class)
 public class GiftWrapOrderItemImplDiffblueTest {
-  @Autowired private GiftWrapOrderItemImpl giftWrapOrderItemImpl;
+  /**
+   * Method under test:
+   * {@link GiftWrapOrderItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    GiftWrapOrderItemImpl giftWrapOrderItemImpl = new GiftWrapOrderItemImpl();
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    CreateResponse<DiscreteOrderItem> actualCreateOrRetrieveCopyInstanceResult = giftWrapOrderItemImpl
+        .createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+  }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link GiftWrapOrderItemImpl#setWrappedItems(List)}
    *   <li>{@link GiftWrapOrderItemImpl#getWrappedItems()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List GiftWrapOrderItemImpl.getWrappedItems()",
-    "void GiftWrapOrderItemImpl.setWrappedItems(List)"
-  })
   public void testGettersAndSetters() {
     // Arrange
     GiftWrapOrderItemImpl giftWrapOrderItemImpl = new GiftWrapOrderItemImpl();
@@ -75,48 +76,19 @@ public class GiftWrapOrderItemImplDiffblueTest {
     giftWrapOrderItemImpl.setWrappedItems(wrappedItems);
     List<OrderItem> actualWrappedItems = giftWrapOrderItemImpl.getWrappedItems();
 
-    // Assert
+    // Assert that nothing has changed
     assertTrue(actualWrappedItems.isEmpty());
     assertSame(wrappedItems, actualWrappedItems);
   }
 
   /**
-   * Test {@link GiftWrapOrderItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * GiftWrapOrderItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: default or parameterless constructor of
+   * {@link GiftWrapOrderItemImpl}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse GiftWrapOrderItemImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
-    // Arrange
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(new GiftWrapOrderItemImpl(), true);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    CreateResponse<DiscreteOrderItem> actualCreateOrRetrieveCopyInstanceResult =
-        giftWrapOrderItemImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
-  }
-
-  /**
-   * Test new {@link GiftWrapOrderItemImpl} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link GiftWrapOrderItemImpl}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void GiftWrapOrderItemImpl.<init>()"})
   public void testNewGiftWrapOrderItemImpl() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange and Act
     GiftWrapOrderItemImpl actualGiftWrapOrderItemImpl = new GiftWrapOrderItemImpl();
 
@@ -126,6 +98,9 @@ public class GiftWrapOrderItemImplDiffblueTest {
     assertNull(actualGiftWrapOrderItemImpl.itemTaxable);
     assertNull(actualGiftWrapOrderItemImpl.retailPriceOverride);
     assertNull(actualGiftWrapOrderItemImpl.salePriceOverride);
+    Auditable auditable = actualGiftWrapOrderItemImpl.getAuditable();
+    assertNull(auditable.getCreatedBy());
+    assertNull(auditable.getUpdatedBy());
     assertNull(actualGiftWrapOrderItemImpl.getId());
     assertNull(actualGiftWrapOrderItemImpl.orderItemType);
     assertNull(actualGiftWrapOrderItemImpl.baseRetailPrice);
@@ -134,6 +109,8 @@ public class GiftWrapOrderItemImplDiffblueTest {
     assertNull(actualGiftWrapOrderItemImpl.retailPrice);
     assertNull(actualGiftWrapOrderItemImpl.salePrice);
     assertNull(actualGiftWrapOrderItemImpl.totalTax);
+    assertNull(auditable.getDateCreated());
+    assertNull(auditable.getDateUpdated());
     assertNull(actualGiftWrapOrderItemImpl.getCartMessages());
     assertNull(actualGiftWrapOrderItemImpl.getBaseRetailPrice());
     assertNull(actualGiftWrapOrderItemImpl.getBaseSalePrice());

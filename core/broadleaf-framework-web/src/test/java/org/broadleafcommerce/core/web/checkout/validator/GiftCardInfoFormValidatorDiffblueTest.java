@@ -20,55 +20,17 @@ package org.broadleafcommerce.core.web.checkout.validator;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.web.checkout.model.GiftCardInfoForm;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 
 class GiftCardInfoFormValidatorDiffblueTest {
   /**
-   * Test {@link GiftCardInfoFormValidator#supports(Class)}.
-   *
-   * <ul>
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link GiftCardInfoFormValidator#supports(Class)}
+   * Method under test: {@link GiftCardInfoFormValidator#supports(Class)}
    */
   @Test
-  @DisplayName("Test supports(Class); then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean GiftCardInfoFormValidator.supports(Class)"})
-  void testSupports_thenReturnTrue() {
-    // Arrange
-    GiftCardInfoFormValidator giftCardInfoFormValidator = new GiftCardInfoFormValidator();
-    Class<GiftCardInfoForm> clazz = GiftCardInfoForm.class;
-
-    // Act and Assert
-    assertTrue(giftCardInfoFormValidator.supports(clazz));
-  }
-
-  /**
-   * Test {@link GiftCardInfoFormValidator#supports(Class)}.
-   *
-   * <ul>
-   *   <li>When {@code Object}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link GiftCardInfoFormValidator#supports(Class)}
-   */
-  @Test
-  @DisplayName("Test supports(Class); when 'java.lang.Object'; then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean GiftCardInfoFormValidator.supports(Class)"})
-  void testSupports_whenJavaLangObject_thenReturnFalse() {
+  void testSupports() {
     // Arrange
     GiftCardInfoFormValidator giftCardInfoFormValidator = new GiftCardInfoFormValidator();
     Class<Object> clazz = Object.class;
@@ -78,15 +40,22 @@ class GiftCardInfoFormValidatorDiffblueTest {
   }
 
   /**
-   * Test {@link GiftCardInfoFormValidator#validate(Object, Errors)}.
-   *
-   * <p>Method under test: {@link GiftCardInfoFormValidator#validate(Object, Errors)}
+   * Method under test: {@link GiftCardInfoFormValidator#supports(Class)}
    */
   @Test
-  @DisplayName("Test validate(Object, Errors)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void GiftCardInfoFormValidator.validate(Object, Errors)"})
+  void testSupports2() {
+    // Arrange
+    GiftCardInfoFormValidator giftCardInfoFormValidator = new GiftCardInfoFormValidator();
+    Class<GiftCardInfoForm> clazz = GiftCardInfoForm.class;
+
+    // Act and Assert
+    assertTrue(giftCardInfoFormValidator.supports(clazz));
+  }
+
+  /**
+   * Method under test: {@link GiftCardInfoFormValidator#validate(Object, Errors)}
+   */
+  @Test
   void testValidate() {
     // Arrange
     GiftCardInfoFormValidator giftCardInfoFormValidator = new GiftCardInfoFormValidator();
@@ -94,11 +63,9 @@ class GiftCardInfoFormValidatorDiffblueTest {
     GiftCardInfoForm giftCardInfoForm = new GiftCardInfoForm();
     giftCardInfoForm.setGiftCardEmailAddress("42 Main St");
     giftCardInfoForm.setGiftCardNumber("42");
-    BindException errors =
-        new BindException(
-            giftCardInfoForm, "org.broadleafcommerce.core.web.checkout.model.GiftCardInfoForm");
 
-    // Act and Assert
-    assertDoesNotThrow(() -> giftCardInfoFormValidator.validate(giftCardInfoForm, errors));
+    // Act
+    assertDoesNotThrow(() -> giftCardInfoFormValidator.validate(giftCardInfoForm,
+        new BindException(giftCardInfoForm, "org.broadleafcommerce.core.web.checkout.model.GiftCardInfoForm")));
   }
 }

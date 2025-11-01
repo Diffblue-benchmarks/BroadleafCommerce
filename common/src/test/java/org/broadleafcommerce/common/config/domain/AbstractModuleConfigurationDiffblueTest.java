@@ -22,218 +22,249 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
 import java.util.Date;
 import org.broadleafcommerce.common.audit.Auditable;
 import org.broadleafcommerce.common.config.service.type.ModuleConfigurationType;
 import org.broadleafcommerce.common.sitemap.domain.SiteMapConfigurationImpl;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.Mockito;
 
-@ContextConfiguration(locations = {"/bl-common-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(SpringJUnit4ClassRunner.class)
 public class AbstractModuleConfigurationDiffblueTest {
-  @Autowired private AbstractModuleConfiguration abstractModuleConfiguration;
-
   /**
-   * Test {@link AbstractModuleConfiguration#getId()}.
-   *
-   * <p>Method under test: {@link AbstractModuleConfiguration#getId()}
+   * Method under test: {@link AbstractModuleConfiguration#getId()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Long AbstractModuleConfiguration.getId()"})
   public void testGetId() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertNull(abstractModuleConfiguration.getId());
+    assertNull((new SiteMapConfigurationImpl()).getId());
   }
 
   /**
-   * Test {@link AbstractModuleConfiguration#setId(Long)}.
-   *
-   * <p>Method under test: {@link AbstractModuleConfiguration#setId(Long)}
+   * Method under test: {@link AbstractModuleConfiguration#getId()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AbstractModuleConfiguration.setId(Long)"})
-  public void testSetId() {
-    // Arrange and Act
-    abstractModuleConfiguration.setId(1L);
+  public void testGetId2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Assert
-    assertTrue(abstractModuleConfiguration instanceof SiteMapConfigurationImpl);
-    assertEquals(1L, abstractModuleConfiguration.getId().longValue());
-  }
-
-  /**
-   * Test {@link AbstractModuleConfiguration#getModuleName()}.
-   *
-   * <p>Method under test: {@link AbstractModuleConfiguration#getModuleName()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String AbstractModuleConfiguration.getModuleName()"})
-  public void testGetModuleName() {
-    // Arrange, Act and Assert
-    assertNull(abstractModuleConfiguration.getModuleName());
-  }
-
-  /**
-   * Test {@link AbstractModuleConfiguration#setModuleName(String)}.
-   *
-   * <p>Method under test: {@link AbstractModuleConfiguration#setModuleName(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AbstractModuleConfiguration.setModuleName(String)"})
-  public void testSetModuleName() {
-    // Arrange and Act
-    abstractModuleConfiguration.setModuleName("Name");
-
-    // Assert
-    assertTrue(abstractModuleConfiguration instanceof SiteMapConfigurationImpl);
-    assertEquals("Name", abstractModuleConfiguration.getModuleName());
-  }
-
-  /**
-   * Test {@link AbstractModuleConfiguration#getIsDefault()}.
-   *
-   * <ul>
-   *   <li>Given {@link AbstractModuleConfiguration} IsDefault is {@code null}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractModuleConfiguration#getIsDefault()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean AbstractModuleConfiguration.getIsDefault()"})
-  public void testGetIsDefault_givenAbstractModuleConfigurationIsDefaultIsNull_thenReturnFalse() {
     // Arrange
-    abstractModuleConfiguration.setIsDefault(null);
-
-    // Act and Assert
-    assertFalse(abstractModuleConfiguration.getIsDefault());
-  }
-
-  /**
-   * Test {@link AbstractModuleConfiguration#getIsDefault()}.
-   *
-   * <ul>
-   *   <li>Given {@link AbstractModuleConfiguration} IsDefault is {@code true}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractModuleConfiguration#getIsDefault()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean AbstractModuleConfiguration.getIsDefault()"})
-  public void testGetIsDefault_givenAbstractModuleConfigurationIsDefaultIsTrue_thenReturnTrue() {
-    // Arrange
-    abstractModuleConfiguration.setIsDefault(true);
-
-    // Act and Assert
-    assertTrue(abstractModuleConfiguration.getIsDefault());
-  }
-
-  /**
-   * Test {@link AbstractModuleConfiguration#getIsDefault()}.
-   *
-   * <ul>
-   *   <li>Given {@link AbstractModuleConfiguration}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractModuleConfiguration#getIsDefault()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean AbstractModuleConfiguration.getIsDefault()"})
-  public void testGetIsDefault_givenAbstractModuleConfiguration_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(abstractModuleConfiguration.getIsDefault());
-  }
-
-  /**
-   * Test {@link AbstractModuleConfiguration#isDefault()}.
-   *
-   * <ul>
-   *   <li>Given {@link AbstractModuleConfiguration}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractModuleConfiguration#isDefault()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AbstractModuleConfiguration.isDefault()"})
-  public void testIsDefault_givenAbstractModuleConfiguration_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(abstractModuleConfiguration.isDefault());
-  }
-
-  /**
-   * Test {@link AbstractModuleConfiguration#isDefault()}.
-   *
-   * <ul>
-   *   <li>Given {@link SiteMapConfigurationImpl} (default constructor) IsDefault is {@code null}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractModuleConfiguration#isDefault()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AbstractModuleConfiguration.isDefault()"})
-  public void testIsDefault_givenSiteMapConfigurationImplIsDefaultIsNull_thenReturnFalse() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
+    ModuleConfigurationType moduleConfigurationType = mock(ModuleConfigurationType.class);
+    when(moduleConfigurationType.getType()).thenReturn("Type");
 
     SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
-    siteMapConfigurationImpl.setActiveEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    siteMapConfigurationImpl.setActiveStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    siteMapConfigurationImpl.setArchived('A');
-    siteMapConfigurationImpl.setAuditable(auditable);
+    siteMapConfigurationImpl.setModuleConfigurationType(moduleConfigurationType);
+
+    // Act
+    Long actualId = siteMapConfigurationImpl.getId();
+
+    // Assert
+    verify(moduleConfigurationType).getType();
+    assertNull(actualId);
+  }
+
+  /**
+   * Method under test: {@link AbstractModuleConfiguration#setId(Long)}
+   */
+  @Test
+  public void testSetId() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
+
+    // Act
     siteMapConfigurationImpl.setId(1L);
-    siteMapConfigurationImpl.setIndexedSiteMapFileName("foo.txt");
-    siteMapConfigurationImpl.setIndexedSiteMapFilePattern("Indexed Site Map File Pattern");
-    siteMapConfigurationImpl.setMaximumUrlEntriesPerFile(3);
-    siteMapConfigurationImpl.setModuleConfigurationType(
-        ModuleConfigurationType.ADDRESS_VERIFICATION);
+
+    // Assert
+    assertEquals(1L, siteMapConfigurationImpl.getId().longValue());
+  }
+
+  /**
+   * Method under test: {@link AbstractModuleConfiguration#setId(Long)}
+   */
+  @Test
+  public void testSetId2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ModuleConfigurationType moduleConfigurationType = mock(ModuleConfigurationType.class);
+    when(moduleConfigurationType.getType()).thenReturn("Type");
+
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
+    siteMapConfigurationImpl.setModuleConfigurationType(moduleConfigurationType);
+
+    // Act
+    siteMapConfigurationImpl.setId(1L);
+
+    // Assert
+    verify(moduleConfigurationType).getType();
+    assertEquals(1L, siteMapConfigurationImpl.getId().longValue());
+  }
+
+  /**
+   * Method under test: {@link AbstractModuleConfiguration#getModuleName()}
+   */
+  @Test
+  public void testGetModuleName() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertNull((new SiteMapConfigurationImpl()).getModuleName());
+  }
+
+  /**
+   * Method under test: {@link AbstractModuleConfiguration#getModuleName()}
+   */
+  @Test
+  public void testGetModuleName2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ModuleConfigurationType moduleConfigurationType = mock(ModuleConfigurationType.class);
+    when(moduleConfigurationType.getType()).thenReturn("Type");
+
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
+    siteMapConfigurationImpl.setModuleConfigurationType(moduleConfigurationType);
+
+    // Act
+    String actualModuleName = siteMapConfigurationImpl.getModuleName();
+
+    // Assert
+    verify(moduleConfigurationType).getType();
+    assertNull(actualModuleName);
+  }
+
+  /**
+   * Method under test: {@link AbstractModuleConfiguration#setModuleName(String)}
+   */
+  @Test
+  public void testSetModuleName() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
+
+    // Act
     siteMapConfigurationImpl.setModuleName("Name");
-    siteMapConfigurationImpl.setPriority(1);
-    siteMapConfigurationImpl.setSiteMapFileName("foo.txt");
-    siteMapConfigurationImpl.setSiteMapGeneratorConfigurations(new ArrayList<>());
+
+    // Assert
+    assertEquals("Name", siteMapConfigurationImpl.getModuleName());
+  }
+
+  /**
+   * Method under test: {@link AbstractModuleConfiguration#setModuleName(String)}
+   */
+  @Test
+  public void testSetModuleName2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ModuleConfigurationType moduleConfigurationType = mock(ModuleConfigurationType.class);
+    when(moduleConfigurationType.getType()).thenReturn("Type");
+
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
+    siteMapConfigurationImpl.setModuleConfigurationType(moduleConfigurationType);
+
+    // Act
+    siteMapConfigurationImpl.setModuleName("Name");
+
+    // Assert
+    verify(moduleConfigurationType).getType();
+    assertEquals("Name", siteMapConfigurationImpl.getModuleName());
+  }
+
+  /**
+   * Method under test: {@link AbstractModuleConfiguration#getIsDefault()}
+   */
+  @Test
+  public void testGetIsDefault() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertFalse((new SiteMapConfigurationImpl()).getIsDefault());
+  }
+
+  /**
+   * Method under test: {@link AbstractModuleConfiguration#getIsDefault()}
+   */
+  @Test
+  public void testGetIsDefault2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
+    siteMapConfigurationImpl.setIsDefault(null);
+
+    // Act and Assert
+    assertFalse(siteMapConfigurationImpl.getIsDefault());
+  }
+
+  /**
+   * Method under test: {@link AbstractModuleConfiguration#getIsDefault()}
+   */
+  @Test
+  public void testGetIsDefault3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
+    siteMapConfigurationImpl.setIsDefault(true);
+
+    // Act and Assert
+    assertTrue(siteMapConfigurationImpl.getIsDefault());
+  }
+
+  /**
+   * Method under test: {@link AbstractModuleConfiguration#getIsDefault()}
+   */
+  @Test
+  public void testGetIsDefault4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ModuleConfigurationType moduleConfigurationType = mock(ModuleConfigurationType.class);
+    when(moduleConfigurationType.getType()).thenReturn("Type");
+
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
+    siteMapConfigurationImpl.setModuleConfigurationType(moduleConfigurationType);
+
+    // Act
+    Boolean actualIsDefault = siteMapConfigurationImpl.getIsDefault();
+
+    // Assert
+    verify(moduleConfigurationType).getType();
+    assertFalse(actualIsDefault);
+  }
+
+  /**
+   * Method under test: {@link AbstractModuleConfiguration#isDefault()}
+   */
+  @Test
+  public void testIsDefault() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertFalse((new SiteMapConfigurationImpl()).isDefault());
+  }
+
+  /**
+   * Method under test: {@link AbstractModuleConfiguration#isDefault()}
+   */
+  @Test
+  public void testIsDefault2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
     siteMapConfigurationImpl.setIsDefault(null);
 
     // Act and Assert
@@ -241,46 +272,14 @@ public class AbstractModuleConfigurationDiffblueTest {
   }
 
   /**
-   * Test {@link AbstractModuleConfiguration#isDefault()}.
-   *
-   * <ul>
-   *   <li>Given {@link SiteMapConfigurationImpl} (default constructor) IsDefault is {@code true}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractModuleConfiguration#isDefault()}
+   * Method under test: {@link AbstractModuleConfiguration#isDefault()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AbstractModuleConfiguration.isDefault()"})
-  public void testIsDefault_givenSiteMapConfigurationImplIsDefaultIsTrue_thenReturnTrue() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
+  public void testIsDefault3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
+    // Arrange
     SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
-    siteMapConfigurationImpl.setActiveEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    siteMapConfigurationImpl.setActiveStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    siteMapConfigurationImpl.setArchived('A');
-    siteMapConfigurationImpl.setAuditable(auditable);
-    siteMapConfigurationImpl.setId(1L);
-    siteMapConfigurationImpl.setIndexedSiteMapFileName("foo.txt");
-    siteMapConfigurationImpl.setIndexedSiteMapFilePattern("Indexed Site Map File Pattern");
-    siteMapConfigurationImpl.setMaximumUrlEntriesPerFile(3);
-    siteMapConfigurationImpl.setModuleConfigurationType(
-        ModuleConfigurationType.ADDRESS_VERIFICATION);
-    siteMapConfigurationImpl.setModuleName("Name");
-    siteMapConfigurationImpl.setPriority(1);
-    siteMapConfigurationImpl.setSiteMapFileName("foo.txt");
-    siteMapConfigurationImpl.setSiteMapGeneratorConfigurations(new ArrayList<>());
     siteMapConfigurationImpl.setIsDefault(true);
 
     // Act and Assert
@@ -288,340 +287,548 @@ public class AbstractModuleConfigurationDiffblueTest {
   }
 
   /**
-   * Test {@link AbstractModuleConfiguration#setIsDefault(Boolean)}.
-   *
-   * <p>Method under test: {@link AbstractModuleConfiguration#setIsDefault(Boolean)}
+   * Method under test: {@link AbstractModuleConfiguration#isDefault()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AbstractModuleConfiguration.setIsDefault(Boolean)"})
-  public void testSetIsDefault() {
-    // Arrange and Act
-    abstractModuleConfiguration.setIsDefault(true);
+  public void testIsDefault4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Assert
-    assertTrue(abstractModuleConfiguration instanceof SiteMapConfigurationImpl);
-    assertTrue(abstractModuleConfiguration.getIsDefault());
-  }
-
-  /**
-   * Test {@link AbstractModuleConfiguration#setModuleConfigurationType(ModuleConfigurationType)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractModuleConfiguration#setModuleConfigurationType(ModuleConfigurationType)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AbstractModuleConfiguration.setModuleConfigurationType(ModuleConfigurationType)"
-  })
-  public void testSetModuleConfigurationType() {
-    // Arrange and Act
-    abstractModuleConfiguration.setModuleConfigurationType(
-        ModuleConfigurationType.ADDRESS_VERIFICATION);
-
-    // Assert
-    assertTrue(abstractModuleConfiguration instanceof SiteMapConfigurationImpl);
-    assertEquals(
-        "ADDRESS_VERIFICATION",
-        ((SiteMapConfigurationImpl) abstractModuleConfiguration).configType);
-    assertSame(
-        ModuleConfigurationType.ADDRESS_VERIFICATION,
-        abstractModuleConfiguration.getModuleConfigurationType());
-  }
-
-  /**
-   * Test {@link AbstractModuleConfiguration#getModuleConfigurationType()}.
-   *
-   * <p>Method under test: {@link AbstractModuleConfiguration#getModuleConfigurationType()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ModuleConfigurationType AbstractModuleConfiguration.getModuleConfigurationType()"
-  })
-  public void testGetModuleConfigurationType() {
-    // Arrange, Act and Assert
-    assertSame(
-        ModuleConfigurationType.SITE_MAP, abstractModuleConfiguration.getModuleConfigurationType());
-  }
-
-  /**
-   * Test {@link AbstractModuleConfiguration#setAuditable(Auditable)}.
-   *
-   * <p>Method under test: {@link AbstractModuleConfiguration#setAuditable(Auditable)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AbstractModuleConfiguration.setAuditable(Auditable)"})
-  public void testSetAuditable() {
     // Arrange
+    ModuleConfigurationType moduleConfigurationType = mock(ModuleConfigurationType.class);
+    when(moduleConfigurationType.getType()).thenReturn("Type");
+
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
+    siteMapConfigurationImpl.setModuleConfigurationType(moduleConfigurationType);
+
+    // Act
+    boolean actualIsDefaultResult = siteMapConfigurationImpl.isDefault();
+
+    // Assert
+    verify(moduleConfigurationType).getType();
+    assertFalse(actualIsDefaultResult);
+  }
+
+  /**
+   * Method under test: {@link AbstractModuleConfiguration#setIsDefault(Boolean)}
+   */
+  @Test
+  public void testSetIsDefault() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
+
+    // Act
+    siteMapConfigurationImpl.setIsDefault(true);
+
+    // Assert
+    assertTrue(siteMapConfigurationImpl.getIsDefault());
+  }
+
+  /**
+   * Method under test: {@link AbstractModuleConfiguration#setIsDefault(Boolean)}
+   */
+  @Test
+  public void testSetIsDefault2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ModuleConfigurationType moduleConfigurationType = mock(ModuleConfigurationType.class);
+    when(moduleConfigurationType.getType()).thenReturn("Type");
+
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
+    siteMapConfigurationImpl.setModuleConfigurationType(moduleConfigurationType);
+
+    // Act
+    siteMapConfigurationImpl.setIsDefault(true);
+
+    // Assert
+    verify(moduleConfigurationType).getType();
+    assertTrue(siteMapConfigurationImpl.getIsDefault());
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractModuleConfiguration#setModuleConfigurationType(ModuleConfigurationType)}
+   */
+  @Test
+  public void testSetModuleConfigurationType() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
+    ModuleConfigurationType moduleConfigurationType = ModuleConfigurationType.ADDRESS_VERIFICATION;
+
+    // Act
+    siteMapConfigurationImpl.setModuleConfigurationType(moduleConfigurationType);
+
+    // Assert
+    assertEquals("ADDRESS_VERIFICATION", siteMapConfigurationImpl.configType);
+    ModuleConfigurationType expectedModuleConfigurationType = moduleConfigurationType.ADDRESS_VERIFICATION;
+    assertSame(expectedModuleConfigurationType, siteMapConfigurationImpl.getModuleConfigurationType());
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractModuleConfiguration#getModuleConfigurationType()}
+   */
+  @Test
+  public void testGetModuleConfigurationType() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange and Act
+    ModuleConfigurationType actualModuleConfigurationType = (new SiteMapConfigurationImpl())
+        .getModuleConfigurationType();
+
+    // Assert
+    assertSame(actualModuleConfigurationType.SITE_MAP, actualModuleConfigurationType);
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractModuleConfiguration#setAuditable(Auditable)}
+   */
+  @Test
+  public void testSetAuditable() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
+
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     // Act
-    abstractModuleConfiguration.setAuditable(auditable);
+    siteMapConfigurationImpl.setAuditable(auditable);
 
     // Assert
-    assertTrue(abstractModuleConfiguration instanceof SiteMapConfigurationImpl);
-    assertSame(auditable, abstractModuleConfiguration.getAuditable());
+    assertSame(auditable, siteMapConfigurationImpl.getAuditable());
   }
 
   /**
-   * Test {@link AbstractModuleConfiguration#getAuditable()}.
-   *
-   * <p>Method under test: {@link AbstractModuleConfiguration#getAuditable()}
+   * Method under test:
+   * {@link AbstractModuleConfiguration#setAuditable(Auditable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Auditable AbstractModuleConfiguration.getAuditable()"})
+  public void testSetAuditable2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
+    Auditable auditable = mock(Auditable.class);
+    doNothing().when(auditable).setCreatedBy(Mockito.<Long>any());
+    doNothing().when(auditable).setDateCreated(Mockito.<Date>any());
+    doNothing().when(auditable).setDateUpdated(Mockito.<Date>any());
+    doNothing().when(auditable).setUpdatedBy(Mockito.<Long>any());
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    // Act
+    siteMapConfigurationImpl.setAuditable(auditable);
+
+    // Assert
+    verify(auditable).setCreatedBy(eq(1L));
+    verify(auditable).setDateCreated(isA(Date.class));
+    verify(auditable).setDateUpdated(isA(Date.class));
+    verify(auditable).setUpdatedBy(eq(1L));
+    assertSame(auditable, siteMapConfigurationImpl.getAuditable());
+  }
+
+  /**
+   * Method under test: {@link AbstractModuleConfiguration#getAuditable()}
+   */
+  @Test
   public void testGetAuditable() {
-    // Arrange and Act
-    Auditable actualAuditable = abstractModuleConfiguration.getAuditable();
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Assert
-    assertSame(abstractModuleConfiguration.auditable, actualAuditable);
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
+
+    // Act and Assert
+    assertSame(siteMapConfigurationImpl.auditable, siteMapConfigurationImpl.getAuditable());
   }
 
   /**
-   * Test {@link AbstractModuleConfiguration#setArchived(Character)}.
-   *
-   * <p>Method under test: {@link AbstractModuleConfiguration#setArchived(Character)}
+   * Method under test: {@link AbstractModuleConfiguration#getAuditable()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AbstractModuleConfiguration.setArchived(Character)"})
+  public void testGetAuditable2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ModuleConfigurationType moduleConfigurationType = mock(ModuleConfigurationType.class);
+    when(moduleConfigurationType.getType()).thenReturn("Type");
+
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
+    siteMapConfigurationImpl.setModuleConfigurationType(moduleConfigurationType);
+
+    // Act
+    Auditable actualAuditable = siteMapConfigurationImpl.getAuditable();
+
+    // Assert
+    verify(moduleConfigurationType).getType();
+    assertSame(siteMapConfigurationImpl.auditable, actualAuditable);
+  }
+
+  /**
+   * Method under test: {@link AbstractModuleConfiguration#setArchived(Character)}
+   */
+  @Test
   public void testSetArchived() {
-    // Arrange and Act
-    abstractModuleConfiguration.setArchived('A');
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
+
+    // Act
+    siteMapConfigurationImpl.setArchived('A');
 
     // Assert
-    assertTrue(abstractModuleConfiguration instanceof SiteMapConfigurationImpl);
-    assertEquals('A', abstractModuleConfiguration.getArchived().charValue());
-    assertEquals(
-        'A',
-        ((SiteMapConfigurationImpl) abstractModuleConfiguration)
-            .archiveStatus
-            .getArchived()
-            .charValue());
+    assertEquals('A', siteMapConfigurationImpl.getArchived().charValue());
+    assertEquals('A', siteMapConfigurationImpl.archiveStatus.getArchived().charValue());
   }
 
   /**
-   * Test {@link AbstractModuleConfiguration#getArchived()}.
-   *
-   * <p>Method under test: {@link AbstractModuleConfiguration#getArchived()}
+   * Method under test: {@link AbstractModuleConfiguration#setArchived(Character)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Character AbstractModuleConfiguration.getArchived()"})
+  public void testSetArchived2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ModuleConfigurationType moduleConfigurationType = mock(ModuleConfigurationType.class);
+    when(moduleConfigurationType.getType()).thenReturn("Type");
+
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
+    siteMapConfigurationImpl.setModuleConfigurationType(moduleConfigurationType);
+
+    // Act
+    siteMapConfigurationImpl.setArchived('A');
+
+    // Assert
+    verify(moduleConfigurationType).getType();
+    assertEquals('A', siteMapConfigurationImpl.getArchived().charValue());
+    assertEquals('A', siteMapConfigurationImpl.archiveStatus.getArchived().charValue());
+  }
+
+  /**
+   * Method under test: {@link AbstractModuleConfiguration#getArchived()}
+   */
+  @Test
   public void testGetArchived() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertEquals('N', abstractModuleConfiguration.getArchived().charValue());
+    assertEquals('N', (new SiteMapConfigurationImpl()).getArchived().charValue());
   }
 
   /**
-   * Test {@link AbstractModuleConfiguration#isActive()}.
-   *
-   * <p>Method under test: {@link AbstractModuleConfiguration#isActive()}
+   * Method under test: {@link AbstractModuleConfiguration#getArchived()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AbstractModuleConfiguration.isActive()"})
+  public void testGetArchived2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ModuleConfigurationType moduleConfigurationType = mock(ModuleConfigurationType.class);
+    when(moduleConfigurationType.getType()).thenReturn("Type");
+
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
+    siteMapConfigurationImpl.setModuleConfigurationType(moduleConfigurationType);
+
+    // Act
+    Character actualArchived = siteMapConfigurationImpl.getArchived();
+
+    // Assert
+    verify(moduleConfigurationType).getType();
+    assertEquals('N', actualArchived.charValue());
+  }
+
+  /**
+   * Method under test: {@link AbstractModuleConfiguration#isActive()}
+   */
+  @Test
   public void testIsActive() {
-    // Arrange
-    abstractModuleConfiguration.setActiveStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    abstractModuleConfiguration.setActiveEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    abstractModuleConfiguration.setArchived(null);
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Act and Assert
-    assertFalse(abstractModuleConfiguration.isActive());
-  }
-
-  /**
-   * Test {@link AbstractModuleConfiguration#isActive()}.
-   *
-   * <ul>
-   *   <li>Given {@link AbstractModuleConfiguration} ActiveEndDate is {@link Date#Date()}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractModuleConfiguration#isActive()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AbstractModuleConfiguration.isActive()"})
-  public void testIsActive_givenAbstractModuleConfigurationActiveEndDateIsDate_thenReturnFalse() {
-    // Arrange
-    abstractModuleConfiguration.setActiveStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    abstractModuleConfiguration.setActiveEndDate(new Date());
-    abstractModuleConfiguration.setArchived('Y');
-
-    // Act and Assert
-    assertFalse(abstractModuleConfiguration.isActive());
-  }
-
-  /**
-   * Test {@link AbstractModuleConfiguration#isActive()}.
-   *
-   * <ul>
-   *   <li>Given {@link AbstractModuleConfiguration} Archived is {@code Y}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractModuleConfiguration#isActive()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AbstractModuleConfiguration.isActive()"})
-  public void testIsActive_givenAbstractModuleConfigurationArchivedIsY_thenReturnFalse() {
-    // Arrange
-    abstractModuleConfiguration.setActiveStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    abstractModuleConfiguration.setActiveEndDate(null);
-    abstractModuleConfiguration.setArchived('Y');
-
-    // Act and Assert
-    assertFalse(abstractModuleConfiguration.isActive());
-  }
-
-  /**
-   * Test {@link AbstractModuleConfiguration#isActive()}.
-   *
-   * <ul>
-   *   <li>Given {@link AbstractModuleConfiguration}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractModuleConfiguration#isActive()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AbstractModuleConfiguration.isActive()"})
-  public void testIsActive_givenAbstractModuleConfiguration_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(abstractModuleConfiguration.isActive());
+    assertFalse((new SiteMapConfigurationImpl()).isActive());
   }
 
   /**
-   * Test {@link AbstractModuleConfiguration#setActiveStartDate(Date)}.
-   *
-   * <p>Method under test: {@link AbstractModuleConfiguration#setActiveStartDate(Date)}
+   * Method under test: {@link AbstractModuleConfiguration#isActive()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AbstractModuleConfiguration.setActiveStartDate(Date)"})
+  public void testIsActive2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
+    siteMapConfigurationImpl.setArchived(null);
+    siteMapConfigurationImpl
+        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    siteMapConfigurationImpl
+        .setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+
+    // Act and Assert
+    assertFalse(siteMapConfigurationImpl.isActive());
+  }
+
+  /**
+   * Method under test: {@link AbstractModuleConfiguration#isActive()}
+   */
+  @Test
+  public void testIsActive3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
+    siteMapConfigurationImpl.setArchived('Y');
+    siteMapConfigurationImpl
+        .setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    siteMapConfigurationImpl.setActiveEndDate(null);
+
+    // Act and Assert
+    assertFalse(siteMapConfigurationImpl.isActive());
+  }
+
+  /**
+   * Method under test: {@link AbstractModuleConfiguration#isActive()}
+   */
+  @Test
+  public void testIsActive4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ModuleConfigurationType moduleConfigurationType = mock(ModuleConfigurationType.class);
+    when(moduleConfigurationType.getType()).thenReturn("Type");
+
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
+    siteMapConfigurationImpl.setModuleConfigurationType(moduleConfigurationType);
+
+    // Act
+    boolean actualIsActiveResult = siteMapConfigurationImpl.isActive();
+
+    // Assert
+    verify(moduleConfigurationType).getType();
+    assertFalse(actualIsActiveResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractModuleConfiguration#setActiveStartDate(Date)}
+   */
+  @Test
   public void testSetActiveStartDate() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    Date startDate =
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
+    Date startDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
 
     // Act
-    abstractModuleConfiguration.setActiveStartDate(startDate);
+    siteMapConfigurationImpl.setActiveStartDate(startDate);
 
     // Assert
-    assertTrue(abstractModuleConfiguration instanceof SiteMapConfigurationImpl);
-    assertSame(startDate, abstractModuleConfiguration.getActiveStartDate());
+    assertSame(startDate, siteMapConfigurationImpl.getActiveStartDate());
   }
 
   /**
-   * Test {@link AbstractModuleConfiguration#getActiveStartDate()}.
-   *
-   * <p>Method under test: {@link AbstractModuleConfiguration#getActiveStartDate()}
+   * Method under test:
+   * {@link AbstractModuleConfiguration#setActiveStartDate(java.util.Date)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Date AbstractModuleConfiguration.getActiveStartDate()"})
+  public void testSetActiveStartDate2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
+    java.sql.Date startDate = mock(java.sql.Date.class);
+
+    // Act
+    siteMapConfigurationImpl.setActiveStartDate(startDate);
+
+    // Assert
+    assertSame(startDate, siteMapConfigurationImpl.getActiveStartDate());
+  }
+
+  /**
+   * Method under test: {@link AbstractModuleConfiguration#getActiveStartDate()}
+   */
+  @Test
   public void testGetActiveStartDate() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertNull(abstractModuleConfiguration.getActiveStartDate());
+    assertNull((new SiteMapConfigurationImpl()).getActiveStartDate());
   }
 
   /**
-   * Test {@link AbstractModuleConfiguration#setActiveEndDate(Date)}.
-   *
-   * <p>Method under test: {@link AbstractModuleConfiguration#setActiveEndDate(Date)}
+   * Method under test: {@link AbstractModuleConfiguration#getActiveStartDate()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AbstractModuleConfiguration.setActiveEndDate(Date)"})
-  public void testSetActiveEndDate() {
+  public void testGetActiveStartDate2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    Date endDate =
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    ModuleConfigurationType moduleConfigurationType = mock(ModuleConfigurationType.class);
+    when(moduleConfigurationType.getType()).thenReturn("Type");
+
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
+    siteMapConfigurationImpl.setModuleConfigurationType(moduleConfigurationType);
 
     // Act
-    abstractModuleConfiguration.setActiveEndDate(endDate);
+    Date actualActiveStartDate = siteMapConfigurationImpl.getActiveStartDate();
 
     // Assert
-    assertTrue(abstractModuleConfiguration instanceof SiteMapConfigurationImpl);
-    assertSame(endDate, abstractModuleConfiguration.getActiveEndDate());
+    verify(moduleConfigurationType).getType();
+    assertNull(actualActiveStartDate);
   }
 
   /**
-   * Test {@link AbstractModuleConfiguration#getActiveEndDate()}.
-   *
-   * <p>Method under test: {@link AbstractModuleConfiguration#getActiveEndDate()}
+   * Method under test: {@link AbstractModuleConfiguration#setActiveEndDate(Date)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Date AbstractModuleConfiguration.getActiveEndDate()"})
+  public void testSetActiveEndDate() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
+    Date endDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+
+    // Act
+    siteMapConfigurationImpl.setActiveEndDate(endDate);
+
+    // Assert
+    assertSame(endDate, siteMapConfigurationImpl.getActiveEndDate());
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractModuleConfiguration#setActiveEndDate(java.util.Date)}
+   */
+  @Test
+  public void testSetActiveEndDate2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
+    java.sql.Date endDate = mock(java.sql.Date.class);
+
+    // Act
+    siteMapConfigurationImpl.setActiveEndDate(endDate);
+
+    // Assert
+    assertSame(endDate, siteMapConfigurationImpl.getActiveEndDate());
+  }
+
+  /**
+   * Method under test: {@link AbstractModuleConfiguration#getActiveEndDate()}
+   */
+  @Test
   public void testGetActiveEndDate() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertNull(abstractModuleConfiguration.getActiveEndDate());
+    assertNull((new SiteMapConfigurationImpl()).getActiveEndDate());
   }
 
   /**
-   * Test {@link AbstractModuleConfiguration#getPriority()}.
-   *
-   * <p>Method under test: {@link AbstractModuleConfiguration#getPriority()}
+   * Method under test: {@link AbstractModuleConfiguration#getActiveEndDate()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Integer AbstractModuleConfiguration.getPriority()"})
-  public void testGetPriority() {
-    // Arrange, Act and Assert
-    assertEquals(100, abstractModuleConfiguration.getPriority().intValue());
-  }
+  public void testGetActiveEndDate2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-  /**
-   * Test {@link AbstractModuleConfiguration#setPriority(Integer)}.
-   *
-   * <p>Method under test: {@link AbstractModuleConfiguration#setPriority(Integer)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AbstractModuleConfiguration.setPriority(Integer)"})
-  public void testSetPriority() {
-    // Arrange and Act
-    abstractModuleConfiguration.setPriority(1);
+    // Arrange
+    ModuleConfigurationType moduleConfigurationType = mock(ModuleConfigurationType.class);
+    when(moduleConfigurationType.getType()).thenReturn("Type");
+
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
+    siteMapConfigurationImpl.setModuleConfigurationType(moduleConfigurationType);
+
+    // Act
+    Date actualActiveEndDate = siteMapConfigurationImpl.getActiveEndDate();
 
     // Assert
-    assertTrue(abstractModuleConfiguration instanceof SiteMapConfigurationImpl);
-    assertEquals(1, abstractModuleConfiguration.getPriority().intValue());
+    verify(moduleConfigurationType).getType();
+    assertNull(actualActiveEndDate);
+  }
+
+  /**
+   * Method under test: {@link AbstractModuleConfiguration#getPriority()}
+   */
+  @Test
+  public void testGetPriority() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertEquals(100, (new SiteMapConfigurationImpl()).getPriority().intValue());
+  }
+
+  /**
+   * Method under test: {@link AbstractModuleConfiguration#getPriority()}
+   */
+  @Test
+  public void testGetPriority2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ModuleConfigurationType moduleConfigurationType = mock(ModuleConfigurationType.class);
+    when(moduleConfigurationType.getType()).thenReturn("Type");
+
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
+    siteMapConfigurationImpl.setModuleConfigurationType(moduleConfigurationType);
+
+    // Act
+    Integer actualPriority = siteMapConfigurationImpl.getPriority();
+
+    // Assert
+    verify(moduleConfigurationType).getType();
+    assertEquals(100, actualPriority.intValue());
+  }
+
+  /**
+   * Method under test: {@link AbstractModuleConfiguration#setPriority(Integer)}
+   */
+  @Test
+  public void testSetPriority() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
+
+    // Act
+    siteMapConfigurationImpl.setPriority(1);
+
+    // Assert
+    assertEquals(1, siteMapConfigurationImpl.getPriority().intValue());
+  }
+
+  /**
+   * Method under test: {@link AbstractModuleConfiguration#setPriority(Integer)}
+   */
+  @Test
+  public void testSetPriority2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ModuleConfigurationType moduleConfigurationType = mock(ModuleConfigurationType.class);
+    when(moduleConfigurationType.getType()).thenReturn("Type");
+
+    SiteMapConfigurationImpl siteMapConfigurationImpl = new SiteMapConfigurationImpl();
+    siteMapConfigurationImpl.setModuleConfigurationType(moduleConfigurationType);
+
+    // Act
+    siteMapConfigurationImpl.setPriority(1);
+
+    // Assert
+    verify(moduleConfigurationType).getType();
+    assertEquals(1, siteMapConfigurationImpl.getPriority().intValue());
   }
 }

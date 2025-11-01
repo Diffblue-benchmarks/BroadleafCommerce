@@ -20,68 +20,43 @@ package org.broadleafcommerce.core.web.catalog;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
+import org.broadleafcommerce.core.web.security.XssRequestWrapper;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.cors.DefaultCorsProcessor;
 
-@ExtendWith(MockitoExtension.class)
 class CategoryHandlerMappingDiffblueTest {
-  @InjectMocks private CategoryHandlerMapping categoryHandlerMapping;
-
   /**
-   * Test {@link CategoryHandlerMapping#findCategoryUsingIdParam(HttpServletRequest)}.
-   *
-   * <ul>
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * CategoryHandlerMapping#findCategoryUsingIdParam(HttpServletRequest)}
+   * Method under test:
+   * {@link CategoryHandlerMapping#findCategoryUsingIdParam(HttpServletRequest)}
    */
   @Test
-  @DisplayName("Test findCategoryUsingIdParam(HttpServletRequest); then return 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.core.catalog.domain.Category CategoryHandlerMapping.findCategoryUsingIdParam(HttpServletRequest)"
-  })
-  void testFindCategoryUsingIdParam_thenReturnNull() throws ServletRequestBindingException {
-    // Arrange, Act and Assert
+  void testFindCategoryUsingIdParam() throws ServletRequestBindingException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CategoryHandlerMapping categoryHandlerMapping = new CategoryHandlerMapping();
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+
+    // Act and Assert
     assertNull(
-        categoryHandlerMapping.findCategoryUsingIdParam(
-            new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()))));
+        categoryHandlerMapping.findCategoryUsingIdParam(new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+            new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}))));
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link CategoryHandlerMapping#setDefaultTemplateName(String)}
    *   <li>{@link CategoryHandlerMapping#getDefaultTemplateName()}
    * </ul>
    */
   @Test
-  @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String CategoryHandlerMapping.getDefaultTemplateName()",
-    "void CategoryHandlerMapping.setDefaultTemplateName(String)"
-  })
   void testGettersAndSetters() {
     // Arrange
     CategoryHandlerMapping categoryHandlerMapping = new CategoryHandlerMapping();
@@ -89,21 +64,18 @@ class CategoryHandlerMappingDiffblueTest {
     // Act
     categoryHandlerMapping.setDefaultTemplateName("Default Template Name");
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("Default Template Name", categoryHandlerMapping.getDefaultTemplateName());
   }
 
   /**
-   * Test new {@link CategoryHandlerMapping} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link CategoryHandlerMapping}
+   * Method under test: default or parameterless constructor of
+   * {@link CategoryHandlerMapping}
    */
   @Test
-  @DisplayName("Test new CategoryHandlerMapping (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void CategoryHandlerMapping.<init>()"})
   void testNewCategoryHandlerMapping() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange and Act
     CategoryHandlerMapping actualCategoryHandlerMapping = new CategoryHandlerMapping();
 

@@ -23,108 +23,65 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
+import java.nio.file.Paths;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
+import org.broadleafcommerce.common.web.util.FileSystemResponseWrapper;
 import org.broadleafcommerce.common.web.util.StatusExposingServletResponse;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 public class EntityManagerFindValidationFilterDiffblueTest {
   /**
-   * Test {@link EntityManagerFindValidationFilter#doFilterInternal(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link ServletException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * EntityManagerFindValidationFilter#doFilterInternal(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}
+   * Method under test:
+   * {@link EntityManagerFindValidationFilter#doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void EntityManagerFindValidationFilter.doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
-  public void testDoFilterInternal_thenThrowServletException()
-      throws IOException, ServletException {
+  public void testDoFilterInternal() throws IOException, ServletException {
     // Arrange
-    EntityManagerFindValidationFilter entityManagerFindValidationFilter =
-        new EntityManagerFindValidationFilter();
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
-    HttpServletResponseWrapper response =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
-
+    EntityManagerFindValidationFilter entityManagerFindValidationFilter = new EntityManagerFindValidationFilter();
+    SessionlessHttpServletRequestWrapper request = new SessionlessHttpServletRequestWrapper(
+        new MockHttpServletRequest());
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse response2 = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
     FilterChain filterChain = mock(FilterChain.class);
-    doThrow(new ServletException("An error occurred"))
-        .when(filterChain)
-        .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
+    doNothing().when(filterChain).doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
 
-    // Act and Assert
-    assertThrows(
-        ServletException.class,
-        () -> entityManagerFindValidationFilter.doFilterInternal(request, response, filterChain));
+    // Act
+    entityManagerFindValidationFilter.doFilterInternal(request, response2, filterChain);
+
+    // Assert
     verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
   }
 
   /**
-   * Test {@link EntityManagerFindValidationFilter#doFilterInternal(HttpServletRequest,
-   * HttpServletResponse, FilterChain)}.
-   *
-   * <ul>
-   *   <li>When {@link FilterChain} {@link FilterChain#doFilter(ServletRequest, ServletResponse)}
-   *       does nothing.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * EntityManagerFindValidationFilter#doFilterInternal(HttpServletRequest, HttpServletResponse,
-   * FilterChain)}
+   * Method under test:
+   * {@link EntityManagerFindValidationFilter#doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void EntityManagerFindValidationFilter.doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)"
-  })
-  public void testDoFilterInternal_whenFilterChainDoFilterDoesNothing()
-      throws IOException, ServletException {
+  public void testDoFilterInternal2() throws IOException, ServletException {
     // Arrange
-    EntityManagerFindValidationFilter entityManagerFindValidationFilter =
-        new EntityManagerFindValidationFilter();
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
-    HttpServletResponseWrapper response =
-        new HttpServletResponseWrapper(
-            new StatusExposingServletResponse(new MockHttpServletResponse()));
-
+    EntityManagerFindValidationFilter entityManagerFindValidationFilter = new EntityManagerFindValidationFilter();
+    SessionlessHttpServletRequestWrapper request = new SessionlessHttpServletRequestWrapper(
+        new MockHttpServletRequest());
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    StatusExposingServletResponse response2 = new StatusExposingServletResponse(
+        new FileSystemResponseWrapper(response, Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()));
     FilterChain filterChain = mock(FilterChain.class);
-    doNothing()
-        .when(filterChain)
+    doThrow(new ServletException("An error occurred")).when(filterChain)
         .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
 
-    // Act
-    entityManagerFindValidationFilter.doFilterInternal(request, response, filterChain);
-
-    // Assert
+    // Act and Assert
+    assertThrows(ServletException.class,
+        () -> entityManagerFindValidationFilter.doFilterInternal(request, response2, filterChain));
     verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
   }
 }

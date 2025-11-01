@@ -18,85 +18,79 @@
 package org.broadleafcommerce.core.search.domain;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.broadleafcommerce.common.copy.CreateResponse;
+import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
+import org.broadleafcommerce.common.service.GenericEntityService;
+import org.broadleafcommerce.common.site.domain.CatalogImpl;
+import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(SpringJUnit4ClassRunner.class)
 public class IndexFieldImplDiffblueTest {
-  @Autowired private IndexFieldImpl indexFieldImpl;
-
   /**
-   * Test {@link IndexFieldImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * IndexFieldImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test:
+   * {@link IndexFieldImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse IndexFieldImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(new IndexFieldImpl(), true);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+    IndexFieldImpl indexFieldImpl = new IndexFieldImpl();
+    GenericEntityService genericEntityService = mock(GenericEntityService.class);
+    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
 
     // Act
-    CreateResponse<IndexField> actualCreateOrRetrieveCopyInstanceResult =
-        indexFieldImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<IndexField> actualCreateOrRetrieveCopyInstanceResult = indexFieldImpl
+        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+            genericEntityService, new MultiTenantCopierExtensionManager()));
 
     // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+    verify(genericEntityService).getCeilingImplClass(eq("org.broadleafcommerce.core.search.domain.IndexFieldImpl"));
+    verify(genericEntityService).getIdentifier(isA(Object.class));
+    IndexField clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
+    assertTrue(clone instanceof IndexFieldImpl);
+    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
+    assertEquals(indexFieldImpl, clone);
   }
 
   /**
-   * Test {@link IndexFieldImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * IndexFieldImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test:
+   * {@link IndexFieldImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse IndexFieldImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
   public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    IndexFieldImpl indexFieldImpl = new IndexFieldImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(indexFieldImpl, false);
+    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<IndexField> actualCreateOrRetrieveCopyInstanceResult =
-        indexFieldImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<IndexField> actualCreateOrRetrieveCopyInstanceResult = indexFieldImpl
+        .createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -104,24 +98,13 @@ public class IndexFieldImplDiffblueTest {
   }
 
   /**
-   * Test {@link IndexFieldImpl#equals(Object)}, and {@link IndexFieldImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link IndexFieldImpl#equals(Object)}
    *   <li>{@link IndexFieldImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean IndexFieldImpl.equals(Object)", "int IndexFieldImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     IndexFieldImpl indexFieldImpl = new IndexFieldImpl();
@@ -138,28 +121,18 @@ public class IndexFieldImplDiffblueTest {
 
     // Act and Assert
     assertEquals(indexFieldImpl, indexFieldImpl2);
-    assertEquals(indexFieldImpl.hashCode(), indexFieldImpl2.hashCode());
+    int expectedHashCodeResult = indexFieldImpl.hashCode();
+    assertEquals(expectedHashCodeResult, indexFieldImpl2.hashCode());
   }
 
   /**
-   * Test {@link IndexFieldImpl#equals(Object)}, and {@link IndexFieldImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link IndexFieldImpl#equals(Object)}
    *   <li>{@link IndexFieldImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean IndexFieldImpl.equals(Object)", "int IndexFieldImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     IndexFieldImpl indexFieldImpl = new IndexFieldImpl();
@@ -175,105 +148,12 @@ public class IndexFieldImplDiffblueTest {
   }
 
   /**
-   * Test {@link IndexFieldImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link IndexFieldImpl#equals(Object)}
+   * Method under test: {@link IndexFieldImpl#getMainEntityName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean IndexFieldImpl.equals(Object)", "int IndexFieldImpl.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
-    // Arrange
-    IndexFieldImpl indexFieldImpl = new IndexFieldImpl();
-    indexFieldImpl.setField(null);
-    indexFieldImpl.setFieldTypes(new ArrayList<>());
-    indexFieldImpl.setId(1L);
-    indexFieldImpl.setSearchable(true);
+  public void testGetMainEntityName() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    IndexFieldImpl indexFieldImpl2 = new IndexFieldImpl();
-    indexFieldImpl2.setField(new FieldImpl());
-    indexFieldImpl2.setFieldTypes(new ArrayList<>());
-    indexFieldImpl2.setId(1L);
-    indexFieldImpl2.setSearchable(true);
-
-    // Act and Assert
-    assertNotEquals(indexFieldImpl, indexFieldImpl2);
-  }
-
-  /**
-   * Test {@link IndexFieldImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link IndexFieldImpl#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean IndexFieldImpl.equals(Object)", "int IndexFieldImpl.hashCode()"})
-  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
-    // Arrange
-    IndexFieldImpl indexFieldImpl = new IndexFieldImpl();
-    indexFieldImpl.setField(new FieldImpl());
-    indexFieldImpl.setFieldTypes(new ArrayList<>());
-    indexFieldImpl.setId(1L);
-    indexFieldImpl.setSearchable(true);
-
-    // Act and Assert
-    assertNotEquals(indexFieldImpl, null);
-  }
-
-  /**
-   * Test {@link IndexFieldImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link IndexFieldImpl#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean IndexFieldImpl.equals(Object)", "int IndexFieldImpl.hashCode()"})
-  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
-    // Arrange
-    IndexFieldImpl indexFieldImpl = new IndexFieldImpl();
-    indexFieldImpl.setField(new FieldImpl());
-    indexFieldImpl.setFieldTypes(new ArrayList<>());
-    indexFieldImpl.setId(1L);
-    indexFieldImpl.setSearchable(true);
-
-    // Act and Assert
-    assertNotEquals(indexFieldImpl, "Different type to IndexFieldImpl");
-  }
-
-  /**
-   * Test {@link IndexFieldImpl#getMainEntityName()}.
-   *
-   * <ul>
-   *   <li>Given {@link IndexFieldImpl} (default constructor) Field is {@link FieldImpl} (default
-   *       constructor).
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link IndexFieldImpl#getMainEntityName()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String IndexFieldImpl.getMainEntityName()"})
-  public void testGetMainEntityName_givenIndexFieldImplFieldIsFieldImpl_thenReturnNull() {
     // Arrange
     IndexFieldImpl indexFieldImpl = new IndexFieldImpl();
     indexFieldImpl.setField(new FieldImpl());
@@ -286,19 +166,12 @@ public class IndexFieldImplDiffblueTest {
   }
 
   /**
-   * Test {@link IndexFieldImpl#getMainEntityName()}.
-   *
-   * <ul>
-   *   <li>Then return {@code Friendly Name}.
-   * </ul>
-   *
-   * <p>Method under test: {@link IndexFieldImpl#getMainEntityName()}
+   * Method under test: {@link IndexFieldImpl#getMainEntityName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String IndexFieldImpl.getMainEntityName()"})
-  public void testGetMainEntityName_thenReturnFriendlyName() {
+  public void testGetMainEntityName2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     Field field = mock(Field.class);
     when(field.getFriendlyName()).thenReturn("Friendly Name");
@@ -318,10 +191,83 @@ public class IndexFieldImplDiffblueTest {
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Method under test: {@link IndexFieldImpl#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+    // Arrange
+    IndexFieldImpl indexFieldImpl = new IndexFieldImpl();
+    indexFieldImpl.setField(null);
+    indexFieldImpl.setFieldTypes(new ArrayList<>());
+    indexFieldImpl.setId(1L);
+    indexFieldImpl.setSearchable(true);
+
+    IndexFieldImpl indexFieldImpl2 = new IndexFieldImpl();
+    indexFieldImpl2.setField(new FieldImpl());
+    indexFieldImpl2.setFieldTypes(new ArrayList<>());
+    indexFieldImpl2.setId(1L);
+    indexFieldImpl2.setSearchable(true);
+
+    // Act and Assert
+    assertNotEquals(indexFieldImpl, indexFieldImpl2);
+  }
+
+  /**
+   * Method under test: {@link IndexFieldImpl#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange
+    IndexFieldImpl indexFieldImpl = new IndexFieldImpl();
+    indexFieldImpl.setField(mock(FieldImpl.class));
+    indexFieldImpl.setFieldTypes(new ArrayList<>());
+    indexFieldImpl.setId(1L);
+    indexFieldImpl.setSearchable(true);
+
+    IndexFieldImpl indexFieldImpl2 = new IndexFieldImpl();
+    indexFieldImpl2.setField(new FieldImpl());
+    indexFieldImpl2.setFieldTypes(new ArrayList<>());
+    indexFieldImpl2.setId(1L);
+    indexFieldImpl2.setSearchable(true);
+
+    // Act and Assert
+    assertNotEquals(indexFieldImpl, indexFieldImpl2);
+  }
+
+  /**
+   * Method under test: {@link IndexFieldImpl#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
+    // Arrange
+    IndexFieldImpl indexFieldImpl = new IndexFieldImpl();
+    indexFieldImpl.setField(new FieldImpl());
+    indexFieldImpl.setFieldTypes(new ArrayList<>());
+    indexFieldImpl.setId(1L);
+    indexFieldImpl.setSearchable(true);
+
+    // Act and Assert
+    assertNotEquals(indexFieldImpl, null);
+  }
+
+  /**
+   * Method under test: {@link IndexFieldImpl#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+    // Arrange
+    IndexFieldImpl indexFieldImpl = new IndexFieldImpl();
+    indexFieldImpl.setField(new FieldImpl());
+    indexFieldImpl.setFieldTypes(new ArrayList<>());
+    indexFieldImpl.setId(1L);
+    indexFieldImpl.setSearchable(true);
+
+    // Act and Assert
+    assertNotEquals(indexFieldImpl, "Different type to IndexFieldImpl");
+  }
+
+  /**
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link IndexFieldImpl}
    *   <li>{@link IndexFieldImpl#setField(Field)}
@@ -335,19 +281,6 @@ public class IndexFieldImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void IndexFieldImpl.<init>()",
-    "Field IndexFieldImpl.getField()",
-    "List IndexFieldImpl.getFieldTypes()",
-    "Long IndexFieldImpl.getId()",
-    "Boolean IndexFieldImpl.getSearchable()",
-    "void IndexFieldImpl.setField(Field)",
-    "void IndexFieldImpl.setFieldTypes(List)",
-    "void IndexFieldImpl.setId(Long)",
-    "void IndexFieldImpl.setSearchable(Boolean)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     IndexFieldImpl actualIndexFieldImpl = new IndexFieldImpl();
@@ -362,7 +295,7 @@ public class IndexFieldImplDiffblueTest {
     Long actualId = actualIndexFieldImpl.getId();
     Boolean actualSearchable = actualIndexFieldImpl.getSearchable();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals(1L, actualId.longValue());
     assertTrue(actualFieldTypes.isEmpty());
     assertTrue(actualSearchable);

@@ -18,18 +18,11 @@
 package org.broadleafcommerce.common.sms.service.type;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class SMSMessageDiffblueTest {
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link SMSMessage#SMSMessage()}
    *   <li>{@link SMSMessage#setBody(String)}
@@ -43,21 +36,6 @@ public class SMSMessageDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SMSMessage.<init>()",
-    "void SMSMessage.<init>(String, String, String)",
-    "void SMSMessage.<init>(String, String, String, String)",
-    "String SMSMessage.getBody()",
-    "String SMSMessage.getFrom()",
-    "String SMSMessage.getMediaUrl()",
-    "String SMSMessage.getTo()",
-    "void SMSMessage.setBody(String)",
-    "void SMSMessage.setFrom(String)",
-    "void SMSMessage.setMediaUrl(String)",
-    "void SMSMessage.setTo(String)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     SMSMessage actualSmsMessage = new SMSMessage();
@@ -69,7 +47,7 @@ public class SMSMessageDiffblueTest {
     String actualFrom = actualSmsMessage.getFrom();
     String actualMediaUrl = actualSmsMessage.getMediaUrl();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("Not all who wander are lost", actualBody);
     assertEquals("alice.liddell@example.org", actualSmsMessage.getTo());
     assertEquals("https://example.org/example", actualMediaUrl);
@@ -77,14 +55,7 @@ public class SMSMessageDiffblueTest {
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <ul>
-   *   <li>When {@code alice.liddell@example.org}.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link SMSMessage#SMSMessage(String, String, String)}
    *   <li>{@link SMSMessage#setBody(String)}
@@ -98,26 +69,10 @@ public class SMSMessageDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SMSMessage.<init>()",
-    "void SMSMessage.<init>(String, String, String)",
-    "void SMSMessage.<init>(String, String, String, String)",
-    "String SMSMessage.getBody()",
-    "String SMSMessage.getFrom()",
-    "String SMSMessage.getMediaUrl()",
-    "String SMSMessage.getTo()",
-    "void SMSMessage.setBody(String)",
-    "void SMSMessage.setFrom(String)",
-    "void SMSMessage.setMediaUrl(String)",
-    "void SMSMessage.setTo(String)"
-  })
-  public void testGettersAndSetters_whenAliceLiddellExampleOrg() {
+  public void testGettersAndSetters2() {
     // Arrange and Act
-    SMSMessage actualSmsMessage =
-        new SMSMessage(
-            "alice.liddell@example.org", "jane.doe@example.org", "Not all who wander are lost");
+    SMSMessage actualSmsMessage = new SMSMessage("alice.liddell@example.org", "jane.doe@example.org",
+        "Not all who wander are lost");
     actualSmsMessage.setBody("Not all who wander are lost");
     actualSmsMessage.setFrom("jane.doe@example.org");
     actualSmsMessage.setMediaUrl("https://example.org/example");
@@ -126,7 +81,7 @@ public class SMSMessageDiffblueTest {
     String actualFrom = actualSmsMessage.getFrom();
     String actualMediaUrl = actualSmsMessage.getMediaUrl();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("Not all who wander are lost", actualBody);
     assertEquals("alice.liddell@example.org", actualSmsMessage.getTo());
     assertEquals("https://example.org/example", actualMediaUrl);
@@ -134,14 +89,7 @@ public class SMSMessageDiffblueTest {
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <ul>
-   *   <li>When {@code https://example.org/example}.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link SMSMessage#SMSMessage(String, String, String, String)}
    *   <li>{@link SMSMessage#setBody(String)}
@@ -155,29 +103,10 @@ public class SMSMessageDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SMSMessage.<init>()",
-    "void SMSMessage.<init>(String, String, String)",
-    "void SMSMessage.<init>(String, String, String, String)",
-    "String SMSMessage.getBody()",
-    "String SMSMessage.getFrom()",
-    "String SMSMessage.getMediaUrl()",
-    "String SMSMessage.getTo()",
-    "void SMSMessage.setBody(String)",
-    "void SMSMessage.setFrom(String)",
-    "void SMSMessage.setMediaUrl(String)",
-    "void SMSMessage.setTo(String)"
-  })
-  public void testGettersAndSetters_whenHttpsExampleOrgExample() {
+  public void testGettersAndSetters3() {
     // Arrange and Act
-    SMSMessage actualSmsMessage =
-        new SMSMessage(
-            "alice.liddell@example.org",
-            "jane.doe@example.org",
-            "Not all who wander are lost",
-            "https://example.org/example");
+    SMSMessage actualSmsMessage = new SMSMessage("alice.liddell@example.org", "jane.doe@example.org",
+        "Not all who wander are lost", "https://example.org/example");
     actualSmsMessage.setBody("Not all who wander are lost");
     actualSmsMessage.setFrom("jane.doe@example.org");
     actualSmsMessage.setMediaUrl("https://example.org/example");
@@ -186,7 +115,7 @@ public class SMSMessageDiffblueTest {
     String actualFrom = actualSmsMessage.getFrom();
     String actualMediaUrl = actualSmsMessage.getMediaUrl();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("Not all who wander are lost", actualBody);
     assertEquals("alice.liddell@example.org", actualSmsMessage.getTo());
     assertEquals("https://example.org/example", actualMediaUrl);

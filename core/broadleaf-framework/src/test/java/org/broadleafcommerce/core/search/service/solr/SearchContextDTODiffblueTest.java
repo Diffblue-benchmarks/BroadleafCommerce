@@ -20,42 +20,51 @@ package org.broadleafcommerce.core.search.service.solr;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiFunction;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ContextConfiguration(classes = {SearchContextDTO.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class SearchContextDTODiffblueTest {
-  @Autowired private SearchContextDTO searchContextDTO;
+  @Autowired
+  private SearchContextDTO searchContextDTO;
 
   /**
-   * Test {@link SearchContextDTO#get(String)}.
-   *
-   * <p>Method under test: {@link SearchContextDTO#get(String)}
+   * Method under test: {@link SearchContextDTO#get(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object SearchContextDTO.get(String)"})
   public void testGet() {
     // Arrange, Act and Assert
-    assertNull(searchContextDTO.get("Key"));
+    assertNull((new SearchContextDTO()).get("Key"));
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Method under test: {@link SearchContextDTO#get(String)}
+   */
+  @Test
+  public void testGet2() {
+    // Arrange
+    HashMap<String, Object> attributes = new HashMap<>();
+    attributes.computeIfPresent("foo", mock(BiFunction.class));
+
+    SearchContextDTO searchContextDTO2 = new SearchContextDTO();
+    searchContextDTO2.setAttributes(attributes);
+
+    // Act and Assert
+    assertNull(searchContextDTO2.get("Key"));
+  }
+
+  /**
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link SearchContextDTO}
    *   <li>{@link SearchContextDTO#setAttributes(Map)}
@@ -63,13 +72,6 @@ public class SearchContextDTODiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SearchContextDTO.<init>()",
-    "Map SearchContextDTO.getAttributes()",
-    "void SearchContextDTO.setAttributes(Map)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     SearchContextDTO actualSearchContextDTO = new SearchContextDTO();
@@ -77,7 +79,7 @@ public class SearchContextDTODiffblueTest {
     actualSearchContextDTO.setAttributes(attributes);
     Map<String, Object> actualAttributes = actualSearchContextDTO.getAttributes();
 
-    // Assert
+    // Assert that nothing has changed
     assertTrue(actualAttributes.isEmpty());
     assertSame(attributes, actualAttributes);
   }

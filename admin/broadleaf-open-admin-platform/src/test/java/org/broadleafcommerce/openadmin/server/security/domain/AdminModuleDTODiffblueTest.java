@@ -20,20 +20,13 @@ package org.broadleafcommerce.openadmin.server.security.domain;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class AdminModuleDTODiffblueTest {
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link AdminModuleDTO}
    *   <li>{@link AdminModuleDTO#setDisplayOrder(Integer)}
@@ -51,23 +44,6 @@ public class AdminModuleDTODiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminModuleDTO.<init>()",
-    "Integer AdminModuleDTO.getDisplayOrder()",
-    "String AdminModuleDTO.getIcon()",
-    "Long AdminModuleDTO.getId()",
-    "String AdminModuleDTO.getModuleKey()",
-    "String AdminModuleDTO.getName()",
-    "List AdminModuleDTO.getSections()",
-    "void AdminModuleDTO.setDisplayOrder(Integer)",
-    "void AdminModuleDTO.setIcon(String)",
-    "void AdminModuleDTO.setId(Long)",
-    "void AdminModuleDTO.setModuleKey(String)",
-    "void AdminModuleDTO.setName(String)",
-    "void AdminModuleDTO.setSections(List)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     AdminModuleDTO actualAdminModuleDTO = new AdminModuleDTO();
@@ -85,7 +61,7 @@ public class AdminModuleDTODiffblueTest {
     String actualName = actualAdminModuleDTO.getName();
     List<AdminSection> actualSections = actualAdminModuleDTO.getSections();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("Icon", actualIcon);
     assertEquals("Module Key", actualModuleKey);
     assertEquals("Name", actualName);

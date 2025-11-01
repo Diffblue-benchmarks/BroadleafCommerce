@@ -21,26 +21,21 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import org.broadleafcommerce.common.sitemap.service.type.SiteMapChangeFreqType;
 import org.broadleafcommerce.common.sitemap.service.type.SiteMapPriorityType;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class SiteMapURLWrapperDiffblueTest {
   /**
-   * Test {@link SiteMapURLWrapper#addImage(SiteMapImageWrapper)}.
-   *
-   * <p>Method under test: {@link SiteMapURLWrapper#addImage(SiteMapImageWrapper)}
+   * Method under test: {@link SiteMapURLWrapper#addImage(SiteMapImageWrapper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SiteMapURLWrapper.addImage(SiteMapImageWrapper)"})
   public void testAddImage() {
     // Arrange
     SiteMapURLWrapper siteMapURLWrapper = new SiteMapURLWrapper();
@@ -58,45 +53,54 @@ public class SiteMapURLWrapperDiffblueTest {
   }
 
   /**
-   * Test {@link SiteMapURLWrapper#setPriorityType(SiteMapPriorityType)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then {@link SiteMapURLWrapper} (default constructor) Priority is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteMapURLWrapper#setPriorityType(SiteMapPriorityType)}
+   * Method under test: {@link SiteMapURLWrapper#addImage(SiteMapImageWrapper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SiteMapURLWrapper.setPriorityType(SiteMapPriorityType)"})
-  public void testSetPriorityType_whenNull_thenSiteMapURLWrapperPriorityIsNull() {
+  public void testAddImage2() {
     // Arrange
+    Date lastModDate = mock(Date.class);
+    when(lastModDate.getTime()).thenReturn(10L);
+
     SiteMapURLWrapper siteMapURLWrapper = new SiteMapURLWrapper();
+    siteMapURLWrapper.setLastModDate(lastModDate);
+
+    SiteMapImageWrapper siteMapImage = new SiteMapImageWrapper();
+    siteMapImage.setLoc("Loc");
 
     // Act
-    siteMapURLWrapper.setPriorityType(null);
+    siteMapURLWrapper.addImage(siteMapImage);
 
-    // Assert that nothing has changed
-    assertNull(siteMapURLWrapper.getPriority());
+    // Assert
+    verify(lastModDate).getTime();
+    List<SiteMapImageWrapper> siteMapImageWrappers = siteMapURLWrapper.getSiteMapImageWrappers();
+    assertEquals(1, siteMapImageWrappers.size());
+    assertSame(siteMapImage, siteMapImageWrappers.get(0));
   }
 
   /**
-   * Test {@link SiteMapURLWrapper#setPriorityType(SiteMapPriorityType)}.
-   *
-   * <ul>
-   *   <li>When {@link SiteMapPriorityType#ONE}.
-   *   <li>Then {@link SiteMapURLWrapper} (default constructor) Priority is {@code 1.0}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteMapURLWrapper#setPriorityType(SiteMapPriorityType)}
+   * Method under test: {@link SiteMapURLWrapper#setLastModDate(java.util.Date)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SiteMapURLWrapper.setPriorityType(SiteMapPriorityType)"})
-  public void testSetPriorityType_whenOne_thenSiteMapURLWrapperPriorityIs10() {
+  public void testSetLastModDate() {
+    // Arrange
+    SiteMapURLWrapper siteMapURLWrapper = new SiteMapURLWrapper();
+    java.sql.Date lastModDate = mock(java.sql.Date.class);
+    when(lastModDate.getTime()).thenReturn(10L);
+
+    // Act
+    siteMapURLWrapper.setLastModDate(lastModDate);
+
+    // Assert
+    verify(lastModDate).getTime();
+    assertEquals("1970-01-01T00:00:00+00:00", siteMapURLWrapper.getLastmod());
+  }
+
+  /**
+   * Method under test:
+   * {@link SiteMapURLWrapper#setPriorityType(SiteMapPriorityType)}
+   */
+  @Test
+  public void testSetPriorityType() {
     // Arrange
     SiteMapURLWrapper siteMapURLWrapper = new SiteMapURLWrapper();
 
@@ -108,20 +112,48 @@ public class SiteMapURLWrapperDiffblueTest {
   }
 
   /**
-   * Test {@link SiteMapURLWrapper#setChangeFreqType(SiteMapChangeFreqType)}.
-   *
-   * <ul>
-   *   <li>When {@link SiteMapChangeFreqType#ALWAYS}.
-   *   <li>Then {@link SiteMapURLWrapper} (default constructor) Changefreq is {@code always}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteMapURLWrapper#setChangeFreqType(SiteMapChangeFreqType)}
+   * Method under test:
+   * {@link SiteMapURLWrapper#setPriorityType(SiteMapPriorityType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SiteMapURLWrapper.setChangeFreqType(SiteMapChangeFreqType)"})
-  public void testSetChangeFreqType_whenAlways_thenSiteMapURLWrapperChangefreqIsAlways() {
+  public void testSetPriorityType2() {
+    // Arrange
+    SiteMapURLWrapper siteMapURLWrapper = new SiteMapURLWrapper();
+
+    // Act
+    siteMapURLWrapper.setPriorityType(null);
+
+    // Assert that nothing has changed
+    assertNull(siteMapURLWrapper.getPriority());
+  }
+
+  /**
+   * Method under test:
+   * {@link SiteMapURLWrapper#setPriorityType(SiteMapPriorityType)}
+   */
+  @Test
+  public void testSetPriorityType3() {
+    // Arrange
+    Date lastModDate = mock(Date.class);
+    when(lastModDate.getTime()).thenReturn(10L);
+
+    SiteMapURLWrapper siteMapURLWrapper = new SiteMapURLWrapper();
+    siteMapURLWrapper.setLastModDate(lastModDate);
+
+    // Act
+    siteMapURLWrapper.setPriorityType(SiteMapPriorityType.ONE);
+
+    // Assert
+    verify(lastModDate).getTime();
+    assertEquals("1.0", siteMapURLWrapper.getPriority());
+  }
+
+  /**
+   * Method under test:
+   * {@link SiteMapURLWrapper#setChangeFreqType(SiteMapChangeFreqType)}
+   */
+  @Test
+  public void testSetChangeFreqType() {
     // Arrange
     SiteMapURLWrapper siteMapURLWrapper = new SiteMapURLWrapper();
 
@@ -133,20 +165,11 @@ public class SiteMapURLWrapperDiffblueTest {
   }
 
   /**
-   * Test {@link SiteMapURLWrapper#setChangeFreqType(SiteMapChangeFreqType)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then {@link SiteMapURLWrapper} (default constructor) Changefreq is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteMapURLWrapper#setChangeFreqType(SiteMapChangeFreqType)}
+   * Method under test:
+   * {@link SiteMapURLWrapper#setChangeFreqType(SiteMapChangeFreqType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SiteMapURLWrapper.setChangeFreqType(SiteMapChangeFreqType)"})
-  public void testSetChangeFreqType_whenNull_thenSiteMapURLWrapperChangefreqIsNull() {
+  public void testSetChangeFreqType2() {
     // Arrange
     SiteMapURLWrapper siteMapURLWrapper = new SiteMapURLWrapper();
 
@@ -158,10 +181,28 @@ public class SiteMapURLWrapperDiffblueTest {
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Method under test:
+   * {@link SiteMapURLWrapper#setChangeFreqType(SiteMapChangeFreqType)}
+   */
+  @Test
+  public void testSetChangeFreqType3() {
+    // Arrange
+    Date lastModDate = mock(Date.class);
+    when(lastModDate.getTime()).thenReturn(10L);
+
+    SiteMapURLWrapper siteMapURLWrapper = new SiteMapURLWrapper();
+    siteMapURLWrapper.setLastModDate(lastModDate);
+
+    // Act
+    siteMapURLWrapper.setChangeFreqType(SiteMapChangeFreqType.ALWAYS);
+
+    // Assert
+    verify(lastModDate).getTime();
+    assertEquals("always", siteMapURLWrapper.getChangefreq());
+  }
+
+  /**
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link SiteMapURLWrapper}
    *   <li>{@link SiteMapURLWrapper#setChangefreq(String)}
@@ -177,21 +218,6 @@ public class SiteMapURLWrapperDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SiteMapURLWrapper.<init>()",
-    "String SiteMapURLWrapper.getChangefreq()",
-    "String SiteMapURLWrapper.getLastmod()",
-    "String SiteMapURLWrapper.getLoc()",
-    "String SiteMapURLWrapper.getPriority()",
-    "List SiteMapURLWrapper.getSiteMapImageWrappers()",
-    "void SiteMapURLWrapper.setChangefreq(String)",
-    "void SiteMapURLWrapper.setLastmod(String)",
-    "void SiteMapURLWrapper.setLoc(String)",
-    "void SiteMapURLWrapper.setPriority(String)",
-    "void SiteMapURLWrapper.setSiteMapImageWrappers(List)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     SiteMapURLWrapper actualSiteMapURLWrapper = new SiteMapURLWrapper();
@@ -205,10 +231,9 @@ public class SiteMapURLWrapperDiffblueTest {
     String actualLastmod = actualSiteMapURLWrapper.getLastmod();
     String actualLoc = actualSiteMapURLWrapper.getLoc();
     String actualPriority = actualSiteMapURLWrapper.getPriority();
-    List<SiteMapImageWrapper> actualSiteMapImageWrappers =
-        actualSiteMapURLWrapper.getSiteMapImageWrappers();
+    List<SiteMapImageWrapper> actualSiteMapImageWrappers = actualSiteMapURLWrapper.getSiteMapImageWrappers();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("https://example.org/example", actualChangefreq);
     assertEquals("https://example.org/example", actualLastmod);
     assertEquals("https://example.org/example", actualLoc);

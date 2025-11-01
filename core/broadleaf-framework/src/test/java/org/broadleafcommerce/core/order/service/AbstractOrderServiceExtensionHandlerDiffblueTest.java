@@ -18,67 +18,74 @@
 package org.broadleafcommerce.core.order.service;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import org.broadleafcommerce.common.audit.Auditable;
+import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.extension.ExtensionResultHolder;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
+import org.broadleafcommerce.common.locale.domain.LocaleImpl;
+import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.core.offer.domain.OfferCode;
 import org.broadleafcommerce.core.offer.domain.OfferCodeImpl;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
+import org.broadleafcommerce.core.order.domain.OrderImpl;
 import org.broadleafcommerce.core.order.service.call.OrderItemRequestDTO;
+import org.broadleafcommerce.core.order.service.type.OrderStatus;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class AbstractOrderServiceExtensionHandlerDiffblueTest {
   /**
-   * Test {@link AbstractOrderServiceExtensionHandler#attachAdditionalDataToNewNamedCart(Customer,
-   * Order)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractOrderServiceExtensionHandler#attachAdditionalDataToNewNamedCart(Customer, Order)}
+   * Method under test:
+   * {@link AbstractOrderServiceExtensionHandler#attachAdditionalDataToNewNamedCart(Customer, Order)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractOrderServiceExtensionHandler.attachAdditionalDataToNewNamedCart(Customer, Order)"
-  })
   public void testAttachAdditionalDataToNewNamedCart() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    CartMessageOrderItemServiceExtensionHandler cartMessageOrderItemServiceExtensionHandler =
-        new CartMessageOrderItemServiceExtensionHandler();
+    CartMessageOrderItemServiceExtensionHandler cartMessageOrderItemServiceExtensionHandler = new CartMessageOrderItemServiceExtensionHandler();
     CustomerImpl customer = new CustomerImpl();
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        cartMessageOrderItemServiceExtensionHandler.attachAdditionalDataToNewNamedCart(
-            customer, new NullOrderImpl()));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        cartMessageOrderItemServiceExtensionHandler.attachAdditionalDataToNewNamedCart(customer, new NullOrderImpl()));
   }
 
   /**
-   * Test {@link AbstractOrderServiceExtensionHandler#preValidateCartOperation(Order,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractOrderServiceExtensionHandler#preValidateCartOperation(Order, ExtensionResultHolder)}
+   * Method under test:
+   * {@link AbstractOrderServiceExtensionHandler#attachAdditionalDataToNewNamedCart(Customer, Order)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractOrderServiceExtensionHandler.preValidateCartOperation(Order, ExtensionResultHolder)"
-  })
-  public void testPreValidateCartOperation() {
+  public void testAttachAdditionalDataToNewNamedCart2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    CartMessageOrderItemServiceExtensionHandler cartMessageOrderItemServiceExtensionHandler =
-        new CartMessageOrderItemServiceExtensionHandler();
+    CartMessageOrderItemServiceExtensionHandler cartMessageOrderItemServiceExtensionHandler = new CartMessageOrderItemServiceExtensionHandler();
+    CustomerImpl customer = mock(CustomerImpl.class);
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        cartMessageOrderItemServiceExtensionHandler.attachAdditionalDataToNewNamedCart(customer, new NullOrderImpl()));
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractOrderServiceExtensionHandler#preValidateCartOperation(Order, ExtensionResultHolder)}
+   */
+  @Test
+  public void testPreValidateCartOperation() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CartMessageOrderItemServiceExtensionHandler cartMessageOrderItemServiceExtensionHandler = new CartMessageOrderItemServiceExtensionHandler();
     NullOrderImpl cart = new NullOrderImpl();
 
     ExtensionResultHolder erh = new ExtensionResultHolder();
@@ -86,29 +93,41 @@ public class AbstractOrderServiceExtensionHandlerDiffblueTest {
     erh.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
         cartMessageOrderItemServiceExtensionHandler.preValidateCartOperation(cart, erh));
   }
 
   /**
-   * Test {@link AbstractOrderServiceExtensionHandler#preValidateUpdateQuantityOperation(Order,
-   * OrderItemRequestDTO, ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractOrderServiceExtensionHandler#preValidateUpdateQuantityOperation(Order,
-   * OrderItemRequestDTO, ExtensionResultHolder)}
+   * Method under test:
+   * {@link AbstractOrderServiceExtensionHandler#preValidateCartOperation(Order, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractOrderServiceExtensionHandler.preValidateUpdateQuantityOperation(Order, OrderItemRequestDTO, ExtensionResultHolder)"
-  })
-  public void testPreValidateUpdateQuantityOperation() {
+  public void testPreValidateCartOperation2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    CartMessageOrderItemServiceExtensionHandler cartMessageOrderItemServiceExtensionHandler =
-        new CartMessageOrderItemServiceExtensionHandler();
+    CartMessageOrderItemServiceExtensionHandler cartMessageOrderItemServiceExtensionHandler = new CartMessageOrderItemServiceExtensionHandler();
+    NullOrderImpl cart = mock(NullOrderImpl.class);
+
+    ExtensionResultHolder erh = new ExtensionResultHolder();
+    erh.setResult("Result");
+    erh.setThrowable(new Throwable());
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        cartMessageOrderItemServiceExtensionHandler.preValidateCartOperation(cart, erh));
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractOrderServiceExtensionHandler#preValidateUpdateQuantityOperation(Order, OrderItemRequestDTO, ExtensionResultHolder)}
+   */
+  @Test
+  public void testPreValidateUpdateQuantityOperation() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CartMessageOrderItemServiceExtensionHandler cartMessageOrderItemServiceExtensionHandler = new CartMessageOrderItemServiceExtensionHandler();
     NullOrderImpl cart = new NullOrderImpl();
     OrderItemRequestDTO dto = new OrderItemRequestDTO();
 
@@ -117,123 +136,206 @@ public class AbstractOrderServiceExtensionHandlerDiffblueTest {
     erh.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        cartMessageOrderItemServiceExtensionHandler.preValidateUpdateQuantityOperation(
-            cart, dto, erh));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        cartMessageOrderItemServiceExtensionHandler.preValidateUpdateQuantityOperation(cart, dto, erh));
   }
 
   /**
-   * Test {@link AbstractOrderServiceExtensionHandler#addOfferCodes(Order, List, boolean)}.
-   *
-   * <ul>
-   *   <li>Given {@link OfferCodeImpl} (default constructor).
-   *   <li>When {@link ArrayList#ArrayList()} add {@link OfferCodeImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractOrderServiceExtensionHandler#addOfferCodes(Order, List,
-   * boolean)}
+   * Method under test:
+   * {@link AbstractOrderServiceExtensionHandler#preValidateUpdateQuantityOperation(Order, OrderItemRequestDTO, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractOrderServiceExtensionHandler.addOfferCodes(Order, List, boolean)"
-  })
-  public void testAddOfferCodes_givenOfferCodeImpl_whenArrayListAddOfferCodeImpl() {
-    // Arrange
-    CartMessageOrderItemServiceExtensionHandler cartMessageOrderItemServiceExtensionHandler =
-        new CartMessageOrderItemServiceExtensionHandler();
-    NullOrderImpl order = new NullOrderImpl();
+  public void testPreValidateUpdateQuantityOperation2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    ArrayList<OfferCode> offerCodes = new ArrayList<>();
-    offerCodes.add(new OfferCodeImpl());
+    // Arrange
+    CartMessageOrderItemServiceExtensionHandler cartMessageOrderItemServiceExtensionHandler = new CartMessageOrderItemServiceExtensionHandler();
+    NullOrderImpl cart = mock(NullOrderImpl.class);
+    OrderItemRequestDTO dto = new OrderItemRequestDTO();
+
+    ExtensionResultHolder erh = new ExtensionResultHolder();
+    erh.setResult("Result");
+    erh.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        cartMessageOrderItemServiceExtensionHandler.addOfferCodes(order, offerCodes, true));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        cartMessageOrderItemServiceExtensionHandler.preValidateUpdateQuantityOperation(cart, dto, erh));
   }
 
   /**
-   * Test {@link AbstractOrderServiceExtensionHandler#addOfferCodes(Order, List, boolean)}.
-   *
-   * <ul>
-   *   <li>Given {@link OfferCodeImpl} (default constructor).
-   *   <li>When {@link ArrayList#ArrayList()} add {@link OfferCodeImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractOrderServiceExtensionHandler#addOfferCodes(Order, List,
-   * boolean)}
+   * Method under test:
+   * {@link AbstractOrderServiceExtensionHandler#attachAdditionalDataToOrder(Order, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractOrderServiceExtensionHandler.addOfferCodes(Order, List, boolean)"
-  })
-  public void testAddOfferCodes_givenOfferCodeImpl_whenArrayListAddOfferCodeImpl2() {
+  public void testAttachAdditionalDataToOrder() {
     // Arrange
-    CartMessageOrderItemServiceExtensionHandler cartMessageOrderItemServiceExtensionHandler =
-        new CartMessageOrderItemServiceExtensionHandler();
-    NullOrderImpl order = new NullOrderImpl();
+    CartMessageOrderItemServiceExtensionHandler cartMessageOrderItemServiceExtensionHandler = new CartMessageOrderItemServiceExtensionHandler();
 
-    ArrayList<OfferCode> offerCodes = new ArrayList<>();
-    offerCodes.add(new OfferCodeImpl());
-    offerCodes.add(new OfferCodeImpl());
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(mock(java.sql.Date.class));
+    auditable.setDateUpdated(
+        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order
+        .setSubmitDate(java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
+    order.setTotalTax(new Money());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        cartMessageOrderItemServiceExtensionHandler.addOfferCodes(order, offerCodes, true));
+    assertEquals(ExtensionResultStatusType.HANDLED_CONTINUE,
+        cartMessageOrderItemServiceExtensionHandler.attachAdditionalDataToOrder(order, true));
   }
 
   /**
-   * Test {@link AbstractOrderServiceExtensionHandler#addOfferCodes(Order, List, boolean)}.
-   *
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractOrderServiceExtensionHandler#addOfferCodes(Order, List,
-   * boolean)}
+   * Method under test:
+   * {@link AbstractOrderServiceExtensionHandler#addOfferCodes(Order, List, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractOrderServiceExtensionHandler.addOfferCodes(Order, List, boolean)"
-  })
-  public void testAddOfferCodes_whenArrayList() {
+  public void testAddOfferCodes() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    CartMessageOrderItemServiceExtensionHandler cartMessageOrderItemServiceExtensionHandler =
-        new CartMessageOrderItemServiceExtensionHandler();
+    CartMessageOrderItemServiceExtensionHandler cartMessageOrderItemServiceExtensionHandler = new CartMessageOrderItemServiceExtensionHandler();
     NullOrderImpl order = new NullOrderImpl();
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
         cartMessageOrderItemServiceExtensionHandler.addOfferCodes(order, new ArrayList<>(), true));
   }
 
   /**
-   * Test {@link AbstractOrderServiceExtensionHandler#findCartForCustomerWithEnhancements(Customer,
-   * Order, ExtensionResultHolder)} with {@code customer}, {@code candidateCart}, {@code erh}.
-   *
-   * <p>Method under test: {@link
-   * AbstractOrderServiceExtensionHandler#findCartForCustomerWithEnhancements(Customer, Order,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link AbstractOrderServiceExtensionHandler#addOfferCodes(Order, List, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractOrderServiceExtensionHandler.findCartForCustomerWithEnhancements(Customer, Order, ExtensionResultHolder)"
-  })
-  public void testFindCartForCustomerWithEnhancementsWithCustomerCandidateCartErh() {
+  public void testAddOfferCodes2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    CartMessageOrderItemServiceExtensionHandler cartMessageOrderItemServiceExtensionHandler =
-        new CartMessageOrderItemServiceExtensionHandler();
+    CartMessageOrderItemServiceExtensionHandler cartMessageOrderItemServiceExtensionHandler = new CartMessageOrderItemServiceExtensionHandler();
+    NullOrderImpl order = mock(NullOrderImpl.class);
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        cartMessageOrderItemServiceExtensionHandler.addOfferCodes(order, new ArrayList<>(), true));
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractOrderServiceExtensionHandler#addOfferCodes(Order, List, boolean)}
+   */
+  @Test
+  public void testAddOfferCodes3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CartMessageOrderItemServiceExtensionHandler cartMessageOrderItemServiceExtensionHandler = new CartMessageOrderItemServiceExtensionHandler();
+    NullOrderImpl order = new NullOrderImpl();
+
+    ArrayList<OfferCode> offerCodes = new ArrayList<>();
+    offerCodes.add(new OfferCodeImpl());
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        cartMessageOrderItemServiceExtensionHandler.addOfferCodes(order, offerCodes, true));
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractOrderServiceExtensionHandler#addOfferCodes(Order, List, boolean)}
+   */
+  @Test
+  public void testAddOfferCodes4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CartMessageOrderItemServiceExtensionHandler cartMessageOrderItemServiceExtensionHandler = new CartMessageOrderItemServiceExtensionHandler();
+    NullOrderImpl order = new NullOrderImpl();
+
+    ArrayList<OfferCode> offerCodes = new ArrayList<>();
+    offerCodes.add(new OfferCodeImpl());
+    offerCodes.add(new OfferCodeImpl());
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        cartMessageOrderItemServiceExtensionHandler.addOfferCodes(order, offerCodes, true));
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractOrderServiceExtensionHandler#findCartForCustomerWithEnhancements(Customer, ExtensionResultHolder)}
+   */
+  @Test
+  public void testFindCartForCustomerWithEnhancements() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CartMessageOrderItemServiceExtensionHandler cartMessageOrderItemServiceExtensionHandler = new CartMessageOrderItemServiceExtensionHandler();
+    CustomerImpl customer = new CustomerImpl();
+
+    ExtensionResultHolder erh = new ExtensionResultHolder();
+    erh.setResult("Result");
+    erh.setThrowable(new Throwable());
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        cartMessageOrderItemServiceExtensionHandler.findCartForCustomerWithEnhancements(customer, erh));
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractOrderServiceExtensionHandler#findCartForCustomerWithEnhancements(Customer, ExtensionResultHolder)}
+   */
+  @Test
+  public void testFindCartForCustomerWithEnhancements2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CartMessageOrderItemServiceExtensionHandler cartMessageOrderItemServiceExtensionHandler = new CartMessageOrderItemServiceExtensionHandler();
+    CustomerImpl customer = mock(CustomerImpl.class);
+
+    ExtensionResultHolder erh = new ExtensionResultHolder();
+    erh.setResult("Result");
+    erh.setThrowable(new Throwable());
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        cartMessageOrderItemServiceExtensionHandler.findCartForCustomerWithEnhancements(customer, erh));
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractOrderServiceExtensionHandler#findCartForCustomerWithEnhancements(Customer, Order, ExtensionResultHolder)}
+   */
+  @Test
+  public void testFindCartForCustomerWithEnhancements3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CartMessageOrderItemServiceExtensionHandler cartMessageOrderItemServiceExtensionHandler = new CartMessageOrderItemServiceExtensionHandler();
     CustomerImpl customer = new CustomerImpl();
     NullOrderImpl candidateCart = new NullOrderImpl();
 
@@ -242,40 +344,29 @@ public class AbstractOrderServiceExtensionHandlerDiffblueTest {
     erh.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        cartMessageOrderItemServiceExtensionHandler.findCartForCustomerWithEnhancements(
-            customer, candidateCart, erh));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        cartMessageOrderItemServiceExtensionHandler.findCartForCustomerWithEnhancements(customer, candidateCart, erh));
   }
 
   /**
-   * Test {@link AbstractOrderServiceExtensionHandler#findCartForCustomerWithEnhancements(Customer,
-   * ExtensionResultHolder)} with {@code customer}, {@code erh}.
-   *
-   * <p>Method under test: {@link
-   * AbstractOrderServiceExtensionHandler#findCartForCustomerWithEnhancements(Customer,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link AbstractOrderServiceExtensionHandler#findCartForCustomerWithEnhancements(Customer, Order, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractOrderServiceExtensionHandler.findCartForCustomerWithEnhancements(Customer, ExtensionResultHolder)"
-  })
-  public void testFindCartForCustomerWithEnhancementsWithCustomerErh() {
+  public void testFindCartForCustomerWithEnhancements4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    CartMessageOrderItemServiceExtensionHandler cartMessageOrderItemServiceExtensionHandler =
-        new CartMessageOrderItemServiceExtensionHandler();
-    CustomerImpl customer = new CustomerImpl();
+    CartMessageOrderItemServiceExtensionHandler cartMessageOrderItemServiceExtensionHandler = new CartMessageOrderItemServiceExtensionHandler();
+    CustomerImpl customer = mock(CustomerImpl.class);
+    NullOrderImpl candidateCart = new NullOrderImpl();
 
     ExtensionResultHolder erh = new ExtensionResultHolder();
     erh.setResult("Result");
     erh.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        cartMessageOrderItemServiceExtensionHandler.findCartForCustomerWithEnhancements(
-            customer, erh));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        cartMessageOrderItemServiceExtensionHandler.findCartForCustomerWithEnhancements(customer, candidateCart, erh));
   }
 }

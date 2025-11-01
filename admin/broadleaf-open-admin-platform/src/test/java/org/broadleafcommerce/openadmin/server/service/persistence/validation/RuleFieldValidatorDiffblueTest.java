@@ -21,17 +21,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import org.broadleafcommerce.common.persistence.EntityConfiguration;
-import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
 import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.Property;
@@ -42,56 +35,31 @@ import org.broadleafcommerce.openadmin.server.service.persistence.module.provide
 import org.broadleafcommerce.openadmin.web.rulebuilder.MVELTranslationException;
 import org.broadleafcommerce.openadmin.web.rulebuilder.dto.DataWrapper;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
 public class RuleFieldValidatorDiffblueTest {
-  @InjectMocks private RuleFieldValidator ruleFieldValidator;
-
   /**
-   * Test {@link RuleFieldValidator#validate(PopulateValueRequest, Serializable)}.
-   *
-   * <ul>
-   *   <li>Then return ErrorMessage is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RuleFieldValidator#validate(PopulateValueRequest, Serializable)}
+   * Method under test:
+   * {@link RuleFieldValidator#validate(PopulateValueRequest, Serializable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PropertyValidationResult RuleFieldValidator.validate(PopulateValueRequest, Serializable)"
-  })
-  public void testValidate_thenReturnErrorMessageIsNull() {
+  public void testValidate() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+    RuleFieldValidator ruleFieldValidator = new RuleFieldValidator();
+    FieldManager fieldManager = new FieldManager(mock(EntityConfiguration.class), null);
+
     Property property = new Property();
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     Class<Object> returnType = Object.class;
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
+        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
 
     // Act
-    PropertyValidationResult actualValidateResult =
-        ruleFieldValidator.validate(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
+    PropertyValidationResult actualValidateResult = ruleFieldValidator.validate(populateValueRequest,
+        new SimpleDateFormat("yyyy/mm/dd"));
 
     // Assert
     assertNull(actualValidateResult.getErrorMessage());
@@ -101,220 +69,68 @@ public class RuleFieldValidatorDiffblueTest {
   }
 
   /**
-   * Test {@link RuleFieldValidator#getMvelParsingErrorMesage(DataWrapper,
-   * MVELTranslationException)}.
-   *
-   * <p>Method under test: {@link RuleFieldValidator#getMvelParsingErrorMesage(DataWrapper,
-   * MVELTranslationException)}
+   * Method under test:
+   * {@link RuleFieldValidator#getMvelParsingErrorMesage(DataWrapper, MVELTranslationException)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String RuleFieldValidator.getMvelParsingErrorMesage(DataWrapper, MVELTranslationException)"
-  })
   public void testGetMvelParsingErrorMesage() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    RuleFieldValidator ruleFieldValidator = new RuleFieldValidator();
     DataWrapper dw = new DataWrapper();
 
-    // Act
-    String actualMvelParsingErrorMesage =
-        ruleFieldValidator.getMvelParsingErrorMesage(
-            dw, new MVELTranslationException(1, "An error occurred"));
-
-    // Assert
-    assertEquals(
-        "Problem translating rule builder, error code 1: An error occurred",
-        actualMvelParsingErrorMesage);
+    // Act and Assert
+    assertEquals("Problem translating rule builder, error code 1: An error occurred",
+        ruleFieldValidator.getMvelParsingErrorMesage(dw, new MVELTranslationException(1, "An error occurred")));
   }
 
   /**
-   * Test {@link RuleFieldValidator#canHandleValidation(PopulateValueRequest)}.
-   *
-   * <p>Method under test: {@link RuleFieldValidator#canHandleValidation(PopulateValueRequest)}
+   * Method under test:
+   * {@link RuleFieldValidator#getMvelParsingErrorMesage(DataWrapper, MVELTranslationException)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean RuleFieldValidator.canHandleValidation(PopulateValueRequest)"})
+  public void testGetMvelParsingErrorMesage2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    RuleFieldValidator ruleFieldValidator = new RuleFieldValidator();
+    DataWrapper dw = mock(DataWrapper.class);
+
+    // Act and Assert
+    assertEquals("Problem translating rule builder, error code 1: An error occurred",
+        ruleFieldValidator.getMvelParsingErrorMesage(dw, new MVELTranslationException(1, "An error occurred")));
+  }
+
+  /**
+   * Method under test:
+   * {@link RuleFieldValidator#canHandleValidation(PopulateValueRequest)}
+   */
+  @Test
   public void testCanHandleValidation() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    BasicFieldMetadata metadata = mock(BasicFieldMetadata.class);
-    when(metadata.getFieldType()).thenReturn(SupportedFieldType.RULE_WITH_QUANTITY);
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    Property property = new Property();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
+    RuleFieldValidator ruleFieldValidator = new RuleFieldValidator();
+    FieldManager fieldManager = new FieldManager(mock(EntityConfiguration.class), null);
 
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
-
-    // Act
-    boolean actualCanHandleValidationResult =
-        ruleFieldValidator.canHandleValidation(populateValueRequest);
-
-    // Assert
-    verify(metadata).getFieldType();
-    assertTrue(actualCanHandleValidationResult);
-  }
-
-  /**
-   * Test {@link RuleFieldValidator#canHandleValidation(PopulateValueRequest)}.
-   *
-   * <ul>
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RuleFieldValidator#canHandleValidation(PopulateValueRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean RuleFieldValidator.canHandleValidation(PopulateValueRequest)"})
-  public void testCanHandleValidation_thenReturnFalse() {
-    // Arrange
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
     Property property = new Property();
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     Class<Object> returnType = Object.class;
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
 
     // Act and Assert
-    assertFalse(ruleFieldValidator.canHandleValidation(populateValueRequest));
+    assertFalse(ruleFieldValidator.canHandleValidation(new PopulateValueRequest(true, fieldManager, property, metadata,
+        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity())));
   }
 
   /**
-   * Test {@link RuleFieldValidator#canHandleValidation(PopulateValueRequest)}.
-   *
-   * <ul>
-   *   <li>When {@link BasicFieldMetadata} {@link BasicFieldMetadata#getFieldType()} return {@link
-   *       SupportedFieldType#RULE_SIMPLE}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RuleFieldValidator#canHandleValidation(PopulateValueRequest)}
+   * Method under test: {@link RuleFieldValidator#getOrder()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean RuleFieldValidator.canHandleValidation(PopulateValueRequest)"})
-  public void testCanHandleValidation_whenBasicFieldMetadataGetFieldTypeReturnRule_simple() {
-    // Arrange
-    BasicFieldMetadata metadata = mock(BasicFieldMetadata.class);
-    when(metadata.getFieldType()).thenReturn(SupportedFieldType.RULE_SIMPLE);
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    Property property = new Property();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
-
-    // Act
-    boolean actualCanHandleValidationResult =
-        ruleFieldValidator.canHandleValidation(populateValueRequest);
-
-    // Assert
-    verify(metadata, atLeast(1)).getFieldType();
-    assertTrue(actualCanHandleValidationResult);
-  }
-
-  /**
-   * Test {@link RuleFieldValidator#canHandleValidation(PopulateValueRequest)}.
-   *
-   * <ul>
-   *   <li>When {@link BasicFieldMetadata} {@link BasicFieldMetadata#getFieldType()} return {@link
-   *       SupportedFieldType#RULE_SIMPLE_TIME}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RuleFieldValidator#canHandleValidation(PopulateValueRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean RuleFieldValidator.canHandleValidation(PopulateValueRequest)"})
-  public void testCanHandleValidation_whenBasicFieldMetadataGetFieldTypeReturnRule_simple_time() {
-    // Arrange
-    BasicFieldMetadata metadata = mock(BasicFieldMetadata.class);
-    when(metadata.getFieldType()).thenReturn(SupportedFieldType.RULE_SIMPLE_TIME);
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-    Property property = new Property();
-    Class<Object> returnType = Object.class;
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider =
-        new AdornedTargetListPersistenceModule();
-
-    PopulateValueRequest populateValueRequest =
-        new PopulateValueRequest(
-            true,
-            fieldManager,
-            property,
-            metadata,
-            returnType,
-            "42",
-            persistenceManager,
-            dataFormatProvider,
-            true,
-            new Entity());
-
-    // Act
-    boolean actualCanHandleValidationResult =
-        ruleFieldValidator.canHandleValidation(populateValueRequest);
-
-    // Assert
-    verify(metadata, atLeast(1)).getFieldType();
-    assertTrue(actualCanHandleValidationResult);
-  }
-
-  /**
-   * Test {@link RuleFieldValidator#getOrder()}.
-   *
-   * <p>Method under test: {@link RuleFieldValidator#getOrder()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int RuleFieldValidator.getOrder()"})
   public void testGetOrder() {
     // Arrange, Act and Assert
-    assertEquals(2147482647, new RuleFieldValidator().getOrder());
+    assertEquals(2147482647, (new RuleFieldValidator()).getOrder());
   }
 }

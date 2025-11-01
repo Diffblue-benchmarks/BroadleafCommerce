@@ -19,61 +19,96 @@ package org.broadleafcommerce.core.web.controller.checkout;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.HashMap;
+import org.broadleafcommerce.common.audit.Auditable;
+import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
+import org.broadleafcommerce.common.locale.domain.LocaleImpl;
+import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
+import org.broadleafcommerce.core.order.domain.OrderImpl;
+import org.broadleafcommerce.core.order.service.type.OrderStatus;
+import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.junit.jupiter.api.Test;
 
 class AbstractConfirmationControllerExtensionHandlerDiffblueTest {
   /**
-   * Test {@link
-   * AbstractConfirmationControllerExtensionHandler#processAdditionalConfirmationActions(Order)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractConfirmationControllerExtensionHandler#processAdditionalConfirmationActions(Order)}
+   * Method under test: default or parameterless constructor of
+   * {@link AbstractConfirmationControllerExtensionHandler}
    */
   @Test
-  @DisplayName("Test processAdditionalConfirmationActions(Order)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractConfirmationControllerExtensionHandler.processAdditionalConfirmationActions(Order)"
-  })
-  void testProcessAdditionalConfirmationActions() {
-    // Arrange
-    AbstractConfirmationControllerExtensionHandler abstractConfirmationControllerExtensionHandler =
-        new AbstractConfirmationControllerExtensionHandler();
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        abstractConfirmationControllerExtensionHandler.processAdditionalConfirmationActions(
-            new NullOrderImpl()));
-  }
-
-  /**
-   * Test new {@link AbstractConfirmationControllerExtensionHandler} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * AbstractConfirmationControllerExtensionHandler}
-   */
-  @Test
-  @DisplayName("Test new AbstractConfirmationControllerExtensionHandler (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AbstractConfirmationControllerExtensionHandler.<init>()"})
   void testNewAbstractConfirmationControllerExtensionHandler() {
     // Arrange and Act
-    AbstractConfirmationControllerExtensionHandler
-        actualAbstractConfirmationControllerExtensionHandler =
-            new AbstractConfirmationControllerExtensionHandler();
+    AbstractConfirmationControllerExtensionHandler actualAbstractConfirmationControllerExtensionHandler = new AbstractConfirmationControllerExtensionHandler();
 
     // Assert
     assertEquals(0, actualAbstractConfirmationControllerExtensionHandler.getPriority());
     assertTrue(actualAbstractConfirmationControllerExtensionHandler.isEnabled());
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractConfirmationControllerExtensionHandler#processAdditionalConfirmationActions(Order)}
+   */
+  @Test
+  void testProcessAdditionalConfirmationActions() {
+    // Arrange
+    AbstractConfirmationControllerExtensionHandler abstractConfirmationControllerExtensionHandler = new AbstractConfirmationControllerExtensionHandler();
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        abstractConfirmationControllerExtensionHandler.processAdditionalConfirmationActions(new NullOrderImpl()));
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractConfirmationControllerExtensionHandler#processAdditionalConfirmationActions(Order)}
+   */
+  @Test
+  void testProcessAdditionalConfirmationActions2() {
+    // Arrange
+    AbstractConfirmationControllerExtensionHandler abstractConfirmationControllerExtensionHandler = new AbstractConfirmationControllerExtensionHandler();
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(4L);
+    auditable.setDateCreated(mock(java.sql.Date.class));
+    auditable.setDateUpdated(
+        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(4L);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(new OrderStatus("Type", "Friendly Type"));
+    order.setSubTotal(new Money());
+    order
+        .setSubmitDate(java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
+    order.setTotalTax(new Money());
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        abstractConfirmationControllerExtensionHandler.processAdditionalConfirmationActions(order));
   }
 }

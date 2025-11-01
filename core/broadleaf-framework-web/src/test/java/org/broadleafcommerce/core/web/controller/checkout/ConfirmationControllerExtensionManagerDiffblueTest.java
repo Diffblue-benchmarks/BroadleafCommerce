@@ -18,33 +18,35 @@
 package org.broadleafcommerce.core.web.controller.checkout;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
+import static org.mockito.Mockito.mock;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@ContextConfiguration(classes = {ConfirmationControllerExtensionManager.class})
-@ExtendWith(SpringExtension.class)
 class ConfirmationControllerExtensionManagerDiffblueTest {
-  @Autowired private ConfirmationControllerExtensionManager confirmationControllerExtensionManager;
-
   /**
-   * Test {@link ConfirmationControllerExtensionManager#continueOnHandled()}.
-   *
-   * <p>Method under test: {@link ConfirmationControllerExtensionManager#continueOnHandled()}
+   * Method under test:
+   * {@link ConfirmationControllerExtensionManager#continueOnHandled()}
    */
   @Test
-  @DisplayName("Test continueOnHandled()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ConfirmationControllerExtensionManager.continueOnHandled()"})
   void testContinueOnHandled() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
+    assertTrue((new ConfirmationControllerExtensionManager()).continueOnHandled());
+  }
+
+  /**
+   * Method under test:
+   * {@link ConfirmationControllerExtensionManager#continueOnHandled()}
+   */
+  @Test
+  void testContinueOnHandled2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ConfirmationControllerExtensionManager confirmationControllerExtensionManager = new ConfirmationControllerExtensionManager();
+    confirmationControllerExtensionManager.registerHandler(mock(AbstractConfirmationControllerExtensionHandler.class));
+
+    // Act and Assert
     assertTrue(confirmationControllerExtensionManager.continueOnHandled());
   }
 }

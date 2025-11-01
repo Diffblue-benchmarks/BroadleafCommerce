@@ -20,55 +20,31 @@ package org.broadleafcommerce.openadmin.web.controller;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Predicate;
 import org.broadleafcommerce.openadmin.web.controller.entity.AdminBasicEntityController;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.springframework.util.AntPathMatcher;
+import org.springframework.util.StringValueResolver;
+import org.springframework.web.accept.ContentNegotiationManager;
+import org.springframework.web.accept.ContentNegotiationStrategy;
+import org.springframework.web.accept.HeaderContentNegotiationStrategy;
 import org.springframework.web.cors.DefaultCorsProcessor;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMethodMappingNamingStrategy;
 
 public class AdminRequestMappingHandlerMappingDiffblueTest {
   /**
-   * Test {@link AdminRequestMappingHandlerMapping#isHandler(Class)}.
-   *
-   * <p>Method under test: {@link AdminRequestMappingHandlerMapping#isHandler(Class)}
+   * Method under test: {@link AdminRequestMappingHandlerMapping#isHandler(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AdminRequestMappingHandlerMapping.isHandler(Class)"})
   public void testIsHandler() {
     // Arrange
-    AdminRequestMappingHandlerMapping adminRequestMappingHandlerMapping =
-        new AdminRequestMappingHandlerMapping();
-    Class<AdminBasicEntityController> beanType = AdminBasicEntityController.class;
-
-    // Act and Assert
-    assertFalse(adminRequestMappingHandlerMapping.isHandler(beanType));
-  }
-
-  /**
-   * Test {@link AdminRequestMappingHandlerMapping#isHandler(Class)}.
-   *
-   * <ul>
-   *   <li>When {@code Object}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminRequestMappingHandlerMapping#isHandler(Class)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AdminRequestMappingHandlerMapping.isHandler(Class)"})
-  public void testIsHandler_whenJavaLangObject_thenReturnFalse() {
-    // Arrange
-    AdminRequestMappingHandlerMapping adminRequestMappingHandlerMapping =
-        new AdminRequestMappingHandlerMapping();
+    AdminRequestMappingHandlerMapping adminRequestMappingHandlerMapping = new AdminRequestMappingHandlerMapping();
     Class<Object> beanType = Object.class;
 
     // Act and Assert
@@ -76,36 +52,71 @@ public class AdminRequestMappingHandlerMappingDiffblueTest {
   }
 
   /**
-   * Test new {@link AdminRequestMappingHandlerMapping} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * AdminRequestMappingHandlerMapping}
+   * Method under test: {@link AdminRequestMappingHandlerMapping#isHandler(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AdminRequestMappingHandlerMapping.<init>()"})
+  public void testIsHandler2() {
+    // Arrange
+    AdminRequestMappingHandlerMapping adminRequestMappingHandlerMapping = new AdminRequestMappingHandlerMapping();
+    Class<AdminBasicEntityController> beanType = AdminBasicEntityController.class;
+
+    // Act and Assert
+    assertFalse(adminRequestMappingHandlerMapping.isHandler(beanType));
+  }
+
+  /**
+   * Method under test: {@link AdminRequestMappingHandlerMapping#isHandler(Class)}
+   */
+  @Test
+  public void testIsHandler3() {
+    // Arrange
+    AdminRequestMappingHandlerMapping adminRequestMappingHandlerMapping = new AdminRequestMappingHandlerMapping();
+    adminRequestMappingHandlerMapping.setEmbeddedValueResolver(mock(StringValueResolver.class));
+    Class<Object> beanType = Object.class;
+
+    // Act and Assert
+    assertFalse(adminRequestMappingHandlerMapping.isHandler(beanType));
+  }
+
+  /**
+   * Method under test: default or parameterless constructor of
+   * {@link AdminRequestMappingHandlerMapping}
+   */
+  @Test
   public void testNewAdminRequestMappingHandlerMapping() {
     // Arrange and Act
-    AdminRequestMappingHandlerMapping actualAdminRequestMappingHandlerMapping =
-        new AdminRequestMappingHandlerMapping();
+    AdminRequestMappingHandlerMapping actualAdminRequestMappingHandlerMapping = new AdminRequestMappingHandlerMapping();
 
     // Assert
     assertTrue(actualAdminRequestMappingHandlerMapping.getPathMatcher() instanceof AntPathMatcher);
-    assertTrue(
-        actualAdminRequestMappingHandlerMapping.getCorsProcessor() instanceof DefaultCorsProcessor);
-    assertTrue(
-        actualAdminRequestMappingHandlerMapping.getNamingStrategy()
-            instanceof RequestMappingInfoHandlerMethodMappingNamingStrategy);
+    ContentNegotiationManager contentNegotiationManager = actualAdminRequestMappingHandlerMapping
+        .getContentNegotiationManager();
+    List<ContentNegotiationStrategy> strategies = contentNegotiationManager.getStrategies();
+    assertEquals(1, strategies.size());
+    assertTrue(strategies.get(0) instanceof HeaderContentNegotiationStrategy);
+    assertTrue(actualAdminRequestMappingHandlerMapping.getCorsProcessor() instanceof DefaultCorsProcessor);
+    assertTrue(actualAdminRequestMappingHandlerMapping
+        .getNamingStrategy() instanceof RequestMappingInfoHandlerMethodMappingNamingStrategy);
     assertNull(actualAdminRequestMappingHandlerMapping.getDefaultHandler());
+    RequestMappingInfo.BuilderConfiguration builderConfiguration = actualAdminRequestMappingHandlerMapping
+        .getBuilderConfiguration();
+    assertNull(builderConfiguration.getFileExtensions());
     assertNull(actualAdminRequestMappingHandlerMapping.getFileExtensions());
+    assertNull(builderConfiguration.getPathMatcher());
+    assertNull(builderConfiguration.getContentNegotiationManager());
     assertNull(actualAdminRequestMappingHandlerMapping.getCorsConfigurationSource());
     assertNull(actualAdminRequestMappingHandlerMapping.getPatternParser());
+    assertNull(builderConfiguration.getPatternParser());
     assertFalse(actualAdminRequestMappingHandlerMapping.useRegisteredSuffixPatternMatch());
     assertFalse(actualAdminRequestMappingHandlerMapping.useSuffixPatternMatch());
+    assertTrue(contentNegotiationManager.getAllFileExtensions().isEmpty());
     assertTrue(actualAdminRequestMappingHandlerMapping.getHandlerMethods().isEmpty());
-    assertTrue(actualAdminRequestMappingHandlerMapping.getPathPrefixes().isEmpty());
+    Map<String, Predicate<Class<?>>> pathPrefixes = actualAdminRequestMappingHandlerMapping.getPathPrefixes();
+    assertTrue(pathPrefixes.isEmpty());
     assertTrue(actualAdminRequestMappingHandlerMapping.useTrailingSlashMatch());
+    assertTrue(actualAdminRequestMappingHandlerMapping.getUrlPathHelper().isUrlDecode());
+    assertTrue(builderConfiguration.getUrlPathHelper().isUrlDecode());
     assertEquals(Integer.MAX_VALUE, actualAdminRequestMappingHandlerMapping.getOrder());
+    assertSame(pathPrefixes, contentNegotiationManager.getMediaTypeMappings());
   }
 }

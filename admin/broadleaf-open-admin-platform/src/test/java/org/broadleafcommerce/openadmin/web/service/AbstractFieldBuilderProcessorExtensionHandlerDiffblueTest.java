@@ -19,13 +19,10 @@ package org.broadleafcommerce.openadmin.web.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.openadmin.web.rulebuilder.dto.FieldWrapper;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -35,46 +32,29 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class AbstractFieldBuilderProcessorExtensionHandlerDiffblueTest {
   @Autowired
-  private AbstractFieldBuilderProcessorExtensionHandler
-      abstractFieldBuilderProcessorExtensionHandler;
+  private AbstractFieldBuilderProcessorExtensionHandler abstractFieldBuilderProcessorExtensionHandler;
 
   /**
-   * Test {@link AbstractFieldBuilderProcessorExtensionHandler#modifyRuleBuilderFields(String,
-   * String, FieldWrapper)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractFieldBuilderProcessorExtensionHandler#modifyRuleBuilderFields(String, String,
-   * FieldWrapper)}
+   * Method under test:
+   * {@link AbstractFieldBuilderProcessorExtensionHandler#modifyRuleBuilderFields(String, String, FieldWrapper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractFieldBuilderProcessorExtensionHandler.modifyRuleBuilderFields(String, String, FieldWrapper)"
-  })
   public void testModifyRuleBuilderFields() {
     // Arrange, Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        abstractFieldBuilderProcessorExtensionHandler.modifyRuleBuilderFields(
-            "Field Builder", "Ceiling Entity", new FieldWrapper()));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED, abstractFieldBuilderProcessorExtensionHandler
+        .modifyRuleBuilderFields("Field Builder", "Ceiling Entity", new FieldWrapper()));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED, abstractFieldBuilderProcessorExtensionHandler
+        .modifyRuleBuilderFields("Field Builder", "Ceiling Entity", mock(FieldWrapper.class)));
   }
 
   /**
-   * Test new {@link AbstractFieldBuilderProcessorExtensionHandler} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * AbstractFieldBuilderProcessorExtensionHandler}
+   * Method under test: default or parameterless constructor of
+   * {@link AbstractFieldBuilderProcessorExtensionHandler}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AbstractFieldBuilderProcessorExtensionHandler.<init>()"})
   public void testNewAbstractFieldBuilderProcessorExtensionHandler() {
     // Arrange and Act
-    AbstractFieldBuilderProcessorExtensionHandler
-        actualAbstractFieldBuilderProcessorExtensionHandler =
-            new AbstractFieldBuilderProcessorExtensionHandler();
+    AbstractFieldBuilderProcessorExtensionHandler actualAbstractFieldBuilderProcessorExtensionHandler = new AbstractFieldBuilderProcessorExtensionHandler();
 
     // Assert
     assertEquals(0, actualAbstractFieldBuilderProcessorExtensionHandler.getPriority());

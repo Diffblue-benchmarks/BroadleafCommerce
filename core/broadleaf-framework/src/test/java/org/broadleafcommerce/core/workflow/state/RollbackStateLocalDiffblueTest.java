@@ -18,18 +18,11 @@
 package org.broadleafcommerce.core.workflow.state;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class RollbackStateLocalDiffblueTest {
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link RollbackStateLocal}
    *   <li>{@link RollbackStateLocal#setThreadId(String)}
@@ -39,15 +32,6 @@ public class RollbackStateLocalDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void RollbackStateLocal.<init>()",
-    "String RollbackStateLocal.getThreadId()",
-    "String RollbackStateLocal.getWorkflowId()",
-    "void RollbackStateLocal.setThreadId(String)",
-    "void RollbackStateLocal.setWorkflowId(String)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     RollbackStateLocal actualRollbackStateLocal = new RollbackStateLocal();
@@ -55,7 +39,7 @@ public class RollbackStateLocalDiffblueTest {
     actualRollbackStateLocal.setWorkflowId("42");
     String actualThreadId = actualRollbackStateLocal.getThreadId();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("42", actualThreadId);
     assertEquals("42", actualRollbackStateLocal.getWorkflowId());
   }

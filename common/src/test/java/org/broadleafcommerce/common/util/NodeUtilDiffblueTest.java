@@ -19,153 +19,197 @@ package org.broadleafcommerce.common.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.imageio.metadata.IIOMetadataNode;
 import org.apache.html.dom.HTMLAnchorElementImpl;
+import org.apache.xerces.dom.AttrNSImpl;
 import org.apache.xerces.impl.xs.opti.DefaultDocument;
-import org.apache.xerces.impl.xs.opti.DefaultElement;
-import org.broadleafcommerce.common.util.NodeUtil.NodeComparatorBySingleAttribute;
+import org.dom4j.dom.DOMAttributeNodeMap;
+import org.dom4j.dom.DOMElement;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.mockito.Mockito;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class NodeUtilDiffblueTest {
   /**
-   * Test {@link NodeUtil#filterByAttribute(Node[], String)}.
-   *
-   * <ul>
-   *   <li>Then return array length is zero.
-   * </ul>
-   *
-   * <p>Method under test: {@link NodeUtil#filterByAttribute(Node[], String)}
+   * Method under test: {@link NodeUtil#filterByAttribute(Node[], String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Node[] NodeUtil.filterByAttribute(Node[], String)"})
-  public void testFilterByAttribute_thenReturnArrayLengthIsZero() {
+  public void testFilterByAttribute() {
     // Arrange, Act and Assert
-    assertEquals(
-        0, NodeUtil.filterByAttribute(new Node[] {new IIOMetadataNode()}, "Attribute Name").length);
+    assertEquals(0, NodeUtil.filterByAttribute(new Node[]{new IIOMetadataNode("foo")}, "Attribute Name").length);
   }
 
   /**
-   * Test {@link NodeUtil#findNode(Node[], Node, String, boolean)}.
-   *
-   * <ul>
-   *   <li>When array of {@link Node} with {@link IIOMetadataNode#IIOMetadataNode()}.
-   *   <li>Then return minus two.
-   * </ul>
-   *
-   * <p>Method under test: {@link NodeUtil#findNode(Node[], Node, String, boolean)}
+   * Method under test: {@link NodeUtil#filterByAttribute(Node[], String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int NodeUtil.findNode(Node[], Node, String, boolean)"})
-  public void testFindNode_whenArrayOfNodeWithIIOMetadataNode_thenReturnMinusTwo() {
-    // Arrange and Act
-    int actualFindNodeResult =
-        NodeUtil.findNode(
-            new Node[] {new IIOMetadataNode()}, new IIOMetadataNode(), "Attribute Name", true);
-
-    // Assert
-    assertEquals(-2, actualFindNodeResult);
-  }
-
-  /**
-   * Test {@link NodeUtil#findNode(Node[], Node, String, boolean)}.
-   *
-   * <ul>
-   *   <li>When {@code false}.
-   *   <li>Then return minus two.
-   * </ul>
-   *
-   * <p>Method under test: {@link NodeUtil#findNode(Node[], Node, String, boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int NodeUtil.findNode(Node[], Node, String, boolean)"})
-  public void testFindNode_whenFalse_thenReturnMinusTwo() {
-    // Arrange and Act
-    int actualFindNodeResult =
-        NodeUtil.findNode(
-            new Node[] {new IIOMetadataNode()}, new IIOMetadataNode(), "Attribute Name", false);
-
-    // Assert
-    assertEquals(-2, actualFindNodeResult);
-  }
-
-  /**
-   * Test {@link NodeUtil#mergeNodeLists(Node, NodeList, NodeList, String)}.
-   *
-   * <ul>
-   *   <li>Given {@link DefaultElement#DefaultElement(String, String, String, String, short)} with
-   *       {@code #text} and {@code #text} and {@code #text} and {@code #text} and three.
-   * </ul>
-   *
-   * <p>Method under test: {@link NodeUtil#mergeNodeLists(Node, NodeList, NodeList, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void NodeUtil.mergeNodeLists(Node, NodeList, NodeList, String)"})
-  public void testMergeNodeLists_givenDefaultElementWithTextAndTextAndTextAndTextAndThree() {
+  public void testFilterByAttribute2() {
     // Arrange
-    IIOMetadataNode targetNode = new IIOMetadataNode();
-
-    HTMLAnchorElementImpl list1 = mock(HTMLAnchorElementImpl.class);
-    DefaultElement defaultElement =
-        new DefaultElement("#text", "#text", "#text", "#text", (short) 3);
-    when(list1.item(anyInt())).thenReturn(defaultElement);
-    when(list1.getLength()).thenReturn(3);
+    Node node = mock(Node.class);
+    when(node.getAttributes()).thenReturn(new DOMAttributeNodeMap(new DOMElement("Name")));
 
     // Act
-    NodeUtil.mergeNodeLists(targetNode, list1, new IIOMetadataNode(), "Attribute Name");
+    Node[] actualFilterByAttributeResult = NodeUtil.filterByAttribute(new Node[]{node}, "Attribute Name");
 
-    // Assert that nothing has changed
-    verify(list1, atLeast(1)).getLength();
-    verify(list1, atLeast(1)).item(anyInt());
+    // Assert
+    verify(node).getAttributes();
+    assertEquals(0, actualFilterByAttributeResult.length);
+  }
+
+  /**
+   * Method under test: {@link NodeUtil#filterByAttribute(Node[], String)}
+   */
+  @Test
+  public void testFilterByAttribute3() {
+    // Arrange
+    DOMElement element = mock(DOMElement.class);
+    when(element.getAttributeNode(Mockito.<String>any())).thenReturn(new AttrNSImpl());
+    Node node = mock(Node.class);
+    when(node.getAttributes()).thenReturn(new DOMAttributeNodeMap(element));
+
+    // Act
+    Node[] actualFilterByAttributeResult = NodeUtil.filterByAttribute(new Node[]{node}, "Attribute Name");
+
+    // Assert
+    verify(element).getAttributeNode(eq("Attribute Name"));
+    verify(node).getAttributes();
+    assertEquals(1, actualFilterByAttributeResult.length);
+  }
+
+  /**
+   * Method under test: {@link NodeUtil#findNode(Node[], Node, String, boolean)}
+   */
+  @Test
+  public void testFindNode() {
+    // Arrange, Act and Assert
+    assertEquals(-2,
+        NodeUtil.findNode(new Node[]{new IIOMetadataNode("foo")}, new IIOMetadataNode("foo"), "Attribute Name", true));
+  }
+
+  /**
+   * Method under test: {@link NodeUtil#findNode(Node[], Node, String, boolean)}
+   */
+  @Test
+  public void testFindNode2() {
+    // Arrange
+    DefaultDocument defaultDocument = mock(DefaultDocument.class);
+    when(defaultDocument.getNodeName()).thenReturn("Node Name");
+    when(defaultDocument.getAttributes()).thenReturn(new DOMAttributeNodeMap(new DOMElement("Name")));
+
+    // Act
+    int actualFindNodeResult = NodeUtil.findNode(new Node[]{defaultDocument}, new IIOMetadataNode("foo"),
+        "Attribute Name", true);
+
+    // Assert
+    verify(defaultDocument, atLeast(1)).getNodeName();
+    verify(defaultDocument).getAttributes();
+    assertEquals(-2, actualFindNodeResult);
+  }
+
+  /**
+   * Method under test: {@link NodeUtil#findNode(Node[], Node, String, boolean)}
+   */
+  @Test
+  public void testFindNode3() {
+    // Arrange
+    DefaultDocument defaultDocument = mock(DefaultDocument.class);
+    when(defaultDocument.getNodeName()).thenReturn("Node Name");
+    when(defaultDocument.getAttributes()).thenReturn(new DOMAttributeNodeMap(new DOMElement("Name")));
+
+    // Act
+    int actualFindNodeResult = NodeUtil.findNode(new Node[]{defaultDocument}, new IIOMetadataNode("foo"),
+        "Attribute Name", false);
+
+    // Assert
+    verify(defaultDocument, atLeast(1)).getNodeName();
+    verify(defaultDocument).getAttributes();
+    assertEquals(-2, actualFindNodeResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link NodeUtil#mergeNodeLists(Node, NodeList, NodeList, String)}
+   */
+  @Test
+  public void testMergeNodeLists() {
+    // Arrange
+    IIOMetadataNode targetNode = new IIOMetadataNode("foo");
+    IIOMetadataNode list1 = new IIOMetadataNode("foo");
+
+    // Act
+    NodeUtil.mergeNodeLists(targetNode, list1, new IIOMetadataNode("foo"), "Attribute Name");
+
+    // Assert
+    assertNull(targetNode.getFirstChild());
+    assertNull(targetNode.getLastChild());
     assertEquals(0, targetNode.getLength());
     assertFalse(targetNode.hasChildNodes());
   }
 
   /**
-   * Test {@link NodeUtil#mergeNodeLists(Node, NodeList, NodeList, String)}.
-   *
-   * <ul>
-   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode()}.
-   *   <li>Then {@link IIOMetadataNode#IIOMetadataNode()} Length is three.
-   * </ul>
-   *
-   * <p>Method under test: {@link NodeUtil#mergeNodeLists(Node, NodeList, NodeList, String)}
+   * Method under test:
+   * {@link NodeUtil#mergeNodeLists(Node, NodeList, NodeList, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void NodeUtil.mergeNodeLists(Node, NodeList, NodeList, String)"})
-  public void testMergeNodeLists_givenIIOMetadataNode_thenIIOMetadataNodeLengthIsThree() {
+  public void testMergeNodeLists2() {
     // Arrange
-    IIOMetadataNode targetNode = new IIOMetadataNode();
+    DefaultDocument targetNode = mock(DefaultDocument.class);
+    IIOMetadataNode list1 = new IIOMetadataNode("foo");
 
+    // Act
+    NodeUtil.mergeNodeLists(targetNode, list1, new IIOMetadataNode("foo"), "Attribute Name");
+
+    // Assert
+    assertNull(list1.getFirstChild());
+    assertNull(list1.getLastChild());
+    assertEquals(0, list1.getLength());
+    assertFalse(list1.hasChildNodes());
+  }
+
+  /**
+   * Method under test:
+   * {@link NodeUtil#mergeNodeLists(Node, NodeList, NodeList, String)}
+   */
+  @Test
+  public void testMergeNodeLists3() {
+    // Arrange
+    IIOMetadataNode targetNode = new IIOMetadataNode("foo");
+
+    // Act
+    NodeUtil.mergeNodeLists(targetNode, null, new IIOMetadataNode("foo"), "Attribute Name");
+
+    // Assert
+    assertNull(targetNode.getFirstChild());
+    assertNull(targetNode.getLastChild());
+    assertEquals(0, targetNode.getLength());
+    assertFalse(targetNode.hasChildNodes());
+  }
+
+  /**
+   * Method under test:
+   * {@link NodeUtil#mergeNodeLists(Node, NodeList, NodeList, String)}
+   */
+  @Test
+  public void testMergeNodeLists4() {
+    // Arrange
+    IIOMetadataNode targetNode = new IIOMetadataNode("foo");
     HTMLAnchorElementImpl list1 = mock(HTMLAnchorElementImpl.class);
-    IIOMetadataNode iioMetadataNode = new IIOMetadataNode();
+    IIOMetadataNode iioMetadataNode = new IIOMetadataNode("foo");
     when(list1.item(anyInt())).thenReturn(iioMetadataNode);
     when(list1.getLength()).thenReturn(3);
 
     // Act
-    NodeUtil.mergeNodeLists(targetNode, list1, new IIOMetadataNode(), "Attribute Name");
+    NodeUtil.mergeNodeLists(targetNode, list1, new IIOMetadataNode("foo"), "Attribute Name");
 
     // Assert
     verify(list1, atLeast(1)).getLength();
@@ -177,28 +221,69 @@ public class NodeUtilDiffblueTest {
   }
 
   /**
-   * Test {@link NodeUtil#mergeNodeLists(Node, NodeList, NodeList, String)}.
-   *
-   * <ul>
-   *   <li>Then {@link IIOMetadataNode#IIOMetadataNode()} FirstChild {@link IIOMetadataNode}.
-   * </ul>
-   *
-   * <p>Method under test: {@link NodeUtil#mergeNodeLists(Node, NodeList, NodeList, String)}
+   * Method under test:
+   * {@link NodeUtil#mergeNodeLists(Node, NodeList, NodeList, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void NodeUtil.mergeNodeLists(Node, NodeList, NodeList, String)"})
-  public void testMergeNodeLists_thenIIOMetadataNodeFirstChildIIOMetadataNode() {
+  public void testMergeNodeLists5() {
     // Arrange
-    IIOMetadataNode targetNode = new IIOMetadataNode();
-
+    IIOMetadataNode targetNode = new IIOMetadataNode("foo");
     HTMLAnchorElementImpl list1 = mock(HTMLAnchorElementImpl.class);
-    when(list1.item(anyInt())).thenReturn(new IIOMetadataNode());
+    when(list1.item(anyInt())).thenReturn(new IIOMetadataNode("#text"));
     when(list1.getLength()).thenReturn(3);
 
+    // Act
+    NodeUtil.mergeNodeLists(targetNode, list1, new IIOMetadataNode("foo"), "Attribute Name");
+
+    // Assert
+    verify(list1, atLeast(1)).getLength();
+    verify(list1, atLeast(1)).item(anyInt());
+    assertNull(targetNode.getFirstChild());
+    assertNull(targetNode.getLastChild());
+    assertEquals(0, targetNode.getLength());
+    assertFalse(targetNode.hasChildNodes());
+  }
+
+  /**
+   * Method under test:
+   * {@link NodeUtil#mergeNodeLists(Node, NodeList, NodeList, String)}
+   */
+  @Test
+  public void testMergeNodeLists6() {
+    // Arrange
+    IIOMetadataNode targetNode = new IIOMetadataNode("foo");
+    HTMLAnchorElementImpl list1 = mock(HTMLAnchorElementImpl.class);
+    IIOMetadataNode iioMetadataNode = new IIOMetadataNode("foo");
+    when(list1.item(anyInt())).thenReturn(iioMetadataNode);
+    when(list1.getLength()).thenReturn(3);
+
+    // Act
+    NodeUtil.mergeNodeLists(targetNode, list1, null, "Attribute Name");
+
+    // Assert
+    verify(list1, atLeast(1)).getLength();
+    verify(list1, atLeast(1)).item(anyInt());
+    assertEquals(3, targetNode.getLength());
+    assertTrue(targetNode.hasChildNodes());
+    assertSame(iioMetadataNode, targetNode.getFirstChild());
+    assertSame(iioMetadataNode, targetNode.getLastChild());
+  }
+
+  /**
+   * Method under test:
+   * {@link NodeUtil#mergeNodeLists(Node, NodeList, NodeList, String)}
+   */
+  @Test
+  public void testMergeNodeLists7() {
+    // Arrange
+    IIOMetadataNode targetNode = new IIOMetadataNode("foo");
+    HTMLAnchorElementImpl list1 = mock(HTMLAnchorElementImpl.class);
+    IIOMetadataNode iioMetadataNode = new IIOMetadataNode("foo");
+    when(list1.item(anyInt())).thenReturn(iioMetadataNode);
+    when(list1.getLength()).thenReturn(3);
     HTMLAnchorElementImpl list2 = mock(HTMLAnchorElementImpl.class);
-    when(list2.item(anyInt())).thenReturn(new IIOMetadataNode());
+    IIOMetadataNode iioMetadataNode2 = new IIOMetadataNode("foo");
+    when(list2.item(anyInt())).thenReturn(iioMetadataNode2);
     when(list2.getLength()).thenReturn(3);
 
     // Act
@@ -209,37 +294,26 @@ public class NodeUtilDiffblueTest {
     verify(list2, atLeast(1)).getLength();
     verify(list1, atLeast(1)).item(anyInt());
     verify(list2, atLeast(1)).item(anyInt());
-    assertTrue(targetNode.getFirstChild() instanceof IIOMetadataNode);
-    assertTrue(targetNode.getLastChild() instanceof IIOMetadataNode);
     assertEquals(6, targetNode.getLength());
+    assertTrue(targetNode.hasChildNodes());
+    assertSame(iioMetadataNode2, targetNode.getFirstChild());
+    assertSame(iioMetadataNode, targetNode.getLastChild());
   }
 
   /**
-   * Test {@link NodeUtil#mergeNodeLists(Node, NodeList, NodeList, String)}.
-   *
-   * <ul>
-   *   <li>Then {@link IIOMetadataNode#IIOMetadataNode()} Length is three.
-   * </ul>
-   *
-   * <p>Method under test: {@link NodeUtil#mergeNodeLists(Node, NodeList, NodeList, String)}
+   * Method under test:
+   * {@link NodeUtil#mergeNodeLists(Node, NodeList, NodeList, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void NodeUtil.mergeNodeLists(Node, NodeList, NodeList, String)"})
-  public void testMergeNodeLists_thenIIOMetadataNodeLengthIsThree() {
+  public void testMergeNodeLists8() {
     // Arrange
-    IIOMetadataNode targetNode = new IIOMetadataNode();
-
+    IIOMetadataNode targetNode = new IIOMetadataNode("foo");
     HTMLAnchorElementImpl list1 = mock(HTMLAnchorElementImpl.class);
-    IIOMetadataNode iioMetadataNode = new IIOMetadataNode();
+    IIOMetadataNode iioMetadataNode = new IIOMetadataNode("foo");
     when(list1.item(anyInt())).thenReturn(iioMetadataNode);
     when(list1.getLength()).thenReturn(3);
-
     HTMLAnchorElementImpl list2 = mock(HTMLAnchorElementImpl.class);
-    DefaultElement defaultElement =
-        new DefaultElement("#text", "#text", "#text", "#text", (short) 3);
-    when(list2.item(anyInt())).thenReturn(defaultElement);
+    when(list2.item(anyInt())).thenReturn(new IIOMetadataNode("#text"));
     when(list2.getLength()).thenReturn(3);
 
     // Act
@@ -257,72 +331,119 @@ public class NodeUtilDiffblueTest {
   }
 
   /**
-   * Test {@link NodeUtil#mergeNodeLists(Node, NodeList, NodeList, String)}.
-   *
-   * <ul>
-   *   <li>When {@link IIOMetadataNode#IIOMetadataNode()}.
-   *   <li>Then {@link IIOMetadataNode#IIOMetadataNode()} Length is zero.
-   * </ul>
-   *
-   * <p>Method under test: {@link NodeUtil#mergeNodeLists(Node, NodeList, NodeList, String)}
+   * Method under test:
+   * {@link NodeUtil.NodeComparatorBySingleAttribute#compare(Node, Node)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void NodeUtil.mergeNodeLists(Node, NodeList, NodeList, String)"})
-  public void testMergeNodeLists_whenIIOMetadataNode_thenIIOMetadataNodeLengthIsZero() {
+  public void testNodeComparatorBySingleAttributeCompare() {
     // Arrange
-    IIOMetadataNode targetNode = new IIOMetadataNode();
-    IIOMetadataNode list1 = new IIOMetadataNode();
+    NodeUtil.NodeComparatorBySingleAttribute nodeComparatorBySingleAttribute = new NodeUtil.NodeComparatorBySingleAttribute(
+        "Attribute Name");
+    IIOMetadataNode o1 = new IIOMetadataNode("foo");
 
-    // Act
-    NodeUtil.mergeNodeLists(targetNode, list1, new IIOMetadataNode(), "Attribute Name");
-
-    // Assert that nothing has changed
-    assertEquals(0, targetNode.getLength());
-    assertFalse(targetNode.hasChildNodes());
+    // Act and Assert
+    assertEquals(-1, nodeComparatorBySingleAttribute.compare(o1, new IIOMetadataNode("foo")));
   }
 
   /**
-   * Test {@link NodeUtil#mergeNodeLists(Node, NodeList, NodeList, String)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then {@link IIOMetadataNode#IIOMetadataNode()} Length is zero.
-   * </ul>
-   *
-   * <p>Method under test: {@link NodeUtil#mergeNodeLists(Node, NodeList, NodeList, String)}
+   * Method under test:
+   * {@link NodeUtil.NodeComparatorBySingleAttribute#compare(Node, Node)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void NodeUtil.mergeNodeLists(Node, NodeList, NodeList, String)"})
-  public void testMergeNodeLists_whenNull_thenIIOMetadataNodeLengthIsZero() {
+  public void testNodeComparatorBySingleAttributeCompare2() {
     // Arrange
-    IIOMetadataNode targetNode = new IIOMetadataNode();
+    NodeUtil.NodeComparatorBySingleAttribute nodeComparatorBySingleAttribute = new NodeUtil.NodeComparatorBySingleAttribute(
+        "Attribute Name");
+    IIOMetadataNode o1 = new IIOMetadataNode("mo:tab");
 
-    // Act
-    NodeUtil.mergeNodeLists(targetNode, null, null, "Attribute Name");
-
-    // Assert that nothing has changed
-    assertEquals(0, targetNode.getLength());
-    assertFalse(targetNode.hasChildNodes());
+    // Act and Assert
+    assertEquals(-1, nodeComparatorBySingleAttribute.compare(o1, new IIOMetadataNode("foo")));
   }
 
   /**
-   * Test NodeComparatorBySingleAttribute {@link NodeComparatorBySingleAttribute#compare(Node,
-   * Node)} with {@code Node}, {@code Node}.
-   *
-   * <p>Method under test: {@link NodeComparatorBySingleAttribute#compare(Node, Node)}
+   * Method under test:
+   * {@link NodeUtil.NodeComparatorBySingleAttribute#compare(Node, Node)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int NodeComparatorBySingleAttribute.compare(Node, Node)"})
-  public void testNodeComparatorBySingleAttributeCompareWithNodeNode() {
+  public void testNodeComparatorBySingleAttributeCompare3() {
     // Arrange
-    NodeComparatorBySingleAttribute nodeComparatorBySingleAttribute =
-        new NodeComparatorBySingleAttribute("Attribute Name");
+    NodeUtil.NodeComparatorBySingleAttribute nodeComparatorBySingleAttribute = new NodeUtil.NodeComparatorBySingleAttribute(
+        "Attribute Name");
+    IIOMetadataNode o1 = new IIOMetadataNode("mo:group");
+
+    // Act and Assert
+    assertEquals(-1, nodeComparatorBySingleAttribute.compare(o1, new IIOMetadataNode("foo")));
+  }
+
+  /**
+   * Method under test:
+   * {@link NodeUtil.NodeComparatorBySingleAttribute#compare(Node, Node)}
+   */
+  @Test
+  public void testNodeComparatorBySingleAttributeCompare4() {
+    // Arrange
+    NodeUtil.NodeComparatorBySingleAttribute nodeComparatorBySingleAttribute = new NodeUtil.NodeComparatorBySingleAttribute(
+        "Attribute Name");
+    DefaultDocument o1 = new DefaultDocument();
+
+    // Act and Assert
+    assertEquals(1, nodeComparatorBySingleAttribute.compare(o1, new IIOMetadataNode("foo")));
+  }
+
+  /**
+   * Method under test:
+   * {@link NodeUtil.NodeComparatorBySingleAttribute#compare(Node, Node)}
+   */
+  @Test
+  public void testNodeComparatorBySingleAttributeCompare5() {
+    // Arrange
+    NodeUtil.NodeComparatorBySingleAttribute nodeComparatorBySingleAttribute = new NodeUtil.NodeComparatorBySingleAttribute(
+        "Attribute Name");
+    IIOMetadataNode o1 = new IIOMetadataNode("foo");
+
+    // Act and Assert
+    assertEquals(1, nodeComparatorBySingleAttribute.compare(o1, new IIOMetadataNode("mo:tab")));
+  }
+
+  /**
+   * Method under test:
+   * {@link NodeUtil.NodeComparatorBySingleAttribute#compare(Node, Node)}
+   */
+  @Test
+  public void testNodeComparatorBySingleAttributeCompare6() {
+    // Arrange
+    NodeUtil.NodeComparatorBySingleAttribute nodeComparatorBySingleAttribute = new NodeUtil.NodeComparatorBySingleAttribute(
+        "Attribute Name");
+    IIOMetadataNode o1 = new IIOMetadataNode("foo");
+
+    // Act and Assert
+    assertEquals(1, nodeComparatorBySingleAttribute.compare(o1, new IIOMetadataNode("mo:group")));
+  }
+
+  /**
+   * Method under test:
+   * {@link NodeUtil.NodeComparatorBySingleAttribute#compare(Node, Node)}
+   */
+  @Test
+  public void testNodeComparatorBySingleAttributeCompare7() {
+    // Arrange
+    NodeUtil.NodeComparatorBySingleAttribute nodeComparatorBySingleAttribute = new NodeUtil.NodeComparatorBySingleAttribute(
+        "Attribute Name");
+    IIOMetadataNode o1 = new IIOMetadataNode("foo");
+
+    // Act and Assert
+    assertEquals(-1, nodeComparatorBySingleAttribute.compare(o1, new DefaultDocument()));
+  }
+
+  /**
+   * Method under test:
+   * {@link NodeUtil.NodeComparatorBySingleAttribute#compare(Node, Node)}
+   */
+  @Test
+  public void testNodeComparatorBySingleAttributeCompare8() {
+    // Arrange
+    NodeUtil.NodeComparatorBySingleAttribute nodeComparatorBySingleAttribute = new NodeUtil.NodeComparatorBySingleAttribute(
+        "Attribute Name");
     IIOMetadataNode o1 = new IIOMetadataNode("mo:tab");
 
     // Act and Assert
@@ -330,182 +451,17 @@ public class NodeUtilDiffblueTest {
   }
 
   /**
-   * Test NodeComparatorBySingleAttribute {@link NodeComparatorBySingleAttribute#compare(Node,
-   * Node)} with {@code Node}, {@code Node}.
-   *
-   * <p>Method under test: {@link NodeComparatorBySingleAttribute#compare(Node, Node)}
+   * Method under test:
+   * {@link NodeUtil.NodeComparatorBySingleAttribute#compare(Node, Node)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int NodeComparatorBySingleAttribute.compare(Node, Node)"})
-  public void testNodeComparatorBySingleAttributeCompareWithNodeNode2() {
+  public void testNodeComparatorBySingleAttributeCompare9() {
     // Arrange
-    NodeComparatorBySingleAttribute nodeComparatorBySingleAttribute =
-        new NodeComparatorBySingleAttribute("Attribute Name");
-    IIOMetadataNode o1 = new IIOMetadataNode("mo:tab");
-
-    // Act and Assert
-    assertEquals(-1, nodeComparatorBySingleAttribute.compare(o1, new IIOMetadataNode("mo:group")));
-  }
-
-  /**
-   * Test NodeComparatorBySingleAttribute {@link NodeComparatorBySingleAttribute#compare(Node,
-   * Node)} with {@code Node}, {@code Node}.
-   *
-   * <p>Method under test: {@link NodeComparatorBySingleAttribute#compare(Node, Node)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int NodeComparatorBySingleAttribute.compare(Node, Node)"})
-  public void testNodeComparatorBySingleAttributeCompareWithNodeNode3() {
-    // Arrange
-    NodeComparatorBySingleAttribute nodeComparatorBySingleAttribute =
-        new NodeComparatorBySingleAttribute("Attribute Name");
+    NodeUtil.NodeComparatorBySingleAttribute nodeComparatorBySingleAttribute = new NodeUtil.NodeComparatorBySingleAttribute(
+        "Attribute Name");
     IIOMetadataNode o1 = new IIOMetadataNode("mo:group");
 
     // Act and Assert
     assertEquals(-1, nodeComparatorBySingleAttribute.compare(o1, new IIOMetadataNode("mo:group")));
-  }
-
-  /**
-   * Test NodeComparatorBySingleAttribute {@link NodeComparatorBySingleAttribute#compare(Node,
-   * Node)} with {@code Node}, {@code Node}.
-   *
-   * <p>Method under test: {@link NodeComparatorBySingleAttribute#compare(Node, Node)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int NodeComparatorBySingleAttribute.compare(Node, Node)"})
-  public void testNodeComparatorBySingleAttributeCompareWithNodeNode4() {
-    // Arrange
-    NodeComparatorBySingleAttribute nodeComparatorBySingleAttribute =
-        new NodeComparatorBySingleAttribute("Attribute Name");
-    IIOMetadataNode o1 = new IIOMetadataNode("mo:group");
-
-    // Act and Assert
-    assertEquals(-1, nodeComparatorBySingleAttribute.compare(o1, new IIOMetadataNode()));
-  }
-
-  /**
-   * Test NodeComparatorBySingleAttribute {@link NodeComparatorBySingleAttribute#compare(Node,
-   * Node)} with {@code Node}, {@code Node}.
-   *
-   * <ul>
-   *   <li>Then return minus one.
-   * </ul>
-   *
-   * <p>Method under test: {@link NodeComparatorBySingleAttribute#compare(Node, Node)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int NodeComparatorBySingleAttribute.compare(Node, Node)"})
-  public void testNodeComparatorBySingleAttributeCompareWithNodeNode_thenReturnMinusOne() {
-    // Arrange
-    NodeComparatorBySingleAttribute nodeComparatorBySingleAttribute =
-        new NodeComparatorBySingleAttribute("Attribute Name");
-    IIOMetadataNode o1 = new IIOMetadataNode();
-
-    // Act and Assert
-    assertEquals(-1, nodeComparatorBySingleAttribute.compare(o1, new IIOMetadataNode()));
-  }
-
-  /**
-   * Test NodeComparatorBySingleAttribute {@link NodeComparatorBySingleAttribute#compare(Node,
-   * Node)} with {@code Node}, {@code Node}.
-   *
-   * <ul>
-   *   <li>Then return one.
-   * </ul>
-   *
-   * <p>Method under test: {@link NodeComparatorBySingleAttribute#compare(Node, Node)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int NodeComparatorBySingleAttribute.compare(Node, Node)"})
-  public void testNodeComparatorBySingleAttributeCompareWithNodeNode_thenReturnOne() {
-    // Arrange
-    NodeComparatorBySingleAttribute nodeComparatorBySingleAttribute =
-        new NodeComparatorBySingleAttribute("Attribute Name");
-    IIOMetadataNode o1 = new IIOMetadataNode("mo:group");
-
-    // Act and Assert
-    assertEquals(1, nodeComparatorBySingleAttribute.compare(o1, new IIOMetadataNode("mo:tab")));
-  }
-
-  /**
-   * Test NodeComparatorBySingleAttribute {@link NodeComparatorBySingleAttribute#compare(Node,
-   * Node)} with {@code Node}, {@code Node}.
-   *
-   * <ul>
-   *   <li>Then return one.
-   * </ul>
-   *
-   * <p>Method under test: {@link NodeComparatorBySingleAttribute#compare(Node, Node)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int NodeComparatorBySingleAttribute.compare(Node, Node)"})
-  public void testNodeComparatorBySingleAttributeCompareWithNodeNode_thenReturnOne2() {
-    // Arrange
-    NodeComparatorBySingleAttribute nodeComparatorBySingleAttribute =
-        new NodeComparatorBySingleAttribute("Attribute Name");
-    IIOMetadataNode o1 = new IIOMetadataNode();
-
-    // Act and Assert
-    assertEquals(1, nodeComparatorBySingleAttribute.compare(o1, new IIOMetadataNode("mo:group")));
-  }
-
-  /**
-   * Test NodeComparatorBySingleAttribute {@link NodeComparatorBySingleAttribute#compare(Node,
-   * Node)} with {@code Node}, {@code Node}.
-   *
-   * <ul>
-   *   <li>When {@link DefaultDocument} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link NodeComparatorBySingleAttribute#compare(Node, Node)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int NodeComparatorBySingleAttribute.compare(Node, Node)"})
-  public void testNodeComparatorBySingleAttributeCompareWithNodeNode_whenDefaultDocument() {
-    // Arrange
-    NodeComparatorBySingleAttribute nodeComparatorBySingleAttribute =
-        new NodeComparatorBySingleAttribute("Attribute Name");
-    DefaultDocument o1 = new DefaultDocument();
-
-    // Act and Assert
-    assertEquals(1, nodeComparatorBySingleAttribute.compare(o1, new IIOMetadataNode()));
-  }
-
-  /**
-   * Test NodeComparatorBySingleAttribute {@link NodeComparatorBySingleAttribute#compare(Node,
-   * Node)} with {@code Node}, {@code Node}.
-   *
-   * <ul>
-   *   <li>When {@link DefaultDocument} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link NodeComparatorBySingleAttribute#compare(Node, Node)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int NodeComparatorBySingleAttribute.compare(Node, Node)"})
-  public void testNodeComparatorBySingleAttributeCompareWithNodeNode_whenDefaultDocument2() {
-    // Arrange
-    NodeComparatorBySingleAttribute nodeComparatorBySingleAttribute =
-        new NodeComparatorBySingleAttribute("Attribute Name");
-    IIOMetadataNode o1 = new IIOMetadataNode();
-
-    // Act and Assert
-    assertEquals(-1, nodeComparatorBySingleAttribute.compare(o1, new DefaultDocument()));
   }
 }

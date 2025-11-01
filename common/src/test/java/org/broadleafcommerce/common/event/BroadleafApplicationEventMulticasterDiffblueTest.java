@@ -20,71 +20,85 @@ package org.broadleafcommerce.common.event;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.concurrent.Executor;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.reactive.context.AnnotationConfigReactiveWebApplicationContext;
 import org.springframework.context.ApplicationContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = {BroadleafApplicationEventMulticaster.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class BroadleafApplicationEventMulticasterDiffblueTest {
-  @Autowired private BroadleafApplicationEventMulticaster broadleafApplicationEventMulticaster;
-
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
-   *   <li>{@link BroadleafApplicationEventMulticaster#setApplicationContext(ApplicationContext)}
+   *   <li>
+   * {@link BroadleafApplicationEventMulticaster#setApplicationContext(ApplicationContext)}
    *   <li>{@link BroadleafApplicationEventMulticaster#setTaskExecutor(Executor)}
    *   <li>{@link BroadleafApplicationEventMulticaster#getTaskExecutor()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Executor BroadleafApplicationEventMulticaster.getTaskExecutor()",
-    "void BroadleafApplicationEventMulticaster.setApplicationContext(ApplicationContext)",
-    "void BroadleafApplicationEventMulticaster.setTaskExecutor(Executor)"
-  })
   public void testGettersAndSetters() throws BeansException {
     // Arrange
-    BroadleafApplicationEventMulticaster broadleafApplicationEventMulticaster =
-        new BroadleafApplicationEventMulticaster();
+    BroadleafApplicationEventMulticaster broadleafApplicationEventMulticaster = new BroadleafApplicationEventMulticaster();
 
     // Act
-    broadleafApplicationEventMulticaster.setApplicationContext(mock(ApplicationContext.class));
+    broadleafApplicationEventMulticaster.setApplicationContext(new AnnotationConfigReactiveWebApplicationContext());
     Executor taskExecutor = mock(Executor.class);
     broadleafApplicationEventMulticaster.setTaskExecutor(taskExecutor);
 
-    // Assert
+    // Assert that nothing has changed
     assertSame(taskExecutor, broadleafApplicationEventMulticaster.getTaskExecutor());
   }
 
   /**
-   * Test new {@link BroadleafApplicationEventMulticaster} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * BroadleafApplicationEventMulticaster}
+   * Methods under test:
+   * <ul>
+   *   <li>
+   * {@link BroadleafApplicationEventMulticaster#setApplicationContext(ApplicationContext)}
+   *   <li>{@link BroadleafApplicationEventMulticaster#setTaskExecutor(Executor)}
+   *   <li>{@link BroadleafApplicationEventMulticaster#getTaskExecutor()}
+   * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BroadleafApplicationEventMulticaster.<init>()"})
+  public void testGettersAndSetters2() throws BeansException {
+    // Arrange
+    BroadleafApplicationEventMulticaster broadleafApplicationEventMulticaster = new BroadleafApplicationEventMulticaster();
+
+    // Act
+    broadleafApplicationEventMulticaster.setApplicationContext(new AnnotationConfigReactiveWebApplicationContext());
+    Executor taskExecutor = mock(Executor.class);
+    broadleafApplicationEventMulticaster.setTaskExecutor(taskExecutor);
+
+    // Assert that nothing has changed
+    assertSame(taskExecutor, broadleafApplicationEventMulticaster.getTaskExecutor());
+  }
+
+  /**
+   * Method under test: default or parameterless constructor of
+   * {@link BroadleafApplicationEventMulticaster}
+   */
+  @Test
   public void testNewBroadleafApplicationEventMulticaster() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange and Act
-    BroadleafApplicationEventMulticaster actualBroadleafApplicationEventMulticaster =
-        new BroadleafApplicationEventMulticaster();
+    BroadleafApplicationEventMulticaster actualBroadleafApplicationEventMulticaster = new BroadleafApplicationEventMulticaster();
+
+    // Assert
+    assertNull(actualBroadleafApplicationEventMulticaster.getTaskExecutor());
+    assertNull(actualBroadleafApplicationEventMulticaster.ctx);
+  }
+
+  /**
+   * Method under test: default or parameterless constructor of
+   * {@link BroadleafApplicationEventMulticaster}
+   */
+  @Test
+  public void testNewBroadleafApplicationEventMulticaster2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange and Act
+    BroadleafApplicationEventMulticaster actualBroadleafApplicationEventMulticaster = new BroadleafApplicationEventMulticaster();
 
     // Assert
     assertNull(actualBroadleafApplicationEventMulticaster.getTaskExecutor());

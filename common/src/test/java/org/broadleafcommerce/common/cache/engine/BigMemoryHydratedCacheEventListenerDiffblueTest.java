@@ -26,9 +26,6 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Set;
 import javax.cache.configuration.CacheEntryListenerConfiguration;
 import javax.cache.configuration.Configuration;
@@ -36,59 +33,47 @@ import javax.cache.configuration.MutableConfiguration;
 import org.ehcache.event.CacheEvent;
 import org.ehcache.event.EventType;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class BigMemoryHydratedCacheEventListenerDiffblueTest {
   /**
-   * Test {@link BigMemoryHydratedCacheEventListener#onEvent(CacheEvent)}.
-   *
-   * <ul>
-   *   <li>Given {@code CREATED}.
-   *   <li>When {@link CacheEvent} {@link CacheEvent#getType()} return {@code CREATED}.
-   *   <li>Then calls {@link CacheEvent#getType()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BigMemoryHydratedCacheEventListener#onEvent(CacheEvent)}
+   * Method under test: default or parameterless constructor of
+   * {@link BigMemoryHydratedCacheEventListener}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BigMemoryHydratedCacheEventListener.onEvent(CacheEvent)"})
-  public void testOnEvent_givenCreated_whenCacheEventGetTypeReturnCreated_thenCallsGetType() {
-    // Arrange
-    BigMemoryHydratedCacheEventListener bigMemoryHydratedCacheEventListener =
-        new BigMemoryHydratedCacheEventListener();
-
-    CacheEvent cacheEvent = mock(CacheEvent.class);
-    when(cacheEvent.getType()).thenReturn(EventType.CREATED);
-
-    // Act
-    bigMemoryHydratedCacheEventListener.onEvent(cacheEvent);
+  public void testNewBigMemoryHydratedCacheEventListener() {
+    // Arrange and Act
+    BigMemoryHydratedCacheEventListener actualBigMemoryHydratedCacheEventListener = new BigMemoryHydratedCacheEventListener();
 
     // Assert
-    verify(cacheEvent, atLeast(1)).getType();
+    Configuration<String, Object> bigMemoryHydratedCacheConfiguration = actualBigMemoryHydratedCacheEventListener
+        .getBigMemoryHydratedCacheConfiguration();
+    Iterable<CacheEntryListenerConfiguration<String, Object>> cacheEntryListenerConfigurations = ((MutableConfiguration<String, Object>) bigMemoryHydratedCacheConfiguration)
+        .getCacheEntryListenerConfigurations();
+    assertTrue(cacheEntryListenerConfigurations instanceof Set);
+    assertTrue(bigMemoryHydratedCacheConfiguration instanceof MutableConfiguration);
+    assertEquals("hydrated-offheap-cache", actualBigMemoryHydratedCacheEventListener.getBigMemoryHydratedCacheName());
+    assertNull(((MutableConfiguration<String, Object>) bigMemoryHydratedCacheConfiguration).getCacheLoaderFactory());
+    assertNull(((MutableConfiguration<String, Object>) bigMemoryHydratedCacheConfiguration).getCacheWriterFactory());
+    assertFalse(((MutableConfiguration<String, Object>) bigMemoryHydratedCacheConfiguration).isManagementEnabled());
+    assertFalse(((MutableConfiguration<String, Object>) bigMemoryHydratedCacheConfiguration).isReadThrough());
+    assertFalse(((MutableConfiguration<String, Object>) bigMemoryHydratedCacheConfiguration).isStatisticsEnabled());
+    assertFalse(((MutableConfiguration<String, Object>) bigMemoryHydratedCacheConfiguration).isWriteThrough());
+    assertTrue(((Set<CacheEntryListenerConfiguration<String, Object>>) cacheEntryListenerConfigurations).isEmpty());
+    assertTrue(bigMemoryHydratedCacheConfiguration.isStoreByValue());
+    Class<Object> expectedKeyType = Object.class;
+    Class<String> keyType = bigMemoryHydratedCacheConfiguration.getKeyType();
+    assertEquals(expectedKeyType, keyType);
+    assertSame(keyType, bigMemoryHydratedCacheConfiguration.getValueType());
   }
 
   /**
-   * Test {@link BigMemoryHydratedCacheEventListener#onEvent(CacheEvent)}.
-   *
-   * <ul>
-   *   <li>Given {@code EVICTED}.
-   *   <li>When {@link CacheEvent} {@link CacheEvent#getType()} return {@code EVICTED}.
-   *   <li>Then calls {@link CacheEvent#getKey()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BigMemoryHydratedCacheEventListener#onEvent(CacheEvent)}
+   * Method under test:
+   * {@link BigMemoryHydratedCacheEventListener#onEvent(CacheEvent)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BigMemoryHydratedCacheEventListener.onEvent(CacheEvent)"})
-  public void testOnEvent_givenEvicted_whenCacheEventGetTypeReturnEvicted_thenCallsGetKey() {
+  public void testOnEvent() {
     // Arrange
-    BigMemoryHydratedCacheEventListener bigMemoryHydratedCacheEventListener =
-        new BigMemoryHydratedCacheEventListener();
-
+    BigMemoryHydratedCacheEventListener bigMemoryHydratedCacheEventListener = new BigMemoryHydratedCacheEventListener();
     CacheEvent cacheEvent = mock(CacheEvent.class);
     when(cacheEvent.getKey()).thenReturn(1);
     when(cacheEvent.getType()).thenReturn(EventType.EVICTED);
@@ -102,25 +87,31 @@ public class BigMemoryHydratedCacheEventListenerDiffblueTest {
   }
 
   /**
-   * Test {@link BigMemoryHydratedCacheEventListener#onEvent(CacheEvent)}.
-   *
-   * <ul>
-   *   <li>Given {@code EXPIRED}.
-   *   <li>When {@link CacheEvent} {@link CacheEvent#getType()} return {@code EXPIRED}.
-   *   <li>Then calls {@link CacheEvent#getKey()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BigMemoryHydratedCacheEventListener#onEvent(CacheEvent)}
+   * Method under test:
+   * {@link BigMemoryHydratedCacheEventListener#onEvent(CacheEvent)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BigMemoryHydratedCacheEventListener.onEvent(CacheEvent)"})
-  public void testOnEvent_givenExpired_whenCacheEventGetTypeReturnExpired_thenCallsGetKey() {
+  public void testOnEvent2() {
     // Arrange
-    BigMemoryHydratedCacheEventListener bigMemoryHydratedCacheEventListener =
-        new BigMemoryHydratedCacheEventListener();
+    BigMemoryHydratedCacheEventListener bigMemoryHydratedCacheEventListener = new BigMemoryHydratedCacheEventListener();
+    CacheEvent cacheEvent = mock(CacheEvent.class);
+    when(cacheEvent.getType()).thenReturn(EventType.CREATED);
 
+    // Act
+    bigMemoryHydratedCacheEventListener.onEvent(cacheEvent);
+
+    // Assert that nothing has changed
+    verify(cacheEvent, atLeast(1)).getType();
+  }
+
+  /**
+   * Method under test:
+   * {@link BigMemoryHydratedCacheEventListener#onEvent(CacheEvent)}
+   */
+  @Test
+  public void testOnEvent3() {
+    // Arrange
+    BigMemoryHydratedCacheEventListener bigMemoryHydratedCacheEventListener = new BigMemoryHydratedCacheEventListener();
     CacheEvent cacheEvent = mock(CacheEvent.class);
     when(cacheEvent.getKey()).thenReturn(1);
     when(cacheEvent.getType()).thenReturn(EventType.EXPIRED);
@@ -134,25 +125,13 @@ public class BigMemoryHydratedCacheEventListenerDiffblueTest {
   }
 
   /**
-   * Test {@link BigMemoryHydratedCacheEventListener#onEvent(CacheEvent)}.
-   *
-   * <ul>
-   *   <li>Given {@code REMOVED}.
-   *   <li>When {@link CacheEvent} {@link CacheEvent#getType()} return {@code REMOVED}.
-   *   <li>Then calls {@link CacheEvent#getKey()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BigMemoryHydratedCacheEventListener#onEvent(CacheEvent)}
+   * Method under test:
+   * {@link BigMemoryHydratedCacheEventListener#onEvent(CacheEvent)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BigMemoryHydratedCacheEventListener.onEvent(CacheEvent)"})
-  public void testOnEvent_givenRemoved_whenCacheEventGetTypeReturnRemoved_thenCallsGetKey() {
+  public void testOnEvent4() {
     // Arrange
-    BigMemoryHydratedCacheEventListener bigMemoryHydratedCacheEventListener =
-        new BigMemoryHydratedCacheEventListener();
-
+    BigMemoryHydratedCacheEventListener bigMemoryHydratedCacheEventListener = new BigMemoryHydratedCacheEventListener();
     CacheEvent cacheEvent = mock(CacheEvent.class);
     when(cacheEvent.getKey()).thenReturn(1);
     when(cacheEvent.getType()).thenReturn(EventType.REMOVED);
@@ -166,25 +145,13 @@ public class BigMemoryHydratedCacheEventListenerDiffblueTest {
   }
 
   /**
-   * Test {@link BigMemoryHydratedCacheEventListener#onEvent(CacheEvent)}.
-   *
-   * <ul>
-   *   <li>Given {@code UPDATED}.
-   *   <li>When {@link CacheEvent} {@link CacheEvent#getType()} return {@code UPDATED}.
-   *   <li>Then calls {@link CacheEvent#getKey()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BigMemoryHydratedCacheEventListener#onEvent(CacheEvent)}
+   * Method under test:
+   * {@link BigMemoryHydratedCacheEventListener#onEvent(CacheEvent)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BigMemoryHydratedCacheEventListener.onEvent(CacheEvent)"})
-  public void testOnEvent_givenUpdated_whenCacheEventGetTypeReturnUpdated_thenCallsGetKey() {
+  public void testOnEvent5() {
     // Arrange
-    BigMemoryHydratedCacheEventListener bigMemoryHydratedCacheEventListener =
-        new BigMemoryHydratedCacheEventListener();
-
+    BigMemoryHydratedCacheEventListener bigMemoryHydratedCacheEventListener = new BigMemoryHydratedCacheEventListener();
     CacheEvent cacheEvent = mock(CacheEvent.class);
     when(cacheEvent.getKey()).thenReturn(1);
     when(cacheEvent.getType()).thenReturn(EventType.UPDATED);
@@ -198,70 +165,12 @@ public class BigMemoryHydratedCacheEventListenerDiffblueTest {
   }
 
   /**
-   * Test {@link BigMemoryHydratedCacheEventListener#useCacheRegionInKey()}.
-   *
-   * <p>Method under test: {@link BigMemoryHydratedCacheEventListener#useCacheRegionInKey()}
+   * Method under test:
+   * {@link BigMemoryHydratedCacheEventListener#useCacheRegionInKey()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean BigMemoryHydratedCacheEventListener.useCacheRegionInKey()"})
   public void testUseCacheRegionInKey() {
     // Arrange, Act and Assert
-    assertFalse(new BigMemoryHydratedCacheEventListener().useCacheRegionInKey());
-  }
-
-  /**
-   * Test new {@link BigMemoryHydratedCacheEventListener} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * BigMemoryHydratedCacheEventListener}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void BigMemoryHydratedCacheEventListener.<init>()"})
-  public void testNewBigMemoryHydratedCacheEventListener() {
-    // Arrange and Act
-    BigMemoryHydratedCacheEventListener actualBigMemoryHydratedCacheEventListener =
-        new BigMemoryHydratedCacheEventListener();
-
-    // Assert
-    Configuration<String, Object> bigMemoryHydratedCacheConfiguration =
-        actualBigMemoryHydratedCacheEventListener.getBigMemoryHydratedCacheConfiguration();
-    Iterable<CacheEntryListenerConfiguration<String, Object>> cacheEntryListenerConfigurations =
-        ((MutableConfiguration<String, Object>) bigMemoryHydratedCacheConfiguration)
-            .getCacheEntryListenerConfigurations();
-    assertTrue(cacheEntryListenerConfigurations instanceof Set);
-    assertTrue(bigMemoryHydratedCacheConfiguration instanceof MutableConfiguration);
-    assertEquals(
-        "hydrated-offheap-cache",
-        actualBigMemoryHydratedCacheEventListener.getBigMemoryHydratedCacheName());
-    assertNull(
-        ((MutableConfiguration<String, Object>) bigMemoryHydratedCacheConfiguration)
-            .getCacheLoaderFactory());
-    assertNull(
-        ((MutableConfiguration<String, Object>) bigMemoryHydratedCacheConfiguration)
-            .getCacheWriterFactory());
-    assertFalse(
-        ((MutableConfiguration<String, Object>) bigMemoryHydratedCacheConfiguration)
-            .isManagementEnabled());
-    assertFalse(
-        ((MutableConfiguration<String, Object>) bigMemoryHydratedCacheConfiguration)
-            .isReadThrough());
-    assertFalse(
-        ((MutableConfiguration<String, Object>) bigMemoryHydratedCacheConfiguration)
-            .isStatisticsEnabled());
-    assertFalse(
-        ((MutableConfiguration<String, Object>) bigMemoryHydratedCacheConfiguration)
-            .isWriteThrough());
-    assertTrue(
-        ((Set<CacheEntryListenerConfiguration<String, Object>>) cacheEntryListenerConfigurations)
-            .isEmpty());
-    assertTrue(bigMemoryHydratedCacheConfiguration.isStoreByValue());
-    Class<Object> expectedKeyType = Object.class;
-    Class<String> keyType = bigMemoryHydratedCacheConfiguration.getKeyType();
-    assertEquals(expectedKeyType, keyType);
-    assertSame(keyType, bigMemoryHydratedCacheConfiguration.getValueType());
+    assertFalse((new BigMemoryHydratedCacheEventListener()).useCacheRegionInKey());
   }
 }

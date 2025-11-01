@@ -20,265 +20,20 @@ package org.broadleafcommerce.openadmin.server.security.service.user;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 public class AdminUserDetailsDiffblueTest {
-  /**
-   * Test {@link AdminUserDetails#AdminUserDetails(Long, String, String, Collection)}.
-   *
-   * <ul>
-   *   <li>Then return Authorities size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminUserDetails#AdminUserDetails(Long, String, String,
-   * Collection)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AdminUserDetails.<init>(Long, String, String, Collection)"})
-  public void testNewAdminUserDetails_thenReturnAuthoritiesSizeIsOne() {
-    // Arrange
-    ArrayList<GrantedAuthority> authorities = new ArrayList<>();
-    authorities.add(new SimpleGrantedAuthority("Role"));
-
-    // Act
-    AdminUserDetails actualAdminUserDetails =
-        new AdminUserDetails(1L, "janedoe", "iloveyou", authorities);
-
-    // Assert
-    Collection<GrantedAuthority> authorities2 = actualAdminUserDetails.getAuthorities();
-    assertEquals(1, authorities2.size());
-    assertTrue(authorities2 instanceof Set);
-    assertEquals("iloveyou", actualAdminUserDetails.getPassword());
-    assertEquals("janedoe", actualAdminUserDetails.getUsername());
-    assertEquals(1L, actualAdminUserDetails.getId().longValue());
-    assertTrue(actualAdminUserDetails.isAccountNonExpired());
-    assertTrue(actualAdminUserDetails.isAccountNonLocked());
-    assertTrue(actualAdminUserDetails.isCredentialsNonExpired());
-    assertTrue(actualAdminUserDetails.isEnabled());
-  }
+  @MockBean
+  private AdminUserDetails adminUserDetails;
 
   /**
-   * Test {@link AdminUserDetails#AdminUserDetails(Long, String, String, Collection)}.
-   *
-   * <ul>
-   *   <li>Then return Authorities size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminUserDetails#AdminUserDetails(Long, String, String,
-   * Collection)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AdminUserDetails.<init>(Long, String, String, Collection)"})
-  public void testNewAdminUserDetails_thenReturnAuthoritiesSizeIsOne2() {
-    // Arrange
-    ArrayList<GrantedAuthority> authorities = new ArrayList<>();
-    authorities.add(new SimpleGrantedAuthority("Role"));
-    authorities.add(new SimpleGrantedAuthority("Role"));
-
-    // Act
-    AdminUserDetails actualAdminUserDetails =
-        new AdminUserDetails(1L, "janedoe", "iloveyou", authorities);
-
-    // Assert
-    Collection<GrantedAuthority> authorities2 = actualAdminUserDetails.getAuthorities();
-    assertEquals(1, authorities2.size());
-    assertTrue(authorities2 instanceof Set);
-    assertEquals("iloveyou", actualAdminUserDetails.getPassword());
-    assertEquals("janedoe", actualAdminUserDetails.getUsername());
-    assertEquals(1L, actualAdminUserDetails.getId().longValue());
-    assertTrue(actualAdminUserDetails.isAccountNonExpired());
-    assertTrue(actualAdminUserDetails.isAccountNonLocked());
-    assertTrue(actualAdminUserDetails.isCredentialsNonExpired());
-    assertTrue(actualAdminUserDetails.isEnabled());
-  }
-
-  /**
-   * Test {@link AdminUserDetails#AdminUserDetails(Long, String, String, boolean, boolean, boolean,
-   * boolean, Collection)}.
-   *
-   * <ul>
-   *   <li>Then return Authorities size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminUserDetails#AdminUserDetails(Long, String, String, boolean,
-   * boolean, boolean, boolean, Collection)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminUserDetails.<init>(Long, String, String, boolean, boolean, boolean, boolean, Collection)"
-  })
-  public void testNewAdminUserDetails_thenReturnAuthoritiesSizeIsOne3() {
-    // Arrange
-    ArrayList<GrantedAuthority> authorities = new ArrayList<>();
-    authorities.add(new SimpleGrantedAuthority("Role"));
-
-    // Act
-    AdminUserDetails actualAdminUserDetails =
-        new AdminUserDetails(1L, "janedoe", "iloveyou", true, true, true, true, authorities);
-
-    // Assert
-    Collection<GrantedAuthority> authorities2 = actualAdminUserDetails.getAuthorities();
-    assertEquals(1, authorities2.size());
-    assertTrue(authorities2 instanceof Set);
-    assertEquals("iloveyou", actualAdminUserDetails.getPassword());
-    assertEquals("janedoe", actualAdminUserDetails.getUsername());
-    assertEquals(1L, actualAdminUserDetails.getId().longValue());
-    assertTrue(actualAdminUserDetails.isAccountNonExpired());
-    assertTrue(actualAdminUserDetails.isAccountNonLocked());
-    assertTrue(actualAdminUserDetails.isCredentialsNonExpired());
-    assertTrue(actualAdminUserDetails.isEnabled());
-  }
-
-  /**
-   * Test {@link AdminUserDetails#AdminUserDetails(Long, String, String, boolean, boolean, boolean,
-   * boolean, Collection)}.
-   *
-   * <ul>
-   *   <li>Then return Authorities size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminUserDetails#AdminUserDetails(Long, String, String, boolean,
-   * boolean, boolean, boolean, Collection)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminUserDetails.<init>(Long, String, String, boolean, boolean, boolean, boolean, Collection)"
-  })
-  public void testNewAdminUserDetails_thenReturnAuthoritiesSizeIsOne4() {
-    // Arrange
-    ArrayList<GrantedAuthority> authorities = new ArrayList<>();
-    authorities.add(new SimpleGrantedAuthority("Role"));
-    authorities.add(new SimpleGrantedAuthority("Role"));
-
-    // Act
-    AdminUserDetails actualAdminUserDetails =
-        new AdminUserDetails(1L, "janedoe", "iloveyou", true, true, true, true, authorities);
-
-    // Assert
-    Collection<GrantedAuthority> authorities2 = actualAdminUserDetails.getAuthorities();
-    assertEquals(1, authorities2.size());
-    assertTrue(authorities2 instanceof Set);
-    assertEquals("iloveyou", actualAdminUserDetails.getPassword());
-    assertEquals("janedoe", actualAdminUserDetails.getUsername());
-    assertEquals(1L, actualAdminUserDetails.getId().longValue());
-    assertTrue(actualAdminUserDetails.isAccountNonExpired());
-    assertTrue(actualAdminUserDetails.isAccountNonLocked());
-    assertTrue(actualAdminUserDetails.isCredentialsNonExpired());
-    assertTrue(actualAdminUserDetails.isEnabled());
-  }
-
-  /**
-   * Test {@link AdminUserDetails#AdminUserDetails(Long, String, String, Collection)}.
-   *
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then return Authorities Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminUserDetails#AdminUserDetails(Long, String, String,
-   * Collection)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AdminUserDetails.<init>(Long, String, String, Collection)"})
-  public void testNewAdminUserDetails_whenArrayList_thenReturnAuthoritiesEmpty() {
-    // Arrange and Act
-    AdminUserDetails actualAdminUserDetails =
-        new AdminUserDetails(1L, "janedoe", "iloveyou", new ArrayList<>());
-
-    // Assert
-    Collection<GrantedAuthority> authorities = actualAdminUserDetails.getAuthorities();
-    assertTrue(authorities instanceof Set);
-    assertEquals("iloveyou", actualAdminUserDetails.getPassword());
-    assertEquals("janedoe", actualAdminUserDetails.getUsername());
-    assertEquals(1L, actualAdminUserDetails.getId().longValue());
-    assertTrue(authorities.isEmpty());
-    assertTrue(actualAdminUserDetails.isAccountNonExpired());
-    assertTrue(actualAdminUserDetails.isAccountNonLocked());
-    assertTrue(actualAdminUserDetails.isCredentialsNonExpired());
-    assertTrue(actualAdminUserDetails.isEnabled());
-  }
-
-  /**
-   * Test {@link AdminUserDetails#AdminUserDetails(Long, String, String, boolean, boolean, boolean,
-   * boolean, Collection)}.
-   *
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then return Authorities Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminUserDetails#AdminUserDetails(Long, String, String, boolean,
-   * boolean, boolean, boolean, Collection)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AdminUserDetails.<init>(Long, String, String, boolean, boolean, boolean, boolean, Collection)"
-  })
-  public void testNewAdminUserDetails_whenArrayList_thenReturnAuthoritiesEmpty2() {
-    // Arrange and Act
-    AdminUserDetails actualAdminUserDetails =
-        new AdminUserDetails(1L, "janedoe", "iloveyou", true, true, true, true, new ArrayList<>());
-
-    // Assert
-    Collection<GrantedAuthority> authorities = actualAdminUserDetails.getAuthorities();
-    assertTrue(authorities instanceof Set);
-    assertEquals("iloveyou", actualAdminUserDetails.getPassword());
-    assertEquals("janedoe", actualAdminUserDetails.getUsername());
-    assertEquals(1L, actualAdminUserDetails.getId().longValue());
-    assertTrue(authorities.isEmpty());
-    assertTrue(actualAdminUserDetails.isAccountNonExpired());
-    assertTrue(actualAdminUserDetails.isAccountNonLocked());
-    assertTrue(actualAdminUserDetails.isCredentialsNonExpired());
-    assertTrue(actualAdminUserDetails.isEnabled());
-  }
-
-  /**
-   * Test {@link AdminUserDetails#withId(Long)}.
-   *
-   * <p>Method under test: {@link AdminUserDetails#withId(Long)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"AdminUserDetails AdminUserDetails.withId(Long)"})
-  public void testWithId() {
-    // Arrange
-    AdminUserDetails adminUserDetails =
-        new AdminUserDetails(1L, "janedoe", "iloveyou", new ArrayList<>());
-
-    // Act
-    AdminUserDetails actualWithIdResult = adminUserDetails.withId(1L);
-
-    // Assert
-    assertSame(adminUserDetails, actualWithIdResult);
-  }
-
-  /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link AdminUserDetails#setId(Long)}
    *   <li>{@link AdminUserDetails#toString()}
@@ -286,28 +41,183 @@ public class AdminUserDetailsDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Long AdminUserDetails.getId()",
-    "void AdminUserDetails.setId(Long)",
-    "String AdminUserDetails.toString()"
-  })
   public void testGettersAndSetters() {
     // Arrange
-    AdminUserDetails adminUserDetails =
-        new AdminUserDetails(1L, "janedoe", "iloveyou", new ArrayList<>());
+    AdminUserDetails adminUserDetails = new AdminUserDetails(1L, "janedoe", "iloveyou", new ArrayList<>());
 
     // Act
     adminUserDetails.setId(1L);
     String actualToStringResult = adminUserDetails.toString();
 
-    // Assert
-    assertEquals(
-        "org.broadleafcommerce.openadmin.server.security.service.user.AdminUserDetails [Username=janedoe,"
-            + " Password=[PROTECTED], Enabled=true, AccountNonExpired=true, credentialsNonExpired=true, AccountNonLocked"
-            + "=true, Granted Authorities=[]]: Id: 1; ",
-        actualToStringResult);
+    // Assert that nothing has changed
+    assertEquals("org.broadleafcommerce.openadmin.server.security.service.user.AdminUserDetails [Username=janedoe,"
+        + " Password=[PROTECTED], Enabled=true, AccountNonExpired=true, credentialsNonExpired=true, AccountNonLocked"
+        + "=true, Granted Authorities=[]]: Id: 1; ", actualToStringResult);
     assertEquals(1L, adminUserDetails.getId().longValue());
+  }
+
+  /**
+   * Method under test:
+   * {@link AdminUserDetails#AdminUserDetails(Long, String, String, Collection)}
+   */
+  @Test
+  public void testNewAdminUserDetails() {
+    // Arrange and Act
+    AdminUserDetails actualAdminUserDetails = new AdminUserDetails(1L, "janedoe", "iloveyou", new ArrayList<>());
+
+    // Assert
+    Collection<GrantedAuthority> authorities = actualAdminUserDetails.getAuthorities();
+    assertTrue(authorities instanceof Set);
+    assertEquals("iloveyou", actualAdminUserDetails.getPassword());
+    assertEquals("janedoe", actualAdminUserDetails.getUsername());
+    assertEquals(1L, actualAdminUserDetails.getId().longValue());
+    assertTrue(authorities.isEmpty());
+    assertTrue(actualAdminUserDetails.isAccountNonExpired());
+    assertTrue(actualAdminUserDetails.isAccountNonLocked());
+    assertTrue(actualAdminUserDetails.isCredentialsNonExpired());
+    assertTrue(actualAdminUserDetails.isEnabled());
+  }
+
+  /**
+   * Method under test:
+   * {@link AdminUserDetails#AdminUserDetails(Long, String, String, Collection)}
+   */
+  @Test
+  public void testNewAdminUserDetails2() {
+    // Arrange
+    ArrayList<GrantedAuthority> authorities = new ArrayList<>();
+    authorities.add(new SimpleGrantedAuthority("Role"));
+
+    // Act
+    AdminUserDetails actualAdminUserDetails = new AdminUserDetails(1L, "janedoe", "iloveyou", authorities);
+
+    // Assert
+    Collection<GrantedAuthority> authorities2 = actualAdminUserDetails.getAuthorities();
+    assertEquals(1, authorities2.size());
+    assertTrue(authorities2 instanceof Set);
+    assertEquals("iloveyou", actualAdminUserDetails.getPassword());
+    assertEquals("janedoe", actualAdminUserDetails.getUsername());
+    assertEquals(1L, actualAdminUserDetails.getId().longValue());
+    assertTrue(actualAdminUserDetails.isAccountNonExpired());
+    assertTrue(actualAdminUserDetails.isAccountNonLocked());
+    assertTrue(actualAdminUserDetails.isCredentialsNonExpired());
+    assertTrue(actualAdminUserDetails.isEnabled());
+  }
+
+  /**
+   * Method under test:
+   * {@link AdminUserDetails#AdminUserDetails(Long, String, String, Collection)}
+   */
+  @Test
+  public void testNewAdminUserDetails3() {
+    // Arrange
+    ArrayList<GrantedAuthority> authorities = new ArrayList<>();
+    authorities.add(new SimpleGrantedAuthority("Role"));
+    authorities.add(new SimpleGrantedAuthority("Role"));
+
+    // Act
+    AdminUserDetails actualAdminUserDetails = new AdminUserDetails(1L, "janedoe", "iloveyou", authorities);
+
+    // Assert
+    Collection<GrantedAuthority> authorities2 = actualAdminUserDetails.getAuthorities();
+    assertEquals(1, authorities2.size());
+    assertTrue(authorities2 instanceof Set);
+    assertEquals("iloveyou", actualAdminUserDetails.getPassword());
+    assertEquals("janedoe", actualAdminUserDetails.getUsername());
+    assertEquals(1L, actualAdminUserDetails.getId().longValue());
+    assertTrue(actualAdminUserDetails.isAccountNonExpired());
+    assertTrue(actualAdminUserDetails.isAccountNonLocked());
+    assertTrue(actualAdminUserDetails.isCredentialsNonExpired());
+    assertTrue(actualAdminUserDetails.isEnabled());
+  }
+
+  /**
+   * Method under test:
+   * {@link AdminUserDetails#AdminUserDetails(Long, String, String, boolean, boolean, boolean, boolean, Collection)}
+   */
+  @Test
+  public void testNewAdminUserDetails4() {
+    // Arrange and Act
+    AdminUserDetails actualAdminUserDetails = new AdminUserDetails(1L, "janedoe", "iloveyou", true, true, true, true,
+        new ArrayList<>());
+
+    // Assert
+    Collection<GrantedAuthority> authorities = actualAdminUserDetails.getAuthorities();
+    assertTrue(authorities instanceof Set);
+    assertEquals("iloveyou", actualAdminUserDetails.getPassword());
+    assertEquals("janedoe", actualAdminUserDetails.getUsername());
+    assertEquals(1L, actualAdminUserDetails.getId().longValue());
+    assertTrue(authorities.isEmpty());
+    assertTrue(actualAdminUserDetails.isAccountNonExpired());
+    assertTrue(actualAdminUserDetails.isAccountNonLocked());
+    assertTrue(actualAdminUserDetails.isCredentialsNonExpired());
+    assertTrue(actualAdminUserDetails.isEnabled());
+  }
+
+  /**
+   * Method under test:
+   * {@link AdminUserDetails#AdminUserDetails(Long, String, String, boolean, boolean, boolean, boolean, Collection)}
+   */
+  @Test
+  public void testNewAdminUserDetails5() {
+    // Arrange
+    ArrayList<GrantedAuthority> authorities = new ArrayList<>();
+    authorities.add(new SimpleGrantedAuthority("Role"));
+
+    // Act
+    AdminUserDetails actualAdminUserDetails = new AdminUserDetails(1L, "janedoe", "iloveyou", true, true, true, true,
+        authorities);
+
+    // Assert
+    Collection<GrantedAuthority> authorities2 = actualAdminUserDetails.getAuthorities();
+    assertEquals(1, authorities2.size());
+    assertTrue(authorities2 instanceof Set);
+    assertEquals("iloveyou", actualAdminUserDetails.getPassword());
+    assertEquals("janedoe", actualAdminUserDetails.getUsername());
+    assertEquals(1L, actualAdminUserDetails.getId().longValue());
+    assertTrue(actualAdminUserDetails.isAccountNonExpired());
+    assertTrue(actualAdminUserDetails.isAccountNonLocked());
+    assertTrue(actualAdminUserDetails.isCredentialsNonExpired());
+    assertTrue(actualAdminUserDetails.isEnabled());
+  }
+
+  /**
+   * Method under test:
+   * {@link AdminUserDetails#AdminUserDetails(Long, String, String, boolean, boolean, boolean, boolean, Collection)}
+   */
+  @Test
+  public void testNewAdminUserDetails6() {
+    // Arrange
+    ArrayList<GrantedAuthority> authorities = new ArrayList<>();
+    authorities.add(new SimpleGrantedAuthority("Role"));
+    authorities.add(new SimpleGrantedAuthority("Role"));
+
+    // Act
+    AdminUserDetails actualAdminUserDetails = new AdminUserDetails(1L, "janedoe", "iloveyou", true, true, true, true,
+        authorities);
+
+    // Assert
+    Collection<GrantedAuthority> authorities2 = actualAdminUserDetails.getAuthorities();
+    assertEquals(1, authorities2.size());
+    assertTrue(authorities2 instanceof Set);
+    assertEquals("iloveyou", actualAdminUserDetails.getPassword());
+    assertEquals("janedoe", actualAdminUserDetails.getUsername());
+    assertEquals(1L, actualAdminUserDetails.getId().longValue());
+    assertTrue(actualAdminUserDetails.isAccountNonExpired());
+    assertTrue(actualAdminUserDetails.isAccountNonLocked());
+    assertTrue(actualAdminUserDetails.isCredentialsNonExpired());
+    assertTrue(actualAdminUserDetails.isEnabled());
+  }
+
+  /**
+   * Method under test: {@link AdminUserDetails#withId(Long)}
+   */
+  @Test
+  public void testWithId() {
+    // Arrange
+    AdminUserDetails adminUserDetails = new AdminUserDetails(1L, "janedoe", "iloveyou", new ArrayList<>());
+
+    // Act and Assert
+    assertSame(adminUserDetails, adminUserDetails.withId(1L));
   }
 }

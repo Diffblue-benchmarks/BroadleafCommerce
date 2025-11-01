@@ -19,69 +19,65 @@ package org.broadleafcommerce.profile.web.core.security;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
+import org.broadleafcommerce.profile.core.domain.ChallengeQuestion;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 class CustomerLoggedInEventDiffblueTest {
   /**
-   * Test {@link CustomerLoggedInEvent#CustomerLoggedInEvent(Customer, Object)}.
-   *
-   * <p>Method under test: {@link CustomerLoggedInEvent#CustomerLoggedInEvent(Customer, Object)}
-   */
-  @Test
-  @DisplayName("Test new CustomerLoggedInEvent(Customer, Object)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void CustomerLoggedInEvent.<init>(Customer, Object)"})
-  void testNewCustomerLoggedInEvent() {
-    // Arrange
-    CustomerImpl customer = new CustomerImpl();
-
-    // Act
-    CustomerLoggedInEvent actualCustomerLoggedInEvent =
-        new CustomerLoggedInEvent(customer, "Source");
-
-    // Assert
-    Customer customer2 = actualCustomerLoggedInEvent.getCustomer();
-    assertTrue(customer2 instanceof CustomerImpl);
-    assertEquals("Source", actualCustomerLoggedInEvent.getSource());
-    assertSame(customer, customer2);
-  }
-
-  /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link CustomerLoggedInEvent#setCustomer(Customer)}
    *   <li>{@link CustomerLoggedInEvent#getCustomer()}
    * </ul>
    */
   @Test
-  @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Customer CustomerLoggedInEvent.getCustomer()",
-    "void CustomerLoggedInEvent.setCustomer(Customer)"
-  })
   void testGettersAndSetters() {
     // Arrange
-    CustomerLoggedInEvent customerLoggedInEvent =
-        new CustomerLoggedInEvent(new CustomerImpl(), "Source");
+    CustomerLoggedInEvent customerLoggedInEvent = new CustomerLoggedInEvent(new CustomerImpl(), "Source");
     CustomerImpl customer = new CustomerImpl();
 
     // Act
     customerLoggedInEvent.setCustomer(customer);
 
-    // Assert
+    // Assert that nothing has changed
     assertSame(customer, customerLoggedInEvent.getCustomer());
+  }
+
+  /**
+   * Method under test:
+   * {@link CustomerLoggedInEvent#CustomerLoggedInEvent(Customer, Object)}
+   */
+  @Test
+  void testNewCustomerLoggedInEvent() {
+    // Arrange
+    CustomerImpl customer = new CustomerImpl();
+
+    // Act
+    CustomerLoggedInEvent actualCustomerLoggedInEvent = new CustomerLoggedInEvent(customer, "Source");
+
+    // Assert
+    assertEquals("Source", actualCustomerLoggedInEvent.getSource());
+    assertSame(customer, actualCustomerLoggedInEvent.getCustomer());
+  }
+
+  /**
+   * Method under test:
+   * {@link CustomerLoggedInEvent#CustomerLoggedInEvent(Customer, Object)}
+   */
+  @Test
+  void testNewCustomerLoggedInEvent2() {
+    // Arrange
+    CustomerImpl customer = new CustomerImpl();
+    customer.setChallengeQuestion(mock(ChallengeQuestion.class));
+
+    // Act
+    CustomerLoggedInEvent actualCustomerLoggedInEvent = new CustomerLoggedInEvent(customer, "Source");
+
+    // Assert
+    assertEquals("Source", actualCustomerLoggedInEvent.getSource());
+    assertSame(customer, actualCustomerLoggedInEvent.getCustomer());
   }
 }

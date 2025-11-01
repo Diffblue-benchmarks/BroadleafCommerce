@@ -19,78 +19,49 @@ package org.broadleafcommerce.profile.core.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class CountrySubdivisionCategoryImplDiffblueTest {
-  @Autowired private CountrySubdivisionCategoryImpl countrySubdivisionCategoryImpl;
-
   /**
-   * Test {@link CountrySubdivisionCategoryImpl#getName()}.
-   *
-   * <p>Method under test: {@link CountrySubdivisionCategoryImpl#getName()}
+   * Method under test: {@link CountrySubdivisionCategoryImpl#getName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String CountrySubdivisionCategoryImpl.getName()"})
   public void testGetName() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertNull(countrySubdivisionCategoryImpl.getName());
+    assertNull((new CountrySubdivisionCategoryImpl()).getName());
   }
 
   /**
-   * Test {@link CountrySubdivisionCategoryImpl#getMainEntityName()}.
-   *
-   * <p>Method under test: {@link CountrySubdivisionCategoryImpl#getMainEntityName()}
+   * Method under test: {@link CountrySubdivisionCategoryImpl#getMainEntityName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String CountrySubdivisionCategoryImpl.getMainEntityName()"})
   public void testGetMainEntityName() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertNull(countrySubdivisionCategoryImpl.getMainEntityName());
+    assertNull((new CountrySubdivisionCategoryImpl()).getMainEntityName());
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
-   *   <li>default or parameterless constructor of {@link CountrySubdivisionCategoryImpl}
+   *   <li>default or parameterless constructor of
+   * {@link CountrySubdivisionCategoryImpl}
    *   <li>{@link CountrySubdivisionCategoryImpl#setId(Long)}
    *   <li>{@link CountrySubdivisionCategoryImpl#setName(String)}
    *   <li>{@link CountrySubdivisionCategoryImpl#getId()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void CountrySubdivisionCategoryImpl.<init>()",
-    "Long CountrySubdivisionCategoryImpl.getId()",
-    "void CountrySubdivisionCategoryImpl.setId(Long)",
-    "void CountrySubdivisionCategoryImpl.setName(String)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
-    CountrySubdivisionCategoryImpl actualCountrySubdivisionCategoryImpl =
-        new CountrySubdivisionCategoryImpl();
+    CountrySubdivisionCategoryImpl actualCountrySubdivisionCategoryImpl = new CountrySubdivisionCategoryImpl();
     actualCountrySubdivisionCategoryImpl.setId(1L);
     actualCountrySubdivisionCategoryImpl.setName("Name");
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals(1L, actualCountrySubdivisionCategoryImpl.getId().longValue());
   }
 }

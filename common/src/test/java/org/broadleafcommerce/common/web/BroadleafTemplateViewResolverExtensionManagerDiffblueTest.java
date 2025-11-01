@@ -17,39 +17,67 @@
  */
 package org.broadleafcommerce.common.web;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class BroadleafTemplateViewResolverExtensionManagerDiffblueTest {
   /**
-   * Test {@link BroadleafTemplateViewResolverExtensionManager#getHandlers()}.
-   *
-   * <p>Method under test: {@link BroadleafTemplateViewResolverExtensionManager#getHandlers()}
+   * Method under test:
+   * {@link BroadleafTemplateViewResolverExtensionManager#getHandlers()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.util.List BroadleafTemplateViewResolverExtensionManager.getHandlers()"})
   public void testGetHandlers() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertTrue(new BroadleafTemplateViewResolverExtensionManager().getHandlers().isEmpty());
+    assertTrue((new BroadleafTemplateViewResolverExtensionManager()).getHandlers().isEmpty());
   }
 
   /**
-   * Test {@link BroadleafTemplateViewResolverExtensionManager#continueOnHandled()}.
-   *
-   * <p>Method under test: {@link BroadleafTemplateViewResolverExtensionManager#continueOnHandled()}
+   * Method under test:
+   * {@link BroadleafTemplateViewResolverExtensionManager#getHandlers()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean BroadleafTemplateViewResolverExtensionManager.continueOnHandled()"})
+  public void testGetHandlers2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    BroadleafTemplateViewResolverExtensionManager broadleafTemplateViewResolverExtensionManager = new BroadleafTemplateViewResolverExtensionManager();
+    broadleafTemplateViewResolverExtensionManager
+        .registerHandler(mock(BroadleafTemplateViewResolverExtensionHandler.class));
+
+    // Act and Assert
+    assertEquals(1, broadleafTemplateViewResolverExtensionManager.getHandlers().size());
+  }
+
+  /**
+   * Method under test:
+   * {@link BroadleafTemplateViewResolverExtensionManager#continueOnHandled()}
+   */
+  @Test
   public void testContinueOnHandled() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertTrue(new BroadleafTemplateViewResolverExtensionManager().continueOnHandled());
+    assertTrue((new BroadleafTemplateViewResolverExtensionManager()).continueOnHandled());
+  }
+
+  /**
+   * Method under test:
+   * {@link BroadleafTemplateViewResolverExtensionManager#continueOnHandled()}
+   */
+  @Test
+  public void testContinueOnHandled2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    BroadleafTemplateViewResolverExtensionManager broadleafTemplateViewResolverExtensionManager = new BroadleafTemplateViewResolverExtensionManager();
+    broadleafTemplateViewResolverExtensionManager
+        .registerHandler(mock(BroadleafTemplateViewResolverExtensionHandler.class));
+
+    // Act and Assert
+    assertTrue(broadleafTemplateViewResolverExtensionManager.continueOnHandled());
   }
 }

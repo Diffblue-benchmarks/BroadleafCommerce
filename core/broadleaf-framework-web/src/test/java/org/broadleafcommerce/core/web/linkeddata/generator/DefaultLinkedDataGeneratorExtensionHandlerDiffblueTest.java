@@ -18,25 +18,16 @@
 package org.broadleafcommerce.core.web.linkeddata.generator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 class DefaultLinkedDataGeneratorExtensionHandlerDiffblueTest {
   /**
-   * Test {@link DefaultLinkedDataGeneratorExtensionHandler#getPriority()}.
-   *
-   * <p>Method under test: {@link DefaultLinkedDataGeneratorExtensionHandler#getPriority()}
+   * Method under test:
+   * {@link DefaultLinkedDataGeneratorExtensionHandler#getPriority()}
    */
   @Test
-  @DisplayName("Test getPriority()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int DefaultLinkedDataGeneratorExtensionHandler.getPriority()"})
   void testGetPriority() {
     // Arrange, Act and Assert
-    assertEquals(Integer.MAX_VALUE, new DefaultLinkedDataGeneratorExtensionHandler().getPriority());
+    assertEquals(Integer.MAX_VALUE, (new DefaultLinkedDataGeneratorExtensionHandler()).getPriority());
   }
 }

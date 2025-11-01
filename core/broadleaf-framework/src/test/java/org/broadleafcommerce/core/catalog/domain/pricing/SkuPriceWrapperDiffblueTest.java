@@ -17,22 +17,29 @@
  */
 package org.broadleafcommerce.core.catalog.domain.pricing;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.math.BigDecimal;
+import java.util.Currency;
+import java.util.List;
+import java.util.Map;
+import org.broadleafcommerce.common.money.Money;
+import org.broadleafcommerce.common.util.WeightUnitOfMeasureType;
+import org.broadleafcommerce.core.catalog.domain.Dimension;
 import org.broadleafcommerce.core.catalog.domain.Sku;
 import org.broadleafcommerce.core.catalog.domain.SkuImpl;
+import org.broadleafcommerce.core.catalog.domain.SkuMediaXref;
+import org.broadleafcommerce.core.catalog.domain.Weight;
+import org.broadleafcommerce.core.catalog.service.dynamic.DynamicSkuPrices;
+import org.broadleafcommerce.core.search.domain.FieldEntity;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class SkuPriceWrapperDiffblueTest {
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link SkuPriceWrapper#SkuPriceWrapper(Sku)}
    *   <li>{@link SkuPriceWrapper#setTargetSku(Sku)}
@@ -40,34 +47,106 @@ public class SkuPriceWrapperDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SkuPriceWrapper.<init>(Sku)",
-    "Sku SkuPriceWrapper.getTargetSku()",
-    "void SkuPriceWrapper.setTargetSku(Sku)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     SkuPriceWrapper actualSkuPriceWrapper = new SkuPriceWrapper(new SkuImpl());
     SkuImpl targetSku = new SkuImpl();
     actualSkuPriceWrapper.setTargetSku(targetSku);
 
-    // Assert
+    // Assert that nothing has changed
     assertSame(targetSku, actualSkuPriceWrapper.getTargetSku());
   }
 
   /**
-   * Test {@link SkuPriceWrapper#SkuPriceWrapper()}.
-   *
-   * <p>Method under test: {@link SkuPriceWrapper#SkuPriceWrapper()}
+   * Method under test: {@link SkuPriceWrapper#SkuPriceWrapper()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SkuPriceWrapper.<init>()"})
   public void testNewSkuPriceWrapper() {
     // Arrange, Act and Assert
-    assertTrue(new SkuPriceWrapper().getTargetSku() instanceof SkuImpl);
+    Sku targetSku = (new SkuPriceWrapper()).getTargetSku();
+    assertTrue(targetSku instanceof SkuImpl);
+    Money margin = targetSku.getMargin();
+    Currency currency = margin.getCurrency();
+    assertEquals("$", currency.getSymbol());
+    Weight weight = targetSku.getWeight();
+    WeightUnitOfMeasureType weightUnitOfMeasure = weight.getWeightUnitOfMeasure();
+    assertEquals("Friendly Type", weightUnitOfMeasure.getFriendlyType());
+    FieldEntity fieldEntityType = targetSku.getFieldEntityType();
+    List<String> allLookupTypes = fieldEntityType.getAllLookupTypes();
+    assertEquals(1, allLookupTypes.size());
+    assertEquals("SKU", allLookupTypes.get(0));
+    assertEquals("SKU", fieldEntityType.getType());
+    assertEquals("Sku", fieldEntityType.getFriendlyType());
+    assertEquals("US Dollar", currency.getDisplayName());
+    assertEquals("USD", currency.getCurrencyCode());
+    assertEquals("USD", currency.toString());
+    Dimension dimension = targetSku.getDimension();
+    assertEquals("nullHxnullWxnullD\"", dimension.getDimensionString());
+    assertNull(targetSku.getTaxable());
+    assertNull(targetSku.getId());
+    assertNull(weightUnitOfMeasure.getType());
+    assertNull(targetSku.getDescription());
+    assertNull(targetSku.getDisplayTemplate());
+    assertNull(targetSku.getExternalId());
+    assertNull(targetSku.getLongDescription());
+    assertNull(targetSku.getName());
+    assertNull(targetSku.getTaxCode());
+    assertNull(targetSku.getUpc());
+    assertNull(targetSku.getUrlKey());
+    assertNull(dimension.getDepth());
+    assertNull(dimension.getGirth());
+    assertNull(dimension.getHeight());
+    assertNull(dimension.getWidth());
+    assertNull(weight.getWeight());
+    assertNull(targetSku.getActiveEndDate());
+    assertNull(targetSku.getActiveStartDate());
+    assertNull(targetSku.getCurrency());
+    assertNull(targetSku.getPrimarySkuMedia());
+    assertNull(targetSku.getBaseRetailPrice());
+    assertNull(targetSku.getBaseSalePrice());
+    assertNull(targetSku.getCost());
+    assertNull(targetSku.getListPrice());
+    assertNull(targetSku.getPrice());
+    assertNull(targetSku.getProductOptionValueAdjustments());
+    assertNull(targetSku.getRetailPrice());
+    assertNull(targetSku.getSalePrice());
+    DynamicSkuPrices priceData = targetSku.getPriceData();
+    assertNull(priceData.getPrice());
+    assertNull(priceData.getPriceAdjustment());
+    assertNull(priceData.getRetailPrice());
+    assertNull(priceData.getSalePrice());
+    assertNull(dimension.getDimensionUnitOfMeasure());
+    assertNull(dimension.getContainer());
+    assertNull(dimension.getSize());
+    assertNull(targetSku.getDefaultProduct());
+    assertNull(targetSku.getProduct());
+    assertNull(targetSku.getInventoryType());
+    assertNull(targetSku.getFulfillmentType());
+    assertEquals(0, targetSku.getQuantityAvailable().intValue());
+    assertEquals(2, currency.getDefaultFractionDigits());
+    assertEquals(840, currency.getNumericCode());
+    assertFalse(targetSku.getIsMachineSortable());
+    assertFalse(targetSku.hasRetailPrice());
+    assertFalse(targetSku.hasSalePrice());
+    assertFalse(((SkuImpl) targetSku).getDiscountable());
+    assertFalse(priceData.getDidOverride());
+    assertTrue(targetSku.getExcludedFulfillmentOptions().isEmpty());
+    assertTrue(targetSku.getFees().isEmpty());
+    assertTrue(targetSku.getProductOptionValues().isEmpty());
+    assertTrue(fieldEntityType.getAdditionalLookupTypes().isEmpty());
+    assertTrue(targetSku.getFulfillmentFlatRates().isEmpty());
+    assertTrue(targetSku.getMultiValueSkuAttributes().isEmpty());
+    assertTrue(targetSku.getSkuAttributes().isEmpty());
+    assertTrue(targetSku.getSkuMedia().isEmpty());
+    Map<String, SkuMediaXref> skuMediaXref = targetSku.getSkuMediaXref();
+    assertTrue(skuMediaXref.isEmpty());
+    assertTrue(targetSku.getProductOptionValueXrefs().isEmpty());
+    assertTrue(targetSku.getProductOptionValuesCollection().isEmpty());
+    assertTrue(targetSku.getAvailable());
+    BigDecimal expectedAmount = new BigDecimal("0.00");
+    assertEquals(expectedAmount, margin.getAmount());
+    assertEquals(margin, margin.abs());
+    assertEquals(margin, margin.zero());
+    assertSame(skuMediaXref, targetSku.getSkuMediaXrefIgnoreDefaultSku());
   }
 }

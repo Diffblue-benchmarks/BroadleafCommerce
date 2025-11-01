@@ -22,47 +22,45 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class OrderItemAttributeImplDiffblueTest {
-  @Autowired private OrderItemAttributeImpl orderItemAttributeImpl;
-
   /**
-   * Test {@link OrderItemAttributeImpl#getValue()}.
-   *
-   * <p>Method under test: {@link OrderItemAttributeImpl#getValue()}
+   * Method under test: {@link OrderItemAttributeImpl#getValue()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String OrderItemAttributeImpl.getValue()"})
   public void testGetValue() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
+    assertNull((new OrderItemAttributeImpl()).getValue());
+  }
+
+  /**
+   * Method under test: {@link OrderItemAttributeImpl#getValue()}
+   */
+  @Test
+  public void testGetValue2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    OrderItemAttributeImpl orderItemAttributeImpl = new OrderItemAttributeImpl();
+    orderItemAttributeImpl.setOrderItem(mock(BundleOrderItemImpl.class));
+
+    // Act and Assert
     assertNull(orderItemAttributeImpl.getValue());
   }
 
   /**
-   * Test {@link OrderItemAttributeImpl#clone()}.
-   *
-   * <p>Method under test: {@link OrderItemAttributeImpl#clone()}
+   * Method under test: {@link OrderItemAttributeImpl#clone()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"OrderItemAttribute OrderItemAttributeImpl.clone()"})
   public void testClone() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange and Act
-    OrderItemAttribute actualCloneResult = orderItemAttributeImpl.clone();
+    OrderItemAttribute actualCloneResult = (new OrderItemAttributeImpl()).clone();
 
     // Assert
     assertTrue(actualCloneResult instanceof OrderItemAttributeImpl);
@@ -74,28 +72,35 @@ public class OrderItemAttributeImplDiffblueTest {
   }
 
   /**
-   * Test {@link OrderItemAttributeImpl#equals(Object)}, and {@link
-   * OrderItemAttributeImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Method under test: {@link OrderItemAttributeImpl#clone()}
+   */
+  @Test
+  public void testClone2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    OrderItemAttributeImpl orderItemAttributeImpl = new OrderItemAttributeImpl();
+    orderItemAttributeImpl.setOrderItem(mock(BundleOrderItemImpl.class));
+
+    // Act
+    OrderItemAttribute actualCloneResult = orderItemAttributeImpl.clone();
+
+    // Assert
+    assertTrue(actualCloneResult instanceof OrderItemAttributeImpl);
+    assertNull(actualCloneResult.getId());
+    assertNull(actualCloneResult.toString());
+    assertNull(actualCloneResult.getName());
+    assertNull(actualCloneResult.getValue());
+  }
+
+  /**
+   * Methods under test:
    * <ul>
    *   <li>{@link OrderItemAttributeImpl#equals(Object)}
    *   <li>{@link OrderItemAttributeImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean OrderItemAttributeImpl.equals(Object)",
-    "int OrderItemAttributeImpl.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     OrderItemAttributeImpl orderItemAttributeImpl = new OrderItemAttributeImpl();
@@ -112,32 +117,46 @@ public class OrderItemAttributeImplDiffblueTest {
 
     // Act and Assert
     assertEquals(orderItemAttributeImpl, orderItemAttributeImpl2);
-    assertEquals(orderItemAttributeImpl.hashCode(), orderItemAttributeImpl2.hashCode());
+    int expectedHashCodeResult = orderItemAttributeImpl.hashCode();
+    assertEquals(expectedHashCodeResult, orderItemAttributeImpl2.hashCode());
   }
 
   /**
-   * Test {@link OrderItemAttributeImpl#equals(Object)}, and {@link
-   * OrderItemAttributeImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link OrderItemAttributeImpl#equals(Object)}
    *   <li>{@link OrderItemAttributeImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean OrderItemAttributeImpl.equals(Object)",
-    "int OrderItemAttributeImpl.hashCode()"
-  })
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
+    // Arrange
+    OrderItemAttributeImpl orderItemAttributeImpl = new OrderItemAttributeImpl();
+    orderItemAttributeImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItemAttributeImpl.setName("Name");
+    orderItemAttributeImpl.setOrderItem(mock(OrderItem.class));
+    orderItemAttributeImpl.setValue("42");
+
+    OrderItemAttributeImpl orderItemAttributeImpl2 = new OrderItemAttributeImpl();
+    orderItemAttributeImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItemAttributeImpl2.setName("Name");
+    orderItemAttributeImpl2.setOrderItem(new BundleOrderItemImpl());
+    orderItemAttributeImpl2.setValue("42");
+
+    // Act and Assert
+    assertEquals(orderItemAttributeImpl, orderItemAttributeImpl2);
+    int expectedHashCodeResult = orderItemAttributeImpl.hashCode();
+    assertEquals(expectedHashCodeResult, orderItemAttributeImpl2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link OrderItemAttributeImpl#equals(Object)}
+   *   <li>{@link OrderItemAttributeImpl#hashCode()}
+   * </ul>
+   */
+  @Test
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     OrderItemAttributeImpl orderItemAttributeImpl = new OrderItemAttributeImpl();
@@ -153,22 +172,9 @@ public class OrderItemAttributeImplDiffblueTest {
   }
 
   /**
-   * Test {@link OrderItemAttributeImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderItemAttributeImpl#equals(Object)}
+   * Method under test: {@link OrderItemAttributeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean OrderItemAttributeImpl.equals(Object)",
-    "int OrderItemAttributeImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     OrderItemAttributeImpl orderItemAttributeImpl = new OrderItemAttributeImpl();
@@ -188,22 +194,9 @@ public class OrderItemAttributeImplDiffblueTest {
   }
 
   /**
-   * Test {@link OrderItemAttributeImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderItemAttributeImpl#equals(Object)}
+   * Method under test: {@link OrderItemAttributeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean OrderItemAttributeImpl.equals(Object)",
-    "int OrderItemAttributeImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     OrderItemAttributeImpl orderItemAttributeImpl = new OrderItemAttributeImpl();
@@ -223,22 +216,9 @@ public class OrderItemAttributeImplDiffblueTest {
   }
 
   /**
-   * Test {@link OrderItemAttributeImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderItemAttributeImpl#equals(Object)}
+   * Method under test: {@link OrderItemAttributeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean OrderItemAttributeImpl.equals(Object)",
-    "int OrderItemAttributeImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     OrderItemAttributeImpl orderItemAttributeImpl = new OrderItemAttributeImpl();
@@ -252,22 +232,9 @@ public class OrderItemAttributeImplDiffblueTest {
   }
 
   /**
-   * Test {@link OrderItemAttributeImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderItemAttributeImpl#equals(Object)}
+   * Method under test: {@link OrderItemAttributeImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean OrderItemAttributeImpl.equals(Object)",
-    "int OrderItemAttributeImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     OrderItemAttributeImpl orderItemAttributeImpl = new OrderItemAttributeImpl();
@@ -281,10 +248,7 @@ public class OrderItemAttributeImplDiffblueTest {
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link OrderItemAttributeImpl}
    *   <li>{@link OrderItemAttributeImpl#setId(Long)}
@@ -298,19 +262,6 @@ public class OrderItemAttributeImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OrderItemAttributeImpl.<init>()",
-    "Long OrderItemAttributeImpl.getId()",
-    "String OrderItemAttributeImpl.getName()",
-    "OrderItem OrderItemAttributeImpl.getOrderItem()",
-    "void OrderItemAttributeImpl.setId(Long)",
-    "void OrderItemAttributeImpl.setName(String)",
-    "void OrderItemAttributeImpl.setOrderItem(OrderItem)",
-    "void OrderItemAttributeImpl.setValue(String)",
-    "String OrderItemAttributeImpl.toString()"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     OrderItemAttributeImpl actualOrderItemAttributeImpl = new OrderItemAttributeImpl();
@@ -324,7 +275,7 @@ public class OrderItemAttributeImplDiffblueTest {
     OrderItem actualOrderItem = actualOrderItemAttributeImpl.getOrderItem();
     String actualToStringResult = actualOrderItemAttributeImpl.toString();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("42", actualOrderItemAttributeImpl.getValue());
     assertEquals("42", actualToStringResult);
     assertEquals("Name", actualName);

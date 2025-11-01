@@ -19,1365 +19,871 @@ package org.broadleafcommerce.common.file.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = {StaticAssetPathServiceImpl.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(SpringJUnit4ClassRunner.class)
 public class StaticAssetPathServiceImplDiffblueTest {
-  @Autowired private StaticAssetPathServiceImpl staticAssetPathServiceImpl;
-
   /**
-   * Test {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}.
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String,
-   * boolean)}
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.convertAllAssetPathsInContent(String, boolean)"
-  })
   public void testConvertAllAssetPathsInContent() {
-    // Arrange
-    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("not blank");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("");
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Act and Assert
-    assertEquals(
-        "not blank", staticAssetPathServiceImpl.convertAllAssetPathsInContent("not blank", false));
+    // Arrange, Act and Assert
+    assertEquals("Not all who wander are lost",
+        (new StaticAssetPathServiceImpl()).convertAllAssetPathsInContent("Not all who wander are lost", true));
+    assertNull((new StaticAssetPathServiceImpl()).convertAllAssetPathsInContent(null, true));
+    assertEquals("", (new StaticAssetPathServiceImpl()).convertAllAssetPathsInContent("", true));
   }
 
   /**
-   * Test {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}.
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String,
-   * boolean)}
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.convertAllAssetPathsInContent(String, boolean)"
-  })
   public void testConvertAllAssetPathsInContent2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("not blank");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("http:");
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
 
     // Act and Assert
-    assertEquals(
-        "not blank", staticAssetPathServiceImpl.convertAllAssetPathsInContent("not blank", false));
+    assertEquals("Not all who wander are lost",
+        staticAssetPathServiceImpl.convertAllAssetPathsInContent("Not all who wander are lost", true));
   }
 
   /**
-   * Test {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}.
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String,
-   * boolean)}
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.convertAllAssetPathsInContent(String, boolean)"
-  })
   public void testConvertAllAssetPathsInContent3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    staticAssetPathServiceImpl.setStaticAssetUrlPrefix(" ");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("");
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("https://example.org/example");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
 
     // Act and Assert
-    assertEquals(
-        "not blank", staticAssetPathServiceImpl.convertAllAssetPathsInContent("not blank", false));
+    assertEquals("Not all who wander are lost",
+        staticAssetPathServiceImpl.convertAllAssetPathsInContent("Not all who wander are lost", true));
   }
 
   /**
-   * Test {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}.
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String,
-   * boolean)}
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.convertAllAssetPathsInContent(String, boolean)"
-  })
   public void testConvertAllAssetPathsInContent4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("");
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("https://example.org/example");
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("https://example.org/example");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
 
     // Act and Assert
-    assertEquals(
-        "not blank", staticAssetPathServiceImpl.convertAllAssetPathsInContent("not blank", false));
+    assertEquals("Not all who wander are lost",
+        staticAssetPathServiceImpl.convertAllAssetPathsInContent("Not all who wander are lost", true));
   }
 
   /**
-   * Test {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}.
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String,
-   * boolean)}
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.convertAllAssetPathsInContent(String, boolean)"
-  })
   public void testConvertAllAssetPathsInContent5() {
-    // Arrange
-    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("not blank");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix(null);
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Act and Assert
-    assertEquals(
-        "not blank", staticAssetPathServiceImpl.convertAllAssetPathsInContent("not blank", false));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}.
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.convertAllAssetPathsInContent(String, boolean)"
-  })
-  public void testConvertAllAssetPathsInContent6() {
-    // Arrange
-    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("not blank");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("/");
-
-    // Act and Assert
-    assertEquals(
-        "not blank", staticAssetPathServiceImpl.convertAllAssetPathsInContent("not blank", false));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}.
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.convertAllAssetPathsInContent(String, boolean)"
-  })
-  public void testConvertAllAssetPathsInContent7() {
-    // Arrange
-    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("/");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("/");
-
-    // Act and Assert
-    assertEquals(
-        "not blank", staticAssetPathServiceImpl.convertAllAssetPathsInContent("not blank", false));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}.
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.convertAllAssetPathsInContent(String, boolean)"
-  })
-  public void testConvertAllAssetPathsInContent8() {
-    // Arrange
-    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("not blank");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix(
-        "https://example.org/example");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("/");
-
-    // Act and Assert
-    assertEquals(
-        "not blank", staticAssetPathServiceImpl.convertAllAssetPathsInContent("not blank", true));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}.
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.convertAllAssetPathsInContent(String, boolean)"
-  })
-  public void testConvertAllAssetPathsInContent9() {
-    // Arrange
-    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("not blank");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix(null);
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("/");
-
-    // Act and Assert
-    assertEquals(
-        "not blank", staticAssetPathServiceImpl.convertAllAssetPathsInContent("not blank", true));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}.
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.convertAllAssetPathsInContent(String, boolean)"
-  })
-  public void testConvertAllAssetPathsInContent10() {
-    // Arrange
-    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("not blank");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("http:");
-
-    // Act and Assert
-    assertEquals(
-        "not blank", staticAssetPathServiceImpl.convertAllAssetPathsInContent("not blank", true));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}.
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.convertAllAssetPathsInContent(String, boolean)"
-  })
-  public void testConvertAllAssetPathsInContent11() {
     // Arrange
     StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
-    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("https:");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("https://example.org/example");
-
-    // Act and Assert
-    assertEquals(
-        "https://example.org/example//example.org/example",
-        staticAssetPathServiceImpl.convertAllAssetPathsInContent(
-            "https://example.org/example", false));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}.
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.convertAllAssetPathsInContent(String, boolean)"
-  })
-  public void testConvertAllAssetPathsInContent12() {
-    // Arrange
-    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
-    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("https:");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix(
-        "Static Asset Environment Url Prefix");
-
-    // Act and Assert
-    assertEquals(
-        "Static Asset Environment Url Prefix//example.org/example",
-        staticAssetPathServiceImpl.convertAllAssetPathsInContent(
-            "https://example.org/example", false));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}.
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.convertAllAssetPathsInContent(String, boolean)"
-  })
-  public void testConvertAllAssetPathsInContent13() {
-    // Arrange
-    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
-    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("not blank");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix(
-        "org.broadleafcommerce.common.file.service.StaticAssetPathServiceImpl");
-
-    // Act and Assert
-    assertEquals(
-        "org.broadleafcommerce.common.file.service.StaticAssetPathServiceImpl/",
-        staticAssetPathServiceImpl.convertAllAssetPathsInContent("not blank/", false));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}.
-   *
-   * <ul>
-   *   <li>Then return {@code 42/}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.convertAllAssetPathsInContent(String, boolean)"
-  })
-  public void testConvertAllAssetPathsInContent_thenReturn42() {
-    // Arrange
-    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("not blank");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("42");
-
-    // Act and Assert
-    assertEquals(
-        "42/", staticAssetPathServiceImpl.convertAllAssetPathsInContent("not blank/", false));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}.
-   *
-   * <ul>
-   *   <li>Then return {@code 42//example.org/example}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.convertAllAssetPathsInContent(String, boolean)"
-  })
-  public void testConvertAllAssetPathsInContent_thenReturn42ExampleOrgExample() {
-    // Arrange
-    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
-    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("https:");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("42");
-
-    // Act and Assert
-    assertEquals(
-        "42//example.org/example",
-        staticAssetPathServiceImpl.convertAllAssetPathsInContent(
-            "https://example.org/example", false));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}.
-   *
-   * <ul>
-   *   <li>Then return {@code /example.org/example}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.convertAllAssetPathsInContent(String, boolean)"
-  })
-  public void testConvertAllAssetPathsInContent_thenReturnExampleOrgExample() {
-    // Arrange
-    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
-    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("https:");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("/");
-
-    // Act and Assert
-    assertEquals(
-        "/example.org/example",
-        staticAssetPathServiceImpl.convertAllAssetPathsInContent(
-            "https://example.org/example", false));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}.
-   *
-   * <ul>
-   *   <li>Then return {@code //example.org/example}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.convertAllAssetPathsInContent(String, boolean)"
-  })
-  public void testConvertAllAssetPathsInContent_thenReturnExampleOrgExample2() {
-    // Arrange
-    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
-    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("https:");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("//");
-
-    // Act and Assert
-    assertEquals(
-        "//example.org/example",
-        staticAssetPathServiceImpl.convertAllAssetPathsInContent(
-            "https://example.org/example", false));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}.
-   *
-   * <ul>
-   *   <li>Then return {@code http:/}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.convertAllAssetPathsInContent(String, boolean)"
-  })
-  public void testConvertAllAssetPathsInContent_thenReturnHttp() {
-    // Arrange
-    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("not blank");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("http:");
-
-    // Act and Assert
-    assertEquals(
-        "http:/", staticAssetPathServiceImpl.convertAllAssetPathsInContent("not blank/", false));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}.
-   *
-   * <ul>
-   *   <li>Then return {@code http://example.org/example}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.convertAllAssetPathsInContent(String, boolean)"
-  })
-  public void testConvertAllAssetPathsInContent_thenReturnHttpExampleOrgExample() {
-    // Arrange
-    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
-    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("https:");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("http:");
-
-    // Act and Assert
-    assertEquals(
-        "http://example.org/example",
-        staticAssetPathServiceImpl.convertAllAssetPathsInContent(
-            "https://example.org/example", false));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}.
-   *
-   * <ul>
-   *   <li>Then return {@code https:/}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.convertAllAssetPathsInContent(String, boolean)"
-  })
-  public void testConvertAllAssetPathsInContent_thenReturnHttps() {
-    // Arrange
-    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("not blank");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("https:");
-
-    // Act and Assert
-    assertEquals(
-        "https:/", staticAssetPathServiceImpl.convertAllAssetPathsInContent("not blank/", false));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}.
-   *
-   * <ul>
-   *   <li>Then return {@code https://example.org/example/}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.convertAllAssetPathsInContent(String, boolean)"
-  })
-  public void testConvertAllAssetPathsInContent_thenReturnHttpsExampleOrgExample() {
-    // Arrange
-    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("not blank");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("https://example.org/example");
-
-    // Act and Assert
-    assertEquals(
-        "https://example.org/example/",
-        staticAssetPathServiceImpl.convertAllAssetPathsInContent("not blank/", false));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}.
-   *
-   * <ul>
-   *   <li>Then return {@code https:/example.org/example}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.convertAllAssetPathsInContent(String, boolean)"
-  })
-  public void testConvertAllAssetPathsInContent_thenReturnHttpsExampleOrgExample2() {
-    // Arrange
-    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("themeChangeStatus");
     staticAssetPathServiceImpl.setStaticAssetUrlPrefix("https://example.org/example");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("/");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
 
     // Act and Assert
-    assertEquals(
-        "https:/example.org/example",
-        staticAssetPathServiceImpl.convertAllAssetPathsInContent(
-            "https://example.org/example", false));
+    assertEquals("Not all who wander are lost",
+        staticAssetPathServiceImpl.convertAllAssetPathsInContent("Not all who wander are lost", true));
   }
 
   /**
-   * Test {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}.
-   *
-   * <ul>
-   *   <li>Then return {@code Not all who wander are lost}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String,
-   * boolean)}
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.convertAllAssetPathsInContent(String, boolean)"
-  })
-  public void testConvertAllAssetPathsInContent_thenReturnNotAllWhoWanderAreLost() {
-    // Arrange, Act and Assert
-    assertEquals(
-        "Not all who wander are lost",
-        staticAssetPathServiceImpl.convertAllAssetPathsInContent(
-            "Not all who wander are lost", true));
-  }
+  public void testConvertAllAssetPathsInContent6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}.
-   *
-   * <ul>
-   *   <li>Then return {@code /}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.convertAllAssetPathsInContent(String, boolean)"
-  })
-  public void testConvertAllAssetPathsInContent_thenReturnSlash() {
-    // Arrange
-    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("not blank");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("/");
-
-    // Act and Assert
-    assertEquals(
-        "/", staticAssetPathServiceImpl.convertAllAssetPathsInContent("not blank/", false));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}.
-   *
-   * <ul>
-   *   <li>Then return {@code //}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.convertAllAssetPathsInContent(String, boolean)"
-  })
-  public void testConvertAllAssetPathsInContent_thenReturnSlashSlash() {
-    // Arrange
-    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("not blank");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("//");
-
-    // Act and Assert
-    assertEquals(
-        "//", staticAssetPathServiceImpl.convertAllAssetPathsInContent("not blank/", false));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}.
-   *
-   * <ul>
-   *   <li>Then return {@code Static Asset Environment Url Prefix/}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.convertAllAssetPathsInContent(String, boolean)"
-  })
-  public void testConvertAllAssetPathsInContent_thenReturnStaticAssetEnvironmentUrlPrefix() {
-    // Arrange
-    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("not blank");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix(
-        "Static Asset Environment Url Prefix");
-
-    // Act and Assert
-    assertEquals(
-        "Static Asset Environment Url Prefix/",
-        staticAssetPathServiceImpl.convertAllAssetPathsInContent("not blank/", false));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}.
-   *
-   * <ul>
-   *   <li>Then return {@code themeChangeStatus/}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.convertAllAssetPathsInContent(String, boolean)"
-  })
-  public void testConvertAllAssetPathsInContent_thenReturnThemeChangeStatus() {
-    // Arrange
-    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("not blank");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("themeChangeStatus");
-
-    // Act and Assert
-    assertEquals(
-        "themeChangeStatus/",
-        staticAssetPathServiceImpl.convertAllAssetPathsInContent("not blank/", false));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}.
-   *
-   * <ul>
-   *   <li>Then return {@code themeChangeStatus//example.org/example}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.convertAllAssetPathsInContent(String, boolean)"
-  })
-  public void testConvertAllAssetPathsInContent_thenReturnThemeChangeStatusExampleOrgExample() {
     // Arrange
     StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
-    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("https:");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("themeChangeStatus");
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("");
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("https://example.org/example");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
 
     // Act and Assert
-    assertEquals(
-        "themeChangeStatus//example.org/example",
-        staticAssetPathServiceImpl.convertAllAssetPathsInContent(
-            "https://example.org/example", false));
+    assertEquals("Not all who wander are lost",
+        staticAssetPathServiceImpl.convertAllAssetPathsInContent("Not all who wander are lost", true));
   }
 
   /**
-   * Test {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}.
-   *
-   * <ul>
-   *   <li>When space.
-   *   <li>Then return space.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String,
-   * boolean)}
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.convertAllAssetPathsInContent(String, boolean)"
-  })
-  public void testConvertAllAssetPathsInContent_whenSpace_thenReturnSpace() {
+  public void testConvertAllAssetPathsInContent7() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("not blank");
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("/");
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("https://example.org/example");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("Not all who wander are lost",
+        staticAssetPathServiceImpl.convertAllAssetPathsInContent("Not all who wander are lost", true));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
+   */
+  @Test
+  public void testConvertAllAssetPathsInContent8() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("themeChangeStatus");
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("https://example.org/example");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("https://example.org/example",
+        staticAssetPathServiceImpl.convertAllAssetPathsInContent("https://example.org/example", true));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
+   */
+  @Test
+  public void testConvertAllAssetPathsInContent9() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("https://example.org/example");
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("themeChangeStatus");
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("https://example.org/example");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("https://example.org/example",
+        staticAssetPathServiceImpl.convertAllAssetPathsInContent("https://example.org/example", true));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
+   */
+  @Test
+  public void testConvertAllAssetPathsInContent10() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("http:");
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("https://example.org/example");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("https://example.org/example",
+        staticAssetPathServiceImpl.convertAllAssetPathsInContent("https://example.org/example", true));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
+   */
+  @Test
+  public void testConvertAllAssetPathsInContent11() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("themeChangeStatus");
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("https://example.org/example");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("https://example.org/example",
+        staticAssetPathServiceImpl.convertAllAssetPathsInContent("https://example.org/example", false));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
+   */
+  @Test
+  public void testConvertAllAssetPathsInContent12() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("/");
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("themeChangeStatus");
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("https://example.org/example");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("https:/example.org/example",
+        staticAssetPathServiceImpl.convertAllAssetPathsInContent("https://example.org/example", true));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
+   */
+  @Test
+  public void testConvertAllAssetPathsInContent13() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
     staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("themeChangeStatus");
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("https://example.org/example");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("https://example.org/example",
+        staticAssetPathServiceImpl.convertAllAssetPathsInContent("https://example.org/example", true));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
+   */
+  @Test
+  public void testConvertAllAssetPathsInContent14() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("https://example.org/example");
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("themeChangeStatus");
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("/");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("https:https://example.org/example/example.org/example",
+        staticAssetPathServiceImpl.convertAllAssetPathsInContent("https://example.org/example", true));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
+   */
+  @Test
+  public void testConvertAllAssetPathsInContent15() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("http:");
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("/");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("https:https:/example.org/example",
+        staticAssetPathServiceImpl.convertAllAssetPathsInContent("https://example.org/example", true));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
+   */
+  @Test
+  public void testConvertAllAssetPathsInContent16() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("themeChangeStatus");
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("/");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("https:themeChangeStatus/example.org/example",
+        staticAssetPathServiceImpl.convertAllAssetPathsInContent("https://example.org/example", false));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
+   */
+  @Test
+  public void testConvertAllAssetPathsInContent17() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("/https://exampleUorg/example/");
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("themeChangeStatus");
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("/");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("https:/https://exampleUorg/example/example.org/example",
+        staticAssetPathServiceImpl.convertAllAssetPathsInContent("https://example.org/example", true));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
+   */
+  @Test
+  public void testConvertAllAssetPathsInContent18() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("Static Asset Environment Secure Url Prefix");
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("themeChangeStatus");
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("/");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("https:Static Asset Environment Secure Url Prefix/example.org/example",
+        staticAssetPathServiceImpl.convertAllAssetPathsInContent("https://example.org/example", true));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
+   */
+  @Test
+  public void testConvertAllAssetPathsInContent19() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("42");
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("themeChangeStatus");
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("/");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("https:42/example.org/example",
+        staticAssetPathServiceImpl.convertAllAssetPathsInContent("https://example.org/example", true));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
+   */
+  @Test
+  public void testConvertAllAssetPathsInContent20() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("http:");
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("themeChangeStatus");
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("/");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("https:http:/example.org/example",
+        staticAssetPathServiceImpl.convertAllAssetPathsInContent("https://example.org/example", true));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
+   */
+  @Test
+  public void testConvertAllAssetPathsInContent21() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("https://example.org/example");
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("themeChangeStatus");
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("/");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("https://example.org/example/", staticAssetPathServiceImpl.convertAllAssetPathsInContent("//", true));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
+   */
+  @Test
+  public void testConvertAllAssetPathsInContent22() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("https://example.org/example");
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("themeChangeStatus");
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("/");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("/https:https://example.org/example/exampleUorg/example/",
+        staticAssetPathServiceImpl.convertAllAssetPathsInContent("/https://exampleUorg/example/", true));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
+   */
+  @Test
+  public void testConvertAllAssetPathsInContent23() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("http:");
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("/");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("https:/", staticAssetPathServiceImpl.convertAllAssetPathsInContent("//", true));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
+   */
+  @Test
+  public void testConvertAllAssetPathsInContent24() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("http:");
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("/");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("https:/", staticAssetPathServiceImpl.convertAllAssetPathsInContent("/https:/", true));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
+   */
+  @Test
+  public void testConvertAllAssetPathsInContent25() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("/themeChangeStatus/");
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("/");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("https:/themeChangeStatus/example.org/example",
+        staticAssetPathServiceImpl.convertAllAssetPathsInContent("https://example.org/example", false));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
+   */
+  @Test
+  public void testConvertAllAssetPathsInContent26() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("Static Asset Environment Url Prefix");
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("/");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("https:Static Asset Environment Url Prefix/example.org/example",
+        staticAssetPathServiceImpl.convertAllAssetPathsInContent("https://example.org/example", false));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
+   */
+  @Test
+  public void testConvertAllAssetPathsInContent27() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("themeChangeStatus");
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("/");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("themeChangeStatus/", staticAssetPathServiceImpl.convertAllAssetPathsInContent("//", false));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
+   */
+  @Test
+  public void testConvertAllAssetPathsInContent28() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("themeChangeStatus");
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("/");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("themeChangeStatus/",
+        staticAssetPathServiceImpl.convertAllAssetPathsInContent("/themeChangeStatus/", false));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
+   */
+  @Test
+  public void testConvertAllAssetPathsInContent29() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("/");
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("themeChangeStatus");
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("https:");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("/example.org/example",
+        staticAssetPathServiceImpl.convertAllAssetPathsInContent("https://example.org/example", true));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
+   */
+  @Test
+  public void testConvertAllAssetPathsInContent30() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("/https://exampleUorg/example/");
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("themeChangeStatus");
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("/");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("/https://exampleUorg/example/", staticAssetPathServiceImpl.convertAllAssetPathsInContent("//", true));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
+   */
+  @Test
+  public void testConvertAllAssetPathsInContent31() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("/https://exampleUorg/example/");
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("themeChangeStatus");
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("/");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("/https://exampleUorg/example/https:/https://exampleUorg/example/exampleUorg/example/",
+        staticAssetPathServiceImpl.convertAllAssetPathsInContent("//https://exampleUorg/example/", true));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
+   */
+  @Test
+  public void testConvertAllAssetPathsInContent32() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("/https://exampleUorg/example/");
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("themeChangeStatus");
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("/");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("/https:/https://exampleUorg/example/exampleUorg/example/",
+        staticAssetPathServiceImpl.convertAllAssetPathsInContent("/https://exampleUorg/example/", true));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
+   */
+  @Test
+  public void testConvertAllAssetPathsInContent33() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("Static Asset Environment Secure Url Prefix");
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("themeChangeStatus");
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("/");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("Static Asset Environment Secure Url Prefix/",
+        staticAssetPathServiceImpl.convertAllAssetPathsInContent("//", true));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}
+   */
+  @Test
+  public void testConvertAllAssetPathsInContent34() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("Static Asset Environment Secure Url Prefix");
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("themeChangeStatus");
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("/");
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("Static Asset Environment Secure Url Prefix/",
+        staticAssetPathServiceImpl.convertAllAssetPathsInContent("/Static Asset Environment Secure Url Prefix/", true));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAssetPath(String, String, boolean)}
+   */
+  @Test
+  public void testConvertAssetPath() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertEquals("/Context Path/Asset Path",
+        (new StaticAssetPathServiceImpl()).convertAssetPath("Asset Path", "Context Path", true));
+    assertNull((new StaticAssetPathServiceImpl()).convertAssetPath(null, null, false));
+    assertEquals("/", (new StaticAssetPathServiceImpl()).convertAssetPath("/", null, false));
+    assertEquals("/", (new StaticAssetPathServiceImpl()).convertAssetPath("/", "", false));
+    assertEquals("/", (new StaticAssetPathServiceImpl()).convertAssetPath("/", "/", false));
+    assertEquals("http:", (new StaticAssetPathServiceImpl()).convertAssetPath("http:", "Context Path", true));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAssetPath(String, String, boolean)}
+   */
+  @Test
+  public void testConvertAssetPath2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("Asset Path", staticAssetPathServiceImpl.convertAssetPath("Asset Path", "Context Path", true));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAssetPath(String, String, boolean)}
+   */
+  @Test
+  public void testConvertAssetPath3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("/Context Path/Asset Path",
+        staticAssetPathServiceImpl.convertAssetPath("Asset Path", "Context Path", true));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAssetPath(String, String, boolean)}
+   */
+  @Test
+  public void testConvertAssetPath4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("/");
+
+    // Act and Assert
+    assertEquals("Asset Path", staticAssetPathServiceImpl.convertAssetPath("Asset Path", "Context Path", true));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAssetPath(String, String, boolean)}
+   */
+  @Test
+  public void testConvertAssetPath5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
     staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("");
 
     // Act and Assert
-    assertEquals(" ", staticAssetPathServiceImpl.convertAllAssetPathsInContent(" ", false));
+    assertEquals("/Context Path/Asset Path",
+        staticAssetPathServiceImpl.convertAssetPath("Asset Path", "Context Path", true));
   }
 
   /**
-   * Test {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String, boolean)}.
-   *
-   * <ul>
-   *   <li>When {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAllAssetPathsInContent(String,
-   * boolean)}
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAssetPath(String, String, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.convertAllAssetPathsInContent(String, boolean)"
-  })
-  public void testConvertAllAssetPathsInContent_whenTrue() {
+  public void testConvertAssetPath6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("not blank");
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
     staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
     staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("/");
 
     // Act and Assert
-    assertEquals(
-        "not blank", staticAssetPathServiceImpl.convertAllAssetPathsInContent("not blank", true));
+    assertEquals("Asset Path", staticAssetPathServiceImpl.convertAssetPath("Asset Path", "Context Path", true));
   }
 
   /**
-   * Test {@link StaticAssetPathServiceImpl#convertAssetPath(String, String, boolean)}.
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAssetPath(String, String,
-   * boolean)}
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAssetPath(String, String, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String StaticAssetPathServiceImpl.convertAssetPath(String, String, boolean)"})
-  public void testConvertAssetPath() {
+  public void testConvertAssetPath7() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("https://example.org/example");
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("/");
     staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("/");
 
     // Act and Assert
-    assertEquals("/", staticAssetPathServiceImpl.convertAssetPath("/", null, false));
+    assertEquals("/", staticAssetPathServiceImpl.convertAssetPath("/", "Context Path", true));
   }
 
   /**
-   * Test {@link StaticAssetPathServiceImpl#convertAssetPath(String, String, boolean)}.
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAssetPath(String, String,
-   * boolean)}
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAssetPath(String, String, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String StaticAssetPathServiceImpl.convertAssetPath(String, String, boolean)"})
-  public void testConvertAssetPath2() {
-    // Arrange
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix(null);
+  public void testConvertAssetPath8() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Act and Assert
-    assertEquals("/", staticAssetPathServiceImpl.convertAssetPath("/", null, false));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAssetPath(String, String, boolean)}.
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAssetPath(String, String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String StaticAssetPathServiceImpl.convertAssetPath(String, String, boolean)"})
-  public void testConvertAssetPath3() {
     // Arrange
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("/");
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("/");
     staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("/");
 
     // Act and Assert
-    assertEquals("/", staticAssetPathServiceImpl.convertAssetPath("/", null, true));
+    assertEquals("/Context Path/", staticAssetPathServiceImpl.convertAssetPath("/", "Context Path", true));
   }
 
   /**
-   * Test {@link StaticAssetPathServiceImpl#convertAssetPath(String, String, boolean)}.
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAssetPath(String, String,
-   * boolean)}
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAssetPath(String, String, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String StaticAssetPathServiceImpl.convertAssetPath(String, String, boolean)"})
-  public void testConvertAssetPath4() {
-    // Arrange
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix(null);
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("/");
+  public void testConvertAssetPath9() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Act and Assert
-    assertEquals("/", staticAssetPathServiceImpl.convertAssetPath("/", null, true));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAssetPath(String, String, boolean)}.
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAssetPath(String, String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String StaticAssetPathServiceImpl.convertAssetPath(String, String, boolean)"})
-  public void testConvertAssetPath5() {
     // Arrange
     StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
     staticAssetPathServiceImpl.setStaticAssetUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("http:");
-
-    // Act and Assert
-    assertEquals(
-        "https:/Asset Path",
-        staticAssetPathServiceImpl.convertAssetPath("Asset Path", "Context Path", true));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAssetPath(String, String, boolean)}.
-   *
-   * <ul>
-   *   <li>Then return {@code ${asset.server.url.prefix.secure}/Asset Path}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAssetPath(String, String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String StaticAssetPathServiceImpl.convertAssetPath(String, String, boolean)"})
-  public void testConvertAssetPath_thenReturnAssetServerUrlPrefixSecureAssetPath() {
-    // Arrange, Act and Assert
-    assertEquals(
-        "${asset.server.url.prefix.secure}/Asset Path",
-        staticAssetPathServiceImpl.convertAssetPath("Asset Path", "Context Path", true));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAssetPath(String, String, boolean)}.
-   *
-   * <ul>
-   *   <li>Then return {@code /Context Path/}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAssetPath(String, String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String StaticAssetPathServiceImpl.convertAssetPath(String, String, boolean)"})
-  public void testConvertAssetPath_thenReturnContextPath() {
-    // Arrange
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("");
-
-    // Act and Assert
-    assertEquals(
-        "/Context Path/", staticAssetPathServiceImpl.convertAssetPath("/", "Context Path", false));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAssetPath(String, String, boolean)}.
-   *
-   * <ul>
-   *   <li>Then return {@code /Context Path/Asset Path}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAssetPath(String, String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String StaticAssetPathServiceImpl.convertAssetPath(String, String, boolean)"})
-  public void testConvertAssetPath_thenReturnContextPathAssetPath() {
-    // Arrange
-    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
-    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("/");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("/");
     staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("/");
 
     // Act and Assert
-    assertEquals(
-        "/Context Path/Asset Path",
-        staticAssetPathServiceImpl.convertAssetPath("Asset Path", "Context Path", true));
+    assertEquals("/", staticAssetPathServiceImpl.convertAssetPath("/", "Context Path", true));
   }
 
   /**
-   * Test {@link StaticAssetPathServiceImpl#convertAssetPath(String, String, boolean)}.
-   *
-   * <ul>
-   *   <li>Then return {@code http:/}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAssetPath(String, String,
-   * boolean)}
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#convertAssetPath(String, String, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String StaticAssetPathServiceImpl.convertAssetPath(String, String, boolean)"})
-  public void testConvertAssetPath_thenReturnHttp() {
-    // Arrange
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("http:");
+  public void testConvertAssetPath10() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Act and Assert
-    assertEquals("http:/", staticAssetPathServiceImpl.convertAssetPath("/", null, false));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAssetPath(String, String, boolean)}.
-   *
-   * <ul>
-   *   <li>Then return {@code https:/Asset Path}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAssetPath(String, String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String StaticAssetPathServiceImpl.convertAssetPath(String, String, boolean)"})
-  public void testConvertAssetPath_thenReturnHttpsAssetPath() {
     // Arrange
     StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
-    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("/");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("http:");
-
-    // Act and Assert
-    assertEquals(
-        "https:/Asset Path",
-        staticAssetPathServiceImpl.convertAssetPath("Asset Path", "Context Path", true));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAssetPath(String, String, boolean)}.
-   *
-   * <ul>
-   *   <li>Then return {@code not blank/}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAssetPath(String, String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String StaticAssetPathServiceImpl.convertAssetPath(String, String, boolean)"})
-  public void testConvertAssetPath_thenReturnNotBlank() {
-    // Arrange
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("not blank");
-
-    // Act and Assert
-    assertEquals("not blank/", staticAssetPathServiceImpl.convertAssetPath("/", null, false));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAssetPath(String, String, boolean)}.
-   *
-   * <ul>
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAssetPath(String, String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String StaticAssetPathServiceImpl.convertAssetPath(String, String, boolean)"})
-  public void testConvertAssetPath_thenReturnNull() {
-    // Arrange
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("");
-
-    // Act and Assert
-    assertNull(staticAssetPathServiceImpl.convertAssetPath(null, null, false));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAssetPath(String, String, boolean)}.
-   *
-   * <ul>
-   *   <li>Then return {@code /}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAssetPath(String, String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String StaticAssetPathServiceImpl.convertAssetPath(String, String, boolean)"})
-  public void testConvertAssetPath_thenReturnSlash() {
-    // Arrange
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("");
-
-    // Act and Assert
-    assertEquals("/", staticAssetPathServiceImpl.convertAssetPath("/", null, false));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAssetPath(String, String, boolean)}.
-   *
-   * <ul>
-   *   <li>Then return {@code /}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAssetPath(String, String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String StaticAssetPathServiceImpl.convertAssetPath(String, String, boolean)"})
-  public void testConvertAssetPath_thenReturnSlash2() {
-    // Arrange
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("");
-
-    // Act and Assert
-    assertEquals("/", staticAssetPathServiceImpl.convertAssetPath("/", "/", false));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAssetPath(String, String, boolean)}.
-   *
-   * <ul>
-   *   <li>When {@code Asset Path}.
-   *   <li>Then return {@code /Asset Path}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAssetPath(String, String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String StaticAssetPathServiceImpl.convertAssetPath(String, String, boolean)"})
-  public void testConvertAssetPath_whenAssetPath_thenReturnAssetPath() {
-    // Arrange
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("");
-
-    // Act and Assert
-    assertEquals(
-        "/Asset Path", staticAssetPathServiceImpl.convertAssetPath("Asset Path", null, false));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAssetPath(String, String, boolean)}.
-   *
-   * <ul>
-   *   <li>When empty string.
-   *   <li>Then return {@code /}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAssetPath(String, String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String StaticAssetPathServiceImpl.convertAssetPath(String, String, boolean)"})
-  public void testConvertAssetPath_whenEmptyString_thenReturnSlash() {
-    // Arrange
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("");
-
-    // Act and Assert
-    assertEquals("/", staticAssetPathServiceImpl.convertAssetPath("/", "", false));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAssetPath(String, String, boolean)}.
-   *
-   * <ul>
-   *   <li>When {@code http:}.
-   *   <li>Then return {@code ${asset.server.url.prefix.secure}/http:}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAssetPath(String, String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String StaticAssetPathServiceImpl.convertAssetPath(String, String, boolean)"})
-  public void testConvertAssetPath_whenHttp_thenReturnAssetServerUrlPrefixSecureHttp() {
-    // Arrange, Act and Assert
-    assertEquals(
-        "${asset.server.url.prefix.secure}/http:",
-        staticAssetPathServiceImpl.convertAssetPath("http:", "Context Path", true));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAssetPath(String, String, boolean)}.
-   *
-   * <ul>
-   *   <li>When {@code http:}.
-   *   <li>Then return {@code http:}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAssetPath(String, String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String StaticAssetPathServiceImpl.convertAssetPath(String, String, boolean)"})
-  public void testConvertAssetPath_whenHttp_thenReturnHttp() {
-    // Arrange
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("");
-
-    // Act and Assert
-    assertEquals("http:", staticAssetPathServiceImpl.convertAssetPath("http:", null, false));
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#convertAssetPath(String, String, boolean)}.
-   *
-   * <ul>
-   *   <li>When {@code not blank}.
-   *   <li>Then return {@code ${asset.server.url.prefix.secure}/not blank}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#convertAssetPath(String, String,
-   * boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String StaticAssetPathServiceImpl.convertAssetPath(String, String, boolean)"})
-  public void testConvertAssetPath_whenNotBlank_thenReturnAssetServerUrlPrefixSecureNotBlank() {
-    // Arrange, Act and Assert
-    assertEquals(
-        "${asset.server.url.prefix.secure}/not blank",
-        staticAssetPathServiceImpl.convertAssetPath("not blank", "Context Path", true));
-  }
-
-  /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link StaticAssetPathServiceImpl#setStaticAssetEnvironmentSecureUrlPrefix(String)}
-   *   <li>{@link StaticAssetPathServiceImpl#setStaticAssetEnvironmentUrlPrefix(String)}
-   *   <li>{@link StaticAssetPathServiceImpl#setStaticAssetUrlPrefix(String)}
-   *   <li>{@link StaticAssetPathServiceImpl#getStaticAssetUrlPrefix()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.getStaticAssetUrlPrefix()",
-    "void StaticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix(String)",
-    "void StaticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix(String)",
-    "void StaticAssetPathServiceImpl.setStaticAssetUrlPrefix(String)"
-  })
-  public void testGettersAndSetters() {
-    // Arrange
-    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
-
-    // Act
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix(
-        "https://example.org/example");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("https://example.org/example");
     staticAssetPathServiceImpl.setStaticAssetUrlPrefix("https://example.org/example");
+    staticAssetPathServiceImpl
+        .setStaticAssetEnvironmentSecureUrlPrefix("https://example.org/examplehttps://example.org/example");
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("/");
 
-    // Assert
-    assertEquals(
-        "https://example.org/example", staticAssetPathServiceImpl.getStaticAssetUrlPrefix());
+    // Act and Assert
+    assertEquals("https://example.org/example", staticAssetPathServiceImpl.convertAssetPath("/", "Context Path", true));
   }
 
   /**
-   * Test {@link StaticAssetPathServiceImpl#getStaticAssetEnvironmentUrlPrefix()}.
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#getStaticAssetEnvironmentUrlPrefix()}
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#getStaticAssetEnvironmentUrlPrefix()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String StaticAssetPathServiceImpl.getStaticAssetEnvironmentUrlPrefix()"})
   public void testGetStaticAssetEnvironmentUrlPrefix() {
-    // Arrange
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix(null);
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Act and Assert
-    assertNull(staticAssetPathServiceImpl.getStaticAssetEnvironmentUrlPrefix());
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#getStaticAssetEnvironmentUrlPrefix()}.
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#getStaticAssetEnvironmentUrlPrefix()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String StaticAssetPathServiceImpl.getStaticAssetEnvironmentUrlPrefix()"})
-  public void testGetStaticAssetEnvironmentUrlPrefix2() {
-    // Arrange
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("");
-
-    // Act and Assert
-    assertNull(staticAssetPathServiceImpl.getStaticAssetEnvironmentUrlPrefix());
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#getStaticAssetEnvironmentUrlPrefix()}.
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#getStaticAssetEnvironmentUrlPrefix()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String StaticAssetPathServiceImpl.getStaticAssetEnvironmentUrlPrefix()"})
-  public void testGetStaticAssetEnvironmentUrlPrefix3() {
-    // Arrange
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix(
-        "${asset.server.url.prefix.internal}");
-
-    // Act and Assert
-    assertNull(staticAssetPathServiceImpl.getStaticAssetEnvironmentUrlPrefix());
-  }
-
-  /**
-   * Test {@link StaticAssetPathServiceImpl#getStaticAssetEnvironmentUrlPrefix()}.
-   *
-   * <ul>
-   *   <li>Then return {@code ${asset.server.url.prefix}/}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#getStaticAssetEnvironmentUrlPrefix()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String StaticAssetPathServiceImpl.getStaticAssetEnvironmentUrlPrefix()"})
-  public void testGetStaticAssetEnvironmentUrlPrefix_thenReturnAssetServerUrlPrefix() {
     // Arrange, Act and Assert
-    assertEquals(
-        "${asset.server.url.prefix}/",
-        staticAssetPathServiceImpl.getStaticAssetEnvironmentUrlPrefix());
+    assertNull((new StaticAssetPathServiceImpl()).getStaticAssetEnvironmentUrlPrefix());
   }
 
   /**
-   * Test {@link StaticAssetPathServiceImpl#getStaticAssetEnvironmentUrlPrefix()}.
-   *
-   * <ul>
-   *   <li>Then return {@code /}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#getStaticAssetEnvironmentUrlPrefix()}
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#getStaticAssetEnvironmentUrlPrefix()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String StaticAssetPathServiceImpl.getStaticAssetEnvironmentUrlPrefix()"})
-  public void testGetStaticAssetEnvironmentUrlPrefix_thenReturnSlash() {
+  public void testGetStaticAssetEnvironmentUrlPrefix2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("https://example.org/example/", staticAssetPathServiceImpl.getStaticAssetEnvironmentUrlPrefix());
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#getStaticAssetEnvironmentUrlPrefix()}
+   */
+  @Test
+  public void testGetStaticAssetEnvironmentUrlPrefix3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
     staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("/");
 
     // Act and Assert
@@ -1385,129 +891,124 @@ public class StaticAssetPathServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link StaticAssetPathServiceImpl#getStaticAssetEnvironmentSecureUrlPrefix()}.
-   *
-   * <p>Method under test: {@link
-   * StaticAssetPathServiceImpl#getStaticAssetEnvironmentSecureUrlPrefix()}
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#getStaticAssetEnvironmentUrlPrefix()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.getStaticAssetEnvironmentSecureUrlPrefix()"
-  })
-  public void testGetStaticAssetEnvironmentSecureUrlPrefix() {
-    // Arrange, Act and Assert
-    assertEquals(
-        "${asset.server.url.prefix.secure}/",
-        staticAssetPathServiceImpl.getStaticAssetEnvironmentSecureUrlPrefix());
-  }
+  public void testGetStaticAssetEnvironmentUrlPrefix4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-  /**
-   * Test {@link StaticAssetPathServiceImpl#getStaticAssetEnvironmentSecureUrlPrefix()}.
-   *
-   * <p>Method under test: {@link
-   * StaticAssetPathServiceImpl#getStaticAssetEnvironmentSecureUrlPrefix()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.getStaticAssetEnvironmentSecureUrlPrefix()"
-  })
-  public void testGetStaticAssetEnvironmentSecureUrlPrefix2() {
     // Arrange
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
     staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("");
 
     // Act and Assert
-    assertNull(staticAssetPathServiceImpl.getStaticAssetEnvironmentSecureUrlPrefix());
+    assertNull(staticAssetPathServiceImpl.getStaticAssetEnvironmentUrlPrefix());
   }
 
   /**
-   * Test {@link StaticAssetPathServiceImpl#getStaticAssetEnvironmentSecureUrlPrefix()}.
-   *
-   * <p>Method under test: {@link
-   * StaticAssetPathServiceImpl#getStaticAssetEnvironmentSecureUrlPrefix()}
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#getStaticAssetEnvironmentUrlPrefix()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.getStaticAssetEnvironmentSecureUrlPrefix()"
-  })
-  public void testGetStaticAssetEnvironmentSecureUrlPrefix3() {
+  public void testGetStaticAssetEnvironmentUrlPrefix5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix(
-        "${asset.server.url.prefix.internal}");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("http:");
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("https://example.org/example");
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("https://example.org/example");
+
+    // Act and Assert
+    assertNull(staticAssetPathServiceImpl.getStaticAssetEnvironmentUrlPrefix());
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#getStaticAssetEnvironmentSecureUrlPrefix()}
+   */
+  @Test
+  public void testGetStaticAssetEnvironmentSecureUrlPrefix() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertNull((new StaticAssetPathServiceImpl()).getStaticAssetEnvironmentSecureUrlPrefix());
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#getStaticAssetEnvironmentSecureUrlPrefix()}
+   */
+  @Test
+  public void testGetStaticAssetEnvironmentSecureUrlPrefix2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("https://example.org/example/", staticAssetPathServiceImpl.getStaticAssetEnvironmentSecureUrlPrefix());
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#getStaticAssetEnvironmentSecureUrlPrefix()}
+   */
+  @Test
+  public void testGetStaticAssetEnvironmentSecureUrlPrefix3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("https://example.org/example");
 
     // Act and Assert
     assertNull(staticAssetPathServiceImpl.getStaticAssetEnvironmentSecureUrlPrefix());
   }
 
   /**
-   * Test {@link StaticAssetPathServiceImpl#getStaticAssetEnvironmentSecureUrlPrefix()}.
-   *
-   * <p>Method under test: {@link
-   * StaticAssetPathServiceImpl#getStaticAssetEnvironmentSecureUrlPrefix()}
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#getStaticAssetEnvironmentSecureUrlPrefix()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.getStaticAssetEnvironmentSecureUrlPrefix()"
-  })
   public void testGetStaticAssetEnvironmentSecureUrlPrefix4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("/");
+
+    // Act and Assert
+    assertEquals("/", staticAssetPathServiceImpl.getStaticAssetEnvironmentSecureUrlPrefix());
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#getStaticAssetEnvironmentSecureUrlPrefix()}
+   */
+  @Test
+  public void testGetStaticAssetEnvironmentSecureUrlPrefix5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
     staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("foo");
 
     // Act and Assert
     assertNull(staticAssetPathServiceImpl.getStaticAssetEnvironmentSecureUrlPrefix());
   }
 
   /**
-   * Test {@link StaticAssetPathServiceImpl#getStaticAssetEnvironmentSecureUrlPrefix()}.
-   *
-   * <ul>
-   *   <li>Given {@link StaticAssetPathServiceImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * StaticAssetPathServiceImpl#getStaticAssetEnvironmentSecureUrlPrefix()}
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#getStaticAssetEnvironmentSecureUrlPrefix()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.getStaticAssetEnvironmentSecureUrlPrefix()"
-  })
-  public void testGetStaticAssetEnvironmentSecureUrlPrefix_givenStaticAssetPathServiceImpl() {
-    // Arrange, Act and Assert
-    assertNull(new StaticAssetPathServiceImpl().getStaticAssetEnvironmentSecureUrlPrefix());
-  }
+  public void testGetStaticAssetEnvironmentSecureUrlPrefix6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-  /**
-   * Test {@link StaticAssetPathServiceImpl#getStaticAssetEnvironmentSecureUrlPrefix()}.
-   *
-   * <ul>
-   *   <li>Then return {@code https:/}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * StaticAssetPathServiceImpl#getStaticAssetEnvironmentSecureUrlPrefix()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.getStaticAssetEnvironmentSecureUrlPrefix()"
-  })
-  public void testGetStaticAssetEnvironmentSecureUrlPrefix_thenReturnHttps() {
     // Arrange
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("");
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
     staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("http:");
 
     // Act and Assert
@@ -1515,67 +1016,74 @@ public class StaticAssetPathServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link StaticAssetPathServiceImpl#getStaticAssetEnvironmentSecureUrlPrefix()}.
-   *
-   * <ul>
-   *   <li>Then return {@code /}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * StaticAssetPathServiceImpl#getStaticAssetEnvironmentSecureUrlPrefix()}
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#getStaticAssetEnvironmentSecureUrlPrefix()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String StaticAssetPathServiceImpl.getStaticAssetEnvironmentSecureUrlPrefix()"
-  })
-  public void testGetStaticAssetEnvironmentSecureUrlPrefix_thenReturnSlash() {
+  public void testGetStaticAssetEnvironmentSecureUrlPrefix7() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("/");
-    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("");
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("https://example.org/example");
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("https://example.org/example");
 
     // Act and Assert
-    assertEquals("/", staticAssetPathServiceImpl.getStaticAssetEnvironmentSecureUrlPrefix());
+    assertNull(staticAssetPathServiceImpl.getStaticAssetEnvironmentSecureUrlPrefix());
   }
 
   /**
-   * Test {@link StaticAssetPathServiceImpl#addThemeContextIfNeeded(String)}.
-   *
-   * <ul>
-   *   <li>Then return {@code https://example.org/example}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#addThemeContextIfNeeded(String)}
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#addThemeContextIfNeeded(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String StaticAssetPathServiceImpl.addThemeContextIfNeeded(String)"})
-  public void testAddThemeContextIfNeeded_thenReturnHttpsExampleOrgExample() {
+  public void testAddThemeContextIfNeeded() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertEquals(
-        "https://example.org/example",
+    assertEquals("https://example.org/example",
+        (new StaticAssetPathServiceImpl()).addThemeContextIfNeeded("https://example.org/example"));
+  }
+
+  /**
+   * Method under test:
+   * {@link StaticAssetPathServiceImpl#addThemeContextIfNeeded(String)}
+   */
+  @Test
+  public void testAddThemeContextIfNeeded2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+    staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example");
+
+    // Act and Assert
+    assertEquals("https://example.org/example",
         staticAssetPathServiceImpl.addThemeContextIfNeeded("https://example.org/example"));
   }
 
   /**
-   * Test {@link StaticAssetPathServiceImpl#addThemeContextIfNeeded(String)}.
-   *
+   * Methods under test:
    * <ul>
-   *   <li>Then return {@code ThreadLocalManager.notify.orphans}.
+   *   <li>
+   * {@link StaticAssetPathServiceImpl#setStaticAssetEnvironmentSecureUrlPrefix(String)}
+   *   <li>
+   * {@link StaticAssetPathServiceImpl#setStaticAssetEnvironmentUrlPrefix(String)}
+   *   <li>{@link StaticAssetPathServiceImpl#setStaticAssetUrlPrefix(String)}
+   *   <li>{@link StaticAssetPathServiceImpl#getStaticAssetUrlPrefix()}
    * </ul>
-   *
-   * <p>Method under test: {@link StaticAssetPathServiceImpl#addThemeContextIfNeeded(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String StaticAssetPathServiceImpl.addThemeContextIfNeeded(String)"})
-  public void testAddThemeContextIfNeeded_thenReturnThreadLocalManagerNotifyOrphans() {
-    // Arrange, Act and Assert
-    assertEquals(
-        "ThreadLocalManager.notify.orphans",
-        staticAssetPathServiceImpl.addThemeContextIfNeeded("ThreadLocalManager.notify.orphans"));
+  public void testGettersAndSetters() {
+    // Arrange
+    StaticAssetPathServiceImpl staticAssetPathServiceImpl = new StaticAssetPathServiceImpl();
+
+    // Act
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentSecureUrlPrefix("https://example.org/example");
+    staticAssetPathServiceImpl.setStaticAssetEnvironmentUrlPrefix("https://example.org/example");
+    staticAssetPathServiceImpl.setStaticAssetUrlPrefix("https://example.org/example");
+
+    // Assert that nothing has changed
+    assertEquals("https://example.org/example", staticAssetPathServiceImpl.getStaticAssetUrlPrefix());
   }
 }

@@ -18,30 +18,34 @@
 package org.broadleafcommerce.common.config.dao;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.junit.Assert.assertSame;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class ModuleConfigurationDaoImplDiffblueTest {
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Method under test:
+   * {@link ModuleConfigurationDaoImpl#getCurrentDateAfterFactoringInDateResolution()}
+   */
+  @Test
+  public void testGetCurrentDateAfterFactoringInDateResolution() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ModuleConfigurationDaoImpl moduleConfigurationDaoImpl = new ModuleConfigurationDaoImpl();
+
+    // Act and Assert
+    assertSame(moduleConfigurationDaoImpl.cachedDate,
+        moduleConfigurationDaoImpl.getCurrentDateAfterFactoringInDateResolution());
+  }
+
+  /**
+   * Methods under test:
    * <ul>
    *   <li>{@link ModuleConfigurationDaoImpl#setCurrentDateResolution(Long)}
    *   <li>{@link ModuleConfigurationDaoImpl#getCurrentDateResolution()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Long ModuleConfigurationDaoImpl.getCurrentDateResolution()",
-    "void ModuleConfigurationDaoImpl.setCurrentDateResolution(Long)"
-  })
   public void testGettersAndSetters() {
     // Arrange
     ModuleConfigurationDaoImpl moduleConfigurationDaoImpl = new ModuleConfigurationDaoImpl();
@@ -49,7 +53,7 @@ public class ModuleConfigurationDaoImplDiffblueTest {
     // Act
     moduleConfigurationDaoImpl.setCurrentDateResolution(1L);
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals(1L, moduleConfigurationDaoImpl.getCurrentDateResolution().longValue());
   }
 }

@@ -23,50 +23,62 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.copy.CreateResponse;
+import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.broadleafcommerce.common.enumeration.domain.DataDrivenEnumeration;
 import org.broadleafcommerce.common.enumeration.domain.DataDrivenEnumerationImpl;
 import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
+import org.broadleafcommerce.common.service.GenericEntityService;
+import org.broadleafcommerce.common.site.domain.CatalogImpl;
+import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(SpringJUnit4ClassRunner.class)
 public class FieldDefinitionImplDiffblueTest {
-  @Autowired private FieldDefinitionImpl fieldDefinitionImpl;
-
   /**
-   * Test {@link FieldDefinitionImpl#getName()}.
-   *
-   * <ul>
-   *   <li>Given {@link FieldDefinitionImpl} Name is {@code foo}.
-   *   <li>Then return {@code foo}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldDefinitionImpl#getName()}
+   * Method under test: {@link FieldDefinitionImpl#getName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String FieldDefinitionImpl.getName()"})
-  public void testGetName_givenFieldDefinitionImplNameIsFoo_thenReturnFoo() {
+  public void testGetName() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertEquals("", (new FieldDefinitionImpl()).getName());
+  }
+
+  /**
+   * Method under test: {@link FieldDefinitionImpl#getName()}
+   */
+  @Test
+  public void testGetName2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    FieldDefinitionImpl fieldDefinitionImpl = new FieldDefinitionImpl();
+    fieldDefinitionImpl.setAllowMultiples(true);
+    fieldDefinitionImpl.setColumnWidth("Column Width");
+    fieldDefinitionImpl.setDataDrivenEnumeration(new DataDrivenEnumerationImpl());
+    fieldDefinitionImpl.setFieldGroup(new FieldGroupImpl());
+    fieldDefinitionImpl.setFieldOrder(1);
+    fieldDefinitionImpl.setFieldType("Field Type");
+    fieldDefinitionImpl.setFriendlyName("Friendly Name");
+    fieldDefinitionImpl.setHelpText("Help Text");
+    fieldDefinitionImpl.setHiddenFlag(true);
+    fieldDefinitionImpl.setHint("Hint");
+    fieldDefinitionImpl.setId(1L);
+    fieldDefinitionImpl.setMaxLength(3);
+    fieldDefinitionImpl.setRequiredFlag(true);
+    fieldDefinitionImpl.setSecurityLevel("Security Level");
+    fieldDefinitionImpl.setTextAreaFlag(true);
+    fieldDefinitionImpl.setTooltip("127.0.0.1");
+    fieldDefinitionImpl.setValidationErrorMesageKey("An error occurred");
+    fieldDefinitionImpl.setValidationRegEx(".*");
     fieldDefinitionImpl.setName("foo");
 
     // Act and Assert
@@ -74,39 +86,56 @@ public class FieldDefinitionImplDiffblueTest {
   }
 
   /**
-   * Test {@link FieldDefinitionImpl#getName()}.
-   *
-   * <ul>
-   *   <li>Given {@link FieldDefinitionImpl}.
-   *   <li>Then return empty string.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldDefinitionImpl#getName()}
+   * Method under test: {@link FieldDefinitionImpl#getName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String FieldDefinitionImpl.getName()"})
-  public void testGetName_givenFieldDefinitionImpl_thenReturnEmptyString() {
-    // Arrange, Act and Assert
-    assertEquals("", fieldDefinitionImpl.getName());
+  public void testGetName3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FieldDefinitionImpl fieldDefinitionImpl = new FieldDefinitionImpl();
+    fieldDefinitionImpl.setAllowMultiples(true);
+    fieldDefinitionImpl.setColumnWidth("Column Width");
+    fieldDefinitionImpl.setDataDrivenEnumeration(mock(DataDrivenEnumerationImpl.class));
+    fieldDefinitionImpl.setFieldGroup(new FieldGroupImpl());
+    fieldDefinitionImpl.setFieldOrder(1);
+    fieldDefinitionImpl.setFieldType("Field Type");
+    fieldDefinitionImpl.setFriendlyName("Friendly Name");
+    fieldDefinitionImpl.setHelpText("Help Text");
+    fieldDefinitionImpl.setHiddenFlag(true);
+    fieldDefinitionImpl.setHint("Hint");
+    fieldDefinitionImpl.setId(1L);
+    fieldDefinitionImpl.setMaxLength(3);
+    fieldDefinitionImpl.setRequiredFlag(true);
+    fieldDefinitionImpl.setSecurityLevel("Security Level");
+    fieldDefinitionImpl.setTextAreaFlag(true);
+    fieldDefinitionImpl.setTooltip("127.0.0.1");
+    fieldDefinitionImpl.setValidationErrorMesageKey("An error occurred");
+    fieldDefinitionImpl.setValidationRegEx(".*");
+    fieldDefinitionImpl.setName("foo");
+
+    // Act and Assert
+    assertEquals("foo", fieldDefinitionImpl.getName());
   }
 
   /**
-   * Test {@link FieldDefinitionImpl#getFieldType()}.
-   *
-   * <ul>
-   *   <li>Given {@link FieldDefinitionImpl} (default constructor) FieldType is {@code UNKNOWN}.
-   *   <li>Then return {@code UNKNOWN}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldDefinitionImpl#getFieldType()}
+   * Method under test: {@link FieldDefinitionImpl#getFieldType()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"SupportedFieldType FieldDefinitionImpl.getFieldType()"})
-  public void testGetFieldType_givenFieldDefinitionImplFieldTypeIsUnknown_thenReturnUnknown() {
+  public void testGetFieldType() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertNull((new FieldDefinitionImpl()).getFieldType());
+  }
+
+  /**
+   * Method under test: {@link FieldDefinitionImpl#getFieldType()}
+   */
+  @Test
+  public void testGetFieldType2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     FieldDefinitionImpl fieldDefinitionImpl = new FieldDefinitionImpl();
     fieldDefinitionImpl.setFieldType(SupportedFieldType.UNKNOWN);
@@ -116,56 +145,38 @@ public class FieldDefinitionImplDiffblueTest {
   }
 
   /**
-   * Test {@link FieldDefinitionImpl#getFieldType()}.
-   *
-   * <ul>
-   *   <li>Given {@link FieldDefinitionImpl}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldDefinitionImpl#getFieldType()}
+   * Method under test: {@link FieldDefinitionImpl#getFieldType()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"SupportedFieldType FieldDefinitionImpl.getFieldType()"})
-  public void testGetFieldType_givenFieldDefinitionImpl_thenReturnNull() {
-    // Arrange, Act and Assert
+  public void testGetFieldType3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FieldDefinitionImpl fieldDefinitionImpl = new FieldDefinitionImpl();
+    fieldDefinitionImpl.setFieldGroup(mock(FieldGroupImpl.class));
+
+    // Act and Assert
     assertNull(fieldDefinitionImpl.getFieldType());
   }
 
   /**
-   * Test {@link FieldDefinitionImpl#getAdditionalForeignKeyClass()}.
-   *
-   * <ul>
-   *   <li>Given {@link FieldDefinitionImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldDefinitionImpl#getAdditionalForeignKeyClass()}
+   * Method under test: {@link FieldDefinitionImpl#getAdditionalForeignKeyClass()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String FieldDefinitionImpl.getAdditionalForeignKeyClass()"})
-  public void testGetAdditionalForeignKeyClass_givenFieldDefinitionImpl() {
+  public void testGetAdditionalForeignKeyClass() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertNull(fieldDefinitionImpl.getAdditionalForeignKeyClass());
+    assertNull((new FieldDefinitionImpl()).getAdditionalForeignKeyClass());
   }
 
   /**
-   * Test {@link FieldDefinitionImpl#getAdditionalForeignKeyClass()}.
-   *
-   * <ul>
-   *   <li>Given {@link FieldDefinitionImpl} (default constructor) FieldType is {@code UNKNOWN}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldDefinitionImpl#getAdditionalForeignKeyClass()}
+   * Method under test: {@link FieldDefinitionImpl#getAdditionalForeignKeyClass()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String FieldDefinitionImpl.getAdditionalForeignKeyClass()"})
-  public void testGetAdditionalForeignKeyClass_givenFieldDefinitionImplFieldTypeIsUnknown() {
+  public void testGetAdditionalForeignKeyClass2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     FieldDefinitionImpl fieldDefinitionImpl = new FieldDefinitionImpl();
     fieldDefinitionImpl.setFieldType(SupportedFieldType.UNKNOWN);
@@ -175,15 +186,57 @@ public class FieldDefinitionImplDiffblueTest {
   }
 
   /**
-   * Test {@link FieldDefinitionImpl#setAdditionalForeignKeyClass(String)}.
-   *
-   * <p>Method under test: {@link FieldDefinitionImpl#setAdditionalForeignKeyClass(String)}
+   * Method under test: {@link FieldDefinitionImpl#getAdditionalForeignKeyClass()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FieldDefinitionImpl.setAdditionalForeignKeyClass(String)"})
+  public void testGetAdditionalForeignKeyClass3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FieldDefinitionImpl fieldDefinitionImpl = new FieldDefinitionImpl();
+    fieldDefinitionImpl.setFieldGroup(mock(FieldGroupImpl.class));
+
+    // Act and Assert
+    assertNull(fieldDefinitionImpl.getAdditionalForeignKeyClass());
+  }
+
+  /**
+   * Method under test:
+   * {@link FieldDefinitionImpl#setAdditionalForeignKeyClass(String)}
+   */
+  @Test
   public void testSetAdditionalForeignKeyClass() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> (new FieldDefinitionImpl()).setAdditionalForeignKeyClass("Class Name"));
+  }
+
+  /**
+   * Method under test:
+   * {@link FieldDefinitionImpl#setAdditionalForeignKeyClass(String)}
+   */
+  @Test
+  public void testSetAdditionalForeignKeyClass2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FieldDefinitionImpl fieldDefinitionImpl = new FieldDefinitionImpl();
+    fieldDefinitionImpl.setFieldType(SupportedFieldType.UNKNOWN);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> fieldDefinitionImpl.setAdditionalForeignKeyClass("Class Name"));
+  }
+
+  /**
+   * Method under test:
+   * {@link FieldDefinitionImpl#setAdditionalForeignKeyClass(String)}
+   */
+  @Test
+  public void testSetAdditionalForeignKeyClass3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     FieldDefinitionImpl fieldDefinitionImpl = new FieldDefinitionImpl();
     fieldDefinitionImpl.setFieldType(SupportedFieldType.ADDITIONAL_FOREIGN_KEY);
@@ -197,61 +250,38 @@ public class FieldDefinitionImplDiffblueTest {
   }
 
   /**
-   * Test {@link FieldDefinitionImpl#setAdditionalForeignKeyClass(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link FieldDefinitionImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldDefinitionImpl#setAdditionalForeignKeyClass(String)}
+   * Method under test:
+   * {@link FieldDefinitionImpl#setAdditionalForeignKeyClass(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FieldDefinitionImpl.setAdditionalForeignKeyClass(String)"})
-  public void testSetAdditionalForeignKeyClass_givenFieldDefinitionImpl() {
-    // Arrange, Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> fieldDefinitionImpl.setAdditionalForeignKeyClass("Class Name"));
-  }
+  public void testSetAdditionalForeignKeyClass4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-  /**
-   * Test {@link FieldDefinitionImpl#setAdditionalForeignKeyClass(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link FieldDefinitionImpl} (default constructor) FieldType is {@code UNKNOWN}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldDefinitionImpl#setAdditionalForeignKeyClass(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FieldDefinitionImpl.setAdditionalForeignKeyClass(String)"})
-  public void testSetAdditionalForeignKeyClass_givenFieldDefinitionImplFieldTypeIsUnknown() {
     // Arrange
     FieldDefinitionImpl fieldDefinitionImpl = new FieldDefinitionImpl();
-    fieldDefinitionImpl.setFieldType(SupportedFieldType.UNKNOWN);
+    fieldDefinitionImpl.setFieldType("ADDITIONAL_FOREIGN_KEY");
+    fieldDefinitionImpl.setFieldGroup(mock(FieldGroupImpl.class));
 
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> fieldDefinitionImpl.setAdditionalForeignKeyClass("Class Name"));
+    // Act
+    fieldDefinitionImpl.setAdditionalForeignKeyClass("Class Name");
+
+    // Assert
+    assertEquals("ADDITIONAL_FOREIGN_KEY|Class Name", fieldDefinitionImpl.getFieldTypeVal());
+    assertEquals("Class Name", fieldDefinitionImpl.getAdditionalForeignKeyClass());
   }
 
   /**
-   * Test {@link FieldDefinitionImpl#setFieldType(SupportedFieldType)} with {@code
-   * SupportedFieldType}.
-   *
-   * <p>Method under test: {@link FieldDefinitionImpl#setFieldType(SupportedFieldType)}
+   * Method under test:
+   * {@link FieldDefinitionImpl#setFieldType(SupportedFieldType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FieldDefinitionImpl.setFieldType(SupportedFieldType)"})
-  public void testSetFieldTypeWithSupportedFieldType() {
-    // Arrange and Act
+  public void testSetFieldType() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FieldDefinitionImpl fieldDefinitionImpl = new FieldDefinitionImpl();
+
+    // Act
     fieldDefinitionImpl.setFieldType(SupportedFieldType.UNKNOWN);
 
     // Assert
@@ -260,44 +290,119 @@ public class FieldDefinitionImplDiffblueTest {
   }
 
   /**
-   * Test {@link FieldDefinitionImpl#setFieldType(SupportedFieldType)} with {@code
-   * SupportedFieldType}.
-   *
-   * <ul>
-   *   <li>Then {@link FieldDefinitionImpl} FieldTypeVal is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldDefinitionImpl#setFieldType(SupportedFieldType)}
+   * Method under test:
+   * {@link FieldDefinitionImpl#setFieldType(SupportedFieldType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FieldDefinitionImpl.setFieldType(SupportedFieldType)"})
-  public void testSetFieldTypeWithSupportedFieldType_thenFieldDefinitionImplFieldTypeValIsNull() {
-    // Arrange and Act
+  public void testSetFieldType2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FieldDefinitionImpl fieldDefinitionImpl = new FieldDefinitionImpl();
+    fieldDefinitionImpl.setAllowMultiples(true);
+    fieldDefinitionImpl.setColumnWidth("Column Width");
+    fieldDefinitionImpl.setDataDrivenEnumeration(new DataDrivenEnumerationImpl());
+    fieldDefinitionImpl.setFieldGroup(new FieldGroupImpl());
+    fieldDefinitionImpl.setFieldOrder(1);
+    fieldDefinitionImpl.setFieldType("Field Type");
+    fieldDefinitionImpl.setFriendlyName("Friendly Name");
+    fieldDefinitionImpl.setHelpText("Help Text");
+    fieldDefinitionImpl.setHiddenFlag(true);
+    fieldDefinitionImpl.setHint("Hint");
+    fieldDefinitionImpl.setId(1L);
+    fieldDefinitionImpl.setMaxLength(3);
+    fieldDefinitionImpl.setName("Name");
+    fieldDefinitionImpl.setRequiredFlag(true);
+    fieldDefinitionImpl.setSecurityLevel("Security Level");
+    fieldDefinitionImpl.setTextAreaFlag(true);
+    fieldDefinitionImpl.setTooltip("127.0.0.1");
+    fieldDefinitionImpl.setValidationErrorMesageKey("An error occurred");
+    fieldDefinitionImpl.setValidationRegEx(".*");
+
+    // Act
     fieldDefinitionImpl.setFieldType((SupportedFieldType) null);
 
-    // Assert that nothing has changed
+    // Assert
     assertNull(fieldDefinitionImpl.getFieldTypeVal());
     assertNull(fieldDefinitionImpl.getFieldType());
   }
 
   /**
-   * Test {@link FieldDefinitionImpl#getHiddenFlag()}.
-   *
-   * <ul>
-   *   <li>Given {@link FieldDefinitionImpl} HiddenFlag is {@code null}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldDefinitionImpl#getHiddenFlag()}
+   * Method under test:
+   * {@link FieldDefinitionImpl#setFieldType(SupportedFieldType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean FieldDefinitionImpl.getHiddenFlag()"})
-  public void testGetHiddenFlag_givenFieldDefinitionImplHiddenFlagIsNull_thenReturnFalse() {
+  public void testSetFieldType3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    FieldDefinitionImpl fieldDefinitionImpl = new FieldDefinitionImpl();
+    fieldDefinitionImpl.setAllowMultiples(true);
+    fieldDefinitionImpl.setColumnWidth("Column Width");
+    fieldDefinitionImpl.setDataDrivenEnumeration(mock(DataDrivenEnumerationImpl.class));
+    fieldDefinitionImpl.setFieldGroup(new FieldGroupImpl());
+    fieldDefinitionImpl.setFieldOrder(1);
+    fieldDefinitionImpl.setFieldType("Field Type");
+    fieldDefinitionImpl.setFriendlyName("Friendly Name");
+    fieldDefinitionImpl.setHelpText("Help Text");
+    fieldDefinitionImpl.setHiddenFlag(true);
+    fieldDefinitionImpl.setHint("Hint");
+    fieldDefinitionImpl.setId(1L);
+    fieldDefinitionImpl.setMaxLength(3);
+    fieldDefinitionImpl.setName("Name");
+    fieldDefinitionImpl.setRequiredFlag(true);
+    fieldDefinitionImpl.setSecurityLevel("Security Level");
+    fieldDefinitionImpl.setTextAreaFlag(true);
+    fieldDefinitionImpl.setTooltip("127.0.0.1");
+    fieldDefinitionImpl.setValidationErrorMesageKey("An error occurred");
+    fieldDefinitionImpl.setValidationRegEx(".*");
+
+    // Act
+    fieldDefinitionImpl.setFieldType((SupportedFieldType) null);
+
+    // Assert
+    assertNull(fieldDefinitionImpl.getFieldTypeVal());
+    assertNull(fieldDefinitionImpl.getFieldType());
+  }
+
+  /**
+   * Method under test: {@link FieldDefinitionImpl#getHiddenFlag()}
+   */
+  @Test
+  public void testGetHiddenFlag() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertFalse((new FieldDefinitionImpl()).getHiddenFlag());
+  }
+
+  /**
+   * Method under test: {@link FieldDefinitionImpl#getHiddenFlag()}
+   */
+  @Test
+  public void testGetHiddenFlag2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FieldDefinitionImpl fieldDefinitionImpl = new FieldDefinitionImpl();
+    fieldDefinitionImpl.setAllowMultiples(true);
+    fieldDefinitionImpl.setColumnWidth("Column Width");
+    fieldDefinitionImpl.setDataDrivenEnumeration(new DataDrivenEnumerationImpl());
+    fieldDefinitionImpl.setFieldGroup(new FieldGroupImpl());
+    fieldDefinitionImpl.setFieldOrder(1);
+    fieldDefinitionImpl.setFieldType("Field Type");
+    fieldDefinitionImpl.setFriendlyName("Friendly Name");
+    fieldDefinitionImpl.setHelpText("Help Text");
+    fieldDefinitionImpl.setHint("Hint");
+    fieldDefinitionImpl.setId(1L);
+    fieldDefinitionImpl.setMaxLength(3);
+    fieldDefinitionImpl.setName("Name");
+    fieldDefinitionImpl.setRequiredFlag(true);
+    fieldDefinitionImpl.setSecurityLevel("Security Level");
+    fieldDefinitionImpl.setTextAreaFlag(true);
+    fieldDefinitionImpl.setTooltip("127.0.0.1");
+    fieldDefinitionImpl.setValidationErrorMesageKey("An error occurred");
+    fieldDefinitionImpl.setValidationRegEx(".*");
     fieldDefinitionImpl.setHiddenFlag(null);
 
     // Act and Assert
@@ -305,21 +410,32 @@ public class FieldDefinitionImplDiffblueTest {
   }
 
   /**
-   * Test {@link FieldDefinitionImpl#getHiddenFlag()}.
-   *
-   * <ul>
-   *   <li>Given {@link FieldDefinitionImpl} HiddenFlag is {@code true}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldDefinitionImpl#getHiddenFlag()}
+   * Method under test: {@link FieldDefinitionImpl#getHiddenFlag()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean FieldDefinitionImpl.getHiddenFlag()"})
-  public void testGetHiddenFlag_givenFieldDefinitionImplHiddenFlagIsTrue_thenReturnTrue() {
+  public void testGetHiddenFlag3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    FieldDefinitionImpl fieldDefinitionImpl = new FieldDefinitionImpl();
+    fieldDefinitionImpl.setAllowMultiples(true);
+    fieldDefinitionImpl.setColumnWidth("Column Width");
+    fieldDefinitionImpl.setDataDrivenEnumeration(new DataDrivenEnumerationImpl());
+    fieldDefinitionImpl.setFieldGroup(new FieldGroupImpl());
+    fieldDefinitionImpl.setFieldOrder(1);
+    fieldDefinitionImpl.setFieldType("Field Type");
+    fieldDefinitionImpl.setFriendlyName("Friendly Name");
+    fieldDefinitionImpl.setHelpText("Help Text");
+    fieldDefinitionImpl.setHint("Hint");
+    fieldDefinitionImpl.setId(1L);
+    fieldDefinitionImpl.setMaxLength(3);
+    fieldDefinitionImpl.setName("Name");
+    fieldDefinitionImpl.setRequiredFlag(true);
+    fieldDefinitionImpl.setSecurityLevel("Security Level");
+    fieldDefinitionImpl.setTextAreaFlag(true);
+    fieldDefinitionImpl.setTooltip("127.0.0.1");
+    fieldDefinitionImpl.setValidationErrorMesageKey("An error occurred");
+    fieldDefinitionImpl.setValidationRegEx(".*");
     fieldDefinitionImpl.setHiddenFlag(true);
 
     // Act and Assert
@@ -327,49 +443,75 @@ public class FieldDefinitionImplDiffblueTest {
   }
 
   /**
-   * Test {@link FieldDefinitionImpl#getHiddenFlag()}.
-   *
-   * <ul>
-   *   <li>Given {@link FieldDefinitionImpl}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldDefinitionImpl#getHiddenFlag()}
+   * Method under test: {@link FieldDefinitionImpl#getHiddenFlag()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Boolean FieldDefinitionImpl.getHiddenFlag()"})
-  public void testGetHiddenFlag_givenFieldDefinitionImpl_thenReturnFalse() {
-    // Arrange, Act and Assert
+  public void testGetHiddenFlag4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FieldDefinitionImpl fieldDefinitionImpl = new FieldDefinitionImpl();
+    fieldDefinitionImpl.setAllowMultiples(true);
+    fieldDefinitionImpl.setColumnWidth("Column Width");
+    fieldDefinitionImpl.setDataDrivenEnumeration(mock(DataDrivenEnumerationImpl.class));
+    fieldDefinitionImpl.setFieldGroup(new FieldGroupImpl());
+    fieldDefinitionImpl.setFieldOrder(1);
+    fieldDefinitionImpl.setFieldType("Field Type");
+    fieldDefinitionImpl.setFriendlyName("Friendly Name");
+    fieldDefinitionImpl.setHelpText("Help Text");
+    fieldDefinitionImpl.setHint("Hint");
+    fieldDefinitionImpl.setId(1L);
+    fieldDefinitionImpl.setMaxLength(3);
+    fieldDefinitionImpl.setName("Name");
+    fieldDefinitionImpl.setRequiredFlag(true);
+    fieldDefinitionImpl.setSecurityLevel("Security Level");
+    fieldDefinitionImpl.setTextAreaFlag(true);
+    fieldDefinitionImpl.setTooltip("127.0.0.1");
+    fieldDefinitionImpl.setValidationErrorMesageKey("An error occurred");
+    fieldDefinitionImpl.setValidationRegEx(".*");
+    fieldDefinitionImpl.setHiddenFlag(null);
+
+    // Act and Assert
     assertFalse(fieldDefinitionImpl.getHiddenFlag());
   }
 
   /**
-   * Test {@link FieldDefinitionImpl#getFieldOrder()}.
-   *
-   * <p>Method under test: {@link FieldDefinitionImpl#getFieldOrder()}
+   * Method under test: {@link FieldDefinitionImpl#getFieldOrder()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int FieldDefinitionImpl.getFieldOrder()"})
   public void testGetFieldOrder() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
+    assertEquals(0, (new FieldDefinitionImpl()).getFieldOrder());
+  }
+
+  /**
+   * Method under test: {@link FieldDefinitionImpl#getFieldOrder()}
+   */
+  @Test
+  public void testGetFieldOrder2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FieldDefinitionImpl fieldDefinitionImpl = new FieldDefinitionImpl();
+    fieldDefinitionImpl.setFieldGroup(mock(FieldGroupImpl.class));
+
+    // Act and Assert
     assertEquals(0, fieldDefinitionImpl.getFieldOrder());
   }
 
   /**
-   * Test {@link FieldDefinitionImpl#setFieldOrder(int)}.
-   *
-   * <p>Method under test: {@link FieldDefinitionImpl#setFieldOrder(int)}
+   * Method under test: {@link FieldDefinitionImpl#setFieldOrder(int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FieldDefinitionImpl.setFieldOrder(int)"})
   public void testSetFieldOrder() {
-    // Arrange and Act
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FieldDefinitionImpl fieldDefinitionImpl = new FieldDefinitionImpl();
+
+    // Act
     fieldDefinitionImpl.setFieldOrder(1);
 
     // Assert
@@ -378,228 +520,112 @@ public class FieldDefinitionImplDiffblueTest {
   }
 
   /**
-   * Test {@link FieldDefinitionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * FieldDefinitionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test: {@link FieldDefinitionImpl#setFieldOrder(int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse FieldDefinitionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
+  public void testSetFieldOrder2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(new FieldDefinitionImpl(), true);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    CreateResponse<FieldDefinition> actualCreateOrRetrieveCopyInstanceResult =
-        fieldDefinitionImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
-  }
-
-  /**
-   * Test {@link FieldDefinitionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * FieldDefinitionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse FieldDefinitionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
-    // Arrange
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(fieldDefinitionImpl, false);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    CreateResponse<FieldDefinition> actualCreateOrRetrieveCopyInstanceResult =
-        fieldDefinitionImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
-  }
-
-  /**
-   * Test {@link FieldDefinitionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * FieldDefinitionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse FieldDefinitionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance3() throws CloneNotSupportedException {
-    // Arrange
-    FieldGroupImpl fieldGroup = mock(FieldGroupImpl.class);
-    when(fieldGroup.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
-        .thenReturn(new CreateResponse<>(new FieldGroupImpl(), true));
-
     FieldDefinitionImpl fieldDefinitionImpl = new FieldDefinitionImpl();
-    fieldDefinitionImpl.setFieldGroup(fieldGroup);
-
-    CreateResponse<Object> createResponse = mock(CreateResponse.class);
-    when(createResponse.isAlreadyPopulated()).thenReturn(false);
-    when(createResponse.getClone()).thenReturn(new FieldDefinitionImpl());
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    fieldDefinitionImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(fieldGroup).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
-    verify(createResponse).getClone();
-    verify(createResponse).isAlreadyPopulated();
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-  }
-
-  /**
-   * Test {@link FieldDefinitionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * FieldDefinitionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse FieldDefinitionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance4() throws CloneNotSupportedException {
-    // Arrange
-    FieldGroupImpl fieldGroup = mock(FieldGroupImpl.class);
-    when(fieldGroup.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
-        .thenThrow(new IllegalArgumentException());
-
-    FieldDefinitionImpl fieldDefinitionImpl = new FieldDefinitionImpl();
-    fieldDefinitionImpl.setFieldGroup(fieldGroup);
-
-    CreateResponse<Object> createResponse = mock(CreateResponse.class);
-    when(createResponse.isAlreadyPopulated()).thenReturn(false);
-    when(createResponse.getClone()).thenReturn(new FieldDefinitionImpl());
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> fieldDefinitionImpl.createOrRetrieveCopyInstance(context));
-    verify(fieldGroup).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
-    verify(createResponse).getClone();
-    verify(createResponse).isAlreadyPopulated();
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-  }
-
-  /**
-   * Test {@link FieldDefinitionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * FieldDefinitionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse FieldDefinitionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance5() throws CloneNotSupportedException {
-    // Arrange
-    FieldGroupImpl fieldGroup = mock(FieldGroupImpl.class);
-    when(fieldGroup.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
-        .thenReturn(new CreateResponse<>(new FieldGroupImpl(), true));
-
-    DataDrivenEnumerationImpl dataDrivenEnumeration = mock(DataDrivenEnumerationImpl.class);
-    when(dataDrivenEnumeration.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
-        .thenReturn(new CreateResponse<>(new DataDrivenEnumerationImpl(), true));
-
-    FieldDefinitionImpl fieldDefinitionImpl = new FieldDefinitionImpl();
-    fieldDefinitionImpl.setDataDrivenEnumeration(dataDrivenEnumeration);
-    fieldDefinitionImpl.setFieldGroup(fieldGroup);
-
-    CreateResponse<Object> createResponse = mock(CreateResponse.class);
-    when(createResponse.isAlreadyPopulated()).thenReturn(false);
-    when(createResponse.getClone()).thenReturn(new FieldDefinitionImpl());
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    fieldDefinitionImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(fieldGroup).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
-    verify(createResponse).getClone();
-    verify(createResponse).isAlreadyPopulated();
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    verify(dataDrivenEnumeration).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
-  }
-
-  /**
-   * Test {@link FieldDefinitionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * FieldDefinitionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse FieldDefinitionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance6() throws CloneNotSupportedException {
-    // Arrange
-    DataDrivenEnumerationImpl dataDrivenEnumeration = mock(DataDrivenEnumerationImpl.class);
-    when(dataDrivenEnumeration.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
-        .thenThrow(new IllegalArgumentException());
-
-    FieldDefinitionImpl fieldDefinitionImpl = new FieldDefinitionImpl();
-    fieldDefinitionImpl.setDataDrivenEnumeration(dataDrivenEnumeration);
     fieldDefinitionImpl.setFieldGroup(mock(FieldGroupImpl.class));
 
-    CreateResponse<Object> createResponse = mock(CreateResponse.class);
-    when(createResponse.isAlreadyPopulated()).thenReturn(false);
-    when(createResponse.getClone()).thenReturn(new FieldDefinitionImpl());
+    // Act
+    fieldDefinitionImpl.setFieldOrder(1);
 
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> fieldDefinitionImpl.createOrRetrieveCopyInstance(context));
-    verify(createResponse).getClone();
-    verify(createResponse).isAlreadyPopulated();
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    verify(dataDrivenEnumeration).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
+    // Assert
+    assertEquals(1, fieldDefinitionImpl.fieldOrder.intValue());
+    assertEquals(1, fieldDefinitionImpl.getFieldOrder());
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Method under test:
+   * {@link FieldDefinitionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FieldDefinitionImpl fieldDefinitionImpl = new FieldDefinitionImpl();
+    GenericEntityService genericEntityService = mock(GenericEntityService.class);
+    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
+
+    // Act
+    CreateResponse<FieldDefinition> actualCreateOrRetrieveCopyInstanceResult = fieldDefinitionImpl
+        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+            genericEntityService, new MultiTenantCopierExtensionManager()));
+
+    // Assert
+    verify(genericEntityService).getCeilingImplClass(eq("org.broadleafcommerce.cms.field.domain.FieldDefinitionImpl"));
+    verify(genericEntityService).getIdentifier(isA(Object.class));
+    FieldDefinition clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
+    assertTrue(clone instanceof FieldDefinitionImpl);
+    assertEquals("", clone.getName());
+    assertNull(clone.getMaxLength());
+    assertNull(clone.getId());
+    assertNull(clone.getAdditionalForeignKeyClass());
+    assertNull(clone.getColumnWidth());
+    assertNull(clone.getFieldTypeVal());
+    assertNull(clone.getFriendlyName());
+    assertNull(clone.getHelpText());
+    assertNull(clone.getHint());
+    assertNull(clone.getSecurityLevel());
+    assertNull(clone.getTooltip());
+    assertNull(clone.getValidationErrorMesageKey());
+    assertNull(clone.getValidationRegEx());
+    assertNull(((FieldDefinitionImpl) clone).name);
+    assertNull(clone.getFieldGroup());
+    assertNull(clone.getDataDrivenEnumeration());
+    assertNull(clone.getFieldType());
+    assertEquals(0, ((FieldDefinitionImpl) clone).fieldOrder.intValue());
+    assertEquals(0, clone.getFieldOrder());
+    assertFalse(clone.getAllowMultiples());
+    assertFalse(clone.getHiddenFlag());
+    assertFalse(clone.getRequiredFlag());
+    assertFalse(clone.getTextAreaFlag());
+    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
+    assertFalse(((FieldDefinitionImpl) clone).hiddenFlag);
+  }
+
+  /**
+   * Method under test:
+   * {@link FieldDefinitionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FieldDefinitionImpl fieldDefinitionImpl = new FieldDefinitionImpl();
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    CreateResponse<FieldDefinition> actualCreateOrRetrieveCopyInstanceResult = fieldDefinitionImpl
+        .createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+  }
+
+  /**
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link FieldDefinitionImpl}
    *   <li>{@link FieldDefinitionImpl#setAllowMultiples(Boolean)}
    *   <li>{@link FieldDefinitionImpl#setColumnWidth(String)}
-   *   <li>{@link FieldDefinitionImpl#setDataDrivenEnumeration(DataDrivenEnumeration)}
+   *   <li>
+   * {@link FieldDefinitionImpl#setDataDrivenEnumeration(DataDrivenEnumeration)}
    *   <li>{@link FieldDefinitionImpl#setFieldGroup(FieldGroup)}
    *   <li>{@link FieldDefinitionImpl#setFieldType(String)}
    *   <li>{@link FieldDefinitionImpl#setFriendlyName(String)}
@@ -634,45 +660,6 @@ public class FieldDefinitionImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void FieldDefinitionImpl.<init>()",
-    "Boolean FieldDefinitionImpl.getAllowMultiples()",
-    "String FieldDefinitionImpl.getColumnWidth()",
-    "DataDrivenEnumeration FieldDefinitionImpl.getDataDrivenEnumeration()",
-    "FieldGroup FieldDefinitionImpl.getFieldGroup()",
-    "String FieldDefinitionImpl.getFieldTypeVal()",
-    "String FieldDefinitionImpl.getFriendlyName()",
-    "String FieldDefinitionImpl.getHelpText()",
-    "String FieldDefinitionImpl.getHint()",
-    "Long FieldDefinitionImpl.getId()",
-    "Integer FieldDefinitionImpl.getMaxLength()",
-    "Boolean FieldDefinitionImpl.getRequiredFlag()",
-    "String FieldDefinitionImpl.getSecurityLevel()",
-    "Boolean FieldDefinitionImpl.getTextAreaFlag()",
-    "String FieldDefinitionImpl.getTooltip()",
-    "String FieldDefinitionImpl.getValidationErrorMesageKey()",
-    "String FieldDefinitionImpl.getValidationRegEx()",
-    "void FieldDefinitionImpl.setAllowMultiples(Boolean)",
-    "void FieldDefinitionImpl.setColumnWidth(String)",
-    "void FieldDefinitionImpl.setDataDrivenEnumeration(DataDrivenEnumeration)",
-    "void FieldDefinitionImpl.setFieldGroup(FieldGroup)",
-    "void FieldDefinitionImpl.setFieldType(String)",
-    "void FieldDefinitionImpl.setFriendlyName(String)",
-    "void FieldDefinitionImpl.setHelpText(String)",
-    "void FieldDefinitionImpl.setHiddenFlag(Boolean)",
-    "void FieldDefinitionImpl.setHint(String)",
-    "void FieldDefinitionImpl.setId(Long)",
-    "void FieldDefinitionImpl.setMaxLength(Integer)",
-    "void FieldDefinitionImpl.setName(String)",
-    "void FieldDefinitionImpl.setRequiredFlag(Boolean)",
-    "void FieldDefinitionImpl.setSecurityLevel(String)",
-    "void FieldDefinitionImpl.setTextAreaFlag(Boolean)",
-    "void FieldDefinitionImpl.setTooltip(String)",
-    "void FieldDefinitionImpl.setValidationErrorMesageKey(String)",
-    "void FieldDefinitionImpl.setValidationRegEx(String)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     FieldDefinitionImpl actualFieldDefinitionImpl = new FieldDefinitionImpl();
@@ -698,8 +685,7 @@ public class FieldDefinitionImplDiffblueTest {
     actualFieldDefinitionImpl.setValidationRegEx(".*");
     Boolean actualAllowMultiples = actualFieldDefinitionImpl.getAllowMultiples();
     String actualColumnWidth = actualFieldDefinitionImpl.getColumnWidth();
-    DataDrivenEnumeration actualDataDrivenEnumeration =
-        actualFieldDefinitionImpl.getDataDrivenEnumeration();
+    DataDrivenEnumeration actualDataDrivenEnumeration = actualFieldDefinitionImpl.getDataDrivenEnumeration();
     FieldGroup actualFieldGroup = actualFieldDefinitionImpl.getFieldGroup();
     String actualFieldTypeVal = actualFieldDefinitionImpl.getFieldTypeVal();
     String actualFriendlyName = actualFieldDefinitionImpl.getFriendlyName();
@@ -713,7 +699,7 @@ public class FieldDefinitionImplDiffblueTest {
     actualFieldDefinitionImpl.getTooltip();
     String actualValidationErrorMesageKey = actualFieldDefinitionImpl.getValidationErrorMesageKey();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals(".*", actualFieldDefinitionImpl.getValidationRegEx());
     assertEquals("An error occurred", actualValidationErrorMesageKey);
     assertEquals("Column Width", actualColumnWidth);

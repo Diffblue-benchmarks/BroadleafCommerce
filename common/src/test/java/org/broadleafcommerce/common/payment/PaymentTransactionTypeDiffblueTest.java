@@ -20,11 +20,7 @@ package org.broadleafcommerce.common.payment;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -33,17 +29,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {PaymentTransactionType.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class PaymentTransactionTypeDiffblueTest {
-  @Autowired private PaymentTransactionType paymentTransactionType;
+  @Autowired
+  private PaymentTransactionType paymentTransactionType;
 
   /**
-   * Test {@link PaymentTransactionType#getInstance(String)}.
-   *
-   * <p>Method under test: {@link PaymentTransactionType#getInstance(String)}
+   * Method under test: {@link PaymentTransactionType#getInstance(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"PaymentTransactionType PaymentTransactionType.getInstance(String)"})
   public void testGetInstance() {
     // Arrange and Act
     PaymentTransactionType actualInstance = PaymentTransactionType.getInstance("Type");
@@ -54,105 +46,13 @@ public class PaymentTransactionTypeDiffblueTest {
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link PaymentTransactionType#PaymentTransactionType()}
-   *   <li>{@link PaymentTransactionType#getFriendlyType()}
-   *   <li>{@link PaymentTransactionType#getType()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PaymentTransactionType.<init>()",
-    "String PaymentTransactionType.getFriendlyType()",
-    "String PaymentTransactionType.getType()"
-  })
-  public void testGettersAndSetters() {
-    // Arrange and Act
-    PaymentTransactionType actualPaymentTransactionType = new PaymentTransactionType();
-    String actualFriendlyType = actualPaymentTransactionType.getFriendlyType();
-
-    // Assert
-    assertNull(actualFriendlyType);
-    assertNull(actualPaymentTransactionType.getType());
-  }
-
-  /**
-   * Test {@link PaymentTransactionType#PaymentTransactionType(String, String)}.
-   *
-   * <ul>
-   *   <li>When {@code Type}.
-   *   <li>Then return {@code Type}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PaymentTransactionType#PaymentTransactionType(String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PaymentTransactionType.<init>(String, String)"})
-  public void testNewPaymentTransactionType_whenType_thenReturnType() {
-    // Arrange and Act
-    PaymentTransactionType actualPaymentTransactionType =
-        new PaymentTransactionType("Type", "Friendly Type");
-
-    // Assert
-    assertEquals("Friendly Type", actualPaymentTransactionType.getFriendlyType());
-    assertEquals("Type", actualPaymentTransactionType.getType());
-  }
-
-  /**
-   * Test {@link PaymentTransactionType#PaymentTransactionType(String, String)}.
-   *
-   * <ul>
-   *   <li>When {@code Void}.
-   *   <li>Then return Type is {@code Void}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PaymentTransactionType#PaymentTransactionType(String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PaymentTransactionType.<init>(String, String)"})
-  public void testNewPaymentTransactionType_whenVoid_thenReturnTypeIsVoid() {
-    // Arrange and Act
-    PaymentTransactionType actualPaymentTransactionType =
-        new PaymentTransactionType("Void", "Friendly Type");
-
-    // Assert
-    assertEquals("Friendly Type", actualPaymentTransactionType.getFriendlyType());
-    assertEquals("Void", actualPaymentTransactionType.getType());
-  }
-
-  /**
-   * Test {@link PaymentTransactionType#equals(Object)}, and {@link
-   * PaymentTransactionType#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link PaymentTransactionType#equals(Object)}
    *   <li>{@link PaymentTransactionType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PaymentTransactionType.equals(Object)",
-    "int PaymentTransactionType.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     PaymentTransactionType paymentTransactionType = PaymentTransactionType.AUTHORIZE;
@@ -160,99 +60,56 @@ public class PaymentTransactionTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(paymentTransactionType, paymentTransactionType2);
-    assertEquals(paymentTransactionType.hashCode(), paymentTransactionType2.hashCode());
+    int expectedHashCodeResult = paymentTransactionType.hashCode();
+    assertEquals(expectedHashCodeResult, paymentTransactionType2.hashCode());
   }
 
   /**
-   * Test {@link PaymentTransactionType#equals(Object)}, and {@link
-   * PaymentTransactionType#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link PaymentTransactionType#equals(Object)}
    *   <li>{@link PaymentTransactionType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PaymentTransactionType.equals(Object)",
-    "int PaymentTransactionType.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
-    // Arrange
-    PaymentTransactionType paymentTransactionType = PaymentTransactionType.AUTHORIZE_AND_CAPTURE;
-    PaymentTransactionType paymentTransactionType2 =
-        new PaymentTransactionType("AUTHORIZE_AND_CAPTURE", "AUTHORIZE_AND_CAPTURE");
-
-    // Act and Assert
-    assertEquals(paymentTransactionType, paymentTransactionType2);
-    assertEquals(paymentTransactionType.hashCode(), paymentTransactionType2.hashCode());
-  }
-
-  /**
-   * Test {@link PaymentTransactionType#equals(Object)}, and {@link
-   * PaymentTransactionType#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link PaymentTransactionType#equals(Object)}
-   *   <li>{@link PaymentTransactionType#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PaymentTransactionType.equals(Object)",
-    "int PaymentTransactionType.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     PaymentTransactionType paymentTransactionType = new PaymentTransactionType();
     PaymentTransactionType paymentTransactionType2 = new PaymentTransactionType();
 
     // Act and Assert
     assertEquals(paymentTransactionType, paymentTransactionType2);
-    assertEquals(paymentTransactionType.hashCode(), paymentTransactionType2.hashCode());
+    int expectedHashCodeResult = paymentTransactionType.hashCode();
+    assertEquals(expectedHashCodeResult, paymentTransactionType2.hashCode());
   }
 
   /**
-   * Test {@link PaymentTransactionType#equals(Object)}, and {@link
-   * PaymentTransactionType#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link PaymentTransactionType#equals(Object)}
    *   <li>{@link PaymentTransactionType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PaymentTransactionType.equals(Object)",
-    "int PaymentTransactionType.hashCode()"
-  })
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
+    // Arrange
+    PaymentTransactionType paymentTransactionType = new PaymentTransactionType("AUTHORIZE", "Friendly Type");
+    PaymentTransactionType paymentTransactionType2 = PaymentTransactionType.AUTHORIZE;
+
+    // Act and Assert
+    assertEquals(paymentTransactionType, paymentTransactionType2);
+    int expectedHashCodeResult = paymentTransactionType.hashCode();
+    assertEquals(expectedHashCodeResult, paymentTransactionType2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link PaymentTransactionType#equals(Object)}
+   *   <li>{@link PaymentTransactionType#hashCode()}
+   * </ul>
+   */
+  @Test
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     PaymentTransactionType paymentTransactionType = PaymentTransactionType.AUTHORIZE;
@@ -264,90 +121,77 @@ public class PaymentTransactionTypeDiffblueTest {
   }
 
   /**
-   * Test {@link PaymentTransactionType#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link PaymentTransactionType#equals(Object)}
+   * Method under test: {@link PaymentTransactionType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PaymentTransactionType.equals(Object)",
-    "int PaymentTransactionType.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(PaymentTransactionType.AUTHORIZE_AND_CAPTURE, PaymentTransactionType.AUTHORIZE);
-  }
-
-  /**
-   * Test {@link PaymentTransactionType#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link PaymentTransactionType#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PaymentTransactionType.equals(Object)",
-    "int PaymentTransactionType.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
-    // Arrange, Act and Assert
     assertNotEquals(new PaymentTransactionType(), PaymentTransactionType.AUTHORIZE);
   }
 
   /**
-   * Test {@link PaymentTransactionType#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link PaymentTransactionType#equals(Object)}
+   * Method under test: {@link PaymentTransactionType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PaymentTransactionType.equals(Object)",
-    "int PaymentTransactionType.hashCode()"
-  })
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(PaymentTransactionType.AUTHORIZE, null);
   }
 
   /**
-   * Test {@link PaymentTransactionType#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link PaymentTransactionType#equals(Object)}
+   * Method under test: {@link PaymentTransactionType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PaymentTransactionType.equals(Object)",
-    "int PaymentTransactionType.hashCode()"
-  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(PaymentTransactionType.AUTHORIZE, "Different type to PaymentTransactionType");
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link PaymentTransactionType#PaymentTransactionType()}
+   *   <li>{@link PaymentTransactionType#getFriendlyType()}
+   *   <li>{@link PaymentTransactionType#getType()}
+   * </ul>
+   */
+  @Test
+  public void testGettersAndSetters() {
+    // Arrange and Act
+    PaymentTransactionType actualPaymentTransactionType = new PaymentTransactionType();
+    String actualFriendlyType = actualPaymentTransactionType.getFriendlyType();
+
+    // Assert
+    assertNull(actualFriendlyType);
+    assertNull(actualPaymentTransactionType.getType());
+  }
+
+  /**
+   * Method under test:
+   * {@link PaymentTransactionType#PaymentTransactionType(String, String)}
+   */
+  @Test
+  public void testNewPaymentTransactionType() {
+    // Arrange and Act
+    PaymentTransactionType actualPaymentTransactionType = new PaymentTransactionType("Type", "Friendly Type");
+
+    // Assert
+    assertEquals("Friendly Type", actualPaymentTransactionType.getFriendlyType());
+    assertEquals("Type", actualPaymentTransactionType.getType());
+  }
+
+  /**
+   * Method under test:
+   * {@link PaymentTransactionType#PaymentTransactionType(String, String)}
+   */
+  @Test
+  public void testNewPaymentTransactionType2() {
+    // Arrange and Act
+    PaymentTransactionType actualPaymentTransactionType = new PaymentTransactionType("Capture", "Friendly Type");
+
+    // Assert
+    assertEquals("Capture", actualPaymentTransactionType.getType());
+    assertEquals("Friendly Type", actualPaymentTransactionType.getFriendlyType());
   }
 }

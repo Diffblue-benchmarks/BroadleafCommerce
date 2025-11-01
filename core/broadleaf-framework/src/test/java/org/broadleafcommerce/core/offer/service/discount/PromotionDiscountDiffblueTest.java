@@ -22,9 +22,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.offer.domain.Offer;
 import org.broadleafcommerce.core.offer.domain.OfferImpl;
 import org.broadleafcommerce.core.offer.domain.OfferItemCriteria;
@@ -36,24 +33,13 @@ import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOfferU
 import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderImpl;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class PromotionDiscountDiffblueTest {
   /**
-   * Test {@link PromotionDiscount#split(int)}.
-   *
-   * <ul>
-   *   <li>When one.
-   *   <li>Then return Promotion is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotionDiscount#split(int)}
+   * Method under test: {@link PromotionDiscount#split(int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"PromotionDiscount PromotionDiscount.split(int)"})
-  public void testSplit_whenOne_thenReturnPromotionIsNull() {
+  public void testSplit() {
     // Arrange
     PromotionDiscount promotionDiscount = new PromotionDiscount();
 
@@ -72,20 +58,10 @@ public class PromotionDiscountDiffblueTest {
   }
 
   /**
-   * Test {@link PromotionDiscount#split(int)}.
-   *
-   * <ul>
-   *   <li>When zero.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotionDiscount#split(int)}
+   * Method under test: {@link PromotionDiscount#split(int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"PromotionDiscount PromotionDiscount.split(int)"})
-  public void testSplit_whenZero_thenReturnNull() {
+  public void testSplit2() {
     // Arrange
     PromotionDiscount promotionDiscount = new PromotionDiscount();
 
@@ -96,17 +72,12 @@ public class PromotionDiscountDiffblueTest {
   }
 
   /**
-   * Test {@link PromotionDiscount#copy()}.
-   *
-   * <p>Method under test: {@link PromotionDiscount#copy()}
+   * Method under test: {@link PromotionDiscount#copy()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"PromotionDiscount PromotionDiscount.copy()"})
   public void testCopy() {
     // Arrange and Act
-    PromotionDiscount actualCopyResult = new PromotionDiscount().copy();
+    PromotionDiscount actualCopyResult = (new PromotionDiscount()).copy();
 
     // Assert
     assertNull(actualCopyResult.getPromotion());
@@ -118,14 +89,9 @@ public class PromotionDiscountDiffblueTest {
   }
 
   /**
-   * Test {@link PromotionDiscount#resetQty(int)}.
-   *
-   * <p>Method under test: {@link PromotionDiscount#resetQty(int)}
+   * Method under test: {@link PromotionDiscount#resetQty(int)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PromotionDiscount.resetQty(int)"})
   public void testResetQty() {
     // Arrange
     PromotionDiscount promotionDiscount = new PromotionDiscount();
@@ -139,20 +105,19 @@ public class PromotionDiscountDiffblueTest {
   }
 
   /**
-   * Test {@link PromotionDiscount#isFinalized()}.
-   *
-   * <ul>
-   *   <li>Given {@link PromotionDiscount} (default constructor) incrementQuantity one.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotionDiscount#isFinalized()}
+   * Method under test: {@link PromotionDiscount#isFinalized()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PromotionDiscount.isFinalized()"})
-  public void testIsFinalized_givenPromotionDiscountIncrementQuantityOne_thenReturnFalse() {
+  public void testIsFinalized() {
+    // Arrange, Act and Assert
+    assertTrue((new PromotionDiscount()).isFinalized());
+  }
+
+  /**
+   * Method under test: {@link PromotionDiscount#isFinalized()}
+   */
+  @Test
+  public void testIsFinalized2() {
     // Arrange
     PromotionDiscount promotionDiscount = new PromotionDiscount();
     promotionDiscount.incrementQuantity(1);
@@ -162,33 +127,12 @@ public class PromotionDiscountDiffblueTest {
   }
 
   /**
-   * Test {@link PromotionDiscount#isFinalized()}.
-   *
-   * <ul>
-   *   <li>Given {@link PromotionDiscount} (default constructor).
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PromotionDiscount#isFinalized()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PromotionDiscount.isFinalized()"})
-  public void testIsFinalized_givenPromotionDiscount_thenReturnTrue() {
-    // Arrange, Act and Assert
-    assertTrue(new PromotionDiscount().isFinalized());
-  }
-
-  /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link PromotionDiscount}
    *   <li>{@link PromotionDiscount#incrementQuantity(int)}
-   *   <li>{@link PromotionDiscount#setCandidateItemOffer(PromotableCandidateItemOffer)}
+   *   <li>
+   * {@link PromotionDiscount#setCandidateItemOffer(PromotableCandidateItemOffer)}
    *   <li>{@link PromotionDiscount#setFinalizedQuantity(int)}
    *   <li>{@link PromotionDiscount#setItemCriteria(OfferItemCriteria)}
    *   <li>{@link PromotionDiscount#setPromotion(Offer)}
@@ -201,32 +145,17 @@ public class PromotionDiscountDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PromotionDiscount.<init>()",
-    "PromotableCandidateItemOffer PromotionDiscount.getCandidateItemOffer()",
-    "int PromotionDiscount.getFinalizedQuantity()",
-    "OfferItemCriteria PromotionDiscount.getItemCriteria()",
-    "Offer PromotionDiscount.getPromotion()",
-    "int PromotionDiscount.getQuantity()",
-    "void PromotionDiscount.incrementQuantity(int)",
-    "void PromotionDiscount.setCandidateItemOffer(PromotableCandidateItemOffer)",
-    "void PromotionDiscount.setFinalizedQuantity(int)",
-    "void PromotionDiscount.setItemCriteria(OfferItemCriteria)",
-    "void PromotionDiscount.setPromotion(Offer)",
-    "void PromotionDiscount.setQuantity(int)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     PromotionDiscount actualPromotionDiscount = new PromotionDiscount();
     actualPromotionDiscount.incrementQuantity(1);
     NullOrderImpl order = new NullOrderImpl();
-    PromotableOrderImpl promotableOrder =
-        new PromotableOrderImpl(
-            order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-    PromotableCandidateItemOfferImpl candidateItemOffer =
-        new PromotableCandidateItemOfferImpl(promotableOrder, new OfferImpl());
+    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    PromotableCandidateItemOfferImpl candidateItemOffer = new PromotableCandidateItemOfferImpl(promotableOrder,
+        new OfferImpl());
+
     actualPromotionDiscount.setCandidateItemOffer(candidateItemOffer);
     actualPromotionDiscount.setFinalizedQuantity(1);
     OfferItemCriteriaImpl itemCriteria = new OfferItemCriteriaImpl();
@@ -234,13 +163,12 @@ public class PromotionDiscountDiffblueTest {
     OfferImpl promotion = new OfferImpl();
     actualPromotionDiscount.setPromotion(promotion);
     actualPromotionDiscount.setQuantity(1);
-    PromotableCandidateItemOffer actualCandidateItemOffer =
-        actualPromotionDiscount.getCandidateItemOffer();
+    PromotableCandidateItemOffer actualCandidateItemOffer = actualPromotionDiscount.getCandidateItemOffer();
     int actualFinalizedQuantity = actualPromotionDiscount.getFinalizedQuantity();
     OfferItemCriteria actualItemCriteria = actualPromotionDiscount.getItemCriteria();
     Offer actualPromotion = actualPromotionDiscount.getPromotion();
 
-    // Assert
+    // Assert that nothing has changed
     assertTrue(actualItemCriteria instanceof OfferItemCriteriaImpl);
     assertEquals(1, actualFinalizedQuantity);
     assertEquals(1, actualPromotionDiscount.getQuantity());

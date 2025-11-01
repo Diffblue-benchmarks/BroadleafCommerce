@@ -21,118 +21,30 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
-import javax.persistence.EntityManagerFactory;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.orm.jpa.DefaultJpaDialect;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = {LifecycleAwareJpaTransactionManager.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(SpringJUnit4ClassRunner.class)
 public class LifecycleAwareJpaTransactionManagerDiffblueTest {
-  @MockBean private EntityManagerFactory entityManagerFactory;
-
-  @Autowired private LifecycleAwareJpaTransactionManager lifecycleAwareJpaTransactionManager;
-
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link LifecycleAwareJpaTransactionManager#setLogEvents(Boolean)}
-   *   <li>{@link LifecycleAwareJpaTransactionManager#getLogEvents()}
-   * </ul>
+   * Method under test: {@link LifecycleAwareJpaTransactionManager#isEnabled()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Boolean LifecycleAwareJpaTransactionManager.getLogEvents()",
-    "void LifecycleAwareJpaTransactionManager.setLogEvents(Boolean)"
-  })
-  public void testGettersAndSetters() {
-    // Arrange
-    LifecycleAwareJpaTransactionManager lifecycleAwareJpaTransactionManager =
-        new LifecycleAwareJpaTransactionManager();
+  public void testIsEnabled() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Act
-    lifecycleAwareJpaTransactionManager.setLogEvents(true);
-
-    // Assert
-    assertTrue(lifecycleAwareJpaTransactionManager.getLogEvents());
-  }
-
-  /**
-   * Test {@link LifecycleAwareJpaTransactionManager#isEnabled()}.
-   *
-   * <ul>
-   *   <li>Given {@link LifecycleAwareJpaTransactionManager} (default constructor) LogEvents is
-   *       {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link LifecycleAwareJpaTransactionManager#isEnabled()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean LifecycleAwareJpaTransactionManager.isEnabled()"})
-  public void testIsEnabled_givenLifecycleAwareJpaTransactionManagerLogEventsIsFalse() {
-    // Arrange
-    LifecycleAwareJpaTransactionManager lifecycleAwareJpaTransactionManager =
-        new LifecycleAwareJpaTransactionManager();
-    lifecycleAwareJpaTransactionManager.setLogEvents(false);
-
-    // Act and Assert
-    assertFalse(lifecycleAwareJpaTransactionManager.isEnabled());
-  }
-
-  /**
-   * Test {@link LifecycleAwareJpaTransactionManager#isEnabled()}.
-   *
-   * <ul>
-   *   <li>Given {@link LifecycleAwareJpaTransactionManager}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link LifecycleAwareJpaTransactionManager#isEnabled()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean LifecycleAwareJpaTransactionManager.isEnabled()"})
-  public void testIsEnabled_givenLifecycleAwareJpaTransactionManager_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(lifecycleAwareJpaTransactionManager.isEnabled());
+    assertFalse((new LifecycleAwareJpaTransactionManager()).isEnabled());
   }
 
   /**
-   * Test {@link LifecycleAwareJpaTransactionManager#isEnabled()}.
-   *
-   * <ul>
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link LifecycleAwareJpaTransactionManager#isEnabled()}
+   * Method under test: {@link LifecycleAwareJpaTransactionManager#isEnabled()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean LifecycleAwareJpaTransactionManager.isEnabled()"})
-  public void testIsEnabled_thenReturnTrue() {
+  public void testIsEnabled2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    LifecycleAwareJpaTransactionManager lifecycleAwareJpaTransactionManager =
-        new LifecycleAwareJpaTransactionManager();
+    LifecycleAwareJpaTransactionManager lifecycleAwareJpaTransactionManager = new LifecycleAwareJpaTransactionManager();
     lifecycleAwareJpaTransactionManager.setLogEvents(true);
 
     // Act and Assert
@@ -140,23 +52,37 @@ public class LifecycleAwareJpaTransactionManagerDiffblueTest {
   }
 
   /**
-   * Test new {@link LifecycleAwareJpaTransactionManager} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * LifecycleAwareJpaTransactionManager}
+   * Methods under test:
+   * <ul>
+   *   <li>{@link LifecycleAwareJpaTransactionManager#setLogEvents(Boolean)}
+   *   <li>{@link LifecycleAwareJpaTransactionManager#getLogEvents()}
+   * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void LifecycleAwareJpaTransactionManager.<init>()"})
+  public void testGettersAndSetters() {
+    // Arrange
+    LifecycleAwareJpaTransactionManager lifecycleAwareJpaTransactionManager = new LifecycleAwareJpaTransactionManager();
+
+    // Act
+    lifecycleAwareJpaTransactionManager.setLogEvents(true);
+
+    // Assert that nothing has changed
+    assertTrue(lifecycleAwareJpaTransactionManager.getLogEvents());
+  }
+
+  /**
+   * Method under test: default or parameterless constructor of
+   * {@link LifecycleAwareJpaTransactionManager}
+   */
+  @Test
   public void testNewLifecycleAwareJpaTransactionManager() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange and Act
-    LifecycleAwareJpaTransactionManager actualLifecycleAwareJpaTransactionManager =
-        new LifecycleAwareJpaTransactionManager();
+    LifecycleAwareJpaTransactionManager actualLifecycleAwareJpaTransactionManager = new LifecycleAwareJpaTransactionManager();
 
     // Assert
-    assertTrue(
-        actualLifecycleAwareJpaTransactionManager.getJpaDialect() instanceof DefaultJpaDialect);
+    assertTrue(actualLifecycleAwareJpaTransactionManager.getJpaDialect() instanceof DefaultJpaDialect);
     assertNull(actualLifecycleAwareJpaTransactionManager.getLogEvents());
     assertNull(actualLifecycleAwareJpaTransactionManager.getPersistenceUnitName());
     assertNull(actualLifecycleAwareJpaTransactionManager.getEntityManagerFactory());

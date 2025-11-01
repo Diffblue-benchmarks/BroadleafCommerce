@@ -18,49 +18,33 @@
 package org.broadleafcommerce.core.offer.domain;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.copy.CreateResponse;
+import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
+import org.broadleafcommerce.common.service.GenericEntityService;
+import org.broadleafcommerce.common.site.domain.CatalogImpl;
+import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class OfferRuleImplDiffblueTest {
-  @Autowired private OfferRuleImpl offerRuleImpl;
-
   /**
-   * Test {@link OfferRuleImpl#equals(Object)}, and {@link OfferRuleImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link OfferRuleImpl#equals(Object)}
    *   <li>{@link OfferRuleImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean OfferRuleImpl.equals(Object)", "int OfferRuleImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     OfferRuleImpl offerRuleImpl = new OfferRuleImpl();
@@ -73,28 +57,18 @@ public class OfferRuleImplDiffblueTest {
 
     // Act and Assert
     assertEquals(offerRuleImpl, offerRuleImpl2);
-    assertEquals(offerRuleImpl.hashCode(), offerRuleImpl2.hashCode());
+    int expectedHashCodeResult = offerRuleImpl.hashCode();
+    assertEquals(expectedHashCodeResult, offerRuleImpl2.hashCode());
   }
 
   /**
-   * Test {@link OfferRuleImpl#equals(Object)}, and {@link OfferRuleImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link OfferRuleImpl#equals(Object)}
    *   <li>{@link OfferRuleImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean OfferRuleImpl.equals(Object)", "int OfferRuleImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     OfferRuleImpl offerRuleImpl = new OfferRuleImpl();
@@ -107,28 +81,18 @@ public class OfferRuleImplDiffblueTest {
 
     // Act and Assert
     assertEquals(offerRuleImpl, offerRuleImpl2);
-    assertNotEquals(offerRuleImpl.hashCode(), offerRuleImpl2.hashCode());
+    int notExpectedHashCodeResult = offerRuleImpl.hashCode();
+    assertNotEquals(notExpectedHashCodeResult, offerRuleImpl2.hashCode());
   }
 
   /**
-   * Test {@link OfferRuleImpl#equals(Object)}, and {@link OfferRuleImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link OfferRuleImpl#equals(Object)}
    *   <li>{@link OfferRuleImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean OfferRuleImpl.equals(Object)", "int OfferRuleImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     OfferRuleImpl offerRuleImpl = new OfferRuleImpl();
@@ -141,28 +105,42 @@ public class OfferRuleImplDiffblueTest {
 
     // Act and Assert
     assertEquals(offerRuleImpl, offerRuleImpl2);
-    assertNotEquals(offerRuleImpl.hashCode(), offerRuleImpl2.hashCode());
+    int notExpectedHashCodeResult = offerRuleImpl.hashCode();
+    assertNotEquals(notExpectedHashCodeResult, offerRuleImpl2.hashCode());
   }
 
   /**
-   * Test {@link OfferRuleImpl#equals(Object)}, and {@link OfferRuleImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link OfferRuleImpl#equals(Object)}
    *   <li>{@link OfferRuleImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean OfferRuleImpl.equals(Object)", "int OfferRuleImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
+    // Arrange
+    OfferRuleImpl offerRuleImpl = new OfferRuleImpl();
+    offerRuleImpl.setId(null);
+    offerRuleImpl.setMatchRule(null);
+
+    OfferRuleImpl offerRuleImpl2 = new OfferRuleImpl();
+    offerRuleImpl2.setId(CandidateFulfillmentGroupOfferImpl.serialVersionUID);
+    offerRuleImpl2.setMatchRule(null);
+
+    // Act and Assert
+    assertEquals(offerRuleImpl, offerRuleImpl2);
+    int notExpectedHashCodeResult = offerRuleImpl.hashCode();
+    assertNotEquals(notExpectedHashCodeResult, offerRuleImpl2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link OfferRuleImpl#equals(Object)}
+   *   <li>{@link OfferRuleImpl#hashCode()}
+   * </ul>
+   */
+  @Test
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     OfferRuleImpl offerRuleImpl = new OfferRuleImpl();
@@ -176,19 +154,66 @@ public class OfferRuleImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferRuleImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link OfferRuleImpl#equals(Object)}
+   * Method under test:
+   * {@link OfferRuleImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean OfferRuleImpl.equals(Object)", "int OfferRuleImpl.hashCode()"})
+  public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    OfferRuleImpl offerRuleImpl = new OfferRuleImpl();
+    GenericEntityService genericEntityService = mock(GenericEntityService.class);
+    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
+
+    // Act
+    CreateResponse<OfferRule> actualCreateOrRetrieveCopyInstanceResult = offerRuleImpl
+        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+            genericEntityService, new MultiTenantCopierExtensionManager()));
+
+    // Assert
+    verify(genericEntityService).getCeilingImplClass(eq("org.broadleafcommerce.core.offer.domain.OfferRuleImpl"));
+    verify(genericEntityService).getIdentifier(isA(Object.class));
+    OfferRule clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
+    assertTrue(clone instanceof OfferRuleImpl);
+    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
+    assertEquals(offerRuleImpl, clone);
+  }
+
+  /**
+   * Method under test:
+   * {@link OfferRuleImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    OfferRuleImpl offerRuleImpl = new OfferRuleImpl();
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    CreateResponse<OfferRule> actualCreateOrRetrieveCopyInstanceResult = offerRuleImpl
+        .createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+  }
+
+  /**
+   * Method under test: {@link OfferRuleImpl#equals(Object)}
+   */
+  @Test
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     OfferRuleImpl offerRuleImpl = new OfferRuleImpl();
@@ -204,20 +229,28 @@ public class OfferRuleImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferRuleImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link OfferRuleImpl#equals(Object)}
+   * Method under test: {@link OfferRuleImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean OfferRuleImpl.equals(Object)", "int OfferRuleImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange
+    OfferRuleImpl offerRuleImpl = new OfferRuleImpl();
+    offerRuleImpl.setId(null);
+    offerRuleImpl.setMatchRule(null);
+
+    OfferRuleImpl offerRuleImpl2 = new OfferRuleImpl();
+    offerRuleImpl2.setId(CandidateFulfillmentGroupOfferImpl.serialVersionUID);
+    offerRuleImpl2.setMatchRule("Match Rule");
+
+    // Act and Assert
+    assertNotEquals(offerRuleImpl, offerRuleImpl2);
+  }
+
+  /**
+   * Method under test: {@link OfferRuleImpl#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     OfferRuleImpl offerRuleImpl = new OfferRuleImpl();
     offerRuleImpl.setId(null);
@@ -232,19 +265,9 @@ public class OfferRuleImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferRuleImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link OfferRuleImpl#equals(Object)}
+   * Method under test: {@link OfferRuleImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean OfferRuleImpl.equals(Object)", "int OfferRuleImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     OfferRuleImpl offerRuleImpl = new OfferRuleImpl();
@@ -256,19 +279,9 @@ public class OfferRuleImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferRuleImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link OfferRuleImpl#equals(Object)}
+   * Method under test: {@link OfferRuleImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean OfferRuleImpl.equals(Object)", "int OfferRuleImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     OfferRuleImpl offerRuleImpl = new OfferRuleImpl();
@@ -280,64 +293,7 @@ public class OfferRuleImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferRuleImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * OfferRuleImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse OfferRuleImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
-    // Arrange
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(new OfferRuleImpl(), true);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    CreateResponse<OfferRule> actualCreateOrRetrieveCopyInstanceResult =
-        offerRuleImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
-  }
-
-  /**
-   * Test {@link OfferRuleImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * OfferRuleImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse OfferRuleImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
-    // Arrange
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(offerRuleImpl, false);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    CreateResponse<OfferRule> actualCreateOrRetrieveCopyInstanceResult =
-        offerRuleImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
-  }
-
-  /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link OfferRuleImpl}
    *   <li>{@link OfferRuleImpl#setId(Long)}
@@ -347,15 +303,6 @@ public class OfferRuleImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OfferRuleImpl.<init>()",
-    "Long OfferRuleImpl.getId()",
-    "String OfferRuleImpl.getMatchRule()",
-    "void OfferRuleImpl.setId(Long)",
-    "void OfferRuleImpl.setMatchRule(String)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     OfferRuleImpl actualOfferRuleImpl = new OfferRuleImpl();
@@ -363,7 +310,7 @@ public class OfferRuleImplDiffblueTest {
     actualOfferRuleImpl.setMatchRule("Match Rule");
     Long actualId = actualOfferRuleImpl.getId();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("Match Rule", actualOfferRuleImpl.getMatchRule());
     assertEquals(CandidateFulfillmentGroupOfferImpl.serialVersionUID, actualId.longValue());
   }

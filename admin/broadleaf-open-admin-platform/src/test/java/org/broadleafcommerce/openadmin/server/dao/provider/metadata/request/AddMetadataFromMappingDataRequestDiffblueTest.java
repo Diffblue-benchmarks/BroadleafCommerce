@@ -20,9 +20,6 @@ package org.broadleafcommerce.openadmin.server.dao.provider.metadata.request;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
@@ -33,18 +30,13 @@ import org.hibernate.mapping.Property;
 import org.hibernate.type.BigDecimalType;
 import org.hibernate.type.Type;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class AddMetadataFromMappingDataRequestDiffblueTest {
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
-   *   <li>{@link AddMetadataFromMappingDataRequest#AddMetadataFromMappingDataRequest(List,
-   *       SupportedFieldType, SupportedFieldType, Type, String, MergedPropertyType,
-   *       DynamicEntityDao)}
+   *   <li>
+   * {@link AddMetadataFromMappingDataRequest#AddMetadataFromMappingDataRequest(List, SupportedFieldType, SupportedFieldType, Type, String, MergedPropertyType, DynamicEntityDao)}
    *   <li>{@link AddMetadataFromMappingDataRequest#getComponentProperties()}
    *   <li>{@link AddMetadataFromMappingDataRequest#getDynamicEntityDao()}
    *   <li>{@link AddMetadataFromMappingDataRequest#getMergedPropertyType()}
@@ -55,18 +47,6 @@ public class AddMetadataFromMappingDataRequestDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void AddMetadataFromMappingDataRequest.<init>(List, SupportedFieldType, SupportedFieldType, Type, String, MergedPropertyType, DynamicEntityDao)",
-    "List AddMetadataFromMappingDataRequest.getComponentProperties()",
-    "DynamicEntityDao AddMetadataFromMappingDataRequest.getDynamicEntityDao()",
-    "MergedPropertyType AddMetadataFromMappingDataRequest.getMergedPropertyType()",
-    "String AddMetadataFromMappingDataRequest.getPropertyName()",
-    "Type AddMetadataFromMappingDataRequest.getRequestedEntityType()",
-    "SupportedFieldType AddMetadataFromMappingDataRequest.getSecondaryType()",
-    "SupportedFieldType AddMetadataFromMappingDataRequest.getType()"
-  })
   public void testGettersAndSetters() {
     // Arrange
     ArrayList<Property> componentProperties = new ArrayList<>();
@@ -74,26 +54,15 @@ public class AddMetadataFromMappingDataRequestDiffblueTest {
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     // Act
-    AddMetadataFromMappingDataRequest actualAddMetadataFromMappingDataRequest =
-        new AddMetadataFromMappingDataRequest(
-            componentProperties,
-            SupportedFieldType.UNKNOWN,
-            SupportedFieldType.UNKNOWN,
-            requestedEntityType,
-            "Property Name",
-            MergedPropertyType.PRIMARY,
-            dynamicEntityDao);
-    List<Property> actualComponentProperties =
-        actualAddMetadataFromMappingDataRequest.getComponentProperties();
-    DynamicEntityDao actualDynamicEntityDao =
-        actualAddMetadataFromMappingDataRequest.getDynamicEntityDao();
-    MergedPropertyType actualMergedPropertyType =
-        actualAddMetadataFromMappingDataRequest.getMergedPropertyType();
+    AddMetadataFromMappingDataRequest actualAddMetadataFromMappingDataRequest = new AddMetadataFromMappingDataRequest(
+        componentProperties, SupportedFieldType.UNKNOWN, SupportedFieldType.UNKNOWN, requestedEntityType,
+        "Property Name", MergedPropertyType.PRIMARY, dynamicEntityDao);
+    List<Property> actualComponentProperties = actualAddMetadataFromMappingDataRequest.getComponentProperties();
+    DynamicEntityDao actualDynamicEntityDao = actualAddMetadataFromMappingDataRequest.getDynamicEntityDao();
+    MergedPropertyType actualMergedPropertyType = actualAddMetadataFromMappingDataRequest.getMergedPropertyType();
     String actualPropertyName = actualAddMetadataFromMappingDataRequest.getPropertyName();
-    Type actualRequestedEntityType =
-        actualAddMetadataFromMappingDataRequest.getRequestedEntityType();
-    SupportedFieldType actualSecondaryType =
-        actualAddMetadataFromMappingDataRequest.getSecondaryType();
+    Type actualRequestedEntityType = actualAddMetadataFromMappingDataRequest.getRequestedEntityType();
+    SupportedFieldType actualSecondaryType = actualAddMetadataFromMappingDataRequest.getSecondaryType();
 
     // Assert
     assertEquals("Property Name", actualPropertyName);

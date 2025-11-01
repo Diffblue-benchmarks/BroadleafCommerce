@@ -18,32 +18,33 @@
 package org.broadleafcommerce.core.util.service;
 
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = {ResourcePurgeExtensionManager.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class ResourcePurgeExtensionManagerDiffblueTest {
-  @Autowired private ResourcePurgeExtensionManager resourcePurgeExtensionManager;
-
   /**
-   * Test {@link ResourcePurgeExtensionManager#continueOnHandled()}.
-   *
-   * <p>Method under test: {@link ResourcePurgeExtensionManager#continueOnHandled()}
+   * Method under test: {@link ResourcePurgeExtensionManager#continueOnHandled()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ResourcePurgeExtensionManager.continueOnHandled()"})
   public void testContinueOnHandled() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
+    assertTrue((new ResourcePurgeExtensionManager()).continueOnHandled());
+  }
+
+  /**
+   * Method under test: {@link ResourcePurgeExtensionManager#continueOnHandled()}
+   */
+  @Test
+  public void testContinueOnHandled2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ResourcePurgeExtensionManager resourcePurgeExtensionManager = new ResourcePurgeExtensionManager();
+    resourcePurgeExtensionManager.registerHandler(mock(AbstractResourcePurgeExtensionHandler.class));
+
+    // Act and Assert
     assertTrue(resourcePurgeExtensionManager.continueOnHandled());
   }
 }

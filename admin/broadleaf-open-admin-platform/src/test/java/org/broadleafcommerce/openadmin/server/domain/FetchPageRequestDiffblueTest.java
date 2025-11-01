@@ -19,22 +19,13 @@ package org.broadleafcommerce.openadmin.server.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class FetchPageRequestDiffblueTest {
   /**
-   * Test {@link FetchPageRequest#withStartIndex(Integer)}.
-   *
-   * <p>Method under test: {@link FetchPageRequest#withStartIndex(Integer)}
+   * Method under test: {@link FetchPageRequest#withStartIndex(Integer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FetchPageRequest FetchPageRequest.withStartIndex(Integer)"})
   public void testWithStartIndex() {
     // Arrange
     FetchPageRequest fetchPageRequest = new FetchPageRequest();
@@ -48,14 +39,9 @@ public class FetchPageRequestDiffblueTest {
   }
 
   /**
-   * Test {@link FetchPageRequest#withMaxIndex(Integer)}.
-   *
-   * <p>Method under test: {@link FetchPageRequest#withMaxIndex(Integer)}
+   * Method under test: {@link FetchPageRequest#withMaxIndex(Integer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FetchPageRequest FetchPageRequest.withMaxIndex(Integer)"})
   public void testWithMaxIndex() {
     // Arrange
     FetchPageRequest fetchPageRequest = new FetchPageRequest();
@@ -69,14 +55,9 @@ public class FetchPageRequestDiffblueTest {
   }
 
   /**
-   * Test {@link FetchPageRequest#withLastId(Long)}.
-   *
-   * <p>Method under test: {@link FetchPageRequest#withLastId(Long)}
+   * Method under test: {@link FetchPageRequest#withLastId(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FetchPageRequest FetchPageRequest.withLastId(Long)"})
   public void testWithLastId() {
     // Arrange
     FetchPageRequest fetchPageRequest = new FetchPageRequest();
@@ -90,94 +71,7 @@ public class FetchPageRequestDiffblueTest {
   }
 
   /**
-   * Test {@link FetchPageRequest#withFirstId(Long)}.
-   *
-   * <p>Method under test: {@link FetchPageRequest#withFirstId(Long)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FetchPageRequest FetchPageRequest.withFirstId(Long)"})
-  public void testWithFirstId() {
-    // Arrange
-    FetchPageRequest fetchPageRequest = new FetchPageRequest();
-
-    // Act
-    FetchPageRequest actualWithFirstIdResult = fetchPageRequest.withFirstId(1L);
-
-    // Assert
-    assertEquals(1L, fetchPageRequest.getFirstId().longValue());
-    assertSame(fetchPageRequest, actualWithFirstIdResult);
-  }
-
-  /**
-   * Test {@link FetchPageRequest#withUpperCount(Integer)}.
-   *
-   * <p>Method under test: {@link FetchPageRequest#withUpperCount(Integer)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FetchPageRequest FetchPageRequest.withUpperCount(Integer)"})
-  public void testWithUpperCount() {
-    // Arrange
-    FetchPageRequest fetchPageRequest = new FetchPageRequest();
-
-    // Act
-    FetchPageRequest actualWithUpperCountResult = fetchPageRequest.withUpperCount(3);
-
-    // Assert
-    assertEquals(3, fetchPageRequest.getUpperCount().intValue());
-    assertSame(fetchPageRequest, actualWithUpperCountResult);
-  }
-
-  /**
-   * Test {@link FetchPageRequest#withLowerCount(Integer)}.
-   *
-   * <p>Method under test: {@link FetchPageRequest#withLowerCount(Integer)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FetchPageRequest FetchPageRequest.withLowerCount(Integer)"})
-  public void testWithLowerCount() {
-    // Arrange
-    FetchPageRequest fetchPageRequest = new FetchPageRequest();
-
-    // Act
-    FetchPageRequest actualWithLowerCountResult = fetchPageRequest.withLowerCount(3);
-
-    // Assert
-    assertEquals(3, fetchPageRequest.getLowerCount().intValue());
-    assertSame(fetchPageRequest, actualWithLowerCountResult);
-  }
-
-  /**
-   * Test {@link FetchPageRequest#withPageSize(Integer)}.
-   *
-   * <p>Method under test: {@link FetchPageRequest#withPageSize(Integer)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FetchPageRequest FetchPageRequest.withPageSize(Integer)"})
-  public void testWithPageSize() {
-    // Arrange
-    FetchPageRequest fetchPageRequest = new FetchPageRequest();
-
-    // Act
-    FetchPageRequest actualWithPageSizeResult = fetchPageRequest.withPageSize(3);
-
-    // Assert
-    assertEquals(3, fetchPageRequest.getPageSize().intValue());
-    assertSame(fetchPageRequest, actualWithPageSizeResult);
-  }
-
-  /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link FetchPageRequest}
    *   <li>{@link FetchPageRequest#setFirstId(Long)}
@@ -197,25 +91,6 @@ public class FetchPageRequestDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void FetchPageRequest.<init>()",
-    "Long FetchPageRequest.getFirstId()",
-    "Long FetchPageRequest.getLastId()",
-    "Integer FetchPageRequest.getLowerCount()",
-    "Integer FetchPageRequest.getMaxIndex()",
-    "Integer FetchPageRequest.getPageSize()",
-    "Integer FetchPageRequest.getStartIndex()",
-    "Integer FetchPageRequest.getUpperCount()",
-    "void FetchPageRequest.setFirstId(Long)",
-    "void FetchPageRequest.setLastId(Long)",
-    "void FetchPageRequest.setLowerCount(Integer)",
-    "void FetchPageRequest.setMaxIndex(Integer)",
-    "void FetchPageRequest.setPageSize(Integer)",
-    "void FetchPageRequest.setStartIndex(Integer)",
-    "void FetchPageRequest.setUpperCount(Integer)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     FetchPageRequest actualFetchPageRequest = new FetchPageRequest();
@@ -234,7 +109,7 @@ public class FetchPageRequestDiffblueTest {
     Integer actualStartIndex = actualFetchPageRequest.getStartIndex();
     Integer actualUpperCount = actualFetchPageRequest.getUpperCount();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals(1, actualMaxIndex.intValue());
     assertEquals(1, actualStartIndex.intValue());
     assertEquals(1L, actualFirstId.longValue());
@@ -242,5 +117,69 @@ public class FetchPageRequestDiffblueTest {
     assertEquals(3, actualLowerCount.intValue());
     assertEquals(3, actualPageSize.intValue());
     assertEquals(3, actualUpperCount.intValue());
+  }
+
+  /**
+   * Method under test: {@link FetchPageRequest#withFirstId(Long)}
+   */
+  @Test
+  public void testWithFirstId() {
+    // Arrange
+    FetchPageRequest fetchPageRequest = new FetchPageRequest();
+
+    // Act
+    FetchPageRequest actualWithFirstIdResult = fetchPageRequest.withFirstId(1L);
+
+    // Assert
+    assertEquals(1L, fetchPageRequest.getFirstId().longValue());
+    assertSame(fetchPageRequest, actualWithFirstIdResult);
+  }
+
+  /**
+   * Method under test: {@link FetchPageRequest#withUpperCount(Integer)}
+   */
+  @Test
+  public void testWithUpperCount() {
+    // Arrange
+    FetchPageRequest fetchPageRequest = new FetchPageRequest();
+
+    // Act
+    FetchPageRequest actualWithUpperCountResult = fetchPageRequest.withUpperCount(3);
+
+    // Assert
+    assertEquals(3, fetchPageRequest.getUpperCount().intValue());
+    assertSame(fetchPageRequest, actualWithUpperCountResult);
+  }
+
+  /**
+   * Method under test: {@link FetchPageRequest#withLowerCount(Integer)}
+   */
+  @Test
+  public void testWithLowerCount() {
+    // Arrange
+    FetchPageRequest fetchPageRequest = new FetchPageRequest();
+
+    // Act
+    FetchPageRequest actualWithLowerCountResult = fetchPageRequest.withLowerCount(3);
+
+    // Assert
+    assertEquals(3, fetchPageRequest.getLowerCount().intValue());
+    assertSame(fetchPageRequest, actualWithLowerCountResult);
+  }
+
+  /**
+   * Method under test: {@link FetchPageRequest#withPageSize(Integer)}
+   */
+  @Test
+  public void testWithPageSize() {
+    // Arrange
+    FetchPageRequest fetchPageRequest = new FetchPageRequest();
+
+    // Act
+    FetchPageRequest actualWithPageSizeResult = fetchPageRequest.withPageSize(3);
+
+    // Assert
+    assertEquals(3, fetchPageRequest.getPageSize().intValue());
+    assertSame(fetchPageRequest, actualWithPageSizeResult);
   }
 }

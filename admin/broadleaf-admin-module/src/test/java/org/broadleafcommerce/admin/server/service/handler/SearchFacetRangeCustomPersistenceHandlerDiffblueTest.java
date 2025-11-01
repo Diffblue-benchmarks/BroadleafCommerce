@@ -19,6 +19,7 @@ package org.broadleafcommerce.admin.server.service.handler;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
@@ -26,12 +27,10 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
 import org.broadleafcommerce.common.exception.ServiceException;
@@ -50,274 +49,306 @@ import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.RecordHelper;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = {SearchFacetRangeCustomPersistenceHandler.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class SearchFacetRangeCustomPersistenceHandlerDiffblueTest {
-  @Autowired
-  private SearchFacetRangeCustomPersistenceHandler searchFacetRangeCustomPersistenceHandler;
-
   /**
-   * Test {@link SearchFacetRangeCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
-   *
-   * <ul>
-   *   <li>When {@link PersistencePackage#PersistencePackage()}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SearchFacetRangeCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
+   * Method under test:
+   * {@link SearchFacetRangeCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean SearchFacetRangeCustomPersistenceHandler.canHandleFetch(PersistencePackage)"
-  })
-  public void testCanHandleFetch_whenPersistencePackage_thenReturnFalse() {
-    // Arrange, Act and Assert
+  public void testCanHandleFetch() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SearchFacetRangeCustomPersistenceHandler searchFacetRangeCustomPersistenceHandler = new SearchFacetRangeCustomPersistenceHandler();
+
+    // Act and Assert
     assertFalse(searchFacetRangeCustomPersistenceHandler.canHandleFetch(new PersistencePackage()));
   }
 
   /**
-   * Test {@link SearchFacetRangeCustomPersistenceHandler#canHandleRemove(PersistencePackage)}.
-   *
-   * <ul>
-   *   <li>When {@link PersistencePackage#PersistencePackage()}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SearchFacetRangeCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
+   * Method under test:
+   * {@link SearchFacetRangeCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean SearchFacetRangeCustomPersistenceHandler.canHandleRemove(PersistencePackage)"
-  })
-  public void testCanHandleRemove_whenPersistencePackage_thenReturnFalse() {
-    // Arrange, Act and Assert
+  public void testCanHandleFetch2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SearchFacetRangeCustomPersistenceHandler searchFacetRangeCustomPersistenceHandler = new SearchFacetRangeCustomPersistenceHandler();
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
+
+    // Act
+    Boolean actualCanHandleFetchResult = searchFacetRangeCustomPersistenceHandler.canHandleFetch(persistencePackage);
+
+    // Assert
+    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
+    assertFalse(actualCanHandleFetchResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link SearchFacetRangeCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
+   */
+  @Test
+  public void testCanHandleFetch3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SearchFacetRangeCustomPersistenceHandler searchFacetRangeCustomPersistenceHandler = new SearchFacetRangeCustomPersistenceHandler();
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getCeilingEntityFullyQualifiedClassname())
+        .thenReturn("org.broadleafcommerce.core.search.domain.SearchFacetRangeImpl");
+
+    // Act
+    Boolean actualCanHandleFetchResult = searchFacetRangeCustomPersistenceHandler.canHandleFetch(persistencePackage);
+
+    // Assert
+    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
+    assertTrue(actualCanHandleFetchResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link SearchFacetRangeCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
+   */
+  @Test
+  public void testCanHandleRemove() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SearchFacetRangeCustomPersistenceHandler searchFacetRangeCustomPersistenceHandler = new SearchFacetRangeCustomPersistenceHandler();
+
+    // Act and Assert
     assertFalse(searchFacetRangeCustomPersistenceHandler.canHandleRemove(new PersistencePackage()));
   }
 
   /**
-   * Test {@link SearchFacetRangeCustomPersistenceHandler#canHandle(PersistencePackage)}.
-   *
-   * <ul>
-   *   <li>When {@link PersistencePackage#PersistencePackage()}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SearchFacetRangeCustomPersistenceHandler#canHandle(PersistencePackage)}
+   * Method under test:
+   * {@link SearchFacetRangeCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.lang.Boolean SearchFacetRangeCustomPersistenceHandler.canHandle(PersistencePackage)"
-  })
-  public void testCanHandle_whenPersistencePackage_thenReturnFalse() {
-    // Arrange, Act and Assert
+  public void testCanHandleRemove2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SearchFacetRangeCustomPersistenceHandler searchFacetRangeCustomPersistenceHandler = new SearchFacetRangeCustomPersistenceHandler();
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
+
+    // Act
+    Boolean actualCanHandleRemoveResult = searchFacetRangeCustomPersistenceHandler.canHandleRemove(persistencePackage);
+
+    // Assert
+    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
+    assertFalse(actualCanHandleRemoveResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link SearchFacetRangeCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
+   */
+  @Test
+  public void testCanHandleRemove3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SearchFacetRangeCustomPersistenceHandler searchFacetRangeCustomPersistenceHandler = new SearchFacetRangeCustomPersistenceHandler();
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getCeilingEntityFullyQualifiedClassname())
+        .thenReturn("org.broadleafcommerce.core.search.domain.SearchFacetRangeImpl");
+
+    // Act
+    Boolean actualCanHandleRemoveResult = searchFacetRangeCustomPersistenceHandler.canHandleRemove(persistencePackage);
+
+    // Assert
+    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
+    assertTrue(actualCanHandleRemoveResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link SearchFacetRangeCustomPersistenceHandler#canHandle(PersistencePackage)}
+   */
+  @Test
+  public void testCanHandle() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SearchFacetRangeCustomPersistenceHandler searchFacetRangeCustomPersistenceHandler = new SearchFacetRangeCustomPersistenceHandler();
+
+    // Act and Assert
     assertFalse(searchFacetRangeCustomPersistenceHandler.canHandle(new PersistencePackage()));
   }
 
   /**
-   * Test {@link SearchFacetRangeCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is four.
-   * </ul>
-   *
-   * <p>Method under test: {@link SearchFacetRangeCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   * Method under test:
+   * {@link SearchFacetRangeCustomPersistenceHandler#canHandle(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SearchFacetRangeCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
-  })
-  public void testFetch_thenCriteriaTransferObjectCriteriaMapSizeIsFour() throws ServiceException {
+  public void testCanHandle2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
-    when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
-
-    PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.setPersistencePerspective(persistencePerspective);
-
-    CriteriaTransferObject cto = new CriteriaTransferObject();
-    cto.add(new FilterAndSortCriteria("42"));
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule =
-        mock(AdornedTargetListPersistenceModule.class);
-    when(adornedTargetListPersistenceModule.fetch(
-            Mockito.<PersistencePackage>any(), Mockito.<CriteriaTransferObject>any()))
-        .thenReturn(new DynamicResultSet());
-
-    AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
-    when(helper.getCompatibleModule(Mockito.<OperationType>any()))
-        .thenReturn(adornedTargetListPersistenceModule);
+    SearchFacetRangeCustomPersistenceHandler searchFacetRangeCustomPersistenceHandler = new SearchFacetRangeCustomPersistenceHandler();
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
 
     // Act
-    searchFacetRangeCustomPersistenceHandler.fetch(
-        persistencePackage, cto, dynamicEntityDao, helper);
+    Boolean actualCanHandleResult = searchFacetRangeCustomPersistenceHandler.canHandle(persistencePackage);
 
     // Assert
-    verify(persistencePerspective).getOperationTypes();
-    verify(adornedTargetListPersistenceModule)
-        .fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
-    verify(helper).getCompatibleModule(OperationType.BASIC);
-    Map<String, FilterAndSortCriteria> criteriaMap = cto.getCriteriaMap();
-    assertEquals(4, criteriaMap.size());
-    assertTrue(criteriaMap.containsKey("42"));
-    assertTrue(criteriaMap.containsKey("embeddablePriceList.priceList"));
-    assertTrue(criteriaMap.containsKey("maxValue"));
-    assertTrue(criteriaMap.containsKey("minValue"));
+    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
+    assertFalse(actualCanHandleResult);
   }
 
   /**
-   * Test {@link SearchFacetRangeCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link SearchFacetRangeCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   * Method under test:
+   * {@link SearchFacetRangeCustomPersistenceHandler#canHandle(PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SearchFacetRangeCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
-  })
-  public void testFetch_thenCriteriaTransferObjectCriteriaMapSizeIsOne() throws ServiceException {
+  public void testCanHandle3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    SearchFacetRangeCustomPersistenceHandler searchFacetRangeCustomPersistenceHandler = new SearchFacetRangeCustomPersistenceHandler();
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getCeilingEntityFullyQualifiedClassname())
+        .thenReturn("org.broadleafcommerce.core.search.domain.SearchFacetRangeImpl");
+
+    // Act
+    Boolean actualCanHandleResult = searchFacetRangeCustomPersistenceHandler.canHandle(persistencePackage);
+
+    // Assert
+    verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
+    assertTrue(actualCanHandleResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link SearchFacetRangeCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   */
+  @Test
+  public void testFetch() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SearchFacetRangeCustomPersistenceHandler searchFacetRangeCustomPersistenceHandler = new SearchFacetRangeCustomPersistenceHandler();
     PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
     when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
 
     PersistencePackage persistencePackage = new PersistencePackage();
     persistencePackage.setPersistencePerspective(persistencePerspective);
-
-    FilterAndSortCriteria criteria = mock(FilterAndSortCriteria.class);
-    when(criteria.getPropertyId()).thenReturn("42");
-    when(criteria.getSortDirection()).thenReturn(SortDirection.ASCENDING);
-
     CriteriaTransferObject cto = new CriteriaTransferObject();
-    cto.add(criteria);
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule =
-        mock(AdornedTargetListPersistenceModule.class);
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = mock(
+        AdornedTargetListPersistenceModule.class);
     DynamicResultSet dynamicResultSet = new DynamicResultSet();
-    when(adornedTargetListPersistenceModule.fetch(
-            Mockito.<PersistencePackage>any(), Mockito.<CriteriaTransferObject>any()))
-        .thenReturn(dynamicResultSet);
-
-    AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
-    when(helper.getCompatibleModule(Mockito.<OperationType>any()))
-        .thenReturn(adornedTargetListPersistenceModule);
+    when(adornedTargetListPersistenceModule.fetch(Mockito.<PersistencePackage>any(),
+        Mockito.<CriteriaTransferObject>any())).thenReturn(dynamicResultSet);
+    RecordHelper helper = mock(RecordHelper.class);
+    when(helper.getCompatibleModule(Mockito.<OperationType>any())).thenReturn(adornedTargetListPersistenceModule);
 
     // Act
-    DynamicResultSet actualFetchResult =
-        searchFacetRangeCustomPersistenceHandler.fetch(
-            persistencePackage, cto, dynamicEntityDao, helper);
+    DynamicResultSet actualFetchResult = searchFacetRangeCustomPersistenceHandler.fetch(persistencePackage, cto,
+        dynamicEntityDao, helper);
 
     // Assert
-    verify(criteria).getPropertyId();
-    verify(criteria).getSortDirection();
     verify(persistencePerspective).getOperationTypes();
-    verify(adornedTargetListPersistenceModule)
-        .fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
-    verify(helper).getCompatibleModule(OperationType.BASIC);
+    verify(adornedTargetListPersistenceModule).fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
+    verify(helper).getCompatibleModule(eq(OperationType.BASIC));
     Map<String, FilterAndSortCriteria> criteriaMap = cto.getCriteriaMap();
-    assertEquals(1, criteriaMap.size());
-    assertTrue(criteriaMap.containsKey("42"));
+    assertEquals(3, criteriaMap.size());
+    FilterAndSortCriteria getResult = criteriaMap.get("embeddablePriceList.priceList");
+    assertEquals("embeddablePriceList.priceList", getResult.getPropertyId());
+    FilterAndSortCriteria getResult2 = criteriaMap.get("maxValue");
+    assertEquals("maxValue", getResult2.getPropertyId());
+    FilterAndSortCriteria getResult3 = criteriaMap.get("minValue");
+    assertEquals("minValue", getResult3.getPropertyId());
+    assertNull(getResult.getRestrictionType());
+    assertNull(getResult2.getRestrictionType());
+    assertNull(getResult3.getRestrictionType());
+    assertEquals(0, getResult.getOrder().intValue());
+    assertEquals(1, getResult3.getOrder().intValue());
+    assertEquals(2, getResult2.getOrder().intValue());
+    assertEquals(SortDirection.ASCENDING, getResult.getSortDirection());
+    assertEquals(SortDirection.ASCENDING, getResult2.getSortDirection());
+    assertEquals(SortDirection.ASCENDING, getResult3.getSortDirection());
+    assertTrue(getResult.getFilterValues().isEmpty());
+    assertTrue(getResult2.getFilterValues().isEmpty());
+    assertTrue(getResult3.getFilterValues().isEmpty());
+    assertTrue(getResult.getSpecialFilterValues().isEmpty());
+    assertTrue(getResult2.getSpecialFilterValues().isEmpty());
+    assertTrue(getResult3.getSpecialFilterValues().isEmpty());
+    assertTrue(getResult.getSortAscending());
+    assertTrue(getResult2.getSortAscending());
+    assertTrue(getResult3.getSortAscending());
+    assertTrue(getResult.isNullsLast());
+    assertTrue(getResult2.isNullsLast());
+    assertTrue(getResult3.isNullsLast());
     assertSame(dynamicResultSet, actualFetchResult);
   }
 
   /**
-   * Test {@link SearchFacetRangeCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is three.
-   * </ul>
-   *
-   * <p>Method under test: {@link SearchFacetRangeCustomPersistenceHandler#fetch(PersistencePackage,
-   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   * Method under test:
+   * {@link SearchFacetRangeCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet SearchFacetRangeCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
-  })
-  public void testFetch_thenCriteriaTransferObjectCriteriaMapSizeIsThree() throws ServiceException {
+  public void testAddDefaultSort() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
-    when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
-
-    PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.setPersistencePerspective(persistencePerspective);
+    SearchFacetRangeCustomPersistenceHandler searchFacetRangeCustomPersistenceHandler = new SearchFacetRangeCustomPersistenceHandler();
     CriteriaTransferObject cto = new CriteriaTransferObject();
-    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule =
-        mock(AdornedTargetListPersistenceModule.class);
-    when(adornedTargetListPersistenceModule.fetch(
-            Mockito.<PersistencePackage>any(), Mockito.<CriteriaTransferObject>any()))
-        .thenReturn(new DynamicResultSet());
-
-    AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
-    when(helper.getCompatibleModule(Mockito.<OperationType>any()))
-        .thenReturn(adornedTargetListPersistenceModule);
 
     // Act
-    searchFacetRangeCustomPersistenceHandler.fetch(
-        persistencePackage, cto, dynamicEntityDao, helper);
+    searchFacetRangeCustomPersistenceHandler.addDefaultSort(cto);
 
     // Assert
-    verify(persistencePerspective).getOperationTypes();
-    verify(adornedTargetListPersistenceModule)
-        .fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
-    verify(helper).getCompatibleModule(OperationType.BASIC);
     Map<String, FilterAndSortCriteria> criteriaMap = cto.getCriteriaMap();
     assertEquals(3, criteriaMap.size());
-    assertTrue(criteriaMap.containsKey("embeddablePriceList.priceList"));
-    assertTrue(criteriaMap.containsKey("maxValue"));
-    assertTrue(criteriaMap.containsKey("minValue"));
+    FilterAndSortCriteria getResult = criteriaMap.get("embeddablePriceList.priceList");
+    assertEquals("embeddablePriceList.priceList", getResult.getPropertyId());
+    FilterAndSortCriteria getResult2 = criteriaMap.get("maxValue");
+    assertEquals("maxValue", getResult2.getPropertyId());
+    FilterAndSortCriteria getResult3 = criteriaMap.get("minValue");
+    assertEquals("minValue", getResult3.getPropertyId());
+    assertNull(getResult.getRestrictionType());
+    assertNull(getResult2.getRestrictionType());
+    assertNull(getResult3.getRestrictionType());
+    assertEquals(0, getResult.getOrder().intValue());
+    assertEquals(1, getResult3.getOrder().intValue());
+    assertEquals(2, getResult2.getOrder().intValue());
+    assertEquals(SortDirection.ASCENDING, getResult.getSortDirection());
+    assertEquals(SortDirection.ASCENDING, getResult2.getSortDirection());
+    assertEquals(SortDirection.ASCENDING, getResult3.getSortDirection());
+    assertTrue(getResult.getFilterValues().isEmpty());
+    assertTrue(getResult2.getFilterValues().isEmpty());
+    assertTrue(getResult3.getFilterValues().isEmpty());
+    assertTrue(getResult.getSpecialFilterValues().isEmpty());
+    assertTrue(getResult2.getSpecialFilterValues().isEmpty());
+    assertTrue(getResult3.getSpecialFilterValues().isEmpty());
+    assertTrue(getResult.getSortAscending());
+    assertTrue(getResult2.getSortAscending());
+    assertTrue(getResult3.getSortAscending());
+    assertTrue(getResult.isNullsLast());
+    assertTrue(getResult2.isNullsLast());
+    assertTrue(getResult3.isNullsLast());
   }
 
   /**
-   * Test {@link SearchFacetRangeCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}.
-   *
-   * <ul>
-   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is four.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SearchFacetRangeCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
+   * Method under test:
+   * {@link SearchFacetRangeCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SearchFacetRangeCustomPersistenceHandler.addDefaultSort(CriteriaTransferObject)"
-  })
-  public void testAddDefaultSort_thenCriteriaTransferObjectCriteriaMapSizeIsFour() {
+  public void testAddDefaultSort2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    SearchFacetRangeCustomPersistenceHandler searchFacetRangeCustomPersistenceHandler = new SearchFacetRangeCustomPersistenceHandler();
+
     CriteriaTransferObject cto = new CriteriaTransferObject();
     cto.add(new FilterAndSortCriteria("42"));
 
@@ -327,123 +358,86 @@ public class SearchFacetRangeCustomPersistenceHandlerDiffblueTest {
     // Assert
     Map<String, FilterAndSortCriteria> criteriaMap = cto.getCriteriaMap();
     assertEquals(4, criteriaMap.size());
+    FilterAndSortCriteria getResult = criteriaMap.get("embeddablePriceList.priceList");
+    assertEquals("embeddablePriceList.priceList", getResult.getPropertyId());
+    FilterAndSortCriteria getResult2 = criteriaMap.get("maxValue");
+    assertEquals("maxValue", getResult2.getPropertyId());
+    FilterAndSortCriteria getResult3 = criteriaMap.get("minValue");
+    assertEquals("minValue", getResult3.getPropertyId());
+    assertNull(getResult.getRestrictionType());
+    assertNull(getResult2.getRestrictionType());
+    assertNull(getResult3.getRestrictionType());
+    assertEquals(0, getResult.getOrder().intValue());
+    assertEquals(1, getResult3.getOrder().intValue());
+    assertEquals(2, getResult2.getOrder().intValue());
+    assertEquals(SortDirection.ASCENDING, getResult.getSortDirection());
+    assertEquals(SortDirection.ASCENDING, getResult2.getSortDirection());
+    assertEquals(SortDirection.ASCENDING, getResult3.getSortDirection());
+    assertTrue(getResult.getFilterValues().isEmpty());
+    assertTrue(getResult2.getFilterValues().isEmpty());
+    assertTrue(getResult3.getFilterValues().isEmpty());
+    assertTrue(getResult.getSpecialFilterValues().isEmpty());
+    assertTrue(getResult2.getSpecialFilterValues().isEmpty());
+    assertTrue(getResult3.getSpecialFilterValues().isEmpty());
     assertTrue(criteriaMap.containsKey("42"));
-    assertTrue(criteriaMap.containsKey("embeddablePriceList.priceList"));
-    assertTrue(criteriaMap.containsKey("maxValue"));
-    assertTrue(criteriaMap.containsKey("minValue"));
+    assertTrue(getResult.getSortAscending());
+    assertTrue(getResult2.getSortAscending());
+    assertTrue(getResult3.getSortAscending());
+    assertTrue(getResult.isNullsLast());
+    assertTrue(getResult2.isNullsLast());
+    assertTrue(getResult3.isNullsLast());
   }
 
   /**
-   * Test {@link SearchFacetRangeCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}.
-   *
-   * <ul>
-   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SearchFacetRangeCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
+   * Method under test:
+   * {@link SearchFacetRangeCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SearchFacetRangeCustomPersistenceHandler.addDefaultSort(CriteriaTransferObject)"
-  })
-  public void testAddDefaultSort_thenCriteriaTransferObjectCriteriaMapSizeIsOne() {
+  public void testAddDefaultSort3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    FilterAndSortCriteria criteria = mock(FilterAndSortCriteria.class);
-    when(criteria.getPropertyId()).thenReturn("42");
-    when(criteria.getSortDirection()).thenReturn(SortDirection.ASCENDING);
-
-    CriteriaTransferObject cto = new CriteriaTransferObject();
-    cto.add(criteria);
-
-    // Act
-    searchFacetRangeCustomPersistenceHandler.addDefaultSort(cto);
-
-    // Assert that nothing has changed
-    verify(criteria).getPropertyId();
-    verify(criteria).getSortDirection();
-    Map<String, FilterAndSortCriteria> criteriaMap = cto.getCriteriaMap();
-    assertEquals(1, criteriaMap.size());
-    assertTrue(criteriaMap.containsKey("42"));
-  }
-
-  /**
-   * Test {@link SearchFacetRangeCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}.
-   *
-   * <ul>
-   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is three.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SearchFacetRangeCustomPersistenceHandler#addDefaultSort(CriteriaTransferObject)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SearchFacetRangeCustomPersistenceHandler.addDefaultSort(CriteriaTransferObject)"
-  })
-  public void testAddDefaultSort_thenCriteriaTransferObjectCriteriaMapSizeIsThree() {
-    // Arrange
-    CriteriaTransferObject cto = new CriteriaTransferObject();
+    SearchFacetRangeCustomPersistenceHandler searchFacetRangeCustomPersistenceHandler = new SearchFacetRangeCustomPersistenceHandler();
+    CriteriaTransferObject cto = mock(CriteriaTransferObject.class);
+    when(cto.getCriteriaMap()).thenReturn(new HashMap<>());
+    doNothing().when(cto).add(Mockito.<FilterAndSortCriteria>any());
+    cto.add(new FilterAndSortCriteria("42"));
 
     // Act
     searchFacetRangeCustomPersistenceHandler.addDefaultSort(cto);
 
     // Assert
-    Map<String, FilterAndSortCriteria> criteriaMap = cto.getCriteriaMap();
-    assertEquals(3, criteriaMap.size());
-    assertTrue(criteriaMap.containsKey("embeddablePriceList.priceList"));
-    assertTrue(criteriaMap.containsKey("maxValue"));
-    assertTrue(criteriaMap.containsKey("minValue"));
+    verify(cto, atLeast(1)).add(Mockito.<FilterAndSortCriteria>any());
+    verify(cto, atLeast(1)).getCriteriaMap();
   }
 
   /**
-   * Test {@link SearchFacetRangeCustomPersistenceHandler#remove(PersistencePackage,
-   * DynamicEntityDao, RecordHelper)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link ServiceException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SearchFacetRangeCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao,
-   * RecordHelper)}
+   * Method under test:
+   * {@link SearchFacetRangeCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SearchFacetRangeCustomPersistenceHandler.remove(PersistencePackage, DynamicEntityDao, RecordHelper)"
-  })
-  public void testRemove_thenThrowServiceException() throws ServiceException {
+  public void testRemove() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    SearchFacetRangeCustomPersistenceHandler searchFacetRangeCustomPersistenceHandler = new SearchFacetRangeCustomPersistenceHandler();
     Entity entity = mock(Entity.class);
-    when(entity.getType()).thenReturn(new String[] {"Type"});
+    when(entity.getType()).thenReturn(new String[]{"Type"});
 
     PersistencePackage persistencePackage = new PersistencePackage();
     persistencePackage.setEntity(entity);
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-
     RecordHelper helper = mock(RecordHelper.class);
     when(helper.getPrimaryKey(Mockito.<Entity>any(), Mockito.<Map<String, FieldMetadata>>any()))
         .thenReturn("Primary Key");
-    when(helper.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
         .thenReturn(new HashMap<>());
 
     // Act and Assert
-    assertThrows(
-        ServiceException.class,
-        () ->
-            searchFacetRangeCustomPersistenceHandler.remove(
-                persistencePackage, dynamicEntityDao, helper));
+    assertThrows(ServiceException.class,
+        () -> searchFacetRangeCustomPersistenceHandler.remove(persistencePackage, dynamicEntityDao, helper));
     verify(entity, atLeast(1)).getType();
     verify(helper).getPrimaryKey(isA(Entity.class), isA(Map.class));
-    verify(helper)
-        .getSimpleMergedProperties(
-            eq("org.broadleafcommerce.core.search.domain.SearchFacetRange"), isNull());
+    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.search.domain.SearchFacetRange"), isNull());
   }
 }

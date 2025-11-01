@@ -22,192 +22,98 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import java.io.IOException;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import org.apache.solr.client.solrj.SolrClient;
-import org.apache.solr.client.solrj.embedded.SSLConfig;
-import org.apache.solr.client.solrj.impl.Http2SolrClient;
-import org.apache.solr.client.solrj.impl.Http2SolrClient.Builder;
 import org.apache.solr.client.solrj.impl.LBHttp2SolrClient;
+import org.apache.solr.common.cloud.SolrZkClient;
+import org.apache.solr.common.cloud.ZkStateReader;
+import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooKeeper;
+import org.broadleafcommerce.core.search.service.solr.BroadleafCloudSolrClient;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.core.env.Environment;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = {DefaultSolrIndexQueueProvider.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class DefaultSolrIndexQueueProviderDiffblueTest {
-  @Autowired private DefaultSolrIndexQueueProvider defaultSolrIndexQueueProvider;
-
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link DefaultSolrIndexQueueProvider#DefaultSolrIndexQueueProvider()}
-   *   <li>{@link DefaultSolrIndexQueueProvider#getZookeeper()}
-   *   <li>{@link DefaultSolrIndexQueueProvider#isDistributed()}
-   *   <li>{@link DefaultSolrIndexQueueProvider#getEnvironment()}
-   * </ul>
+   * Method under test:
+   * {@link DefaultSolrIndexQueueProvider#createOrRetrieveCommandQueue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void DefaultSolrIndexQueueProvider.<init>()",
-    "Environment DefaultSolrIndexQueueProvider.getEnvironment()",
-    "ZooKeeper DefaultSolrIndexQueueProvider.getZookeeper()",
-    "boolean DefaultSolrIndexQueueProvider.isDistributed()"
-  })
-  public void testGettersAndSetters() {
-    // Arrange and Act
-    DefaultSolrIndexQueueProvider actualDefaultSolrIndexQueueProvider =
-        new DefaultSolrIndexQueueProvider();
-    ZooKeeper actualZookeeper = actualDefaultSolrIndexQueueProvider.getZookeeper();
-    boolean actualIsDistributedResult = actualDefaultSolrIndexQueueProvider.isDistributed();
+  public void testCreateOrRetrieveCommandQueue() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Assert
-    assertNull(actualZookeeper);
-    assertNull(actualDefaultSolrIndexQueueProvider.getEnvironment());
-    assertFalse(actualIsDistributedResult);
-  }
-
-  /**
-   * Test {@link DefaultSolrIndexQueueProvider#DefaultSolrIndexQueueProvider(SolrClient,
-   * Environment)}.
-   *
-   * <p>Method under test: {@link
-   * DefaultSolrIndexQueueProvider#DefaultSolrIndexQueueProvider(SolrClient, Environment)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void DefaultSolrIndexQueueProvider.<init>(SolrClient, Environment)"})
-  public void testNewDefaultSolrIndexQueueProvider() {
-    // Arrange
-    Builder connectionTimeoutResult = new Builder().connectionTimeout(1);
-
-    Builder connectionTimeoutResult2 = new Builder().connectionTimeout(1);
-
-    Builder connectionTimeoutResult3 = new Builder().connectionTimeout(1);
-
-    Builder connectionTimeoutResult4 = new Builder().connectionTimeout(1);
-
-    Builder maxConnectionsPerHostResult =
-        connectionTimeoutResult3
-            .withHttpClient(
-                connectionTimeoutResult4
-                    .withHttpClient(new Builder().build())
-                    .idleTimeout(1)
-                    .maxConnectionsPerHost(3)
-                    .withSSLConfig(null)
-                    .useHttp1_1(true)
-                    .build())
-            .idleTimeout(1)
-            .maxConnectionsPerHost(3);
-    SSLConfig sslConfig =
-        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
-
-    Builder maxConnectionsPerHostResult2 =
-        connectionTimeoutResult2
-            .withHttpClient(
-                maxConnectionsPerHostResult.withSSLConfig(sslConfig).useHttp1_1(true).build())
-            .idleTimeout(1)
-            .maxConnectionsPerHost(3);
-    SSLConfig sslConfig2 =
-        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
-
-    Builder maxConnectionsPerHostResult3 =
-        connectionTimeoutResult
-            .withHttpClient(
-                maxConnectionsPerHostResult2.withSSLConfig(sslConfig2).useHttp1_1(true).build())
-            .idleTimeout(1)
-            .maxConnectionsPerHost(3);
-    SSLConfig sslConfig3 =
-        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
-    Http2SolrClient httpClient =
-        maxConnectionsPerHostResult3.withSSLConfig(sslConfig3).useHttp1_1(true).build();
-    LBHttp2SolrClient solrClient = new LBHttp2SolrClient(httpClient, "https://example.org/example");
-    StandardReactiveWebEnvironment env = new StandardReactiveWebEnvironment();
-
-    // Act
-    DefaultSolrIndexQueueProvider actualDefaultSolrIndexQueueProvider =
-        new DefaultSolrIndexQueueProvider(solrClient, env);
-
-    // Assert
-    assertNull(actualDefaultSolrIndexQueueProvider.getZookeeper());
-    assertFalse(actualDefaultSolrIndexQueueProvider.isDistributed());
-    assertSame(env, actualDefaultSolrIndexQueueProvider.getEnvironment());
-  }
-
-  /**
-   * Test {@link DefaultSolrIndexQueueProvider#DefaultSolrIndexQueueProvider(SolrClient,
-   * Environment)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return Zookeeper is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * DefaultSolrIndexQueueProvider#DefaultSolrIndexQueueProvider(SolrClient, Environment)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void DefaultSolrIndexQueueProvider.<init>(SolrClient, Environment)"})
-  public void testNewDefaultSolrIndexQueueProvider_whenNull_thenReturnZookeeperIsNull() {
-    // Arrange
-    StandardReactiveWebEnvironment env = new StandardReactiveWebEnvironment();
-
-    // Act
-    DefaultSolrIndexQueueProvider actualDefaultSolrIndexQueueProvider =
-        new DefaultSolrIndexQueueProvider((SolrClient) null, env);
-
-    // Assert
-    assertNull(actualDefaultSolrIndexQueueProvider.getZookeeper());
-    assertFalse(actualDefaultSolrIndexQueueProvider.isDistributed());
-    assertSame(env, actualDefaultSolrIndexQueueProvider.getEnvironment());
-  }
-
-  /**
-   * Test {@link DefaultSolrIndexQueueProvider#createLocalQueue(String)}.
-   *
-   * <p>Method under test: {@link DefaultSolrIndexQueueProvider#createLocalQueue(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "java.util.concurrent.BlockingQueue DefaultSolrIndexQueueProvider.createLocalQueue(String)"
-  })
-  public void testCreateLocalQueue() {
     // Arrange, Act and Assert
-    assertTrue(defaultSolrIndexQueueProvider.createLocalQueue("Queue Name").isEmpty());
+    assertTrue((new DefaultSolrIndexQueueProvider()).createOrRetrieveCommandQueue("Queue Name").isEmpty());
   }
 
   /**
-   * Test {@link DefaultSolrIndexQueueProvider#createLocalLock(String)}.
-   *
-   * <p>Method under test: {@link DefaultSolrIndexQueueProvider#createLocalLock(String)}
+   * Method under test:
+   * {@link DefaultSolrIndexQueueProvider#createOrRetrieveCommandLock(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Lock DefaultSolrIndexQueueProvider.createLocalLock(String)"})
-  public void testCreateLocalLock() {
+  public void testCreateOrRetrieveCommandLock() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange and Act
-    Lock actualCreateLocalLockResult =
-        new DefaultSolrIndexQueueProvider().createLocalLock("Lock Name");
+    Lock actualCreateOrRetrieveCommandLockResult = (new DefaultSolrIndexQueueProvider())
+        .createOrRetrieveCommandLock("Lock Name");
+
+    // Assert
+    assertTrue(actualCreateOrRetrieveCommandLockResult instanceof ReentrantLock);
+    assertEquals(0, ((ReentrantLock) actualCreateOrRetrieveCommandLockResult).getHoldCount());
+    assertEquals(0, ((ReentrantLock) actualCreateOrRetrieveCommandLockResult).getQueueLength());
+    assertFalse(((ReentrantLock) actualCreateOrRetrieveCommandLockResult).hasQueuedThreads());
+    assertFalse(((ReentrantLock) actualCreateOrRetrieveCommandLockResult).isFair());
+    assertFalse(((ReentrantLock) actualCreateOrRetrieveCommandLockResult).isHeldByCurrentThread());
+    assertFalse(((ReentrantLock) actualCreateOrRetrieveCommandLockResult).isLocked());
+  }
+
+  /**
+   * Method under test:
+   * {@link DefaultSolrIndexQueueProvider#createLocalQueue(String)}
+   */
+  @Test
+  public void testCreateLocalQueue() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertTrue((new DefaultSolrIndexQueueProvider()).createLocalQueue("Queue Name").isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link DefaultSolrIndexQueueProvider#createLocalQueue(String)}
+   */
+  @Test
+  public void testCreateLocalQueue2() throws IOException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ZooKeeper zookeeper = new ZooKeeper("Creating Local Queue for Solr update commands with the name ", 10,
+        mock(Watcher.class));
+
+    // Act and Assert
+    assertTrue((new DefaultSolrIndexQueueProvider(zookeeper, new StandardReactiveWebEnvironment()))
+        .createLocalQueue("Queue Name")
+        .isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link DefaultSolrIndexQueueProvider#createLocalLock(String)}
+   */
+  @Test
+  public void testCreateLocalLock() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange and Act
+    Lock actualCreateLocalLockResult = (new DefaultSolrIndexQueueProvider()).createLocalLock("Lock Name");
 
     // Assert
     assertTrue(actualCreateLocalLockResult instanceof ReentrantLock);
@@ -217,5 +123,186 @@ public class DefaultSolrIndexQueueProviderDiffblueTest {
     assertFalse(((ReentrantLock) actualCreateLocalLockResult).isFair());
     assertFalse(((ReentrantLock) actualCreateLocalLockResult).isHeldByCurrentThread());
     assertFalse(((ReentrantLock) actualCreateLocalLockResult).isLocked());
+  }
+
+  /**
+   * Method under test:
+   * {@link DefaultSolrIndexQueueProvider#createLocalLock(String)}
+   */
+  @Test
+  public void testCreateLocalLock2() throws IOException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ZooKeeper zookeeper = new ZooKeeper("Creating Local Lock for lock name ", 10, mock(Watcher.class));
+
+    // Act
+    Lock actualCreateLocalLockResult = (new DefaultSolrIndexQueueProvider(zookeeper,
+        new StandardReactiveWebEnvironment())).createLocalLock("Lock Name");
+
+    // Assert
+    assertTrue(actualCreateLocalLockResult instanceof ReentrantLock);
+    assertEquals(0, ((ReentrantLock) actualCreateLocalLockResult).getHoldCount());
+    assertEquals(0, ((ReentrantLock) actualCreateLocalLockResult).getQueueLength());
+    assertFalse(((ReentrantLock) actualCreateLocalLockResult).hasQueuedThreads());
+    assertFalse(((ReentrantLock) actualCreateLocalLockResult).isFair());
+    assertFalse(((ReentrantLock) actualCreateLocalLockResult).isHeldByCurrentThread());
+    assertFalse(((ReentrantLock) actualCreateLocalLockResult).isLocked());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link DefaultSolrIndexQueueProvider#DefaultSolrIndexQueueProvider()}
+   *   <li>{@link DefaultSolrIndexQueueProvider#getEnvironment()}
+   *   <li>{@link DefaultSolrIndexQueueProvider#getZookeeper()}
+   *   <li>{@link DefaultSolrIndexQueueProvider#isDistributed()}
+   * </ul>
+   */
+  @Test
+  public void testGettersAndSetters() {
+    // Arrange and Act
+    DefaultSolrIndexQueueProvider actualDefaultSolrIndexQueueProvider = new DefaultSolrIndexQueueProvider();
+    Environment actualEnvironment = actualDefaultSolrIndexQueueProvider.getEnvironment();
+    ZooKeeper actualZookeeper = actualDefaultSolrIndexQueueProvider.getZookeeper();
+
+    // Assert
+    assertNull(actualZookeeper);
+    assertNull(actualEnvironment);
+    assertFalse(actualDefaultSolrIndexQueueProvider.isDistributed());
+  }
+
+  /**
+   * Method under test:
+   * {@link DefaultSolrIndexQueueProvider#DefaultSolrIndexQueueProvider(SolrClient, Environment)}
+   */
+  @Test
+  public void testNewDefaultSolrIndexQueueProvider() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StandardReactiveWebEnvironment env = new StandardReactiveWebEnvironment();
+
+    // Act
+    DefaultSolrIndexQueueProvider actualDefaultSolrIndexQueueProvider = new DefaultSolrIndexQueueProvider(
+        (SolrClient) null, env);
+
+    // Assert
+    assertNull(actualDefaultSolrIndexQueueProvider.getZookeeper());
+    assertFalse(actualDefaultSolrIndexQueueProvider.isDistributed());
+    assertSame(env, actualDefaultSolrIndexQueueProvider.getEnvironment());
+  }
+
+  /**
+   * Method under test:
+   * {@link DefaultSolrIndexQueueProvider#DefaultSolrIndexQueueProvider(SolrClient, Environment)}
+   */
+  @Test
+  public void testNewDefaultSolrIndexQueueProvider2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    LBHttp2SolrClient solrClient = new LBHttp2SolrClient(null, "https://example.org/example");
+
+    StandardReactiveWebEnvironment env = new StandardReactiveWebEnvironment();
+
+    // Act
+    DefaultSolrIndexQueueProvider actualDefaultSolrIndexQueueProvider = new DefaultSolrIndexQueueProvider(solrClient,
+        env);
+
+    // Assert
+    assertNull(actualDefaultSolrIndexQueueProvider.getZookeeper());
+    assertFalse(actualDefaultSolrIndexQueueProvider.isDistributed());
+    assertSame(env, actualDefaultSolrIndexQueueProvider.getEnvironment());
+  }
+
+  /**
+   * Method under test:
+   * {@link DefaultSolrIndexQueueProvider#DefaultSolrIndexQueueProvider(SolrClient, Environment)}
+   */
+  @Test
+  public void testNewDefaultSolrIndexQueueProvider3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    LBHttp2SolrClient solrClient = mock(LBHttp2SolrClient.class);
+    StandardReactiveWebEnvironment env = new StandardReactiveWebEnvironment();
+
+    // Act
+    DefaultSolrIndexQueueProvider actualDefaultSolrIndexQueueProvider = new DefaultSolrIndexQueueProvider(solrClient,
+        env);
+
+    // Assert
+    assertNull(actualDefaultSolrIndexQueueProvider.getZookeeper());
+    assertFalse(actualDefaultSolrIndexQueueProvider.isDistributed());
+    assertSame(env, actualDefaultSolrIndexQueueProvider.getEnvironment());
+  }
+
+  /**
+   * Method under test:
+   * {@link DefaultSolrIndexQueueProvider#DefaultSolrIndexQueueProvider(SolrClient, Environment)}
+   */
+  @Test
+  public void testNewDefaultSolrIndexQueueProvider4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    BroadleafCloudSolrClient solrClient = mock(BroadleafCloudSolrClient.class);
+    when(solrClient.getZkStateReader()).thenReturn(new ZkStateReader(new SolrZkClient()));
+    StandardReactiveWebEnvironment env = new StandardReactiveWebEnvironment();
+
+    // Act
+    DefaultSolrIndexQueueProvider actualDefaultSolrIndexQueueProvider = new DefaultSolrIndexQueueProvider(solrClient,
+        env);
+
+    // Assert
+    verify(solrClient).getZkStateReader();
+    assertNull(actualDefaultSolrIndexQueueProvider.getZookeeper());
+    assertTrue(actualDefaultSolrIndexQueueProvider.isDistributed());
+    assertSame(env, actualDefaultSolrIndexQueueProvider.getEnvironment());
+  }
+
+  /**
+   * Method under test:
+   * {@link DefaultSolrIndexQueueProvider#DefaultSolrIndexQueueProvider(ZooKeeper, Environment)}
+   */
+  @Test
+  public void testNewDefaultSolrIndexQueueProvider5() throws IOException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ZooKeeper zookeeper = new ZooKeeper("Connect String", 10, mock(Watcher.class));
+
+    StandardReactiveWebEnvironment env = new StandardReactiveWebEnvironment();
+
+    // Act
+    DefaultSolrIndexQueueProvider actualDefaultSolrIndexQueueProvider = new DefaultSolrIndexQueueProvider(zookeeper,
+        env);
+
+    // Assert
+    assertTrue(actualDefaultSolrIndexQueueProvider.isDistributed());
+    assertSame(zookeeper, actualDefaultSolrIndexQueueProvider.getZookeeper());
+    assertSame(env, actualDefaultSolrIndexQueueProvider.getEnvironment());
+  }
+
+  /**
+   * Method under test:
+   * {@link DefaultSolrIndexQueueProvider#DefaultSolrIndexQueueProvider(ZooKeeper, Environment)}
+   */
+  @Test
+  public void testNewDefaultSolrIndexQueueProvider6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StandardReactiveWebEnvironment env = new StandardReactiveWebEnvironment();
+
+    // Act
+    DefaultSolrIndexQueueProvider actualDefaultSolrIndexQueueProvider = new DefaultSolrIndexQueueProvider(
+        (ZooKeeper) null, env);
+
+    // Assert
+    assertNull(actualDefaultSolrIndexQueueProvider.getZookeeper());
+    assertFalse(actualDefaultSolrIndexQueueProvider.isDistributed());
+    assertSame(env, actualDefaultSolrIndexQueueProvider.getEnvironment());
   }
 }

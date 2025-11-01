@@ -18,61 +18,45 @@
 package org.broadleafcommerce.core.catalog.domain;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.util.Currency;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.broadleafcommerce.common.copy.CreateResponse;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
-import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
+import org.broadleafcommerce.common.media.domain.Media;
 import org.broadleafcommerce.common.money.Money;
+import org.broadleafcommerce.common.persistence.ArchiveStatus;
+import org.broadleafcommerce.core.catalog.service.dynamic.DynamicSkuPrices;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(SpringJUnit4ClassRunner.class)
 public class SkuBundleItemImplDiffblueTest {
-  @Autowired private SkuBundleItemImpl skuBundleItemImpl;
-
   /**
-   * Test {@link SkuBundleItemImpl#getDynamicSalePrice(Sku, BigDecimal)}.
-   *
-   * <ul>
-   *   <li>Then return Currency Symbol is {@code $}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuBundleItemImpl#getDynamicSalePrice(Sku, BigDecimal)}
+   * Method under test:
+   * {@link SkuBundleItemImpl#getDynamicSalePrice(Sku, BigDecimal)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuBundleItemImpl.getDynamicSalePrice(Sku, BigDecimal)"})
-  public void testGetDynamicSalePrice_thenReturnCurrencySymbolIsDollarSign() {
+  public void testGetDynamicSalePrice() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
     SkuImpl sku = new SkuImpl();
 
     // Act
-    Money actualDynamicSalePrice =
-        skuBundleItemImpl.getDynamicSalePrice(sku, new BigDecimal("2.3"));
+    Money actualDynamicSalePrice = skuBundleItemImpl.getDynamicSalePrice(sku, new BigDecimal("2.3"));
 
     // Assert
     Currency currency = actualDynamicSalePrice.getCurrency();
@@ -82,47 +66,150 @@ public class SkuBundleItemImplDiffblueTest {
     assertEquals("USD", currency.toString());
     assertEquals(2, currency.getDefaultFractionDigits());
     assertEquals(840, currency.getNumericCode());
-    assertEquals(new BigDecimal("2.30"), actualDynamicSalePrice.getAmount());
-    Money actualAbsResult = actualDynamicSalePrice.abs();
-    assertEquals(actualDynamicSalePrice, actualAbsResult);
-    assertEquals(Money.ZERO, actualDynamicSalePrice.zero());
+    BigDecimal expectedAmount = new BigDecimal("2.30");
+    assertEquals(expectedAmount, actualDynamicSalePrice.getAmount());
+    assertEquals(actualDynamicSalePrice, actualDynamicSalePrice.abs());
+    Money expectedZeroResult = actualDynamicSalePrice.ZERO;
+    assertEquals(expectedZeroResult, actualDynamicSalePrice.zero());
   }
 
   /**
-   * Test {@link SkuBundleItemImpl#getDynamicSalePrice(Sku, BigDecimal)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuBundleItemImpl#getDynamicSalePrice(Sku, BigDecimal)}
+   * Method under test:
+   * {@link SkuBundleItemImpl#getDynamicSalePrice(Sku, BigDecimal)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuBundleItemImpl.getDynamicSalePrice(Sku, BigDecimal)"})
-  public void testGetDynamicSalePrice_whenNull_thenReturnNull() {
-    // Arrange, Act and Assert
+  public void testGetDynamicSalePrice2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
+    Sku sku = mock(Sku.class);
+
+    // Act
+    Money actualDynamicSalePrice = skuBundleItemImpl.getDynamicSalePrice(sku, new BigDecimal("2.3"));
+
+    // Assert
+    Currency currency = actualDynamicSalePrice.getCurrency();
+    assertEquals("$", currency.getSymbol());
+    assertEquals("US Dollar", currency.getDisplayName());
+    assertEquals("USD", currency.getCurrencyCode());
+    assertEquals("USD", currency.toString());
+    assertEquals(2, currency.getDefaultFractionDigits());
+    assertEquals(840, currency.getNumericCode());
+    BigDecimal expectedAmount = new BigDecimal("2.30");
+    assertEquals(expectedAmount, actualDynamicSalePrice.getAmount());
+    assertEquals(actualDynamicSalePrice, actualDynamicSalePrice.abs());
+    Money expectedZeroResult = actualDynamicSalePrice.ZERO;
+    assertEquals(expectedZeroResult, actualDynamicSalePrice.zero());
+  }
+
+  /**
+   * Method under test:
+   * {@link SkuBundleItemImpl#getDynamicSalePrice(Sku, BigDecimal)}
+   */
+  @Test
+  public void testGetDynamicSalePrice3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
+
+    // Act and Assert
     assertNull(skuBundleItemImpl.getDynamicSalePrice(new SkuImpl(), null));
   }
 
   /**
-   * Test {@link SkuBundleItemImpl#setSalePrice(Money)}.
-   *
-   * <ul>
-   *   <li>Then {@link SkuBundleItemImpl} {@link SkuBundleItemImpl#itemSalePrice} is {@link
-   *       BigDecimal#BigDecimal(String)} with {@code 2.3}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuBundleItemImpl#setSalePrice(Money)}
+   * Method under test:
+   * {@link SkuBundleItemImpl#getDynamicSalePrice(Sku, BigDecimal)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SkuBundleItemImpl.setSalePrice(Money)"})
-  public void testSetSalePrice_thenSkuBundleItemImplItemSalePriceIsBigDecimalWith23() {
+  public void testGetDynamicSalePrice4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
+    Money salePrice = new Money();
+    skuBundleItemImpl.setSalePrice(salePrice);
+    SkuImpl sku = new SkuImpl();
+
+    // Act
+    Money actualDynamicSalePrice = skuBundleItemImpl.getDynamicSalePrice(sku, new BigDecimal("2.3"));
+
+    // Assert
+    Currency currency = actualDynamicSalePrice.getCurrency();
+    assertEquals("$", currency.getSymbol());
+    assertEquals("US Dollar", currency.getDisplayName());
+    assertEquals("USD", currency.getCurrencyCode());
+    assertEquals("USD", currency.toString());
+    assertEquals(2, currency.getDefaultFractionDigits());
+    assertEquals(840, currency.getNumericCode());
+    BigDecimal expectedAmount = new BigDecimal("2.30");
+    assertEquals(expectedAmount, actualDynamicSalePrice.getAmount());
+    assertEquals(salePrice, actualDynamicSalePrice.zero());
+    assertEquals(actualDynamicSalePrice, actualDynamicSalePrice.abs());
+  }
+
+  /**
+   * Method under test: {@link SkuBundleItemImpl#setSalePrice(Money)}
+   */
+  @Test
+  public void testSetSalePrice() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
+    Money salePrice = new Money();
+
+    // Act
+    skuBundleItemImpl.setSalePrice(salePrice);
+
+    // Assert
+    assertNull(skuBundleItemImpl.bundle);
+    BigDecimal expectedAmount = new BigDecimal("0.00");
+    BigDecimal amount = salePrice.getAmount();
+    assertEquals(expectedAmount, amount);
+    assertEquals(new BigDecimal("0.00"), skuBundleItemImpl.itemSalePrice);
+    assertEquals(salePrice, salePrice.abs());
+    assertEquals(salePrice, salePrice.zero());
+    assertSame(skuBundleItemImpl.itemSalePrice, amount);
+  }
+
+  /**
+   * Method under test: {@link SkuBundleItemImpl#setSalePrice(Money)}
+   */
+  @Test
+  public void testSetSalePrice2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
+    ProductBundleImpl bundle = new ProductBundleImpl();
+    skuBundleItemImpl.setBundle(bundle);
+    skuBundleItemImpl.setId(1L);
+    skuBundleItemImpl.setQuantity(1);
+    skuBundleItemImpl.setSalePrice(new Money());
+    skuBundleItemImpl.setSequence(new BigDecimal("2.3"));
+    skuBundleItemImpl.setSku(new SkuImpl());
+
+    // Act
+    skuBundleItemImpl.setSalePrice(null);
+
+    // Assert
+    assertTrue(skuBundleItemImpl.bundle instanceof ProductBundleImpl);
+    assertNull(skuBundleItemImpl.itemSalePrice);
+    assertNull(skuBundleItemImpl.getSalePrice());
+    assertSame(bundle, skuBundleItemImpl.getBundle());
+  }
+
+  /**
+   * Method under test: {@link SkuBundleItemImpl#setSalePrice(Money)}
+   */
+  @Test
+  public void testSetSalePrice3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
     Money salePrice = mock(Money.class);
     when(salePrice.getAmount()).thenReturn(new BigDecimal("2.3"));
 
@@ -131,93 +218,116 @@ public class SkuBundleItemImplDiffblueTest {
 
     // Assert
     verify(salePrice).getAmount();
+    assertNull(skuBundleItemImpl.bundle);
     assertEquals(new BigDecimal("2.3"), skuBundleItemImpl.itemSalePrice);
   }
 
   /**
-   * Test {@link SkuBundleItemImpl#setSalePrice(Money)}.
-   *
-   * <ul>
-   *   <li>When {@link Money#Money()}.
-   *   <li>Then {@link SkuBundleItemImpl} {@link SkuBundleItemImpl#itemSalePrice} is {@link
-   *       BigDecimal#BigDecimal(String)} with {@code 0.00}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuBundleItemImpl#setSalePrice(Money)}
+   * Method under test: {@link SkuBundleItemImpl#getSalePrice()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SkuBundleItemImpl.setSalePrice(Money)"})
-  public void testSetSalePrice_whenMoney_thenSkuBundleItemImplItemSalePriceIsBigDecimalWith000() {
+  public void testGetSalePrice() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    Money salePrice = new Money();
+    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
+    SkuImpl sku = new SkuImpl();
+    skuBundleItemImpl.setSku(sku);
 
     // Act
-    skuBundleItemImpl.setSalePrice(salePrice);
+    Money actualSalePrice = skuBundleItemImpl.getSalePrice();
 
     // Assert
-    assertEquals(new BigDecimal("0.00"), skuBundleItemImpl.itemSalePrice);
-    BigDecimal bigDecimal = skuBundleItemImpl.itemSalePrice;
-    Money absResult = salePrice.abs();
-    assertSame(bigDecimal, absResult.getAmount());
-    Money absResult2 = absResult.abs();
-    assertSame(bigDecimal, absResult2.getAmount());
-    assertSame(bigDecimal, absResult2.abs().getAmount());
-    Money zeroResult = salePrice.zero();
-    Money absResult3 = zeroResult.abs();
-    assertSame(bigDecimal, absResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult3.getAmount());
-    Money zeroResult2 = absResult.zero();
-    assertSame(bigDecimal, zeroResult2.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    assertSame(bigDecimal, zeroResult3.abs().getAmount());
-    assertSame(bigDecimal, zeroResult.getAmount());
-    assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, absResult2.zero().getAmount());
-    assertSame(bigDecimal, absResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult2.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.zero().getAmount());
+    Sku sku2 = skuBundleItemImpl.getSku();
+    assertTrue(sku2 instanceof SkuImpl);
+    Sku sku3 = skuBundleItemImpl.deproxiedSku;
+    assertTrue(sku3 instanceof SkuImpl);
+    assertNull(sku3.getTaxable());
+    assertNull(((SkuImpl) sku3).isMachineSortable);
+    assertNull(((SkuImpl) sku3).available);
+    assertNull(((SkuImpl) sku3).discountable);
+    assertNull(((SkuImpl) sku3).taxable);
+    assertNull(sku3.getId());
+    assertNull(sku3.getDescription());
+    assertNull(sku3.getDisplayTemplate());
+    assertNull(sku3.getExternalId());
+    assertNull(sku3.getLongDescription());
+    assertNull(sku3.getName());
+    assertNull(sku3.getTaxCode());
+    assertNull(sku3.getUpc());
+    assertNull(sku3.getUrlKey());
+    assertNull(((SkuImpl) sku3).description);
+    assertNull(((SkuImpl) sku3).fulfillmentType);
+    assertNull(((SkuImpl) sku3).inventoryType);
+    assertNull(((SkuImpl) sku3).longDescription);
+    assertNull(((SkuImpl) sku3).name);
+    assertNull(((SkuImpl) sku3).taxCode);
+    assertNull(((SkuImpl) sku3).cost);
+    assertNull(((SkuImpl) sku3).retailPrice);
+    assertNull(((SkuImpl) sku3).salePrice);
+    assertNull(sku3.getActiveEndDate());
+    assertNull(sku3.getActiveStartDate());
+    assertNull(((SkuImpl) sku3).activeEndDate);
+    assertNull(((SkuImpl) sku3).activeStartDate);
+    assertNull(sku3.getCurrency());
+    assertNull(((SkuImpl) sku3).currency);
+    assertNull(sku3.getPrimarySkuMedia());
+    assertNull(sku3.getBaseRetailPrice());
+    assertNull(sku3.getBaseSalePrice());
+    assertNull(sku3.getCost());
+    assertNull(sku3.getListPrice());
+    assertNull(sku3.getPrice());
+    assertNull(sku3.getProductOptionValueAdjustments());
+    assertNull(sku3.getRetailPrice());
+    assertNull(sku3.getSalePrice());
+    assertNull(actualSalePrice);
+    assertNull(((SkuImpl) sku3).getRetailPriceInternal());
+    DynamicSkuPrices priceData = sku3.getPriceData();
+    assertNull(priceData.getPrice());
+    assertNull(priceData.getPriceAdjustment());
+    assertNull(priceData.getRetailPrice());
+    assertNull(priceData.getSalePrice());
+    assertNull(sku3.getDefaultProduct());
+    assertNull(sku3.getProduct());
+    assertNull(((SkuImpl) sku3).product);
+    assertNull(sku3.getInventoryType());
+    assertNull(sku3.getFulfillmentType());
+    assertEquals(0, sku3.getQuantityAvailable().intValue());
+    assertFalse(sku3.getIsMachineSortable());
+    assertFalse(sku3.hasRetailPrice());
+    assertFalse(sku3.hasSalePrice());
+    assertFalse(((SkuImpl) sku3).getDiscountable());
+    assertFalse(((SkuImpl) sku3).hasDefaultSku());
+    assertFalse(priceData.getDidOverride());
+    assertTrue(sku3.getProductOptionValues().isEmpty());
+    assertTrue(sku3.getMultiValueSkuAttributes().isEmpty());
+    assertTrue(sku3.getSkuAttributes().isEmpty());
+    assertTrue(sku3.getSkuMedia().isEmpty());
+    assertTrue(sku3.getProductOptionValuesCollection().isEmpty());
+    assertTrue(sku3.getAvailable());
+    assertSame(sku, sku2);
+    Dimension dimension = sku.dimension;
+    assertSame(dimension, sku3.getDimension());
+    assertSame(dimension, ((SkuImpl) sku3).dimension);
+    assertSame(sku.legacyProductOptionValues, ((SkuImpl) sku3).legacyProductOptionValues);
+    assertSame(sku.legacySkuMedia, ((SkuImpl) sku3).legacySkuMedia);
+    assertSame(sku.skuAttributes, ((SkuImpl) sku3).skuAttributes);
+    Map<String, SkuMediaXref> stringSkuMediaXrefMap = sku.skuMedia;
+    assertSame(stringSkuMediaXrefMap, sku3.getSkuMediaXref());
+    assertSame(stringSkuMediaXrefMap, sku3.getSkuMediaXrefIgnoreDefaultSku());
+    assertSame(stringSkuMediaXrefMap, ((SkuImpl) sku3).skuMedia);
+    Weight weight = sku.weight;
+    assertSame(weight, sku3.getWeight());
+    assertSame(weight, ((SkuImpl) sku3).weight);
   }
 
   /**
-   * Test {@link SkuBundleItemImpl#setSalePrice(Money)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then {@link SkuBundleItemImpl} {@link SkuBundleItemImpl#itemSalePrice} is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuBundleItemImpl#setSalePrice(Money)}
+   * Method under test: {@link SkuBundleItemImpl#getSalePrice()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SkuBundleItemImpl.setSalePrice(Money)"})
-  public void testSetSalePrice_whenNull_thenSkuBundleItemImplItemSalePriceIsNull() {
-    // Arrange and Act
-    skuBundleItemImpl.setSalePrice(null);
+  public void testGetSalePrice2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Assert that nothing has changed
-    assertNull(skuBundleItemImpl.itemSalePrice);
-  }
-
-  /**
-   * Test {@link SkuBundleItemImpl#getSalePrice()}.
-   *
-   * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} return one.
-   *   <li>Then calls {@link Sku#getId()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuBundleItemImpl#getSalePrice()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuBundleItemImpl.getSalePrice()"})
-  public void testGetSalePrice_givenSkuGetIdReturnOne_thenCallsGetId() {
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
@@ -237,140 +347,387 @@ public class SkuBundleItemImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuBundleItemImpl#getSalePrice()}.
-   *
-   * <ul>
-   *   <li>Then {@link SkuBundleItemImpl} (default constructor) {@link
-   *       SkuBundleItemImpl#deproxiedSku} {@link SkuImpl#salePrice} is {@link SkuImpl} (default
-   *       constructor) {@link SkuImpl#salePrice}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuBundleItemImpl#getSalePrice()}
+   * Method under test: {@link SkuBundleItemImpl#getSalePrice()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuBundleItemImpl.getSalePrice()"})
-  public void testGetSalePrice_thenSkuBundleItemImplDeproxiedSkuSalePriceIsSkuImplSalePrice() {
+  public void testGetSalePrice3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    SkuImpl sku = new SkuImpl();
-    Money salePrice = new Money();
-    sku.setSalePrice(salePrice);
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
 
     SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
+    Money salePrice = new Money();
+    skuBundleItemImpl.setSalePrice(salePrice);
     skuBundleItemImpl.setSku(sku);
 
     // Act
     Money actualSalePrice = skuBundleItemImpl.getSalePrice();
 
     // Assert
-    Sku sku2 = skuBundleItemImpl.deproxiedSku;
-    assertTrue(sku2 instanceof SkuImpl);
+    verify(sku).getId();
     assertEquals(salePrice, actualSalePrice);
-    assertSame(sku.salePrice, ((SkuImpl) sku2).salePrice);
   }
 
   /**
-   * Test {@link SkuBundleItemImpl#getSalePrice()}.
-   *
-   * <ul>
-   *   <li>Then {@link SkuBundleItemImpl} (default constructor) Sku {@link SkuImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuBundleItemImpl#getSalePrice()}
+   * Method under test: {@link SkuBundleItemImpl#getRetailPrice()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuBundleItemImpl.getSalePrice()"})
-  public void testGetSalePrice_thenSkuBundleItemImplSkuSkuImpl() {
+  public void testGetRetailPrice() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
     SkuImpl sku = new SkuImpl();
     skuBundleItemImpl.setSku(sku);
 
     // Act
-    Money actualSalePrice = skuBundleItemImpl.getSalePrice();
+    Money actualRetailPrice = skuBundleItemImpl.getRetailPrice();
 
     // Assert
     Sku sku2 = skuBundleItemImpl.getSku();
     assertTrue(sku2 instanceof SkuImpl);
-    assertNull(actualSalePrice);
+    Sku sku3 = skuBundleItemImpl.deproxiedSku;
+    assertTrue(sku3 instanceof SkuImpl);
+    assertNull(sku3.getTaxable());
+    assertNull(((SkuImpl) sku3).isMachineSortable);
+    assertNull(((SkuImpl) sku3).available);
+    assertNull(((SkuImpl) sku3).discountable);
+    assertNull(((SkuImpl) sku3).taxable);
+    assertNull(sku3.getId());
+    assertNull(sku3.getDescription());
+    assertNull(sku3.getDisplayTemplate());
+    assertNull(sku3.getExternalId());
+    assertNull(sku3.getLongDescription());
+    assertNull(sku3.getName());
+    assertNull(sku3.getTaxCode());
+    assertNull(sku3.getUpc());
+    assertNull(sku3.getUrlKey());
+    assertNull(((SkuImpl) sku3).description);
+    assertNull(((SkuImpl) sku3).fulfillmentType);
+    assertNull(((SkuImpl) sku3).inventoryType);
+    assertNull(((SkuImpl) sku3).longDescription);
+    assertNull(((SkuImpl) sku3).name);
+    assertNull(((SkuImpl) sku3).taxCode);
+    assertNull(((SkuImpl) sku3).cost);
+    assertNull(((SkuImpl) sku3).retailPrice);
+    assertNull(((SkuImpl) sku3).salePrice);
+    assertNull(sku3.getActiveEndDate());
+    assertNull(sku3.getActiveStartDate());
+    assertNull(((SkuImpl) sku3).activeEndDate);
+    assertNull(((SkuImpl) sku3).activeStartDate);
+    assertNull(sku3.getCurrency());
+    assertNull(((SkuImpl) sku3).currency);
+    assertNull(sku3.getPrimarySkuMedia());
+    assertNull(sku3.getBaseRetailPrice());
+    assertNull(sku3.getBaseSalePrice());
+    assertNull(sku3.getCost());
+    assertNull(sku3.getListPrice());
+    assertNull(sku3.getPrice());
+    assertNull(sku3.getProductOptionValueAdjustments());
+    assertNull(sku3.getRetailPrice());
+    assertNull(sku3.getSalePrice());
+    assertNull(actualRetailPrice);
+    assertNull(((SkuImpl) sku3).getRetailPriceInternal());
+    DynamicSkuPrices priceData = sku3.getPriceData();
+    assertNull(priceData.getPrice());
+    assertNull(priceData.getPriceAdjustment());
+    assertNull(priceData.getRetailPrice());
+    assertNull(priceData.getSalePrice());
+    assertNull(sku3.getDefaultProduct());
+    assertNull(sku3.getProduct());
+    assertNull(((SkuImpl) sku3).product);
+    assertNull(sku3.getInventoryType());
+    assertNull(sku3.getFulfillmentType());
+    assertEquals(0, sku3.getQuantityAvailable().intValue());
+    assertFalse(sku3.getIsMachineSortable());
+    assertFalse(sku3.hasRetailPrice());
+    assertFalse(sku3.hasSalePrice());
+    assertFalse(((SkuImpl) sku3).getDiscountable());
+    assertFalse(((SkuImpl) sku3).hasDefaultSku());
+    assertFalse(priceData.getDidOverride());
+    assertTrue(sku3.getProductOptionValues().isEmpty());
+    assertTrue(sku3.getMultiValueSkuAttributes().isEmpty());
+    assertTrue(sku3.getSkuAttributes().isEmpty());
+    assertTrue(sku3.getSkuMedia().isEmpty());
+    assertTrue(sku3.getProductOptionValuesCollection().isEmpty());
+    assertTrue(sku3.getAvailable());
     assertSame(sku, sku2);
+    Dimension dimension = sku.dimension;
+    assertSame(dimension, sku3.getDimension());
+    assertSame(dimension, ((SkuImpl) sku3).dimension);
+    assertSame(sku.legacyProductOptionValues, ((SkuImpl) sku3).legacyProductOptionValues);
+    assertSame(sku.legacySkuMedia, ((SkuImpl) sku3).legacySkuMedia);
+    assertSame(sku.skuAttributes, ((SkuImpl) sku3).skuAttributes);
+    Map<String, SkuMediaXref> stringSkuMediaXrefMap = sku.skuMedia;
+    assertSame(stringSkuMediaXrefMap, sku3.getSkuMediaXref());
+    assertSame(stringSkuMediaXrefMap, sku3.getSkuMediaXrefIgnoreDefaultSku());
+    assertSame(stringSkuMediaXrefMap, ((SkuImpl) sku3).skuMedia);
+    Weight weight = sku.weight;
+    assertSame(weight, sku3.getWeight());
+    assertSame(weight, ((SkuImpl) sku3).weight);
   }
 
   /**
-   * Test {@link SkuBundleItemImpl#getSalePrice()}.
-   *
-   * <ul>
-   *   <li>Then {@link SkuBundleItemImpl} (default constructor) {@link SkuBundleItemImpl#sku} {@link
-   *       SkuImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuBundleItemImpl#getSalePrice()}
+   * Method under test: {@link SkuBundleItemImpl#getRetailPrice()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Money SkuBundleItemImpl.getSalePrice()"})
-  public void testGetSalePrice_thenSkuBundleItemImplSkuSkuImpl2() {
-    // Arrange
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
+  public void testGetRetailPrice2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    SkuImpl sku = new SkuImpl();
-    sku.setCurrency(currency);
-    sku.setSalePrice(new Money());
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+    Money money = new Money();
+    when(sku.getRetailPrice()).thenReturn(money);
 
     SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
     skuBundleItemImpl.setSku(sku);
 
     // Act
-    Money actualSalePrice = skuBundleItemImpl.getSalePrice();
+    Money actualRetailPrice = skuBundleItemImpl.getRetailPrice();
 
     // Assert
-    verify(currency).getCurrencyCode();
+    verify(sku).getId();
+    verify(sku).getRetailPrice();
+    assertSame(money, actualRetailPrice);
+  }
+
+  /**
+   * Method under test: {@link SkuBundleItemImpl#getBundle()}
+   */
+  @Test
+  public void testGetBundle() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
+    ProductBundleImpl bundle = new ProductBundleImpl();
+    skuBundleItemImpl.setBundle(bundle);
+
+    // Act
+    ProductBundle actualBundle = skuBundleItemImpl.getBundle();
+
+    // Assert
+    ProductBundle productBundle = skuBundleItemImpl.bundle;
+    assertTrue(productBundle instanceof ProductBundleImpl);
+    ProductBundle productBundle2 = skuBundleItemImpl.deproxiedBundle;
+    assertTrue(productBundle2 instanceof ProductBundleImpl);
+    assertSame(bundle, actualBundle);
+    ArchiveStatus archiveStatus = ((ProductImpl) actualBundle).archiveStatus;
+    assertSame(archiveStatus, ((ProductBundleImpl) productBundle).archiveStatus);
+    assertSame(archiveStatus, ((ProductBundleImpl) productBundle2).archiveStatus);
+    List<ProductAttribute> productAttributeList = ((ProductImpl) actualBundle).productAttributes;
+    assertSame(productAttributeList, ((ProductBundleImpl) productBundle).productAttributes);
+    assertSame(productAttributeList, ((ProductBundleImpl) productBundle2).productAttributes);
+    Map<String, Set<String>> stringSetMap = ((ProductImpl) actualBundle).productOptionMap;
+    assertSame(stringSetMap, ((ProductBundleImpl) productBundle).productOptionMap);
+    assertSame(stringSetMap, ((ProductBundleImpl) productBundle2).productOptionMap);
+    List<ProductOptionXref> productOptionXrefList = ((ProductImpl) actualBundle).productOptions;
+    assertSame(productOptionXrefList, ((ProductBundleImpl) productBundle).productOptions);
+    assertSame(productOptionXrefList, ((ProductBundleImpl) productBundle2).productOptions);
+    List<Sku> skuList = ((ProductImpl) actualBundle).skus;
+    assertSame(skuList, ((ProductBundleImpl) productBundle).skus);
+    assertSame(skuList, ((ProductBundleImpl) productBundle2).skus);
+  }
+
+  /**
+   * Method under test: {@link SkuBundleItemImpl#getBundle()}
+   */
+  @Test
+  public void testGetBundle2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ProductBundle bundle = mock(ProductBundle.class);
+    when(bundle.getId()).thenReturn(1L);
+
+    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
+    skuBundleItemImpl.setBundle(bundle);
+
+    // Act
+    ProductBundle actualBundle = skuBundleItemImpl.getBundle();
+
+    // Assert
+    verify(bundle).getId();
+    assertSame(skuBundleItemImpl.deproxiedBundle, actualBundle);
+  }
+
+  /**
+   * Method under test: {@link SkuBundleItemImpl#getSku()}
+   */
+  @Test
+  public void testGetSku() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
+    SkuImpl sku = new SkuImpl();
+    skuBundleItemImpl.setSku(sku);
+
+    // Act
+    Sku actualSku = skuBundleItemImpl.getSku();
+
+    // Assert
     Sku sku2 = skuBundleItemImpl.deproxiedSku;
     assertTrue(sku2 instanceof SkuImpl);
     Sku sku3 = skuBundleItemImpl.sku;
     assertTrue(sku3 instanceof SkuImpl);
-    Currency currency2 = actualSalePrice.getCurrency();
-    assertEquals("British Pound", currency2.getDisplayName());
-    assertEquals("GBP", currency2.getCurrencyCode());
-    assertEquals("GBP", currency2.toString());
-    assertEquals("£", currency2.getSymbol());
-    assertEquals(826, currency2.getNumericCode());
-    BroadleafCurrency broadleafCurrency = sku.currency;
-    assertSame(broadleafCurrency, ((SkuImpl) sku2).currency);
-    assertSame(broadleafCurrency, ((SkuImpl) sku3).currency);
+    assertSame(sku, actualSku);
+    Dimension dimension = ((SkuImpl) actualSku).dimension;
+    assertSame(dimension, ((SkuImpl) sku2).dimension);
+    assertSame(dimension, ((SkuImpl) sku3).dimension);
+    Set<ProductOptionValue> productOptionValueSet = ((SkuImpl) actualSku).legacyProductOptionValues;
+    assertSame(productOptionValueSet, ((SkuImpl) sku2).legacyProductOptionValues);
+    assertSame(productOptionValueSet, ((SkuImpl) sku3).legacyProductOptionValues);
+    Map<String, Media> stringMediaMap = ((SkuImpl) actualSku).legacySkuMedia;
+    assertSame(stringMediaMap, ((SkuImpl) sku2).legacySkuMedia);
+    assertSame(stringMediaMap, ((SkuImpl) sku3).legacySkuMedia);
+    List<SkuAttribute> skuAttributeList = ((SkuImpl) actualSku).skuAttributes;
+    assertSame(skuAttributeList, ((SkuImpl) sku2).skuAttributes);
+    assertSame(skuAttributeList, ((SkuImpl) sku3).skuAttributes);
+    Map<String, SkuMediaXref> stringSkuMediaXrefMap = ((SkuImpl) actualSku).skuMedia;
+    assertSame(stringSkuMediaXrefMap, ((SkuImpl) sku2).skuMedia);
+    assertSame(stringSkuMediaXrefMap, ((SkuImpl) sku3).skuMedia);
+    Weight weight = ((SkuImpl) actualSku).weight;
+    assertSame(weight, ((SkuImpl) sku2).weight);
+    assertSame(weight, ((SkuImpl) sku3).weight);
   }
 
   /**
-   * Test {@link SkuBundleItemImpl#clearDynamicPrices()}.
-   *
-   * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} return one.
-   *   <li>Then {@link SkuBundleItemImpl} (default constructor) {@link SkuBundleItemImpl#sku}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuBundleItemImpl#clearDynamicPrices()}
+   * Method under test: {@link SkuBundleItemImpl#getSku()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SkuBundleItemImpl.clearDynamicPrices()"})
-  public void testClearDynamicPrices_givenSkuGetIdReturnOne_thenSkuBundleItemImplSku() {
+  public void testGetSku2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    Sku sku = mock(Sku.class);
+    when(sku.getId()).thenReturn(1L);
+
+    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
+    skuBundleItemImpl.setSku(sku);
+
+    // Act
+    Sku actualSku = skuBundleItemImpl.getSku();
+
+    // Assert
+    verify(sku).getId();
+    assertSame(skuBundleItemImpl.sku, actualSku);
+  }
+
+  /**
+   * Method under test: {@link SkuBundleItemImpl#clearDynamicPrices()}
+   */
+  @Test
+  public void testClearDynamicPrices() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
+    SkuImpl sku = new SkuImpl();
+    skuBundleItemImpl.setSku(sku);
+
+    // Act
+    skuBundleItemImpl.clearDynamicPrices();
+
+    // Assert
+    Sku sku2 = skuBundleItemImpl.getSku();
+    assertTrue(sku2 instanceof SkuImpl);
+    Sku sku3 = skuBundleItemImpl.deproxiedSku;
+    assertTrue(sku3 instanceof SkuImpl);
+    assertNull(sku3.getTaxable());
+    assertNull(((SkuImpl) sku3).isMachineSortable);
+    assertNull(((SkuImpl) sku3).available);
+    assertNull(((SkuImpl) sku3).discountable);
+    assertNull(((SkuImpl) sku3).taxable);
+    assertNull(sku3.getId());
+    assertNull(sku3.getDescription());
+    assertNull(sku3.getDisplayTemplate());
+    assertNull(sku3.getExternalId());
+    assertNull(sku3.getLongDescription());
+    assertNull(sku3.getName());
+    assertNull(sku3.getTaxCode());
+    assertNull(sku3.getUpc());
+    assertNull(sku3.getUrlKey());
+    assertNull(((SkuImpl) sku3).description);
+    assertNull(((SkuImpl) sku3).fulfillmentType);
+    assertNull(((SkuImpl) sku3).inventoryType);
+    assertNull(((SkuImpl) sku3).longDescription);
+    assertNull(((SkuImpl) sku3).name);
+    assertNull(((SkuImpl) sku3).taxCode);
+    assertNull(((SkuImpl) sku3).cost);
+    assertNull(((SkuImpl) sku3).retailPrice);
+    assertNull(((SkuImpl) sku3).salePrice);
+    assertNull(sku3.getActiveEndDate());
+    assertNull(sku3.getActiveStartDate());
+    assertNull(((SkuImpl) sku3).activeEndDate);
+    assertNull(((SkuImpl) sku3).activeStartDate);
+    assertNull(sku3.getCurrency());
+    assertNull(((SkuImpl) sku3).currency);
+    assertNull(sku3.getPrimarySkuMedia());
+    assertNull(sku3.getBaseRetailPrice());
+    assertNull(sku3.getBaseSalePrice());
+    assertNull(sku3.getCost());
+    assertNull(sku3.getListPrice());
+    assertNull(sku3.getPrice());
+    assertNull(sku3.getProductOptionValueAdjustments());
+    assertNull(sku3.getRetailPrice());
+    assertNull(sku3.getSalePrice());
+    assertNull(((SkuImpl) sku3).getRetailPriceInternal());
+    DynamicSkuPrices priceData = sku3.getPriceData();
+    assertNull(priceData.getPrice());
+    assertNull(priceData.getPriceAdjustment());
+    assertNull(priceData.getRetailPrice());
+    assertNull(priceData.getSalePrice());
+    assertNull(sku3.getDefaultProduct());
+    assertNull(sku3.getProduct());
+    assertNull(((SkuImpl) sku3).product);
+    assertNull(sku3.getInventoryType());
+    assertNull(sku3.getFulfillmentType());
+    assertEquals(0, sku3.getQuantityAvailable().intValue());
+    assertFalse(sku3.getIsMachineSortable());
+    assertFalse(sku3.hasRetailPrice());
+    assertFalse(sku3.hasSalePrice());
+    assertFalse(((SkuImpl) sku3).getDiscountable());
+    assertFalse(((SkuImpl) sku3).hasDefaultSku());
+    assertFalse(priceData.getDidOverride());
+    assertTrue(sku3.getProductOptionValues().isEmpty());
+    assertTrue(sku3.getMultiValueSkuAttributes().isEmpty());
+    assertTrue(sku3.getSkuAttributes().isEmpty());
+    assertTrue(sku3.getSkuMedia().isEmpty());
+    assertTrue(sku3.getProductOptionValuesCollection().isEmpty());
+    assertTrue(sku3.getAvailable());
+    assertSame(sku, sku2);
+    Dimension dimension = sku.dimension;
+    assertSame(dimension, sku3.getDimension());
+    assertSame(dimension, ((SkuImpl) sku3).dimension);
+    assertSame(sku.legacyProductOptionValues, ((SkuImpl) sku3).legacyProductOptionValues);
+    assertSame(sku.legacySkuMedia, ((SkuImpl) sku3).legacySkuMedia);
+    assertSame(sku.skuAttributes, ((SkuImpl) sku3).skuAttributes);
+    Map<String, SkuMediaXref> stringSkuMediaXrefMap = sku.skuMedia;
+    assertSame(stringSkuMediaXrefMap, sku3.getSkuMediaXref());
+    assertSame(stringSkuMediaXrefMap, sku3.getSkuMediaXrefIgnoreDefaultSku());
+    assertSame(stringSkuMediaXrefMap, ((SkuImpl) sku3).skuMedia);
+    Weight weight = sku.weight;
+    assertSame(weight, sku3.getWeight());
+    assertSame(weight, ((SkuImpl) sku3).weight);
+  }
+
+  /**
+   * Method under test: {@link SkuBundleItemImpl#clearDynamicPrices()}
+   */
+  @Test
+  public void testClearDynamicPrices2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
     doNothing().when(sku).clearDynamicPrices();
 
     SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
-    skuBundleItemImpl.setBundle(new ProductBundleImpl());
-    skuBundleItemImpl.setId(1L);
-    skuBundleItemImpl.setQuantity(1);
-    skuBundleItemImpl.setSalePrice(new Money());
-    skuBundleItemImpl.setSequence(new BigDecimal("2.3"));
     skuBundleItemImpl.setSku(sku);
 
     // Act
@@ -384,27 +741,18 @@ public class SkuBundleItemImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuBundleItemImpl#clearDynamicPrices()}.
-   *
-   * <ul>
-   *   <li>Then {@link SkuBundleItemImpl} (default constructor) Sku {@link SkuImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuBundleItemImpl#clearDynamicPrices()}
+   * Method under test: {@link SkuBundleItemImpl#clearDynamicPrices()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SkuBundleItemImpl.clearDynamicPrices()"})
-  public void testClearDynamicPrices_thenSkuBundleItemImplSkuSkuImpl() {
+  public void testClearDynamicPrices3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
-    skuBundleItemImpl.setBundle(new ProductBundleImpl());
-    skuBundleItemImpl.setId(1L);
-    skuBundleItemImpl.setQuantity(1);
-    skuBundleItemImpl.setSalePrice(new Money());
-    skuBundleItemImpl.setSequence(new BigDecimal("2.3"));
     SkuImpl sku = new SkuImpl();
+    Money salePrice = new Money();
+    sku.setSalePrice(salePrice);
+
+    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
     skuBundleItemImpl.setSku(sku);
 
     // Act
@@ -413,31 +761,107 @@ public class SkuBundleItemImplDiffblueTest {
     // Assert
     Sku sku2 = skuBundleItemImpl.getSku();
     assertTrue(sku2 instanceof SkuImpl);
-    assertTrue(skuBundleItemImpl.deproxiedSku instanceof SkuImpl);
+    Sku sku3 = skuBundleItemImpl.deproxiedSku;
+    assertTrue(sku3 instanceof SkuImpl);
+    assertNull(sku3.getTaxable());
+    assertNull(((SkuImpl) sku3).isMachineSortable);
+    assertNull(((SkuImpl) sku3).available);
+    assertNull(((SkuImpl) sku3).discountable);
+    assertNull(((SkuImpl) sku3).taxable);
+    assertNull(sku3.getId());
+    assertNull(sku3.getDescription());
+    assertNull(sku3.getDisplayTemplate());
+    assertNull(sku3.getExternalId());
+    assertNull(sku3.getLongDescription());
+    assertNull(sku3.getName());
+    assertNull(sku3.getTaxCode());
+    assertNull(sku3.getUpc());
+    assertNull(sku3.getUrlKey());
+    assertNull(((SkuImpl) sku3).description);
+    assertNull(((SkuImpl) sku3).fulfillmentType);
+    assertNull(((SkuImpl) sku3).inventoryType);
+    assertNull(((SkuImpl) sku3).longDescription);
+    assertNull(((SkuImpl) sku3).name);
+    assertNull(((SkuImpl) sku3).taxCode);
+    assertNull(((SkuImpl) sku3).cost);
+    assertNull(((SkuImpl) sku3).retailPrice);
+    assertNull(sku3.getActiveEndDate());
+    assertNull(sku3.getActiveStartDate());
+    assertNull(((SkuImpl) sku3).activeEndDate);
+    assertNull(((SkuImpl) sku3).activeStartDate);
+    assertNull(sku3.getCurrency());
+    assertNull(((SkuImpl) sku3).currency);
+    assertNull(sku3.getPrimarySkuMedia());
+    assertNull(sku3.getBaseRetailPrice());
+    assertNull(sku3.getCost());
+    assertNull(sku3.getListPrice());
+    assertNull(sku3.getPrice());
+    assertNull(sku3.getProductOptionValueAdjustments());
+    assertNull(sku3.getRetailPrice());
+    assertNull(((SkuImpl) sku3).getRetailPriceInternal());
+    DynamicSkuPrices priceData = sku3.getPriceData();
+    assertNull(priceData.getPriceAdjustment());
+    assertNull(priceData.getRetailPrice());
+    assertNull(sku3.getDefaultProduct());
+    assertNull(sku3.getProduct());
+    assertNull(((SkuImpl) sku3).product);
+    assertNull(sku3.getInventoryType());
+    assertNull(sku3.getFulfillmentType());
+    assertEquals(0, sku3.getQuantityAvailable().intValue());
+    assertFalse(sku3.getIsMachineSortable());
+    assertFalse(sku3.hasRetailPrice());
+    assertFalse(((SkuImpl) sku3).getDiscountable());
+    assertFalse(((SkuImpl) sku3).hasDefaultSku());
+    assertFalse(priceData.getDidOverride());
+    assertTrue(sku3.getProductOptionValues().isEmpty());
+    assertTrue(sku3.getMultiValueSkuAttributes().isEmpty());
+    assertTrue(sku3.getSkuAttributes().isEmpty());
+    assertTrue(sku3.getSkuMedia().isEmpty());
+    assertTrue(sku3.getProductOptionValuesCollection().isEmpty());
+    assertTrue(sku3.getAvailable());
+    assertTrue(sku3.hasSalePrice());
+    assertEquals(salePrice, sku3.getBaseSalePrice());
+    assertEquals(salePrice, sku3.getSalePrice());
+    Money price = priceData.getPrice();
+    assertEquals(salePrice, price);
     assertSame(sku, sku2);
+    assertSame(price, priceData.getSalePrice());
+    Money expectedMargin = salePrice.ZERO;
+    assertSame(expectedMargin, sku3.getMargin());
+    Dimension dimension = sku.dimension;
+    assertSame(dimension, sku3.getDimension());
+    assertSame(dimension, ((SkuImpl) sku3).dimension);
+    assertSame(sku.legacyProductOptionValues, ((SkuImpl) sku3).legacyProductOptionValues);
+    assertSame(sku.legacySkuMedia, ((SkuImpl) sku3).legacySkuMedia);
+    assertSame(sku.salePrice, ((SkuImpl) sku3).salePrice);
+    assertSame(sku.skuAttributes, ((SkuImpl) sku3).skuAttributes);
+    Map<String, SkuMediaXref> stringSkuMediaXrefMap = sku.skuMedia;
+    assertSame(stringSkuMediaXrefMap, sku3.getSkuMediaXref());
+    assertSame(stringSkuMediaXrefMap, sku3.getSkuMediaXrefIgnoreDefaultSku());
+    assertSame(stringSkuMediaXrefMap, ((SkuImpl) sku3).skuMedia);
+    Weight weight = sku.weight;
+    assertSame(weight, sku3.getWeight());
+    assertSame(weight, ((SkuImpl) sku3).weight);
   }
 
   /**
-   * Test {@link SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Method under test:
+   * {@link SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse SkuBundleItemImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(new SkuBundleItemImpl(), true);
+    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<SkuBundleItem> actualCreateOrRetrieveCopyInstanceResult =
-        skuBundleItemImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<SkuBundleItem> actualCreateOrRetrieveCopyInstanceResult = skuBundleItemImpl
+        .createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -445,413 +869,13 @@ public class SkuBundleItemImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse SkuBundleItemImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
-    // Arrange
-    SkuImpl sku = mock(SkuImpl.class);
-    when(sku.getId()).thenReturn(1L);
-    when(sku.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
-        .thenReturn(new CreateResponse<>(new SkuImpl(), true));
-    when(sku.getSalePrice()).thenReturn(new Money());
-
-    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
-    skuBundleItemImpl.setSku(sku);
-
-    CreateResponse<Object> createResponse = mock(CreateResponse.class);
-    when(createResponse.isAlreadyPopulated()).thenReturn(false);
-    SkuBundleItemImpl skuBundleItemImpl2 = new SkuBundleItemImpl();
-    when(createResponse.getClone()).thenReturn(skuBundleItemImpl2);
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    skuBundleItemImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(createResponse).getClone();
-    verify(createResponse).isAlreadyPopulated();
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    verify(sku).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
-    verify(sku).getId();
-    verify(sku).getSalePrice();
-    BigDecimal bigDecimal = skuBundleItemImpl2.itemSalePrice;
-    Money salePrice = skuBundleItemImpl.getSalePrice();
-    Money absResult = salePrice.abs();
-    Money absResult2 = absResult.abs();
-    assertSame(bigDecimal, absResult2.abs().getAmount());
-    Money zeroResult = salePrice.zero();
-    Money absResult3 = zeroResult.abs();
-    assertSame(bigDecimal, absResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult2.getAmount());
-    Money zeroResult2 = absResult.zero();
-    assertSame(bigDecimal, zeroResult2.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    assertSame(bigDecimal, zeroResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult3.getAmount());
-    assertSame(bigDecimal, absResult.getAmount());
-    assertSame(bigDecimal, absResult2.zero().getAmount());
-    assertSame(bigDecimal, absResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult2.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult.getAmount());
-  }
-
-  /**
-   * Test {@link SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse SkuBundleItemImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance3() throws CloneNotSupportedException {
-    // Arrange
-    SkuImpl sku = mock(SkuImpl.class);
-    when(sku.getId()).thenReturn(1L);
-    when(sku.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
-        .thenThrow(new CloneNotSupportedException());
-    when(sku.getSalePrice()).thenReturn(new Money());
-
-    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
-    skuBundleItemImpl.setSku(sku);
-
-    CreateResponse<Object> createResponse = mock(CreateResponse.class);
-    when(createResponse.isAlreadyPopulated()).thenReturn(false);
-    when(createResponse.getClone()).thenReturn(new SkuBundleItemImpl());
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act and Assert
-    assertThrows(
-        CloneNotSupportedException.class,
-        () -> skuBundleItemImpl.createOrRetrieveCopyInstance(context));
-    verify(createResponse).getClone();
-    verify(createResponse).isAlreadyPopulated();
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    verify(sku).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
-    verify(sku).getId();
-    verify(sku).getSalePrice();
-  }
-
-  /**
-   * Test {@link SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse SkuBundleItemImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance4() throws CloneNotSupportedException {
-    // Arrange
-    Money money = mock(Money.class);
-    when(money.getAmount()).thenReturn(new BigDecimal("2.3"));
-
-    SkuImpl sku = mock(SkuImpl.class);
-    when(sku.getId()).thenReturn(1L);
-    when(sku.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
-        .thenReturn(new CreateResponse<>(new SkuImpl(), true));
-    when(sku.getSalePrice()).thenReturn(money);
-
-    ProductBundleImpl bundle = mock(ProductBundleImpl.class);
-    when(bundle.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
-        .thenReturn(new CreateResponse<>(new ProductBundleImpl(), true));
-
-    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
-    skuBundleItemImpl.setBundle(bundle);
-    skuBundleItemImpl.setSku(sku);
-
-    CreateResponse<Object> createResponse = mock(CreateResponse.class);
-    when(createResponse.isAlreadyPopulated()).thenReturn(false);
-    when(createResponse.getClone()).thenReturn(new SkuBundleItemImpl());
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    skuBundleItemImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(createResponse).getClone();
-    verify(createResponse).isAlreadyPopulated();
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    verify(money).getAmount();
-    verify(bundle).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
-    verify(sku).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
-    verify(sku).getId();
-    verify(sku).getSalePrice();
-    Sku expectedSku = skuBundleItemImpl.sku;
-    assertSame(expectedSku, skuBundleItemImpl.getSku());
-  }
-
-  /**
-   * Test {@link SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse SkuBundleItemImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance5() throws CloneNotSupportedException {
-    // Arrange
-    Money money = mock(Money.class);
-    when(money.getAmount()).thenReturn(new BigDecimal("2.3"));
-
-    SkuImpl sku = mock(SkuImpl.class);
-    when(sku.getId()).thenReturn(1L);
-    when(sku.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
-        .thenReturn(new CreateResponse<>(new SkuImpl(), true));
-    when(sku.getSalePrice()).thenReturn(money);
-
-    ProductBundleImpl bundle = mock(ProductBundleImpl.class);
-    when(bundle.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
-        .thenThrow(new CloneNotSupportedException());
-
-    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
-    skuBundleItemImpl.setBundle(bundle);
-    skuBundleItemImpl.setSku(sku);
-
-    CreateResponse<Object> createResponse = mock(CreateResponse.class);
-    when(createResponse.isAlreadyPopulated()).thenReturn(false);
-    when(createResponse.getClone()).thenReturn(new SkuBundleItemImpl());
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act and Assert
-    assertThrows(
-        CloneNotSupportedException.class,
-        () -> skuBundleItemImpl.createOrRetrieveCopyInstance(context));
-    verify(createResponse).getClone();
-    verify(createResponse).isAlreadyPopulated();
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    verify(money).getAmount();
-    verify(bundle).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
-    verify(sku).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
-    verify(sku).getId();
-    verify(sku).getSalePrice();
-  }
-
-  /**
-   * Test {@link SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuBundleItemImpl} (default constructor) SalePrice is {@link Money#Money()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse SkuBundleItemImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance_givenSkuBundleItemImplSalePriceIsMoney()
-      throws CloneNotSupportedException {
-    // Arrange
-    SkuImpl sku = mock(SkuImpl.class);
-    when(sku.getId()).thenReturn(1L);
-    when(sku.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
-        .thenReturn(new CreateResponse<>(new SkuImpl(), true));
-
-    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
-    skuBundleItemImpl.setSalePrice(new Money());
-    skuBundleItemImpl.setSku(sku);
-
-    CreateResponse<Object> createResponse = mock(CreateResponse.class);
-    when(createResponse.isAlreadyPopulated()).thenReturn(false);
-    SkuBundleItemImpl skuBundleItemImpl2 = new SkuBundleItemImpl();
-    when(createResponse.getClone()).thenReturn(skuBundleItemImpl2);
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    skuBundleItemImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(createResponse).getClone();
-    verify(createResponse).isAlreadyPopulated();
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    verify(sku).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
-    verify(sku).getId();
-    BigDecimal bigDecimal = skuBundleItemImpl2.itemSalePrice;
-    Money salePrice = skuBundleItemImpl.getSalePrice();
-    Money absResult = salePrice.abs();
-    Money absResult2 = absResult.abs();
-    assertSame(bigDecimal, absResult2.abs().getAmount());
-    Money zeroResult = salePrice.zero();
-    Money absResult3 = zeroResult.abs();
-    assertSame(bigDecimal, absResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult2.getAmount());
-    Money zeroResult2 = absResult.zero();
-    assertSame(bigDecimal, zeroResult2.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    assertSame(bigDecimal, zeroResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult3.getAmount());
-    assertSame(bigDecimal, absResult.getAmount());
-    assertSame(bigDecimal, absResult2.zero().getAmount());
-    assertSame(bigDecimal, absResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult2.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult.getAmount());
-    Sku expectedSku = skuBundleItemImpl.sku;
-    assertSame(expectedSku, skuBundleItemImpl.getSku());
-  }
-
-  /**
-   * Test {@link SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} {@link SkuImpl#getSalePrice()} return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse SkuBundleItemImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance_givenSkuImplGetSalePriceReturnNull()
-      throws CloneNotSupportedException {
-    // Arrange
-    SkuImpl sku = mock(SkuImpl.class);
-    when(sku.getId()).thenReturn(1L);
-    when(sku.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
-        .thenReturn(new CreateResponse<>(new SkuImpl(), true));
-    when(sku.getSalePrice()).thenReturn(null);
-
-    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
-    skuBundleItemImpl.setSku(sku);
-
-    CreateResponse<Object> createResponse = mock(CreateResponse.class);
-    when(createResponse.isAlreadyPopulated()).thenReturn(false);
-    when(createResponse.getClone()).thenReturn(new SkuBundleItemImpl());
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    skuBundleItemImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(createResponse).getClone();
-    verify(createResponse).isAlreadyPopulated();
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    verify(sku).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
-    verify(sku).getId();
-    verify(sku).getSalePrice();
-    Sku expectedSku = skuBundleItemImpl.sku;
-    assertSame(expectedSku, skuBundleItemImpl.getSku());
-  }
-
-  /**
-   * Test {@link SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link Money#getAmount()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse SkuBundleItemImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance_thenCallsGetAmount()
-      throws CloneNotSupportedException {
-    // Arrange
-    Money money = mock(Money.class);
-    when(money.getAmount()).thenReturn(new BigDecimal("2.3"));
-
-    SkuImpl sku = mock(SkuImpl.class);
-    when(sku.getId()).thenReturn(1L);
-    when(sku.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
-        .thenReturn(new CreateResponse<>(new SkuImpl(), true));
-    when(sku.getSalePrice()).thenReturn(money);
-
-    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
-    skuBundleItemImpl.setSku(sku);
-
-    CreateResponse<Object> createResponse = mock(CreateResponse.class);
-    when(createResponse.isAlreadyPopulated()).thenReturn(false);
-    when(createResponse.getClone()).thenReturn(new SkuBundleItemImpl());
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    skuBundleItemImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(createResponse).getClone();
-    verify(createResponse).isAlreadyPopulated();
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    verify(money).getAmount();
-    verify(sku).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
-    verify(sku).getId();
-    verify(sku).getSalePrice();
-    Sku expectedSku = skuBundleItemImpl.sku;
-    assertSame(expectedSku, skuBundleItemImpl.getSku());
-  }
-
-  /**
-   * Test {@link SkuBundleItemImpl#equals(Object)}, and {@link SkuBundleItemImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link SkuBundleItemImpl#equals(Object)}
    *   <li>{@link SkuBundleItemImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SkuBundleItemImpl.equals(Object)",
-    "int SkuBundleItemImpl.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
@@ -872,31 +896,50 @@ public class SkuBundleItemImplDiffblueTest {
 
     // Act and Assert
     assertEquals(skuBundleItemImpl, skuBundleItemImpl2);
-    assertEquals(skuBundleItemImpl.hashCode(), skuBundleItemImpl2.hashCode());
+    int expectedHashCodeResult = skuBundleItemImpl.hashCode();
+    assertEquals(expectedHashCodeResult, skuBundleItemImpl2.hashCode());
   }
 
   /**
-   * Test {@link SkuBundleItemImpl#equals(Object)}, and {@link SkuBundleItemImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link SkuBundleItemImpl#equals(Object)}
    *   <li>{@link SkuBundleItemImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SkuBundleItemImpl.equals(Object)",
-    "int SkuBundleItemImpl.hashCode()"
-  })
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
+    // Arrange
+    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
+    skuBundleItemImpl.setBundle(mock(ProductBundle.class));
+    skuBundleItemImpl.setId(1L);
+    skuBundleItemImpl.setQuantity(1);
+    skuBundleItemImpl.setSalePrice(new Money());
+    skuBundleItemImpl.setSequence(new BigDecimal("2.3"));
+    skuBundleItemImpl.setSku(new SkuImpl());
+
+    SkuBundleItemImpl skuBundleItemImpl2 = new SkuBundleItemImpl();
+    skuBundleItemImpl2.setBundle(new ProductBundleImpl());
+    skuBundleItemImpl2.setId(1L);
+    skuBundleItemImpl2.setQuantity(1);
+    skuBundleItemImpl2.setSalePrice(new Money());
+    skuBundleItemImpl2.setSequence(new BigDecimal("2.3"));
+    skuBundleItemImpl2.setSku(new SkuImpl());
+
+    // Act and Assert
+    assertEquals(skuBundleItemImpl, skuBundleItemImpl2);
+    int expectedHashCodeResult = skuBundleItemImpl.hashCode();
+    assertEquals(expectedHashCodeResult, skuBundleItemImpl2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link SkuBundleItemImpl#equals(Object)}
+   *   <li>{@link SkuBundleItemImpl#hashCode()}
+   * </ul>
+   */
+  @Test
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
@@ -914,22 +957,9 @@ public class SkuBundleItemImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuBundleItemImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuBundleItemImpl#equals(Object)}
+   * Method under test: {@link SkuBundleItemImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SkuBundleItemImpl.equals(Object)",
-    "int SkuBundleItemImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
@@ -953,22 +983,9 @@ public class SkuBundleItemImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuBundleItemImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuBundleItemImpl#equals(Object)}
+   * Method under test: {@link SkuBundleItemImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SkuBundleItemImpl.equals(Object)",
-    "int SkuBundleItemImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
@@ -984,22 +1001,9 @@ public class SkuBundleItemImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuBundleItemImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link SkuBundleItemImpl#equals(Object)}
+   * Method under test: {@link SkuBundleItemImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean SkuBundleItemImpl.equals(Object)",
-    "int SkuBundleItemImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
@@ -1015,10 +1019,7 @@ public class SkuBundleItemImplDiffblueTest {
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link SkuBundleItemImpl}
    *   <li>{@link SkuBundleItemImpl#setBundle(ProductBundle)}
@@ -1032,19 +1033,6 @@ public class SkuBundleItemImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SkuBundleItemImpl.<init>()",
-    "Long SkuBundleItemImpl.getId()",
-    "Integer SkuBundleItemImpl.getQuantity()",
-    "BigDecimal SkuBundleItemImpl.getSequence()",
-    "void SkuBundleItemImpl.setBundle(ProductBundle)",
-    "void SkuBundleItemImpl.setId(Long)",
-    "void SkuBundleItemImpl.setQuantity(Integer)",
-    "void SkuBundleItemImpl.setSequence(BigDecimal)",
-    "void SkuBundleItemImpl.setSku(Sku)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     SkuBundleItemImpl actualSkuBundleItemImpl = new SkuBundleItemImpl();
@@ -1058,7 +1046,7 @@ public class SkuBundleItemImplDiffblueTest {
     Integer actualQuantity = actualSkuBundleItemImpl.getQuantity();
     BigDecimal actualSequence = actualSkuBundleItemImpl.getSequence();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals(1, actualQuantity.intValue());
     assertEquals(1L, actualId.longValue());
     assertEquals(new BigDecimal("2.3"), actualSequence);

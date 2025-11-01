@@ -20,73 +20,49 @@ package org.broadleafcommerce.openadmin.weave;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.Date;
 import org.broadleafcommerce.openadmin.audit.AdminAuditable;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class WeaveAdminAuditableDiffblueTest {
   /**
-   * Test {@link WeaveAdminAuditable#getCreatedBy()}.
-   *
-   * <p>Method under test: {@link WeaveAdminAuditable#getCreatedBy()}
+   * Method under test: {@link WeaveAdminAuditable#getCreatedBy()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Long WeaveAdminAuditable.getCreatedBy()"})
   public void testGetCreatedBy() {
     // Arrange, Act and Assert
-    assertNull(new WeaveAdminAuditable().getCreatedBy());
+    assertNull((new WeaveAdminAuditable()).getCreatedBy());
   }
 
   /**
-   * Test {@link WeaveAdminAuditable#getDateCreated()}.
-   *
-   * <p>Method under test: {@link WeaveAdminAuditable#getDateCreated()}
+   * Method under test: {@link WeaveAdminAuditable#getDateCreated()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Date WeaveAdminAuditable.getDateCreated()"})
   public void testGetDateCreated() {
     // Arrange, Act and Assert
-    assertNull(new WeaveAdminAuditable().getDateCreated());
+    assertNull((new WeaveAdminAuditable()).getDateCreated());
   }
 
   /**
-   * Test {@link WeaveAdminAuditable#getDateUpdated()}.
-   *
-   * <p>Method under test: {@link WeaveAdminAuditable#getDateUpdated()}
+   * Method under test: {@link WeaveAdminAuditable#getDateUpdated()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Date WeaveAdminAuditable.getDateUpdated()"})
   public void testGetDateUpdated() {
     // Arrange, Act and Assert
-    assertNull(new WeaveAdminAuditable().getDateUpdated());
+    assertNull((new WeaveAdminAuditable()).getDateUpdated());
   }
 
   /**
-   * Test {@link WeaveAdminAuditable#setDateCreated(Date)}.
-   *
-   * <p>Method under test: {@link WeaveAdminAuditable#setDateCreated(Date)}
+   * Method under test: {@link WeaveAdminAuditable#setDateCreated(Date)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void WeaveAdminAuditable.setDateCreated(Date)"})
   public void testSetDateCreated() {
     // Arrange
     WeaveAdminAuditable weaveAdminAuditable = new WeaveAdminAuditable();
-    Date dateCreated =
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    Date dateCreated = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
 
     // Act
     weaveAdminAuditable.setDateCreated(dateCreated);
@@ -97,19 +73,30 @@ public class WeaveAdminAuditableDiffblueTest {
   }
 
   /**
-   * Test {@link WeaveAdminAuditable#setDateUpdated(Date)}.
-   *
-   * <p>Method under test: {@link WeaveAdminAuditable#setDateUpdated(Date)}
+   * Method under test: {@link WeaveAdminAuditable#setDateCreated(java.util.Date)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void WeaveAdminAuditable.setDateUpdated(Date)"})
+  public void testSetDateCreated2() {
+    // Arrange
+    WeaveAdminAuditable weaveAdminAuditable = new WeaveAdminAuditable();
+    java.sql.Date dateCreated = mock(java.sql.Date.class);
+
+    // Act
+    weaveAdminAuditable.setDateCreated(dateCreated);
+
+    // Assert
+    assertSame(dateCreated, weaveAdminAuditable.auditable.getDateCreated());
+    assertSame(dateCreated, weaveAdminAuditable.getDateCreated());
+  }
+
+  /**
+   * Method under test: {@link WeaveAdminAuditable#setDateUpdated(Date)}
+   */
+  @Test
   public void testSetDateUpdated() {
     // Arrange
     WeaveAdminAuditable weaveAdminAuditable = new WeaveAdminAuditable();
-    Date dateUpdated =
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    Date dateUpdated = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
 
     // Act
     weaveAdminAuditable.setDateUpdated(dateUpdated);
@@ -120,14 +107,26 @@ public class WeaveAdminAuditableDiffblueTest {
   }
 
   /**
-   * Test {@link WeaveAdminAuditable#setCreatedBy(Long)}.
-   *
-   * <p>Method under test: {@link WeaveAdminAuditable#setCreatedBy(Long)}
+   * Method under test: {@link WeaveAdminAuditable#setDateUpdated(java.util.Date)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void WeaveAdminAuditable.setCreatedBy(Long)"})
+  public void testSetDateUpdated2() {
+    // Arrange
+    WeaveAdminAuditable weaveAdminAuditable = new WeaveAdminAuditable();
+    java.sql.Date dateUpdated = mock(java.sql.Date.class);
+
+    // Act
+    weaveAdminAuditable.setDateUpdated(dateUpdated);
+
+    // Assert
+    assertSame(dateUpdated, weaveAdminAuditable.auditable.getDateUpdated());
+    assertSame(dateUpdated, weaveAdminAuditable.getDateUpdated());
+  }
+
+  /**
+   * Method under test: {@link WeaveAdminAuditable#setCreatedBy(Long)}
+   */
+  @Test
   public void testSetCreatedBy() {
     // Arrange
     WeaveAdminAuditable weaveAdminAuditable = new WeaveAdminAuditable();
@@ -141,28 +140,18 @@ public class WeaveAdminAuditableDiffblueTest {
   }
 
   /**
-   * Test {@link WeaveAdminAuditable#getUpdatedBy()}.
-   *
-   * <p>Method under test: {@link WeaveAdminAuditable#getUpdatedBy()}
+   * Method under test: {@link WeaveAdminAuditable#getUpdatedBy()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Long WeaveAdminAuditable.getUpdatedBy()"})
   public void testGetUpdatedBy() {
     // Arrange, Act and Assert
-    assertNull(new WeaveAdminAuditable().getUpdatedBy());
+    assertNull((new WeaveAdminAuditable()).getUpdatedBy());
   }
 
   /**
-   * Test {@link WeaveAdminAuditable#setUpdatedBy(Long)}.
-   *
-   * <p>Method under test: {@link WeaveAdminAuditable#setUpdatedBy(Long)}
+   * Method under test: {@link WeaveAdminAuditable#setUpdatedBy(Long)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void WeaveAdminAuditable.setUpdatedBy(Long)"})
   public void testSetUpdatedBy() {
     // Arrange
     WeaveAdminAuditable weaveAdminAuditable = new WeaveAdminAuditable();
@@ -176,35 +165,23 @@ public class WeaveAdminAuditableDiffblueTest {
   }
 
   /**
-   * Test {@link WeaveAdminAuditable#getEmbeddableAdminAuditable(boolean)}.
-   *
-   * <p>Method under test: {@link WeaveAdminAuditable#getEmbeddableAdminAuditable(boolean)}
+   * Method under test:
+   * {@link WeaveAdminAuditable#getEmbeddableAdminAuditable(boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"AdminAuditable WeaveAdminAuditable.getEmbeddableAdminAuditable(boolean)"})
   public void testGetEmbeddableAdminAuditable() {
     // Arrange
     WeaveAdminAuditable weaveAdminAuditable = new WeaveAdminAuditable();
 
-    // Act
-    AdminAuditable actualEmbeddableAdminAuditable =
-        weaveAdminAuditable.getEmbeddableAdminAuditable(true);
-
-    // Assert
-    assertSame(weaveAdminAuditable.auditable, actualEmbeddableAdminAuditable);
+    // Act and Assert
+    assertSame(weaveAdminAuditable.auditable, weaveAdminAuditable.getEmbeddableAdminAuditable(true));
   }
 
   /**
-   * Test new {@link WeaveAdminAuditable} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link WeaveAdminAuditable}
+   * Method under test: default or parameterless constructor of
+   * {@link WeaveAdminAuditable}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void WeaveAdminAuditable.<init>()"})
   public void testNewWeaveAdminAuditable() {
     // Arrange and Act
     WeaveAdminAuditable actualWeaveAdminAuditable = new WeaveAdminAuditable();

@@ -18,25 +18,15 @@
 package org.broadleafcommerce.core.web.expression.checkout;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 class CheckoutStageVariableExpressionDiffblueTest {
   /**
-   * Test {@link CheckoutStageVariableExpression#getName()}.
-   *
-   * <p>Method under test: {@link CheckoutStageVariableExpression#getName()}
+   * Method under test: {@link CheckoutStageVariableExpression#getName()}
    */
   @Test
-  @DisplayName("Test getName()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.lang.String CheckoutStageVariableExpression.getName()"})
   void testGetName() {
     // Arrange, Act and Assert
-    assertEquals("checkoutStage", new CheckoutStageVariableExpression().getName());
+    assertEquals("checkoutStage", (new CheckoutStageVariableExpression()).getName());
   }
 }

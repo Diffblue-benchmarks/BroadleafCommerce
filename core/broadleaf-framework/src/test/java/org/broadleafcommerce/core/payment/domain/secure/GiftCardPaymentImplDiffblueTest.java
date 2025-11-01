@@ -21,76 +21,24 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.broadleafcommerce.common.encryption.EncryptionModule;
 import org.broadleafcommerce.common.encryption.PassthroughEncryptionModule;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.mockito.Mockito;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class GiftCardPaymentImplDiffblueTest {
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>default or parameterless constructor of {@link GiftCardPaymentImpl}
-   *   <li>{@link GiftCardPaymentImpl#setEncryptionModule(EncryptionModule)}
-   *   <li>{@link GiftCardPaymentImpl#setId(Long)}
-   *   <li>{@link GiftCardPaymentImpl#setReferenceNumber(String)}
-   *   <li>{@link GiftCardPaymentImpl#getEncryptionModule()}
-   *   <li>{@link GiftCardPaymentImpl#getId()}
-   *   <li>{@link GiftCardPaymentImpl#getReferenceNumber()}
-   * </ul>
+   * Method under test: {@link GiftCardPaymentImpl#getPan()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void GiftCardPaymentImpl.<init>()",
-    "EncryptionModule GiftCardPaymentImpl.getEncryptionModule()",
-    "Long GiftCardPaymentImpl.getId()",
-    "String GiftCardPaymentImpl.getReferenceNumber()",
-    "void GiftCardPaymentImpl.setEncryptionModule(EncryptionModule)",
-    "void GiftCardPaymentImpl.setId(Long)",
-    "void GiftCardPaymentImpl.setReferenceNumber(String)"
-  })
-  public void testGettersAndSetters() {
-    // Arrange and Act
-    GiftCardPaymentImpl actualGiftCardPaymentImpl = new GiftCardPaymentImpl();
-    PassthroughEncryptionModule encryptionModule = new PassthroughEncryptionModule();
-    actualGiftCardPaymentImpl.setEncryptionModule(encryptionModule);
-    actualGiftCardPaymentImpl.setId(1L);
-    actualGiftCardPaymentImpl.setReferenceNumber("42");
-    EncryptionModule actualEncryptionModule = actualGiftCardPaymentImpl.getEncryptionModule();
-    Long actualId = actualGiftCardPaymentImpl.getId();
+  public void testGetPan() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Assert
-    assertTrue(actualEncryptionModule instanceof PassthroughEncryptionModule);
-    assertEquals("42", actualGiftCardPaymentImpl.getReferenceNumber());
-    assertEquals(1L, actualId.longValue());
-    assertSame(encryptionModule, actualEncryptionModule);
-  }
-
-  /**
-   * Test {@link GiftCardPaymentImpl#getPan()}.
-   *
-   * <ul>
-   *   <li>Then return {@code Pan}.
-   * </ul>
-   *
-   * <p>Method under test: {@link GiftCardPaymentImpl#getPan()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String GiftCardPaymentImpl.getPan()"})
-  public void testGetPan_thenReturnPan() {
     // Arrange
     GiftCardPaymentImpl giftCardPaymentImpl = new GiftCardPaymentImpl();
     giftCardPaymentImpl.setEncryptionModule(new PassthroughEncryptionModule());
@@ -104,19 +52,40 @@ public class GiftCardPaymentImplDiffblueTest {
   }
 
   /**
-   * Test {@link GiftCardPaymentImpl#getPin()}.
-   *
-   * <ul>
-   *   <li>Then return {@code Pin}.
-   * </ul>
-   *
-   * <p>Method under test: {@link GiftCardPaymentImpl#getPin()}
+   * Method under test: {@link GiftCardPaymentImpl#getPan()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String GiftCardPaymentImpl.getPin()"})
-  public void testGetPin_thenReturnPin() {
+  public void testGetPan2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PassthroughEncryptionModule encryptionModule = mock(PassthroughEncryptionModule.class);
+    when(encryptionModule.decrypt(Mockito.<String>any())).thenReturn("Decrypt");
+    when(encryptionModule.encrypt(Mockito.<String>any())).thenReturn("Encrypt");
+
+    GiftCardPaymentImpl giftCardPaymentImpl = new GiftCardPaymentImpl();
+    giftCardPaymentImpl.setEncryptionModule(encryptionModule);
+    giftCardPaymentImpl.setId(1L);
+    giftCardPaymentImpl.setPan("Pan");
+    giftCardPaymentImpl.setPin("Pin");
+    giftCardPaymentImpl.setReferenceNumber("42");
+
+    // Act
+    String actualPan = giftCardPaymentImpl.getPan();
+
+    // Assert
+    verify(encryptionModule).decrypt(eq("Encrypt"));
+    verify(encryptionModule, atLeast(1)).encrypt(Mockito.<String>any());
+    assertEquals("Decrypt", actualPan);
+  }
+
+  /**
+   * Method under test: {@link GiftCardPaymentImpl#getPin()}
+   */
+  @Test
+  public void testGetPin() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     GiftCardPaymentImpl giftCardPaymentImpl = new GiftCardPaymentImpl();
     giftCardPaymentImpl.setEncryptionModule(new PassthroughEncryptionModule());
@@ -130,27 +99,91 @@ public class GiftCardPaymentImplDiffblueTest {
   }
 
   /**
-   * Test {@link GiftCardPaymentImpl#equals(Object)}, and {@link GiftCardPaymentImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Method under test: {@link GiftCardPaymentImpl#getPin()}
+   */
+  @Test
+  public void testGetPin2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PassthroughEncryptionModule encryptionModule = mock(PassthroughEncryptionModule.class);
+    when(encryptionModule.decrypt(Mockito.<String>any())).thenReturn("Decrypt");
+    when(encryptionModule.encrypt(Mockito.<String>any())).thenReturn("Encrypt");
+
+    GiftCardPaymentImpl giftCardPaymentImpl = new GiftCardPaymentImpl();
+    giftCardPaymentImpl.setEncryptionModule(encryptionModule);
+    giftCardPaymentImpl.setId(1L);
+    giftCardPaymentImpl.setPan("Pan");
+    giftCardPaymentImpl.setPin("Pin");
+    giftCardPaymentImpl.setReferenceNumber("42");
+
+    // Act
+    String actualPin = giftCardPaymentImpl.getPin();
+
+    // Assert
+    verify(encryptionModule).decrypt(eq("Encrypt"));
+    verify(encryptionModule, atLeast(1)).encrypt(Mockito.<String>any());
+    assertEquals("Decrypt", actualPin);
+  }
+
+  /**
+   * Method under test: {@link GiftCardPaymentImpl#setPan(String)}
+   */
+  @Test
+  public void testSetPan() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PassthroughEncryptionModule encryptionModule = mock(PassthroughEncryptionModule.class);
+    when(encryptionModule.encrypt(Mockito.<String>any())).thenReturn("Encrypt");
+
+    GiftCardPaymentImpl giftCardPaymentImpl = new GiftCardPaymentImpl();
+    giftCardPaymentImpl.setEncryptionModule(encryptionModule);
+    giftCardPaymentImpl.setId(1L);
+    giftCardPaymentImpl.setPan("Pan");
+    giftCardPaymentImpl.setPin("Pin");
+    giftCardPaymentImpl.setReferenceNumber("42");
+
+    // Act
+    giftCardPaymentImpl.setPan("Pan");
+
+    // Assert
+    verify(encryptionModule, atLeast(1)).encrypt(Mockito.<String>any());
+  }
+
+  /**
+   * Method under test: {@link GiftCardPaymentImpl#setPin(String)}
+   */
+  @Test
+  public void testSetPin() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PassthroughEncryptionModule encryptionModule = mock(PassthroughEncryptionModule.class);
+    when(encryptionModule.encrypt(Mockito.<String>any())).thenReturn("Encrypt");
+
+    GiftCardPaymentImpl giftCardPaymentImpl = new GiftCardPaymentImpl();
+    giftCardPaymentImpl.setEncryptionModule(encryptionModule);
+    giftCardPaymentImpl.setId(1L);
+    giftCardPaymentImpl.setPan("Pan");
+    giftCardPaymentImpl.setPin("Pin");
+    giftCardPaymentImpl.setReferenceNumber("42");
+
+    // Act
+    giftCardPaymentImpl.setPin("Pin");
+
+    // Assert
+    verify(encryptionModule, atLeast(1)).encrypt(Mockito.<String>any());
+  }
+
+  /**
+   * Methods under test:
    * <ul>
    *   <li>{@link GiftCardPaymentImpl#equals(Object)}
    *   <li>{@link GiftCardPaymentImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean GiftCardPaymentImpl.equals(Object)",
-    "int GiftCardPaymentImpl.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     GiftCardPaymentImpl giftCardPaymentImpl = new GiftCardPaymentImpl();
@@ -169,78 +202,25 @@ public class GiftCardPaymentImplDiffblueTest {
 
     // Act and Assert
     assertEquals(giftCardPaymentImpl, giftCardPaymentImpl2);
-    assertEquals(giftCardPaymentImpl.hashCode(), giftCardPaymentImpl2.hashCode());
+    int expectedHashCodeResult = giftCardPaymentImpl.hashCode();
+    assertEquals(expectedHashCodeResult, giftCardPaymentImpl2.hashCode());
   }
 
   /**
-   * Test {@link GiftCardPaymentImpl#equals(Object)}, and {@link GiftCardPaymentImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link GiftCardPaymentImpl#equals(Object)}
    *   <li>{@link GiftCardPaymentImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean GiftCardPaymentImpl.equals(Object)",
-    "int GiftCardPaymentImpl.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
+    EncryptionModule encryptionModule = mock(EncryptionModule.class);
+    when(encryptionModule.encrypt(Mockito.<String>any())).thenReturn("Encrypt");
+
     GiftCardPaymentImpl giftCardPaymentImpl = new GiftCardPaymentImpl();
-    giftCardPaymentImpl.setEncryptionModule(new PassthroughEncryptionModule());
-    giftCardPaymentImpl.setId(null);
-    giftCardPaymentImpl.setPan("Pan");
-    giftCardPaymentImpl.setPin("Pin");
-    giftCardPaymentImpl.setReferenceNumber("42");
-
-    GiftCardPaymentImpl giftCardPaymentImpl2 = new GiftCardPaymentImpl();
-    giftCardPaymentImpl2.setEncryptionModule(new PassthroughEncryptionModule());
-    giftCardPaymentImpl2.setId(1L);
-    giftCardPaymentImpl2.setPan("Pan");
-    giftCardPaymentImpl2.setPin("Pin");
-    giftCardPaymentImpl2.setReferenceNumber("42");
-
-    // Act and Assert
-    assertEquals(giftCardPaymentImpl, giftCardPaymentImpl2);
-    assertEquals(giftCardPaymentImpl.hashCode(), giftCardPaymentImpl2.hashCode());
-  }
-
-  /**
-   * Test {@link GiftCardPaymentImpl#equals(Object)}, and {@link GiftCardPaymentImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link GiftCardPaymentImpl#equals(Object)}
-   *   <li>{@link GiftCardPaymentImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean GiftCardPaymentImpl.equals(Object)",
-    "int GiftCardPaymentImpl.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
-    // Arrange
-    GiftCardPaymentImpl giftCardPaymentImpl = new GiftCardPaymentImpl();
-    giftCardPaymentImpl.setEncryptionModule(new PassthroughEncryptionModule());
+    giftCardPaymentImpl.setEncryptionModule(encryptionModule);
     giftCardPaymentImpl.setId(1L);
     giftCardPaymentImpl.setPan("Pan");
     giftCardPaymentImpl.setPin("Pin");
@@ -248,135 +228,76 @@ public class GiftCardPaymentImplDiffblueTest {
 
     GiftCardPaymentImpl giftCardPaymentImpl2 = new GiftCardPaymentImpl();
     giftCardPaymentImpl2.setEncryptionModule(new PassthroughEncryptionModule());
-    giftCardPaymentImpl2.setId(null);
+    giftCardPaymentImpl2.setId(1L);
     giftCardPaymentImpl2.setPan("Pan");
     giftCardPaymentImpl2.setPin("Pin");
     giftCardPaymentImpl2.setReferenceNumber("42");
 
     // Act and Assert
     assertEquals(giftCardPaymentImpl, giftCardPaymentImpl2);
-    assertEquals(giftCardPaymentImpl.hashCode(), giftCardPaymentImpl2.hashCode());
+    int notExpectedHashCodeResult = giftCardPaymentImpl.hashCode();
+    assertNotEquals(notExpectedHashCodeResult, giftCardPaymentImpl2.hashCode());
   }
 
   /**
-   * Test {@link GiftCardPaymentImpl#equals(Object)}, and {@link GiftCardPaymentImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link GiftCardPaymentImpl#equals(Object)}
    *   <li>{@link GiftCardPaymentImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean GiftCardPaymentImpl.equals(Object)",
-    "int GiftCardPaymentImpl.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
+    EncryptionModule encryptionModule = mock(EncryptionModule.class);
+    when(encryptionModule.encrypt(Mockito.<String>any())).thenReturn("Encrypt");
+
     GiftCardPaymentImpl giftCardPaymentImpl = new GiftCardPaymentImpl();
-    giftCardPaymentImpl.setEncryptionModule(new PassthroughEncryptionModule());
-    giftCardPaymentImpl.setId(null);
-    giftCardPaymentImpl.setPan(null);
-    giftCardPaymentImpl.setPin("Pin");
-    giftCardPaymentImpl.setReferenceNumber("42");
-
-    GiftCardPaymentImpl giftCardPaymentImpl2 = new GiftCardPaymentImpl();
-    giftCardPaymentImpl2.setEncryptionModule(new PassthroughEncryptionModule());
-    giftCardPaymentImpl2.setId(1L);
-    giftCardPaymentImpl2.setPan(null);
-    giftCardPaymentImpl2.setPin("Pin");
-    giftCardPaymentImpl2.setReferenceNumber("42");
-
-    // Act and Assert
-    assertEquals(giftCardPaymentImpl, giftCardPaymentImpl2);
-    assertEquals(giftCardPaymentImpl.hashCode(), giftCardPaymentImpl2.hashCode());
-  }
-
-  /**
-   * Test {@link GiftCardPaymentImpl#equals(Object)}, and {@link GiftCardPaymentImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link GiftCardPaymentImpl#equals(Object)}
-   *   <li>{@link GiftCardPaymentImpl#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean GiftCardPaymentImpl.equals(Object)",
-    "int GiftCardPaymentImpl.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
-    // Arrange
-    GiftCardPaymentImpl giftCardPaymentImpl = new GiftCardPaymentImpl();
-    giftCardPaymentImpl.setEncryptionModule(new PassthroughEncryptionModule());
+    giftCardPaymentImpl.setEncryptionModule(encryptionModule);
     giftCardPaymentImpl.setId(null);
     giftCardPaymentImpl.setPan("Pan");
-    giftCardPaymentImpl.setPin(null);
+    giftCardPaymentImpl.setPin("Pin");
     giftCardPaymentImpl.setReferenceNumber("42");
+    EncryptionModule encryptionModule2 = mock(EncryptionModule.class);
+    when(encryptionModule2.encrypt(Mockito.<String>any())).thenReturn("Encrypt");
 
     GiftCardPaymentImpl giftCardPaymentImpl2 = new GiftCardPaymentImpl();
-    giftCardPaymentImpl2.setEncryptionModule(new PassthroughEncryptionModule());
+    giftCardPaymentImpl2.setEncryptionModule(encryptionModule2);
     giftCardPaymentImpl2.setId(1L);
     giftCardPaymentImpl2.setPan("Pan");
-    giftCardPaymentImpl2.setPin(null);
+    giftCardPaymentImpl2.setPin("Pin");
     giftCardPaymentImpl2.setReferenceNumber("42");
 
     // Act and Assert
     assertEquals(giftCardPaymentImpl, giftCardPaymentImpl2);
-    assertEquals(giftCardPaymentImpl.hashCode(), giftCardPaymentImpl2.hashCode());
+    int expectedHashCodeResult = giftCardPaymentImpl.hashCode();
+    assertEquals(expectedHashCodeResult, giftCardPaymentImpl2.hashCode());
   }
 
   /**
-   * Test {@link GiftCardPaymentImpl#equals(Object)}, and {@link GiftCardPaymentImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link GiftCardPaymentImpl#equals(Object)}
    *   <li>{@link GiftCardPaymentImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean GiftCardPaymentImpl.equals(Object)",
-    "int GiftCardPaymentImpl.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual6() {
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
+    EncryptionModule encryptionModule = mock(EncryptionModule.class);
+    when(encryptionModule.encrypt(Mockito.<String>any())).thenReturn("Encrypt");
+
     GiftCardPaymentImpl giftCardPaymentImpl = new GiftCardPaymentImpl();
-    giftCardPaymentImpl.setEncryptionModule(new PassthroughEncryptionModule());
+    giftCardPaymentImpl.setEncryptionModule(encryptionModule);
     giftCardPaymentImpl.setId(null);
     giftCardPaymentImpl.setPan("Pan");
     giftCardPaymentImpl.setPin("Pin");
     giftCardPaymentImpl.setReferenceNumber(null);
+    EncryptionModule encryptionModule2 = mock(EncryptionModule.class);
+    when(encryptionModule2.encrypt(Mockito.<String>any())).thenReturn("Encrypt");
 
     GiftCardPaymentImpl giftCardPaymentImpl2 = new GiftCardPaymentImpl();
-    giftCardPaymentImpl2.setEncryptionModule(new PassthroughEncryptionModule());
+    giftCardPaymentImpl2.setEncryptionModule(encryptionModule2);
     giftCardPaymentImpl2.setId(1L);
     giftCardPaymentImpl2.setPan("Pan");
     giftCardPaymentImpl2.setPin("Pin");
@@ -384,31 +305,18 @@ public class GiftCardPaymentImplDiffblueTest {
 
     // Act and Assert
     assertEquals(giftCardPaymentImpl, giftCardPaymentImpl2);
-    assertEquals(giftCardPaymentImpl.hashCode(), giftCardPaymentImpl2.hashCode());
+    int expectedHashCodeResult = giftCardPaymentImpl.hashCode();
+    assertEquals(expectedHashCodeResult, giftCardPaymentImpl2.hashCode());
   }
 
   /**
-   * Test {@link GiftCardPaymentImpl#equals(Object)}, and {@link GiftCardPaymentImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link GiftCardPaymentImpl#equals(Object)}
    *   <li>{@link GiftCardPaymentImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean GiftCardPaymentImpl.equals(Object)",
-    "int GiftCardPaymentImpl.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     GiftCardPaymentImpl giftCardPaymentImpl = new GiftCardPaymentImpl();
@@ -425,26 +333,16 @@ public class GiftCardPaymentImplDiffblueTest {
   }
 
   /**
-   * Test {@link GiftCardPaymentImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link GiftCardPaymentImpl#equals(Object)}
+   * Method under test: {@link GiftCardPaymentImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean GiftCardPaymentImpl.equals(Object)",
-    "int GiftCardPaymentImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
+    EncryptionModule encryptionModule = mock(EncryptionModule.class);
+    when(encryptionModule.encrypt(Mockito.<String>any())).thenReturn("Encrypt");
+
     GiftCardPaymentImpl giftCardPaymentImpl = new GiftCardPaymentImpl();
-    giftCardPaymentImpl.setEncryptionModule(new PassthroughEncryptionModule());
+    giftCardPaymentImpl.setEncryptionModule(encryptionModule);
     giftCardPaymentImpl.setId(2L);
     giftCardPaymentImpl.setPan("Pan");
     giftCardPaymentImpl.setPin("Pin");
@@ -462,28 +360,18 @@ public class GiftCardPaymentImplDiffblueTest {
   }
 
   /**
-   * Test {@link GiftCardPaymentImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link GiftCardPaymentImpl#equals(Object)}
+   * Method under test: {@link GiftCardPaymentImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean GiftCardPaymentImpl.equals(Object)",
-    "int GiftCardPaymentImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
+    EncryptionModule encryptionModule = mock(EncryptionModule.class);
+    when(encryptionModule.encrypt(Mockito.<String>any())).thenReturn("Encrypt");
+
     GiftCardPaymentImpl giftCardPaymentImpl = new GiftCardPaymentImpl();
-    giftCardPaymentImpl.setEncryptionModule(new PassthroughEncryptionModule());
+    giftCardPaymentImpl.setEncryptionModule(encryptionModule);
     giftCardPaymentImpl.setId(null);
-    giftCardPaymentImpl.setPan("Pin");
+    giftCardPaymentImpl.setPan("Pan");
     giftCardPaymentImpl.setPin("Pin");
     giftCardPaymentImpl.setReferenceNumber("42");
 
@@ -499,34 +387,24 @@ public class GiftCardPaymentImplDiffblueTest {
   }
 
   /**
-   * Test {@link GiftCardPaymentImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link GiftCardPaymentImpl#equals(Object)}
+   * Method under test: {@link GiftCardPaymentImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean GiftCardPaymentImpl.equals(Object)",
-    "int GiftCardPaymentImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
+    EncryptionModule encryptionModule = mock(EncryptionModule.class);
+    when(encryptionModule.encrypt(Mockito.<String>any())).thenReturn("Encrypt");
+
     GiftCardPaymentImpl giftCardPaymentImpl = new GiftCardPaymentImpl();
-    giftCardPaymentImpl.setEncryptionModule(new PassthroughEncryptionModule());
-    giftCardPaymentImpl.setId(null);
-    giftCardPaymentImpl.setPan(null);
+    giftCardPaymentImpl.setEncryptionModule(encryptionModule);
+    giftCardPaymentImpl.setId(1L);
+    giftCardPaymentImpl.setPan("Pan");
     giftCardPaymentImpl.setPin("Pin");
     giftCardPaymentImpl.setReferenceNumber("42");
 
     GiftCardPaymentImpl giftCardPaymentImpl2 = new GiftCardPaymentImpl();
     giftCardPaymentImpl2.setEncryptionModule(new PassthroughEncryptionModule());
-    giftCardPaymentImpl2.setId(1L);
+    giftCardPaymentImpl2.setId(null);
     giftCardPaymentImpl2.setPan("Pan");
     giftCardPaymentImpl2.setPin("Pin");
     giftCardPaymentImpl2.setReferenceNumber("42");
@@ -536,104 +414,20 @@ public class GiftCardPaymentImplDiffblueTest {
   }
 
   /**
-   * Test {@link GiftCardPaymentImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link GiftCardPaymentImpl#equals(Object)}
+   * Method under test: {@link GiftCardPaymentImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean GiftCardPaymentImpl.equals(Object)",
-    "int GiftCardPaymentImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
+    EncryptionModule encryptionModule = mock(EncryptionModule.class);
+    when(encryptionModule.encrypt(Mockito.<String>any())).thenReturn("Pan");
+
     GiftCardPaymentImpl giftCardPaymentImpl = new GiftCardPaymentImpl();
-    giftCardPaymentImpl.setEncryptionModule(new PassthroughEncryptionModule());
-    giftCardPaymentImpl.setId(null);
-    giftCardPaymentImpl.setPan("Pan");
-    giftCardPaymentImpl.setPin("Pan");
-    giftCardPaymentImpl.setReferenceNumber("42");
-
-    GiftCardPaymentImpl giftCardPaymentImpl2 = new GiftCardPaymentImpl();
-    giftCardPaymentImpl2.setEncryptionModule(new PassthroughEncryptionModule());
-    giftCardPaymentImpl2.setId(1L);
-    giftCardPaymentImpl2.setPan("Pan");
-    giftCardPaymentImpl2.setPin("Pin");
-    giftCardPaymentImpl2.setReferenceNumber("42");
-
-    // Act and Assert
-    assertNotEquals(giftCardPaymentImpl, giftCardPaymentImpl2);
-  }
-
-  /**
-   * Test {@link GiftCardPaymentImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link GiftCardPaymentImpl#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean GiftCardPaymentImpl.equals(Object)",
-    "int GiftCardPaymentImpl.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
-    // Arrange
-    GiftCardPaymentImpl giftCardPaymentImpl = new GiftCardPaymentImpl();
-    giftCardPaymentImpl.setEncryptionModule(new PassthroughEncryptionModule());
-    giftCardPaymentImpl.setId(null);
-    giftCardPaymentImpl.setPan("Pan");
-    giftCardPaymentImpl.setPin(null);
-    giftCardPaymentImpl.setReferenceNumber("42");
-
-    GiftCardPaymentImpl giftCardPaymentImpl2 = new GiftCardPaymentImpl();
-    giftCardPaymentImpl2.setEncryptionModule(new PassthroughEncryptionModule());
-    giftCardPaymentImpl2.setId(1L);
-    giftCardPaymentImpl2.setPan("Pan");
-    giftCardPaymentImpl2.setPin("Pin");
-    giftCardPaymentImpl2.setReferenceNumber("42");
-
-    // Act and Assert
-    assertNotEquals(giftCardPaymentImpl, giftCardPaymentImpl2);
-  }
-
-  /**
-   * Test {@link GiftCardPaymentImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link GiftCardPaymentImpl#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean GiftCardPaymentImpl.equals(Object)",
-    "int GiftCardPaymentImpl.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
-    // Arrange
-    GiftCardPaymentImpl giftCardPaymentImpl = new GiftCardPaymentImpl();
-    giftCardPaymentImpl.setEncryptionModule(new PassthroughEncryptionModule());
+    giftCardPaymentImpl.setEncryptionModule(encryptionModule);
     giftCardPaymentImpl.setId(null);
     giftCardPaymentImpl.setPan("Pan");
     giftCardPaymentImpl.setPin("Pin");
-    giftCardPaymentImpl.setReferenceNumber("Pan");
+    giftCardPaymentImpl.setReferenceNumber("42");
 
     GiftCardPaymentImpl giftCardPaymentImpl2 = new GiftCardPaymentImpl();
     giftCardPaymentImpl2.setEncryptionModule(new PassthroughEncryptionModule());
@@ -647,33 +441,81 @@ public class GiftCardPaymentImplDiffblueTest {
   }
 
   /**
-   * Test {@link GiftCardPaymentImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link GiftCardPaymentImpl#equals(Object)}
+   * Method under test: {@link GiftCardPaymentImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean GiftCardPaymentImpl.equals(Object)",
-    "int GiftCardPaymentImpl.hashCode()"
-  })
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
+    // Arrange
+    EncryptionModule encryptionModule = mock(EncryptionModule.class);
+    when(encryptionModule.encrypt(Mockito.<String>any())).thenReturn(null);
+
+    GiftCardPaymentImpl giftCardPaymentImpl = new GiftCardPaymentImpl();
+    giftCardPaymentImpl.setEncryptionModule(encryptionModule);
+    giftCardPaymentImpl.setId(null);
+    giftCardPaymentImpl.setPan("Pan");
+    giftCardPaymentImpl.setPin("Pin");
+    giftCardPaymentImpl.setReferenceNumber("42");
+
+    GiftCardPaymentImpl giftCardPaymentImpl2 = new GiftCardPaymentImpl();
+    giftCardPaymentImpl2.setEncryptionModule(new PassthroughEncryptionModule());
+    giftCardPaymentImpl2.setId(1L);
+    giftCardPaymentImpl2.setPan("Pan");
+    giftCardPaymentImpl2.setPin("Pin");
+    giftCardPaymentImpl2.setReferenceNumber("42");
+
+    // Act and Assert
+    assertNotEquals(giftCardPaymentImpl, giftCardPaymentImpl2);
+  }
+
+  /**
+   * Method under test: {@link GiftCardPaymentImpl#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
+    // Arrange
+    EncryptionModule encryptionModule = mock(EncryptionModule.class);
+    when(encryptionModule.encrypt(Mockito.<String>any())).thenReturn("Encrypt");
+
+    GiftCardPaymentImpl giftCardPaymentImpl = new GiftCardPaymentImpl();
+    giftCardPaymentImpl.setEncryptionModule(encryptionModule);
+    giftCardPaymentImpl.setId(null);
+    giftCardPaymentImpl.setPan("Pan");
+    giftCardPaymentImpl.setPin("Pin");
+    giftCardPaymentImpl.setReferenceNumber("Encrypt");
+    EncryptionModule encryptionModule2 = mock(EncryptionModule.class);
+    when(encryptionModule2.encrypt(Mockito.<String>any())).thenReturn("Encrypt");
+
+    GiftCardPaymentImpl giftCardPaymentImpl2 = new GiftCardPaymentImpl();
+    giftCardPaymentImpl2.setEncryptionModule(encryptionModule2);
+    giftCardPaymentImpl2.setId(1L);
+    giftCardPaymentImpl2.setPan("Pan");
+    giftCardPaymentImpl2.setPin("Pin");
+    giftCardPaymentImpl2.setReferenceNumber("42");
+
+    // Act and Assert
+    assertNotEquals(giftCardPaymentImpl, giftCardPaymentImpl2);
+  }
+
+  /**
+   * Method under test: {@link GiftCardPaymentImpl#equals(Object)}
+   */
+  @Test
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
+    EncryptionModule encryptionModule = mock(EncryptionModule.class);
+    when(encryptionModule.encrypt(Mockito.<String>any())).thenReturn("Encrypt");
+
     GiftCardPaymentImpl giftCardPaymentImpl = new GiftCardPaymentImpl();
-    giftCardPaymentImpl.setEncryptionModule(new PassthroughEncryptionModule());
+    giftCardPaymentImpl.setEncryptionModule(encryptionModule);
     giftCardPaymentImpl.setId(null);
     giftCardPaymentImpl.setPan("Pan");
     giftCardPaymentImpl.setPin("Pin");
     giftCardPaymentImpl.setReferenceNumber(null);
+    EncryptionModule encryptionModule2 = mock(EncryptionModule.class);
+    when(encryptionModule2.encrypt(Mockito.<String>any())).thenReturn("Encrypt");
 
     GiftCardPaymentImpl giftCardPaymentImpl2 = new GiftCardPaymentImpl();
-    giftCardPaymentImpl2.setEncryptionModule(new PassthroughEncryptionModule());
+    giftCardPaymentImpl2.setEncryptionModule(encryptionModule2);
     giftCardPaymentImpl2.setId(1L);
     giftCardPaymentImpl2.setPan("Pan");
     giftCardPaymentImpl2.setPin("Pin");
@@ -684,22 +526,9 @@ public class GiftCardPaymentImplDiffblueTest {
   }
 
   /**
-   * Test {@link GiftCardPaymentImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link GiftCardPaymentImpl#equals(Object)}
+   * Method under test: {@link GiftCardPaymentImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean GiftCardPaymentImpl.equals(Object)",
-    "int GiftCardPaymentImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     GiftCardPaymentImpl giftCardPaymentImpl = new GiftCardPaymentImpl();
@@ -714,22 +543,9 @@ public class GiftCardPaymentImplDiffblueTest {
   }
 
   /**
-   * Test {@link GiftCardPaymentImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link GiftCardPaymentImpl#equals(Object)}
+   * Method under test: {@link GiftCardPaymentImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean GiftCardPaymentImpl.equals(Object)",
-    "int GiftCardPaymentImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     GiftCardPaymentImpl giftCardPaymentImpl = new GiftCardPaymentImpl();
@@ -741,5 +557,35 @@ public class GiftCardPaymentImplDiffblueTest {
 
     // Act and Assert
     assertNotEquals(giftCardPaymentImpl, "Different type to GiftCardPaymentImpl");
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>default or parameterless constructor of {@link GiftCardPaymentImpl}
+   *   <li>{@link GiftCardPaymentImpl#setEncryptionModule(EncryptionModule)}
+   *   <li>{@link GiftCardPaymentImpl#setId(Long)}
+   *   <li>{@link GiftCardPaymentImpl#setReferenceNumber(String)}
+   *   <li>{@link GiftCardPaymentImpl#getEncryptionModule()}
+   *   <li>{@link GiftCardPaymentImpl#getId()}
+   *   <li>{@link GiftCardPaymentImpl#getReferenceNumber()}
+   * </ul>
+   */
+  @Test
+  public void testGettersAndSetters() {
+    // Arrange and Act
+    GiftCardPaymentImpl actualGiftCardPaymentImpl = new GiftCardPaymentImpl();
+    PassthroughEncryptionModule encryptionModule = new PassthroughEncryptionModule();
+    actualGiftCardPaymentImpl.setEncryptionModule(encryptionModule);
+    actualGiftCardPaymentImpl.setId(1L);
+    actualGiftCardPaymentImpl.setReferenceNumber("42");
+    EncryptionModule actualEncryptionModule = actualGiftCardPaymentImpl.getEncryptionModule();
+    Long actualId = actualGiftCardPaymentImpl.getId();
+
+    // Assert that nothing has changed
+    assertTrue(actualEncryptionModule instanceof PassthroughEncryptionModule);
+    assertEquals("42", actualGiftCardPaymentImpl.getReferenceNumber());
+    assertEquals(1L, actualId.longValue());
+    assertSame(encryptionModule, actualEncryptionModule);
   }
 }

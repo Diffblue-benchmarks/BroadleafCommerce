@@ -22,361 +22,146 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Stack;
-import org.broadleafcommerce.core.util.service.DeleteStatementGeneratorImpl.OperationStackHolder;
-import org.broadleafcommerce.core.util.service.DeleteStatementGeneratorImpl.PathElement;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class DeleteStatementGeneratorImplDiffblueTest {
   /**
-   * Test {@link DeleteStatementGeneratorImpl#getSqls(String, OperationStackHolder)}.
-   *
-   * <p>Method under test: {@link DeleteStatementGeneratorImpl#getSqls(String,
-   * OperationStackHolder)}
+   * Method under test:
+   * {@link DeleteStatementGeneratorImpl#getSqls(String, DeleteStatementGeneratorImpl.OperationStackHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String DeleteStatementGeneratorImpl.getSqls(String, OperationStackHolder)"})
   public void testGetSqls() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     DeleteStatementGeneratorImpl deleteStatementGeneratorImpl = new DeleteStatementGeneratorImpl();
 
-    PathElement pathElement = mock(PathElement.class);
-    when(pathElement.getIdField()).thenReturn("Id Field");
-    when(pathElement.isFromManyToOne()).thenReturn(true);
-    when(pathElement.getJoinColumn()).thenReturn("Join Column");
-    when(pathElement.getName()).thenReturn("Name");
+    Stack<DeleteStatementGeneratorImpl.PathElement> stack = new Stack<>();
+    stack.add(new DeleteStatementGeneratorImpl.PathElement("Name", "Id Field", "Join Column"));
+    DeleteStatementGeneratorImpl.OperationStackHolder operationStackHolder = new DeleteStatementGeneratorImpl.OperationStackHolder(
+        stack);
 
-    Stack<PathElement> stack = new Stack<>();
-    PathElement pathElement2 = new PathElement("delete FROM ", "delete FROM ", "delete FROM ");
-    stack.add(pathElement2);
-    stack.add(pathElement);
-    OperationStackHolder operationStackHolder = new OperationStackHolder(stack);
-
-    // Act
-    String actualSqls = deleteStatementGeneratorImpl.getSqls("42", operationStackHolder);
-
-    // Assert
-    verify(pathElement).getIdField();
-    verify(pathElement, atLeast(1)).getJoinColumn();
-    verify(pathElement).getName();
-    verify(pathElement).isFromManyToOne();
-    assertEquals(
-        "delete FROM Name WHERE Id Field IN (SELECT t.Join Column FROM delete FROM  t WHERE t.delete"
-            + " FROM =42)",
-        actualSqls);
-    Stack<PathElement> stack2 = operationStackHolder.getStack();
+    // Act and Assert
+    assertEquals("delete FROM Name WHERE Id Field=42",
+        deleteStatementGeneratorImpl.getSqls("42", operationStackHolder));
+    Stack<DeleteStatementGeneratorImpl.PathElement> stack2 = operationStackHolder.getStack();
     assertTrue(stack2.isEmpty());
     assertSame(stack, stack2);
   }
 
   /**
-   * Test {@link DeleteStatementGeneratorImpl#getSqls(String, OperationStackHolder)}.
-   *
-   * <ul>
-   *   <li>Given {@link PathElement} {@link PathElement#getJoinColumn()} return {@code Join Column}.
-   *   <li>Then return a string.
-   * </ul>
-   *
-   * <p>Method under test: {@link DeleteStatementGeneratorImpl#getSqls(String,
-   * OperationStackHolder)}
+   * Method under test:
+   * {@link DeleteStatementGeneratorImpl#getSqls(String, DeleteStatementGeneratorImpl.OperationStackHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String DeleteStatementGeneratorImpl.getSqls(String, OperationStackHolder)"})
-  public void testGetSqls_givenPathElementGetJoinColumnReturnJoinColumn_thenReturnAString() {
+  public void testGetSqls2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     DeleteStatementGeneratorImpl deleteStatementGeneratorImpl = new DeleteStatementGeneratorImpl();
 
-    PathElement pathElement = mock(PathElement.class);
-    when(pathElement.getJoinColumn()).thenReturn("Join Column");
-    when(pathElement.getName()).thenReturn("Name");
+    Stack<DeleteStatementGeneratorImpl.PathElement> stack = new Stack<>();
+    stack.add(new DeleteStatementGeneratorImpl.PathElement("delete FROM ", "delete FROM ", "delete FROM "));
+    stack.add(new DeleteStatementGeneratorImpl.PathElement("Name", "Id Field", "Join Column"));
+    DeleteStatementGeneratorImpl.OperationStackHolder operationStackHolder = new DeleteStatementGeneratorImpl.OperationStackHolder(
+        stack);
 
-    PathElement pathElement2 = mock(PathElement.class);
-    when(pathElement2.isFromManyToOne()).thenReturn(true);
-    when(pathElement2.getIdField()).thenReturn("Id Field");
-    when(pathElement2.getJoinColumn()).thenReturn("Join Column");
-    when(pathElement2.getName()).thenReturn("Name");
-
-    Stack<PathElement> stack = new Stack<>();
-    PathElement pathElement3 = new PathElement("delete FROM ", "delete FROM ", "delete FROM ");
-    stack.add(pathElement3);
-    stack.add(pathElement2);
-    stack.add(pathElement);
-    OperationStackHolder operationStackHolder = new OperationStackHolder(stack);
-
-    // Act
-    String actualSqls = deleteStatementGeneratorImpl.getSqls("42", operationStackHolder);
-
-    // Assert
-    verify(pathElement2, atLeast(1)).getIdField();
-    verify(pathElement2).getJoinColumn();
-    verify(pathElement).getJoinColumn();
-    verify(pathElement2).getName();
-    verify(pathElement).getName();
-    verify(pathElement2).isFromManyToOne();
-    assertEquals(
-        "delete FROM Name WHERE Join Column IN (SELECT b.Id Field FROM Name b inner join delete FROM  a0 on"
-            + " b.Id Field=a0.Join Column WHERE a0.delete FROM =42)",
-        actualSqls);
-    Stack<PathElement> stack2 = operationStackHolder.getStack();
+    // Act and Assert
+    assertEquals("delete FROM Name WHERE Join Column=42",
+        deleteStatementGeneratorImpl.getSqls("42", operationStackHolder));
+    Stack<DeleteStatementGeneratorImpl.PathElement> stack2 = operationStackHolder.getStack();
     assertTrue(stack2.isEmpty());
     assertSame(stack, stack2);
   }
 
   /**
-   * Test {@link DeleteStatementGeneratorImpl#getSqls(String, OperationStackHolder)}.
-   *
-   * <ul>
-   *   <li>Given {@link PathElement#PathElement(String, String, String)} with {@code Name} and
-   *       {@code Id Field} and {@code Join Column}.
-   *   <li>Then return a string.
-   * </ul>
-   *
-   * <p>Method under test: {@link DeleteStatementGeneratorImpl#getSqls(String,
-   * OperationStackHolder)}
+   * Method under test:
+   * {@link DeleteStatementGeneratorImpl#getSqls(String, DeleteStatementGeneratorImpl.OperationStackHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String DeleteStatementGeneratorImpl.getSqls(String, OperationStackHolder)"})
-  public void testGetSqls_givenPathElementWithNameAndIdFieldAndJoinColumn_thenReturnAString() {
+  public void testGetSqls3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     DeleteStatementGeneratorImpl deleteStatementGeneratorImpl = new DeleteStatementGeneratorImpl();
 
-    Stack<PathElement> stack = new Stack<>();
-    PathElement pathElement = new PathElement("delete FROM ", "delete FROM ", "delete FROM ");
-    stack.add(pathElement);
-    PathElement pathElement2 = new PathElement("delete FROM ", "delete FROM ", "delete FROM ");
-    stack.add(pathElement2);
-    PathElement pathElement3 = new PathElement("Name", "Id Field", "Join Column");
-    stack.add(pathElement3);
-    OperationStackHolder operationStackHolder = new OperationStackHolder(stack);
+    Stack<DeleteStatementGeneratorImpl.PathElement> stack = new Stack<>();
+    stack.add(new DeleteStatementGeneratorImpl.PathElement("delete FROM ", "delete FROM ", "delete FROM "));
+    stack.add(new DeleteStatementGeneratorImpl.PathElement("delete FROM ", "delete FROM ", "delete FROM "));
+    stack.add(new DeleteStatementGeneratorImpl.PathElement("Name", "Id Field", "Join Column"));
+    DeleteStatementGeneratorImpl.OperationStackHolder operationStackHolder = new DeleteStatementGeneratorImpl.OperationStackHolder(
+        stack);
 
     // Act and Assert
     assertEquals(
         "delete FROM Name WHERE Join Column IN (SELECT b.delete FROM  FROM delete FROM  b inner join delete"
             + " FROM  a0 on b.delete FROM =a0.delete FROM  WHERE a0.delete FROM =42)",
         deleteStatementGeneratorImpl.getSqls("42", operationStackHolder));
-    Stack<PathElement> stack2 = operationStackHolder.getStack();
+    Stack<DeleteStatementGeneratorImpl.PathElement> stack2 = operationStackHolder.getStack();
     assertTrue(stack2.isEmpty());
     assertSame(stack, stack2);
   }
 
   /**
-   * Test {@link DeleteStatementGeneratorImpl#getSqls(String, OperationStackHolder)}.
-   *
-   * <ul>
-   *   <li>Then return {@code delete FROM delete FROM WHERE delete FROM =42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link DeleteStatementGeneratorImpl#getSqls(String,
-   * OperationStackHolder)}
+   * Method under test:
+   * {@link DeleteStatementGeneratorImpl#getSqls(String, DeleteStatementGeneratorImpl.OperationStackHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String DeleteStatementGeneratorImpl.getSqls(String, OperationStackHolder)"})
-  public void testGetSqls_thenReturnDeleteFromDeleteFromWhereDeleteFrom42() {
+  public void testGetSqls4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     DeleteStatementGeneratorImpl deleteStatementGeneratorImpl = new DeleteStatementGeneratorImpl();
 
-    Stack<PathElement> stack = new Stack<>();
-    PathElement pathElement = new PathElement("delete FROM ", "delete FROM ", "delete FROM ");
-    stack.add(pathElement);
-    PathElement pathElement2 =
-        new PathElement("delete FROM ", "delete FROM ", "delete FROM ", true);
-    stack.add(pathElement2);
-    OperationStackHolder operationStackHolder = new OperationStackHolder(stack);
-
-    // Act and Assert
-    assertEquals(
-        "delete FROM delete FROM  WHERE delete FROM =42",
-        deleteStatementGeneratorImpl.getSqls("42", operationStackHolder));
-    Stack<PathElement> stack2 = operationStackHolder.getStack();
-    assertTrue(stack2.isEmpty());
-    assertSame(stack, stack2);
-  }
-
-  /**
-   * Test {@link DeleteStatementGeneratorImpl#getSqls(String, OperationStackHolder)}.
-   *
-   * <ul>
-   *   <li>Then return {@code delete FROM Name WHERE Id Field=42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link DeleteStatementGeneratorImpl#getSqls(String,
-   * OperationStackHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String DeleteStatementGeneratorImpl.getSqls(String, OperationStackHolder)"})
-  public void testGetSqls_thenReturnDeleteFromNameWhereIdField42() {
-    // Arrange
-    DeleteStatementGeneratorImpl deleteStatementGeneratorImpl = new DeleteStatementGeneratorImpl();
-
-    Stack<PathElement> stack = new Stack<>();
-    PathElement pathElement = new PathElement("Name", "Id Field", "Join Column");
-    stack.add(pathElement);
-    OperationStackHolder operationStackHolder = new OperationStackHolder(stack);
-
-    // Act and Assert
-    assertEquals(
-        "delete FROM Name WHERE Id Field=42",
-        deleteStatementGeneratorImpl.getSqls("42", operationStackHolder));
-    Stack<PathElement> stack2 = operationStackHolder.getStack();
-    assertTrue(stack2.isEmpty());
-    assertSame(stack, stack2);
-  }
-
-  /**
-   * Test {@link DeleteStatementGeneratorImpl#getSqls(String, OperationStackHolder)}.
-   *
-   * <ul>
-   *   <li>Then return {@code delete FROM Name WHERE Join Column=42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link DeleteStatementGeneratorImpl#getSqls(String,
-   * OperationStackHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String DeleteStatementGeneratorImpl.getSqls(String, OperationStackHolder)"})
-  public void testGetSqls_thenReturnDeleteFromNameWhereJoinColumn42() {
-    // Arrange
-    DeleteStatementGeneratorImpl deleteStatementGeneratorImpl = new DeleteStatementGeneratorImpl();
-
-    Stack<PathElement> stack = new Stack<>();
-    PathElement pathElement = new PathElement("delete FROM ", "delete FROM ", "delete FROM ");
-    stack.add(pathElement);
-    PathElement pathElement2 = new PathElement("Name", "Id Field", "Join Column");
-    stack.add(pathElement2);
-    OperationStackHolder operationStackHolder = new OperationStackHolder(stack);
-
-    // Act and Assert
-    assertEquals(
-        "delete FROM Name WHERE Join Column=42",
-        deleteStatementGeneratorImpl.getSqls("42", operationStackHolder));
-    Stack<PathElement> stack2 = operationStackHolder.getStack();
-    assertTrue(stack2.isEmpty());
-    assertSame(stack, stack2);
-  }
-
-  /**
-   * Test OperationStackHolder getters and setters.
-   *
-   * <ul>
-   *   <li>Then return ColumnToUpdate is {@code 2020-03-01}.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link OperationStackHolder#OperationStackHolder(Stack, boolean, String)}
-   *   <li>{@link OperationStackHolder#getColumnToUpdate()}
-   *   <li>{@link OperationStackHolder#getStack()}
-   *   <li>{@link OperationStackHolder#isManyToOneRelationshipDelete()}
-   *   <li>{@link OperationStackHolder#isRelationshipUpdate()}
-   *   <li>{@link OperationStackHolder#isUpdate()}
-   *   <li>{@link OperationStackHolder#isXref()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OperationStackHolder.<init>(Stack)",
-    "void OperationStackHolder.<init>(Stack, boolean)",
-    "void OperationStackHolder.<init>(Stack, boolean, String)",
-    "void OperationStackHolder.<init>(Stack, boolean, String, boolean)",
-    "void OperationStackHolder.<init>(Stack, boolean, String, boolean, boolean)",
-    "String OperationStackHolder.getColumnToUpdate()",
-    "Stack OperationStackHolder.getStack()",
-    "boolean OperationStackHolder.isManyToOneRelationshipDelete()",
-    "boolean OperationStackHolder.isRelationshipUpdate()",
-    "boolean OperationStackHolder.isUpdate()",
-    "boolean OperationStackHolder.isXref()"
-  })
-  public void testOperationStackHolderGettersAndSetters_thenReturnColumnToUpdateIs20200301() {
-    // Arrange
-    Stack<PathElement> stack = new Stack<>();
+    Stack<DeleteStatementGeneratorImpl.PathElement> pathElementList = new Stack<>();
+    pathElementList.add(new DeleteStatementGeneratorImpl.PathElement("Name", "Id Field", "Join Column"));
+    DeleteStatementGeneratorImpl.OperationStackHolder operationStackHolder = mock(
+        DeleteStatementGeneratorImpl.OperationStackHolder.class);
+    when(operationStackHolder.getColumnToUpdate()).thenReturn("2020-03-01");
+    when(operationStackHolder.isUpdate()).thenReturn(true);
+    when(operationStackHolder.getStack()).thenReturn(pathElementList);
 
     // Act
-    OperationStackHolder actualOperationStackHolder =
-        new OperationStackHolder(stack, true, "2020-03-01");
-    String actualColumnToUpdate = actualOperationStackHolder.getColumnToUpdate();
-    Stack<PathElement> actualStack = actualOperationStackHolder.getStack();
-    boolean actualIsManyToOneRelationshipDeleteResult =
-        actualOperationStackHolder.isManyToOneRelationshipDelete();
-    boolean actualIsRelationshipUpdateResult = actualOperationStackHolder.isRelationshipUpdate();
-    boolean actualIsUpdateResult = actualOperationStackHolder.isUpdate();
+    String actualSqls = deleteStatementGeneratorImpl.getSqls("42", operationStackHolder);
 
     // Assert
-    assertEquals("2020-03-01", actualColumnToUpdate);
-    assertFalse(actualIsManyToOneRelationshipDeleteResult);
-    assertFalse(actualIsRelationshipUpdateResult);
-    assertFalse(actualOperationStackHolder.isXref());
-    assertTrue(actualIsUpdateResult);
-    assertSame(stack, actualStack);
+    verify(operationStackHolder).getColumnToUpdate();
+    verify(operationStackHolder).getStack();
+    verify(operationStackHolder).isUpdate();
+    assertEquals("update Name SET 2020-03-01=NULL WHERE Id Field=42", actualSqls);
   }
 
   /**
-   * Test OperationStackHolder getters and setters.
-   *
+   * Methods under test:
    * <ul>
-   *   <li>Then return ColumnToUpdate is {@code null}.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link OperationStackHolder#OperationStackHolder(Stack)}
-   *   <li>{@link OperationStackHolder#getColumnToUpdate()}
-   *   <li>{@link OperationStackHolder#getStack()}
-   *   <li>{@link OperationStackHolder#isManyToOneRelationshipDelete()}
-   *   <li>{@link OperationStackHolder#isRelationshipUpdate()}
-   *   <li>{@link OperationStackHolder#isUpdate()}
-   *   <li>{@link OperationStackHolder#isXref()}
+   *   <li>
+   * {@link DeleteStatementGeneratorImpl.OperationStackHolder#OperationStackHolder(Stack)}
+   *   <li>
+   * {@link DeleteStatementGeneratorImpl.OperationStackHolder#getColumnToUpdate()}
+   *   <li>{@link DeleteStatementGeneratorImpl.OperationStackHolder#getStack()}
+   *   <li>
+   * {@link DeleteStatementGeneratorImpl.OperationStackHolder#isManyToOneRelationshipDelete()}
+   *   <li>
+   * {@link DeleteStatementGeneratorImpl.OperationStackHolder#isRelationshipUpdate()}
+   *   <li>{@link DeleteStatementGeneratorImpl.OperationStackHolder#isUpdate()}
+   *   <li>{@link DeleteStatementGeneratorImpl.OperationStackHolder#isXref()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OperationStackHolder.<init>(Stack)",
-    "void OperationStackHolder.<init>(Stack, boolean)",
-    "void OperationStackHolder.<init>(Stack, boolean, String)",
-    "void OperationStackHolder.<init>(Stack, boolean, String, boolean)",
-    "void OperationStackHolder.<init>(Stack, boolean, String, boolean, boolean)",
-    "String OperationStackHolder.getColumnToUpdate()",
-    "Stack OperationStackHolder.getStack()",
-    "boolean OperationStackHolder.isManyToOneRelationshipDelete()",
-    "boolean OperationStackHolder.isRelationshipUpdate()",
-    "boolean OperationStackHolder.isUpdate()",
-    "boolean OperationStackHolder.isXref()"
-  })
-  public void testOperationStackHolderGettersAndSetters_thenReturnColumnToUpdateIsNull() {
+  public void testOperationStackHolderGettersAndSetters() {
     // Arrange
-    Stack<PathElement> stack = new Stack<>();
+    Stack<DeleteStatementGeneratorImpl.PathElement> stack = new Stack<>();
 
     // Act
-    OperationStackHolder actualOperationStackHolder = new OperationStackHolder(stack);
+    DeleteStatementGeneratorImpl.OperationStackHolder actualOperationStackHolder = new DeleteStatementGeneratorImpl.OperationStackHolder(
+        stack);
     String actualColumnToUpdate = actualOperationStackHolder.getColumnToUpdate();
-    Stack<PathElement> actualStack = actualOperationStackHolder.getStack();
-    boolean actualIsManyToOneRelationshipDeleteResult =
-        actualOperationStackHolder.isManyToOneRelationshipDelete();
+    Stack<DeleteStatementGeneratorImpl.PathElement> actualStack = actualOperationStackHolder.getStack();
+    boolean actualIsManyToOneRelationshipDeleteResult = actualOperationStackHolder.isManyToOneRelationshipDelete();
     boolean actualIsRelationshipUpdateResult = actualOperationStackHolder.isRelationshipUpdate();
     boolean actualIsUpdateResult = actualOperationStackHolder.isUpdate();
 
@@ -390,168 +175,32 @@ public class DeleteStatementGeneratorImplDiffblueTest {
   }
 
   /**
-   * Test OperationStackHolder getters and setters.
-   *
+   * Methods under test:
    * <ul>
-   *   <li>Then return ManyToOneRelationshipDelete.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link OperationStackHolder#OperationStackHolder(Stack, boolean, String, boolean,
-   *       boolean)}
-   *   <li>{@link OperationStackHolder#getColumnToUpdate()}
-   *   <li>{@link OperationStackHolder#getStack()}
-   *   <li>{@link OperationStackHolder#isManyToOneRelationshipDelete()}
-   *   <li>{@link OperationStackHolder#isRelationshipUpdate()}
-   *   <li>{@link OperationStackHolder#isUpdate()}
-   *   <li>{@link OperationStackHolder#isXref()}
+   *   <li>
+   * {@link DeleteStatementGeneratorImpl.OperationStackHolder#OperationStackHolder(Stack, boolean)}
+   *   <li>
+   * {@link DeleteStatementGeneratorImpl.OperationStackHolder#getColumnToUpdate()}
+   *   <li>{@link DeleteStatementGeneratorImpl.OperationStackHolder#getStack()}
+   *   <li>
+   * {@link DeleteStatementGeneratorImpl.OperationStackHolder#isManyToOneRelationshipDelete()}
+   *   <li>
+   * {@link DeleteStatementGeneratorImpl.OperationStackHolder#isRelationshipUpdate()}
+   *   <li>{@link DeleteStatementGeneratorImpl.OperationStackHolder#isUpdate()}
+   *   <li>{@link DeleteStatementGeneratorImpl.OperationStackHolder#isXref()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OperationStackHolder.<init>(Stack)",
-    "void OperationStackHolder.<init>(Stack, boolean)",
-    "void OperationStackHolder.<init>(Stack, boolean, String)",
-    "void OperationStackHolder.<init>(Stack, boolean, String, boolean)",
-    "void OperationStackHolder.<init>(Stack, boolean, String, boolean, boolean)",
-    "String OperationStackHolder.getColumnToUpdate()",
-    "Stack OperationStackHolder.getStack()",
-    "boolean OperationStackHolder.isManyToOneRelationshipDelete()",
-    "boolean OperationStackHolder.isRelationshipUpdate()",
-    "boolean OperationStackHolder.isUpdate()",
-    "boolean OperationStackHolder.isXref()"
-  })
-  public void testOperationStackHolderGettersAndSetters_thenReturnManyToOneRelationshipDelete() {
+  public void testOperationStackHolderGettersAndSetters2() {
     // Arrange
-    Stack<PathElement> stack = new Stack<>();
+    Stack<DeleteStatementGeneratorImpl.PathElement> stack = new Stack<>();
 
     // Act
-    OperationStackHolder actualOperationStackHolder =
-        new OperationStackHolder(stack, true, "2020-03-01", true, true);
+    DeleteStatementGeneratorImpl.OperationStackHolder actualOperationStackHolder = new DeleteStatementGeneratorImpl.OperationStackHolder(
+        stack, true);
     String actualColumnToUpdate = actualOperationStackHolder.getColumnToUpdate();
-    Stack<PathElement> actualStack = actualOperationStackHolder.getStack();
-    boolean actualIsManyToOneRelationshipDeleteResult =
-        actualOperationStackHolder.isManyToOneRelationshipDelete();
-    boolean actualIsRelationshipUpdateResult = actualOperationStackHolder.isRelationshipUpdate();
-    boolean actualIsUpdateResult = actualOperationStackHolder.isUpdate();
-
-    // Assert
-    assertEquals("2020-03-01", actualColumnToUpdate);
-    assertFalse(actualOperationStackHolder.isXref());
-    assertTrue(actualIsManyToOneRelationshipDeleteResult);
-    assertTrue(actualIsRelationshipUpdateResult);
-    assertTrue(actualIsUpdateResult);
-    assertSame(stack, actualStack);
-  }
-
-  /**
-   * Test OperationStackHolder getters and setters.
-   *
-   * <ul>
-   *   <li>Then return RelationshipUpdate.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link OperationStackHolder#OperationStackHolder(Stack, boolean, String, boolean)}
-   *   <li>{@link OperationStackHolder#getColumnToUpdate()}
-   *   <li>{@link OperationStackHolder#getStack()}
-   *   <li>{@link OperationStackHolder#isManyToOneRelationshipDelete()}
-   *   <li>{@link OperationStackHolder#isRelationshipUpdate()}
-   *   <li>{@link OperationStackHolder#isUpdate()}
-   *   <li>{@link OperationStackHolder#isXref()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OperationStackHolder.<init>(Stack)",
-    "void OperationStackHolder.<init>(Stack, boolean)",
-    "void OperationStackHolder.<init>(Stack, boolean, String)",
-    "void OperationStackHolder.<init>(Stack, boolean, String, boolean)",
-    "void OperationStackHolder.<init>(Stack, boolean, String, boolean, boolean)",
-    "String OperationStackHolder.getColumnToUpdate()",
-    "Stack OperationStackHolder.getStack()",
-    "boolean OperationStackHolder.isManyToOneRelationshipDelete()",
-    "boolean OperationStackHolder.isRelationshipUpdate()",
-    "boolean OperationStackHolder.isUpdate()",
-    "boolean OperationStackHolder.isXref()"
-  })
-  public void testOperationStackHolderGettersAndSetters_thenReturnRelationshipUpdate() {
-    // Arrange
-    Stack<PathElement> stack = new Stack<>();
-
-    // Act
-    OperationStackHolder actualOperationStackHolder =
-        new OperationStackHolder(stack, true, "2020-03-01", true);
-    String actualColumnToUpdate = actualOperationStackHolder.getColumnToUpdate();
-    Stack<PathElement> actualStack = actualOperationStackHolder.getStack();
-    boolean actualIsManyToOneRelationshipDeleteResult =
-        actualOperationStackHolder.isManyToOneRelationshipDelete();
-    boolean actualIsRelationshipUpdateResult = actualOperationStackHolder.isRelationshipUpdate();
-    boolean actualIsUpdateResult = actualOperationStackHolder.isUpdate();
-
-    // Assert
-    assertEquals("2020-03-01", actualColumnToUpdate);
-    assertFalse(actualIsManyToOneRelationshipDeleteResult);
-    assertFalse(actualOperationStackHolder.isXref());
-    assertTrue(actualIsRelationshipUpdateResult);
-    assertTrue(actualIsUpdateResult);
-    assertSame(stack, actualStack);
-  }
-
-  /**
-   * Test OperationStackHolder getters and setters.
-   *
-   * <ul>
-   *   <li>When {@code true}.
-   *   <li>Then return Xref.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link OperationStackHolder#OperationStackHolder(Stack, boolean)}
-   *   <li>{@link OperationStackHolder#getColumnToUpdate()}
-   *   <li>{@link OperationStackHolder#getStack()}
-   *   <li>{@link OperationStackHolder#isManyToOneRelationshipDelete()}
-   *   <li>{@link OperationStackHolder#isRelationshipUpdate()}
-   *   <li>{@link OperationStackHolder#isUpdate()}
-   *   <li>{@link OperationStackHolder#isXref()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OperationStackHolder.<init>(Stack)",
-    "void OperationStackHolder.<init>(Stack, boolean)",
-    "void OperationStackHolder.<init>(Stack, boolean, String)",
-    "void OperationStackHolder.<init>(Stack, boolean, String, boolean)",
-    "void OperationStackHolder.<init>(Stack, boolean, String, boolean, boolean)",
-    "String OperationStackHolder.getColumnToUpdate()",
-    "Stack OperationStackHolder.getStack()",
-    "boolean OperationStackHolder.isManyToOneRelationshipDelete()",
-    "boolean OperationStackHolder.isRelationshipUpdate()",
-    "boolean OperationStackHolder.isUpdate()",
-    "boolean OperationStackHolder.isXref()"
-  })
-  public void testOperationStackHolderGettersAndSetters_whenTrue_thenReturnXref() {
-    // Arrange
-    Stack<PathElement> stack = new Stack<>();
-
-    // Act
-    OperationStackHolder actualOperationStackHolder = new OperationStackHolder(stack, true);
-    String actualColumnToUpdate = actualOperationStackHolder.getColumnToUpdate();
-    Stack<PathElement> actualStack = actualOperationStackHolder.getStack();
-    boolean actualIsManyToOneRelationshipDeleteResult =
-        actualOperationStackHolder.isManyToOneRelationshipDelete();
+    Stack<DeleteStatementGeneratorImpl.PathElement> actualStack = actualOperationStackHolder.getStack();
+    boolean actualIsManyToOneRelationshipDeleteResult = actualOperationStackHolder.isManyToOneRelationshipDelete();
     boolean actualIsRelationshipUpdateResult = actualOperationStackHolder.isRelationshipUpdate();
     boolean actualIsUpdateResult = actualOperationStackHolder.isUpdate();
 
@@ -565,37 +214,138 @@ public class DeleteStatementGeneratorImplDiffblueTest {
   }
 
   /**
-   * Test PathElement getters and setters.
-   *
+   * Methods under test:
    * <ul>
-   *   <li>When {@code Join Column}.
-   *   <li>Then return not FromManyToOne.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link PathElement#PathElement(String, String, String)}
-   *   <li>{@link PathElement#getIdField()}
-   *   <li>{@link PathElement#getJoinColumn()}
-   *   <li>{@link PathElement#getName()}
-   *   <li>{@link PathElement#isFromManyToOne()}
+   *   <li>
+   * {@link DeleteStatementGeneratorImpl.OperationStackHolder#OperationStackHolder(Stack, boolean, String)}
+   *   <li>
+   * {@link DeleteStatementGeneratorImpl.OperationStackHolder#getColumnToUpdate()}
+   *   <li>{@link DeleteStatementGeneratorImpl.OperationStackHolder#getStack()}
+   *   <li>
+   * {@link DeleteStatementGeneratorImpl.OperationStackHolder#isManyToOneRelationshipDelete()}
+   *   <li>
+   * {@link DeleteStatementGeneratorImpl.OperationStackHolder#isRelationshipUpdate()}
+   *   <li>{@link DeleteStatementGeneratorImpl.OperationStackHolder#isUpdate()}
+   *   <li>{@link DeleteStatementGeneratorImpl.OperationStackHolder#isXref()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PathElement.<init>(String, String, String)",
-    "void PathElement.<init>(String, String, String, boolean)",
-    "String PathElement.getIdField()",
-    "String PathElement.getJoinColumn()",
-    "String PathElement.getName()",
-    "boolean PathElement.isFromManyToOne()"
-  })
-  public void testPathElementGettersAndSetters_whenJoinColumn_thenReturnNotFromManyToOne() {
+  public void testOperationStackHolderGettersAndSetters3() {
+    // Arrange
+    Stack<DeleteStatementGeneratorImpl.PathElement> stack = new Stack<>();
+
+    // Act
+    DeleteStatementGeneratorImpl.OperationStackHolder actualOperationStackHolder = new DeleteStatementGeneratorImpl.OperationStackHolder(
+        stack, true, "2020-03-01");
+    String actualColumnToUpdate = actualOperationStackHolder.getColumnToUpdate();
+    Stack<DeleteStatementGeneratorImpl.PathElement> actualStack = actualOperationStackHolder.getStack();
+    boolean actualIsManyToOneRelationshipDeleteResult = actualOperationStackHolder.isManyToOneRelationshipDelete();
+    boolean actualIsRelationshipUpdateResult = actualOperationStackHolder.isRelationshipUpdate();
+    boolean actualIsUpdateResult = actualOperationStackHolder.isUpdate();
+
+    // Assert
+    assertEquals("2020-03-01", actualColumnToUpdate);
+    assertFalse(actualIsManyToOneRelationshipDeleteResult);
+    assertFalse(actualIsRelationshipUpdateResult);
+    assertFalse(actualOperationStackHolder.isXref());
+    assertTrue(actualIsUpdateResult);
+    assertSame(stack, actualStack);
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>
+   * {@link DeleteStatementGeneratorImpl.OperationStackHolder#OperationStackHolder(Stack, boolean, String, boolean)}
+   *   <li>
+   * {@link DeleteStatementGeneratorImpl.OperationStackHolder#getColumnToUpdate()}
+   *   <li>{@link DeleteStatementGeneratorImpl.OperationStackHolder#getStack()}
+   *   <li>
+   * {@link DeleteStatementGeneratorImpl.OperationStackHolder#isManyToOneRelationshipDelete()}
+   *   <li>
+   * {@link DeleteStatementGeneratorImpl.OperationStackHolder#isRelationshipUpdate()}
+   *   <li>{@link DeleteStatementGeneratorImpl.OperationStackHolder#isUpdate()}
+   *   <li>{@link DeleteStatementGeneratorImpl.OperationStackHolder#isXref()}
+   * </ul>
+   */
+  @Test
+  public void testOperationStackHolderGettersAndSetters4() {
+    // Arrange
+    Stack<DeleteStatementGeneratorImpl.PathElement> stack = new Stack<>();
+
+    // Act
+    DeleteStatementGeneratorImpl.OperationStackHolder actualOperationStackHolder = new DeleteStatementGeneratorImpl.OperationStackHolder(
+        stack, true, "2020-03-01", true);
+    String actualColumnToUpdate = actualOperationStackHolder.getColumnToUpdate();
+    Stack<DeleteStatementGeneratorImpl.PathElement> actualStack = actualOperationStackHolder.getStack();
+    boolean actualIsManyToOneRelationshipDeleteResult = actualOperationStackHolder.isManyToOneRelationshipDelete();
+    boolean actualIsRelationshipUpdateResult = actualOperationStackHolder.isRelationshipUpdate();
+    boolean actualIsUpdateResult = actualOperationStackHolder.isUpdate();
+
+    // Assert
+    assertEquals("2020-03-01", actualColumnToUpdate);
+    assertFalse(actualIsManyToOneRelationshipDeleteResult);
+    assertFalse(actualOperationStackHolder.isXref());
+    assertTrue(actualIsRelationshipUpdateResult);
+    assertTrue(actualIsUpdateResult);
+    assertSame(stack, actualStack);
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>
+   * {@link DeleteStatementGeneratorImpl.OperationStackHolder#OperationStackHolder(Stack, boolean, String, boolean, boolean)}
+   *   <li>
+   * {@link DeleteStatementGeneratorImpl.OperationStackHolder#getColumnToUpdate()}
+   *   <li>{@link DeleteStatementGeneratorImpl.OperationStackHolder#getStack()}
+   *   <li>
+   * {@link DeleteStatementGeneratorImpl.OperationStackHolder#isManyToOneRelationshipDelete()}
+   *   <li>
+   * {@link DeleteStatementGeneratorImpl.OperationStackHolder#isRelationshipUpdate()}
+   *   <li>{@link DeleteStatementGeneratorImpl.OperationStackHolder#isUpdate()}
+   *   <li>{@link DeleteStatementGeneratorImpl.OperationStackHolder#isXref()}
+   * </ul>
+   */
+  @Test
+  public void testOperationStackHolderGettersAndSetters5() {
+    // Arrange
+    Stack<DeleteStatementGeneratorImpl.PathElement> stack = new Stack<>();
+
+    // Act
+    DeleteStatementGeneratorImpl.OperationStackHolder actualOperationStackHolder = new DeleteStatementGeneratorImpl.OperationStackHolder(
+        stack, true, "2020-03-01", true, true);
+    String actualColumnToUpdate = actualOperationStackHolder.getColumnToUpdate();
+    Stack<DeleteStatementGeneratorImpl.PathElement> actualStack = actualOperationStackHolder.getStack();
+    boolean actualIsManyToOneRelationshipDeleteResult = actualOperationStackHolder.isManyToOneRelationshipDelete();
+    boolean actualIsRelationshipUpdateResult = actualOperationStackHolder.isRelationshipUpdate();
+    boolean actualIsUpdateResult = actualOperationStackHolder.isUpdate();
+
+    // Assert
+    assertEquals("2020-03-01", actualColumnToUpdate);
+    assertFalse(actualOperationStackHolder.isXref());
+    assertTrue(actualIsManyToOneRelationshipDeleteResult);
+    assertTrue(actualIsRelationshipUpdateResult);
+    assertTrue(actualIsUpdateResult);
+    assertSame(stack, actualStack);
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>
+   * {@link DeleteStatementGeneratorImpl.PathElement#PathElement(String, String, String)}
+   *   <li>{@link DeleteStatementGeneratorImpl.PathElement#getIdField()}
+   *   <li>{@link DeleteStatementGeneratorImpl.PathElement#getJoinColumn()}
+   *   <li>{@link DeleteStatementGeneratorImpl.PathElement#getName()}
+   *   <li>{@link DeleteStatementGeneratorImpl.PathElement#isFromManyToOne()}
+   * </ul>
+   */
+  @Test
+  public void testPathElementGettersAndSetters() {
     // Arrange and Act
-    PathElement actualPathElement = new PathElement("Name", "Id Field", "Join Column");
+    DeleteStatementGeneratorImpl.PathElement actualPathElement = new DeleteStatementGeneratorImpl.PathElement("Name",
+        "Id Field", "Join Column");
     String actualIdField = actualPathElement.getIdField();
     String actualJoinColumn = actualPathElement.getJoinColumn();
     String actualName = actualPathElement.getName();
@@ -608,37 +358,21 @@ public class DeleteStatementGeneratorImplDiffblueTest {
   }
 
   /**
-   * Test PathElement getters and setters.
-   *
+   * Methods under test:
    * <ul>
-   *   <li>When {@code true}.
-   *   <li>Then return FromManyToOne.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link PathElement#PathElement(String, String, String, boolean)}
-   *   <li>{@link PathElement#getIdField()}
-   *   <li>{@link PathElement#getJoinColumn()}
-   *   <li>{@link PathElement#getName()}
-   *   <li>{@link PathElement#isFromManyToOne()}
+   *   <li>
+   * {@link DeleteStatementGeneratorImpl.PathElement#PathElement(String, String, String, boolean)}
+   *   <li>{@link DeleteStatementGeneratorImpl.PathElement#getIdField()}
+   *   <li>{@link DeleteStatementGeneratorImpl.PathElement#getJoinColumn()}
+   *   <li>{@link DeleteStatementGeneratorImpl.PathElement#getName()}
+   *   <li>{@link DeleteStatementGeneratorImpl.PathElement#isFromManyToOne()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PathElement.<init>(String, String, String)",
-    "void PathElement.<init>(String, String, String, boolean)",
-    "String PathElement.getIdField()",
-    "String PathElement.getJoinColumn()",
-    "String PathElement.getName()",
-    "boolean PathElement.isFromManyToOne()"
-  })
-  public void testPathElementGettersAndSetters_whenTrue_thenReturnFromManyToOne() {
+  public void testPathElementGettersAndSetters2() {
     // Arrange and Act
-    PathElement actualPathElement = new PathElement("Name", "Id Field", "Join Column", true);
+    DeleteStatementGeneratorImpl.PathElement actualPathElement = new DeleteStatementGeneratorImpl.PathElement("Name",
+        "Id Field", "Join Column", true);
     String actualIdField = actualPathElement.getIdField();
     String actualJoinColumn = actualPathElement.getJoinColumn();
     String actualName = actualPathElement.getName();

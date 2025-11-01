@@ -21,214 +21,169 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.payment.PaymentGatewayType;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = {PassthroughPaymentConfigurationImpl.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class PassthroughPaymentConfigurationImplDiffblueTest {
-  @Autowired private PassthroughPaymentConfigurationImpl passthroughPaymentConfigurationImpl;
-
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
-   *   <li>{@link PassthroughPaymentConfigurationImpl#setFailureReportingThreshold(int)}
-   *   <li>{@link PassthroughPaymentConfigurationImpl#setPerformAuthorizeAndCapture(boolean)}
-   *   <li>{@link PassthroughPaymentConfigurationImpl#getFailureReportingThreshold()}
+   *   <li>
+   * {@link PassthroughPaymentConfigurationImpl#setFailureReportingThreshold(int)}
+   *   <li>
+   * {@link PassthroughPaymentConfigurationImpl#setPerformAuthorizeAndCapture(boolean)}
+   *   <li>
+   * {@link PassthroughPaymentConfigurationImpl#getFailureReportingThreshold()}
    *   <li>{@link PassthroughPaymentConfigurationImpl#getGatewayType()}
-   *   <li>{@link PassthroughPaymentConfigurationImpl#isPerformAuthorizeAndCapture()}
+   *   <li>
+   * {@link PassthroughPaymentConfigurationImpl#isPerformAuthorizeAndCapture()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "int PassthroughPaymentConfigurationImpl.getFailureReportingThreshold()",
-    "PaymentGatewayType PassthroughPaymentConfigurationImpl.getGatewayType()",
-    "boolean PassthroughPaymentConfigurationImpl.isPerformAuthorizeAndCapture()",
-    "void PassthroughPaymentConfigurationImpl.setFailureReportingThreshold(int)",
-    "void PassthroughPaymentConfigurationImpl.setPerformAuthorizeAndCapture(boolean)"
-  })
   public void testGettersAndSetters() {
     // Arrange
-    PassthroughPaymentConfigurationImpl passthroughPaymentConfigurationImpl =
-        new PassthroughPaymentConfigurationImpl();
+    PassthroughPaymentConfigurationImpl passthroughPaymentConfigurationImpl = new PassthroughPaymentConfigurationImpl();
 
     // Act
     passthroughPaymentConfigurationImpl.setFailureReportingThreshold(1);
     passthroughPaymentConfigurationImpl.setPerformAuthorizeAndCapture(true);
-    int actualFailureReportingThreshold =
-        passthroughPaymentConfigurationImpl.getFailureReportingThreshold();
+    int actualFailureReportingThreshold = passthroughPaymentConfigurationImpl.getFailureReportingThreshold();
     PaymentGatewayType actualGatewayType = passthroughPaymentConfigurationImpl.getGatewayType();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals(1, actualFailureReportingThreshold);
     assertFalse(passthroughPaymentConfigurationImpl.isPerformAuthorizeAndCapture());
-    assertSame(PaymentGatewayType.PASSTHROUGH, actualGatewayType);
+    assertSame(actualGatewayType.PASSTHROUGH, actualGatewayType);
   }
 
   /**
-   * Test {@link PassthroughPaymentConfigurationImpl#handlesAuthorize()}.
-   *
-   * <p>Method under test: {@link PassthroughPaymentConfigurationImpl#handlesAuthorize()}
+   * Method under test:
+   * {@link PassthroughPaymentConfigurationImpl#handlesAuthorize()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PassthroughPaymentConfigurationImpl.handlesAuthorize()"})
   public void testHandlesAuthorize() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertTrue(passthroughPaymentConfigurationImpl.handlesAuthorize());
+    assertTrue((new PassthroughPaymentConfigurationImpl()).handlesAuthorize());
   }
 
   /**
-   * Test {@link PassthroughPaymentConfigurationImpl#handlesCapture()}.
-   *
-   * <p>Method under test: {@link PassthroughPaymentConfigurationImpl#handlesCapture()}
+   * Method under test:
+   * {@link PassthroughPaymentConfigurationImpl#handlesCapture()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PassthroughPaymentConfigurationImpl.handlesCapture()"})
   public void testHandlesCapture() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertTrue(passthroughPaymentConfigurationImpl.handlesCapture());
+    assertTrue((new PassthroughPaymentConfigurationImpl()).handlesCapture());
   }
 
   /**
-   * Test {@link PassthroughPaymentConfigurationImpl#handlesAuthorizeAndCapture()}.
-   *
-   * <p>Method under test: {@link PassthroughPaymentConfigurationImpl#handlesAuthorizeAndCapture()}
+   * Method under test:
+   * {@link PassthroughPaymentConfigurationImpl#handlesAuthorizeAndCapture()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PassthroughPaymentConfigurationImpl.handlesAuthorizeAndCapture()"})
   public void testHandlesAuthorizeAndCapture() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertTrue(passthroughPaymentConfigurationImpl.handlesAuthorizeAndCapture());
+    assertTrue((new PassthroughPaymentConfigurationImpl()).handlesAuthorizeAndCapture());
   }
 
   /**
-   * Test {@link PassthroughPaymentConfigurationImpl#handlesReverseAuthorize()}.
-   *
-   * <p>Method under test: {@link PassthroughPaymentConfigurationImpl#handlesReverseAuthorize()}
+   * Method under test:
+   * {@link PassthroughPaymentConfigurationImpl#handlesReverseAuthorize()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PassthroughPaymentConfigurationImpl.handlesReverseAuthorize()"})
   public void testHandlesReverseAuthorize() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertTrue(passthroughPaymentConfigurationImpl.handlesReverseAuthorize());
+    assertTrue((new PassthroughPaymentConfigurationImpl()).handlesReverseAuthorize());
   }
 
   /**
-   * Test {@link PassthroughPaymentConfigurationImpl#handlesVoid()}.
-   *
-   * <p>Method under test: {@link PassthroughPaymentConfigurationImpl#handlesVoid()}
+   * Method under test: {@link PassthroughPaymentConfigurationImpl#handlesVoid()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PassthroughPaymentConfigurationImpl.handlesVoid()"})
   public void testHandlesVoid() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertTrue(passthroughPaymentConfigurationImpl.handlesVoid());
+    assertTrue((new PassthroughPaymentConfigurationImpl()).handlesVoid());
   }
 
   /**
-   * Test {@link PassthroughPaymentConfigurationImpl#handlesRefund()}.
-   *
-   * <p>Method under test: {@link PassthroughPaymentConfigurationImpl#handlesRefund()}
+   * Method under test:
+   * {@link PassthroughPaymentConfigurationImpl#handlesRefund()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PassthroughPaymentConfigurationImpl.handlesRefund()"})
   public void testHandlesRefund() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertTrue(passthroughPaymentConfigurationImpl.handlesRefund());
+    assertTrue((new PassthroughPaymentConfigurationImpl()).handlesRefund());
   }
 
   /**
-   * Test {@link PassthroughPaymentConfigurationImpl#handlesPartialCapture()}.
-   *
-   * <p>Method under test: {@link PassthroughPaymentConfigurationImpl#handlesPartialCapture()}
+   * Method under test:
+   * {@link PassthroughPaymentConfigurationImpl#handlesPartialCapture()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PassthroughPaymentConfigurationImpl.handlesPartialCapture()"})
   public void testHandlesPartialCapture() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertFalse(passthroughPaymentConfigurationImpl.handlesPartialCapture());
+    assertFalse((new PassthroughPaymentConfigurationImpl()).handlesPartialCapture());
   }
 
   /**
-   * Test {@link PassthroughPaymentConfigurationImpl#handlesMultipleShipment()}.
-   *
-   * <p>Method under test: {@link PassthroughPaymentConfigurationImpl#handlesMultipleShipment()}
+   * Method under test:
+   * {@link PassthroughPaymentConfigurationImpl#handlesMultipleShipment()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PassthroughPaymentConfigurationImpl.handlesMultipleShipment()"})
   public void testHandlesMultipleShipment() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertFalse(passthroughPaymentConfigurationImpl.handlesMultipleShipment());
+    assertFalse((new PassthroughPaymentConfigurationImpl()).handlesMultipleShipment());
   }
 
   /**
-   * Test {@link PassthroughPaymentConfigurationImpl#handlesRecurringPayment()}.
-   *
-   * <p>Method under test: {@link PassthroughPaymentConfigurationImpl#handlesRecurringPayment()}
+   * Method under test:
+   * {@link PassthroughPaymentConfigurationImpl#handlesRecurringPayment()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PassthroughPaymentConfigurationImpl.handlesRecurringPayment()"})
   public void testHandlesRecurringPayment() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertFalse(passthroughPaymentConfigurationImpl.handlesRecurringPayment());
+    assertFalse((new PassthroughPaymentConfigurationImpl()).handlesRecurringPayment());
   }
 
   /**
-   * Test {@link PassthroughPaymentConfigurationImpl#handlesSavedCustomerPayment()}.
-   *
-   * <p>Method under test: {@link PassthroughPaymentConfigurationImpl#handlesSavedCustomerPayment()}
+   * Method under test:
+   * {@link PassthroughPaymentConfigurationImpl#handlesSavedCustomerPayment()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PassthroughPaymentConfigurationImpl.handlesSavedCustomerPayment()"})
   public void testHandlesSavedCustomerPayment() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertFalse(passthroughPaymentConfigurationImpl.handlesSavedCustomerPayment());
+    assertFalse((new PassthroughPaymentConfigurationImpl()).handlesSavedCustomerPayment());
   }
 
   /**
-   * Test {@link PassthroughPaymentConfigurationImpl#handlesMultiplePayments()}.
-   *
-   * <p>Method under test: {@link PassthroughPaymentConfigurationImpl#handlesMultiplePayments()}
+   * Method under test:
+   * {@link PassthroughPaymentConfigurationImpl#handlesMultiplePayments()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PassthroughPaymentConfigurationImpl.handlesMultiplePayments()"})
   public void testHandlesMultiplePayments() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertFalse(passthroughPaymentConfigurationImpl.handlesMultiplePayments());
+    assertFalse((new PassthroughPaymentConfigurationImpl()).handlesMultiplePayments());
   }
 }

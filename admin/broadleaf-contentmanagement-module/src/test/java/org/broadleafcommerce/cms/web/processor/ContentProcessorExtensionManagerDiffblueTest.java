@@ -18,24 +18,35 @@
 package org.broadleafcommerce.cms.web.processor;
 
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class ContentProcessorExtensionManagerDiffblueTest {
   /**
-   * Test {@link ContentProcessorExtensionManager#continueOnHandled()}.
-   *
-   * <p>Method under test: {@link ContentProcessorExtensionManager#continueOnHandled()}
+   * Method under test:
+   * {@link ContentProcessorExtensionManager#continueOnHandled()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean ContentProcessorExtensionManager.continueOnHandled()"})
   public void testContinueOnHandled() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertTrue(new ContentProcessorExtensionManager().continueOnHandled());
+    assertTrue((new ContentProcessorExtensionManager()).continueOnHandled());
+  }
+
+  /**
+   * Method under test:
+   * {@link ContentProcessorExtensionManager#continueOnHandled()}
+   */
+  @Test
+  public void testContinueOnHandled2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ContentProcessorExtensionManager contentProcessorExtensionManager = new ContentProcessorExtensionManager();
+    contentProcessorExtensionManager.registerHandler(mock(ContentProcessorExtensionHandler.class));
+
+    // Act and Assert
+    assertTrue(contentProcessorExtensionManager.continueOnHandled());
   }
 }

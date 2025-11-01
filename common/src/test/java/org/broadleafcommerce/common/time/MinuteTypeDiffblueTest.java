@@ -20,61 +20,17 @@ package org.broadleafcommerce.common.time;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class MinuteTypeDiffblueTest {
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link MinuteType#MinuteType()}
-   *   <li>{@link MinuteType#getFriendlyType()}
-   *   <li>{@link MinuteType#getType()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void MinuteType.<init>()",
-    "String MinuteType.getFriendlyType()",
-    "String MinuteType.getType()"
-  })
-  public void testGettersAndSetters() {
-    // Arrange and Act
-    MinuteType actualMinuteType = new MinuteType();
-    String actualFriendlyType = actualMinuteType.getFriendlyType();
-
-    // Assert
-    assertNull(actualFriendlyType);
-    assertNull(actualMinuteType.getType());
-  }
-
-  /**
-   * Test {@link MinuteType#equals(Object)}, and {@link MinuteType#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link MinuteType#equals(Object)}
    *   <li>{@link MinuteType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean MinuteType.equals(Object)", "int MinuteType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     MinuteType minuteType = MinuteType.EIGHT;
@@ -82,28 +38,18 @@ public class MinuteTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(minuteType, minuteType2);
-    assertEquals(minuteType.hashCode(), minuteType2.hashCode());
+    int expectedHashCodeResult = minuteType.hashCode();
+    assertEquals(expectedHashCodeResult, minuteType2.hashCode());
   }
 
   /**
-   * Test {@link MinuteType#equals(Object)}, and {@link MinuteType#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link MinuteType#equals(Object)}
    *   <li>{@link MinuteType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean MinuteType.equals(Object)", "int MinuteType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     MinuteType minuteType = new MinuteType();
@@ -111,28 +57,18 @@ public class MinuteTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(minuteType, minuteType2);
-    assertEquals(minuteType.hashCode(), minuteType2.hashCode());
+    int expectedHashCodeResult = minuteType.hashCode();
+    assertEquals(expectedHashCodeResult, minuteType2.hashCode());
   }
 
   /**
-   * Test {@link MinuteType#equals(Object)}, and {@link MinuteType#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link MinuteType#equals(Object)}
    *   <li>{@link MinuteType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean MinuteType.equals(Object)", "int MinuteType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     MinuteType minuteType = MinuteType.EIGHT;
@@ -144,78 +80,49 @@ public class MinuteTypeDiffblueTest {
   }
 
   /**
-   * Test {@link MinuteType#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link MinuteType#equals(Object)}
+   * Method under test: {@link MinuteType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean MinuteType.equals(Object)", "int MinuteType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(MinuteType.EIGHTEEN, MinuteType.EIGHT);
-  }
-
-  /**
-   * Test {@link MinuteType#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link MinuteType#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean MinuteType.equals(Object)", "int MinuteType.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
-    // Arrange, Act and Assert
     assertNotEquals(new MinuteType(), MinuteType.EIGHT);
   }
 
   /**
-   * Test {@link MinuteType#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link MinuteType#equals(Object)}
+   * Method under test: {@link MinuteType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean MinuteType.equals(Object)", "int MinuteType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(MinuteType.EIGHT, null);
   }
 
   /**
-   * Test {@link MinuteType#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link MinuteType#equals(Object)}
+   * Method under test: {@link MinuteType#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean MinuteType.equals(Object)", "int MinuteType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(MinuteType.EIGHT, "Different type to MinuteType");
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link MinuteType#MinuteType()}
+   *   <li>{@link MinuteType#getFriendlyType()}
+   *   <li>{@link MinuteType#getType()}
+   * </ul>
+   */
+  @Test
+  public void testGettersAndSetters() {
+    // Arrange and Act
+    MinuteType actualMinuteType = new MinuteType();
+    String actualFriendlyType = actualMinuteType.getFriendlyType();
+
+    // Assert
+    assertNull(actualFriendlyType);
+    assertNull(actualMinuteType.getType());
   }
 }

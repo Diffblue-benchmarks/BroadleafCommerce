@@ -25,12 +25,10 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,10 +45,12 @@ import org.broadleafcommerce.openadmin.dto.CriteriaTransferObject;
 import org.broadleafcommerce.openadmin.dto.DynamicResultSet;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
+import org.broadleafcommerce.openadmin.dto.ForeignKey;
 import org.broadleafcommerce.openadmin.dto.PersistencePackage;
 import org.broadleafcommerce.openadmin.dto.PersistencePerspective;
 import org.broadleafcommerce.openadmin.dto.Property;
 import org.broadleafcommerce.openadmin.dto.SectionCrumb;
+import org.broadleafcommerce.openadmin.dto.TabMetadata;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
 import org.broadleafcommerce.openadmin.server.security.handler.AdminPermissionCustomPersistenceHandler;
@@ -62,72 +62,21 @@ import org.broadleafcommerce.openadmin.server.service.handler.CustomPersistenceH
 import org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.BasicPersistenceModule;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.PersistenceModule;
+import org.broadleafcommerce.openadmin.server.service.type.ChangeType;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 import org.springframework.beans.BeansException;
+import org.springframework.boot.web.reactive.context.AnnotationConfigReactiveWebApplicationContext;
 import org.springframework.context.ApplicationContext;
 
 public class PersistenceManagerImplDiffblueTest {
   /**
-   * Test {@link PersistenceManagerImpl#getAllPolymorphicEntitiesFromCeiling(Class)}.
-   *
-   * <ul>
-   *   <li>Then return array length is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * PersistenceManagerImpl#getAllPolymorphicEntitiesFromCeiling(Class)}
+   * Method under test:
+   * {@link PersistenceManagerImpl#getAllPolymorphicEntitiesFromCeiling(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Class[] PersistenceManagerImpl.getAllPolymorphicEntitiesFromCeiling(Class)"})
-  public void testGetAllPolymorphicEntitiesFromCeiling_thenReturnArrayLengthIsOne() {
+  public void testGetAllPolymorphicEntitiesFromCeiling() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
-    // Arrange
-    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
-    Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>[]>when(
-            dynamicEntityDao.getAllPolymorphicEntitiesFromCeiling(Mockito.<Class<?>>any()))
-        .thenReturn(new Class[] {forNameResult});
-
-    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-    persistenceManagerImpl.setDynamicEntityDao(dynamicEntityDao);
-    Class<Object> ceilingClass = Object.class;
-
-    // Act
-    Class<?>[] actualAllPolymorphicEntitiesFromCeiling =
-        persistenceManagerImpl.getAllPolymorphicEntitiesFromCeiling(ceilingClass);
-
-    // Assert
-    verify(dynamicEntityDao).getAllPolymorphicEntitiesFromCeiling(isA(Class.class));
-    assertEquals(1, actualAllPolymorphicEntitiesFromCeiling.length);
-    Class<Object> expectedResultClass = Object.class;
-    assertEquals(expectedResultClass, actualAllPolymorphicEntitiesFromCeiling[0]);
-  }
-
-  /**
-   * Test {@link PersistenceManagerImpl#getAllPolymorphicEntitiesFromCeiling(Class)}.
-   *
-   * <ul>
-   *   <li>Then return array length is zero.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * PersistenceManagerImpl#getAllPolymorphicEntitiesFromCeiling(Class)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Class[] PersistenceManagerImpl.getAllPolymorphicEntitiesFromCeiling(Class)"})
-  public void testGetAllPolymorphicEntitiesFromCeiling_thenReturnArrayLengthIsZero() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
 
     // Arrange
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
@@ -135,33 +84,67 @@ public class PersistenceManagerImplDiffblueTest {
     Class<Object> ceilingClass = Object.class;
 
     // Act and Assert
-    assertEquals(
-        0, persistenceManagerImpl.getAllPolymorphicEntitiesFromCeiling(ceilingClass).length);
+    assertEquals(0, persistenceManagerImpl.getAllPolymorphicEntitiesFromCeiling(ceilingClass).length);
   }
 
   /**
-   * Test {@link PersistenceManagerImpl#getUpDownInheritance(Class)} with {@code testClass}.
-   *
-   * <ul>
-   *   <li>Then return array length is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#getUpDownInheritance(Class)}
+   * Method under test:
+   * {@link PersistenceManagerImpl#getAllPolymorphicEntitiesFromCeiling(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Class[] PersistenceManagerImpl.getUpDownInheritance(Class)"})
-  public void testGetUpDownInheritanceWithTestClass_thenReturnArrayLengthIsOne() {
+  public void testGetAllPolymorphicEntitiesFromCeiling2() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
 
     // Arrange
     DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
     Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>[]>when(dynamicEntityDao.getUpDownInheritance(Mockito.<Class<?>>any()))
-        .thenReturn(new Class[] {forNameResult});
+    when(dynamicEntityDao.getAllPolymorphicEntitiesFromCeiling(Mockito.<Class<Object>>any()))
+        .thenReturn(new Class[]{forNameResult});
+
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    persistenceManagerImpl.setDynamicEntityDao(dynamicEntityDao);
+    Class<Object> ceilingClass = Object.class;
+
+    // Act
+    Class<?>[] actualAllPolymorphicEntitiesFromCeiling = persistenceManagerImpl
+        .getAllPolymorphicEntitiesFromCeiling(ceilingClass);
+
+    // Assert
+    verify(dynamicEntityDao).getAllPolymorphicEntitiesFromCeiling(isA(Class.class));
+    assertEquals(1, actualAllPolymorphicEntitiesFromCeiling.length);
+    Class<Object> expectedResultClass = Object.class;
+    Class<?> resultClass = actualAllPolymorphicEntitiesFromCeiling[0];
+    assertEquals(expectedResultClass, resultClass);
+    assertSame(ceilingClass, resultClass);
+  }
+
+  /**
+   * Method under test: {@link PersistenceManagerImpl#getUpDownInheritance(Class)}
+   */
+  @Test
+  public void testGetUpDownInheritance() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    persistenceManagerImpl.setDynamicEntityDao(new DynamicEntityDaoImpl());
+    Class<Object> testClass = Object.class;
+
+    // Act and Assert
+    assertEquals(0, persistenceManagerImpl.getUpDownInheritance(testClass).length);
+  }
+
+  /**
+   * Method under test: {@link PersistenceManagerImpl#getUpDownInheritance(Class)}
+   */
+  @Test
+  public void testGetUpDownInheritance2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
+    Class<Object> forNameResult = Object.class;
+    when(dynamicEntityDao.getUpDownInheritance(Mockito.<Class<Object>>any())).thenReturn(new Class[]{forNameResult});
 
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
     persistenceManagerImpl.setDynamicEntityDao(dynamicEntityDao);
@@ -174,93 +157,18 @@ public class PersistenceManagerImplDiffblueTest {
     verify(dynamicEntityDao).getUpDownInheritance(isA(Class.class));
     assertEquals(1, actualUpDownInheritance.length);
     Class<Object> expectedResultClass = Object.class;
-    assertEquals(expectedResultClass, actualUpDownInheritance[0]);
+    Class<?> resultClass = actualUpDownInheritance[0];
+    assertEquals(expectedResultClass, resultClass);
+    assertSame(testClass, resultClass);
   }
 
   /**
-   * Test {@link PersistenceManagerImpl#getUpDownInheritance(Class)} with {@code testClass}.
-   *
-   * <ul>
-   *   <li>Then return array length is zero.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#getUpDownInheritance(Class)}
+   * Method under test:
+   * {@link PersistenceManagerImpl#getUpDownInheritance(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Class[] PersistenceManagerImpl.getUpDownInheritance(Class)"})
-  public void testGetUpDownInheritanceWithTestClass_thenReturnArrayLengthIsZero() {
+  public void testGetUpDownInheritance3() throws ClassNotFoundException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
-    // Arrange
-    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-    persistenceManagerImpl.setDynamicEntityDao(new DynamicEntityDaoImpl());
-    Class<Object> testClass = Object.class;
-
-    // Act and Assert
-    assertEquals(0, persistenceManagerImpl.getUpDownInheritance(testClass).length);
-  }
-
-  /**
-   * Test {@link PersistenceManagerImpl#getUpDownInheritance(String)} with {@code testClassname}.
-   *
-   * <ul>
-   *   <li>Then return array length is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#getUpDownInheritance(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Class[] PersistenceManagerImpl.getUpDownInheritance(String)"})
-  public void testGetUpDownInheritanceWithTestClassname_thenReturnArrayLengthIsOne()
-      throws ClassNotFoundException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
-    // Arrange
-    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
-    Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>[]>when(dynamicEntityDao.getUpDownInheritance(Mockito.<Class<?>>any()))
-        .thenReturn(new Class[] {forNameResult});
-
-    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-    persistenceManagerImpl.setDynamicEntityDao(dynamicEntityDao);
-
-    // Act
-    Class<?>[] actualUpDownInheritance =
-        persistenceManagerImpl.getUpDownInheritance("java.lang.String");
-
-    // Assert
-    verify(dynamicEntityDao).getUpDownInheritance(isA(Class.class));
-    assertEquals(1, actualUpDownInheritance.length);
-    Class<Object> expectedResultClass = Object.class;
-    assertEquals(expectedResultClass, actualUpDownInheritance[0]);
-  }
-
-  /**
-   * Test {@link PersistenceManagerImpl#getUpDownInheritance(String)} with {@code testClassname}.
-   *
-   * <ul>
-   *   <li>Then return array length is zero.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#getUpDownInheritance(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Class[] PersistenceManagerImpl.getUpDownInheritance(String)"})
-  public void testGetUpDownInheritanceWithTestClassname_thenReturnArrayLengthIsZero()
-      throws ClassNotFoundException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
 
     // Arrange
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
@@ -271,64 +179,40 @@ public class PersistenceManagerImplDiffblueTest {
   }
 
   /**
-   * Test {@link PersistenceManagerImpl#getPolymorphicEntities(String)}.
-   *
-   * <ul>
-   *   <li>Given {@code Object}.
-   *   <li>Then return array length is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#getPolymorphicEntities(String)}
+   * Method under test:
+   * {@link PersistenceManagerImpl#getUpDownInheritance(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Class[] PersistenceManagerImpl.getPolymorphicEntities(String)"})
-  public void testGetPolymorphicEntities_givenJavaLangObject_thenReturnArrayLengthIsOne()
-      throws ClassNotFoundException {
+  public void testGetUpDownInheritance4() throws ClassNotFoundException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
 
     // Arrange
     DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
     Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>[]>when(
-            dynamicEntityDao.getAllPolymorphicEntitiesFromCeiling(Mockito.<Class<?>>any()))
-        .thenReturn(new Class[] {forNameResult});
+    when(dynamicEntityDao.getUpDownInheritance(Mockito.<Class<Object>>any())).thenReturn(new Class[]{forNameResult});
 
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
     persistenceManagerImpl.setDynamicEntityDao(dynamicEntityDao);
 
     // Act
-    Class<?>[] actualPolymorphicEntities =
-        persistenceManagerImpl.getPolymorphicEntities("java.lang.String");
+    Class<?>[] actualUpDownInheritance = persistenceManagerImpl.getUpDownInheritance("java.lang.String");
 
     // Assert
-    verify(dynamicEntityDao).getAllPolymorphicEntitiesFromCeiling(isA(Class.class));
-    assertEquals(1, actualPolymorphicEntities.length);
+    verify(dynamicEntityDao).getUpDownInheritance(isA(Class.class));
+    assertEquals(1, actualUpDownInheritance.length);
     Class<Object> expectedResultClass = Object.class;
-    assertEquals(expectedResultClass, actualPolymorphicEntities[0]);
+    Class<?> resultClass = actualUpDownInheritance[0];
+    assertEquals(expectedResultClass, resultClass);
+    assertSame(forNameResult, resultClass);
   }
 
   /**
-   * Test {@link PersistenceManagerImpl#getPolymorphicEntities(String)}.
-   *
-   * <ul>
-   *   <li>Then return array length is zero.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#getPolymorphicEntities(String)}
+   * Method under test:
+   * {@link PersistenceManagerImpl#getPolymorphicEntities(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Class[] PersistenceManagerImpl.getPolymorphicEntities(String)"})
-  public void testGetPolymorphicEntities_thenReturnArrayLengthIsZero()
-      throws ClassNotFoundException {
+  public void testGetPolymorphicEntities() throws ClassNotFoundException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
 
     // Arrange
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
@@ -339,121 +223,105 @@ public class PersistenceManagerImplDiffblueTest {
   }
 
   /**
-   * Test {@link PersistenceManagerImpl#getSimpleMergedProperties(String, PersistencePerspective)}.
-   *
-   * <ul>
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#getSimpleMergedProperties(String,
-   * PersistencePerspective)}
+   * Method under test:
+   * {@link PersistenceManagerImpl#getPolymorphicEntities(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map PersistenceManagerImpl.getSimpleMergedProperties(String, PersistencePerspective)"
-  })
-  public void testGetSimpleMergedProperties_thenReturnEmpty() {
+  public void testGetPolymorphicEntities2() throws ClassNotFoundException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
 
     // Arrange
-    DynamicEntityDaoImpl dynamicEntityDao = mock(DynamicEntityDaoImpl.class);
-    when(dynamicEntityDao.getSimpleMergedProperties(
-            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
-        .thenReturn(new HashMap<>());
+    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
+    Class<Object> forNameResult = Object.class;
+    when(dynamicEntityDao.getAllPolymorphicEntitiesFromCeiling(Mockito.<Class<Object>>any()))
+        .thenReturn(new Class[]{forNameResult});
 
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
     persistenceManagerImpl.setDynamicEntityDao(dynamicEntityDao);
 
     // Act
-    Map<String, FieldMetadata> actualSimpleMergedProperties =
-        persistenceManagerImpl.getSimpleMergedProperties(
-            "Entity Name", new PersistencePerspective());
+    Class<?>[] actualPolymorphicEntities = persistenceManagerImpl.getPolymorphicEntities("java.lang.String");
 
     // Assert
-    verify(dynamicEntityDao)
-        .getSimpleMergedProperties(eq("Entity Name"), isA(PersistencePerspective.class));
-    assertTrue(actualSimpleMergedProperties.isEmpty());
+    verify(dynamicEntityDao).getAllPolymorphicEntitiesFromCeiling(isA(Class.class));
+    assertEquals(1, actualPolymorphicEntities.length);
+    Class<Object> expectedResultClass = Object.class;
+    Class<?> resultClass = actualPolymorphicEntities[0];
+    assertEquals(expectedResultClass, resultClass);
+    assertSame(forNameResult, resultClass);
   }
 
   /**
-   * Test {@link PersistenceManagerImpl#processMergedProperties(Class[], Map)}.
-   *
-   * <ul>
-   *   <li>Then return array length is zero.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#processMergedProperties(Class[], Map)}
+   * Method under test:
+   * {@link PersistenceManagerImpl#getSimpleMergedProperties(String, PersistencePerspective)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Property[] PersistenceManagerImpl.processMergedProperties(Class[], Map)"})
-  public void testProcessMergedProperties_thenReturnArrayLengthIsZero() {
+  public void testGetSimpleMergedProperties() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDao = mock(DynamicEntityDaoImpl.class);
+    HashMap<String, FieldMetadata> stringFieldMetadataMap = new HashMap<>();
+    when(dynamicEntityDao.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+        .thenReturn(stringFieldMetadataMap);
+
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    persistenceManagerImpl.setDynamicEntityDao(dynamicEntityDao);
+
+    // Act
+    Map<String, FieldMetadata> actualSimpleMergedProperties = persistenceManagerImpl
+        .getSimpleMergedProperties("Entity Name", new PersistencePerspective());
+
+    // Assert
+    verify(dynamicEntityDao).getSimpleMergedProperties(eq("Entity Name"), isA(PersistencePerspective.class));
+    assertTrue(actualSimpleMergedProperties.isEmpty());
+    assertSame(stringFieldMetadataMap, actualSimpleMergedProperties);
+  }
+
+  /**
+   * Method under test:
+   * {@link PersistenceManagerImpl#processMergedProperties(Class[], Map)}
+   */
+  @Test
+  public void testProcessMergedProperties() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
     // Arrange
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-    persistenceManagerImpl.setModules(
-        new PersistenceModule[] {new AdornedTargetListPersistenceModule()});
+    persistenceManagerImpl.setModules(new PersistenceModule[]{new AdornedTargetListPersistenceModule()});
     Class<Object> forNameResult = Object.class;
 
     // Act and Assert
-    assertEquals(
-        0,
-        persistenceManagerImpl.processMergedProperties(new Class[] {forNameResult}, new HashMap<>())
-            .length);
+    assertEquals(0, persistenceManagerImpl.processMergedProperties(new Class[]{forNameResult}, new HashMap<>()).length);
   }
 
   /**
-   * Test {@link PersistenceManagerImpl#buildClassMetadata(Class[], PersistencePackage, Map)}.
-   *
-   * <ul>
-   *   <li>Then return CeilingType is {@code Dr Jane Doe}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#buildClassMetadata(Class[],
-   * PersistencePackage, Map)}
+   * Method under test:
+   * {@link PersistenceManagerImpl#buildClassMetadata(Class[], PersistencePackage, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ClassMetadata PersistenceManagerImpl.buildClassMetadata(Class[], PersistencePackage, Map)"
-  })
-  public void testBuildClassMetadata_thenReturnCeilingTypeIsDrJaneDoe() {
+  public void testBuildClassMetadata() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
 
     // Arrange
     DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
-    when(dynamicEntityDao.getTabAndGroupMetadata(
-            Mockito.<Class<Object>[]>any(), Mockito.<ClassMetadata>any()))
-        .thenReturn(new HashMap<>());
+    HashMap<String, TabMetadata> stringTabMetadataMap = new HashMap<>();
+    when(dynamicEntityDao.getTabAndGroupMetadata(Mockito.<Class<Object>[]>any(), Mockito.<ClassMetadata>any()))
+        .thenReturn(stringTabMetadataMap);
     ClassTree classTree = new ClassTree();
     when(dynamicEntityDao.getClassTree(Mockito.<Class<Object>[]>any())).thenReturn(classTree);
 
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-    persistenceManagerImpl.setModules(
-        new PersistenceModule[] {new AdornedTargetListPersistenceModule()});
+    persistenceManagerImpl.setModules(new PersistenceModule[]{new AdornedTargetListPersistenceModule()});
     persistenceManagerImpl.setDynamicEntityDao(dynamicEntityDao);
     Class<Object> forNameResult = Object.class;
-
     PersistencePackage persistencePackage = mock(PersistencePackage.class);
     when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getSecurityCeilingEntityFullyQualifiedClassname())
-        .thenReturn("Dr Jane Doe");
+    when(persistencePackage.getSecurityCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
 
     // Act
-    ClassMetadata actualBuildClassMetadataResult =
-        persistenceManagerImpl.buildClassMetadata(
-            new Class[] {forNameResult}, persistencePackage, new HashMap<>());
+    ClassMetadata actualBuildClassMetadataResult = persistenceManagerImpl.buildClassMetadata(new Class[]{forNameResult},
+        persistencePackage, new HashMap<>());
 
     // Assert
     verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
@@ -467,55 +335,37 @@ public class PersistenceManagerImplDiffblueTest {
     assertEquals(0, actualBuildClassMetadataResult.getGroupOptionsFromTabAndGroupMetadata().length);
     assertEquals(0, actualBuildClassMetadataResult.getProperties().length);
     assertTrue(actualBuildClassMetadataResult.getPMap().isEmpty());
-    assertTrue(actualBuildClassMetadataResult.getTabAndGroupMetadata().isEmpty());
+    Map<String, TabMetadata> tabAndGroupMetadata = actualBuildClassMetadataResult.getTabAndGroupMetadata();
+    assertTrue(tabAndGroupMetadata.isEmpty());
+    assertSame(stringTabMetadataMap, tabAndGroupMetadata);
     assertSame(classTree, actualBuildClassMetadataResult.getPolymorphicEntities());
   }
 
   /**
-   * Test {@link PersistenceManagerImpl#buildClassMetadata(Class[], PersistencePackage, Map)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link NoPossibleResultsException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#buildClassMetadata(Class[],
-   * PersistencePackage, Map)}
+   * Method under test:
+   * {@link PersistenceManagerImpl#buildClassMetadata(Class[], PersistencePackage, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ClassMetadata PersistenceManagerImpl.buildClassMetadata(Class[], PersistencePackage, Map)"
-  })
-  public void testBuildClassMetadata_thenThrowNoPossibleResultsException() {
+  public void testBuildClassMetadata2() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
 
     // Arrange
     DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
-    when(dynamicEntityDao.getTabAndGroupMetadata(
-            Mockito.<Class<Object>[]>any(), Mockito.<ClassMetadata>any()))
+    when(dynamicEntityDao.getTabAndGroupMetadata(Mockito.<Class<Object>[]>any(), Mockito.<ClassMetadata>any()))
         .thenThrow(new NoPossibleResultsException("An error occurred"));
     when(dynamicEntityDao.getClassTree(Mockito.<Class<Object>[]>any())).thenReturn(new ClassTree());
 
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-    persistenceManagerImpl.setModules(
-        new PersistenceModule[] {new AdornedTargetListPersistenceModule()});
+    persistenceManagerImpl.setModules(new PersistenceModule[]{new AdornedTargetListPersistenceModule()});
     persistenceManagerImpl.setDynamicEntityDao(dynamicEntityDao);
     Class<Object> forNameResult = Object.class;
-
     PersistencePackage persistencePackage = mock(PersistencePackage.class);
     when(persistencePackage.getCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
-    when(persistencePackage.getSecurityCeilingEntityFullyQualifiedClassname())
-        .thenReturn("Dr Jane Doe");
+    when(persistencePackage.getSecurityCeilingEntityFullyQualifiedClassname()).thenReturn("Dr Jane Doe");
 
     // Act and Assert
-    assertThrows(
-        NoPossibleResultsException.class,
-        () ->
-            persistenceManagerImpl.buildClassMetadata(
-                new Class[] {forNameResult}, persistencePackage, new HashMap<>()));
+    assertThrows(NoPossibleResultsException.class, () -> persistenceManagerImpl
+        .buildClassMetadata(new Class[]{forNameResult}, persistencePackage, new HashMap<>()));
     verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
     verify(persistencePackage).getSecurityCeilingEntityFullyQualifiedClassname();
     verify(dynamicEntityDao).getClassTree(isA(Class[].class));
@@ -523,18 +373,11 @@ public class PersistenceManagerImplDiffblueTest {
   }
 
   /**
-   * Test {@link PersistenceManagerImpl#getIdPropertyName(String)}.
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#getIdPropertyName(String)}
+   * Method under test: {@link PersistenceManagerImpl#getIdPropertyName(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String PersistenceManagerImpl.getIdPropertyName(String)"})
   public void testGetIdPropertyName() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
 
     // Arrange
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
@@ -545,30 +388,17 @@ public class PersistenceManagerImplDiffblueTest {
   }
 
   /**
-   * Test {@link PersistenceManagerImpl#getIdPropertyName(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link DynamicEntityDao} {@link DynamicEntityDao#getIdMetadata(Class)} return
-   *       {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#getIdPropertyName(String)}
+   * Method under test: {@link PersistenceManagerImpl#getIdPropertyName(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String PersistenceManagerImpl.getIdPropertyName(String)"})
-  public void testGetIdPropertyName_givenDynamicEntityDaoGetIdMetadataReturnNull() {
+  public void testGetIdPropertyName2() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
 
     // Arrange
     DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
-    when(dynamicEntityDao.getIdMetadata(Mockito.<Class<?>>any())).thenReturn(null);
+    when(dynamicEntityDao.getIdMetadata(Mockito.<Class<Object>>any())).thenReturn(new HashMap<>());
     Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>[]>when(dynamicEntityDao.getUpDownInheritance(Mockito.<Class<?>>any()))
-        .thenReturn(new Class[] {forNameResult});
+    when(dynamicEntityDao.getUpDownInheritance(Mockito.<Class<Object>>any())).thenReturn(new Class[]{forNameResult});
 
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
     persistenceManagerImpl.setDynamicEntityDao(dynamicEntityDao);
@@ -583,249 +413,200 @@ public class PersistenceManagerImplDiffblueTest {
   }
 
   /**
-   * Test {@link PersistenceManagerImpl#getIdPropertyName(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link DynamicEntityDao} {@link DynamicEntityDao#getUpDownInheritance(Class)}
-   *       return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#getIdPropertyName(String)}
+   * Method under test: {@link PersistenceManagerImpl#getIdPropertyName(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String PersistenceManagerImpl.getIdPropertyName(String)"})
-  public void testGetIdPropertyName_givenDynamicEntityDaoGetUpDownInheritanceReturnNull() {
+  public void testGetIdPropertyName3() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
 
     // Arrange
     DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
-    Mockito.<Class<?>[]>when(dynamicEntityDao.getUpDownInheritance(Mockito.<Class<?>>any()))
-        .thenReturn(null);
-
-    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-    persistenceManagerImpl.setDynamicEntityDao(dynamicEntityDao);
-
-    // Act
-    String actualIdPropertyName = persistenceManagerImpl.getIdPropertyName("java.lang.String");
-
-    // Assert
-    verify(dynamicEntityDao).getUpDownInheritance(isA(Class.class));
-    assertNull(actualIdPropertyName);
-  }
-
-  /**
-   * Test {@link PersistenceManagerImpl#getIdPropertyName(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code name} is {@code Id Metadata}.
-   *   <li>Then return {@code Id Metadata}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#getIdPropertyName(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String PersistenceManagerImpl.getIdPropertyName(String)"})
-  public void testGetIdPropertyName_givenHashMapNameIsIdMetadata_thenReturnIdMetadata() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
-    // Arrange
-    HashMap<String, Object> stringObjectMap = new HashMap<>();
-    stringObjectMap.put("name", "Id Metadata");
-
-    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
-    when(dynamicEntityDao.getIdMetadata(Mockito.<Class<?>>any())).thenReturn(stringObjectMap);
-    Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>[]>when(dynamicEntityDao.getUpDownInheritance(Mockito.<Class<?>>any()))
-        .thenReturn(new Class[] {forNameResult});
-
-    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-    persistenceManagerImpl.setDynamicEntityDao(dynamicEntityDao);
-
-    // Act
-    String actualIdPropertyName = persistenceManagerImpl.getIdPropertyName("java.lang.String");
-
-    // Assert
-    verify(dynamicEntityDao).getIdMetadata(isA(Class.class));
-    verify(dynamicEntityDao).getUpDownInheritance(isA(Class.class));
-    assertEquals("Id Metadata", actualIdPropertyName);
-  }
-
-  /**
-   * Test {@link PersistenceManagerImpl#getIdPropertyName(String)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link NoPossibleResultsException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#getIdPropertyName(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String PersistenceManagerImpl.getIdPropertyName(String)"})
-  public void testGetIdPropertyName_thenThrowNoPossibleResultsException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
-    // Arrange
-    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
-    when(dynamicEntityDao.getIdMetadata(Mockito.<Class<?>>any()))
+    when(dynamicEntityDao.getIdMetadata(Mockito.<Class<Object>>any()))
         .thenThrow(new NoPossibleResultsException("An error occurred"));
     Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>[]>when(dynamicEntityDao.getUpDownInheritance(Mockito.<Class<?>>any()))
-        .thenReturn(new Class[] {forNameResult});
+    when(dynamicEntityDao.getUpDownInheritance(Mockito.<Class<Object>>any())).thenReturn(new Class[]{forNameResult});
 
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
     persistenceManagerImpl.setDynamicEntityDao(dynamicEntityDao);
 
     // Act and Assert
-    assertThrows(
-        NoPossibleResultsException.class,
-        () -> persistenceManagerImpl.getIdPropertyName("java.lang.String"));
+    assertThrows(NoPossibleResultsException.class, () -> persistenceManagerImpl.getIdPropertyName("java.lang.String"));
     verify(dynamicEntityDao).getIdMetadata(isA(Class.class));
     verify(dynamicEntityDao).getUpDownInheritance(isA(Class.class));
   }
 
   /**
-   * Test {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage,
-   * PersistenceResponse)}.
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage,
-   * PersistenceResponse)}
+   * Method under test: {@link PersistenceManagerImpl#getIdPropertyName(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PersistenceManagerImpl.postFetchValidation(PersistencePackage, PersistenceResponse)"
-  })
+  public void testGetIdPropertyName4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    DynamicEntityDao dynamicEntityDao = mock(DynamicEntityDao.class);
+    when(dynamicEntityDao.getUpDownInheritance(Mockito.<Class<Object>>any())).thenReturn(null);
+
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    persistenceManagerImpl.setDynamicEntityDao(dynamicEntityDao);
+
+    // Act
+    String actualIdPropertyName = persistenceManagerImpl.getIdPropertyName("java.lang.String");
+
+    // Assert
+    verify(dynamicEntityDao).getUpDownInheritance(isA(Class.class));
+    assertNull(actualIdPropertyName);
+  }
+
+  /**
+   * Method under test:
+   * {@link PersistenceManagerImpl#executePostFetchHandlers(PersistencePackage, CriteriaTransferObject, PersistenceResponse)}
+   */
+  @Test
+  public void testExecutePostFetchHandlers() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
+    when(persistencePerspective.getPersistencePerspectiveItems()).thenReturn(new HashMap<>());
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+
+    PersistencePackage persistencePackage = new PersistencePackage();
+    persistencePackage.setSectionCrumbs(new SectionCrumb[]{sectionCrumb});
+    persistencePackage.setPersistencePerspective(persistencePerspective);
+    CriteriaTransferObject cto = new CriteriaTransferObject();
+    DynamicResultSet dynamicResultSet = mock(DynamicResultSet.class);
+    when(dynamicResultSet.getRecords()).thenThrow(new NoPossibleResultsException("An error occurred"));
+    PersistenceResponse persistenceResponse = mock(PersistenceResponse.class);
+    when(persistenceResponse.getDynamicResultSet()).thenReturn(dynamicResultSet);
+
+    // Act and Assert
+    assertThrows(NoPossibleResultsException.class,
+        () -> persistenceManagerImpl.executePostFetchHandlers(persistencePackage, cto, persistenceResponse));
+    verify(dynamicResultSet).getRecords();
+    verify(persistencePerspective).getPersistencePerspectiveItems();
+    verify(persistenceResponse).getDynamicResultSet();
+  }
+
+  /**
+   * Method under test:
+   * {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage, PersistenceResponse)}
+   */
+  @Test
   public void testPostFetchValidation() throws ServiceException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
 
     // Arrange
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-
-    PersistencePerspective persistencePerspective = new PersistencePerspective();
-    persistencePerspective.addPersistencePerspectiveItem(
-        PersistencePerspectiveItemType.FOREIGNKEY, new AdornedTargetList());
 
     SectionCrumb sectionCrumb = new SectionCrumb();
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
     sectionCrumb.setSectionIdentifier("42");
-
-    PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.setSectionCrumbs(new SectionCrumb[] {sectionCrumb});
-    persistencePackage.setPersistencePerspective(persistencePerspective);
-
-    PersistenceResponse persistenceResponse = mock(PersistenceResponse.class);
-    when(persistenceResponse.getDynamicResultSet()).thenReturn(new DynamicResultSet());
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
 
     // Act
-    persistenceManagerImpl.postFetchValidation(persistencePackage, persistenceResponse);
+    persistenceManagerImpl.postFetchValidation(persistencePackage, new PersistenceResponse());
 
     // Assert
-    verify(persistenceResponse).getDynamicResultSet();
+    verify(persistencePackage).getPersistencePerspective();
+    verify(persistencePackage).getSectionCrumbs();
   }
 
   /**
-   * Test {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage,
-   * PersistenceResponse)}.
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage,
-   * PersistenceResponse)}
+   * Method under test:
+   * {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage, PersistenceResponse)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PersistenceManagerImpl.postFetchValidation(PersistencePackage, PersistenceResponse)"
-  })
   public void testPostFetchValidation2() throws ServiceException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
 
     // Arrange
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-
-    PersistencePerspective persistencePerspective = new PersistencePerspective();
-    persistencePerspective.addPersistencePerspectiveItem(
-        PersistencePerspectiveItemType.MAPSTRUCTURE, new AdornedTargetList());
 
     SectionCrumb sectionCrumb = new SectionCrumb();
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
     sectionCrumb.setSectionIdentifier("42");
-
-    PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.setSectionCrumbs(new SectionCrumb[] {sectionCrumb});
-    persistencePackage.setPersistencePerspective(persistencePerspective);
-
-    DynamicResultSet dynamicResultSet = mock(DynamicResultSet.class);
-    when(dynamicResultSet.getRecords()).thenReturn(new Entity[] {new Entity()});
-
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
     PersistenceResponse persistenceResponse = mock(PersistenceResponse.class);
-    when(persistenceResponse.getDynamicResultSet()).thenReturn(dynamicResultSet);
+    when(persistenceResponse.getDynamicResultSet()).thenReturn(new DynamicResultSet());
 
     // Act
     persistenceManagerImpl.postFetchValidation(persistencePackage, persistenceResponse);
 
     // Assert
-    verify(dynamicResultSet, atLeast(1)).getRecords();
+    verify(persistencePackage).getPersistencePerspective();
+    verify(persistencePackage).getSectionCrumbs();
     verify(persistenceResponse).getDynamicResultSet();
   }
 
   /**
-   * Test {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage,
-   * PersistenceResponse)}.
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage,
-   * PersistenceResponse)}
+   * Method under test:
+   * {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage, PersistenceResponse)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PersistenceManagerImpl.postFetchValidation(PersistencePackage, PersistenceResponse)"
-  })
   public void testPostFetchValidation3() throws ServiceException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
 
     // Arrange
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
 
     PersistencePerspective persistencePerspective = new PersistencePerspective();
-    persistencePerspective.addPersistencePerspectiveItem(
-        PersistencePerspectiveItemType.ADORNEDTARGETLIST, new AdornedTargetList());
-    persistencePerspective.addPersistencePerspectiveItem(
-        PersistencePerspectiveItemType.MAPSTRUCTURE, new AdornedTargetList());
+    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.ADORNEDTARGETLIST,
+        new AdornedTargetList());
 
     SectionCrumb sectionCrumb = new SectionCrumb();
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
     sectionCrumb.setSectionIdentifier("42");
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    when(persistencePackage.getPersistencePerspective()).thenReturn(persistencePerspective);
+    PersistenceResponse persistenceResponse = mock(PersistenceResponse.class);
+    when(persistenceResponse.getDynamicResultSet()).thenReturn(new DynamicResultSet());
 
-    PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.setSectionCrumbs(new SectionCrumb[] {sectionCrumb});
-    persistencePackage.setPersistencePerspective(persistencePerspective);
+    // Act
+    persistenceManagerImpl.postFetchValidation(persistencePackage, persistenceResponse);
 
+    // Assert
+    verify(persistencePackage).getPersistencePerspective();
+    verify(persistencePackage).getSectionCrumbs();
+    verify(persistenceResponse).getDynamicResultSet();
+  }
+
+  /**
+   * Method under test:
+   * {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage, PersistenceResponse)}
+   */
+  @Test
+  public void testPostFetchValidation4() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.MAPSTRUCTURE,
+        new AdornedTargetList());
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    when(persistencePackage.getPersistencePerspective()).thenReturn(persistencePerspective);
     DynamicResultSet dynamicResultSet = mock(DynamicResultSet.class);
-    when(dynamicResultSet.getRecords()).thenReturn(new Entity[] {new Entity()});
-
+    when(dynamicResultSet.getRecords()).thenReturn(new Entity[]{new Entity()});
     PersistenceResponse persistenceResponse = mock(PersistenceResponse.class);
     when(persistenceResponse.getDynamicResultSet()).thenReturn(dynamicResultSet);
 
@@ -834,68 +615,18 @@ public class PersistenceManagerImplDiffblueTest {
 
     // Assert
     verify(dynamicResultSet, atLeast(1)).getRecords();
+    verify(persistencePackage).getPersistencePerspective();
+    verify(persistencePackage).getSectionCrumbs();
     verify(persistenceResponse).getDynamicResultSet();
   }
 
   /**
-   * Test {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage,
-   * PersistenceResponse)}.
-   *
-   * <ul>
-   *   <li>Given {@link DynamicResultSet#DynamicResultSet()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage,
-   * PersistenceResponse)}
+   * Method under test:
+   * {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage, PersistenceResponse)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PersistenceManagerImpl.postFetchValidation(PersistencePackage, PersistenceResponse)"
-  })
-  public void testPostFetchValidation_givenDynamicResultSet() throws ServiceException {
+  public void testPostFetchValidation5() throws ServiceException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
-    // Arrange
-    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-
-    PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.setPersistencePerspective(new PersistencePerspective());
-
-    PersistenceResponse persistenceResponse = mock(PersistenceResponse.class);
-    when(persistenceResponse.getDynamicResultSet()).thenReturn(new DynamicResultSet());
-
-    // Act
-    persistenceManagerImpl.postFetchValidation(persistencePackage, persistenceResponse);
-
-    // Assert
-    verify(persistenceResponse).getDynamicResultSet();
-  }
-
-  /**
-   * Test {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage,
-   * PersistenceResponse)}.
-   *
-   * <ul>
-   *   <li>Given {@link DynamicResultSet#DynamicResultSet()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage,
-   * PersistenceResponse)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PersistenceManagerImpl.postFetchValidation(PersistencePackage, PersistenceResponse)"
-  })
-  public void testPostFetchValidation_givenDynamicResultSet2() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
 
     // Arrange
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
@@ -904,305 +635,399 @@ public class PersistenceManagerImplDiffblueTest {
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
     sectionCrumb.setSectionIdentifier("42");
-
-    PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.setSectionCrumbs(new SectionCrumb[] {sectionCrumb});
-    persistencePackage.setPersistencePerspective(new PersistencePerspective());
-
-    PersistenceResponse persistenceResponse = mock(PersistenceResponse.class);
-    when(persistenceResponse.getDynamicResultSet()).thenReturn(new DynamicResultSet());
-
-    // Act
-    persistenceManagerImpl.postFetchValidation(persistencePackage, persistenceResponse);
-
-    // Assert
-    verify(persistenceResponse).getDynamicResultSet();
-  }
-
-  /**
-   * Test {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage,
-   * PersistenceResponse)}.
-   *
-   * <ul>
-   *   <li>Given {@link DynamicResultSet} {@link DynamicResultSet#getRecords()} return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage,
-   * PersistenceResponse)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PersistenceManagerImpl.postFetchValidation(PersistencePackage, PersistenceResponse)"
-  })
-  public void testPostFetchValidation_givenDynamicResultSetGetRecordsReturnNull()
-      throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
-    // Arrange
-    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-
-    PersistencePerspective persistencePerspective = new PersistencePerspective();
-    persistencePerspective.addPersistencePerspectiveItem(
-        PersistencePerspectiveItemType.MAPSTRUCTURE, new AdornedTargetList());
-
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("42");
-
-    PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.setSectionCrumbs(new SectionCrumb[] {sectionCrumb});
-    persistencePackage.setPersistencePerspective(persistencePerspective);
-
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    when(persistencePackage.getPersistencePerspective()).thenReturn(new PersistencePerspective());
     DynamicResultSet dynamicResultSet = mock(DynamicResultSet.class);
-    when(dynamicResultSet.getRecords()).thenReturn(null);
-
-    PersistenceResponse persistenceResponse = mock(PersistenceResponse.class);
-    when(persistenceResponse.getDynamicResultSet()).thenReturn(dynamicResultSet);
-
-    // Act
-    persistenceManagerImpl.postFetchValidation(persistencePackage, persistenceResponse);
-
-    // Assert
-    verify(dynamicResultSet).getRecords();
-    verify(persistenceResponse).getDynamicResultSet();
-  }
-
-  /**
-   * Test {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage,
-   * PersistenceResponse)}.
-   *
-   * <ul>
-   *   <li>Given {@link Entity} {@link Entity#getPMap()} return {@link HashMap#HashMap()}.
-   *   <li>Then calls {@link Entity#getPMap()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage,
-   * PersistenceResponse)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PersistenceManagerImpl.postFetchValidation(PersistencePackage, PersistenceResponse)"
-  })
-  public void testPostFetchValidation_givenEntityGetPMapReturnHashMap_thenCallsGetPMap()
-      throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
-    // Arrange
-    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-
-    PersistencePerspective persistencePerspective = new PersistencePerspective();
-    persistencePerspective.addPersistencePerspectiveItem(
-        PersistencePerspectiveItemType.MAPSTRUCTURE, new AdornedTargetList());
-
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("42");
-
-    PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.setSectionCrumbs(new SectionCrumb[] {sectionCrumb});
-    persistencePackage.setPersistencePerspective(persistencePerspective);
-
-    Entity entity = mock(Entity.class);
-    when(entity.getPMap()).thenReturn(new HashMap<>());
-
-    DynamicResultSet dynamicResultSet = mock(DynamicResultSet.class);
-    when(dynamicResultSet.getRecords()).thenReturn(new Entity[] {entity});
-
-    PersistenceResponse persistenceResponse = mock(PersistenceResponse.class);
-    when(persistenceResponse.getDynamicResultSet()).thenReturn(dynamicResultSet);
-
-    // Act
-    persistenceManagerImpl.postFetchValidation(persistencePackage, persistenceResponse);
-
-    // Assert
-    verify(dynamicResultSet, atLeast(1)).getRecords();
-    verify(entity).getPMap();
-    verify(persistenceResponse).getDynamicResultSet();
-  }
-
-  /**
-   * Test {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage,
-   * PersistenceResponse)}.
-   *
-   * <ul>
-   *   <li>Given {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage,
-   * PersistenceResponse)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PersistenceManagerImpl.postFetchValidation(PersistencePackage, PersistenceResponse)"
-  })
-  public void testPostFetchValidation_givenNull() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
-    // Arrange
-    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("42");
-
-    PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.setSectionCrumbs(new SectionCrumb[] {sectionCrumb});
-    persistencePackage.setPersistencePerspective(new PersistencePerspective());
-
-    PersistenceResponse persistenceResponse = mock(PersistenceResponse.class);
-    when(persistenceResponse.getDynamicResultSet()).thenReturn(null);
-
-    // Act
-    persistenceManagerImpl.postFetchValidation(persistencePackage, persistenceResponse);
-
-    // Assert
-    verify(persistenceResponse).getDynamicResultSet();
-  }
-
-  /**
-   * Test {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage,
-   * PersistenceResponse)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link NoPossibleResultsException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage,
-   * PersistenceResponse)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PersistenceManagerImpl.postFetchValidation(PersistencePackage, PersistenceResponse)"
-  })
-  public void testPostFetchValidation_thenThrowNoPossibleResultsException()
-      throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
-    // Arrange
-    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("42");
-
-    PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.setSectionCrumbs(new SectionCrumb[] {sectionCrumb});
-    persistencePackage.setPersistencePerspective(new PersistencePerspective());
-
-    DynamicResultSet dynamicResultSet = mock(DynamicResultSet.class);
-    when(dynamicResultSet.getRecords())
-        .thenThrow(new NoPossibleResultsException("An error occurred"));
-
+    when(dynamicResultSet.getRecords()).thenThrow(new NoPossibleResultsException("An error occurred"));
     PersistenceResponse persistenceResponse = mock(PersistenceResponse.class);
     when(persistenceResponse.getDynamicResultSet()).thenReturn(dynamicResultSet);
 
     // Act and Assert
-    assertThrows(
-        NoPossibleResultsException.class,
+    assertThrows(NoPossibleResultsException.class,
         () -> persistenceManagerImpl.postFetchValidation(persistencePackage, persistenceResponse));
     verify(dynamicResultSet).getRecords();
+    verify(persistencePackage).getPersistencePerspective();
+    verify(persistencePackage).getSectionCrumbs();
     verify(persistenceResponse).getDynamicResultSet();
   }
 
   /**
-   * Test {@link PersistenceManagerImpl#postFetch(DynamicResultSet, PersistencePackage,
-   * CriteriaTransferObject)}.
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#postFetch(DynamicResultSet,
-   * PersistencePackage, CriteriaTransferObject)}
+   * Method under test:
+   * {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage, PersistenceResponse)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "DynamicResultSet PersistenceManagerImpl.postFetch(DynamicResultSet, PersistencePackage, CriteriaTransferObject)"
-  })
+  public void testPostFetchValidation6() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.ADORNEDTARGETLIST,
+        new AdornedTargetList());
+    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.MAPSTRUCTURE,
+        new AdornedTargetList());
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    when(persistencePackage.getPersistencePerspective()).thenReturn(persistencePerspective);
+    DynamicResultSet dynamicResultSet = mock(DynamicResultSet.class);
+    when(dynamicResultSet.getRecords()).thenReturn(new Entity[]{new Entity()});
+    PersistenceResponse persistenceResponse = mock(PersistenceResponse.class);
+    when(persistenceResponse.getDynamicResultSet()).thenReturn(dynamicResultSet);
+
+    // Act
+    persistenceManagerImpl.postFetchValidation(persistencePackage, persistenceResponse);
+
+    // Assert
+    verify(dynamicResultSet, atLeast(1)).getRecords();
+    verify(persistencePackage).getPersistencePerspective();
+    verify(persistencePackage).getSectionCrumbs();
+    verify(persistenceResponse).getDynamicResultSet();
+  }
+
+  /**
+   * Method under test:
+   * {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage, PersistenceResponse)}
+   */
+  @Test
+  public void testPostFetchValidation7() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.MAPSTRUCTURE, new ForeignKey());
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    when(persistencePackage.getPersistencePerspective()).thenReturn(persistencePerspective);
+    DynamicResultSet dynamicResultSet = mock(DynamicResultSet.class);
+    when(dynamicResultSet.getRecords()).thenReturn(new Entity[]{new Entity()});
+    PersistenceResponse persistenceResponse = mock(PersistenceResponse.class);
+    when(persistenceResponse.getDynamicResultSet()).thenReturn(dynamicResultSet);
+
+    // Act
+    persistenceManagerImpl.postFetchValidation(persistencePackage, persistenceResponse);
+
+    // Assert
+    verify(dynamicResultSet, atLeast(1)).getRecords();
+    verify(persistencePackage).getPersistencePerspective();
+    verify(persistencePackage).getSectionCrumbs();
+    verify(persistenceResponse).getDynamicResultSet();
+  }
+
+  /**
+   * Method under test:
+   * {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage, PersistenceResponse)}
+   */
+  @Test
+  public void testPostFetchValidation8() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    ForeignKey item = mock(ForeignKey.class);
+    when(item.getManyToField()).thenThrow(new NoPossibleResultsException("An error occurred"));
+
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.MAPSTRUCTURE, item);
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    when(persistencePackage.getPersistencePerspective()).thenReturn(persistencePerspective);
+    DynamicResultSet dynamicResultSet = mock(DynamicResultSet.class);
+    when(dynamicResultSet.getRecords()).thenReturn(new Entity[]{new Entity()});
+    PersistenceResponse persistenceResponse = mock(PersistenceResponse.class);
+    when(persistenceResponse.getDynamicResultSet()).thenReturn(dynamicResultSet);
+
+    // Act and Assert
+    assertThrows(NoPossibleResultsException.class,
+        () -> persistenceManagerImpl.postFetchValidation(persistencePackage, persistenceResponse));
+    verify(dynamicResultSet, atLeast(1)).getRecords();
+    verify(item).getManyToField();
+    verify(persistencePackage).getPersistencePerspective();
+    verify(persistencePackage).getSectionCrumbs();
+    verify(persistenceResponse).getDynamicResultSet();
+  }
+
+  /**
+   * Method under test:
+   * {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage, PersistenceResponse)}
+   */
+  @Test
+  public void testPostFetchValidation9() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    ForeignKey item = mock(ForeignKey.class);
+    when(item.getManyToField()).thenThrow(new NoPossibleResultsException("An error occurred"));
+
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.MAPSTRUCTURE, item);
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    when(persistencePackage.getPersistencePerspective()).thenReturn(persistencePerspective);
+    Entity entity = mock(Entity.class);
+    when(entity.getPMap()).thenReturn(new HashMap<>());
+    DynamicResultSet dynamicResultSet = mock(DynamicResultSet.class);
+    when(dynamicResultSet.getRecords()).thenReturn(new Entity[]{entity});
+    PersistenceResponse persistenceResponse = mock(PersistenceResponse.class);
+    when(persistenceResponse.getDynamicResultSet()).thenReturn(dynamicResultSet);
+
+    // Act and Assert
+    assertThrows(NoPossibleResultsException.class,
+        () -> persistenceManagerImpl.postFetchValidation(persistencePackage, persistenceResponse));
+    verify(dynamicResultSet, atLeast(1)).getRecords();
+    verify(entity).getPMap();
+    verify(item).getManyToField();
+    verify(persistencePackage).getPersistencePerspective();
+    verify(persistencePackage).getSectionCrumbs();
+    verify(persistenceResponse).getDynamicResultSet();
+  }
+
+  /**
+   * Method under test:
+   * {@link PersistenceManagerImpl#postFetchValidation(PersistencePackage, PersistenceResponse)}
+   */
+  @Test
+  public void testPostFetchValidation10() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.MAPSTRUCTURE,
+        mock(ForeignKey.class));
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    when(persistencePackage.getPersistencePerspective()).thenReturn(persistencePerspective);
+    DynamicResultSet dynamicResultSet = mock(DynamicResultSet.class);
+    when(dynamicResultSet.getRecords()).thenReturn(null);
+    PersistenceResponse persistenceResponse = mock(PersistenceResponse.class);
+    when(persistenceResponse.getDynamicResultSet()).thenReturn(dynamicResultSet);
+
+    // Act
+    persistenceManagerImpl.postFetchValidation(persistencePackage, persistenceResponse);
+
+    // Assert
+    verify(dynamicResultSet).getRecords();
+    verify(persistencePackage).getPersistencePerspective();
+    verify(persistencePackage).getSectionCrumbs();
+    verify(persistenceResponse).getDynamicResultSet();
+  }
+
+  /**
+   * Method under test:
+   * {@link PersistenceManagerImpl#postFetch(DynamicResultSet, PersistencePackage, CriteriaTransferObject)}
+   */
+  @Test
   public void testPostFetch() throws ServiceException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
 
     // Arrange
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
     DynamicResultSet resultSet = new DynamicResultSet();
     PersistencePackage persistencePackage = new PersistencePackage();
 
-    // Act
-    DynamicResultSet actualPostFetchResult =
-        persistenceManagerImpl.postFetch(
-            resultSet, persistencePackage, new CriteriaTransferObject());
-
-    // Assert
-    assertSame(resultSet, actualPostFetchResult);
+    // Act and Assert
+    assertSame(resultSet,
+        persistenceManagerImpl.postFetch(resultSet, persistencePackage, new CriteriaTransferObject()));
   }
 
   /**
-   * Test {@link PersistenceManagerImpl#postAdd(Entity, PersistencePackage)}.
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#postAdd(Entity, PersistencePackage)}
+   * Method under test:
+   * {@link PersistenceManagerImpl#postFetch(DynamicResultSet, PersistencePackage, CriteriaTransferObject)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Entity PersistenceManagerImpl.postAdd(Entity, PersistencePackage)"})
+  public void testPostFetch2() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    DynamicResultSet resultSet = mock(DynamicResultSet.class);
+    PersistencePackage persistencePackage = new PersistencePackage();
+
+    // Act and Assert
+    assertSame(resultSet,
+        persistenceManagerImpl.postFetch(resultSet, persistencePackage, new CriteriaTransferObject()));
+  }
+
+  /**
+   * Method under test:
+   * {@link PersistenceManagerImpl#executePostAddHandlers(PersistencePackage, PersistenceResponse)}
+   */
+  @Test
+  public void testExecutePostAddHandlers() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDao = mock(DynamicEntityDaoImpl.class);
+    doNothing().when(dynamicEntityDao).flush();
+
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    persistenceManagerImpl.setDynamicEntityDao(dynamicEntityDao);
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getRequestingEntityName()).thenReturn("");
+    Property property = mock(Property.class);
+    when(property.getValue()).thenThrow(new NoPossibleResultsException("An error occurred"));
+
+    HashMap<String, Property> stringPropertyMap = new HashMap<>();
+    stringPropertyMap.put("__adminMainEntity", property);
+    Entity entity = mock(Entity.class);
+    when(entity.getPMap()).thenReturn(stringPropertyMap);
+    PersistenceResponse persistenceResponse = mock(PersistenceResponse.class);
+    when(persistenceResponse.getEntity()).thenReturn(entity);
+
+    // Act and Assert
+    assertThrows(NoPossibleResultsException.class,
+        () -> persistenceManagerImpl.executePostAddHandlers(persistencePackage, persistenceResponse));
+    verify(entity).getPMap();
+    verify(persistencePackage).getRequestingEntityName();
+    verify(property).getValue();
+    verify(dynamicEntityDao).flush();
+    verify(persistenceResponse).getEntity();
+  }
+
+  /**
+   * Method under test:
+   * {@link PersistenceManagerImpl#executeDeferredOperations(PersistencePackage)}
+   */
+  @Test
+  public void testExecuteDeferredOperations() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getDeferredOperations()).thenReturn(new HashMap<>());
+    when(persistencePackage.getSubPackages()).thenReturn(new HashMap<>());
+
+    // Act
+    persistenceManagerImpl.executeDeferredOperations(persistencePackage);
+
+    // Assert
+    verify(persistencePackage).getDeferredOperations();
+    verify(persistencePackage).getSubPackages();
+  }
+
+  /**
+   * Method under test:
+   * {@link PersistenceManagerImpl#executeDeferredOperations(PersistencePackage)}
+   */
+  @Test
+  public void testExecuteDeferredOperations2() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+
+    HashMap<ChangeType, List<PersistencePackage>> changeTypeListMap = new HashMap<>();
+    changeTypeListMap.put(ChangeType.ADD, new ArrayList<>());
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getDeferredOperations()).thenReturn(changeTypeListMap);
+    when(persistencePackage.getSubPackages()).thenReturn(new HashMap<>());
+
+    // Act
+    persistenceManagerImpl.executeDeferredOperations(persistencePackage);
+
+    // Assert
+    verify(persistencePackage, atLeast(1)).getDeferredOperations();
+    verify(persistencePackage).getSubPackages();
+  }
+
+  /**
+   * Method under test:
+   * {@link PersistenceManagerImpl#executeDeferredOperations(PersistencePackage)}
+   */
+  @Test
+  public void testExecuteDeferredOperations3() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+
+    HashMap<String, PersistencePackage> stringPersistencePackageMap = new HashMap<>();
+    stringPersistencePackageMap.put("foo", new PersistencePackage());
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getDeferredOperations()).thenReturn(new HashMap<>());
+    when(persistencePackage.getSubPackages()).thenReturn(stringPersistencePackageMap);
+
+    // Act
+    persistenceManagerImpl.executeDeferredOperations(persistencePackage);
+
+    // Assert
+    verify(persistencePackage).getDeferredOperations();
+    verify(persistencePackage).getSubPackages();
+  }
+
+  /**
+   * Method under test:
+   * {@link PersistenceManagerImpl#postAdd(Entity, PersistencePackage)}
+   */
+  @Test
   public void testPostAdd() throws ServiceException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
 
     // Arrange
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
     Entity entity = new Entity();
 
-    // Act
-    Entity actualPostAddResult = persistenceManagerImpl.postAdd(entity, new PersistencePackage());
-
-    // Assert
-    assertSame(entity, actualPostAddResult);
+    // Act and Assert
+    assertSame(entity, persistenceManagerImpl.postAdd(entity, new PersistencePackage()));
   }
 
   /**
-   * Test {@link PersistenceManagerImpl#logValidationError(Entity)}.
-   *
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()}.
-   *   <li>Then calls {@link Entity#getPropertyValidationErrors()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#logValidationError(Entity)}
+   * Method under test:
+   * {@link PersistenceManagerImpl#postAdd(Entity, PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PersistenceManagerImpl.logValidationError(Entity)"})
-  public void testLogValidationError_givenHashMap_thenCallsGetPropertyValidationErrors() {
+  public void testPostAdd2() throws ServiceException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
 
     // Arrange
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    Entity entity = mock(Entity.class);
 
+    // Act and Assert
+    assertSame(entity, persistenceManagerImpl.postAdd(entity, new PersistencePackage()));
+  }
+
+  /**
+   * Method under test: {@link PersistenceManagerImpl#logValidationError(Entity)}
+   */
+  @Test
+  public void testLogValidationError() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
     Entity response = mock(Entity.class);
     when(response.getPropertyValidationErrors()).thenReturn(new HashMap<>());
 
@@ -1214,102 +1039,185 @@ public class PersistenceManagerImplDiffblueTest {
   }
 
   /**
-   * Test {@link PersistenceManagerImpl#postUpdate(Entity, PersistencePackage)}.
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#postUpdate(Entity, PersistencePackage)}
+   * Method under test:
+   * {@link PersistenceManagerImpl#executePostUpdateHandlers(PersistencePackage, PersistenceResponse)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Entity PersistenceManagerImpl.postUpdate(Entity, PersistencePackage)"})
+  public void testExecutePostUpdateHandlers() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDao = mock(DynamicEntityDaoImpl.class);
+    doNothing().when(dynamicEntityDao).flush();
+
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    persistenceManagerImpl.setDynamicEntityDao(dynamicEntityDao);
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getRequestingEntityName()).thenReturn("");
+    Property property = mock(Property.class);
+    when(property.getValue()).thenThrow(new NoPossibleResultsException("An error occurred"));
+
+    HashMap<String, Property> stringPropertyMap = new HashMap<>();
+    stringPropertyMap.put("__adminMainEntity", property);
+    Entity entity = mock(Entity.class);
+    when(entity.getPMap()).thenReturn(stringPropertyMap);
+    PersistenceResponse persistenceResponse = mock(PersistenceResponse.class);
+    when(persistenceResponse.getEntity()).thenReturn(entity);
+
+    // Act and Assert
+    assertThrows(NoPossibleResultsException.class,
+        () -> persistenceManagerImpl.executePostUpdateHandlers(persistencePackage, persistenceResponse));
+    verify(entity).getPMap();
+    verify(persistencePackage).getRequestingEntityName();
+    verify(property).getValue();
+    verify(dynamicEntityDao).flush();
+    verify(persistenceResponse).getEntity();
+  }
+
+  /**
+   * Method under test:
+   * {@link PersistenceManagerImpl#postUpdate(Entity, PersistencePackage)}
+   */
+  @Test
   public void testPostUpdate() throws ServiceException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
 
     // Arrange
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
     Entity entity = new Entity();
 
-    // Act
-    Entity actualPostUpdateResult =
-        persistenceManagerImpl.postUpdate(entity, new PersistencePackage());
-
-    // Assert
-    assertSame(entity, actualPostUpdateResult);
+    // Act and Assert
+    assertSame(entity, persistenceManagerImpl.postUpdate(entity, new PersistencePackage()));
   }
 
   /**
-   * Test {@link PersistenceManagerImpl#getCompatibleModule(OperationType)}.
-   *
-   * <ul>
-   *   <li>Then return {@link BasicPersistenceModule} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#getCompatibleModule(OperationType)}
+   * Method under test:
+   * {@link PersistenceManagerImpl#postUpdate(Entity, PersistencePackage)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"PersistenceModule PersistenceManagerImpl.getCompatibleModule(OperationType)"})
-  public void testGetCompatibleModule_thenReturnBasicPersistenceModule() {
+  public void testPostUpdate2() throws ServiceException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
 
     // Arrange
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-    BasicPersistenceModule basicPersistenceModule = new BasicPersistenceModule();
-    persistenceManagerImpl.setModules(new PersistenceModule[] {basicPersistenceModule});
+    Entity entity = mock(Entity.class);
 
     // Act and Assert
-    assertSame(
-        basicPersistenceModule,
-        persistenceManagerImpl.getCompatibleModule(OperationType.NONDESTRUCTIVEREMOVE));
+    assertSame(entity, persistenceManagerImpl.postUpdate(entity, new PersistencePackage()));
   }
 
   /**
-   * Test {@link PersistenceManagerImpl#getCompatibleModule(OperationType)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link RuntimeException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#getCompatibleModule(OperationType)}
+   * Method under test:
+   * {@link PersistenceManagerImpl#executePostRemoveHandlers(PersistencePackage, PersistenceResponse)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"PersistenceModule PersistenceManagerImpl.getCompatibleModule(OperationType)"})
-  public void testGetCompatibleModule_thenThrowRuntimeException() {
+  public void testExecutePostRemoveHandlers() throws ServiceException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDao = mock(DynamicEntityDaoImpl.class);
+    doNothing().when(dynamicEntityDao).flush();
+
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    persistenceManagerImpl.setDynamicEntityDao(dynamicEntityDao);
+    PersistencePackage persistencePackage = mock(PersistencePackage.class);
+    when(persistencePackage.getRequestingEntityName()).thenReturn("");
+    Property property = mock(Property.class);
+    when(property.getValue()).thenThrow(new NoPossibleResultsException("An error occurred"));
+
+    HashMap<String, Property> stringPropertyMap = new HashMap<>();
+    stringPropertyMap.put("__adminMainEntity", property);
+    Entity entity = mock(Entity.class);
+    when(entity.getPMap()).thenReturn(stringPropertyMap);
+    PersistenceResponse persistenceResponse = mock(PersistenceResponse.class);
+    when(persistenceResponse.getEntity()).thenReturn(entity);
+
+    // Act and Assert
+    assertThrows(NoPossibleResultsException.class,
+        () -> persistenceManagerImpl.executePostRemoveHandlers(persistencePackage, persistenceResponse));
+    verify(entity).getPMap();
+    verify(persistencePackage).getRequestingEntityName();
+    verify(property).getValue();
+    verify(dynamicEntityDao).flush();
+    verify(persistenceResponse).getEntity();
+  }
+
+  /**
+   * Method under test:
+   * {@link PersistenceManagerImpl#getCompatibleModule(OperationType)}
+   */
+  @Test
+  public void testGetCompatibleModule() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
     // Arrange
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-    persistenceManagerImpl.setModules(
-        new PersistenceModule[] {new AdornedTargetListPersistenceModule()});
+    persistenceManagerImpl.setModules(new PersistenceModule[]{new AdornedTargetListPersistenceModule()});
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class,
+    assertThrows(RuntimeException.class,
         () -> persistenceManagerImpl.getCompatibleModule(OperationType.NONDESTRUCTIVEREMOVE));
   }
 
   /**
-   * Test {@link PersistenceManagerImpl#getCustomPersistenceHandlers()}.
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#getCustomPersistenceHandlers()}
+   * Method under test:
+   * {@link PersistenceManagerImpl#getCompatibleModule(OperationType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List PersistenceManagerImpl.getCustomPersistenceHandlers()"})
+  public void testGetCompatibleModule2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    BasicPersistenceModule basicPersistenceModule = new BasicPersistenceModule();
+    persistenceManagerImpl.setModules(new PersistenceModule[]{basicPersistenceModule});
+
+    // Act and Assert
+    assertSame(basicPersistenceModule, persistenceManagerImpl.getCompatibleModule(OperationType.NONDESTRUCTIVEREMOVE));
+  }
+
+  /**
+   * Method under test:
+   * {@link PersistenceManagerImpl#getCompatibleModule(OperationType)}
+   */
+  @Test
+  public void testGetCompatibleModule3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = mock(
+        AdornedTargetListPersistenceModule.class);
+    when(adornedTargetListPersistenceModule.isCompatible(Mockito.<OperationType>any())).thenReturn(true);
+
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    persistenceManagerImpl.setModules(new PersistenceModule[]{adornedTargetListPersistenceModule});
+
+    // Act
+    persistenceManagerImpl.getCompatibleModule(OperationType.NONDESTRUCTIVEREMOVE);
+
+    // Assert
+    verify(adornedTargetListPersistenceModule).isCompatible(eq(OperationType.NONDESTRUCTIVEREMOVE));
+  }
+
+  /**
+   * Method under test:
+   * {@link PersistenceManagerImpl#getCustomPersistenceHandlers()}
+   */
+  @Test
   public void testGetCustomPersistenceHandlers() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
+
+    // Arrange, Act and Assert
+    assertTrue((new PersistenceManagerImpl()).getCustomPersistenceHandlers().isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link PersistenceManagerImpl#getCustomPersistenceHandlers()}
+   */
+  @Test
+  public void testGetCustomPersistenceHandlers2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
     // Arrange
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
@@ -1320,129 +1228,12 @@ public class PersistenceManagerImplDiffblueTest {
   }
 
   /**
-   * Test {@link PersistenceManagerImpl#getCustomPersistenceHandlers()}.
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#getCustomPersistenceHandlers()}
+   * Method under test:
+   * {@link PersistenceManagerImpl#getCustomPersistenceHandlers()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List PersistenceManagerImpl.getCustomPersistenceHandlers()"})
-  public void testGetCustomPersistenceHandlers2() {
+  public void testGetCustomPersistenceHandlers3() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
-    // Arrange
-    CustomPersistenceHandlerFilter customPersistenceHandlerFilter =
-        mock(CustomPersistenceHandlerFilter.class);
-    when(customPersistenceHandlerFilter.shouldUseHandler(Mockito.<String>any())).thenReturn(false);
-
-    ArrayList<CustomPersistenceHandlerFilter> customPersistenceHandlerFilters = new ArrayList<>();
-    customPersistenceHandlerFilters.add(customPersistenceHandlerFilter);
-
-    ArrayList<CustomPersistenceHandler> customPersistenceHandlers = new ArrayList<>();
-    customPersistenceHandlers.add(new AdminPermissionCustomPersistenceHandler());
-
-    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-    persistenceManagerImpl.setCustomPersistenceHandlers(customPersistenceHandlers);
-    persistenceManagerImpl.setCustomPersistenceHandlerFilters(customPersistenceHandlerFilters);
-
-    // Act
-    List<CustomPersistenceHandler> actualCustomPersistenceHandlers =
-        persistenceManagerImpl.getCustomPersistenceHandlers();
-
-    // Assert
-    verify(customPersistenceHandlerFilter)
-        .shouldUseHandler(
-            "org.broadleafcommerce.openadmin.server.security.handler.AdminPermissionCustomPersistenceHandler");
-    assertTrue(actualCustomPersistenceHandlers.isEmpty());
-  }
-
-  /**
-   * Test {@link PersistenceManagerImpl#getCustomPersistenceHandlers()}.
-   *
-   * <ul>
-   *   <li>Given {@link PersistenceManagerImpl} (default constructor).
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#getCustomPersistenceHandlers()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List PersistenceManagerImpl.getCustomPersistenceHandlers()"})
-  public void testGetCustomPersistenceHandlers_givenPersistenceManagerImpl_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
-    // Arrange, Act and Assert
-    assertTrue(new PersistenceManagerImpl().getCustomPersistenceHandlers().isEmpty());
-  }
-
-  /**
-   * Test {@link PersistenceManagerImpl#getCustomPersistenceHandlers()}.
-   *
-   * <ul>
-   *   <li>Then return {@link ArrayList#ArrayList()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#getCustomPersistenceHandlers()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List PersistenceManagerImpl.getCustomPersistenceHandlers()"})
-  public void testGetCustomPersistenceHandlers_thenReturnArrayList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
-    // Arrange
-    CustomPersistenceHandlerFilter customPersistenceHandlerFilter =
-        mock(CustomPersistenceHandlerFilter.class);
-    when(customPersistenceHandlerFilter.shouldUseHandler(Mockito.<String>any())).thenReturn(true);
-
-    ArrayList<CustomPersistenceHandlerFilter> customPersistenceHandlerFilters = new ArrayList<>();
-    customPersistenceHandlerFilters.add(customPersistenceHandlerFilter);
-
-    ArrayList<CustomPersistenceHandler> customPersistenceHandlers = new ArrayList<>();
-    customPersistenceHandlers.add(new AdminPermissionCustomPersistenceHandler());
-
-    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-    persistenceManagerImpl.setCustomPersistenceHandlers(customPersistenceHandlers);
-    persistenceManagerImpl.setCustomPersistenceHandlerFilters(customPersistenceHandlerFilters);
-
-    // Act
-    List<CustomPersistenceHandler> actualCustomPersistenceHandlers =
-        persistenceManagerImpl.getCustomPersistenceHandlers();
-
-    // Assert
-    verify(customPersistenceHandlerFilter)
-        .shouldUseHandler(
-            "org.broadleafcommerce.openadmin.server.security.handler.AdminPermissionCustomPersistenceHandler");
-    assertEquals(customPersistenceHandlers, actualCustomPersistenceHandlers);
-  }
-
-  /**
-   * Test {@link PersistenceManagerImpl#getCustomPersistenceHandlers()}.
-   *
-   * <ul>
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#getCustomPersistenceHandlers()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List PersistenceManagerImpl.getCustomPersistenceHandlers()"})
-  public void testGetCustomPersistenceHandlers_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
 
     // Arrange
     ArrayList<CustomPersistenceHandlerFilter> customPersistenceHandlerFilters = new ArrayList<>();
@@ -1456,206 +1247,57 @@ public class PersistenceManagerImplDiffblueTest {
   }
 
   /**
-   * Test {@link PersistenceManagerImpl#getCustomPersistenceHandlers()}.
-   *
-   * <ul>
-   *   <li>Then return size is three.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#getCustomPersistenceHandlers()}
+   * Method under test:
+   * {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage, Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List PersistenceManagerImpl.getCustomPersistenceHandlers()"})
-  public void testGetCustomPersistenceHandlers_thenReturnSizeIsThree() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
-    // Arrange
-    CustomPersistenceHandlerFilter customPersistenceHandlerFilter =
-        mock(CustomPersistenceHandlerFilter.class);
-    when(customPersistenceHandlerFilter.shouldUseHandler(Mockito.<String>any())).thenReturn(true);
-
-    ArrayList<CustomPersistenceHandlerFilter> customPersistenceHandlerFilters = new ArrayList<>();
-    customPersistenceHandlerFilters.add(customPersistenceHandlerFilter);
-
-    ArrayList<CustomPersistenceHandler> customPersistenceHandlers = new ArrayList<>();
-    customPersistenceHandlers.add(new AdminPermissionCustomPersistenceHandler());
-    customPersistenceHandlers.add(new AdminPermissionCustomPersistenceHandler());
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler =
-        new AdminPermissionCustomPersistenceHandler();
-    customPersistenceHandlers.add(adminPermissionCustomPersistenceHandler);
-
-    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-    persistenceManagerImpl.setCustomPersistenceHandlers(customPersistenceHandlers);
-    persistenceManagerImpl.setCustomPersistenceHandlerFilters(customPersistenceHandlerFilters);
-
-    // Act
-    List<CustomPersistenceHandler> actualCustomPersistenceHandlers =
-        persistenceManagerImpl.getCustomPersistenceHandlers();
-
-    // Assert
-    verify(customPersistenceHandlerFilter, atLeast(1))
-        .shouldUseHandler(
-            "org.broadleafcommerce.openadmin.server.security.handler.AdminPermissionCustomPersistenceHandler");
-    assertEquals(3, actualCustomPersistenceHandlers.size());
-    CustomPersistenceHandler getResult = actualCustomPersistenceHandlers.get(2);
-    assertTrue(getResult instanceof AdminPermissionCustomPersistenceHandler);
-    assertEquals(Integer.MAX_VALUE, getResult.getOrder());
-    assertSame(adminPermissionCustomPersistenceHandler, getResult);
-  }
-
-  /**
-   * Test {@link PersistenceManagerImpl#getCustomPersistenceHandlers()}.
-   *
-   * <ul>
-   *   <li>Then return size is two.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#getCustomPersistenceHandlers()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List PersistenceManagerImpl.getCustomPersistenceHandlers()"})
-  public void testGetCustomPersistenceHandlers_thenReturnSizeIsTwo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
-    // Arrange
-    CustomPersistenceHandlerFilter customPersistenceHandlerFilter =
-        mock(CustomPersistenceHandlerFilter.class);
-    when(customPersistenceHandlerFilter.shouldUseHandler(Mockito.<String>any())).thenReturn(true);
-
-    ArrayList<CustomPersistenceHandlerFilter> customPersistenceHandlerFilters = new ArrayList<>();
-    customPersistenceHandlerFilters.add(customPersistenceHandlerFilter);
-
-    ArrayList<CustomPersistenceHandler> customPersistenceHandlers = new ArrayList<>();
-    customPersistenceHandlers.add(new AdminPermissionCustomPersistenceHandler());
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler =
-        new AdminPermissionCustomPersistenceHandler();
-    customPersistenceHandlers.add(adminPermissionCustomPersistenceHandler);
-
-    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-    persistenceManagerImpl.setCustomPersistenceHandlers(customPersistenceHandlers);
-    persistenceManagerImpl.setCustomPersistenceHandlerFilters(customPersistenceHandlerFilters);
-
-    // Act
-    List<CustomPersistenceHandler> actualCustomPersistenceHandlers =
-        persistenceManagerImpl.getCustomPersistenceHandlers();
-
-    // Assert
-    verify(customPersistenceHandlerFilter, atLeast(1))
-        .shouldUseHandler(
-            "org.broadleafcommerce.openadmin.server.security.handler.AdminPermissionCustomPersistenceHandler");
-    assertEquals(2, actualCustomPersistenceHandlers.size());
-    CustomPersistenceHandler getResult = actualCustomPersistenceHandlers.get(1);
-    assertTrue(getResult instanceof AdminPermissionCustomPersistenceHandler);
-    assertEquals(Integer.MAX_VALUE, getResult.getOrder());
-    assertSame(adminPermissionCustomPersistenceHandler, getResult);
-  }
-
-  /**
-   * Test {@link PersistenceManagerImpl#getCustomPersistenceHandlers()}.
-   *
-   * <ul>
-   *   <li>Then throw {@link NoPossibleResultsException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#getCustomPersistenceHandlers()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List PersistenceManagerImpl.getCustomPersistenceHandlers()"})
-  public void testGetCustomPersistenceHandlers_thenThrowNoPossibleResultsException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
-    // Arrange
-    CustomPersistenceHandlerFilter customPersistenceHandlerFilter =
-        mock(CustomPersistenceHandlerFilter.class);
-    when(customPersistenceHandlerFilter.shouldUseHandler(Mockito.<String>any()))
-        .thenThrow(new NoPossibleResultsException("An error occurred"));
-
-    ArrayList<CustomPersistenceHandlerFilter> customPersistenceHandlerFilters = new ArrayList<>();
-    customPersistenceHandlerFilters.add(customPersistenceHandlerFilter);
-
-    ArrayList<CustomPersistenceHandler> customPersistenceHandlers = new ArrayList<>();
-    customPersistenceHandlers.add(new AdminPermissionCustomPersistenceHandler());
-
-    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-    persistenceManagerImpl.setCustomPersistenceHandlers(customPersistenceHandlers);
-    persistenceManagerImpl.setCustomPersistenceHandlerFilters(customPersistenceHandlerFilters);
-
-    // Act and Assert
-    assertThrows(
-        NoPossibleResultsException.class,
-        () -> persistenceManagerImpl.getCustomPersistenceHandlers());
-    verify(customPersistenceHandlerFilter)
-        .shouldUseHandler(
-            "org.broadleafcommerce.openadmin.server.security.handler.AdminPermissionCustomPersistenceHandler");
-  }
-
-  /**
-   * Test {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage, Entity)}.
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage,
-   * Entity)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PersistenceManagerImpl.setMainEntityName(PersistencePackage, Entity)"})
   public void testSetMainEntityName() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
 
     // Arrange
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-    Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
+    PersistencePackage pp = new PersistencePackage();
 
-    PersistencePackage pp =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
-    pp.setRequestingEntityName(" ");
+    // Act
+    persistenceManagerImpl.setMainEntityName(pp, new Entity());
+
+    // Assert
+    assertNull(pp.getRequestingEntityName());
+  }
+
+  /**
+   * Method under test:
+   * {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage, Entity)}
+   */
+  @Test
+  public void testSetMainEntityName2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+
+    PersistencePackage pp = new PersistencePackage();
+    pp.setRequestingEntityName(null);
 
     // Act
     persistenceManagerImpl.setMainEntityName(pp, null);
 
     // Assert that nothing has changed
-    assertEquals(" ", pp.getRequestingEntityName());
+    assertNull(pp.getRequestingEntityName());
   }
 
   /**
-   * Test {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage, Entity)}.
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage,
-   * Entity)}
+   * Method under test:
+   * {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage, Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PersistenceManagerImpl.setMainEntityName(PersistencePackage, Entity)"})
-  public void testSetMainEntityName2() {
+  public void testSetMainEntityName3() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
 
     // Arrange
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-    Entity entity = new Entity();
-    String[] customCriteria = new String[] {"Custom Criteria"};
 
-    PersistencePackage pp =
-        new PersistencePackage(
-            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
+    PersistencePackage pp = new PersistencePackage();
     pp.setRequestingEntityName("Pp");
 
     // Act
@@ -1666,70 +1308,94 @@ public class PersistenceManagerImplDiffblueTest {
   }
 
   /**
-   * Test {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage, Entity)}.
-   *
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code __adminMainEntity} is {@link Property#Property()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage,
-   * Entity)}
+   * Method under test:
+   * {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage, Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PersistenceManagerImpl.setMainEntityName(PersistencePackage, Entity)"})
-  public void testSetMainEntityName_givenHashMapAdminMainEntityIsProperty() {
+  public void testSetMainEntityName4() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
 
     // Arrange
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    PersistencePackage pp = mock(PersistencePackage.class);
+    when(pp.getRequestingEntityName()).thenReturn("Requesting Entity Name");
+
+    // Act
+    persistenceManagerImpl.setMainEntityName(pp, new Entity());
+
+    // Assert
+    verify(pp).getRequestingEntityName();
+  }
+
+  /**
+   * Method under test:
+   * {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage, Entity)}
+   */
+  @Test
+  public void testSetMainEntityName5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+
     PersistencePackage pp = new PersistencePackage();
+    pp.setRequestingEntityName(null);
+    Entity entity = mock(Entity.class);
+    when(entity.getPMap()).thenReturn(new HashMap<>());
+
+    // Act
+    persistenceManagerImpl.setMainEntityName(pp, entity);
+
+    // Assert
+    verify(entity).getPMap();
+    assertNull(pp.getRequestingEntityName());
+  }
+
+  /**
+   * Method under test:
+   * {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage, Entity)}
+   */
+  @Test
+  public void testSetMainEntityName6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+
+    PersistencePackage pp = new PersistencePackage();
+    pp.setRequestingEntityName(null);
 
     HashMap<String, Property> stringPropertyMap = new HashMap<>();
     stringPropertyMap.put("__adminMainEntity", new Property());
-
     Entity entity = mock(Entity.class);
     when(entity.getPMap()).thenReturn(stringPropertyMap);
 
     // Act
     persistenceManagerImpl.setMainEntityName(pp, entity);
 
-    // Assert that nothing has changed
+    // Assert
     verify(entity).getPMap();
+    assertNull(pp.getRequestingEntityName());
   }
 
   /**
-   * Test {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage, Entity)}.
-   *
-   * <ul>
-   *   <li>Then {@link PersistencePackage#PersistencePackage()} RequestingEntityName is {@code 42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage,
-   * Entity)}
+   * Method under test:
+   * {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage, Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PersistenceManagerImpl.setMainEntityName(PersistencePackage, Entity)"})
-  public void testSetMainEntityName_thenPersistencePackageRequestingEntityNameIs42() {
+  public void testSetMainEntityName7() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
 
     // Arrange
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-    PersistencePackage pp = new PersistencePackage();
 
+    PersistencePackage pp = new PersistencePackage();
+    pp.setRequestingEntityName(null);
     Property property = mock(Property.class);
     when(property.getValue()).thenReturn("42");
 
     HashMap<String, Property> stringPropertyMap = new HashMap<>();
     stringPropertyMap.put("__adminMainEntity", property);
-
     Entity entity = mock(Entity.class);
     when(entity.getPMap()).thenReturn(stringPropertyMap);
 
@@ -1743,83 +1409,223 @@ public class PersistenceManagerImplDiffblueTest {
   }
 
   /**
-   * Test {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage, Entity)}.
-   *
-   * <ul>
-   *   <li>Then {@link PersistencePackage#PersistencePackage()} RequestingEntityName is {@code
-   *       null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage,
-   * Entity)}
+   * Method under test:
+   * {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage, Entity)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PersistenceManagerImpl.setMainEntityName(PersistencePackage, Entity)"})
-  public void testSetMainEntityName_thenPersistencePackageRequestingEntityNameIsNull() {
+  public void testSetMainEntityName8() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
 
     // Arrange
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+
     PersistencePackage pp = new PersistencePackage();
-
-    // Act
-    persistenceManagerImpl.setMainEntityName(pp, new Entity());
-
-    // Assert that nothing has changed
-    assertNull(pp.getRequestingEntityName());
-  }
-
-  /**
-   * Test {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage, Entity)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link NoPossibleResultsException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#setMainEntityName(PersistencePackage,
-   * Entity)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PersistenceManagerImpl.setMainEntityName(PersistencePackage, Entity)"})
-  public void testSetMainEntityName_thenThrowNoPossibleResultsException() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
-    // Arrange
-    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-    PersistencePackage pp = new PersistencePackage();
-
+    pp.setRequestingEntityName(null);
     Property property = mock(Property.class);
     when(property.getValue()).thenThrow(new NoPossibleResultsException("An error occurred"));
 
     HashMap<String, Property> stringPropertyMap = new HashMap<>();
     stringPropertyMap.put("__adminMainEntity", property);
-
     Entity entity = mock(Entity.class);
     when(entity.getPMap()).thenReturn(stringPropertyMap);
 
     // Act and Assert
-    assertThrows(
-        NoPossibleResultsException.class,
-        () -> persistenceManagerImpl.setMainEntityName(pp, entity));
+    assertThrows(NoPossibleResultsException.class, () -> persistenceManagerImpl.setMainEntityName(pp, entity));
     verify(entity).getPMap();
     verify(property).getValue();
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Method under test:
+   * {@link PersistenceManagerImpl#honorExplicitPersistenceHandlerSorting()}
+   */
+  @Test
+  public void testHonorExplicitPersistenceHandlerSorting() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+
+    // Act
+    persistenceManagerImpl.honorExplicitPersistenceHandlerSorting();
+
+    // Assert that nothing has changed
+    assertTrue(persistenceManagerImpl.getCustomPersistenceHandlerFilters().isEmpty());
+    assertTrue(persistenceManagerImpl.getCustomPersistenceHandlers().isEmpty());
+    assertTrue(persistenceManagerImpl.customPersistenceHandlers.isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link PersistenceManagerImpl#honorExplicitPersistenceHandlerSorting()}
+   */
+  @Test
+  public void testHonorExplicitPersistenceHandlerSorting2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ArrayList<CustomPersistenceHandler> customPersistenceHandlers = new ArrayList<>();
+    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
+    customPersistenceHandlers.add(adminPermissionCustomPersistenceHandler);
+
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    persistenceManagerImpl.setCustomPersistenceHandlers(customPersistenceHandlers);
+
+    // Act
+    persistenceManagerImpl.honorExplicitPersistenceHandlerSorting();
+
+    // Assert
+    assertEquals(1, persistenceManagerImpl.getCustomPersistenceHandlers().size());
+    List<CustomPersistenceHandler> customPersistenceHandlerList = persistenceManagerImpl.customPersistenceHandlers;
+    assertEquals(1, customPersistenceHandlerList.size());
+    assertTrue(persistenceManagerImpl.getCustomPersistenceHandlerFilters().isEmpty());
+    assertSame(adminPermissionCustomPersistenceHandler, customPersistenceHandlerList.get(0));
+  }
+
+  /**
+   * Method under test:
+   * {@link PersistenceManagerImpl#honorExplicitPersistenceHandlerSorting()}
+   */
+  @Test
+  public void testHonorExplicitPersistenceHandlerSorting3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ClassCustomPersistenceHandlerAdapter classCustomPersistenceHandlerAdapter = mock(
+        ClassCustomPersistenceHandlerAdapter.class);
+    when(classCustomPersistenceHandlerAdapter.getOrder()).thenReturn(1);
+
+    ArrayList<CustomPersistenceHandler> customPersistenceHandlers = new ArrayList<>();
+    customPersistenceHandlers.add(classCustomPersistenceHandlerAdapter);
+
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    persistenceManagerImpl.setCustomPersistenceHandlers(customPersistenceHandlers);
+
+    // Act
+    persistenceManagerImpl.honorExplicitPersistenceHandlerSorting();
+
+    // Assert
+    verify(classCustomPersistenceHandlerAdapter).getOrder();
+    assertTrue(persistenceManagerImpl.getCustomPersistenceHandlerFilters().isEmpty());
+    assertTrue(persistenceManagerImpl.getCustomPersistenceHandlers().isEmpty());
+    assertTrue(persistenceManagerImpl.customPersistenceHandlers.isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link PersistenceManagerImpl#honorExplicitPersistenceHandlerSorting()}
+   */
+  @Test
+  public void testHonorExplicitPersistenceHandlerSorting4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ClassCustomPersistenceHandlerAdapter classCustomPersistenceHandlerAdapter = mock(
+        ClassCustomPersistenceHandlerAdapter.class);
+    when(classCustomPersistenceHandlerAdapter.getOrder()).thenReturn(1);
+
+    ArrayList<CustomPersistenceHandler> customPersistenceHandlers = new ArrayList<>();
+    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
+    customPersistenceHandlers.add(adminPermissionCustomPersistenceHandler);
+    customPersistenceHandlers.add(classCustomPersistenceHandlerAdapter);
+
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    persistenceManagerImpl.setCustomPersistenceHandlers(customPersistenceHandlers);
+
+    // Act
+    persistenceManagerImpl.honorExplicitPersistenceHandlerSorting();
+
+    // Assert
+    verify(classCustomPersistenceHandlerAdapter, atLeast(1)).getOrder();
+    List<CustomPersistenceHandler> customPersistenceHandlerList = persistenceManagerImpl.customPersistenceHandlers;
+    assertEquals(2, customPersistenceHandlerList.size());
+    assertTrue(persistenceManagerImpl.getCustomPersistenceHandlerFilters().isEmpty());
+    List<CustomPersistenceHandler> expectedCustomPersistenceHandlers = persistenceManagerImpl.customPersistenceHandlers;
+    assertEquals(expectedCustomPersistenceHandlers, persistenceManagerImpl.getCustomPersistenceHandlers());
+    assertSame(adminPermissionCustomPersistenceHandler, customPersistenceHandlerList.get(1));
+  }
+
+  /**
+   * Method under test:
+   * {@link PersistenceManagerImpl#honorExplicitPersistenceHandlerSorting()}
+   */
+  @Test
+  public void testHonorExplicitPersistenceHandlerSorting5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ClassCustomPersistenceHandlerAdapter classCustomPersistenceHandlerAdapter = mock(
+        ClassCustomPersistenceHandlerAdapter.class);
+    when(classCustomPersistenceHandlerAdapter.getOrder()).thenReturn(1);
+
+    ArrayList<CustomPersistenceHandler> customPersistenceHandlers = new ArrayList<>();
+    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
+    customPersistenceHandlers.add(adminPermissionCustomPersistenceHandler);
+    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler2 = new AdminPermissionCustomPersistenceHandler();
+    customPersistenceHandlers.add(adminPermissionCustomPersistenceHandler2);
+    customPersistenceHandlers.add(classCustomPersistenceHandlerAdapter);
+
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    persistenceManagerImpl.setCustomPersistenceHandlers(customPersistenceHandlers);
+
+    // Act
+    persistenceManagerImpl.honorExplicitPersistenceHandlerSorting();
+
+    // Assert
+    verify(classCustomPersistenceHandlerAdapter, atLeast(1)).getOrder();
+    List<CustomPersistenceHandler> customPersistenceHandlerList = persistenceManagerImpl.customPersistenceHandlers;
+    assertEquals(3, customPersistenceHandlerList.size());
+    assertTrue(persistenceManagerImpl.getCustomPersistenceHandlerFilters().isEmpty());
+    List<CustomPersistenceHandler> expectedCustomPersistenceHandlers = persistenceManagerImpl.customPersistenceHandlers;
+    assertEquals(expectedCustomPersistenceHandlers, persistenceManagerImpl.getCustomPersistenceHandlers());
+    assertSame(adminPermissionCustomPersistenceHandler, customPersistenceHandlerList.get(1));
+    assertSame(adminPermissionCustomPersistenceHandler2, customPersistenceHandlerList.get(2));
+  }
+
+  /**
+   * Method under test:
+   * {@link PersistenceManagerImpl#honorExplicitPersistenceHandlerSorting()}
+   */
+  @Test
+  public void testHonorExplicitPersistenceHandlerSorting6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ClassCustomPersistenceHandlerAdapter classCustomPersistenceHandlerAdapter = mock(
+        ClassCustomPersistenceHandlerAdapter.class);
+    when(classCustomPersistenceHandlerAdapter.getOrder()).thenReturn(1);
+    ClassCustomPersistenceHandlerAdapter classCustomPersistenceHandlerAdapter2 = mock(
+        ClassCustomPersistenceHandlerAdapter.class);
+    when(classCustomPersistenceHandlerAdapter2.getOrder()).thenReturn(1);
+
+    ArrayList<CustomPersistenceHandler> customPersistenceHandlers = new ArrayList<>();
+    customPersistenceHandlers.add(classCustomPersistenceHandlerAdapter2);
+    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler = new AdminPermissionCustomPersistenceHandler();
+    customPersistenceHandlers.add(adminPermissionCustomPersistenceHandler);
+    customPersistenceHandlers.add(classCustomPersistenceHandlerAdapter);
+
+    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
+    persistenceManagerImpl.setCustomPersistenceHandlers(customPersistenceHandlers);
+
+    // Act
+    persistenceManagerImpl.honorExplicitPersistenceHandlerSorting();
+
+    // Assert
+    verify(classCustomPersistenceHandlerAdapter2, atLeast(1)).getOrder();
+    verify(classCustomPersistenceHandlerAdapter, atLeast(1)).getOrder();
+    List<CustomPersistenceHandler> customPersistenceHandlerList = persistenceManagerImpl.customPersistenceHandlers;
+    assertEquals(3, customPersistenceHandlerList.size());
+    assertTrue(persistenceManagerImpl.getCustomPersistenceHandlerFilters().isEmpty());
+    List<CustomPersistenceHandler> expectedCustomPersistenceHandlers = persistenceManagerImpl.customPersistenceHandlers;
+    assertEquals(expectedCustomPersistenceHandlers, persistenceManagerImpl.getCustomPersistenceHandlers());
+    assertSame(adminPermissionCustomPersistenceHandler, customPersistenceHandlerList.get(2));
+  }
+
+  /**
+   * Methods under test:
    * <ul>
-   *   <li>{@link PersistenceManagerImpl#setAdminRemoteSecurityService(AdminSecurityServiceRemote)}
+   *   <li>
+   * {@link PersistenceManagerImpl#setAdminRemoteSecurityService(AdminSecurityServiceRemote)}
    *   <li>{@link PersistenceManagerImpl#setApplicationContext(ApplicationContext)}
    *   <li>{@link PersistenceManagerImpl#setCustomPersistenceHandlerFilters(List)}
    *   <li>{@link PersistenceManagerImpl#setCustomPersistenceHandlers(List)}
@@ -1834,22 +1640,6 @@ public class PersistenceManagerImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "SecurityVerifier PersistenceManagerImpl.getAdminRemoteSecurityService()",
-    "List PersistenceManagerImpl.getCustomPersistenceHandlerFilters()",
-    "DynamicEntityDao PersistenceManagerImpl.getDynamicEntityDao()",
-    "PersistenceModule[] PersistenceManagerImpl.getModules()",
-    "TargetModeType PersistenceManagerImpl.getTargetMode()",
-    "void PersistenceManagerImpl.setAdminRemoteSecurityService(AdminSecurityServiceRemote)",
-    "void PersistenceManagerImpl.setApplicationContext(ApplicationContext)",
-    "void PersistenceManagerImpl.setCustomPersistenceHandlerFilters(List)",
-    "void PersistenceManagerImpl.setCustomPersistenceHandlers(List)",
-    "void PersistenceManagerImpl.setDynamicEntityDao(DynamicEntityDao)",
-    "void PersistenceManagerImpl.setModules(PersistenceModule[])",
-    "void PersistenceManagerImpl.setTargetMode(TargetModeType)"
-  })
   public void testGettersAndSetters() throws BeansException {
     // Arrange
     PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
@@ -1857,264 +1647,30 @@ public class PersistenceManagerImplDiffblueTest {
 
     // Act
     persistenceManagerImpl.setAdminRemoteSecurityService(adminRemoteSecurityService);
-    persistenceManagerImpl.setApplicationContext(mock(ApplicationContext.class));
+    persistenceManagerImpl.setApplicationContext(new AnnotationConfigReactiveWebApplicationContext());
     ArrayList<CustomPersistenceHandlerFilter> customPersistenceHandlerFilters = new ArrayList<>();
     persistenceManagerImpl.setCustomPersistenceHandlerFilters(customPersistenceHandlerFilters);
     persistenceManagerImpl.setCustomPersistenceHandlers(new ArrayList<>());
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
     persistenceManagerImpl.setDynamicEntityDao(dynamicEntityDao);
-    PersistenceModule[] modules =
-        new PersistenceModule[] {new AdornedTargetListPersistenceModule()};
+    PersistenceModule[] modules = new PersistenceModule[]{new AdornedTargetListPersistenceModule()};
     persistenceManagerImpl.setModules(modules);
     TargetModeType targetMode = new TargetModeType("Type", "Friendly Type");
+
     persistenceManagerImpl.setTargetMode(targetMode);
-    SecurityVerifier actualAdminRemoteSecurityService =
-        persistenceManagerImpl.getAdminRemoteSecurityService();
-    List<CustomPersistenceHandlerFilter> actualCustomPersistenceHandlerFilters =
-        persistenceManagerImpl.getCustomPersistenceHandlerFilters();
+    SecurityVerifier actualAdminRemoteSecurityService = persistenceManagerImpl.getAdminRemoteSecurityService();
+    List<CustomPersistenceHandlerFilter> actualCustomPersistenceHandlerFilters = persistenceManagerImpl
+        .getCustomPersistenceHandlerFilters();
     DynamicEntityDao actualDynamicEntityDao = persistenceManagerImpl.getDynamicEntityDao();
     PersistenceModule[] actualModules = persistenceManagerImpl.getModules();
     TargetModeType actualTargetMode = persistenceManagerImpl.getTargetMode();
 
-    // Assert
+    // Assert that nothing has changed
     assertTrue(actualCustomPersistenceHandlerFilters.isEmpty());
     assertSame(customPersistenceHandlerFilters, actualCustomPersistenceHandlerFilters);
     assertSame(targetMode, actualTargetMode);
     assertSame(dynamicEntityDao, actualDynamicEntityDao);
     assertSame(adminRemoteSecurityService, actualAdminRemoteSecurityService);
     assertSame(modules, actualModules);
-  }
-
-  /**
-   * Test {@link PersistenceManagerImpl#honorExplicitPersistenceHandlerSorting()}.
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#honorExplicitPersistenceHandlerSorting()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PersistenceManagerImpl.honorExplicitPersistenceHandlerSorting()"})
-  public void testHonorExplicitPersistenceHandlerSorting() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
-    // Arrange
-    ArrayList<CustomPersistenceHandler> customPersistenceHandlers = new ArrayList<>();
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler =
-        new AdminPermissionCustomPersistenceHandler();
-    customPersistenceHandlers.add(adminPermissionCustomPersistenceHandler);
-
-    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-    persistenceManagerImpl.setCustomPersistenceHandlers(customPersistenceHandlers);
-
-    // Act
-    persistenceManagerImpl.honorExplicitPersistenceHandlerSorting();
-
-    // Assert that nothing has changed
-    assertEquals(1, persistenceManagerImpl.getCustomPersistenceHandlers().size());
-    List<CustomPersistenceHandler> customPersistenceHandlerList =
-        persistenceManagerImpl.customPersistenceHandlers;
-    assertEquals(1, customPersistenceHandlerList.size());
-    assertSame(adminPermissionCustomPersistenceHandler, customPersistenceHandlerList.get(0));
-  }
-
-  /**
-   * Test {@link PersistenceManagerImpl#honorExplicitPersistenceHandlerSorting()}.
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#honorExplicitPersistenceHandlerSorting()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PersistenceManagerImpl.honorExplicitPersistenceHandlerSorting()"})
-  public void testHonorExplicitPersistenceHandlerSorting2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
-    // Arrange
-    ClassCustomPersistenceHandlerAdapter classCustomPersistenceHandlerAdapter =
-        mock(ClassCustomPersistenceHandlerAdapter.class);
-    when(classCustomPersistenceHandlerAdapter.getOrder()).thenReturn(1);
-
-    ArrayList<CustomPersistenceHandler> customPersistenceHandlers = new ArrayList<>();
-    customPersistenceHandlers.add(classCustomPersistenceHandlerAdapter);
-
-    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-    persistenceManagerImpl.setCustomPersistenceHandlers(customPersistenceHandlers);
-
-    // Act
-    persistenceManagerImpl.honorExplicitPersistenceHandlerSorting();
-
-    // Assert
-    verify(classCustomPersistenceHandlerAdapter).getOrder();
-    assertTrue(persistenceManagerImpl.getCustomPersistenceHandlers().isEmpty());
-    assertTrue(persistenceManagerImpl.customPersistenceHandlers.isEmpty());
-  }
-
-  /**
-   * Test {@link PersistenceManagerImpl#honorExplicitPersistenceHandlerSorting()}.
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#honorExplicitPersistenceHandlerSorting()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PersistenceManagerImpl.honorExplicitPersistenceHandlerSorting()"})
-  public void testHonorExplicitPersistenceHandlerSorting3() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
-    // Arrange
-    ClassCustomPersistenceHandlerAdapter classCustomPersistenceHandlerAdapter =
-        mock(ClassCustomPersistenceHandlerAdapter.class);
-    when(classCustomPersistenceHandlerAdapter.getOrder()).thenReturn(1);
-
-    ArrayList<CustomPersistenceHandler> customPersistenceHandlers = new ArrayList<>();
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler =
-        new AdminPermissionCustomPersistenceHandler();
-    customPersistenceHandlers.add(adminPermissionCustomPersistenceHandler);
-    customPersistenceHandlers.add(classCustomPersistenceHandlerAdapter);
-
-    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-    persistenceManagerImpl.setCustomPersistenceHandlers(customPersistenceHandlers);
-
-    // Act
-    persistenceManagerImpl.honorExplicitPersistenceHandlerSorting();
-
-    // Assert
-    verify(classCustomPersistenceHandlerAdapter, atLeast(1)).getOrder();
-    List<CustomPersistenceHandler> customPersistenceHandlerList =
-        persistenceManagerImpl.customPersistenceHandlers;
-    assertEquals(2, customPersistenceHandlerList.size());
-    List<CustomPersistenceHandler> expectedCustomPersistenceHandlers =
-        persistenceManagerImpl.customPersistenceHandlers;
-    assertEquals(
-        expectedCustomPersistenceHandlers, persistenceManagerImpl.getCustomPersistenceHandlers());
-    assertSame(adminPermissionCustomPersistenceHandler, customPersistenceHandlerList.get(1));
-  }
-
-  /**
-   * Test {@link PersistenceManagerImpl#honorExplicitPersistenceHandlerSorting()}.
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#honorExplicitPersistenceHandlerSorting()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PersistenceManagerImpl.honorExplicitPersistenceHandlerSorting()"})
-  public void testHonorExplicitPersistenceHandlerSorting4() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
-    // Arrange
-    ClassCustomPersistenceHandlerAdapter classCustomPersistenceHandlerAdapter =
-        mock(ClassCustomPersistenceHandlerAdapter.class);
-    when(classCustomPersistenceHandlerAdapter.getOrder()).thenReturn(1);
-
-    ArrayList<CustomPersistenceHandler> customPersistenceHandlers = new ArrayList<>();
-    customPersistenceHandlers.add(new AdminPermissionCustomPersistenceHandler());
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler =
-        new AdminPermissionCustomPersistenceHandler();
-    customPersistenceHandlers.add(adminPermissionCustomPersistenceHandler);
-    customPersistenceHandlers.add(classCustomPersistenceHandlerAdapter);
-
-    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-    persistenceManagerImpl.setCustomPersistenceHandlers(customPersistenceHandlers);
-
-    // Act
-    persistenceManagerImpl.honorExplicitPersistenceHandlerSorting();
-
-    // Assert
-    verify(classCustomPersistenceHandlerAdapter, atLeast(1)).getOrder();
-    List<CustomPersistenceHandler> customPersistenceHandlers2 =
-        persistenceManagerImpl.getCustomPersistenceHandlers();
-    assertEquals(3, customPersistenceHandlers2.size());
-    List<CustomPersistenceHandler> customPersistenceHandlerList =
-        persistenceManagerImpl.customPersistenceHandlers;
-    assertEquals(3, customPersistenceHandlerList.size());
-    assertSame(adminPermissionCustomPersistenceHandler, customPersistenceHandlerList.get(2));
-    assertSame(customPersistenceHandlers2.get(0), customPersistenceHandlerList.get(0));
-  }
-
-  /**
-   * Test {@link PersistenceManagerImpl#honorExplicitPersistenceHandlerSorting()}.
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#honorExplicitPersistenceHandlerSorting()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PersistenceManagerImpl.honorExplicitPersistenceHandlerSorting()"})
-  public void testHonorExplicitPersistenceHandlerSorting5() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
-    // Arrange
-    ClassCustomPersistenceHandlerAdapter classCustomPersistenceHandlerAdapter =
-        mock(ClassCustomPersistenceHandlerAdapter.class);
-    when(classCustomPersistenceHandlerAdapter.getOrder()).thenReturn(1);
-
-    ClassCustomPersistenceHandlerAdapter classCustomPersistenceHandlerAdapter2 =
-        mock(ClassCustomPersistenceHandlerAdapter.class);
-    when(classCustomPersistenceHandlerAdapter2.getOrder()).thenReturn(1);
-
-    ArrayList<CustomPersistenceHandler> customPersistenceHandlers = new ArrayList<>();
-    customPersistenceHandlers.add(classCustomPersistenceHandlerAdapter2);
-    AdminPermissionCustomPersistenceHandler adminPermissionCustomPersistenceHandler =
-        new AdminPermissionCustomPersistenceHandler();
-    customPersistenceHandlers.add(adminPermissionCustomPersistenceHandler);
-    customPersistenceHandlers.add(classCustomPersistenceHandlerAdapter);
-
-    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-    persistenceManagerImpl.setCustomPersistenceHandlers(customPersistenceHandlers);
-
-    // Act
-    persistenceManagerImpl.honorExplicitPersistenceHandlerSorting();
-
-    // Assert
-    verify(classCustomPersistenceHandlerAdapter2, atLeast(1)).getOrder();
-    verify(classCustomPersistenceHandlerAdapter, atLeast(1)).getOrder();
-    List<CustomPersistenceHandler> customPersistenceHandlerList =
-        persistenceManagerImpl.customPersistenceHandlers;
-    assertEquals(3, customPersistenceHandlerList.size());
-    List<CustomPersistenceHandler> expectedCustomPersistenceHandlers =
-        persistenceManagerImpl.customPersistenceHandlers;
-    assertEquals(
-        expectedCustomPersistenceHandlers, persistenceManagerImpl.getCustomPersistenceHandlers());
-    assertSame(adminPermissionCustomPersistenceHandler, customPersistenceHandlerList.get(2));
-  }
-
-  /**
-   * Test {@link PersistenceManagerImpl#honorExplicitPersistenceHandlerSorting()}.
-   *
-   * <ul>
-   *   <li>Given {@link PersistenceManagerImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link PersistenceManagerImpl#honorExplicitPersistenceHandlerSorting()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void PersistenceManagerImpl.honorExplicitPersistenceHandlerSorting()"})
-  public void testHonorExplicitPersistenceHandlerSorting_givenPersistenceManagerImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
-    // Arrange
-    PersistenceManagerImpl persistenceManagerImpl = new PersistenceManagerImpl();
-
-    // Act
-    persistenceManagerImpl.honorExplicitPersistenceHandlerSorting();
-
-    // Assert that nothing has changed
-    assertTrue(persistenceManagerImpl.getCustomPersistenceHandlers().isEmpty());
-    assertTrue(persistenceManagerImpl.customPersistenceHandlers.isEmpty());
   }
 }

@@ -18,43 +18,73 @@
 package org.broadleafcommerce.common.config.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.broadleafcommerce.common.config.service.SystemPropertiesPropertySourceRegistrar.SystemPropertyPropertySource;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 
 public class SystemPropertiesPropertySourceRegistrarDiffblueTest {
   /**
-   * Test SystemPropertyPropertySource {@link SystemPropertyPropertySource#getProperty(String)}.
-   *
-   * <ul>
-   *   <li>Then return {@code Resolve System Property}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SystemPropertyPropertySource#getProperty(String)}
+   * Method under test:
+   * {@link SystemPropertiesPropertySourceRegistrar.SystemPropertyPropertySource#getProperty(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object SystemPropertyPropertySource.getProperty(String)"})
-  public void testSystemPropertyPropertySourceGetProperty_thenReturnResolveSystemProperty() {
+  public void testSystemPropertyPropertySourceGetProperty() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     SystemPropertiesServiceImpl source = mock(SystemPropertiesServiceImpl.class);
     when(source.resolveSystemProperty(Mockito.<String>any())).thenReturn("Resolve System Property");
-    SystemPropertyPropertySource systemPropertyPropertySource =
-        new SystemPropertyPropertySource("Name", source);
 
     // Act
-    Object actualProperty = systemPropertyPropertySource.getProperty("Name");
+    Object actualProperty = (new SystemPropertiesPropertySourceRegistrar.SystemPropertyPropertySource("Name", source))
+        .getProperty("Name");
 
     // Assert
-    verify(source).resolveSystemProperty("Name");
+    verify(source).resolveSystemProperty(eq("Name"));
     assertEquals("Resolve System Property", actualProperty);
+  }
+
+  /**
+   * Method under test:
+   * {@link SystemPropertiesPropertySourceRegistrar.SystemPropertyPropertySource#SystemPropertyPropertySource(String, SystemPropertiesService)}
+   */
+  @Test
+  public void testSystemPropertyPropertySourceNewSystemPropertyPropertySource() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SystemPropertiesServiceImpl source = new SystemPropertiesServiceImpl();
+
+    // Act
+    SystemPropertiesPropertySourceRegistrar.SystemPropertyPropertySource actualSystemPropertyPropertySource = new SystemPropertiesPropertySourceRegistrar.SystemPropertyPropertySource(
+        "Name", source);
+
+    // Assert
+    assertEquals("Name", actualSystemPropertyPropertySource.getName());
+    assertSame(source, actualSystemPropertyPropertySource.getSource());
+  }
+
+  /**
+   * Method under test:
+   * {@link SystemPropertiesPropertySourceRegistrar.SystemPropertyPropertySource#SystemPropertyPropertySource(String, SystemPropertiesService)}
+   */
+  @Test
+  public void testSystemPropertyPropertySourceNewSystemPropertyPropertySource2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SystemPropertiesServiceImpl source = mock(SystemPropertiesServiceImpl.class);
+
+    // Act
+    SystemPropertiesPropertySourceRegistrar.SystemPropertyPropertySource actualSystemPropertyPropertySource = new SystemPropertiesPropertySourceRegistrar.SystemPropertyPropertySource(
+        "Name", source);
+
+    // Assert
+    assertEquals("Name", actualSystemPropertyPropertySource.getName());
+    assertSame(source, actualSystemPropertyPropertySource.getSource());
   }
 }

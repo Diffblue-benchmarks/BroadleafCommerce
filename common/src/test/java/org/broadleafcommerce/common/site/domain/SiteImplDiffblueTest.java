@@ -23,9 +23,9 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 import org.broadleafcommerce.common.locale.domain.Locale;
@@ -33,67 +33,68 @@ import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.persistence.ArchiveStatus;
 import org.broadleafcommerce.common.site.service.type.SiteResolutionType;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-common-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(SpringJUnit4ClassRunner.class)
 public class SiteImplDiffblueTest {
-  @Autowired private SiteImpl siteImpl;
-
   /**
-   * Test {@link SiteImpl#getName()}.
-   *
-   * <p>Method under test: {@link SiteImpl#getName()}
+   * Method under test: {@link SiteImpl#getName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SiteImpl.getName()"})
   public void testGetName() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertNull(siteImpl.getName());
+    assertNull((new SiteImpl()).getName());
   }
 
   /**
-   * Test {@link SiteImpl#getSiteResolutionType()}.
-   *
-   * <ul>
-   *   <li>Given {@link SiteImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteImpl#getSiteResolutionType()}
+   * Method under test: {@link SiteImpl#getName()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"SiteResolutionType SiteImpl.getSiteResolutionType()"})
-  public void testGetSiteResolutionType_givenSiteImpl() {
-    // Arrange, Act and Assert
-    assertNull(siteImpl.getSiteResolutionType());
-  }
+  public void testGetName2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-  /**
-   * Test {@link SiteImpl#getSiteResolutionType()}.
-   *
-   * <ul>
-   *   <li>Given {@link SiteImpl} SiteIdentifierType is {@code foo}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteImpl#getSiteResolutionType()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"SiteResolutionType SiteImpl.getSiteResolutionType()"})
-  public void testGetSiteResolutionType_givenSiteImplSiteIdentifierTypeIsFoo() {
     // Arrange
+    SiteResolutionType siteResolutionType = mock(SiteResolutionType.class);
+    when(siteResolutionType.getType()).thenReturn("Type");
+
+    SiteImpl siteImpl = new SiteImpl();
+    siteImpl.setSiteResolutionType(siteResolutionType);
+
+    // Act
+    String actualName = siteImpl.getName();
+
+    // Assert
+    verify(siteResolutionType).getType();
+    assertNull(actualName);
+  }
+
+  /**
+   * Method under test: {@link SiteImpl#getSiteResolutionType()}
+   */
+  @Test
+  public void testGetSiteResolutionType() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertNull((new SiteImpl()).getSiteResolutionType());
+  }
+
+  /**
+   * Method under test: {@link SiteImpl#getSiteResolutionType()}
+   */
+  @Test
+  public void testGetSiteResolutionType2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteImpl siteImpl = new SiteImpl();
+    siteImpl.setCatalogs(new ArrayList<>());
+    siteImpl.setDeactivated(true);
+    siteImpl.setDefaultLocale(new LocaleImpl());
+    siteImpl.setId(1L);
+    siteImpl.setName("Name");
+    siteImpl.setSiteIdentifierValue("42");
+    siteImpl.setSiteResolutionType(SiteResolutionType.DOMAIN);
     siteImpl.setSiteIdentifierType("foo");
 
     // Act and Assert
@@ -101,292 +102,54 @@ public class SiteImplDiffblueTest {
   }
 
   /**
-   * Test {@link SiteImpl#setSiteResolutionType(SiteResolutionType)}.
-   *
-   * <ul>
-   *   <li>When {@link SiteResolutionType#DOMAIN}.
-   *   <li>Then {@link SiteImpl} SiteIdentifierType is {@code DOMAIN}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteImpl#setSiteResolutionType(SiteResolutionType)}
+   * Method under test: {@link SiteImpl#getSiteResolutionType()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SiteImpl.setSiteResolutionType(SiteResolutionType)"})
-  public void testSetSiteResolutionType_whenDomain_thenSiteImplSiteIdentifierTypeIsDomain() {
-    // Arrange and Act
+  public void testGetSiteResolutionType3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteImpl siteImpl = new SiteImpl();
+    siteImpl.setCatalogs(new ArrayList<>());
+    siteImpl.setDeactivated(true);
+    siteImpl.setDefaultLocale(mock(Locale.class));
+    siteImpl.setId(1L);
+    siteImpl.setName("Name");
+    siteImpl.setSiteIdentifierValue("42");
     siteImpl.setSiteResolutionType(SiteResolutionType.DOMAIN);
+    siteImpl.setSiteIdentifierType("foo");
 
-    // Assert
-    assertEquals("DOMAIN", siteImpl.getSiteIdentifierType());
-    assertSame(SiteResolutionType.DOMAIN, siteImpl.getSiteResolutionType());
-  }
-
-  /**
-   * Test {@link SiteImpl#setSiteResolutionType(SiteResolutionType)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then {@link SiteImpl} SiteIdentifierType is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteImpl#setSiteResolutionType(SiteResolutionType)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SiteImpl.setSiteResolutionType(SiteResolutionType)"})
-  public void testSetSiteResolutionType_whenNull_thenSiteImplSiteIdentifierTypeIsNull() {
-    // Arrange and Act
-    siteImpl.setSiteResolutionType(null);
-
-    // Assert that nothing has changed
-    assertNull(siteImpl.getSiteIdentifierType());
+    // Act and Assert
     assertNull(siteImpl.getSiteResolutionType());
   }
 
   /**
-   * Test {@link SiteImpl#getArchived()}.
-   *
-   * <p>Method under test: {@link SiteImpl#getArchived()}
+   * Method under test: {@link SiteImpl#setSiteResolutionType(SiteResolutionType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Character SiteImpl.getArchived()"})
-  public void testGetArchived() {
-    // Arrange, Act and Assert
-    assertEquals('N', siteImpl.getArchived().charValue());
-  }
+  public void testSetSiteResolutionType() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-  /**
-   * Test {@link SiteImpl#setArchived(Character)}.
-   *
-   * <p>Method under test: {@link SiteImpl#setArchived(Character)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SiteImpl.setArchived(Character)"})
-  public void testSetArchived() {
-    // Arrange and Act
-    siteImpl.setArchived('A');
-
-    // Assert
-    assertEquals('A', siteImpl.getArchiveStatus().getArchived().charValue());
-    assertEquals('A', siteImpl.getArchived().charValue());
-  }
-
-  /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link SiteImpl#setCatalogs(List)}
-   *   <li>{@link SiteImpl#setDefaultLocale(Locale)}
-   *   <li>{@link SiteImpl#setId(Long)}
-   *   <li>{@link SiteImpl#setName(String)}
-   *   <li>{@link SiteImpl#setSiteIdentifierType(String)}
-   *   <li>{@link SiteImpl#setSiteIdentifierValue(String)}
-   *   <li>{@link SiteImpl#getArchiveStatus()}
-   *   <li>{@link SiteImpl#getCatalogs()}
-   *   <li>{@link SiteImpl#getDefaultLocale()}
-   *   <li>{@link SiteImpl#getId()}
-   *   <li>{@link SiteImpl#getSiteIdentifierType()}
-   *   <li>{@link SiteImpl#getSiteIdentifierValue()}
-   *   <li>{@link SiteImpl#isTemplateSite()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ArchiveStatus SiteImpl.getArchiveStatus()",
-    "List SiteImpl.getCatalogs()",
-    "Locale SiteImpl.getDefaultLocale()",
-    "Long SiteImpl.getId()",
-    "String SiteImpl.getSiteIdentifierType()",
-    "String SiteImpl.getSiteIdentifierValue()",
-    "boolean SiteImpl.isTemplateSite()",
-    "void SiteImpl.setCatalogs(List)",
-    "void SiteImpl.setDefaultLocale(Locale)",
-    "void SiteImpl.setId(Long)",
-    "void SiteImpl.setName(String)",
-    "void SiteImpl.setSiteIdentifierType(String)",
-    "void SiteImpl.setSiteIdentifierValue(String)"
-  })
-  public void testGettersAndSetters() {
     // Arrange
     SiteImpl siteImpl = new SiteImpl();
-    ArrayList<Catalog> catalogs = new ArrayList<>();
+    SiteResolutionType siteResolutionType = SiteResolutionType.DOMAIN;
 
     // Act
-    siteImpl.setCatalogs(catalogs);
-    LocaleImpl defaultLocale = new LocaleImpl();
-    siteImpl.setDefaultLocale(defaultLocale);
-    siteImpl.setId(1L);
-    siteImpl.setName("Name");
-    siteImpl.setSiteIdentifierType("Site Identifier Type");
-    siteImpl.setSiteIdentifierValue("42");
-    ArchiveStatus actualArchiveStatus = siteImpl.getArchiveStatus();
-    List<Catalog> actualCatalogs = siteImpl.getCatalogs();
-    Locale actualDefaultLocale = siteImpl.getDefaultLocale();
-    Long actualId = siteImpl.getId();
-    String actualSiteIdentifierType = siteImpl.getSiteIdentifierType();
-    String actualSiteIdentifierValue = siteImpl.getSiteIdentifierValue();
-    boolean actualIsTemplateSiteResult = siteImpl.isTemplateSite();
+    siteImpl.setSiteResolutionType(siteResolutionType);
 
     // Assert
-    assertEquals("42", actualSiteIdentifierValue);
-    assertEquals("Site Identifier Type", actualSiteIdentifierType);
-    assertEquals('N', actualArchiveStatus.getArchived().charValue());
-    assertEquals(1L, actualId.longValue());
-    assertFalse(actualIsTemplateSiteResult);
-    assertTrue(actualCatalogs.isEmpty());
-    assertSame(catalogs, actualCatalogs);
-    assertSame(defaultLocale, actualDefaultLocale);
+    assertEquals("DOMAIN", siteImpl.getSiteIdentifierType());
+    SiteResolutionType expectedSiteResolutionType = siteResolutionType.DOMAIN;
+    assertSame(expectedSiteResolutionType, siteImpl.getSiteResolutionType());
   }
 
   /**
-   * Test {@link SiteImpl#isActive()}.
-   *
-   * <ul>
-   *   <li>Given {@link SiteImpl} Archived is {@code Y}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteImpl#isActive()}
+   * Method under test: {@link SiteImpl#setSiteResolutionType(SiteResolutionType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SiteImpl.isActive()"})
-  public void testIsActive_givenSiteImplArchivedIsY_thenReturnFalse() {
-    // Arrange
-    siteImpl.setDeactivated(false);
-    siteImpl.setArchived('Y');
+  public void testSetSiteResolutionType2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Act and Assert
-    assertFalse(siteImpl.isActive());
-  }
-
-  /**
-   * Test {@link SiteImpl#isActive()}.
-   *
-   * <ul>
-   *   <li>Given {@link SiteImpl} Deactivated is {@code true}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteImpl#isActive()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SiteImpl.isActive()"})
-  public void testIsActive_givenSiteImplDeactivatedIsTrue_thenReturnFalse() {
-    // Arrange
-    siteImpl.setDeactivated(true);
-    siteImpl.setArchived(null);
-
-    // Act and Assert
-    assertFalse(siteImpl.isActive());
-  }
-
-  /**
-   * Test {@link SiteImpl#isActive()}.
-   *
-   * <ul>
-   *   <li>Given {@link SiteImpl}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteImpl#isActive()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SiteImpl.isActive()"})
-  public void testIsActive_givenSiteImpl_thenReturnTrue() {
-    // Arrange, Act and Assert
-    assertTrue(siteImpl.isActive());
-  }
-
-  /**
-   * Test {@link SiteImpl#isDeactivated()}.
-   *
-   * <ul>
-   *   <li>Given {@link SiteImpl} Deactivated is {@code true}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteImpl#isDeactivated()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SiteImpl.isDeactivated()"})
-  public void testIsDeactivated_givenSiteImplDeactivatedIsTrue_thenReturnTrue() {
-    // Arrange
-    siteImpl.setDeactivated(true);
-
-    // Act and Assert
-    assertTrue(siteImpl.isDeactivated());
-  }
-
-  /**
-   * Test {@link SiteImpl#isDeactivated()}.
-   *
-   * <ul>
-   *   <li>Given {@link SiteImpl}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteImpl#isDeactivated()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SiteImpl.isDeactivated()"})
-  public void testIsDeactivated_givenSiteImpl_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(siteImpl.isDeactivated());
-  }
-
-  /**
-   * Test {@link SiteImpl#setDeactivated(boolean)}.
-   *
-   * <p>Method under test: {@link SiteImpl#setDeactivated(boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SiteImpl.setDeactivated(boolean)"})
-  public void testSetDeactivated() {
-    // Arrange and Act
-    siteImpl.setDeactivated(true);
-
-    // Assert
-    assertTrue(siteImpl.deactivated);
-  }
-
-  /**
-   * Test {@link SiteImpl#clone()}.
-   *
-   * <ul>
-   *   <li>Given {@link SiteImpl} (default constructor) Catalogs is {@link ArrayList#ArrayList()}.
-   *   <li>Then return {@link SiteImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteImpl#clone()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Site SiteImpl.clone()"})
-  public void testClone_givenSiteImplCatalogsIsArrayList_thenReturnSiteImpl() {
     // Arrange
     SiteImpl siteImpl = new SiteImpl();
     siteImpl.setCatalogs(new ArrayList<>());
@@ -399,72 +162,266 @@ public class SiteImplDiffblueTest {
     siteImpl.setSiteResolutionType(SiteResolutionType.DOMAIN);
 
     // Act
-    Site actualCloneResult = siteImpl.clone();
+    siteImpl.setSiteResolutionType(null);
 
     // Assert
-    assertTrue(actualCloneResult instanceof SiteImpl);
-    assertEquals(siteImpl, actualCloneResult);
+    assertNull(siteImpl.getSiteIdentifierType());
+    assertNull(siteImpl.getSiteResolutionType());
   }
 
   /**
-   * Test {@link SiteImpl#clone()}.
-   *
-   * <ul>
-   *   <li>Given {@link SiteImpl} Deactivated is {@code true}.
-   *   <li>Then return Archived is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteImpl#clone()}
+   * Method under test: {@link SiteImpl#getArchived()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Site SiteImpl.clone()"})
-  public void testClone_givenSiteImplDeactivatedIsTrue_thenReturnArchivedIsNull() {
+  public void testGetArchived() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertEquals('N', (new SiteImpl()).getArchived().charValue());
+  }
+
+  /**
+   * Method under test: {@link SiteImpl#getArchived()}
+   */
+  @Test
+  public void testGetArchived2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    siteImpl.setDeactivated(true);
-    siteImpl.setSiteIdentifierType("foo");
-    siteImpl.setArchived(null);
+    SiteResolutionType siteResolutionType = mock(SiteResolutionType.class);
+    when(siteResolutionType.getType()).thenReturn("Type");
+
+    SiteImpl siteImpl = new SiteImpl();
+    siteImpl.setSiteResolutionType(siteResolutionType);
 
     // Act
-    Site actualCloneResult = siteImpl.clone();
+    Character actualArchived = siteImpl.getArchived();
 
     // Assert
-    assertTrue(actualCloneResult instanceof SiteImpl);
-    assertNull(actualCloneResult.getArchived());
-    assertNull(actualCloneResult.getId());
-    assertNull(actualCloneResult.getName());
-    assertNull(actualCloneResult.getSiteIdentifierType());
-    assertNull(actualCloneResult.getSiteIdentifierValue());
-    assertNull(((SiteImpl) actualCloneResult).getMainEntityName());
-    assertNull(((SiteImpl) actualCloneResult).name);
-    assertNull(actualCloneResult.getDefaultLocale());
-    assertNull(actualCloneResult.getSiteResolutionType());
-    assertFalse(actualCloneResult.isTemplateSite());
-    assertTrue(actualCloneResult.getCatalogs().isEmpty());
-    assertTrue(((SiteImpl) actualCloneResult).deactivated);
+    verify(siteResolutionType).getType();
+    assertEquals('N', actualArchived.charValue());
   }
 
   /**
-   * Test {@link SiteImpl#clone()}.
-   *
-   * <ul>
-   *   <li>Given {@link SiteImpl}.
-   *   <li>Then return Archived charValue is {@code N}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteImpl#clone()}
+   * Method under test: {@link SiteImpl#setArchived(Character)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Site SiteImpl.clone()"})
-  public void testClone_givenSiteImpl_thenReturnArchivedCharValueIsN() {
+  public void testSetArchived() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteImpl siteImpl = new SiteImpl();
+
+    // Act
+    siteImpl.setArchived('A');
+
+    // Assert
+    assertEquals('A', siteImpl.getArchiveStatus().getArchived().charValue());
+    assertEquals('A', siteImpl.getArchived().charValue());
+  }
+
+  /**
+   * Method under test: {@link SiteImpl#setArchived(Character)}
+   */
+  @Test
+  public void testSetArchived2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteResolutionType siteResolutionType = mock(SiteResolutionType.class);
+    when(siteResolutionType.getType()).thenReturn("Type");
+
+    SiteImpl siteImpl = new SiteImpl();
+    siteImpl.setSiteResolutionType(siteResolutionType);
+
+    // Act
+    siteImpl.setArchived('A');
+
+    // Assert
+    verify(siteResolutionType).getType();
+    assertEquals('A', siteImpl.getArchiveStatus().getArchived().charValue());
+    assertEquals('A', siteImpl.getArchived().charValue());
+  }
+
+  /**
+   * Method under test: {@link SiteImpl#isActive()}
+   */
+  @Test
+  public void testIsActive() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertTrue((new SiteImpl()).isActive());
+  }
+
+  /**
+   * Method under test: {@link SiteImpl#isActive()}
+   */
+  @Test
+  public void testIsActive2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteImpl siteImpl = new SiteImpl();
+    siteImpl.setCatalogs(new ArrayList<>());
+    siteImpl.setDefaultLocale(new LocaleImpl());
+    siteImpl.setId(1L);
+    siteImpl.setName("Name");
+    siteImpl.setSiteIdentifierType("Site Identifier Type");
+    siteImpl.setSiteIdentifierValue("42");
+    siteImpl.setSiteResolutionType(SiteResolutionType.DOMAIN);
+    siteImpl.setDeactivated(true);
+    siteImpl.setArchived(null);
+
+    // Act and Assert
+    assertFalse(siteImpl.isActive());
+  }
+
+  /**
+   * Method under test: {@link SiteImpl#isActive()}
+   */
+  @Test
+  public void testIsActive3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteImpl siteImpl = new SiteImpl();
+    siteImpl.setArchived('Y');
+
+    // Act and Assert
+    assertFalse(siteImpl.isActive());
+  }
+
+  /**
+   * Method under test: {@link SiteImpl#isActive()}
+   */
+  @Test
+  public void testIsActive4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteImpl siteImpl = new SiteImpl();
+    siteImpl.setCatalogs(new ArrayList<>());
+    siteImpl.setDefaultLocale(mock(LocaleImpl.class));
+    siteImpl.setId(1L);
+    siteImpl.setName("Name");
+    siteImpl.setSiteIdentifierType("Site Identifier Type");
+    siteImpl.setSiteIdentifierValue("42");
+    siteImpl.setSiteResolutionType(SiteResolutionType.DOMAIN);
+    siteImpl.setDeactivated(true);
+    siteImpl.setArchived(null);
+
+    // Act and Assert
+    assertFalse(siteImpl.isActive());
+  }
+
+  /**
+   * Method under test: {@link SiteImpl#isDeactivated()}
+   */
+  @Test
+  public void testIsDeactivated() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertFalse((new SiteImpl()).isDeactivated());
+  }
+
+  /**
+   * Method under test: {@link SiteImpl#isDeactivated()}
+   */
+  @Test
+  public void testIsDeactivated2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteImpl siteImpl = new SiteImpl();
+    siteImpl.setCatalogs(new ArrayList<>());
+    siteImpl.setDefaultLocale(new LocaleImpl());
+    siteImpl.setId(1L);
+    siteImpl.setName("Name");
+    siteImpl.setSiteIdentifierType("Site Identifier Type");
+    siteImpl.setSiteIdentifierValue("42");
+    siteImpl.setSiteResolutionType(SiteResolutionType.DOMAIN);
+    siteImpl.setDeactivated(true);
+
+    // Act and Assert
+    assertTrue(siteImpl.isDeactivated());
+  }
+
+  /**
+   * Method under test: {@link SiteImpl#isDeactivated()}
+   */
+  @Test
+  public void testIsDeactivated3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteImpl siteImpl = new SiteImpl();
+    siteImpl.setCatalogs(new ArrayList<>());
+    siteImpl.setDefaultLocale(mock(LocaleImpl.class));
+    siteImpl.setId(1L);
+    siteImpl.setName("Name");
+    siteImpl.setSiteIdentifierType("Site Identifier Type");
+    siteImpl.setSiteIdentifierValue("42");
+    siteImpl.setSiteResolutionType(SiteResolutionType.DOMAIN);
+    siteImpl.setDeactivated(true);
+
+    // Act and Assert
+    assertTrue(siteImpl.isDeactivated());
+  }
+
+  /**
+   * Method under test: {@link SiteImpl#setDeactivated(boolean)}
+   */
+  @Test
+  public void testSetDeactivated() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteImpl siteImpl = new SiteImpl();
+
+    // Act
+    siteImpl.setDeactivated(true);
+
+    // Assert
+    assertTrue(siteImpl.deactivated);
+  }
+
+  /**
+   * Method under test: {@link SiteImpl#setDeactivated(boolean)}
+   */
+  @Test
+  public void testSetDeactivated2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteResolutionType siteResolutionType = mock(SiteResolutionType.class);
+    when(siteResolutionType.getType()).thenReturn("Type");
+
+    SiteImpl siteImpl = new SiteImpl();
+    siteImpl.setSiteResolutionType(siteResolutionType);
+
+    // Act
+    siteImpl.setDeactivated(true);
+
+    // Assert
+    verify(siteResolutionType).getType();
+    assertTrue(siteImpl.deactivated);
+  }
+
+  /**
+   * Method under test: {@link SiteImpl#clone()}
+   */
+  @Test
+  public void testClone() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange and Act
-    Site actualCloneResult = siteImpl.clone();
+    Site actualCloneResult = (new SiteImpl()).clone();
 
     // Assert
     assertTrue(actualCloneResult instanceof SiteImpl);
+    assertEquals('N', actualCloneResult.getArchiveStatus().getArchived().charValue());
     assertEquals('N', actualCloneResult.getArchived().charValue());
     assertNull(actualCloneResult.getId());
     assertNull(actualCloneResult.getName());
@@ -480,38 +437,106 @@ public class SiteImplDiffblueTest {
   }
 
   /**
-   * Test {@link SiteImpl#getMainEntityName()}.
-   *
-   * <p>Method under test: {@link SiteImpl#getMainEntityName()}
+   * Method under test: {@link SiteImpl#clone()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SiteImpl.getMainEntityName()"})
-  public void testGetMainEntityName() {
-    // Arrange, Act and Assert
-    assertNull(siteImpl.getMainEntityName());
+  public void testClone2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteImpl siteImpl = new SiteImpl();
+    siteImpl.setCatalogs(new ArrayList<>());
+    siteImpl.setDefaultLocale(new LocaleImpl());
+    siteImpl.setId(1L);
+    siteImpl.setName("Name");
+    siteImpl.setSiteIdentifierValue("42");
+    siteImpl.setSiteResolutionType(SiteResolutionType.DOMAIN);
+    siteImpl.setSiteIdentifierType("foo");
+    siteImpl.setDeactivated(true);
+    siteImpl.setArchived(null);
+
+    // Act
+    Site actualCloneResult = siteImpl.clone();
+
+    // Assert
+    assertTrue(actualCloneResult instanceof SiteImpl);
+    assertEquals(siteImpl, actualCloneResult);
   }
 
   /**
-   * Test {@link SiteImpl#equals(Object)}, and {@link SiteImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Method under test: {@link SiteImpl#clone()}
+   */
+  @Test
+  public void testClone3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteImpl siteImpl = new SiteImpl();
+    siteImpl.setSiteResolutionType(SiteResolutionType.DOMAIN);
+
+    // Act
+    Site actualCloneResult = siteImpl.clone();
+
+    // Assert
+    assertTrue(actualCloneResult instanceof SiteImpl);
+    assertEquals("DOMAIN", actualCloneResult.getSiteIdentifierType());
+    SiteResolutionType siteResolutionType = actualCloneResult.getSiteResolutionType();
+    assertEquals("DOMAIN", siteResolutionType.getType());
+    assertEquals("Domain", siteResolutionType.getFriendlyType());
+    assertEquals('N', actualCloneResult.getArchiveStatus().getArchived().charValue());
+    assertEquals('N', actualCloneResult.getArchived().charValue());
+    assertNull(actualCloneResult.getId());
+    assertNull(actualCloneResult.getName());
+    assertNull(actualCloneResult.getSiteIdentifierValue());
+    assertNull(((SiteImpl) actualCloneResult).getMainEntityName());
+    assertNull(((SiteImpl) actualCloneResult).name);
+    assertNull(actualCloneResult.getDefaultLocale());
+    assertFalse(actualCloneResult.isTemplateSite());
+    assertFalse(((SiteImpl) actualCloneResult).deactivated);
+    assertTrue(actualCloneResult.getCatalogs().isEmpty());
+  }
+
+  /**
+   * Method under test: {@link SiteImpl#getMainEntityName()}
+   */
+  @Test
+  public void testGetMainEntityName() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertNull((new SiteImpl()).getMainEntityName());
+  }
+
+  /**
+   * Method under test: {@link SiteImpl#getMainEntityName()}
+   */
+  @Test
+  public void testGetMainEntityName2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SiteResolutionType siteResolutionType = mock(SiteResolutionType.class);
+    when(siteResolutionType.getType()).thenReturn("Type");
+
+    SiteImpl siteImpl = new SiteImpl();
+    siteImpl.setSiteResolutionType(siteResolutionType);
+
+    // Act
+    String actualMainEntityName = siteImpl.getMainEntityName();
+
+    // Assert
+    verify(siteResolutionType).getType();
+    assertNull(actualMainEntityName);
+  }
+
+  /**
+   * Methods under test:
    * <ul>
    *   <li>{@link SiteImpl#equals(Object)}
    *   <li>{@link SiteImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SiteImpl.equals(Object)", "int SiteImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     SiteImpl siteImpl = new SiteImpl();
@@ -536,28 +561,54 @@ public class SiteImplDiffblueTest {
 
     // Act and Assert
     assertEquals(siteImpl, siteImpl2);
-    assertEquals(siteImpl.hashCode(), siteImpl2.hashCode());
+    int expectedHashCodeResult = siteImpl.hashCode();
+    assertEquals(expectedHashCodeResult, siteImpl2.hashCode());
   }
 
   /**
-   * Test {@link SiteImpl#equals(Object)}, and {@link SiteImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link SiteImpl#equals(Object)}
    *   <li>{@link SiteImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SiteImpl.equals(Object)", "int SiteImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
+    // Arrange
+    SiteImpl siteImpl = new SiteImpl();
+    siteImpl.setCatalogs(new ArrayList<>());
+    siteImpl.setDeactivated(true);
+    siteImpl.setDefaultLocale(mock(Locale.class));
+    siteImpl.setId(1L);
+    siteImpl.setName("Name");
+    siteImpl.setSiteIdentifierType("Site Identifier Type");
+    siteImpl.setSiteIdentifierValue("42");
+    siteImpl.setSiteResolutionType(SiteResolutionType.DOMAIN);
+
+    SiteImpl siteImpl2 = new SiteImpl();
+    siteImpl2.setCatalogs(new ArrayList<>());
+    siteImpl2.setDeactivated(true);
+    siteImpl2.setDefaultLocale(new LocaleImpl());
+    siteImpl2.setId(1L);
+    siteImpl2.setName("Name");
+    siteImpl2.setSiteIdentifierType("Site Identifier Type");
+    siteImpl2.setSiteIdentifierValue("42");
+    siteImpl2.setSiteResolutionType(SiteResolutionType.DOMAIN);
+
+    // Act and Assert
+    assertEquals(siteImpl, siteImpl2);
+    int expectedHashCodeResult = siteImpl.hashCode();
+    assertEquals(expectedHashCodeResult, siteImpl2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link SiteImpl#equals(Object)}
+   *   <li>{@link SiteImpl#hashCode()}
+   * </ul>
+   */
+  @Test
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     SiteImpl siteImpl = new SiteImpl();
@@ -577,19 +628,9 @@ public class SiteImplDiffblueTest {
   }
 
   /**
-   * Test {@link SiteImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteImpl#equals(Object)}
+   * Method under test: {@link SiteImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SiteImpl.equals(Object)", "int SiteImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     SiteImpl siteImpl = new SiteImpl();
@@ -617,19 +658,9 @@ public class SiteImplDiffblueTest {
   }
 
   /**
-   * Test {@link SiteImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteImpl#equals(Object)}
+   * Method under test: {@link SiteImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SiteImpl.equals(Object)", "int SiteImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     SiteImpl siteImpl = new SiteImpl();
@@ -657,19 +688,9 @@ public class SiteImplDiffblueTest {
   }
 
   /**
-   * Test {@link SiteImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteImpl#equals(Object)}
+   * Method under test: {@link SiteImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SiteImpl.equals(Object)", "int SiteImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     SiteImpl siteImpl = new SiteImpl();
@@ -697,19 +718,9 @@ public class SiteImplDiffblueTest {
   }
 
   /**
-   * Test {@link SiteImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteImpl#equals(Object)}
+   * Method under test: {@link SiteImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SiteImpl.equals(Object)", "int SiteImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     SiteImpl siteImpl = new SiteImpl();
@@ -727,19 +738,9 @@ public class SiteImplDiffblueTest {
   }
 
   /**
-   * Test {@link SiteImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link SiteImpl#equals(Object)}
+   * Method under test: {@link SiteImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean SiteImpl.equals(Object)", "int SiteImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     SiteImpl siteImpl = new SiteImpl();
@@ -757,19 +758,68 @@ public class SiteImplDiffblueTest {
   }
 
   /**
-   * Test new {@link SiteImpl} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link SiteImpl}
+   * Methods under test:
+   * <ul>
+   *   <li>{@link SiteImpl#setCatalogs(List)}
+   *   <li>{@link SiteImpl#setDefaultLocale(Locale)}
+   *   <li>{@link SiteImpl#setId(Long)}
+   *   <li>{@link SiteImpl#setName(String)}
+   *   <li>{@link SiteImpl#setSiteIdentifierType(String)}
+   *   <li>{@link SiteImpl#setSiteIdentifierValue(String)}
+   *   <li>{@link SiteImpl#getArchiveStatus()}
+   *   <li>{@link SiteImpl#getCatalogs()}
+   *   <li>{@link SiteImpl#getDefaultLocale()}
+   *   <li>{@link SiteImpl#getId()}
+   *   <li>{@link SiteImpl#getSiteIdentifierType()}
+   *   <li>{@link SiteImpl#getSiteIdentifierValue()}
+   *   <li>{@link SiteImpl#isTemplateSite()}
+   * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SiteImpl.<init>()"})
+  public void testGettersAndSetters() {
+    // Arrange
+    SiteImpl siteImpl = new SiteImpl();
+    ArrayList<Catalog> catalogs = new ArrayList<>();
+
+    // Act
+    siteImpl.setCatalogs(catalogs);
+    LocaleImpl defaultLocale = new LocaleImpl();
+    siteImpl.setDefaultLocale(defaultLocale);
+    siteImpl.setId(1L);
+    siteImpl.setName("Name");
+    siteImpl.setSiteIdentifierType("Site Identifier Type");
+    siteImpl.setSiteIdentifierValue("42");
+    ArchiveStatus actualArchiveStatus = siteImpl.getArchiveStatus();
+    List<Catalog> actualCatalogs = siteImpl.getCatalogs();
+    Locale actualDefaultLocale = siteImpl.getDefaultLocale();
+    Long actualId = siteImpl.getId();
+    String actualSiteIdentifierType = siteImpl.getSiteIdentifierType();
+    String actualSiteIdentifierValue = siteImpl.getSiteIdentifierValue();
+    boolean actualIsTemplateSiteResult = siteImpl.isTemplateSite();
+
+    // Assert that nothing has changed
+    assertEquals("42", actualSiteIdentifierValue);
+    assertEquals("Site Identifier Type", actualSiteIdentifierType);
+    assertEquals('N', actualArchiveStatus.getArchived().charValue());
+    assertEquals(1L, actualId.longValue());
+    assertFalse(actualIsTemplateSiteResult);
+    assertTrue(actualCatalogs.isEmpty());
+    assertSame(catalogs, actualCatalogs);
+    assertSame(defaultLocale, actualDefaultLocale);
+  }
+
+  /**
+   * Method under test: default or parameterless constructor of {@link SiteImpl}
+   */
+  @Test
   public void testNewSiteImpl() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange and Act
     SiteImpl actualSiteImpl = new SiteImpl();
 
     // Assert
+    assertEquals('N', actualSiteImpl.getArchiveStatus().getArchived().charValue());
     assertEquals('N', actualSiteImpl.getArchived().charValue());
     assertNull(actualSiteImpl.getId());
     assertNull(actualSiteImpl.getMainEntityName());

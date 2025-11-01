@@ -19,23 +19,16 @@ package org.broadleafcommerce.core.order.service.call;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderItem;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class MergeCartResponseDiffblueTest {
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link MergeCartResponse}
    *   <li>{@link MergeCartResponse#setAddedItems(List)}
@@ -49,19 +42,6 @@ public class MergeCartResponseDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void MergeCartResponse.<init>()",
-    "List MergeCartResponse.getAddedItems()",
-    "Order MergeCartResponse.getOrder()",
-    "List MergeCartResponse.getRemovedItems()",
-    "boolean MergeCartResponse.isMerged()",
-    "void MergeCartResponse.setAddedItems(List)",
-    "void MergeCartResponse.setMerged(boolean)",
-    "void MergeCartResponse.setOrder(Order)",
-    "void MergeCartResponse.setRemovedItems(List)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     MergeCartResponse actualMergeCartResponse = new MergeCartResponse();
@@ -77,7 +57,7 @@ public class MergeCartResponseDiffblueTest {
     List<OrderItem> actualRemovedItems = actualMergeCartResponse.getRemovedItems();
     boolean actualIsMergedResult = actualMergeCartResponse.isMerged();
 
-    // Assert
+    // Assert that nothing has changed
     assertTrue(actualAddedItems.isEmpty());
     assertTrue(actualIsMergedResult);
     assertSame(addedItems, actualAddedItems);

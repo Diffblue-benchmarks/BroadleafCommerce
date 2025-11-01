@@ -17,95 +17,125 @@
  */
 package org.broadleafcommerce.common.jmx;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import javax.management.JMException;
+import javax.management.modelmbean.ModelMBeanNotificationInfo;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.mockito.Mockito;
 import org.springframework.aop.aspectj.annotation.AspectJProxyFactory;
-import org.springframework.jmx.export.annotation.AnnotationJmxAttributeSource;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.jmx.export.metadata.InvalidMetadataException;
+import org.springframework.jmx.export.metadata.ManagedNotification;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class MetadataMBeanInfoAssemblerDiffblueTest {
   /**
-   * Test {@link MetadataMBeanInfoAssembler#getNotificationInfo(Object, String)}.
-   *
-   * <ul>
-   *   <li>Then return array length is zero.
-   * </ul>
-   *
-   * <p>Method under test: {@link MetadataMBeanInfoAssembler#getNotificationInfo(Object, String)}
+   * Method under test:
+   * {@link MetadataMBeanInfoAssembler#getNotificationInfo(Object, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "javax.management.modelmbean.ModelMBeanNotificationInfo[] MetadataMBeanInfoAssembler.getNotificationInfo(Object, String)"
-  })
-  public void testGetNotificationInfo_thenReturnArrayLengthIsZero() {
+  public void testGetNotificationInfo() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     MetadataMBeanInfoAssembler metadataMBeanInfoAssembler = new MetadataMBeanInfoAssembler();
-    metadataMBeanInfoAssembler.setAttributeSource(new AnnotationJmxAttributeSource());
+    metadataMBeanInfoAssembler.setAttributeSource(new AnnotationJmxAttributeSource("App Name"));
 
     // Act and Assert
-    assertEquals(
-        0,
-        metadataMBeanInfoAssembler.getNotificationInfo(new AspectJProxyFactory(), "Bean Key")
-            .length);
+    assertEquals(0, metadataMBeanInfoAssembler.getNotificationInfo(new AspectJProxyFactory(), "Bean Key").length);
   }
 
   /**
-   * Test {@link MetadataMBeanInfoAssembler#getAttributeInfo(Object, String)}.
-   *
-   * <ul>
-   *   <li>When {@link BLCFieldUtils#NULL_FIELD}.
-   *   <li>Then return array length is zero.
-   * </ul>
-   *
-   * <p>Method under test: {@link MetadataMBeanInfoAssembler#getAttributeInfo(Object, String)}
+   * Method under test:
+   * {@link MetadataMBeanInfoAssembler#getNotificationInfo(Object, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "javax.management.modelmbean.ModelMBeanAttributeInfo[] MetadataMBeanInfoAssembler.getAttributeInfo(Object, String)"
-  })
-  public void testGetAttributeInfo_whenNull_field_thenReturnArrayLengthIsZero() throws JMException {
-    // Arrange, Act and Assert
-    assertEquals(
-        0,
-        new MetadataMBeanInfoAssembler()
-            .getAttributeInfo(BLCFieldUtils.NULL_FIELD, "Bean Key")
-            .length);
+  public void testGetNotificationInfo2() throws InvalidMetadataException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ManagedNotification managedNotification = new ManagedNotification();
+    managedNotification.setDescription("The characteristics of someone or something");
+    managedNotification.setName("Name");
+    managedNotification.setNotificationType("Notification Type");
+    managedNotification.setNotificationTypes("Notification Types");
+    AnnotationJmxAttributeSource attributeSource = mock(AnnotationJmxAttributeSource.class);
+    when(attributeSource.getManagedNotifications(Mockito.<Class<Object>>any()))
+        .thenReturn(new ManagedNotification[]{managedNotification});
+
+    MetadataMBeanInfoAssembler metadataMBeanInfoAssembler = new MetadataMBeanInfoAssembler();
+    metadataMBeanInfoAssembler.setAttributeSource(attributeSource);
+
+    // Act
+    ModelMBeanNotificationInfo[] actualNotificationInfo = metadataMBeanInfoAssembler
+        .getNotificationInfo(new AspectJProxyFactory(), "Bean Key");
+
+    // Assert
+    verify(attributeSource).getManagedNotifications(isA(Class.class));
+    ModelMBeanNotificationInfo modelMBeanNotificationInfo = actualNotificationInfo[0];
+    assertEquals("Name", modelMBeanNotificationInfo.getName());
+    assertEquals("The characteristics of someone or something", modelMBeanNotificationInfo.getDescription());
+    assertEquals(1, actualNotificationInfo.length);
+    assertArrayEquals(new String[]{"Notification Types"}, modelMBeanNotificationInfo.getNotifTypes());
   }
 
   /**
-   * Test {@link MetadataMBeanInfoAssembler#getOperationInfo(Object, String)}.
-   *
-   * <ul>
-   *   <li>When {@link BLCFieldUtils#NULL_FIELD}.
-   *   <li>Then return array length is zero.
-   * </ul>
-   *
-   * <p>Method under test: {@link MetadataMBeanInfoAssembler#getOperationInfo(Object, String)}
+   * Method under test:
+   * {@link MetadataMBeanInfoAssembler#getAttributeInfo(Object, String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "javax.management.modelmbean.ModelMBeanOperationInfo[] MetadataMBeanInfoAssembler.getOperationInfo(Object, String)"
-  })
-  public void testGetOperationInfo_whenNull_field_thenReturnArrayLengthIsZero() {
+  public void testGetAttributeInfo() throws JMException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertEquals(
-        0,
-        new MetadataMBeanInfoAssembler()
-            .getOperationInfo(BLCFieldUtils.NULL_FIELD, "Bean Key")
-            .length);
+    assertEquals(0, (new MetadataMBeanInfoAssembler()).getAttributeInfo(BLCFieldUtils.NULL_FIELD, "Bean Key").length);
+  }
+
+  /**
+   * Method under test:
+   * {@link MetadataMBeanInfoAssembler#getAttributeInfo(Object, String)}
+   */
+  @Test
+  public void testGetAttributeInfo2() throws JMException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    MetadataMBeanInfoAssembler metadataMBeanInfoAssembler = new MetadataMBeanInfoAssembler();
+    metadataMBeanInfoAssembler.setAttributeSource(mock(AnnotationJmxAttributeSource.class));
+
+    // Act and Assert
+    assertEquals(0, metadataMBeanInfoAssembler.getAttributeInfo(BLCFieldUtils.NULL_FIELD, "Bean Key").length);
+  }
+
+  /**
+   * Method under test:
+   * {@link MetadataMBeanInfoAssembler#getOperationInfo(Object, String)}
+   */
+  @Test
+  public void testGetOperationInfo() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertEquals(0, (new MetadataMBeanInfoAssembler()).getOperationInfo(BLCFieldUtils.NULL_FIELD, "Bean Key").length);
+  }
+
+  /**
+   * Method under test:
+   * {@link MetadataMBeanInfoAssembler#getOperationInfo(Object, String)}
+   */
+  @Test
+  public void testGetOperationInfo2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    MetadataMBeanInfoAssembler metadataMBeanInfoAssembler = new MetadataMBeanInfoAssembler();
+    metadataMBeanInfoAssembler.setAttributeSource(mock(AnnotationJmxAttributeSource.class));
+
+    // Act and Assert
+    assertEquals(0, metadataMBeanInfoAssembler.getOperationInfo(BLCFieldUtils.NULL_FIELD, "Bean Key").length);
   }
 }

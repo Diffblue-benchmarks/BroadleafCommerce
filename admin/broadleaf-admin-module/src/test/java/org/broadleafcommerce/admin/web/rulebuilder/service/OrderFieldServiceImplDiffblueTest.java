@@ -18,90 +18,24 @@
 package org.broadleafcommerce.admin.web.rulebuilder.service;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
-import java.util.ArrayList;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.mock;
+import java.util.List;
+import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
 import org.broadleafcommerce.openadmin.web.rulebuilder.dto.FieldData;
+import org.broadleafcommerce.openadmin.web.rulebuilder.service.RuleBuilderFieldServiceExtensionManager;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(MockitoJUnitRunner.class)
 public class OrderFieldServiceImplDiffblueTest {
-  @InjectMocks private OrderFieldServiceImpl orderFieldServiceImpl;
-
   /**
-   * Test {@link OrderFieldServiceImpl#init()}.
-   *
-   * <ul>
-   *   <li>Given {@link OrderFieldServiceImpl}.
-   *   <li>Then {@link OrderFieldServiceImpl} Fields size is three.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderFieldServiceImpl#init()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void OrderFieldServiceImpl.init()"})
-  public void testInit_givenOrderFieldServiceImpl_thenOrderFieldServiceImplFieldsSizeIsThree() {
-    // Arrange and Act
-    orderFieldServiceImpl.init();
-
-    // Assert
-    assertEquals(3, orderFieldServiceImpl.getFields().size());
-  }
-
-  /**
-   * Test {@link OrderFieldServiceImpl#init()}.
-   *
-   * <ul>
-   *   <li>Then {@link OrderFieldServiceImpl} (default constructor) Fields is {@link
-   *       ArrayList#ArrayList()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderFieldServiceImpl#init()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void OrderFieldServiceImpl.init()"})
-  public void testInit_thenOrderFieldServiceImplFieldsIsArrayList() {
-    // Arrange
-    OrderFieldServiceImpl orderFieldServiceImpl = new OrderFieldServiceImpl();
-    ArrayList<FieldData> fields = new ArrayList<>();
-    orderFieldServiceImpl.setFields(fields);
-
-    // Act
-    orderFieldServiceImpl.init();
-
-    // Assert
-    assertEquals(fields, orderFieldServiceImpl.getFields());
-  }
-
-  /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link OrderFieldServiceImpl#getDtoClassName()}
    *   <li>{@link OrderFieldServiceImpl#getName()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String OrderFieldServiceImpl.getDtoClassName()",
-    "String OrderFieldServiceImpl.getName()"
-  })
   public void testGettersAndSetters() {
     // Arrange
     OrderFieldServiceImpl orderFieldServiceImpl = new OrderFieldServiceImpl();
@@ -112,5 +46,109 @@ public class OrderFieldServiceImplDiffblueTest {
     // Assert
     assertEquals("ORDER_FIELDS", orderFieldServiceImpl.getName());
     assertEquals("org.broadleafcommerce.core.order.domain.OrderImpl", actualDtoClassName);
+  }
+
+  /**
+   * Method under test: {@link OrderFieldServiceImpl#init()}
+   */
+  @Test
+  public void testInit() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    OrderFieldServiceImpl orderFieldServiceImpl = new OrderFieldServiceImpl();
+
+    // Act
+    orderFieldServiceImpl.init();
+
+    // Assert
+    List<FieldData> fields = orderFieldServiceImpl.getFields();
+    assertEquals(3, fields.size());
+    FieldData getResult = fields.get(0);
+    assertEquals("[]", getResult.getOptions());
+    FieldData getResult2 = fields.get(1);
+    assertEquals("[]", getResult2.getOptions());
+    FieldData getResult3 = fields.get(2);
+    assertEquals("[]", getResult3.getOptions());
+    assertEquals("blcOperators_Numeric", getResult2.getOperators());
+    assertEquals("blcOperators_Text", getResult.getOperators());
+    assertEquals("blcOperators_Text", getResult3.getOperators());
+    assertEquals("currency.currencyCode", getResult.getFieldName());
+    assertEquals("locale.localeCode", getResult3.getFieldName());
+    assertEquals("rule_localeCode", getResult3.getFieldLabel());
+    assertEquals("rule_orderCurrencyCode", getResult.getFieldLabel());
+    assertEquals("rule_orderSubtotal", getResult2.getFieldLabel());
+    assertEquals("subTotal", getResult2.getFieldName());
+    assertNull(getResult.getOverrideDtoClassName());
+    assertNull(getResult2.getOverrideDtoClassName());
+    assertNull(getResult3.getOverrideDtoClassName());
+    assertNull(getResult.getOverrideEntityKey());
+    assertNull(getResult2.getOverrideEntityKey());
+    assertNull(getResult3.getOverrideEntityKey());
+    assertNull(getResult.getSelectizeSectionKey());
+    assertNull(getResult2.getSelectizeSectionKey());
+    assertNull(getResult3.getSelectizeSectionKey());
+    assertNull(getResult.getSecondaryFieldType());
+    assertNull(getResult2.getSecondaryFieldType());
+    assertNull(getResult3.getSecondaryFieldType());
+    assertEquals(SupportedFieldType.MONEY, getResult2.getFieldType());
+    assertEquals(SupportedFieldType.STRING, getResult.getFieldType());
+    assertEquals(SupportedFieldType.STRING, getResult3.getFieldType());
+    assertFalse(getResult.getSkipValidation());
+    assertFalse(getResult2.getSkipValidation());
+    assertFalse(getResult3.getSkipValidation());
+  }
+
+  /**
+   * Method under test: {@link OrderFieldServiceImpl#init()}
+   */
+  @Test
+  public void testInit2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    OrderFieldServiceImpl orderFieldServiceImpl = new OrderFieldServiceImpl();
+    orderFieldServiceImpl
+        .setRuleBuilderFieldServiceExtensionManager(mock(RuleBuilderFieldServiceExtensionManager.class));
+
+    // Act
+    orderFieldServiceImpl.init();
+
+    // Assert
+    List<FieldData> fields = orderFieldServiceImpl.getFields();
+    assertEquals(3, fields.size());
+    FieldData getResult = fields.get(0);
+    assertEquals("[]", getResult.getOptions());
+    FieldData getResult2 = fields.get(1);
+    assertEquals("[]", getResult2.getOptions());
+    FieldData getResult3 = fields.get(2);
+    assertEquals("[]", getResult3.getOptions());
+    assertEquals("blcOperators_Numeric", getResult2.getOperators());
+    assertEquals("blcOperators_Text", getResult.getOperators());
+    assertEquals("blcOperators_Text", getResult3.getOperators());
+    assertEquals("currency.currencyCode", getResult.getFieldName());
+    assertEquals("locale.localeCode", getResult3.getFieldName());
+    assertEquals("rule_localeCode", getResult3.getFieldLabel());
+    assertEquals("rule_orderCurrencyCode", getResult.getFieldLabel());
+    assertEquals("rule_orderSubtotal", getResult2.getFieldLabel());
+    assertEquals("subTotal", getResult2.getFieldName());
+    assertNull(getResult.getOverrideDtoClassName());
+    assertNull(getResult2.getOverrideDtoClassName());
+    assertNull(getResult3.getOverrideDtoClassName());
+    assertNull(getResult.getOverrideEntityKey());
+    assertNull(getResult2.getOverrideEntityKey());
+    assertNull(getResult3.getOverrideEntityKey());
+    assertNull(getResult.getSelectizeSectionKey());
+    assertNull(getResult2.getSelectizeSectionKey());
+    assertNull(getResult3.getSelectizeSectionKey());
+    assertNull(getResult.getSecondaryFieldType());
+    assertNull(getResult2.getSecondaryFieldType());
+    assertNull(getResult3.getSecondaryFieldType());
+    assertEquals(SupportedFieldType.MONEY, getResult2.getFieldType());
+    assertEquals(SupportedFieldType.STRING, getResult.getFieldType());
+    assertEquals(SupportedFieldType.STRING, getResult3.getFieldType());
+    assertFalse(getResult.getSkipValidation());
+    assertFalse(getResult2.getSkipValidation());
+    assertFalse(getResult3.getSkipValidation());
   }
 }

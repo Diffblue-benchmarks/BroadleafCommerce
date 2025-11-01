@@ -22,12 +22,10 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,39 +38,61 @@ import org.broadleafcommerce.common.service.GenericEntityServiceImpl;
 import org.broadleafcommerce.common.site.domain.CatalogImpl;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
-import org.broadleafcommerce.common.util.dao.DynamicDaoHelperImpl;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = {EntityDuplicatorExtensionManager.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(SpringJUnit4ClassRunner.class)
 public class EntityDuplicatorExtensionManagerDiffblueTest {
-  @Autowired private EntityDuplicatorExtensionManager entityDuplicatorExtensionManager;
-
   /**
-   * Test {@link EntityDuplicatorExtensionManager#validateDuplicate(Object, ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link EntityDuplicatorExtensionManager#validateDuplicate(Object,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#validateDuplicate(Object, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.validateDuplicate(Object, ExtensionResultHolder)"
-  })
   public void testValidateDuplicate() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager =
-        new EntityDuplicatorExtensionManager();
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
+
+    ExtensionResultHolder<Boolean> resultHolder = new ExtensionResultHolder<>();
+    resultHolder.setResult(true);
+    resultHolder.setThrowable(new Throwable());
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        entityDuplicatorExtensionManager.validateDuplicate(BLCFieldUtils.NULL_FIELD, resultHolder));
+  }
+
+  /**
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#validateDuplicate(Object, ExtensionResultHolder)}
+   */
+  @Test
+  public void testValidateDuplicate2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
+    entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
+
+    ExtensionResultHolder<Boolean> resultHolder = new ExtensionResultHolder<>();
+    resultHolder.setResult(true);
+    resultHolder.setThrowable(new Throwable());
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        entityDuplicatorExtensionManager.validateDuplicate(BLCFieldUtils.NULL_FIELD, resultHolder));
+  }
+
+  /**
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#validateDuplicate(Object, ExtensionResultHolder)}
+   */
+  @Test
+  public void testValidateDuplicate3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
     entityDuplicatorExtensionManager.registerHandler(new EntityDuplicatorExtensionManager());
     entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
 
@@ -81,217 +101,99 @@ public class EntityDuplicatorExtensionManagerDiffblueTest {
     resultHolder.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
         entityDuplicatorExtensionManager.validateDuplicate(BLCFieldUtils.NULL_FIELD, resultHolder));
   }
 
   /**
-   * Test {@link EntityDuplicatorExtensionManager#validateDuplicate(Object, ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link EntityDuplicatorExtensionManager#validateDuplicate(Object,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#validateDuplicate(Object, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.validateDuplicate(Object, ExtensionResultHolder)"
-  })
-  public void testValidateDuplicate2() {
+  public void testValidateDuplicate4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    EntityDuplicatorExtensionHandler entityDuplicatorExtensionHandler =
-        mock(EntityDuplicatorExtensionHandler.class);
-    when(entityDuplicatorExtensionHandler.addToSandbox(Mockito.<Object>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(entityDuplicatorExtensionHandler.validateDuplicate(
-            Mockito.<Object>any(), Mockito.<ExtensionResultHolder<Boolean>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(entityDuplicatorExtensionHandler.isEnabled()).thenReturn(true);
-
-    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager =
-        new EntityDuplicatorExtensionManager();
-    entityDuplicatorExtensionManager.registerHandler(entityDuplicatorExtensionHandler);
-    entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
-
-    ExtensionResultHolder<Boolean> resultHolder = new ExtensionResultHolder<>();
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
+    ExtensionResultHolder<Boolean> resultHolder = mock(ExtensionResultHolder.class);
+    doNothing().when(resultHolder).setResult(Mockito.<Boolean>any());
+    doNothing().when(resultHolder).setThrowable(Mockito.<Throwable>any());
     resultHolder.setResult(true);
     resultHolder.setThrowable(new Throwable());
 
     // Act
-    ExtensionResultStatusType actualValidateDuplicateResult =
-        entityDuplicatorExtensionManager.validateDuplicate(BLCFieldUtils.NULL_FIELD, resultHolder);
+    ExtensionResultStatusType actualValidateDuplicateResult = entityDuplicatorExtensionManager
+        .validateDuplicate(BLCFieldUtils.NULL_FIELD, resultHolder);
 
     // Assert
-    verify(entityDuplicatorExtensionHandler, atLeast(1)).isEnabled();
-    verify(entityDuplicatorExtensionHandler).addToSandbox(isA(Object.class));
-    verify(entityDuplicatorExtensionHandler)
-        .validateDuplicate(isA(Object.class), isA(ExtensionResultHolder.class));
-    assertEquals(ExtensionResultStatusType.HANDLED, actualValidateDuplicateResult);
-  }
-
-  /**
-   * Test {@link EntityDuplicatorExtensionManager#validateDuplicate(Object, ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link EntityDuplicatorExtensionManager#validateDuplicate(Object,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.validateDuplicate(Object, ExtensionResultHolder)"
-  })
-  public void testValidateDuplicate3() {
-    // Arrange
-    EntityDuplicatorExtensionHandler entityDuplicatorExtensionHandler =
-        mock(EntityDuplicatorExtensionHandler.class);
-    when(entityDuplicatorExtensionHandler.addToSandbox(Mockito.<Object>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(entityDuplicatorExtensionHandler.validateDuplicate(
-            Mockito.<Object>any(), Mockito.<ExtensionResultHolder<Boolean>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED_STOP);
-    when(entityDuplicatorExtensionHandler.isEnabled()).thenReturn(true);
-
-    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager =
-        new EntityDuplicatorExtensionManager();
-    entityDuplicatorExtensionManager.registerHandler(entityDuplicatorExtensionHandler);
-    entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
-
-    ExtensionResultHolder<Boolean> resultHolder = new ExtensionResultHolder<>();
-    resultHolder.setResult(true);
-    resultHolder.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualValidateDuplicateResult =
-        entityDuplicatorExtensionManager.validateDuplicate(BLCFieldUtils.NULL_FIELD, resultHolder);
-
-    // Assert
-    verify(entityDuplicatorExtensionHandler, atLeast(1)).isEnabled();
-    verify(entityDuplicatorExtensionHandler).addToSandbox(isA(Object.class));
-    verify(entityDuplicatorExtensionHandler)
-        .validateDuplicate(isA(Object.class), isA(ExtensionResultHolder.class));
-    assertEquals(ExtensionResultStatusType.HANDLED, actualValidateDuplicateResult);
-  }
-
-  /**
-   * Test {@link EntityDuplicatorExtensionManager#validateDuplicate(Object, ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Given {@link EntityDuplicatorExtensionHandler} {@link
-   *       EntityDuplicatorExtensionHandler#isEnabled()} return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityDuplicatorExtensionManager#validateDuplicate(Object,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.validateDuplicate(Object, ExtensionResultHolder)"
-  })
-  public void testValidateDuplicate_givenEntityDuplicatorExtensionHandlerIsEnabledReturnFalse() {
-    // Arrange
-    EntityDuplicatorExtensionHandler entityDuplicatorExtensionHandler =
-        mock(EntityDuplicatorExtensionHandler.class);
-    when(entityDuplicatorExtensionHandler.isEnabled()).thenReturn(false);
-
-    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager =
-        new EntityDuplicatorExtensionManager();
-    entityDuplicatorExtensionManager.registerHandler(entityDuplicatorExtensionHandler);
-    entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
-
-    ExtensionResultHolder<Boolean> resultHolder = new ExtensionResultHolder<>();
-    resultHolder.setResult(true);
-    resultHolder.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualValidateDuplicateResult =
-        entityDuplicatorExtensionManager.validateDuplicate(BLCFieldUtils.NULL_FIELD, resultHolder);
-
-    // Assert
-    verify(entityDuplicatorExtensionHandler, atLeast(1)).isEnabled();
+    verify(resultHolder).setResult(eq(true));
+    verify(resultHolder).setThrowable(isA(Throwable.class));
     assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualValidateDuplicateResult);
   }
 
   /**
-   * Test {@link EntityDuplicatorExtensionManager#validateDuplicate(Object, ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Given {@link EntityDuplicatorExtensionManager}.
-   *   <li>Then return {@code NOT_HANDLED}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityDuplicatorExtensionManager#validateDuplicate(Object,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#setupDuplicate(Object, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.validateDuplicate(Object, ExtensionResultHolder)"
-  })
-  public void testValidateDuplicate_givenEntityDuplicatorExtensionManager_thenReturnNotHandled() {
+  public void testSetupDuplicate() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    ExtensionResultHolder<Boolean> resultHolder = new ExtensionResultHolder<>();
-    resultHolder.setResult(true);
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
+
+    ExtensionResultHolder<MultiTenantCopyContext> resultHolder = new ExtensionResultHolder<>();
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
+    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
+    resultHolder.setResult(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite, genericEntityService,
+        new MultiTenantCopierExtensionManager()));
     resultHolder.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityDuplicatorExtensionManager.validateDuplicate(BLCFieldUtils.NULL_FIELD, resultHolder));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        entityDuplicatorExtensionManager.setupDuplicate(BLCFieldUtils.NULL_FIELD, resultHolder));
   }
 
   /**
-   * Test {@link EntityDuplicatorExtensionManager#validateDuplicate(Object, ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Then return {@code NOT_HANDLED}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityDuplicatorExtensionManager#validateDuplicate(Object,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#setupDuplicate(Object, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.validateDuplicate(Object, ExtensionResultHolder)"
-  })
-  public void testValidateDuplicate_thenReturnNotHandled() {
+  public void testSetupDuplicate2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager =
-        new EntityDuplicatorExtensionManager();
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
     entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
 
-    ExtensionResultHolder<Boolean> resultHolder = new ExtensionResultHolder<>();
-    resultHolder.setResult(true);
+    ExtensionResultHolder<MultiTenantCopyContext> resultHolder = new ExtensionResultHolder<>();
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
+    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
+    resultHolder.setResult(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite, genericEntityService,
+        new MultiTenantCopierExtensionManager()));
     resultHolder.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityDuplicatorExtensionManager.validateDuplicate(BLCFieldUtils.NULL_FIELD, resultHolder));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        entityDuplicatorExtensionManager.setupDuplicate(BLCFieldUtils.NULL_FIELD, resultHolder));
   }
 
   /**
-   * Test {@link EntityDuplicatorExtensionManager#setupDuplicate(Object, ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link EntityDuplicatorExtensionManager#setupDuplicate(Object,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#setupDuplicate(Object, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.setupDuplicate(Object, ExtensionResultHolder)"
-  })
-  public void testSetupDuplicate() {
+  public void testSetupDuplicate3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager =
-        new EntityDuplicatorExtensionManager();
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
     entityDuplicatorExtensionManager.registerHandler(new EntityDuplicatorExtensionManager());
     entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
 
@@ -301,374 +203,116 @@ public class EntityDuplicatorExtensionManagerDiffblueTest {
     SiteImpl fromSite = new SiteImpl();
     SiteImpl toSite = new SiteImpl();
     GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    MultiTenantCopyContext multiTenantCopyContext =
-        new MultiTenantCopyContext(
-            fromCatalog,
-            toCatalog,
-            fromSite,
-            toSite,
-            genericEntityService,
-            new MultiTenantCopierExtensionManager());
-    resultHolder.setResult(multiTenantCopyContext);
+    resultHolder.setResult(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite, genericEntityService,
+        new MultiTenantCopierExtensionManager()));
     resultHolder.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
         entityDuplicatorExtensionManager.setupDuplicate(BLCFieldUtils.NULL_FIELD, resultHolder));
   }
 
   /**
-   * Test {@link EntityDuplicatorExtensionManager#setupDuplicate(Object, ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link EntityDuplicatorExtensionManager#setupDuplicate(Object,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#setupDuplicate(Object, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.setupDuplicate(Object, ExtensionResultHolder)"
-  })
-  public void testSetupDuplicate2() {
+  public void testSetupDuplicate4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    EntityDuplicatorExtensionHandler entityDuplicatorExtensionHandler =
-        mock(EntityDuplicatorExtensionHandler.class);
-    when(entityDuplicatorExtensionHandler.addToSandbox(Mockito.<Object>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(entityDuplicatorExtensionHandler.setupDuplicate(
-            Mockito.<Object>any(), Mockito.<ExtensionResultHolder<MultiTenantCopyContext>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(entityDuplicatorExtensionHandler.isEnabled()).thenReturn(true);
-
-    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager =
-        new EntityDuplicatorExtensionManager();
-    entityDuplicatorExtensionManager.registerHandler(entityDuplicatorExtensionHandler);
-    entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
-
-    ExtensionResultHolder<MultiTenantCopyContext> resultHolder = new ExtensionResultHolder<>();
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
+    ExtensionResultHolder<MultiTenantCopyContext> resultHolder = mock(ExtensionResultHolder.class);
+    doNothing().when(resultHolder).setResult(Mockito.<MultiTenantCopyContext>any());
+    doNothing().when(resultHolder).setThrowable(Mockito.<Throwable>any());
     CatalogImpl fromCatalog = new CatalogImpl();
     CatalogImpl toCatalog = new CatalogImpl();
     SiteImpl fromSite = new SiteImpl();
     SiteImpl toSite = new SiteImpl();
     GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    MultiTenantCopyContext multiTenantCopyContext =
-        new MultiTenantCopyContext(
-            fromCatalog,
-            toCatalog,
-            fromSite,
-            toSite,
-            genericEntityService,
-            new MultiTenantCopierExtensionManager());
-    resultHolder.setResult(multiTenantCopyContext);
+    resultHolder.setResult(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite, genericEntityService,
+        new MultiTenantCopierExtensionManager()));
     resultHolder.setThrowable(new Throwable());
 
     // Act
-    ExtensionResultStatusType actualSetupDuplicateResult =
-        entityDuplicatorExtensionManager.setupDuplicate(BLCFieldUtils.NULL_FIELD, resultHolder);
+    ExtensionResultStatusType actualSetupDuplicateResult = entityDuplicatorExtensionManager
+        .setupDuplicate(BLCFieldUtils.NULL_FIELD, resultHolder);
 
     // Assert
-    verify(entityDuplicatorExtensionHandler, atLeast(1)).isEnabled();
-    verify(entityDuplicatorExtensionHandler).addToSandbox(isA(Object.class));
-    verify(entityDuplicatorExtensionHandler)
-        .setupDuplicate(isA(Object.class), isA(ExtensionResultHolder.class));
-    assertEquals(ExtensionResultStatusType.HANDLED, actualSetupDuplicateResult);
-  }
-
-  /**
-   * Test {@link EntityDuplicatorExtensionManager#setupDuplicate(Object, ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link EntityDuplicatorExtensionManager#setupDuplicate(Object,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.setupDuplicate(Object, ExtensionResultHolder)"
-  })
-  public void testSetupDuplicate3() {
-    // Arrange
-    EntityDuplicatorExtensionHandler entityDuplicatorExtensionHandler =
-        mock(EntityDuplicatorExtensionHandler.class);
-    when(entityDuplicatorExtensionHandler.addToSandbox(Mockito.<Object>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(entityDuplicatorExtensionHandler.setupDuplicate(
-            Mockito.<Object>any(), Mockito.<ExtensionResultHolder<MultiTenantCopyContext>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED_STOP);
-    when(entityDuplicatorExtensionHandler.isEnabled()).thenReturn(true);
-
-    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager =
-        new EntityDuplicatorExtensionManager();
-    entityDuplicatorExtensionManager.registerHandler(entityDuplicatorExtensionHandler);
-    entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
-
-    ExtensionResultHolder<MultiTenantCopyContext> resultHolder = new ExtensionResultHolder<>();
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    MultiTenantCopyContext multiTenantCopyContext =
-        new MultiTenantCopyContext(
-            fromCatalog,
-            toCatalog,
-            fromSite,
-            toSite,
-            genericEntityService,
-            new MultiTenantCopierExtensionManager());
-    resultHolder.setResult(multiTenantCopyContext);
-    resultHolder.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualSetupDuplicateResult =
-        entityDuplicatorExtensionManager.setupDuplicate(BLCFieldUtils.NULL_FIELD, resultHolder);
-
-    // Assert
-    verify(entityDuplicatorExtensionHandler, atLeast(1)).isEnabled();
-    verify(entityDuplicatorExtensionHandler).addToSandbox(isA(Object.class));
-    verify(entityDuplicatorExtensionHandler)
-        .setupDuplicate(isA(Object.class), isA(ExtensionResultHolder.class));
-    assertEquals(ExtensionResultStatusType.HANDLED, actualSetupDuplicateResult);
-  }
-
-  /**
-   * Test {@link EntityDuplicatorExtensionManager#setupDuplicate(Object, ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Given {@link EntityDuplicatorExtensionHandler} {@link
-   *       EntityDuplicatorExtensionHandler#isEnabled()} return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityDuplicatorExtensionManager#setupDuplicate(Object,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.setupDuplicate(Object, ExtensionResultHolder)"
-  })
-  public void testSetupDuplicate_givenEntityDuplicatorExtensionHandlerIsEnabledReturnFalse() {
-    // Arrange
-    EntityDuplicatorExtensionHandler entityDuplicatorExtensionHandler =
-        mock(EntityDuplicatorExtensionHandler.class);
-    when(entityDuplicatorExtensionHandler.isEnabled()).thenReturn(false);
-
-    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager =
-        new EntityDuplicatorExtensionManager();
-    entityDuplicatorExtensionManager.registerHandler(entityDuplicatorExtensionHandler);
-    entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
-
-    ExtensionResultHolder<MultiTenantCopyContext> resultHolder = new ExtensionResultHolder<>();
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    MultiTenantCopyContext multiTenantCopyContext =
-        new MultiTenantCopyContext(
-            fromCatalog,
-            toCatalog,
-            fromSite,
-            toSite,
-            genericEntityService,
-            new MultiTenantCopierExtensionManager());
-    resultHolder.setResult(multiTenantCopyContext);
-    resultHolder.setThrowable(new Throwable());
-
-    // Act
-    ExtensionResultStatusType actualSetupDuplicateResult =
-        entityDuplicatorExtensionManager.setupDuplicate(BLCFieldUtils.NULL_FIELD, resultHolder);
-
-    // Assert
-    verify(entityDuplicatorExtensionHandler, atLeast(1)).isEnabled();
+    verify(resultHolder).setResult(isA(MultiTenantCopyContext.class));
+    verify(resultHolder).setThrowable(isA(Throwable.class));
     assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualSetupDuplicateResult);
   }
 
   /**
-   * Test {@link EntityDuplicatorExtensionManager#setupDuplicate(Object, ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Given {@link EntityDuplicatorExtensionManager}.
-   *   <li>Then return {@code NOT_HANDLED}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityDuplicatorExtensionManager#setupDuplicate(Object,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#addToSandbox(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.setupDuplicate(Object, ExtensionResultHolder)"
-  })
-  public void testSetupDuplicate_givenEntityDuplicatorExtensionManager_thenReturnNotHandled() {
-    // Arrange
-    ExtensionResultHolder<MultiTenantCopyContext> resultHolder = new ExtensionResultHolder<>();
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    MultiTenantCopyContext multiTenantCopyContext =
-        new MultiTenantCopyContext(
-            fromCatalog,
-            toCatalog,
-            fromSite,
-            toSite,
-            genericEntityService,
-            new MultiTenantCopierExtensionManager());
-    resultHolder.setResult(multiTenantCopyContext);
-    resultHolder.setThrowable(new Throwable());
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityDuplicatorExtensionManager.setupDuplicate(BLCFieldUtils.NULL_FIELD, resultHolder));
-  }
-
-  /**
-   * Test {@link EntityDuplicatorExtensionManager#setupDuplicate(Object, ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Then return {@code NOT_HANDLED}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityDuplicatorExtensionManager#setupDuplicate(Object,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.setupDuplicate(Object, ExtensionResultHolder)"
-  })
-  public void testSetupDuplicate_thenReturnNotHandled() {
-    // Arrange
-    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager =
-        new EntityDuplicatorExtensionManager();
-    entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
-
-    ExtensionResultHolder<MultiTenantCopyContext> resultHolder = new ExtensionResultHolder<>();
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    MultiTenantCopyContext multiTenantCopyContext =
-        new MultiTenantCopyContext(
-            fromCatalog,
-            toCatalog,
-            fromSite,
-            toSite,
-            genericEntityService,
-            new MultiTenantCopierExtensionManager());
-    resultHolder.setResult(multiTenantCopyContext);
-    resultHolder.setThrowable(new Throwable());
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityDuplicatorExtensionManager.setupDuplicate(BLCFieldUtils.NULL_FIELD, resultHolder));
-  }
-
-  /**
-   * Test {@link EntityDuplicatorExtensionManager#addToSandbox(Object)}.
-   *
-   * <p>Method under test: {@link EntityDuplicatorExtensionManager#addToSandbox(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.addToSandbox(Object)"
-  })
   public void testAddToSandbox() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        (new EntityDuplicatorExtensionManager()).addToSandbox(BLCFieldUtils.NULL_FIELD));
+  }
+
+  /**
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#addToSandbox(Object)}
+   */
+  @Test
+  public void testAddToSandbox2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager =
-        new EntityDuplicatorExtensionManager();
-    entityDuplicatorExtensionManager.registerHandler(new EntityDuplicatorExtensionManager());
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
     entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
         entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD));
   }
 
   /**
-   * Test {@link EntityDuplicatorExtensionManager#addToSandbox(Object)}.
-   *
-   * <p>Method under test: {@link EntityDuplicatorExtensionManager#addToSandbox(Object)}
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#addToSandbox(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.addToSandbox(Object)"
-  })
-  public void testAddToSandbox2() {
-    // Arrange
-    EntityDuplicatorExtensionHandler entityDuplicatorExtensionHandler =
-        mock(EntityDuplicatorExtensionHandler.class);
-    when(entityDuplicatorExtensionHandler.addToSandbox(Mockito.<Object>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED_STOP);
-    when(entityDuplicatorExtensionHandler.isEnabled()).thenReturn(true);
+  public void testAddToSandbox3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager =
-        new EntityDuplicatorExtensionManager();
-    entityDuplicatorExtensionManager.registerHandler(entityDuplicatorExtensionHandler);
+    // Arrange
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
+    entityDuplicatorExtensionManager.registerHandler(new EntityDuplicatorExtensionManager());
     entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
 
-    // Act
-    ExtensionResultStatusType actualAddToSandboxResult =
-        entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
-
-    // Assert
-    verify(entityDuplicatorExtensionHandler, atLeast(1)).isEnabled();
-    verify(entityDuplicatorExtensionHandler, atLeast(1)).addToSandbox(isA(Object.class));
-    assertEquals(ExtensionResultStatusType.HANDLED, actualAddToSandboxResult);
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD));
   }
 
   /**
-   * Test {@link EntityDuplicatorExtensionManager#addToSandbox(Object)}.
-   *
-   * <ul>
-   *   <li>Given {@link EntityDuplicatorExtensionHandler} {@link
-   *       EntityDuplicatorExtensionHandler#addToSandbox(Object)} return {@code HANDLED}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityDuplicatorExtensionManager#addToSandbox(Object)}
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#addToSandbox(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.addToSandbox(Object)"
-  })
-  public void testAddToSandbox_givenEntityDuplicatorExtensionHandlerAddToSandboxReturnHandled() {
+  public void testAddToSandbox4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    EntityDuplicatorExtensionHandler entityDuplicatorExtensionHandler =
-        mock(EntityDuplicatorExtensionHandler.class);
+    EntityDuplicatorExtensionHandler entityDuplicatorExtensionHandler = mock(EntityDuplicatorExtensionHandler.class);
     when(entityDuplicatorExtensionHandler.addToSandbox(Mockito.<Object>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(entityDuplicatorExtensionHandler.isEnabled()).thenReturn(true);
 
-    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager =
-        new EntityDuplicatorExtensionManager();
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
     entityDuplicatorExtensionManager.registerHandler(entityDuplicatorExtensionHandler);
     entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
 
     // Act
-    ExtensionResultStatusType actualAddToSandboxResult =
-        entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
+    ExtensionResultStatusType actualAddToSandboxResult = entityDuplicatorExtensionManager
+        .addToSandbox(BLCFieldUtils.NULL_FIELD);
 
     // Assert
     verify(entityDuplicatorExtensionHandler, atLeast(1)).isEnabled();
@@ -677,35 +321,52 @@ public class EntityDuplicatorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test {@link EntityDuplicatorExtensionManager#addToSandbox(Object)}.
-   *
-   * <ul>
-   *   <li>Given {@link EntityDuplicatorExtensionHandler} {@link
-   *       EntityDuplicatorExtensionHandler#isEnabled()} return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityDuplicatorExtensionManager#addToSandbox(Object)}
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#addToSandbox(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.addToSandbox(Object)"
-  })
-  public void testAddToSandbox_givenEntityDuplicatorExtensionHandlerIsEnabledReturnFalse() {
-    // Arrange
-    EntityDuplicatorExtensionHandler entityDuplicatorExtensionHandler =
-        mock(EntityDuplicatorExtensionHandler.class);
-    when(entityDuplicatorExtensionHandler.isEnabled()).thenReturn(false);
+  public void testAddToSandbox5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager =
-        new EntityDuplicatorExtensionManager();
+    // Arrange
+    EntityDuplicatorExtensionHandler entityDuplicatorExtensionHandler = mock(EntityDuplicatorExtensionHandler.class);
+    when(entityDuplicatorExtensionHandler.addToSandbox(Mockito.<Object>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED_STOP);
+    when(entityDuplicatorExtensionHandler.isEnabled()).thenReturn(true);
+
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
     entityDuplicatorExtensionManager.registerHandler(entityDuplicatorExtensionHandler);
     entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
 
     // Act
-    ExtensionResultStatusType actualAddToSandboxResult =
-        entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
+    ExtensionResultStatusType actualAddToSandboxResult = entityDuplicatorExtensionManager
+        .addToSandbox(BLCFieldUtils.NULL_FIELD);
+
+    // Assert
+    verify(entityDuplicatorExtensionHandler, atLeast(1)).isEnabled();
+    verify(entityDuplicatorExtensionHandler, atLeast(1)).addToSandbox(isA(Object.class));
+    assertEquals(ExtensionResultStatusType.HANDLED, actualAddToSandboxResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#addToSandbox(Object)}
+   */
+  @Test
+  public void testAddToSandbox6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EntityDuplicatorExtensionHandler entityDuplicatorExtensionHandler = mock(EntityDuplicatorExtensionHandler.class);
+    when(entityDuplicatorExtensionHandler.isEnabled()).thenReturn(false);
+
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
+    entityDuplicatorExtensionManager.registerHandler(entityDuplicatorExtensionHandler);
+    entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
+
+    // Act
+    ExtensionResultStatusType actualAddToSandboxResult = entityDuplicatorExtensionManager
+        .addToSandbox(BLCFieldUtils.NULL_FIELD);
 
     // Assert
     verify(entityDuplicatorExtensionHandler, atLeast(1)).isEnabled();
@@ -713,104 +374,71 @@ public class EntityDuplicatorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test {@link EntityDuplicatorExtensionManager#addToSandbox(Object)}.
-   *
-   * <ul>
-   *   <li>Given {@link EntityDuplicatorExtensionManager}.
-   *   <li>Then return {@code NOT_HANDLED}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityDuplicatorExtensionManager#addToSandbox(Object)}
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#tearDownDuplicate()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.addToSandbox(Object)"
-  })
-  public void testAddToSandbox_givenEntityDuplicatorExtensionManager_thenReturnNotHandled() {
-    // Arrange, Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD));
-  }
-
-  /**
-   * Test {@link EntityDuplicatorExtensionManager#addToSandbox(Object)}.
-   *
-   * <ul>
-   *   <li>Given {@link EntityDuplicatorExtensionManager}.
-   *   <li>When {@link DynamicDaoHelperImpl#LOCK_OBJECT}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityDuplicatorExtensionManager#addToSandbox(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.addToSandbox(Object)"
-  })
-  public void testAddToSandbox_givenEntityDuplicatorExtensionManager_whenLock_object() {
-    // Arrange, Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityDuplicatorExtensionManager.addToSandbox(DynamicDaoHelperImpl.LOCK_OBJECT));
-  }
-
-  /**
-   * Test {@link EntityDuplicatorExtensionManager#tearDownDuplicate()}.
-   *
-   * <p>Method under test: {@link EntityDuplicatorExtensionManager#tearDownDuplicate()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.tearDownDuplicate()"
-  })
   public void testTearDownDuplicate() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED, (new EntityDuplicatorExtensionManager()).tearDownDuplicate());
+  }
+
+  /**
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#tearDownDuplicate()}
+   */
+  @Test
+  public void testTearDownDuplicate2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager =
-        new EntityDuplicatorExtensionManager();
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
+    entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED, entityDuplicatorExtensionManager.tearDownDuplicate());
+  }
+
+  /**
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#tearDownDuplicate()}
+   */
+  @Test
+  public void testTearDownDuplicate3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
     entityDuplicatorExtensionManager.registerHandler(new EntityDuplicatorExtensionManager());
     entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityDuplicatorExtensionManager.tearDownDuplicate());
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED, entityDuplicatorExtensionManager.tearDownDuplicate());
   }
 
   /**
-   * Test {@link EntityDuplicatorExtensionManager#tearDownDuplicate()}.
-   *
-   * <p>Method under test: {@link EntityDuplicatorExtensionManager#tearDownDuplicate()}
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#tearDownDuplicate()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.tearDownDuplicate()"
-  })
-  public void testTearDownDuplicate2() {
+  public void testTearDownDuplicate4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    EntityDuplicatorExtensionHandler entityDuplicatorExtensionHandler =
-        mock(EntityDuplicatorExtensionHandler.class);
+    EntityDuplicatorExtensionHandler entityDuplicatorExtensionHandler = mock(EntityDuplicatorExtensionHandler.class);
     when(entityDuplicatorExtensionHandler.addToSandbox(Mockito.<Object>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(entityDuplicatorExtensionHandler.tearDownDuplicate())
-        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(entityDuplicatorExtensionHandler.tearDownDuplicate()).thenReturn(ExtensionResultStatusType.HANDLED);
     when(entityDuplicatorExtensionHandler.isEnabled()).thenReturn(true);
 
-    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager =
-        new EntityDuplicatorExtensionManager();
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
     entityDuplicatorExtensionManager.registerHandler(entityDuplicatorExtensionHandler);
     entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
 
     // Act
-    ExtensionResultStatusType actualTearDownDuplicateResult =
-        entityDuplicatorExtensionManager.tearDownDuplicate();
+    ExtensionResultStatusType actualTearDownDuplicateResult = entityDuplicatorExtensionManager.tearDownDuplicate();
 
     // Assert
     verify(entityDuplicatorExtensionHandler, atLeast(1)).isEnabled();
@@ -820,34 +448,26 @@ public class EntityDuplicatorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test {@link EntityDuplicatorExtensionManager#tearDownDuplicate()}.
-   *
-   * <p>Method under test: {@link EntityDuplicatorExtensionManager#tearDownDuplicate()}
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#tearDownDuplicate()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.tearDownDuplicate()"
-  })
-  public void testTearDownDuplicate3() {
+  public void testTearDownDuplicate5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    EntityDuplicatorExtensionHandler entityDuplicatorExtensionHandler =
-        mock(EntityDuplicatorExtensionHandler.class);
+    EntityDuplicatorExtensionHandler entityDuplicatorExtensionHandler = mock(EntityDuplicatorExtensionHandler.class);
     when(entityDuplicatorExtensionHandler.addToSandbox(Mockito.<Object>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(entityDuplicatorExtensionHandler.tearDownDuplicate())
-        .thenReturn(ExtensionResultStatusType.HANDLED_STOP);
+    when(entityDuplicatorExtensionHandler.tearDownDuplicate()).thenReturn(ExtensionResultStatusType.HANDLED_STOP);
     when(entityDuplicatorExtensionHandler.isEnabled()).thenReturn(true);
 
-    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager =
-        new EntityDuplicatorExtensionManager();
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
     entityDuplicatorExtensionManager.registerHandler(entityDuplicatorExtensionHandler);
     entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
 
     // Act
-    ExtensionResultStatusType actualTearDownDuplicateResult =
-        entityDuplicatorExtensionManager.tearDownDuplicate();
+    ExtensionResultStatusType actualTearDownDuplicateResult = entityDuplicatorExtensionManager.tearDownDuplicate();
 
     // Assert
     verify(entityDuplicatorExtensionHandler, atLeast(1)).isEnabled();
@@ -857,35 +477,23 @@ public class EntityDuplicatorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test {@link EntityDuplicatorExtensionManager#tearDownDuplicate()}.
-   *
-   * <ul>
-   *   <li>Given {@link EntityDuplicatorExtensionHandler} {@link
-   *       EntityDuplicatorExtensionHandler#isEnabled()} return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityDuplicatorExtensionManager#tearDownDuplicate()}
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#tearDownDuplicate()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.tearDownDuplicate()"
-  })
-  public void testTearDownDuplicate_givenEntityDuplicatorExtensionHandlerIsEnabledReturnFalse() {
+  public void testTearDownDuplicate6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    EntityDuplicatorExtensionHandler entityDuplicatorExtensionHandler =
-        mock(EntityDuplicatorExtensionHandler.class);
+    EntityDuplicatorExtensionHandler entityDuplicatorExtensionHandler = mock(EntityDuplicatorExtensionHandler.class);
     when(entityDuplicatorExtensionHandler.isEnabled()).thenReturn(false);
 
-    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager =
-        new EntityDuplicatorExtensionManager();
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
     entityDuplicatorExtensionManager.registerHandler(entityDuplicatorExtensionHandler);
     entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
 
     // Act
-    ExtensionResultStatusType actualTearDownDuplicateResult =
-        entityDuplicatorExtensionManager.tearDownDuplicate();
+    ExtensionResultStatusType actualTearDownDuplicateResult = entityDuplicatorExtensionManager.tearDownDuplicate();
 
     // Assert
     verify(entityDuplicatorExtensionHandler, atLeast(1)).isEnabled();
@@ -893,73 +501,70 @@ public class EntityDuplicatorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test {@link EntityDuplicatorExtensionManager#tearDownDuplicate()}.
-   *
-   * <ul>
-   *   <li>Given {@link EntityDuplicatorExtensionManager}.
-   *   <li>Then return {@code NOT_HANDLED}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityDuplicatorExtensionManager#tearDownDuplicate()}
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#getCatalogsForPropagation(MultiTenantCopyContext, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.tearDownDuplicate()"
-  })
-  public void testTearDownDuplicate_givenEntityDuplicatorExtensionManager_thenReturnNotHandled() {
-    // Arrange, Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityDuplicatorExtensionManager.tearDownDuplicate());
-  }
+  public void testGetCatalogsForPropagation() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-  /**
-   * Test {@link EntityDuplicatorExtensionManager#tearDownDuplicate()}.
-   *
-   * <ul>
-   *   <li>Then return {@code NOT_HANDLED}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityDuplicatorExtensionManager#tearDownDuplicate()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.tearDownDuplicate()"
-  })
-  public void testTearDownDuplicate_thenReturnNotHandled() {
     // Arrange
-    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager =
-        new EntityDuplicatorExtensionManager();
-    entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
+    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
+    MultiTenantCopyContext context = new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+        genericEntityService, new MultiTenantCopierExtensionManager());
+
+    ExtensionResultHolder<List<MultiTenantCopyContext>> resultHolder = new ExtensionResultHolder<>();
+    resultHolder.setResult(new ArrayList<>());
+    resultHolder.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityDuplicatorExtensionManager.tearDownDuplicate());
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        entityDuplicatorExtensionManager.getCatalogsForPropagation(context, resultHolder));
   }
 
   /**
-   * Test {@link EntityDuplicatorExtensionManager#getCatalogsForPropagation(MultiTenantCopyContext,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityDuplicatorExtensionManager#getCatalogsForPropagation(MultiTenantCopyContext,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#getCatalogsForPropagation(MultiTenantCopyContext, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.getCatalogsForPropagation(MultiTenantCopyContext, ExtensionResultHolder)"
-  })
-  public void testGetCatalogsForPropagation() {
+  public void testGetCatalogsForPropagation2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager =
-        new EntityDuplicatorExtensionManager();
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
+    entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
+    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
+    MultiTenantCopyContext context = new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+        genericEntityService, new MultiTenantCopierExtensionManager());
+
+    ExtensionResultHolder<List<MultiTenantCopyContext>> resultHolder = new ExtensionResultHolder<>();
+    resultHolder.setResult(new ArrayList<>());
+    resultHolder.setThrowable(new Throwable());
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        entityDuplicatorExtensionManager.getCatalogsForPropagation(context, resultHolder));
+  }
+
+  /**
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#getCatalogsForPropagation(MultiTenantCopyContext, ExtensionResultHolder)}
+   */
+  @Test
+  public void testGetCatalogsForPropagation3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
     entityDuplicatorExtensionManager.registerHandler(new EntityDuplicatorExtensionManager());
     entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
     CatalogImpl fromCatalog = new CatalogImpl();
@@ -967,55 +572,63 @@ public class EntityDuplicatorExtensionManagerDiffblueTest {
     SiteImpl fromSite = new SiteImpl();
     SiteImpl toSite = new SiteImpl();
     GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
+    MultiTenantCopyContext context = new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+        genericEntityService, new MultiTenantCopierExtensionManager());
 
-    MultiTenantCopyContext context =
-        new MultiTenantCopyContext(
-            fromCatalog,
-            toCatalog,
-            fromSite,
-            toSite,
-            genericEntityService,
-            new MultiTenantCopierExtensionManager());
-
-    ExtensionResultHolder<List<MultiTenantCopyContext>> resultHolder =
-        new ExtensionResultHolder<>();
+    ExtensionResultHolder<List<MultiTenantCopyContext>> resultHolder = new ExtensionResultHolder<>();
     resultHolder.setResult(new ArrayList<>());
     resultHolder.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
         entityDuplicatorExtensionManager.getCatalogsForPropagation(context, resultHolder));
   }
 
   /**
-   * Test {@link EntityDuplicatorExtensionManager#getCatalogsForPropagation(MultiTenantCopyContext,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityDuplicatorExtensionManager#getCatalogsForPropagation(MultiTenantCopyContext,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#getCatalogsForPropagation(MultiTenantCopyContext, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.getCatalogsForPropagation(MultiTenantCopyContext, ExtensionResultHolder)"
-  })
-  public void testGetCatalogsForPropagation2() {
+  public void testGetCatalogsForPropagation4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    EntityDuplicatorExtensionHandler entityDuplicatorExtensionHandler =
-        mock(EntityDuplicatorExtensionHandler.class);
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
+    CatalogImpl fromCatalog = mock(CatalogImpl.class);
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
+    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
+    MultiTenantCopyContext context = new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+        genericEntityService, new MultiTenantCopierExtensionManager());
+
+    ExtensionResultHolder<List<MultiTenantCopyContext>> resultHolder = new ExtensionResultHolder<>();
+    resultHolder.setResult(new ArrayList<>());
+    resultHolder.setThrowable(new Throwable());
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        entityDuplicatorExtensionManager.getCatalogsForPropagation(context, resultHolder));
+  }
+
+  /**
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#getCatalogsForPropagation(MultiTenantCopyContext, ExtensionResultHolder)}
+   */
+  @Test
+  public void testGetCatalogsForPropagation5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EntityDuplicatorExtensionHandler entityDuplicatorExtensionHandler = mock(EntityDuplicatorExtensionHandler.class);
     when(entityDuplicatorExtensionHandler.addToSandbox(Mockito.<Object>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(entityDuplicatorExtensionHandler.getCatalogsForPropagation(
-            Mockito.<MultiTenantCopyContext>any(),
-            Mockito.<ExtensionResultHolder<List<MultiTenantCopyContext>>>any()))
+    when(entityDuplicatorExtensionHandler.getCatalogsForPropagation(Mockito.<MultiTenantCopyContext>any(),
+        Mockito.<ExtensionResultHolder<List<MultiTenantCopyContext>>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(entityDuplicatorExtensionHandler.isEnabled()).thenReturn(true);
 
-    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager =
-        new EntityDuplicatorExtensionManager();
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
     entityDuplicatorExtensionManager.registerHandler(entityDuplicatorExtensionHandler);
     entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
     CatalogImpl fromCatalog = new CatalogImpl();
@@ -1023,62 +636,43 @@ public class EntityDuplicatorExtensionManagerDiffblueTest {
     SiteImpl fromSite = new SiteImpl();
     SiteImpl toSite = new SiteImpl();
     GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
+    MultiTenantCopyContext context = new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+        genericEntityService, new MultiTenantCopierExtensionManager());
 
-    MultiTenantCopyContext context =
-        new MultiTenantCopyContext(
-            fromCatalog,
-            toCatalog,
-            fromSite,
-            toSite,
-            genericEntityService,
-            new MultiTenantCopierExtensionManager());
-
-    ExtensionResultHolder<List<MultiTenantCopyContext>> resultHolder =
-        new ExtensionResultHolder<>();
+    ExtensionResultHolder<List<MultiTenantCopyContext>> resultHolder = new ExtensionResultHolder<>();
     resultHolder.setResult(new ArrayList<>());
     resultHolder.setThrowable(new Throwable());
 
     // Act
-    ExtensionResultStatusType actualCatalogsForPropagation =
-        entityDuplicatorExtensionManager.getCatalogsForPropagation(context, resultHolder);
+    ExtensionResultStatusType actualCatalogsForPropagation = entityDuplicatorExtensionManager
+        .getCatalogsForPropagation(context, resultHolder);
 
     // Assert
     verify(entityDuplicatorExtensionHandler, atLeast(1)).isEnabled();
     verify(entityDuplicatorExtensionHandler).addToSandbox(isA(Object.class));
-    verify(entityDuplicatorExtensionHandler)
-        .getCatalogsForPropagation(
-            isA(MultiTenantCopyContext.class), isA(ExtensionResultHolder.class));
+    verify(entityDuplicatorExtensionHandler).getCatalogsForPropagation(isA(MultiTenantCopyContext.class),
+        isA(ExtensionResultHolder.class));
     assertEquals(ExtensionResultStatusType.HANDLED, actualCatalogsForPropagation);
   }
 
   /**
-   * Test {@link EntityDuplicatorExtensionManager#getCatalogsForPropagation(MultiTenantCopyContext,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityDuplicatorExtensionManager#getCatalogsForPropagation(MultiTenantCopyContext,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#getCatalogsForPropagation(MultiTenantCopyContext, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.getCatalogsForPropagation(MultiTenantCopyContext, ExtensionResultHolder)"
-  })
-  public void testGetCatalogsForPropagation3() {
+  public void testGetCatalogsForPropagation6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    EntityDuplicatorExtensionHandler entityDuplicatorExtensionHandler =
-        mock(EntityDuplicatorExtensionHandler.class);
+    EntityDuplicatorExtensionHandler entityDuplicatorExtensionHandler = mock(EntityDuplicatorExtensionHandler.class);
     when(entityDuplicatorExtensionHandler.addToSandbox(Mockito.<Object>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(entityDuplicatorExtensionHandler.getCatalogsForPropagation(
-            Mockito.<MultiTenantCopyContext>any(),
-            Mockito.<ExtensionResultHolder<List<MultiTenantCopyContext>>>any()))
+    when(entityDuplicatorExtensionHandler.getCatalogsForPropagation(Mockito.<MultiTenantCopyContext>any(),
+        Mockito.<ExtensionResultHolder<List<MultiTenantCopyContext>>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED_STOP);
     when(entityDuplicatorExtensionHandler.isEnabled()).thenReturn(true);
 
-    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager =
-        new EntityDuplicatorExtensionManager();
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
     entityDuplicatorExtensionManager.registerHandler(entityDuplicatorExtensionHandler);
     entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
     CatalogImpl fromCatalog = new CatalogImpl();
@@ -1086,56 +680,38 @@ public class EntityDuplicatorExtensionManagerDiffblueTest {
     SiteImpl fromSite = new SiteImpl();
     SiteImpl toSite = new SiteImpl();
     GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
+    MultiTenantCopyContext context = new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+        genericEntityService, new MultiTenantCopierExtensionManager());
 
-    MultiTenantCopyContext context =
-        new MultiTenantCopyContext(
-            fromCatalog,
-            toCatalog,
-            fromSite,
-            toSite,
-            genericEntityService,
-            new MultiTenantCopierExtensionManager());
-
-    ExtensionResultHolder<List<MultiTenantCopyContext>> resultHolder =
-        new ExtensionResultHolder<>();
+    ExtensionResultHolder<List<MultiTenantCopyContext>> resultHolder = new ExtensionResultHolder<>();
     resultHolder.setResult(new ArrayList<>());
     resultHolder.setThrowable(new Throwable());
 
     // Act
-    ExtensionResultStatusType actualCatalogsForPropagation =
-        entityDuplicatorExtensionManager.getCatalogsForPropagation(context, resultHolder);
+    ExtensionResultStatusType actualCatalogsForPropagation = entityDuplicatorExtensionManager
+        .getCatalogsForPropagation(context, resultHolder);
 
     // Assert
     verify(entityDuplicatorExtensionHandler, atLeast(1)).isEnabled();
     verify(entityDuplicatorExtensionHandler).addToSandbox(isA(Object.class));
-    verify(entityDuplicatorExtensionHandler)
-        .getCatalogsForPropagation(
-            isA(MultiTenantCopyContext.class), isA(ExtensionResultHolder.class));
+    verify(entityDuplicatorExtensionHandler).getCatalogsForPropagation(isA(MultiTenantCopyContext.class),
+        isA(ExtensionResultHolder.class));
     assertEquals(ExtensionResultStatusType.HANDLED, actualCatalogsForPropagation);
   }
 
   /**
-   * Test {@link EntityDuplicatorExtensionManager#getCatalogsForPropagation(MultiTenantCopyContext,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * EntityDuplicatorExtensionManager#getCatalogsForPropagation(MultiTenantCopyContext,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#getCatalogsForPropagation(MultiTenantCopyContext, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.getCatalogsForPropagation(MultiTenantCopyContext, ExtensionResultHolder)"
-  })
-  public void testGetCatalogsForPropagation4() {
+  public void testGetCatalogsForPropagation7() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    EntityDuplicatorExtensionHandler entityDuplicatorExtensionHandler =
-        mock(EntityDuplicatorExtensionHandler.class);
+    EntityDuplicatorExtensionHandler entityDuplicatorExtensionHandler = mock(EntityDuplicatorExtensionHandler.class);
     when(entityDuplicatorExtensionHandler.isEnabled()).thenReturn(false);
 
-    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager =
-        new EntityDuplicatorExtensionManager();
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
     entityDuplicatorExtensionManager.registerHandler(entityDuplicatorExtensionHandler);
     entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
     CatalogImpl fromCatalog = new CatalogImpl();
@@ -1143,24 +719,16 @@ public class EntityDuplicatorExtensionManagerDiffblueTest {
     SiteImpl fromSite = new SiteImpl();
     SiteImpl toSite = new SiteImpl();
     GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
+    MultiTenantCopyContext context = new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+        genericEntityService, new MultiTenantCopierExtensionManager());
 
-    MultiTenantCopyContext context =
-        new MultiTenantCopyContext(
-            fromCatalog,
-            toCatalog,
-            fromSite,
-            toSite,
-            genericEntityService,
-            new MultiTenantCopierExtensionManager());
-
-    ExtensionResultHolder<List<MultiTenantCopyContext>> resultHolder =
-        new ExtensionResultHolder<>();
+    ExtensionResultHolder<List<MultiTenantCopyContext>> resultHolder = new ExtensionResultHolder<>();
     resultHolder.setResult(new ArrayList<>());
     resultHolder.setThrowable(new Throwable());
 
     // Act
-    ExtensionResultStatusType actualCatalogsForPropagation =
-        entityDuplicatorExtensionManager.getCatalogsForPropagation(context, resultHolder);
+    ExtensionResultStatusType actualCatalogsForPropagation = entityDuplicatorExtensionManager
+        .getCatalogsForPropagation(context, resultHolder);
 
     // Assert
     verify(entityDuplicatorExtensionHandler, atLeast(1)).isEnabled();
@@ -1168,117 +736,70 @@ public class EntityDuplicatorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test {@link EntityDuplicatorExtensionManager#getCatalogsForPropagation(MultiTenantCopyContext,
-   * ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Given {@link EntityDuplicatorExtensionManager}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * EntityDuplicatorExtensionManager#getCatalogsForPropagation(MultiTenantCopyContext,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#getClonesByCatalogs(String, Long, MultiTenantCopyContext, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.getCatalogsForPropagation(MultiTenantCopyContext, ExtensionResultHolder)"
-  })
-  public void testGetCatalogsForPropagation_givenEntityDuplicatorExtensionManager() {
+  public void testGetClonesByCatalogs() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
     CatalogImpl fromCatalog = new CatalogImpl();
     CatalogImpl toCatalog = new CatalogImpl();
     SiteImpl fromSite = new SiteImpl();
     SiteImpl toSite = new SiteImpl();
     GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
+    MultiTenantCopyContext multiTenantCopyContext = new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+        genericEntityService, new MultiTenantCopierExtensionManager());
 
-    MultiTenantCopyContext context =
-        new MultiTenantCopyContext(
-            fromCatalog,
-            toCatalog,
-            fromSite,
-            toSite,
-            genericEntityService,
-            new MultiTenantCopierExtensionManager());
-
-    ExtensionResultHolder<List<MultiTenantCopyContext>> resultHolder =
-        new ExtensionResultHolder<>();
-    resultHolder.setResult(new ArrayList<>());
+    ExtensionResultHolder<Map<Long, Map<Long, Long>>> resultHolder = new ExtensionResultHolder<>();
+    resultHolder.setResult(new HashMap<>());
     resultHolder.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityDuplicatorExtensionManager.getCatalogsForPropagation(context, resultHolder));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        entityDuplicatorExtensionManager.getClonesByCatalogs("Table Name", 1L, multiTenantCopyContext, resultHolder));
   }
 
   /**
-   * Test {@link EntityDuplicatorExtensionManager#getCatalogsForPropagation(MultiTenantCopyContext,
-   * ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Then return {@code NOT_HANDLED}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * EntityDuplicatorExtensionManager#getCatalogsForPropagation(MultiTenantCopyContext,
-   * ExtensionResultHolder)}
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#getClonesByCatalogs(String, Long, MultiTenantCopyContext, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.getCatalogsForPropagation(MultiTenantCopyContext, ExtensionResultHolder)"
-  })
-  public void testGetCatalogsForPropagation_thenReturnNotHandled() {
+  public void testGetClonesByCatalogs2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager =
-        new EntityDuplicatorExtensionManager();
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
     entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
     CatalogImpl fromCatalog = new CatalogImpl();
     CatalogImpl toCatalog = new CatalogImpl();
     SiteImpl fromSite = new SiteImpl();
     SiteImpl toSite = new SiteImpl();
     GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
+    MultiTenantCopyContext multiTenantCopyContext = new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+        genericEntityService, new MultiTenantCopierExtensionManager());
 
-    MultiTenantCopyContext context =
-        new MultiTenantCopyContext(
-            fromCatalog,
-            toCatalog,
-            fromSite,
-            toSite,
-            genericEntityService,
-            new MultiTenantCopierExtensionManager());
-
-    ExtensionResultHolder<List<MultiTenantCopyContext>> resultHolder =
-        new ExtensionResultHolder<>();
-    resultHolder.setResult(new ArrayList<>());
+    ExtensionResultHolder<Map<Long, Map<Long, Long>>> resultHolder = new ExtensionResultHolder<>();
+    resultHolder.setResult(new HashMap<>());
     resultHolder.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityDuplicatorExtensionManager.getCatalogsForPropagation(context, resultHolder));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        entityDuplicatorExtensionManager.getClonesByCatalogs("Table Name", 1L, multiTenantCopyContext, resultHolder));
   }
 
   /**
-   * Test {@link EntityDuplicatorExtensionManager#getClonesByCatalogs(String, Long,
-   * MultiTenantCopyContext, ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link EntityDuplicatorExtensionManager#getClonesByCatalogs(String, Long,
-   * MultiTenantCopyContext, ExtensionResultHolder)}
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#getClonesByCatalogs(String, Long, MultiTenantCopyContext, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.getClonesByCatalogs(String, Long, MultiTenantCopyContext, ExtensionResultHolder)"
-  })
-  public void testGetClonesByCatalogs() {
+  public void testGetClonesByCatalogs3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager =
-        new EntityDuplicatorExtensionManager();
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
     entityDuplicatorExtensionManager.registerHandler(new EntityDuplicatorExtensionManager());
     entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
     CatalogImpl fromCatalog = new CatalogImpl();
@@ -1286,56 +807,63 @@ public class EntityDuplicatorExtensionManagerDiffblueTest {
     SiteImpl fromSite = new SiteImpl();
     SiteImpl toSite = new SiteImpl();
     GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    MultiTenantCopyContext multiTenantCopyContext =
-        new MultiTenantCopyContext(
-            fromCatalog,
-            toCatalog,
-            fromSite,
-            toSite,
-            genericEntityService,
-            new MultiTenantCopierExtensionManager());
+    MultiTenantCopyContext multiTenantCopyContext = new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+        genericEntityService, new MultiTenantCopierExtensionManager());
 
     ExtensionResultHolder<Map<Long, Map<Long, Long>>> resultHolder = new ExtensionResultHolder<>();
     resultHolder.setResult(new HashMap<>());
     resultHolder.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityDuplicatorExtensionManager.getClonesByCatalogs(
-            "Table Name", 1L, multiTenantCopyContext, resultHolder));
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        entityDuplicatorExtensionManager.getClonesByCatalogs("Table Name", 1L, multiTenantCopyContext, resultHolder));
   }
 
   /**
-   * Test {@link EntityDuplicatorExtensionManager#getClonesByCatalogs(String, Long,
-   * MultiTenantCopyContext, ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link EntityDuplicatorExtensionManager#getClonesByCatalogs(String, Long,
-   * MultiTenantCopyContext, ExtensionResultHolder)}
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#getClonesByCatalogs(String, Long, MultiTenantCopyContext, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.getClonesByCatalogs(String, Long, MultiTenantCopyContext, ExtensionResultHolder)"
-  })
-  public void testGetClonesByCatalogs2() {
+  public void testGetClonesByCatalogs4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    EntityDuplicatorExtensionHandler entityDuplicatorExtensionHandler =
-        mock(EntityDuplicatorExtensionHandler.class);
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
+    CatalogImpl fromCatalog = mock(CatalogImpl.class);
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
+    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
+    MultiTenantCopyContext multiTenantCopyContext = new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+        genericEntityService, new MultiTenantCopierExtensionManager());
+
+    ExtensionResultHolder<Map<Long, Map<Long, Long>>> resultHolder = new ExtensionResultHolder<>();
+    resultHolder.setResult(new HashMap<>());
+    resultHolder.setThrowable(new Throwable());
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+        entityDuplicatorExtensionManager.getClonesByCatalogs("Table Name", 1L, multiTenantCopyContext, resultHolder));
+  }
+
+  /**
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#getClonesByCatalogs(String, Long, MultiTenantCopyContext, ExtensionResultHolder)}
+   */
+  @Test
+  public void testGetClonesByCatalogs5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EntityDuplicatorExtensionHandler entityDuplicatorExtensionHandler = mock(EntityDuplicatorExtensionHandler.class);
     when(entityDuplicatorExtensionHandler.addToSandbox(Mockito.<Object>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(entityDuplicatorExtensionHandler.getClonesByCatalogs(
-            Mockito.<String>any(),
-            Mockito.<Long>any(),
-            Mockito.<MultiTenantCopyContext>any(),
-            Mockito.<ExtensionResultHolder<Map<Long, Map<Long, Long>>>>any()))
+    when(entityDuplicatorExtensionHandler.getClonesByCatalogs(Mockito.<String>any(), Mockito.<Long>any(),
+        Mockito.<MultiTenantCopyContext>any(), Mockito.<ExtensionResultHolder<Map<Long, Map<Long, Long>>>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(entityDuplicatorExtensionHandler.isEnabled()).thenReturn(true);
 
-    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager =
-        new EntityDuplicatorExtensionManager();
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
     entityDuplicatorExtensionManager.registerHandler(entityDuplicatorExtensionHandler);
     entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
     CatalogImpl fromCatalog = new CatalogImpl();
@@ -1343,66 +871,43 @@ public class EntityDuplicatorExtensionManagerDiffblueTest {
     SiteImpl fromSite = new SiteImpl();
     SiteImpl toSite = new SiteImpl();
     GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    MultiTenantCopyContext multiTenantCopyContext =
-        new MultiTenantCopyContext(
-            fromCatalog,
-            toCatalog,
-            fromSite,
-            toSite,
-            genericEntityService,
-            new MultiTenantCopierExtensionManager());
+    MultiTenantCopyContext multiTenantCopyContext = new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+        genericEntityService, new MultiTenantCopierExtensionManager());
 
     ExtensionResultHolder<Map<Long, Map<Long, Long>>> resultHolder = new ExtensionResultHolder<>();
     resultHolder.setResult(new HashMap<>());
     resultHolder.setThrowable(new Throwable());
 
     // Act
-    ExtensionResultStatusType actualClonesByCatalogs =
-        entityDuplicatorExtensionManager.getClonesByCatalogs(
-            "Table Name", 1L, multiTenantCopyContext, resultHolder);
+    ExtensionResultStatusType actualClonesByCatalogs = entityDuplicatorExtensionManager
+        .getClonesByCatalogs("Table Name", 1L, multiTenantCopyContext, resultHolder);
 
     // Assert
     verify(entityDuplicatorExtensionHandler, atLeast(1)).isEnabled();
     verify(entityDuplicatorExtensionHandler).addToSandbox(isA(Object.class));
-    verify(entityDuplicatorExtensionHandler)
-        .getClonesByCatalogs(
-            eq("Table Name"),
-            eq(1L),
-            isA(MultiTenantCopyContext.class),
-            isA(ExtensionResultHolder.class));
+    verify(entityDuplicatorExtensionHandler).getClonesByCatalogs(eq("Table Name"), eq(1L),
+        isA(MultiTenantCopyContext.class), isA(ExtensionResultHolder.class));
     assertEquals(ExtensionResultStatusType.HANDLED, actualClonesByCatalogs);
   }
 
   /**
-   * Test {@link EntityDuplicatorExtensionManager#getClonesByCatalogs(String, Long,
-   * MultiTenantCopyContext, ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link EntityDuplicatorExtensionManager#getClonesByCatalogs(String, Long,
-   * MultiTenantCopyContext, ExtensionResultHolder)}
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#getClonesByCatalogs(String, Long, MultiTenantCopyContext, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.getClonesByCatalogs(String, Long, MultiTenantCopyContext, ExtensionResultHolder)"
-  })
-  public void testGetClonesByCatalogs3() {
+  public void testGetClonesByCatalogs6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    EntityDuplicatorExtensionHandler entityDuplicatorExtensionHandler =
-        mock(EntityDuplicatorExtensionHandler.class);
+    EntityDuplicatorExtensionHandler entityDuplicatorExtensionHandler = mock(EntityDuplicatorExtensionHandler.class);
     when(entityDuplicatorExtensionHandler.addToSandbox(Mockito.<Object>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(entityDuplicatorExtensionHandler.getClonesByCatalogs(
-            Mockito.<String>any(),
-            Mockito.<Long>any(),
-            Mockito.<MultiTenantCopyContext>any(),
-            Mockito.<ExtensionResultHolder<Map<Long, Map<Long, Long>>>>any()))
+    when(entityDuplicatorExtensionHandler.getClonesByCatalogs(Mockito.<String>any(), Mockito.<Long>any(),
+        Mockito.<MultiTenantCopyContext>any(), Mockito.<ExtensionResultHolder<Map<Long, Map<Long, Long>>>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED_STOP);
     when(entityDuplicatorExtensionHandler.isEnabled()).thenReturn(true);
 
-    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager =
-        new EntityDuplicatorExtensionManager();
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
     entityDuplicatorExtensionManager.registerHandler(entityDuplicatorExtensionHandler);
     entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
     CatalogImpl fromCatalog = new CatalogImpl();
@@ -1410,58 +915,38 @@ public class EntityDuplicatorExtensionManagerDiffblueTest {
     SiteImpl fromSite = new SiteImpl();
     SiteImpl toSite = new SiteImpl();
     GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    MultiTenantCopyContext multiTenantCopyContext =
-        new MultiTenantCopyContext(
-            fromCatalog,
-            toCatalog,
-            fromSite,
-            toSite,
-            genericEntityService,
-            new MultiTenantCopierExtensionManager());
+    MultiTenantCopyContext multiTenantCopyContext = new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+        genericEntityService, new MultiTenantCopierExtensionManager());
 
     ExtensionResultHolder<Map<Long, Map<Long, Long>>> resultHolder = new ExtensionResultHolder<>();
     resultHolder.setResult(new HashMap<>());
     resultHolder.setThrowable(new Throwable());
 
     // Act
-    ExtensionResultStatusType actualClonesByCatalogs =
-        entityDuplicatorExtensionManager.getClonesByCatalogs(
-            "Table Name", 1L, multiTenantCopyContext, resultHolder);
+    ExtensionResultStatusType actualClonesByCatalogs = entityDuplicatorExtensionManager
+        .getClonesByCatalogs("Table Name", 1L, multiTenantCopyContext, resultHolder);
 
     // Assert
     verify(entityDuplicatorExtensionHandler, atLeast(1)).isEnabled();
     verify(entityDuplicatorExtensionHandler).addToSandbox(isA(Object.class));
-    verify(entityDuplicatorExtensionHandler)
-        .getClonesByCatalogs(
-            eq("Table Name"),
-            eq(1L),
-            isA(MultiTenantCopyContext.class),
-            isA(ExtensionResultHolder.class));
+    verify(entityDuplicatorExtensionHandler).getClonesByCatalogs(eq("Table Name"), eq(1L),
+        isA(MultiTenantCopyContext.class), isA(ExtensionResultHolder.class));
     assertEquals(ExtensionResultStatusType.HANDLED, actualClonesByCatalogs);
   }
 
   /**
-   * Test {@link EntityDuplicatorExtensionManager#getClonesByCatalogs(String, Long,
-   * MultiTenantCopyContext, ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link EntityDuplicatorExtensionManager#getClonesByCatalogs(String, Long,
-   * MultiTenantCopyContext, ExtensionResultHolder)}
+   * Method under test:
+   * {@link EntityDuplicatorExtensionManager#getClonesByCatalogs(String, Long, MultiTenantCopyContext, ExtensionResultHolder)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.getClonesByCatalogs(String, Long, MultiTenantCopyContext, ExtensionResultHolder)"
-  })
-  public void testGetClonesByCatalogs4() {
+  public void testGetClonesByCatalogs7() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    EntityDuplicatorExtensionHandler entityDuplicatorExtensionHandler =
-        mock(EntityDuplicatorExtensionHandler.class);
+    EntityDuplicatorExtensionHandler entityDuplicatorExtensionHandler = mock(EntityDuplicatorExtensionHandler.class);
     when(entityDuplicatorExtensionHandler.isEnabled()).thenReturn(false);
 
-    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager =
-        new EntityDuplicatorExtensionManager();
+    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager = new EntityDuplicatorExtensionManager();
     entityDuplicatorExtensionManager.registerHandler(entityDuplicatorExtensionHandler);
     entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
     CatalogImpl fromCatalog = new CatalogImpl();
@@ -1469,24 +954,16 @@ public class EntityDuplicatorExtensionManagerDiffblueTest {
     SiteImpl fromSite = new SiteImpl();
     SiteImpl toSite = new SiteImpl();
     GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    MultiTenantCopyContext multiTenantCopyContext =
-        new MultiTenantCopyContext(
-            fromCatalog,
-            toCatalog,
-            fromSite,
-            toSite,
-            genericEntityService,
-            new MultiTenantCopierExtensionManager());
+    MultiTenantCopyContext multiTenantCopyContext = new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+        genericEntityService, new MultiTenantCopierExtensionManager());
 
     ExtensionResultHolder<Map<Long, Map<Long, Long>>> resultHolder = new ExtensionResultHolder<>();
     resultHolder.setResult(new HashMap<>());
     resultHolder.setThrowable(new Throwable());
 
     // Act
-    ExtensionResultStatusType actualClonesByCatalogs =
-        entityDuplicatorExtensionManager.getClonesByCatalogs(
-            "Table Name", 1L, multiTenantCopyContext, resultHolder);
+    ExtensionResultStatusType actualClonesByCatalogs = entityDuplicatorExtensionManager
+        .getClonesByCatalogs("Table Name", 1L, multiTenantCopyContext, resultHolder);
 
     // Assert
     verify(entityDuplicatorExtensionHandler, atLeast(1)).isEnabled();
@@ -1494,109 +971,11 @@ public class EntityDuplicatorExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test {@link EntityDuplicatorExtensionManager#getClonesByCatalogs(String, Long,
-   * MultiTenantCopyContext, ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Given {@link EntityDuplicatorExtensionManager}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityDuplicatorExtensionManager#getClonesByCatalogs(String, Long,
-   * MultiTenantCopyContext, ExtensionResultHolder)}
+   * Method under test: {@link EntityDuplicatorExtensionManager#isEnabled()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.getClonesByCatalogs(String, Long, MultiTenantCopyContext, ExtensionResultHolder)"
-  })
-  public void testGetClonesByCatalogs_givenEntityDuplicatorExtensionManager() {
-    // Arrange
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    MultiTenantCopyContext multiTenantCopyContext =
-        new MultiTenantCopyContext(
-            fromCatalog,
-            toCatalog,
-            fromSite,
-            toSite,
-            genericEntityService,
-            new MultiTenantCopierExtensionManager());
-
-    ExtensionResultHolder<Map<Long, Map<Long, Long>>> resultHolder = new ExtensionResultHolder<>();
-    resultHolder.setResult(new HashMap<>());
-    resultHolder.setThrowable(new Throwable());
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityDuplicatorExtensionManager.getClonesByCatalogs(
-            "Table Name", 1L, multiTenantCopyContext, resultHolder));
-  }
-
-  /**
-   * Test {@link EntityDuplicatorExtensionManager#getClonesByCatalogs(String, Long,
-   * MultiTenantCopyContext, ExtensionResultHolder)}.
-   *
-   * <ul>
-   *   <li>Then return {@code NOT_HANDLED}.
-   * </ul>
-   *
-   * <p>Method under test: {@link EntityDuplicatorExtensionManager#getClonesByCatalogs(String, Long,
-   * MultiTenantCopyContext, ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType EntityDuplicatorExtensionManager.getClonesByCatalogs(String, Long, MultiTenantCopyContext, ExtensionResultHolder)"
-  })
-  public void testGetClonesByCatalogs_thenReturnNotHandled() {
-    // Arrange
-    EntityDuplicatorExtensionManager entityDuplicatorExtensionManager =
-        new EntityDuplicatorExtensionManager();
-    entityDuplicatorExtensionManager.addToSandbox(BLCFieldUtils.NULL_FIELD);
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-
-    MultiTenantCopyContext multiTenantCopyContext =
-        new MultiTenantCopyContext(
-            fromCatalog,
-            toCatalog,
-            fromSite,
-            toSite,
-            genericEntityService,
-            new MultiTenantCopierExtensionManager());
-
-    ExtensionResultHolder<Map<Long, Map<Long, Long>>> resultHolder = new ExtensionResultHolder<>();
-    resultHolder.setResult(new HashMap<>());
-    resultHolder.setThrowable(new Throwable());
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        entityDuplicatorExtensionManager.getClonesByCatalogs(
-            "Table Name", 1L, multiTenantCopyContext, resultHolder));
-  }
-
-  /**
-   * Test {@link EntityDuplicatorExtensionManager#isEnabled()}.
-   *
-   * <p>Method under test: {@link EntityDuplicatorExtensionManager#isEnabled()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean EntityDuplicatorExtensionManager.isEnabled()"})
   public void testIsEnabled() {
     // Arrange, Act and Assert
-    assertTrue(new EntityDuplicatorExtensionManager().isEnabled());
+    assertTrue((new EntityDuplicatorExtensionManager()).isEnabled());
   }
 }

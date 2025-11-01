@@ -20,18 +20,42 @@ package org.broadleafcommerce.core.order.service.call;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
+import java.util.HashMap;
+import java.util.function.BiFunction;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class OrderItemRequestDiffblueTest {
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Method under test: {@link OrderItemRequest#clone()}
+   */
+  @Test
+  public void testClone() {
+    // Arrange
+    OrderItemRequest orderItemRequest = new OrderItemRequest();
+
+    // Act and Assert
+    assertEquals(orderItemRequest, orderItemRequest.clone());
+  }
+
+  /**
+   * Method under test: {@link OrderItemRequest#clone()}
+   */
+  @Test
+  public void testClone2() {
+    // Arrange
+    HashMap<String, String> itemAttributes = new HashMap<>();
+    itemAttributes.computeIfPresent("foo", mock(BiFunction.class));
+
+    OrderItemRequest orderItemRequest = new OrderItemRequest();
+    orderItemRequest.setItemAttributes(itemAttributes);
+
+    // Act and Assert
+    assertEquals(orderItemRequest, orderItemRequest.clone());
+  }
+
+  /**
+   * Methods under test:
    * <ul>
    *   <li>{@link OrderItemRequest#OrderItemRequest()}
    *   <li>{@link OrderItemRequest#setItemName(String)}
@@ -39,47 +63,24 @@ public class OrderItemRequestDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OrderItemRequest.<init>()",
-    "String OrderItemRequest.getItemName()",
-    "void OrderItemRequest.setItemName(String)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     OrderItemRequest actualOrderItemRequest = new OrderItemRequest();
     actualOrderItemRequest.setItemName("Item Name");
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("Item Name", actualOrderItemRequest.getItemName());
-    assertNull(actualOrderItemRequest.getRetailPriceOverride());
-    assertNull(actualOrderItemRequest.getSalePriceOverride());
-    assertNull(actualOrderItemRequest.getCategory());
-    assertNull(actualOrderItemRequest.getProduct());
-    assertNull(actualOrderItemRequest.getSku());
-    assertNull(actualOrderItemRequest.getOrder());
-    assertNull(actualOrderItemRequest.getPersonalMessage());
     assertEquals(0, actualOrderItemRequest.getQuantity());
     assertTrue(actualOrderItemRequest.getAdditionalAttributes().isEmpty());
     assertTrue(actualOrderItemRequest.getItemAttributes().isEmpty());
   }
 
   /**
-   * Test {@link OrderItemRequest#OrderItemRequest(AbstractOrderItemRequest)}.
-   *
-   * <ul>
-   *   <li>When {@link DiscreteOrderItemRequest#DiscreteOrderItemRequest()}.
-   *   <li>Then return ItemName is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OrderItemRequest#OrderItemRequest(AbstractOrderItemRequest)}
+   * Method under test:
+   * {@link OrderItemRequest#OrderItemRequest(AbstractOrderItemRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void OrderItemRequest.<init>(AbstractOrderItemRequest)"})
-  public void testNewOrderItemRequest_whenDiscreteOrderItemRequest_thenReturnItemNameIsNull() {
+  public void testNewOrderItemRequest() {
     // Arrange and Act
     OrderItemRequest actualOrderItemRequest = new OrderItemRequest(new DiscreteOrderItemRequest());
 
@@ -98,22 +99,32 @@ public class OrderItemRequestDiffblueTest {
   }
 
   /**
-   * Test {@link OrderItemRequest#clone()}.
-   *
-   * <p>Method under test: {@link OrderItemRequest#clone()}
+   * Method under test:
+   * {@link OrderItemRequest#OrderItemRequest(AbstractOrderItemRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"OrderItemRequest OrderItemRequest.clone()"})
-  public void testClone() {
+  public void testNewOrderItemRequest2() {
     // Arrange
-    OrderItemRequest orderItemRequest = new OrderItemRequest();
+    HashMap<String, String> itemAttributes = new HashMap<>();
+    itemAttributes.computeIfPresent("foo", mock(BiFunction.class));
+
+    DiscreteOrderItemRequest request = new DiscreteOrderItemRequest();
+    request.setItemAttributes(itemAttributes);
 
     // Act
-    OrderItemRequest actualCloneResult = orderItemRequest.clone();
+    OrderItemRequest actualOrderItemRequest = new OrderItemRequest(request);
 
     // Assert
-    assertEquals(orderItemRequest, actualCloneResult);
+    assertNull(actualOrderItemRequest.getItemName());
+    assertNull(actualOrderItemRequest.getRetailPriceOverride());
+    assertNull(actualOrderItemRequest.getSalePriceOverride());
+    assertNull(actualOrderItemRequest.getCategory());
+    assertNull(actualOrderItemRequest.getProduct());
+    assertNull(actualOrderItemRequest.getSku());
+    assertNull(actualOrderItemRequest.getOrder());
+    assertNull(actualOrderItemRequest.getPersonalMessage());
+    assertEquals(0, actualOrderItemRequest.getQuantity());
+    assertTrue(actualOrderItemRequest.getAdditionalAttributes().isEmpty());
+    assertTrue(actualOrderItemRequest.getItemAttributes().isEmpty());
   }
 }

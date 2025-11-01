@@ -21,43 +21,74 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import java.util.HashMap;
 import java.util.Map;
-import org.broadleafcommerce.common.event.BroadleafSystemEvent.BroadleafEventScopeType;
-import org.broadleafcommerce.common.event.BroadleafSystemEvent.BroadleafEventWorkerType;
+import java.util.function.BiFunction;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 public class BroadleafSystemEventDiffblueTest {
+  @MockBean
+  private BroadleafSystemEvent broadleafSystemEvent;
+
   /**
-   * Test {@link BroadleafSystemEvent#BroadleafSystemEvent(String, Map, BroadleafEventScopeType,
-   * BroadleafEventWorkerType, boolean)}.
-   *
+   * Methods under test:
    * <ul>
-   *   <li>Then return {@code Type}.
+   *   <li>{@link BroadleafSystemEvent#setDetailMap(Map)}
+   *   <li>
+   * {@link BroadleafSystemEvent#setScopeType(BroadleafSystemEvent.BroadleafEventScopeType)}
+   *   <li>{@link BroadleafSystemEvent#setType(String)}
+   *   <li>{@link BroadleafSystemEvent#setUniversal(boolean)}
+   *   <li>
+   * {@link BroadleafSystemEvent#setWorkerType(BroadleafSystemEvent.BroadleafEventWorkerType)}
+   *   <li>{@link BroadleafSystemEvent#getDetailMap()}
+   *   <li>{@link BroadleafSystemEvent#getScopeType()}
+   *   <li>{@link BroadleafSystemEvent#getType()}
+   *   <li>{@link BroadleafSystemEvent#getWorkerType()}
+   *   <li>{@link BroadleafSystemEvent#isUniversal()}
    * </ul>
-   *
-   * <p>Method under test: {@link BroadleafSystemEvent#BroadleafSystemEvent(String, Map,
-   * BroadleafEventScopeType, BroadleafEventWorkerType, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void BroadleafSystemEvent.<init>(String, Map, BroadleafEventScopeType, BroadleafEventWorkerType, boolean)"
-  })
-  public void testNewBroadleafSystemEvent_thenReturnType() {
-    // Arrange and Act
-    BroadleafSystemEvent actualBroadleafSystemEvent =
-        new BroadleafSystemEvent(
-            "Type",
-            new HashMap<>(),
-            BroadleafEventScopeType.GLOBAL,
-            BroadleafEventWorkerType.SITE,
-            true);
+  public void testGettersAndSetters() {
+    // Arrange
+    BroadleafSystemEvent broadleafSystemEvent = new BroadleafSystemEvent("Type",
+        BroadleafSystemEvent.BroadleafEventScopeType.GLOBAL, BroadleafSystemEvent.BroadleafEventWorkerType.SITE, true);
+    HashMap<String, BroadleafSystemEventDetail> detailMap = new HashMap<>();
+
+    // Act
+    broadleafSystemEvent.setDetailMap(detailMap);
+    broadleafSystemEvent.setScopeType(BroadleafSystemEvent.BroadleafEventScopeType.GLOBAL);
+    broadleafSystemEvent.setType("Type");
+    broadleafSystemEvent.setUniversal(true);
+    broadleafSystemEvent.setWorkerType(BroadleafSystemEvent.BroadleafEventWorkerType.SITE);
+    Map<String, BroadleafSystemEventDetail> actualDetailMap = broadleafSystemEvent.getDetailMap();
+    BroadleafSystemEvent.BroadleafEventScopeType actualScopeType = broadleafSystemEvent.getScopeType();
+    String actualType = broadleafSystemEvent.getType();
+    BroadleafSystemEvent.BroadleafEventWorkerType actualWorkerType = broadleafSystemEvent.getWorkerType();
+    boolean actualIsUniversalResult = broadleafSystemEvent.isUniversal();
+
+    // Assert that nothing has changed
+    assertEquals("Type", actualType);
+    assertEquals(BroadleafSystemEvent.BroadleafEventScopeType.GLOBAL, actualScopeType);
+    assertEquals(BroadleafSystemEvent.BroadleafEventWorkerType.SITE, actualWorkerType);
+    assertTrue(actualDetailMap.isEmpty());
+    assertTrue(actualIsUniversalResult);
+    assertSame(detailMap, actualDetailMap);
+  }
+
+  /**
+   * Method under test:
+   * {@link BroadleafSystemEvent#BroadleafSystemEvent(String, Map, BroadleafSystemEvent.BroadleafEventScopeType, BroadleafSystemEvent.BroadleafEventWorkerType, boolean)}
+   */
+  @Test
+  public void testNewBroadleafSystemEvent() {
+    // Arrange
+    HashMap<String, BroadleafSystemEventDetail> detailMap = new HashMap<>();
+
+    // Act
+    BroadleafSystemEvent actualBroadleafSystemEvent = new BroadleafSystemEvent("Type", detailMap,
+        BroadleafSystemEvent.BroadleafEventScopeType.GLOBAL, BroadleafSystemEvent.BroadleafEventWorkerType.SITE, true);
 
     // Assert
     assertEquals("Type", actualBroadleafSystemEvent.getType());
@@ -68,35 +99,56 @@ public class BroadleafSystemEventDiffblueTest {
     assertNull(actualBroadleafSystemEvent.getCurrencyCode());
     assertNull(actualBroadleafSystemEvent.getLocaleCode());
     assertNull(actualBroadleafSystemEvent.getTimeZoneId());
-    assertEquals(BroadleafEventScopeType.GLOBAL, actualBroadleafSystemEvent.getScopeType());
-    assertEquals(BroadleafEventWorkerType.SITE, actualBroadleafSystemEvent.getWorkerType());
+    assertEquals(BroadleafSystemEvent.BroadleafEventScopeType.GLOBAL, actualBroadleafSystemEvent.getScopeType());
+    assertEquals(BroadleafSystemEvent.BroadleafEventWorkerType.SITE, actualBroadleafSystemEvent.getWorkerType());
     assertTrue(actualBroadleafSystemEvent.getContext().isEmpty());
-    assertTrue(actualBroadleafSystemEvent.getDetailMap().isEmpty());
+    Map<String, BroadleafSystemEventDetail> detailMap2 = actualBroadleafSystemEvent.getDetailMap();
+    assertTrue(detailMap2.isEmpty());
     assertTrue(actualBroadleafSystemEvent.isUniversal());
+    assertSame(detailMap, detailMap2);
   }
 
   /**
-   * Test {@link BroadleafSystemEvent#BroadleafSystemEvent(String, BroadleafEventScopeType,
-   * BroadleafEventWorkerType, boolean)}.
-   *
-   * <ul>
-   *   <li>Then return {@code Type}.
-   * </ul>
-   *
-   * <p>Method under test: {@link BroadleafSystemEvent#BroadleafSystemEvent(String,
-   * BroadleafEventScopeType, BroadleafEventWorkerType, boolean)}
+   * Method under test:
+   * {@link BroadleafSystemEvent#BroadleafSystemEvent(String, Map, BroadleafSystemEvent.BroadleafEventScopeType, BroadleafSystemEvent.BroadleafEventWorkerType, boolean)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void BroadleafSystemEvent.<init>(String, BroadleafEventScopeType, BroadleafEventWorkerType, boolean)"
-  })
-  public void testNewBroadleafSystemEvent_thenReturnType2() {
+  public void testNewBroadleafSystemEvent2() {
+    // Arrange
+    HashMap<String, BroadleafSystemEventDetail> detailMap = new HashMap<>();
+    detailMap.computeIfPresent("ThreadLocalManager.notify.orphans", mock(BiFunction.class));
+
+    // Act
+    BroadleafSystemEvent actualBroadleafSystemEvent = new BroadleafSystemEvent("Type", detailMap,
+        BroadleafSystemEvent.BroadleafEventScopeType.GLOBAL, BroadleafSystemEvent.BroadleafEventWorkerType.SITE, true);
+
+    // Assert
+    assertEquals("Type", actualBroadleafSystemEvent.getType());
+    assertEquals("Type", actualBroadleafSystemEvent.getSource());
+    assertNull(actualBroadleafSystemEvent.getCatalogId());
+    assertNull(actualBroadleafSystemEvent.getProfileId());
+    assertNull(actualBroadleafSystemEvent.getSiteId());
+    assertNull(actualBroadleafSystemEvent.getCurrencyCode());
+    assertNull(actualBroadleafSystemEvent.getLocaleCode());
+    assertNull(actualBroadleafSystemEvent.getTimeZoneId());
+    assertEquals(BroadleafSystemEvent.BroadleafEventScopeType.GLOBAL, actualBroadleafSystemEvent.getScopeType());
+    assertEquals(BroadleafSystemEvent.BroadleafEventWorkerType.SITE, actualBroadleafSystemEvent.getWorkerType());
+    assertTrue(actualBroadleafSystemEvent.getContext().isEmpty());
+    Map<String, BroadleafSystemEventDetail> detailMap2 = actualBroadleafSystemEvent.getDetailMap();
+    assertTrue(detailMap2.isEmpty());
+    assertTrue(actualBroadleafSystemEvent.isUniversal());
+    assertSame(detailMap, detailMap2);
+  }
+
+  /**
+   * Method under test:
+   * {@link BroadleafSystemEvent#BroadleafSystemEvent(String, BroadleafSystemEvent.BroadleafEventScopeType, BroadleafSystemEvent.BroadleafEventWorkerType, boolean)}
+   */
+  @Test
+  public void testNewBroadleafSystemEvent3() {
     // Arrange and Act
-    BroadleafSystemEvent actualBroadleafSystemEvent =
-        new BroadleafSystemEvent(
-            "Type", BroadleafEventScopeType.GLOBAL, BroadleafEventWorkerType.SITE, true);
+    BroadleafSystemEvent actualBroadleafSystemEvent = new BroadleafSystemEvent("Type",
+        BroadleafSystemEvent.BroadleafEventScopeType.GLOBAL, BroadleafSystemEvent.BroadleafEventWorkerType.SITE, true);
 
     // Assert
     assertEquals("Type", actualBroadleafSystemEvent.getType());
@@ -108,70 +160,9 @@ public class BroadleafSystemEventDiffblueTest {
     assertNull(actualBroadleafSystemEvent.getLocaleCode());
     assertNull(actualBroadleafSystemEvent.getTimeZoneId());
     assertNull(actualBroadleafSystemEvent.getDetailMap());
-    assertEquals(BroadleafEventScopeType.GLOBAL, actualBroadleafSystemEvent.getScopeType());
-    assertEquals(BroadleafEventWorkerType.SITE, actualBroadleafSystemEvent.getWorkerType());
+    assertEquals(BroadleafSystemEvent.BroadleafEventScopeType.GLOBAL, actualBroadleafSystemEvent.getScopeType());
+    assertEquals(BroadleafSystemEvent.BroadleafEventWorkerType.SITE, actualBroadleafSystemEvent.getWorkerType());
     assertTrue(actualBroadleafSystemEvent.getContext().isEmpty());
     assertTrue(actualBroadleafSystemEvent.isUniversal());
-  }
-
-  /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link BroadleafSystemEvent#setDetailMap(Map)}
-   *   <li>{@link BroadleafSystemEvent#setScopeType(BroadleafEventScopeType)}
-   *   <li>{@link BroadleafSystemEvent#setType(String)}
-   *   <li>{@link BroadleafSystemEvent#setUniversal(boolean)}
-   *   <li>{@link BroadleafSystemEvent#setWorkerType(BroadleafEventWorkerType)}
-   *   <li>{@link BroadleafSystemEvent#getDetailMap()}
-   *   <li>{@link BroadleafSystemEvent#getScopeType()}
-   *   <li>{@link BroadleafSystemEvent#getType()}
-   *   <li>{@link BroadleafSystemEvent#getWorkerType()}
-   *   <li>{@link BroadleafSystemEvent#isUniversal()}
-   * </ul>
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Map BroadleafSystemEvent.getDetailMap()",
-    "BroadleafEventScopeType BroadleafSystemEvent.getScopeType()",
-    "String BroadleafSystemEvent.getType()",
-    "BroadleafEventWorkerType BroadleafSystemEvent.getWorkerType()",
-    "boolean BroadleafSystemEvent.isUniversal()",
-    "void BroadleafSystemEvent.setDetailMap(Map)",
-    "void BroadleafSystemEvent.setScopeType(BroadleafEventScopeType)",
-    "void BroadleafSystemEvent.setType(String)",
-    "void BroadleafSystemEvent.setUniversal(boolean)",
-    "void BroadleafSystemEvent.setWorkerType(BroadleafEventWorkerType)"
-  })
-  public void testGettersAndSetters() {
-    // Arrange
-    BroadleafSystemEvent broadleafSystemEvent =
-        new BroadleafSystemEvent(
-            "Type", BroadleafEventScopeType.GLOBAL, BroadleafEventWorkerType.SITE, true);
-    HashMap<String, BroadleafSystemEventDetail> detailMap = new HashMap<>();
-
-    // Act
-    broadleafSystemEvent.setDetailMap(detailMap);
-    broadleafSystemEvent.setScopeType(BroadleafEventScopeType.GLOBAL);
-    broadleafSystemEvent.setType("Type");
-    broadleafSystemEvent.setUniversal(true);
-    broadleafSystemEvent.setWorkerType(BroadleafEventWorkerType.SITE);
-    Map<String, BroadleafSystemEventDetail> actualDetailMap = broadleafSystemEvent.getDetailMap();
-    BroadleafEventScopeType actualScopeType = broadleafSystemEvent.getScopeType();
-    String actualType = broadleafSystemEvent.getType();
-    BroadleafEventWorkerType actualWorkerType = broadleafSystemEvent.getWorkerType();
-    boolean actualIsUniversalResult = broadleafSystemEvent.isUniversal();
-
-    // Assert
-    assertEquals("Type", actualType);
-    assertEquals(BroadleafEventScopeType.GLOBAL, actualScopeType);
-    assertEquals(BroadleafEventWorkerType.SITE, actualWorkerType);
-    assertTrue(actualDetailMap.isEmpty());
-    assertTrue(actualIsUniversalResult);
-    assertSame(detailMap, actualDetailMap);
   }
 }

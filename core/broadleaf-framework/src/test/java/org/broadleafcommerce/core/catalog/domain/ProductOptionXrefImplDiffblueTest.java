@@ -18,6 +18,7 @@
 package org.broadleafcommerce.core.catalog.domain;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
@@ -26,91 +27,33 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
-import java.util.HashMap;
+import java.util.List;
 import org.broadleafcommerce.common.copy.CreateResponse;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
+import org.broadleafcommerce.core.catalog.service.type.ProductOptionValidationType;
+import org.broadleafcommerce.core.search.domain.FieldEntity;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class ProductOptionXrefImplDiffblueTest {
-  @Autowired private ProductOptionXrefImpl productOptionXrefImpl;
-
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link ProductOptionXrefImpl#setId(Long)}
-   *   <li>{@link ProductOptionXrefImpl#setProduct(Product)}
-   *   <li>{@link ProductOptionXrefImpl#setProductOption(ProductOption)}
-   *   <li>{@link ProductOptionXrefImpl#getId()}
-   *   <li>{@link ProductOptionXrefImpl#getProduct()}
-   *   <li>{@link ProductOptionXrefImpl#getProductOption()}
-   * </ul>
+   * Method under test:
+   * {@link ProductOptionXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Long ProductOptionXrefImpl.getId()",
-    "Product ProductOptionXrefImpl.getProduct()",
-    "ProductOption ProductOptionXrefImpl.getProductOption()",
-    "void ProductOptionXrefImpl.setId(Long)",
-    "void ProductOptionXrefImpl.setProduct(Product)",
-    "void ProductOptionXrefImpl.setProductOption(ProductOption)"
-  })
-  public void testGettersAndSetters() {
+  public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     ProductOptionXrefImpl productOptionXrefImpl = new ProductOptionXrefImpl();
-
-    // Act
-    productOptionXrefImpl.setId(1L);
-    ProductBundleImpl product = new ProductBundleImpl();
-    productOptionXrefImpl.setProduct(product);
-    ProductOptionImpl productOption = new ProductOptionImpl();
-    productOptionXrefImpl.setProductOption(productOption);
-    Long actualId = productOptionXrefImpl.getId();
-    Product actualProduct = productOptionXrefImpl.getProduct();
-    ProductOption actualProductOption = productOptionXrefImpl.getProductOption();
-
-    // Assert
-    assertEquals(1L, actualId.longValue());
-    assertSame(product, actualProduct);
-    assertSame(productOption, actualProductOption);
-  }
-
-  /**
-   * Test {@link ProductOptionXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * ProductOptionXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse ProductOptionXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
-    // Arrange
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(new ProductOptionXrefImpl(), true);
+    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<ProductOptionXref> actualCreateOrRetrieveCopyInstanceResult =
-        productOptionXrefImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<ProductOptionXref> actualCreateOrRetrieveCopyInstanceResult = productOptionXrefImpl
+        .createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -118,60 +61,13 @@ public class ProductOptionXrefImplDiffblueTest {
   }
 
   /**
-   * Test {@link ProductOptionXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * ProductOptionXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse ProductOptionXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
-    // Arrange
-    HashMap<String, String> stringStringMap = new HashMap<>();
-    stringStringMap.put("MANUAL_DUPLICATION", "Copy Hints");
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.getCopyHints()).thenReturn(stringStringMap);
-    CreateResponse<Object> createResponse = new CreateResponse<>(productOptionXrefImpl, false);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    CreateResponse<ProductOptionXref> actualCreateOrRetrieveCopyInstanceResult =
-        productOptionXrefImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    verify(context).getCopyHints();
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
-  }
-
-  /**
-   * Test {@link ProductOptionXrefImpl#equals(Object)}, and {@link
-   * ProductOptionXrefImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link ProductOptionXrefImpl#equals(Object)}
    *   <li>{@link ProductOptionXrefImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductOptionXrefImpl.equals(Object)",
-    "int ProductOptionXrefImpl.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     ProductOptionXrefImpl productOptionXrefImpl = new ProductOptionXrefImpl();
@@ -186,32 +82,18 @@ public class ProductOptionXrefImplDiffblueTest {
 
     // Act and Assert
     assertEquals(productOptionXrefImpl, productOptionXrefImpl2);
-    assertEquals(productOptionXrefImpl.hashCode(), productOptionXrefImpl2.hashCode());
+    int expectedHashCodeResult = productOptionXrefImpl.hashCode();
+    assertEquals(expectedHashCodeResult, productOptionXrefImpl2.hashCode());
   }
 
   /**
-   * Test {@link ProductOptionXrefImpl#equals(Object)}, and {@link
-   * ProductOptionXrefImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link ProductOptionXrefImpl#equals(Object)}
    *   <li>{@link ProductOptionXrefImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductOptionXrefImpl.equals(Object)",
-    "int ProductOptionXrefImpl.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     ProductOptionXrefImpl productOptionXrefImpl = new ProductOptionXrefImpl();
@@ -226,22 +108,9 @@ public class ProductOptionXrefImplDiffblueTest {
   }
 
   /**
-   * Test {@link ProductOptionXrefImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionXrefImpl#equals(Object)}
+   * Method under test: {@link ProductOptionXrefImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductOptionXrefImpl.equals(Object)",
-    "int ProductOptionXrefImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     ProductOptionXrefImpl productOptionXrefImpl = new ProductOptionXrefImpl();
@@ -259,22 +128,29 @@ public class ProductOptionXrefImplDiffblueTest {
   }
 
   /**
-   * Test {@link ProductOptionXrefImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionXrefImpl#equals(Object)}
+   * Method under test: {@link ProductOptionXrefImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductOptionXrefImpl.equals(Object)",
-    "int ProductOptionXrefImpl.hashCode()"
-  })
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange
+    ProductOptionXrefImpl productOptionXrefImpl = new ProductOptionXrefImpl();
+    productOptionXrefImpl.setId(1L);
+    productOptionXrefImpl.setProduct(mock(ProductBundleImpl.class));
+    productOptionXrefImpl.setProductOption(new ProductOptionImpl());
+
+    ProductOptionXrefImpl productOptionXrefImpl2 = new ProductOptionXrefImpl();
+    productOptionXrefImpl2.setId(1L);
+    productOptionXrefImpl2.setProduct(new ProductBundleImpl());
+    productOptionXrefImpl2.setProductOption(new ProductOptionImpl());
+
+    // Act and Assert
+    assertNotEquals(productOptionXrefImpl, productOptionXrefImpl2);
+  }
+
+  /**
+   * Method under test: {@link ProductOptionXrefImpl#equals(Object)}
+   */
+  @Test
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     ProductOptionXrefImpl productOptionXrefImpl = new ProductOptionXrefImpl();
@@ -287,22 +163,9 @@ public class ProductOptionXrefImplDiffblueTest {
   }
 
   /**
-   * Test {@link ProductOptionXrefImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link ProductOptionXrefImpl#equals(Object)}
+   * Method under test: {@link ProductOptionXrefImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean ProductOptionXrefImpl.equals(Object)",
-    "int ProductOptionXrefImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     ProductOptionXrefImpl productOptionXrefImpl = new ProductOptionXrefImpl();
@@ -315,21 +178,139 @@ public class ProductOptionXrefImplDiffblueTest {
   }
 
   /**
-   * Test new {@link ProductOptionXrefImpl} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link ProductOptionXrefImpl}
+   * Methods under test:
+   * <ul>
+   *   <li>{@link ProductOptionXrefImpl#setId(Long)}
+   *   <li>{@link ProductOptionXrefImpl#setProduct(Product)}
+   *   <li>{@link ProductOptionXrefImpl#setProductOption(ProductOption)}
+   *   <li>{@link ProductOptionXrefImpl#getId()}
+   *   <li>{@link ProductOptionXrefImpl#getProduct()}
+   *   <li>{@link ProductOptionXrefImpl#getProductOption()}
+   * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ProductOptionXrefImpl.<init>()"})
+  public void testGettersAndSetters() {
+    // Arrange
+    ProductOptionXrefImpl productOptionXrefImpl = new ProductOptionXrefImpl();
+
+    // Act
+    productOptionXrefImpl.setId(1L);
+    ProductBundleImpl product = new ProductBundleImpl();
+    productOptionXrefImpl.setProduct(product);
+    ProductOptionImpl productOption = new ProductOptionImpl();
+    productOptionXrefImpl.setProductOption(productOption);
+    Long actualId = productOptionXrefImpl.getId();
+    Product actualProduct = productOptionXrefImpl.getProduct();
+    ProductOption actualProductOption = productOptionXrefImpl.getProductOption();
+
+    // Assert that nothing has changed
+    assertEquals(1L, actualId.longValue());
+    assertSame(product, actualProduct);
+    assertSame(productOption, actualProductOption);
+  }
+
+  /**
+   * Method under test: default or parameterless constructor of
+   * {@link ProductOptionXrefImpl}
+   */
+  @Test
   public void testNewProductOptionXrefImpl() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange and Act
     ProductOptionXrefImpl actualProductOptionXrefImpl = new ProductOptionXrefImpl();
 
     // Assert
-    assertTrue(actualProductOptionXrefImpl.getProduct() instanceof ProductImpl);
-    assertTrue(actualProductOptionXrefImpl.getProductOption() instanceof ProductOptionImpl);
+    Product product = actualProductOptionXrefImpl.getProduct();
+    assertTrue(product instanceof ProductImpl);
+    ProductOption productOption = actualProductOptionXrefImpl.getProductOption();
+    assertTrue(productOption instanceof ProductOptionImpl);
+    FieldEntity fieldEntityType = product.getFieldEntityType();
+    List<String> allLookupTypes = fieldEntityType.getAllLookupTypes();
+    assertEquals(1, allLookupTypes.size());
+    assertEquals("PRODUCT", allLookupTypes.get(0));
+    assertEquals("PRODUCT", fieldEntityType.getType());
+    assertEquals("Product", fieldEntityType.getFriendlyType());
+    ProductOptionValidationType productOptionValidationType = productOption.getProductOptionValidationType();
+    assertEquals("REGEX", productOptionValidationType.getType());
+    assertEquals("Regular Expression", productOptionValidationType.getFriendlyType());
+    assertEquals('N', ((ProductImpl) product).archiveStatus.getArchived().charValue());
+    assertEquals('N', ((ProductImpl) product).getArchived().charValue());
+    assertNull(productOption.getRequired());
+    assertNull(productOption.getDisplayOrder());
+    assertNull(product.getId());
+    assertNull(productOption.getId());
     assertNull(actualProductOptionXrefImpl.getId());
+    assertNull(product.getCanonicalUrl());
+    assertNull(product.getDisplayTemplate());
+    assertNull(product.getGeneratedUrl());
+    assertNull(product.getManufacturer());
+    assertNull(product.getMetaDescription());
+    assertNull(product.getMetaTitle());
+    assertNull(product.getModel());
+    assertNull(product.getPromoMessage());
+    assertNull(product.getUrl());
+    assertNull(((ProductImpl) product).getLocation());
+    assertNull(productOption.getAttributeName());
+    assertNull(productOption.getErrorCode());
+    assertNull(productOption.getErrorMessage());
+    assertNull(productOption.getLabel());
+    assertNull(productOption.getName());
+    assertNull(productOption.getValidationString());
+    assertNull(((ProductOptionImpl) productOption).getMainEntityName());
+    assertNull(((ProductImpl) product).url);
+    assertNull(((ProductImpl) product).urlKey);
+    assertNull(((ProductOptionImpl) productOption).errorMessage);
+    assertNull(((ProductOptionImpl) productOption).label);
+    assertNull(((ProductOptionImpl) productOption).name);
+    assertNull(((ProductOptionImpl) productOption).type);
+    assertNull(product.getPrice());
+    assertNull(product.getRetailPrice());
+    assertNull(product.getSalePrice());
+    assertNull(((ProductImpl) product).getRetailPriceInternal());
+    assertNull(((ProductImpl) product).getSalePriceInternal());
+    assertNull(product.getCategory());
+    assertNull(product.getDefaultCategory());
+    assertNull(((ProductImpl) product).defaultCategory);
+    List<Sku> allSellableSkus = product.getAllSellableSkus();
+    assertEquals(1, allSellableSkus.size());
+    assertNull(allSellableSkus.get(0));
+    List<Sku> allSkus = product.getAllSkus();
+    assertEquals(1, allSkus.size());
+    assertNull(allSkus.get(0));
+    assertNull(product.getDefaultSku());
+    assertNull(productOption.getType());
+    assertNull(productOption.getProductOptionValidationStrategyType());
+    assertFalse(product.getCanSellWithoutOptions());
+    assertFalse(product.getOverrideGeneratedUrl());
+    assertFalse(product.hasRetailPrice());
+    assertFalse(productOption.getUseInSkuGeneration());
+    assertFalse(((ProductImpl) product).canSellWithoutOptions);
+    assertFalse(((ProductImpl) product).isFeaturedProduct);
+    assertFalse(((ProductImpl) product).overrideGeneratedUrl);
+    assertTrue(product.getAdditionalSkus().isEmpty());
+    assertTrue(product.getAllParentCategories().isEmpty());
+    assertTrue(product.getAllParentCategoryIds().isEmpty());
+    assertTrue(product.getAllParentCategoryXrefs().isEmpty());
+    List<RelatedProduct> crossSaleProducts = product.getCrossSaleProducts();
+    assertTrue(crossSaleProducts.isEmpty());
+    List<RelatedProduct> cumulativeUpSaleProducts = product.getCumulativeUpSaleProducts();
+    assertTrue(cumulativeUpSaleProducts.isEmpty());
+    assertTrue(product.getParentCategoryHierarchyIds().isEmpty());
+    assertTrue(product.getProductOptionXrefs().isEmpty());
+    assertTrue(product.getProductOptions().isEmpty());
+    assertTrue(product.getSkus().isEmpty());
+    assertTrue(productOption.getAllowedValues().isEmpty());
+    assertTrue(productOption.getProductXrefs().isEmpty());
+    assertTrue(productOption.getProducts().isEmpty());
+    assertTrue(fieldEntityType.getAdditionalLookupTypes().isEmpty());
+    assertTrue(((ProductImpl) product).productAttributes.isEmpty());
+    assertTrue(((ProductImpl) product).productOptions.isEmpty());
+    assertTrue(((ProductImpl) product).skus.isEmpty());
+    assertTrue(product.getMultiValueProductAttributes().isEmpty());
+    assertTrue(product.getProductAttributes().isEmpty());
+    assertTrue(product.getProductOptionValuesMap().isEmpty());
+    assertSame(crossSaleProducts, product.getCumulativeCrossSaleProducts());
+    assertSame(cumulativeUpSaleProducts, product.getUpSaleProducts());
   }
 }

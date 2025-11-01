@@ -21,333 +21,359 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
+import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.Mockito;
 
-@ContextConfiguration(locations = {"/bl-common-applicationContext-entity.xml"})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(SpringJUnit4ClassRunner.class)
 public class StructuredContentDTODiffblueTest {
-  @Autowired private StructuredContentDTO structuredContentDTO;
-
   /**
-   * Test {@link StructuredContentDTO#getPropertyValue(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link StructuredContentDTO} (default constructor) Values is {@link
-   *       HashMap#HashMap()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentDTO#getPropertyValue(String)}
+   * Method under test: {@link StructuredContentDTO#getPropertyValue(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object StructuredContentDTO.getPropertyValue(String)"})
-  public void testGetPropertyValue_givenStructuredContentDTOValuesIsHashMap() {
+  public void testGetPropertyValue() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertNull((new StructuredContentDTO()).getPropertyValue("Property Name"));
+    assertNull((new StructuredContentDTOWrapper(new StructuredContentDTO())).getPropertyValue("Property Name"));
+    assertNull((new StructuredContentDTO()).getPropertyValue("contentName"));
+    assertNull((new StructuredContentDTO()).getPropertyValue("contentType"));
+    assertNull((new StructuredContentDTO()).getPropertyValue("localeCode"));
+  }
+
+  /**
+   * Method under test: {@link StructuredContentDTO#getPropertyValue(String)}
+   */
+  @Test
+  public void testGetPropertyValue2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
-    structuredContentDTO.setContentName("Not all who wander are lost");
-    structuredContentDTO.setValues(new HashMap<>());
+    StructuredContentDTOWrapper structuredContentDTO = mock(StructuredContentDTOWrapper.class);
+    when(structuredContentDTO.getPropertyValue(Mockito.<String>any())).thenReturn(BLCFieldUtils.NULL_FIELD);
 
-    // Act and Assert
-    assertEquals(
-        "Not all who wander are lost", structuredContentDTO.getPropertyValue("contentName"));
+    // Act
+    (new StructuredContentDTOWrapper(structuredContentDTO)).getPropertyValue("Property Name");
+
+    // Assert
+    verify(structuredContentDTO).getPropertyValue(eq("Property Name"));
   }
 
   /**
-   * Test {@link StructuredContentDTO#getPropertyValue(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link StructuredContentDTO}.
-   *   <li>When {@code contentName}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentDTO#getPropertyValue(String)}
+   * Method under test: {@link StructuredContentDTO#setContentName(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object StructuredContentDTO.getPropertyValue(String)"})
-  public void testGetPropertyValue_givenStructuredContentDTO_whenContentName_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(structuredContentDTO.getPropertyValue("contentName"));
-  }
-
-  /**
-   * Test {@link StructuredContentDTO#getPropertyValue(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link StructuredContentDTO}.
-   *   <li>When {@code contentType}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentDTO#getPropertyValue(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object StructuredContentDTO.getPropertyValue(String)"})
-  public void testGetPropertyValue_givenStructuredContentDTO_whenContentType_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(structuredContentDTO.getPropertyValue("contentType"));
-  }
-
-  /**
-   * Test {@link StructuredContentDTO#getPropertyValue(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link StructuredContentDTO}.
-   *   <li>When {@code localeCode}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentDTO#getPropertyValue(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object StructuredContentDTO.getPropertyValue(String)"})
-  public void testGetPropertyValue_givenStructuredContentDTO_whenLocaleCode_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(structuredContentDTO.getPropertyValue("localeCode"));
-  }
-
-  /**
-   * Test {@link StructuredContentDTO#getPropertyValue(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link StructuredContentDTO}.
-   *   <li>When {@code priority}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentDTO#getPropertyValue(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object StructuredContentDTO.getPropertyValue(String)"})
-  public void testGetPropertyValue_givenStructuredContentDTO_whenPriority_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(structuredContentDTO.getPropertyValue("priority"));
-  }
-
-  /**
-   * Test {@link StructuredContentDTO#getPropertyValue(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link StructuredContentDTO}.
-   *   <li>When {@code Property Name}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentDTO#getPropertyValue(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object StructuredContentDTO.getPropertyValue(String)"})
-  public void testGetPropertyValue_givenStructuredContentDTO_whenPropertyName_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(structuredContentDTO.getPropertyValue("Property Name"));
-  }
-
-  /**
-   * Test {@link StructuredContentDTO#getPropertyValue(String)}.
-   *
-   * <ul>
-   *   <li>Then return {@code Not all who wander are lost}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentDTO#getPropertyValue(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object StructuredContentDTO.getPropertyValue(String)"})
-  public void testGetPropertyValue_thenReturnNotAllWhoWanderAreLost() {
-    // Arrange
-    StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
-    structuredContentDTO.setContentName("Not all who wander are lost");
-
-    // Act and Assert
-    assertEquals(
-        "Not all who wander are lost", structuredContentDTO.getPropertyValue("contentName"));
-  }
-
-  /**
-   * Test {@link StructuredContentDTO#setContentName(String)}.
-   *
-   * <p>Method under test: {@link StructuredContentDTO#setContentName(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void StructuredContentDTO.setContentName(String)"})
   public void testSetContentName() {
-    // Arrange and Act
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
+
+    // Act
     structuredContentDTO.setContentName("Not all who wander are lost");
 
     // Assert
-    StructuredContentDTO clone = structuredContentDTO.getClone();
-    StructuredContentDTO clone2 = clone.getClone();
-    StructuredContentDTO clone3 = clone2.getClone();
-    StructuredContentDTO clone4 = clone3.getClone();
-    StructuredContentDTO clone5 = clone4.getClone();
-    StructuredContentDTO clone6 = clone5.getClone();
-    StructuredContentDTO clone7 = clone6.getClone();
-    assertEquals("Not all who wander are lost", clone7.getClone().getContentName());
-    assertEquals("Not all who wander are lost", clone7.getContentName());
-    assertEquals("Not all who wander are lost", clone6.getContentName());
-    assertEquals("Not all who wander are lost", clone5.getContentName());
-    assertEquals("Not all who wander are lost", clone4.getContentName());
-    assertEquals("Not all who wander are lost", clone3.getContentName());
-    assertEquals("Not all who wander are lost", clone2.getContentName());
-    assertEquals("Not all who wander are lost", clone.getContentName());
     assertEquals("Not all who wander are lost", structuredContentDTO.getContentName());
+    StructuredContentDTO clone = structuredContentDTO.getClone();
+    assertEquals("Not all who wander are lost", clone.getContentName());
+    StructuredContentDTO clone2 = clone.getClone();
+    assertEquals("Not all who wander are lost", clone2.getContentName());
+    StructuredContentDTO clone3 = clone2.getClone();
+    assertEquals("Not all who wander are lost", clone3.getContentName());
+    StructuredContentDTO clone4 = clone3.getClone();
+    assertEquals("Not all who wander are lost", clone4.getContentName());
+    StructuredContentDTO clone5 = clone4.getClone();
+    assertEquals("Not all who wander are lost", clone5.getContentName());
+    StructuredContentDTO clone6 = clone5.getClone();
+    assertEquals("Not all who wander are lost", clone6.getContentName());
+    StructuredContentDTO clone7 = clone6.getClone();
+    assertEquals("Not all who wander are lost", clone7.getContentName());
+    assertEquals("Not all who wander are lost", clone7.getClone().getContentName());
     Map<String, Object> values = structuredContentDTO.getValues();
     assertEquals(1, values.size());
     assertEquals("Not all who wander are lost", values.get("contentName"));
+    Map<String, Object> values2 = clone.getValues();
+    assertEquals(1, values2.size());
+    assertEquals("Not all who wander are lost", values2.get("contentName"));
+    Map<String, Object> values3 = clone2.getValues();
+    assertEquals(1, values3.size());
+    assertEquals("Not all who wander are lost", values3.get("contentName"));
+    Map<String, Object> values4 = clone3.getValues();
+    assertEquals(1, values4.size());
+    assertEquals("Not all who wander are lost", values4.get("contentName"));
+    Map<String, Object> values5 = clone4.getValues();
+    assertEquals(1, values5.size());
+    assertEquals("Not all who wander are lost", values5.get("contentName"));
+    Map<String, Object> values6 = clone5.getValues();
+    assertEquals(1, values6.size());
+    assertEquals("Not all who wander are lost", values6.get("contentName"));
+    Map<String, Object> values7 = clone6.getValues();
+    assertEquals(1, values7.size());
+    assertEquals("Not all who wander are lost", values7.get("contentName"));
+    Map<String, Object> values8 = clone7.getValues();
+    assertEquals(1, values8.size());
+    assertEquals("Not all who wander are lost", values8.get("contentName"));
   }
 
   /**
-   * Test {@link StructuredContentDTO#setContentType(String)}.
-   *
-   * <p>Method under test: {@link StructuredContentDTO#setContentType(String)}
+   * Method under test: {@link StructuredContentDTO#setContentName(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void StructuredContentDTO.setContentType(String)"})
+  public void testSetContentName2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StructuredContentDTOWrapper structuredContentDTO = mock(StructuredContentDTOWrapper.class);
+    doNothing().when(structuredContentDTO).setContentName(Mockito.<String>any());
+
+    // Act
+    (new StructuredContentDTOWrapper(structuredContentDTO)).setContentName("Not all who wander are lost");
+
+    // Assert
+    verify(structuredContentDTO).setContentName(eq("Not all who wander are lost"));
+  }
+
+  /**
+   * Method under test: {@link StructuredContentDTO#setContentType(String)}
+   */
+  @Test
   public void testSetContentType() {
-    // Arrange and Act
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
+
+    // Act
     structuredContentDTO.setContentType("text/plain");
 
     // Assert
-    StructuredContentDTO clone = structuredContentDTO.getClone();
-    StructuredContentDTO clone2 = clone.getClone();
-    StructuredContentDTO clone3 = clone2.getClone();
-    StructuredContentDTO clone4 = clone3.getClone();
-    StructuredContentDTO clone5 = clone4.getClone();
-    StructuredContentDTO clone6 = clone5.getClone();
-    StructuredContentDTO clone7 = clone6.getClone();
-    assertEquals("text/plain", clone7.getClone().getContentType());
-    assertEquals("text/plain", clone7.getContentType());
-    assertEquals("text/plain", clone6.getContentType());
-    assertEquals("text/plain", clone5.getContentType());
-    assertEquals("text/plain", clone4.getContentType());
-    assertEquals("text/plain", clone3.getContentType());
-    assertEquals("text/plain", clone2.getContentType());
-    assertEquals("text/plain", clone.getContentType());
     assertEquals("text/plain", structuredContentDTO.getContentType());
+    StructuredContentDTO clone = structuredContentDTO.getClone();
+    assertEquals("text/plain", clone.getContentType());
+    StructuredContentDTO clone2 = clone.getClone();
+    assertEquals("text/plain", clone2.getContentType());
+    StructuredContentDTO clone3 = clone2.getClone();
+    assertEquals("text/plain", clone3.getContentType());
+    StructuredContentDTO clone4 = clone3.getClone();
+    assertEquals("text/plain", clone4.getContentType());
+    StructuredContentDTO clone5 = clone4.getClone();
+    assertEquals("text/plain", clone5.getContentType());
+    StructuredContentDTO clone6 = clone5.getClone();
+    assertEquals("text/plain", clone6.getContentType());
+    StructuredContentDTO clone7 = clone6.getClone();
+    assertEquals("text/plain", clone7.getContentType());
+    assertEquals("text/plain", clone7.getClone().getContentType());
     Map<String, Object> values = structuredContentDTO.getValues();
     assertEquals(1, values.size());
     assertEquals("text/plain", values.get("contentType"));
+    Map<String, Object> values2 = clone.getValues();
+    assertEquals(1, values2.size());
+    assertEquals("text/plain", values2.get("contentType"));
+    Map<String, Object> values3 = clone2.getValues();
+    assertEquals(1, values3.size());
+    assertEquals("text/plain", values3.get("contentType"));
+    Map<String, Object> values4 = clone3.getValues();
+    assertEquals(1, values4.size());
+    assertEquals("text/plain", values4.get("contentType"));
+    Map<String, Object> values5 = clone4.getValues();
+    assertEquals(1, values5.size());
+    assertEquals("text/plain", values5.get("contentType"));
+    Map<String, Object> values6 = clone5.getValues();
+    assertEquals(1, values6.size());
+    assertEquals("text/plain", values6.get("contentType"));
+    Map<String, Object> values7 = clone6.getValues();
+    assertEquals(1, values7.size());
+    assertEquals("text/plain", values7.get("contentType"));
+    Map<String, Object> values8 = clone7.getValues();
+    assertEquals(1, values8.size());
+    assertEquals("text/plain", values8.get("contentType"));
   }
 
   /**
-   * Test {@link StructuredContentDTO#setLocaleCode(String)}.
-   *
-   * <p>Method under test: {@link StructuredContentDTO#setLocaleCode(String)}
+   * Method under test: {@link StructuredContentDTO#setContentType(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void StructuredContentDTO.setLocaleCode(String)"})
+  public void testSetContentType2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StructuredContentDTOWrapper structuredContentDTO = mock(StructuredContentDTOWrapper.class);
+    doNothing().when(structuredContentDTO).setContentType(Mockito.<String>any());
+
+    // Act
+    (new StructuredContentDTOWrapper(structuredContentDTO)).setContentType("text/plain");
+
+    // Assert
+    verify(structuredContentDTO).setContentType(eq("text/plain"));
+  }
+
+  /**
+   * Method under test: {@link StructuredContentDTO#setLocaleCode(String)}
+   */
+  @Test
   public void testSetLocaleCode() {
-    // Arrange and Act
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
+
+    // Act
     structuredContentDTO.setLocaleCode("en");
 
     // Assert
-    StructuredContentDTO clone = structuredContentDTO.getClone();
-    StructuredContentDTO clone2 = clone.getClone();
-    StructuredContentDTO clone3 = clone2.getClone();
-    StructuredContentDTO clone4 = clone3.getClone();
-    StructuredContentDTO clone5 = clone4.getClone();
-    StructuredContentDTO clone6 = clone5.getClone();
-    StructuredContentDTO clone7 = clone6.getClone();
-    assertEquals("en", clone7.getClone().getLocaleCode());
-    assertEquals("en", clone7.getLocaleCode());
-    assertEquals("en", clone6.getLocaleCode());
-    assertEquals("en", clone5.getLocaleCode());
-    assertEquals("en", clone4.getLocaleCode());
-    assertEquals("en", clone3.getLocaleCode());
-    assertEquals("en", clone2.getLocaleCode());
-    assertEquals("en", clone.getLocaleCode());
     assertEquals("en", structuredContentDTO.getLocaleCode());
+    StructuredContentDTO clone = structuredContentDTO.getClone();
+    assertEquals("en", clone.getLocaleCode());
+    StructuredContentDTO clone2 = clone.getClone();
+    assertEquals("en", clone2.getLocaleCode());
+    StructuredContentDTO clone3 = clone2.getClone();
+    assertEquals("en", clone3.getLocaleCode());
+    StructuredContentDTO clone4 = clone3.getClone();
+    assertEquals("en", clone4.getLocaleCode());
+    StructuredContentDTO clone5 = clone4.getClone();
+    assertEquals("en", clone5.getLocaleCode());
+    StructuredContentDTO clone6 = clone5.getClone();
+    assertEquals("en", clone6.getLocaleCode());
+    StructuredContentDTO clone7 = clone6.getClone();
+    assertEquals("en", clone7.getLocaleCode());
+    assertEquals("en", clone7.getClone().getLocaleCode());
     Map<String, Object> values = structuredContentDTO.getValues();
     assertEquals(1, values.size());
     assertEquals("en", values.get("localeCode"));
+    Map<String, Object> values2 = clone.getValues();
+    assertEquals(1, values2.size());
+    assertEquals("en", values2.get("localeCode"));
+    Map<String, Object> values3 = clone2.getValues();
+    assertEquals(1, values3.size());
+    assertEquals("en", values3.get("localeCode"));
+    Map<String, Object> values4 = clone3.getValues();
+    assertEquals(1, values4.size());
+    assertEquals("en", values4.get("localeCode"));
+    Map<String, Object> values5 = clone4.getValues();
+    assertEquals(1, values5.size());
+    assertEquals("en", values5.get("localeCode"));
+    Map<String, Object> values6 = clone5.getValues();
+    assertEquals(1, values6.size());
+    assertEquals("en", values6.get("localeCode"));
+    Map<String, Object> values7 = clone6.getValues();
+    assertEquals(1, values7.size());
+    assertEquals("en", values7.get("localeCode"));
+    Map<String, Object> values8 = clone7.getValues();
+    assertEquals(1, values8.size());
+    assertEquals("en", values8.get("localeCode"));
   }
 
   /**
-   * Test {@link StructuredContentDTO#setPriority(Integer)}.
-   *
-   * <p>Method under test: {@link StructuredContentDTO#setPriority(Integer)}
+   * Method under test: {@link StructuredContentDTO#setLocaleCode(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void StructuredContentDTO.setPriority(Integer)"})
+  public void testSetLocaleCode2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StructuredContentDTOWrapper structuredContentDTO = mock(StructuredContentDTOWrapper.class);
+    doNothing().when(structuredContentDTO).setLocaleCode(Mockito.<String>any());
+
+    // Act
+    (new StructuredContentDTOWrapper(structuredContentDTO)).setLocaleCode("en");
+
+    // Assert
+    verify(structuredContentDTO).setLocaleCode(eq("en"));
+  }
+
+  /**
+   * Method under test: {@link StructuredContentDTO#setPriority(Integer)}
+   */
+  @Test
   public void testSetPriority() {
-    // Arrange and Act
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
+
+    // Act
     structuredContentDTO.setPriority(1);
 
     // Assert
-    StructuredContentDTO clone = structuredContentDTO.getClone();
-    StructuredContentDTO clone2 = clone.getClone();
-    StructuredContentDTO clone3 = clone2.getClone();
-    StructuredContentDTO clone4 = clone3.getClone();
-    StructuredContentDTO clone5 = clone4.getClone();
-    StructuredContentDTO clone6 = clone5.getClone();
-    StructuredContentDTO clone7 = clone6.getClone();
-    assertEquals(1, clone7.getClone().getPriority().intValue());
-    assertEquals(1, clone7.getPriority().intValue());
-    assertEquals(1, clone6.getPriority().intValue());
-    assertEquals(1, clone5.getPriority().intValue());
-    assertEquals(1, clone4.getPriority().intValue());
-    assertEquals(1, clone3.getPriority().intValue());
-    assertEquals(1, clone2.getPriority().intValue());
-    assertEquals(1, clone.getPriority().intValue());
     assertEquals(1, structuredContentDTO.getPriority().intValue());
+    StructuredContentDTO clone = structuredContentDTO.getClone();
+    assertEquals(1, clone.getPriority().intValue());
+    StructuredContentDTO clone2 = clone.getClone();
+    assertEquals(1, clone2.getPriority().intValue());
+    StructuredContentDTO clone3 = clone2.getClone();
+    assertEquals(1, clone3.getPriority().intValue());
+    StructuredContentDTO clone4 = clone3.getClone();
+    assertEquals(1, clone4.getPriority().intValue());
+    StructuredContentDTO clone5 = clone4.getClone();
+    assertEquals(1, clone5.getPriority().intValue());
+    StructuredContentDTO clone6 = clone5.getClone();
+    assertEquals(1, clone6.getPriority().intValue());
+    StructuredContentDTO clone7 = clone6.getClone();
+    assertEquals(1, clone7.getPriority().intValue());
+    assertEquals(1, clone7.getClone().getPriority().intValue());
     Map<String, Object> values = structuredContentDTO.getValues();
     assertEquals(1, values.size());
-    assertEquals(1, ((Integer) values.get("priority")).intValue());
+    Map<String, Object> values2 = clone.getValues();
+    assertEquals(1, values2.size());
+    Map<String, Object> values3 = clone2.getValues();
+    assertEquals(1, values3.size());
+    Map<String, Object> values4 = clone3.getValues();
+    assertEquals(1, values4.size());
+    Map<String, Object> values5 = clone4.getValues();
+    assertEquals(1, values5.size());
+    Map<String, Object> values6 = clone5.getValues();
+    assertEquals(1, values6.size());
+    Map<String, Object> values7 = clone6.getValues();
+    assertEquals(1, values7.size());
+    Map<String, Object> values8 = clone7.getValues();
+    assertEquals(1, values8.size());
+    assertTrue(values.containsKey("priority"));
+    assertTrue(values2.containsKey("priority"));
+    assertTrue(values3.containsKey("priority"));
+    assertTrue(values4.containsKey("priority"));
+    assertTrue(values5.containsKey("priority"));
+    assertTrue(values6.containsKey("priority"));
+    assertTrue(values7.containsKey("priority"));
+    assertTrue(values8.containsKey("priority"));
   }
 
   /**
-   * Test {@link StructuredContentDTO#getClone()}.
-   *
-   * <ul>
-   *   <li>Given {@link StructuredContentDTO}.
-   *   <li>Then return ItemCriteriaDTOList is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentDTO#getClone()}
+   * Method under test: {@link StructuredContentDTO#setPriority(Integer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"StructuredContentDTO StructuredContentDTO.getClone()"})
-  public void testGetClone_givenStructuredContentDTO_thenReturnItemCriteriaDTOListIsNull() {
+  public void testSetPriority2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    StructuredContentDTOWrapper structuredContentDTO = mock(StructuredContentDTOWrapper.class);
+    doNothing().when(structuredContentDTO).setPriority(Mockito.<Integer>any());
+
+    // Act
+    (new StructuredContentDTOWrapper(structuredContentDTO)).setPriority(1);
+
+    // Assert
+    verify(structuredContentDTO).setPriority(eq(1));
+  }
+
+  /**
+   * Method under test: {@link StructuredContentDTO#getClone()}
+   */
+  @Test
+  public void testGetClone() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange and Act
-    StructuredContentDTO actualClone = structuredContentDTO.getClone();
+    StructuredContentDTO actualClone = (new StructuredContentDTO()).getClone();
 
     // Assert
     assertNull(actualClone.getPriority());
@@ -361,50 +387,44 @@ public class StructuredContentDTODiffblueTest {
   }
 
   /**
-   * Test {@link StructuredContentDTO#getClone()}.
-   *
-   * <ul>
-   *   <li>Then return ItemCriteriaDTOList Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentDTO#getClone()}
+   * Method under test: {@link StructuredContentDTO#getClone()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"StructuredContentDTO StructuredContentDTO.getClone()"})
-  public void testGetClone_thenReturnItemCriteriaDTOListEmpty() {
+  public void testGetClone2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
+    structuredContentDTO.setContentName("Not all who wander are lost");
+    structuredContentDTO.setContentType("text/plain");
+    structuredContentDTO.setId(1L);
+    structuredContentDTO.setLocaleCode("en");
+    structuredContentDTO.setPriority(1);
+    structuredContentDTO.setRuleExpression("Rule Expression");
+    structuredContentDTO.setValues(new HashMap<>());
     structuredContentDTO.setItemCriteriaDTOList(new ArrayList<>());
 
     // Act
     StructuredContentDTO actualClone = structuredContentDTO.getClone();
 
     // Assert
-    assertNull(actualClone.getPriority());
-    assertNull(actualClone.getId());
-    assertNull(actualClone.getContentName());
-    assertNull(actualClone.getContentType());
-    assertNull(actualClone.getLocaleCode());
-    assertNull(actualClone.getRuleExpression());
+    assertEquals("Not all who wander are lost", actualClone.getContentName());
+    assertEquals("Rule Expression", actualClone.getRuleExpression());
+    assertEquals("en", actualClone.getLocaleCode());
+    assertEquals("text/plain", actualClone.getContentType());
+    assertEquals(1, actualClone.getPriority().intValue());
+    assertEquals(1L, actualClone.getId().longValue());
     assertTrue(actualClone.getItemCriteriaDTOList().isEmpty());
     assertTrue(actualClone.getValues().isEmpty());
   }
 
   /**
-   * Test {@link StructuredContentDTO#getClone()}.
-   *
-   * <ul>
-   *   <li>Then return ItemCriteriaDTOList size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link StructuredContentDTO#getClone()}
+   * Method under test: {@link StructuredContentDTO#getClone()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"StructuredContentDTO StructuredContentDTO.getClone()"})
-  public void testGetClone_thenReturnItemCriteriaDTOListSizeIsOne() {
+  public void testGetClone3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     ItemCriteriaDTO itemCriteriaDTO = new ItemCriteriaDTO();
     itemCriteriaDTO.setMatchRule("Match Rule");
@@ -412,11 +432,22 @@ public class StructuredContentDTODiffblueTest {
 
     ArrayList<ItemCriteriaDTO> itemCriteriaDTOList = new ArrayList<>();
     itemCriteriaDTOList.add(itemCriteriaDTO);
+
+    StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
+    structuredContentDTO.setContentName("Not all who wander are lost");
+    structuredContentDTO.setContentType("text/plain");
+    structuredContentDTO.setId(1L);
+    structuredContentDTO.setLocaleCode("en");
+    structuredContentDTO.setPriority(1);
+    structuredContentDTO.setRuleExpression("Rule Expression");
+    structuredContentDTO.setValues(new HashMap<>());
     structuredContentDTO.setItemCriteriaDTOList(itemCriteriaDTOList);
 
-    // Act and Assert
-    List<ItemCriteriaDTO> itemCriteriaDTOList2 =
-        structuredContentDTO.getClone().getItemCriteriaDTOList();
+    // Act
+    StructuredContentDTO actualClone = structuredContentDTO.getClone();
+
+    // Assert
+    List<ItemCriteriaDTO> itemCriteriaDTOList2 = actualClone.getItemCriteriaDTOList();
     assertEquals(1, itemCriteriaDTOList2.size());
     ItemCriteriaDTO getResult = itemCriteriaDTOList2.get(0);
     assertEquals("Match Rule", getResult.getMatchRule());
@@ -428,18 +459,63 @@ public class StructuredContentDTODiffblueTest {
     assertEquals("Match Rule", clone3.getMatchRule());
     ItemCriteriaDTO clone4 = clone3.getClone();
     assertEquals("Match Rule", clone4.getMatchRule());
+    ItemCriteriaDTO clone5 = clone4.getClone();
+    assertEquals("Match Rule", clone5.getMatchRule());
+    ItemCriteriaDTO clone6 = clone5.getClone();
+    assertEquals("Match Rule", clone6.getMatchRule());
+    assertEquals("Not all who wander are lost", actualClone.getContentName());
+    assertEquals("Rule Expression", actualClone.getRuleExpression());
+    assertEquals("en", actualClone.getLocaleCode());
+    assertEquals("text/plain", actualClone.getContentType());
     assertEquals(1, getResult.getQty().intValue());
     assertEquals(1, clone.getQty().intValue());
     assertEquals(1, clone2.getQty().intValue());
     assertEquals(1, clone3.getQty().intValue());
     assertEquals(1, clone4.getQty().intValue());
+    assertEquals(1, clone5.getQty().intValue());
+    assertEquals(1, clone6.getQty().intValue());
+    assertEquals(1, actualClone.getPriority().intValue());
+    assertEquals(1L, actualClone.getId().longValue());
+    assertTrue(actualClone.getValues().isEmpty());
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Method under test: {@link StructuredContentDTO#getClone()}
+   */
+  @Test
+  public void testGetClone4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    HashMap<String, Object> values = new HashMap<>();
+    values.computeIfPresent("contentName", mock(BiFunction.class));
+
+    StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
+    structuredContentDTO.setContentName("Not all who wander are lost");
+    structuredContentDTO.setContentType("text/plain");
+    structuredContentDTO.setId(1L);
+    structuredContentDTO.setLocaleCode("en");
+    structuredContentDTO.setPriority(1);
+    structuredContentDTO.setRuleExpression("Rule Expression");
+    structuredContentDTO.setValues(values);
+    structuredContentDTO.setItemCriteriaDTOList(new ArrayList<>());
+
+    // Act
+    StructuredContentDTO actualClone = structuredContentDTO.getClone();
+
+    // Assert
+    assertEquals("Not all who wander are lost", actualClone.getContentName());
+    assertEquals("Rule Expression", actualClone.getRuleExpression());
+    assertEquals("en", actualClone.getLocaleCode());
+    assertEquals("text/plain", actualClone.getContentType());
+    assertEquals(1, actualClone.getPriority().intValue());
+    assertEquals(1L, actualClone.getId().longValue());
+    assertTrue(actualClone.getItemCriteriaDTOList().isEmpty());
+    assertTrue(actualClone.getValues().isEmpty());
+  }
+
+  /**
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link StructuredContentDTO}
    *   <li>{@link StructuredContentDTO#setId(Long)}
@@ -457,23 +533,6 @@ public class StructuredContentDTODiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void StructuredContentDTO.<init>()",
-    "String StructuredContentDTO.getContentName()",
-    "String StructuredContentDTO.getContentType()",
-    "Long StructuredContentDTO.getId()",
-    "List StructuredContentDTO.getItemCriteriaDTOList()",
-    "String StructuredContentDTO.getLocaleCode()",
-    "Integer StructuredContentDTO.getPriority()",
-    "String StructuredContentDTO.getRuleExpression()",
-    "Map StructuredContentDTO.getValues()",
-    "void StructuredContentDTO.setId(Long)",
-    "void StructuredContentDTO.setItemCriteriaDTOList(List)",
-    "void StructuredContentDTO.setRuleExpression(String)",
-    "void StructuredContentDTO.setValues(Map)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     StructuredContentDTO actualStructuredContentDTO = new StructuredContentDTO();
@@ -483,22 +542,17 @@ public class StructuredContentDTODiffblueTest {
     actualStructuredContentDTO.setRuleExpression("Rule Expression");
     HashMap<String, Object> values = new HashMap<>();
     actualStructuredContentDTO.setValues(values);
-    String actualContentName = actualStructuredContentDTO.getContentName();
-    String actualContentType = actualStructuredContentDTO.getContentType();
+    actualStructuredContentDTO.getContentName();
+    actualStructuredContentDTO.getContentType();
     Long actualId = actualStructuredContentDTO.getId();
-    List<ItemCriteriaDTO> actualItemCriteriaDTOList =
-        actualStructuredContentDTO.getItemCriteriaDTOList();
-    String actualLocaleCode = actualStructuredContentDTO.getLocaleCode();
-    Integer actualPriority = actualStructuredContentDTO.getPriority();
+    List<ItemCriteriaDTO> actualItemCriteriaDTOList = actualStructuredContentDTO.getItemCriteriaDTOList();
+    actualStructuredContentDTO.getLocaleCode();
+    actualStructuredContentDTO.getPriority();
     String actualRuleExpression = actualStructuredContentDTO.getRuleExpression();
     Map<String, Object> actualValues = actualStructuredContentDTO.getValues();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("Rule Expression", actualRuleExpression);
-    assertNull(actualPriority);
-    assertNull(actualContentName);
-    assertNull(actualContentType);
-    assertNull(actualLocaleCode);
     assertEquals(1L, actualId.longValue());
     assertTrue(actualItemCriteriaDTOList.isEmpty());
     assertTrue(actualValues.isEmpty());

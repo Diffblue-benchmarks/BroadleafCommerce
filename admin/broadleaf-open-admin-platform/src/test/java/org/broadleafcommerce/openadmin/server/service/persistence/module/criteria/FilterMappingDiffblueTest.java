@@ -19,77 +19,48 @@ package org.broadleafcommerce.openadmin.server.service.persistence.module.criter
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import java.util.ArrayList;
 import java.util.List;
 import org.broadleafcommerce.openadmin.dto.SortDirection;
-import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.FilterMapping.ComparatorByOrder;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ContextConfiguration(classes = {FilterMapping.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class FilterMappingDiffblueTest {
-  @Autowired private FilterMapping filterMapping;
+  @Autowired
+  private FilterMapping filterMapping;
 
   /**
-   * Test ComparatorByOrder {@link ComparatorByOrder#compare(FilterMapping, FilterMapping)} with
-   * {@code FilterMapping}, {@code FilterMapping}.
-   *
-   * <ul>
-   *   <li>Then return minus one.
-   * </ul>
-   *
-   * <p>Method under test: {@link ComparatorByOrder#compare(FilterMapping, FilterMapping)}
+   * Method under test:
+   * {@link FilterMapping.ComparatorByOrder#compare(FilterMapping, FilterMapping)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int ComparatorByOrder.compare(FilterMapping, FilterMapping)"})
-  public void testComparatorByOrderCompareWithFilterMappingFilterMapping_thenReturnMinusOne() {
+  public void testComparatorByOrderCompare() {
     // Arrange
-    ComparatorByOrder comparatorByOrder = new ComparatorByOrder();
-
+    FilterMapping.ComparatorByOrder comparatorByOrder = new FilterMapping.ComparatorByOrder();
     FilterMapping o1 = new FilterMapping();
-    o1.setOrder(1);
-
-    FilterMapping o2 = new FilterMapping();
-    o2.setOrder(null);
 
     // Act and Assert
-    assertEquals(-1, comparatorByOrder.compare(o1, o2));
+    assertEquals(0, comparatorByOrder.compare(o1, new FilterMapping()));
   }
 
   /**
-   * Test ComparatorByOrder {@link ComparatorByOrder#compare(FilterMapping, FilterMapping)} with
-   * {@code FilterMapping}, {@code FilterMapping}.
-   *
-   * <ul>
-   *   <li>Then return one.
-   * </ul>
-   *
-   * <p>Method under test: {@link ComparatorByOrder#compare(FilterMapping, FilterMapping)}
+   * Method under test:
+   * {@link FilterMapping.ComparatorByOrder#compare(FilterMapping, FilterMapping)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int ComparatorByOrder.compare(FilterMapping, FilterMapping)"})
-  public void testComparatorByOrderCompareWithFilterMappingFilterMapping_thenReturnOne() {
+  public void testComparatorByOrderCompare2() {
     // Arrange
-    ComparatorByOrder comparatorByOrder = new ComparatorByOrder();
+    FilterMapping.ComparatorByOrder comparatorByOrder = new FilterMapping.ComparatorByOrder();
 
     FilterMapping o1 = new FilterMapping();
     o1.setOrder(null);
@@ -102,45 +73,32 @@ public class FilterMappingDiffblueTest {
   }
 
   /**
-   * Test ComparatorByOrder {@link ComparatorByOrder#compare(FilterMapping, FilterMapping)} with
-   * {@code FilterMapping}, {@code FilterMapping}.
-   *
-   * <ul>
-   *   <li>Then return zero.
-   * </ul>
-   *
-   * <p>Method under test: {@link ComparatorByOrder#compare(FilterMapping, FilterMapping)}
+   * Method under test:
+   * {@link FilterMapping.ComparatorByOrder#compare(FilterMapping, FilterMapping)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int ComparatorByOrder.compare(FilterMapping, FilterMapping)"})
-  public void testComparatorByOrderCompareWithFilterMappingFilterMapping_thenReturnZero() {
+  public void testComparatorByOrderCompare3() {
     // Arrange
-    ComparatorByOrder comparatorByOrder = new ComparatorByOrder();
+    FilterMapping.ComparatorByOrder comparatorByOrder = new FilterMapping.ComparatorByOrder();
+
     FilterMapping o1 = new FilterMapping();
+    o1.setOrder(1);
+
+    FilterMapping o2 = new FilterMapping();
+    o2.setOrder(null);
 
     // Act and Assert
-    assertEquals(0, comparatorByOrder.compare(o1, new FilterMapping()));
+    assertEquals(-1, comparatorByOrder.compare(o1, o2));
   }
 
   /**
-   * Test ComparatorByOrder {@link ComparatorByOrder#compare(FilterMapping, FilterMapping)} with
-   * {@code FilterMapping}, {@code FilterMapping}.
-   *
-   * <ul>
-   *   <li>Then return zero.
-   * </ul>
-   *
-   * <p>Method under test: {@link ComparatorByOrder#compare(FilterMapping, FilterMapping)}
+   * Method under test:
+   * {@link FilterMapping.ComparatorByOrder#compare(FilterMapping, FilterMapping)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"int ComparatorByOrder.compare(FilterMapping, FilterMapping)"})
-  public void testComparatorByOrderCompareWithFilterMappingFilterMapping_thenReturnZero2() {
+  public void testComparatorByOrderCompare4() {
     // Arrange
-    ComparatorByOrder comparatorByOrder = new ComparatorByOrder();
+    FilterMapping.ComparatorByOrder comparatorByOrder = new FilterMapping.ComparatorByOrder();
 
     FilterMapping o1 = new FilterMapping();
     o1.setOrder(1);
@@ -153,14 +111,9 @@ public class FilterMappingDiffblueTest {
   }
 
   /**
-   * Test {@link FilterMapping#withOrder(Integer)}.
-   *
-   * <p>Method under test: {@link FilterMapping#withOrder(Integer)}
+   * Method under test: {@link FilterMapping#withOrder(Integer)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FilterMapping FilterMapping.withOrder(Integer)"})
   public void testWithOrder() {
     // Arrange
     FilterMapping filterMapping = new FilterMapping();
@@ -174,18 +127,12 @@ public class FilterMappingDiffblueTest {
   }
 
   /**
-   * Test {@link FilterMapping#withFullPropertyName(String)}.
-   *
-   * <p>Method under test: {@link FilterMapping#withFullPropertyName(String)}
+   * Method under test: {@link FilterMapping#withFullPropertyName(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FilterMapping FilterMapping.withFullPropertyName(String)"})
   public void testWithFullPropertyName() {
     // Arrange and Act
-    FilterMapping actualWithFullPropertyNameResult =
-        filterMapping.withFullPropertyName("Dr Jane Doe");
+    FilterMapping actualWithFullPropertyNameResult = filterMapping.withFullPropertyName("Dr Jane Doe");
 
     // Assert
     assertEquals("Dr Jane Doe", filterMapping.getFullPropertyName());
@@ -193,218 +140,68 @@ public class FilterMappingDiffblueTest {
   }
 
   /**
-   * Test {@link FilterMapping#withFilterValues(List)}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@code 42}.
-   *   <li>Then throw {@link IllegalArgumentException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FilterMapping#withFilterValues(List)}
+   * Method under test: {@link FilterMapping#withFilterValues(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FilterMapping FilterMapping.withFilterValues(List)"})
-  public void testWithFilterValues_givenArrayListAdd42_thenThrowIllegalArgumentException() {
-    // Arrange
-    ArrayList<Object> directFilterValues = new ArrayList<>();
-    directFilterValues.add("42");
-
-    FilterMapping filterMapping = new FilterMapping();
-    filterMapping.setDirectFilterValues(directFilterValues);
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class, () -> filterMapping.withFilterValues(new ArrayList<>()));
+  public void testWithFilterValues() {
+    // Arrange, Act and Assert
+    assertSame(filterMapping, filterMapping.withFilterValues(new ArrayList<>()));
   }
 
   /**
-   * Test {@link FilterMapping#withFilterValues(List)}.
-   *
-   * <ul>
-   *   <li>Given {@code Cannot set both filter values and direct filter values}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FilterMapping#withFilterValues(List)}
+   * Method under test: {@link FilterMapping#withFilterValues(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FilterMapping FilterMapping.withFilterValues(List)"})
-  public void testWithFilterValues_givenCannotSetBothFilterValuesAndDirectFilterValues() {
+  public void testWithFilterValues2() {
     // Arrange
     ArrayList<String> filterValues = new ArrayList<>();
     filterValues.add("Cannot set both filter values and direct filter values");
 
-    // Act
-    FilterMapping actualWithFilterValuesResult = filterMapping.withFilterValues(filterValues);
-
-    // Assert
-    assertSame(filterMapping, actualWithFilterValuesResult);
+    // Act and Assert
+    assertSame(filterMapping, filterMapping.withFilterValues(filterValues));
   }
 
   /**
-   * Test {@link FilterMapping#withFilterValues(List)}.
-   *
-   * <ul>
-   *   <li>Given {@code foo}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@code foo}.
-   *   <li>Then return {@link FilterMapping}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FilterMapping#withFilterValues(List)}
+   * Method under test: {@link FilterMapping#withFilterValues(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FilterMapping FilterMapping.withFilterValues(List)"})
-  public void testWithFilterValues_givenFoo_whenArrayListAddFoo_thenReturnFilterMapping() {
+  public void testWithFilterValues3() {
     // Arrange
     ArrayList<String> filterValues = new ArrayList<>();
     filterValues.add("foo");
     filterValues.add("Cannot set both filter values and direct filter values");
 
-    // Act
-    FilterMapping actualWithFilterValuesResult = filterMapping.withFilterValues(filterValues);
-
-    // Assert
-    assertSame(filterMapping, actualWithFilterValuesResult);
-  }
-
-  /**
-   * Test {@link FilterMapping#withFilterValues(List)}.
-   *
-   * <ul>
-   *   <li>Given {@code null}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@code null}.
-   *   <li>Then return {@link FilterMapping}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FilterMapping#withFilterValues(List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FilterMapping FilterMapping.withFilterValues(List)"})
-  public void testWithFilterValues_givenNull_whenArrayListAddNull_thenReturnFilterMapping() {
-    // Arrange
-    filterMapping.setDirectFilterValues(null);
-
-    ArrayList<String> filterValues = new ArrayList<>();
-    filterValues.add(null);
-
-    // Act
-    FilterMapping actualWithFilterValuesResult = filterMapping.withFilterValues(filterValues);
-
-    // Assert
-    assertSame(filterMapping, actualWithFilterValuesResult);
-  }
-
-  /**
-   * Test {@link FilterMapping#withFilterValues(List)}.
-   *
-   * <ul>
-   *   <li>Given {@link FilterMapping#RANGE_SPECIFIER_REGEX}.
-   *   <li>Then return FilterValues size is two.
-   * </ul>
-   *
-   * <p>Method under test: {@link FilterMapping#withFilterValues(List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FilterMapping FilterMapping.withFilterValues(List)"})
-  public void testWithFilterValues_givenRange_specifier_regex_thenReturnFilterValuesSizeIsTwo() {
-    // Arrange
-    filterMapping.setDirectFilterValues(null);
-
-    ArrayList<String> filterValues = new ArrayList<>();
-    filterValues.add(FilterMapping.RANGE_SPECIFIER_REGEX);
-
-    // Act
-    FilterMapping actualWithFilterValuesResult = filterMapping.withFilterValues(filterValues);
-
-    // Assert
-    List<String> filterValues2 = actualWithFilterValuesResult.getFilterValues();
-    assertEquals(2, filterValues2.size());
-    assertEquals("", filterValues2.get(0));
-    assertEquals("", filterValues2.get(1));
-    assertNull(actualWithFilterValuesResult.getDirectFilterValues());
-  }
-
-  /**
-   * Test {@link FilterMapping#withFilterValues(List)}.
-   *
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then return DirectFilterValues Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link FilterMapping#withFilterValues(List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FilterMapping FilterMapping.withFilterValues(List)"})
-  public void testWithFilterValues_whenArrayList_thenReturnDirectFilterValuesEmpty() {
-    // Arrange and Act
-    FilterMapping actualWithFilterValuesResult = filterMapping.withFilterValues(new ArrayList<>());
-
-    // Assert
-    assertTrue(actualWithFilterValuesResult.getDirectFilterValues().isEmpty());
-    assertTrue(actualWithFilterValuesResult.getFilterValues().isEmpty());
-  }
-
-  /**
-   * Test {@link FilterMapping#withDirectFilterValues(List)}.
-   *
-   * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>Then return DirectFilterValues size is two.
-   * </ul>
-   *
-   * <p>Method under test: {@link FilterMapping#withDirectFilterValues(List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FilterMapping FilterMapping.withDirectFilterValues(List)"})
-  public void testWithDirectFilterValues_given42_thenReturnDirectFilterValuesSizeIsTwo() {
-    // Arrange
-    ArrayList<Object> directFilterValues = new ArrayList<>();
-    directFilterValues.add("42");
-    directFilterValues.add("42");
-
     // Act and Assert
-    List directFilterValues2 =
-        filterMapping.withDirectFilterValues(directFilterValues).getDirectFilterValues();
-    assertEquals(2, directFilterValues2.size());
-    assertEquals("42", directFilterValues2.get(0));
-    assertEquals("42", directFilterValues2.get(1));
+    assertSame(filterMapping, filterMapping.withFilterValues(filterValues));
   }
 
   /**
-   * Test {@link FilterMapping#withDirectFilterValues(List)}.
-   *
-   * <ul>
-   *   <li>Then {@link FilterMapping} DirectFilterValues is {@link ArrayList#ArrayList()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FilterMapping#withDirectFilterValues(List)}
+   * Method under test: {@link FilterMapping#withDirectFilterValues(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FilterMapping FilterMapping.withDirectFilterValues(List)"})
-  public void testWithDirectFilterValues_thenFilterMappingDirectFilterValuesIsArrayList() {
+  public void testWithDirectFilterValues() {
+    // Arrange
+    ArrayList<Object> directFilterValues = new ArrayList<>();
+
+    // Act
+    FilterMapping actualWithDirectFilterValuesResult = filterMapping.withDirectFilterValues(directFilterValues);
+
+    // Assert
+    assertSame(directFilterValues, filterMapping.getDirectFilterValues());
+    assertSame(filterMapping, actualWithDirectFilterValuesResult);
+  }
+
+  /**
+   * Method under test: {@link FilterMapping#withDirectFilterValues(List)}
+   */
+  @Test
+  public void testWithDirectFilterValues2() {
     // Arrange
     ArrayList<Object> directFilterValues = new ArrayList<>();
     directFilterValues.add("42");
 
     // Act
-    FilterMapping actualWithDirectFilterValuesResult =
-        filterMapping.withDirectFilterValues(directFilterValues);
+    FilterMapping actualWithDirectFilterValuesResult = filterMapping.withDirectFilterValues(directFilterValues);
 
     // Assert
     assertSame(directFilterValues, filterMapping.getDirectFilterValues());
@@ -412,25 +209,17 @@ public class FilterMappingDiffblueTest {
   }
 
   /**
-   * Test {@link FilterMapping#withDirectFilterValues(List)}.
-   *
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FilterMapping#withDirectFilterValues(List)}
+   * Method under test: {@link FilterMapping#withDirectFilterValues(List)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FilterMapping FilterMapping.withDirectFilterValues(List)"})
-  public void testWithDirectFilterValues_whenArrayList() {
+  public void testWithDirectFilterValues3() {
     // Arrange
     ArrayList<Object> directFilterValues = new ArrayList<>();
+    directFilterValues.add("42");
+    directFilterValues.add("42");
 
     // Act
-    FilterMapping actualWithDirectFilterValuesResult =
-        filterMapping.withDirectFilterValues(directFilterValues);
+    FilterMapping actualWithDirectFilterValuesResult = filterMapping.withDirectFilterValues(directFilterValues);
 
     // Assert
     assertSame(directFilterValues, filterMapping.getDirectFilterValues());
@@ -438,21 +227,15 @@ public class FilterMappingDiffblueTest {
   }
 
   /**
-   * Test {@link FilterMapping#withSortDirection(SortDirection)}.
-   *
-   * <p>Method under test: {@link FilterMapping#withSortDirection(SortDirection)}
+   * Method under test: {@link FilterMapping#withSortDirection(SortDirection)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FilterMapping FilterMapping.withSortDirection(SortDirection)"})
   public void testWithSortDirection() {
     // Arrange
     FilterMapping filterMapping = new FilterMapping();
 
     // Act
-    FilterMapping actualWithSortDirectionResult =
-        filterMapping.withSortDirection(SortDirection.ASCENDING);
+    FilterMapping actualWithSortDirectionResult = filterMapping.withSortDirection(SortDirection.ASCENDING);
 
     // Assert
     assertEquals(SortDirection.ASCENDING, filterMapping.getSortDirection());
@@ -460,14 +243,9 @@ public class FilterMappingDiffblueTest {
   }
 
   /**
-   * Test {@link FilterMapping#withRestriction(Restriction)}.
-   *
-   * <p>Method under test: {@link FilterMapping#withRestriction(Restriction)}
+   * Method under test: {@link FilterMapping#withRestriction(Restriction)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FilterMapping FilterMapping.withRestriction(Restriction)"})
   public void testWithRestriction() {
     // Arrange
     Restriction restriction = new Restriction();
@@ -481,369 +259,20 @@ public class FilterMappingDiffblueTest {
   }
 
   /**
-   * Test {@link FilterMapping#withFieldPath(FieldPath)}.
-   *
-   * <p>Method under test: {@link FilterMapping#withFieldPath(FieldPath)}
+   * Method under test: {@link FilterMapping#withRestriction(Restriction)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FilterMapping FilterMapping.withFieldPath(FieldPath)"})
-  public void testWithFieldPath() {
+  public void testWithRestriction2() {
     // Arrange
-    FilterMapping filterMapping = new FilterMapping();
-    FieldPath fieldPath = new FieldPath();
-
-    // Act
-    FilterMapping actualWithFieldPathResult = filterMapping.withFieldPath(fieldPath);
-
-    // Assert
-    assertSame(fieldPath, filterMapping.getFieldPath());
-    assertSame(filterMapping, actualWithFieldPathResult);
-  }
-
-  /**
-   * Test {@link FilterMapping#withInheritedFromClass(Class)}.
-   *
-   * <p>Method under test: {@link FilterMapping#withInheritedFromClass(Class)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FilterMapping FilterMapping.withInheritedFromClass(Class)"})
-  public void testWithInheritedFromClass() {
-    // Arrange
-    FilterMapping filterMapping = new FilterMapping();
-    Class<Object> inheritedFromClass = Object.class;
-
-    // Act
-    FilterMapping actualWithInheritedFromClassResult =
-        filterMapping.withInheritedFromClass(inheritedFromClass);
-
-    // Assert
-    assertSame(filterMapping, actualWithInheritedFromClassResult);
-    assertSame(inheritedFromClass, filterMapping.getInheritedFromClass());
-  }
-
-  /**
-   * Test {@link FilterMapping#withNullsLast(boolean)}.
-   *
-   * <p>Method under test: {@link FilterMapping#withNullsLast(boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"FilterMapping FilterMapping.withNullsLast(boolean)"})
-  public void testWithNullsLast() {
-    // Arrange
-    FilterMapping filterMapping = new FilterMapping();
-
-    // Act
-    FilterMapping actualWithNullsLastResult = filterMapping.withNullsLast(true);
-
-    // Assert
-    assertSame(filterMapping, actualWithNullsLastResult);
-  }
-
-  /**
-   * Test {@link FilterMapping#setFilterValues(List)}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@code 42}.
-   *   <li>Then throw {@link IllegalArgumentException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FilterMapping#setFilterValues(List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FilterMapping.setFilterValues(List)"})
-  public void testSetFilterValues_givenArrayListAdd42_thenThrowIllegalArgumentException() {
-    // Arrange
-    ArrayList<Object> directFilterValues = new ArrayList<>();
-    directFilterValues.add("42");
-
-    FilterMapping filterMapping = new FilterMapping();
-    filterMapping.setDirectFilterValues(directFilterValues);
+    Restriction restriction = mock(Restriction.class);
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class, () -> filterMapping.setFilterValues(new ArrayList<>()));
+    assertSame(filterMapping, filterMapping.withRestriction(restriction));
+    assertSame(restriction, filterMapping.getRestriction());
   }
 
   /**
-   * Test {@link FilterMapping#setFilterValues(List)}.
-   *
-   * <ul>
-   *   <li>Given {@code foo}.
-   *   <li>Then {@link FilterMapping} FilterValues is {@link ArrayList#ArrayList()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FilterMapping#setFilterValues(List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FilterMapping.setFilterValues(List)"})
-  public void testSetFilterValues_givenFoo_thenFilterMappingFilterValuesIsArrayList() {
-    // Arrange
-    ArrayList<String> filterValues = new ArrayList<>();
-    filterValues.add("foo");
-
-    // Act
-    filterMapping.setFilterValues(filterValues);
-
-    // Assert
-    assertEquals(filterValues, filterMapping.getFilterValues());
-  }
-
-  /**
-   * Test {@link FilterMapping#setFilterValues(List)}.
-   *
-   * <ul>
-   *   <li>Given {@code foo}.
-   *   <li>Then {@link FilterMapping} FilterValues is {@link ArrayList#ArrayList()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FilterMapping#setFilterValues(List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FilterMapping.setFilterValues(List)"})
-  public void testSetFilterValues_givenFoo_thenFilterMappingFilterValuesIsArrayList2() {
-    // Arrange
-    ArrayList<String> filterValues = new ArrayList<>();
-    filterValues.add("foo");
-    filterValues.add("foo");
-
-    // Act
-    filterMapping.setFilterValues(filterValues);
-
-    // Assert
-    assertEquals(filterValues, filterMapping.getFilterValues());
-  }
-
-  /**
-   * Test {@link FilterMapping#setFilterValues(List)}.
-   *
-   * <ul>
-   *   <li>Given {@code null}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FilterMapping#setFilterValues(List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FilterMapping.setFilterValues(List)"})
-  public void testSetFilterValues_givenNull_whenArrayListAddNull() {
-    // Arrange
-    filterMapping.setDirectFilterValues(null);
-
-    ArrayList<String> filterValues = new ArrayList<>();
-    filterValues.add(null);
-
-    // Act
-    filterMapping.setFilterValues(filterValues);
-
-    // Assert that nothing has changed
-    assertTrue(filterMapping.getFilterValues().isEmpty());
-  }
-
-  /**
-   * Test {@link FilterMapping#setFilterValues(List)}.
-   *
-   * <ul>
-   *   <li>Then {@link FilterMapping} FilterValues size is two.
-   * </ul>
-   *
-   * <p>Method under test: {@link FilterMapping#setFilterValues(List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FilterMapping.setFilterValues(List)"})
-  public void testSetFilterValues_thenFilterMappingFilterValuesSizeIsTwo() {
-    // Arrange
-    filterMapping.setDirectFilterValues(null);
-
-    ArrayList<String> filterValues = new ArrayList<>();
-    filterValues.add(FilterMapping.RANGE_SPECIFIER_REGEX);
-
-    // Act
-    filterMapping.setFilterValues(filterValues);
-
-    // Assert
-    List<String> filterValues2 = filterMapping.getFilterValues();
-    assertEquals(2, filterValues2.size());
-    assertEquals("", filterValues2.get(0));
-    assertEquals("", filterValues2.get(1));
-  }
-
-  /**
-   * Test {@link FilterMapping#setFilterValues(List)}.
-   *
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then {@link FilterMapping} FilterValues Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link FilterMapping#setFilterValues(List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FilterMapping.setFilterValues(List)"})
-  public void testSetFilterValues_whenArrayList_thenFilterMappingFilterValuesEmpty() {
-    // Arrange and Act
-    filterMapping.setFilterValues(new ArrayList<>());
-
-    // Assert that nothing has changed
-    assertTrue(filterMapping.getFilterValues().isEmpty());
-  }
-
-  /**
-   * Test {@link FilterMapping#setDirectFilterValues(List)}.
-   *
-   * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FilterMapping#setDirectFilterValues(List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FilterMapping.setDirectFilterValues(List)"})
-  public void testSetDirectFilterValues_given42_whenArrayListAdd42() {
-    // Arrange
-    ArrayList<Object> directFilterValues = new ArrayList<>();
-    directFilterValues.add("42");
-
-    // Act
-    filterMapping.setDirectFilterValues(directFilterValues);
-
-    // Assert
-    assertSame(directFilterValues, filterMapping.getDirectFilterValues());
-  }
-
-  /**
-   * Test {@link FilterMapping#setDirectFilterValues(List)}.
-   *
-   * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FilterMapping#setDirectFilterValues(List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FilterMapping.setDirectFilterValues(List)"})
-  public void testSetDirectFilterValues_given42_whenArrayListAdd422() {
-    // Arrange
-    ArrayList<Object> directFilterValues = new ArrayList<>();
-    directFilterValues.add("42");
-    directFilterValues.add("42");
-
-    // Act
-    filterMapping.setDirectFilterValues(directFilterValues);
-
-    // Assert
-    assertSame(directFilterValues, filterMapping.getDirectFilterValues());
-  }
-
-  /**
-   * Test {@link FilterMapping#setDirectFilterValues(List)}.
-   *
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FilterMapping#setDirectFilterValues(List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void FilterMapping.setDirectFilterValues(List)"})
-  public void testSetDirectFilterValues_whenArrayList() {
-    // Arrange
-    ArrayList<Object> directFilterValues = new ArrayList<>();
-
-    // Act
-    filterMapping.setDirectFilterValues(directFilterValues);
-
-    // Assert
-    assertSame(directFilterValues, filterMapping.getDirectFilterValues());
-  }
-
-  /**
-   * Test {@link FilterMapping#parseFilterValue(String)}.
-   *
-   * <ul>
-   *   <li>Then return array of {@link String} with empty string and empty string.
-   * </ul>
-   *
-   * <p>Method under test: {@link FilterMapping#parseFilterValue(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String[] FilterMapping.parseFilterValue(String)"})
-  public void testParseFilterValue_thenReturnArrayOfStringWithEmptyStringAndEmptyString() {
-    // Arrange, Act and Assert
-    assertArrayEquals(
-        new String[] {"", ""}, filterMapping.parseFilterValue(FilterMapping.RANGE_SPECIFIER_REGEX));
-  }
-
-  /**
-   * Test {@link FilterMapping#parseFilterValue(String)}.
-   *
-   * <ul>
-   *   <li>When {@code 42}.
-   *   <li>Then return array of {@link String} with {@code 42}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FilterMapping#parseFilterValue(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String[] FilterMapping.parseFilterValue(String)"})
-  public void testParseFilterValue_when42_thenReturnArrayOfStringWith42() {
-    // Arrange, Act and Assert
-    assertArrayEquals(new String[] {"42"}, filterMapping.parseFilterValue("42"));
-  }
-
-  /**
-   * Test {@link FilterMapping#parseFilterValue(String)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return array length is zero.
-   * </ul>
-   *
-   * <p>Method under test: {@link FilterMapping#parseFilterValue(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String[] FilterMapping.parseFilterValue(String)"})
-  public void testParseFilterValue_whenNull_thenReturnArrayLengthIsZero() {
-    // Arrange, Act and Assert
-    assertEquals(0, filterMapping.parseFilterValue(null).length);
-  }
-
-  /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link FilterMapping}
    *   <li>{@link FilterMapping#setFieldPath(FieldPath)}
@@ -865,27 +294,6 @@ public class FilterMappingDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void FilterMapping.<init>()",
-    "List FilterMapping.getDirectFilterValues()",
-    "FieldPath FilterMapping.getFieldPath()",
-    "List FilterMapping.getFilterValues()",
-    "String FilterMapping.getFullPropertyName()",
-    "Class FilterMapping.getInheritedFromClass()",
-    "Boolean FilterMapping.getNullsLast()",
-    "Integer FilterMapping.getOrder()",
-    "Restriction FilterMapping.getRestriction()",
-    "SortDirection FilterMapping.getSortDirection()",
-    "void FilterMapping.setFieldPath(FieldPath)",
-    "void FilterMapping.setFullPropertyName(String)",
-    "void FilterMapping.setInheritedFromClass(Class)",
-    "void FilterMapping.setNullsLast(Boolean)",
-    "void FilterMapping.setOrder(Integer)",
-    "void FilterMapping.setRestriction(Restriction)",
-    "void FilterMapping.setSortDirection(SortDirection)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     FilterMapping actualFilterMapping = new FilterMapping();
@@ -909,7 +317,7 @@ public class FilterMappingDiffblueTest {
     Restriction actualRestriction = actualFilterMapping.getRestriction();
     SortDirection actualSortDirection = actualFilterMapping.getSortDirection();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("Dr Jane Doe", actualFullPropertyName);
     assertEquals(1, actualOrder.intValue());
     assertEquals(SortDirection.ASCENDING, actualSortDirection);
@@ -921,5 +329,154 @@ public class FilterMappingDiffblueTest {
     assertSame(fieldPath, actualFieldPath);
     assertSame(restriction, actualRestriction);
     assertSame(inheritedFromClass, actualInheritedFromClass);
+  }
+
+  /**
+   * Method under test: {@link FilterMapping#withFieldPath(FieldPath)}
+   */
+  @Test
+  public void testWithFieldPath() {
+    // Arrange
+    FilterMapping filterMapping = new FilterMapping();
+    FieldPath fieldPath = new FieldPath();
+
+    // Act
+    FilterMapping actualWithFieldPathResult = filterMapping.withFieldPath(fieldPath);
+
+    // Assert
+    assertSame(fieldPath, filterMapping.getFieldPath());
+    assertSame(filterMapping, actualWithFieldPathResult);
+  }
+
+  /**
+   * Method under test: {@link FilterMapping#withInheritedFromClass(Class)}
+   */
+  @Test
+  public void testWithInheritedFromClass() {
+    // Arrange
+    FilterMapping filterMapping = new FilterMapping();
+    Class<Object> inheritedFromClass = Object.class;
+
+    // Act and Assert
+    assertSame(filterMapping, filterMapping.withInheritedFromClass(inheritedFromClass));
+    assertSame(inheritedFromClass, filterMapping.getInheritedFromClass());
+  }
+
+  /**
+   * Method under test: {@link FilterMapping#withNullsLast(boolean)}
+   */
+  @Test
+  public void testWithNullsLast() {
+    // Arrange
+    FilterMapping filterMapping = new FilterMapping();
+
+    // Act and Assert
+    assertSame(filterMapping, filterMapping.withNullsLast(true));
+  }
+
+  /**
+   * Method under test: {@link FilterMapping#setFilterValues(List)}
+   */
+  @Test
+  public void testSetFilterValues() {
+    // Arrange and Act
+    filterMapping.setFilterValues(new ArrayList<>());
+
+    // Assert
+    assertTrue(filterMapping.getFilterValues().isEmpty());
+  }
+
+  /**
+   * Method under test: {@link FilterMapping#setFilterValues(List)}
+   */
+  @Test
+  public void testSetFilterValues2() {
+    // Arrange
+    ArrayList<String> filterValues = new ArrayList<>();
+    filterValues.add("Cannot set both filter values and direct filter values");
+
+    // Act
+    filterMapping.setFilterValues(filterValues);
+
+    // Assert
+    List<String> filterValues2 = filterMapping.getFilterValues();
+    assertEquals(1, filterValues2.size());
+    assertEquals("Cannot set both filter values and direct filter values", filterValues2.get(0));
+  }
+
+  /**
+   * Method under test: {@link FilterMapping#setFilterValues(List)}
+   */
+  @Test
+  public void testSetFilterValues3() {
+    // Arrange
+    ArrayList<String> filterValues = new ArrayList<>();
+    filterValues.add("foo");
+    filterValues.add("Cannot set both filter values and direct filter values");
+
+    // Act
+    filterMapping.setFilterValues(filterValues);
+
+    // Assert
+    assertEquals(filterValues, filterMapping.getFilterValues());
+  }
+
+  /**
+   * Method under test: {@link FilterMapping#setDirectFilterValues(List)}
+   */
+  @Test
+  public void testSetDirectFilterValues() {
+    // Arrange
+    ArrayList<Object> directFilterValues = new ArrayList<>();
+
+    // Act
+    filterMapping.setDirectFilterValues(directFilterValues);
+
+    // Assert
+    assertSame(directFilterValues, filterMapping.getDirectFilterValues());
+  }
+
+  /**
+   * Method under test: {@link FilterMapping#setDirectFilterValues(List)}
+   */
+  @Test
+  public void testSetDirectFilterValues2() {
+    // Arrange
+    ArrayList<Object> directFilterValues = new ArrayList<>();
+    directFilterValues.add("42");
+
+    // Act
+    filterMapping.setDirectFilterValues(directFilterValues);
+
+    // Assert
+    assertSame(directFilterValues, filterMapping.getDirectFilterValues());
+  }
+
+  /**
+   * Method under test: {@link FilterMapping#setDirectFilterValues(List)}
+   */
+  @Test
+  public void testSetDirectFilterValues3() {
+    // Arrange
+    ArrayList<Object> directFilterValues = new ArrayList<>();
+    directFilterValues.add("42");
+    directFilterValues.add("42");
+
+    // Act
+    filterMapping.setDirectFilterValues(directFilterValues);
+
+    // Assert
+    assertSame(directFilterValues, filterMapping.getDirectFilterValues());
+  }
+
+  /**
+   * Method under test: {@link FilterMapping#parseFilterValue(String)}
+   */
+  @Test
+  public void testParseFilterValue() {
+    // Arrange, Act and Assert
+    assertArrayEquals(new String[]{"42"}, filterMapping.parseFilterValue("42"));
+    assertArrayEquals(new String[]{"", ""}, filterMapping.parseFilterValue(FilterMapping.RANGE_SPECIFIER_REGEX));
+    assertEquals(0, filterMapping.parseFilterValue(null).length);
   }
 }

@@ -18,37 +18,37 @@
 package org.broadleafcommerce.cms.admin.web.controller;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiFunction;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
 public class AdminAssetControllerDiffblueTest {
-  @InjectMocks private AdminAssetController adminAssetController;
-
   /**
-   * Test {@link AdminAssetController#getSectionKey(Map)}.
-   *
-   * <ul>
-   *   <li>Given {@code sectionKey}.
-   *   <li>Then return {@code sectionKey}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminAssetController#getSectionKey(Map)}
+   * Method under test: {@link AdminAssetController#getSectionKey(Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String AdminAssetController.getSectionKey(Map)"})
-  public void testGetSectionKey_givenSectionKey_thenReturnSectionKey() {
+  public void testGetSectionKey() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    AdminAssetController adminAssetController = new AdminAssetController();
+
+    // Act and Assert
+    assertEquals(AdminAssetController.SECTION_KEY, adminAssetController.getSectionKey(new HashMap<>()));
+  }
+
+  /**
+   * Method under test: {@link AdminAssetController#getSectionKey(Map)}
+   */
+  @Test
+  public void testGetSectionKey2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AdminAssetController adminAssetController = new AdminAssetController();
+
     HashMap<String, String> pathVars = new HashMap<>();
     pathVars.put("sectionKey", "sectionKey");
 
@@ -57,38 +57,32 @@ public class AdminAssetControllerDiffblueTest {
   }
 
   /**
-   * Test {@link AdminAssetController#getSectionKey(Map)}.
-   *
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()}.
-   *   <li>Then return {@link AdminAssetController#SECTION_KEY}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AdminAssetController#getSectionKey(Map)}
+   * Method under test: {@link AdminAssetController#getSectionKey(Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String AdminAssetController.getSectionKey(Map)"})
-  public void testGetSectionKey_whenHashMap_thenReturnSection_key() {
-    // Arrange, Act and Assert
-    assertEquals(
-        AdminAssetController.SECTION_KEY, adminAssetController.getSectionKey(new HashMap<>()));
+  public void testGetSectionKey3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AdminAssetController adminAssetController = new AdminAssetController();
+
+    HashMap<String, String> pathVars = new HashMap<>();
+    pathVars.computeIfPresent("sectionKey", mock(BiFunction.class));
+    pathVars.put("sectionKey", "sectionKey");
+
+    // Act and Assert
+    assertEquals("sectionKey", adminAssetController.getSectionKey(pathVars));
   }
 
   /**
-   * Test {@link AdminAssetController#getDefaultEntityType()}.
-   *
-   * <p>Method under test: {@link AdminAssetController#getDefaultEntityType()}
+   * Method under test: {@link AdminAssetController#getDefaultEntityType()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String AdminAssetController.getDefaultEntityType()"})
   public void testGetDefaultEntityType() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertEquals(
-        "org.broadleafcommerce.cms.file.domain.StaticAssetImpl",
-        adminAssetController.getDefaultEntityType());
+    assertEquals("org.broadleafcommerce.cms.file.domain.StaticAssetImpl",
+        (new AdminAssetController()).getDefaultEntityType());
   }
 }

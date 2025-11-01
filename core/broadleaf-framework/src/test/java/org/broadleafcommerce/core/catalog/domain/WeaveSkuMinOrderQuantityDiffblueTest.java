@@ -21,28 +21,23 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class WeaveSkuMinOrderQuantityDiffblueTest {
   /**
-   * Test {@link WeaveSkuMinOrderQuantity#hasMinOrderQuantity()}.
-   *
-   * <ul>
-   *   <li>Given {@link WeaveSkuMinOrderQuantity} (default constructor) HasMinOrderQuantity is
-   *       {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link WeaveSkuMinOrderQuantity#hasMinOrderQuantity()}
+   * Method under test: {@link WeaveSkuMinOrderQuantity#hasMinOrderQuantity()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean WeaveSkuMinOrderQuantity.hasMinOrderQuantity()"})
-  public void testHasMinOrderQuantity_givenWeaveSkuMinOrderQuantityHasMinOrderQuantityIsNull() {
+  public void testHasMinOrderQuantity() {
+    // Arrange, Act and Assert
+    assertFalse((new WeaveSkuMinOrderQuantity()).hasMinOrderQuantity());
+  }
+
+  /**
+   * Method under test: {@link WeaveSkuMinOrderQuantity#hasMinOrderQuantity()}
+   */
+  @Test
+  public void testHasMinOrderQuantity2() {
     // Arrange
     WeaveSkuMinOrderQuantity weaveSkuMinOrderQuantity = new WeaveSkuMinOrderQuantity();
     weaveSkuMinOrderQuantity.setHasMinOrderQuantity(null);
@@ -52,38 +47,10 @@ public class WeaveSkuMinOrderQuantityDiffblueTest {
   }
 
   /**
-   * Test {@link WeaveSkuMinOrderQuantity#hasMinOrderQuantity()}.
-   *
-   * <ul>
-   *   <li>Given {@link WeaveSkuMinOrderQuantity} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link WeaveSkuMinOrderQuantity#hasMinOrderQuantity()}
+   * Method under test: {@link WeaveSkuMinOrderQuantity#hasMinOrderQuantity()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean WeaveSkuMinOrderQuantity.hasMinOrderQuantity()"})
-  public void testHasMinOrderQuantity_givenWeaveSkuMinOrderQuantity_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(new WeaveSkuMinOrderQuantity().hasMinOrderQuantity());
-  }
-
-  /**
-   * Test {@link WeaveSkuMinOrderQuantity#hasMinOrderQuantity()}.
-   *
-   * <ul>
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link WeaveSkuMinOrderQuantity#hasMinOrderQuantity()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean WeaveSkuMinOrderQuantity.hasMinOrderQuantity()"})
-  public void testHasMinOrderQuantity_thenReturnTrue() {
+  public void testHasMinOrderQuantity3() {
     // Arrange
     WeaveSkuMinOrderQuantity weaveSkuMinOrderQuantity = new WeaveSkuMinOrderQuantity();
     weaveSkuMinOrderQuantity.setHasMinOrderQuantity(true);
@@ -93,37 +60,19 @@ public class WeaveSkuMinOrderQuantityDiffblueTest {
   }
 
   /**
-   * Test {@link WeaveSkuMinOrderQuantity#getMinOrderQuantity()}.
-   *
-   * <ul>
-   *   <li>Given {@link WeaveSkuMinOrderQuantity} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link WeaveSkuMinOrderQuantity#getMinOrderQuantity()}
+   * Method under test: {@link WeaveSkuMinOrderQuantity#getMinOrderQuantity()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.lang.Integer WeaveSkuMinOrderQuantity.getMinOrderQuantity()"})
-  public void testGetMinOrderQuantity_givenWeaveSkuMinOrderQuantity() {
+  public void testGetMinOrderQuantity() {
     // Arrange, Act and Assert
-    assertEquals(1, new WeaveSkuMinOrderQuantity().getMinOrderQuantity().intValue());
+    assertEquals(1, (new WeaveSkuMinOrderQuantity()).getMinOrderQuantity().intValue());
   }
 
   /**
-   * Test {@link WeaveSkuMinOrderQuantity#getMinOrderQuantity()}.
-   *
-   * <ul>
-   *   <li>Given {@link WeaveSkuMinOrderQuantity} (default constructor) MinOrderQuantity is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link WeaveSkuMinOrderQuantity#getMinOrderQuantity()}
+   * Method under test: {@link WeaveSkuMinOrderQuantity#getMinOrderQuantity()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.lang.Integer WeaveSkuMinOrderQuantity.getMinOrderQuantity()"})
-  public void testGetMinOrderQuantity_givenWeaveSkuMinOrderQuantityMinOrderQuantityIsOne() {
+  public void testGetMinOrderQuantity2() {
     // Arrange
     WeaveSkuMinOrderQuantity weaveSkuMinOrderQuantity = new WeaveSkuMinOrderQuantity();
     weaveSkuMinOrderQuantity.setMinOrderQuantity(1);
@@ -133,14 +82,10 @@ public class WeaveSkuMinOrderQuantityDiffblueTest {
   }
 
   /**
-   * Test new {@link WeaveSkuMinOrderQuantity} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link WeaveSkuMinOrderQuantity}
+   * Method under test: default or parameterless constructor of
+   * {@link WeaveSkuMinOrderQuantity}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void WeaveSkuMinOrderQuantity.<init>()"})
   public void testNewWeaveSkuMinOrderQuantity() {
     // Arrange and Act
     WeaveSkuMinOrderQuantity actualWeaveSkuMinOrderQuantity = new WeaveSkuMinOrderQuantity();

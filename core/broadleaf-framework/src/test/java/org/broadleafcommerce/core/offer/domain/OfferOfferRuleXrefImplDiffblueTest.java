@@ -26,32 +26,282 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.copy.CreateResponse;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {OfferOfferRuleXrefImpl.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class OfferOfferRuleXrefImplDiffblueTest {
-  @Autowired private OfferOfferRuleXrefImpl offerOfferRuleXrefImpl;
+  @Autowired
+  private OfferOfferRuleXrefImpl offerOfferRuleXrefImpl;
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Method under test: {@link OfferOfferRuleXrefImpl#getMatchRule()}
+   */
+  @Test
+  public void testGetMatchRule() {
+    // Arrange, Act and Assert
+    assertNull((new OfferOfferRuleXrefImpl()).getMatchRule());
+  }
+
+  /**
+   * Method under test: {@link OfferOfferRuleXrefImpl#getMatchRule()}
+   */
+  @Test
+  public void testGetMatchRule2() {
+    // Arrange
+    OfferOfferRuleXrefImpl offerOfferRuleXrefImpl = new OfferOfferRuleXrefImpl();
+    offerOfferRuleXrefImpl.setId(CandidateFulfillmentGroupOfferImpl.serialVersionUID);
+    offerOfferRuleXrefImpl.setKey("Key");
+    offerOfferRuleXrefImpl.setOffer(new OfferImpl());
+    offerOfferRuleXrefImpl.setOfferRule(new OfferRuleImpl());
+
+    // Act and Assert
+    assertNull(offerOfferRuleXrefImpl.getMatchRule());
+  }
+
+  /**
+   * Method under test: {@link OfferOfferRuleXrefImpl#setMatchRule(String)}
+   */
+  @Test
+  public void testSetMatchRule() {
+    // Arrange
+    OfferOfferRuleXrefImpl offerOfferRuleXrefImpl2 = new OfferOfferRuleXrefImpl();
+
+    // Act
+    offerOfferRuleXrefImpl2.setMatchRule("Match Rule");
+
+    // Assert
+    OfferRule offerRule = offerOfferRuleXrefImpl2.getOfferRule();
+    assertTrue(offerRule instanceof OfferRuleImpl);
+    assertEquals("Match Rule", offerOfferRuleXrefImpl2.getMatchRule());
+    assertEquals("Match Rule", offerRule.getMatchRule());
+  }
+
+  /**
+   * Method under test: {@link OfferOfferRuleXrefImpl#setMatchRule(String)}
+   */
+  @Test
+  public void testSetMatchRule2() {
+    // Arrange
+    OfferImpl offer = new OfferImpl();
+    OfferRuleImpl offerRule = new OfferRuleImpl();
+    OfferOfferRuleXrefImpl offerOfferRuleXrefImpl2 = new OfferOfferRuleXrefImpl(offer, offerRule, "Key");
+
+    // Act
+    offerOfferRuleXrefImpl2.setMatchRule("Match Rule");
+
+    // Assert
+    OfferRule offerRule2 = offerOfferRuleXrefImpl2.getOfferRule();
+    assertTrue(offerRule2 instanceof OfferRuleImpl);
+    assertEquals("Match Rule", offerOfferRuleXrefImpl2.getMatchRule());
+    assertEquals("Match Rule", offerRule2.getMatchRule());
+    assertSame(offerRule, offerRule2);
+  }
+
+  /**
+   * Method under test: {@link OfferOfferRuleXrefImpl#setMatchRule(String)}
+   */
+  @Test
+  public void testSetMatchRule3() {
+    // Arrange
+    OfferImpl offer = mock(OfferImpl.class);
+    OfferRuleImpl offerRule = new OfferRuleImpl();
+    OfferOfferRuleXrefImpl offerOfferRuleXrefImpl2 = new OfferOfferRuleXrefImpl(offer, offerRule, "Key");
+
+    // Act
+    offerOfferRuleXrefImpl2.setMatchRule("Match Rule");
+
+    // Assert
+    OfferRule offerRule2 = offerOfferRuleXrefImpl2.getOfferRule();
+    assertTrue(offerRule2 instanceof OfferRuleImpl);
+    assertEquals("Match Rule", offerOfferRuleXrefImpl2.getMatchRule());
+    assertEquals("Match Rule", offerRule2.getMatchRule());
+    assertSame(offerRule, offerRule2);
+  }
+
+  /**
+   * Method under test:
+   * {@link OfferOfferRuleXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
+    // Arrange
+    OfferOfferRuleXrefImpl offerOfferRuleXrefImpl = new OfferOfferRuleXrefImpl();
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    CreateResponse<OfferOfferRuleXref> actualCreateOrRetrieveCopyInstanceResult = offerOfferRuleXrefImpl
+        .createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link OfferOfferRuleXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
+    // Arrange
+    CreateResponse<Offer> createResponse = mock(CreateResponse.class);
+    when(createResponse.getClone()).thenReturn(new OfferImpl());
+    Offer offer = mock(Offer.class);
+    when(offer.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any())).thenReturn(createResponse);
+    OfferOfferRuleXrefImpl offerOfferRuleXrefImpl = new OfferOfferRuleXrefImpl(offer, null,
+        "ThreadLocalManager.notify.orphans");
+
+    OfferOfferRuleXrefImpl offerOfferRuleXrefImpl2 = new OfferOfferRuleXrefImpl();
+    offerOfferRuleXrefImpl2.setId(CandidateFulfillmentGroupOfferImpl.serialVersionUID);
+    offerOfferRuleXrefImpl2.setKey("Key");
+    offerOfferRuleXrefImpl2.setOffer(new OfferImpl());
+    offerOfferRuleXrefImpl2.setOfferRule(new OfferRuleImpl());
+    CreateResponse<Object> createResponse2 = mock(CreateResponse.class);
+    when(createResponse2.isAlreadyPopulated()).thenReturn(false);
+    when(createResponse2.getClone()).thenReturn(offerOfferRuleXrefImpl2);
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse2);
+
+    // Act
+    offerOfferRuleXrefImpl.createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(createResponse2).getClone();
+    verify(createResponse).getClone();
+    verify(createResponse2).isAlreadyPopulated();
+    verify(offer).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+  }
+
+  /**
+   * Method under test:
+   * {@link OfferOfferRuleXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  public void testCreateOrRetrieveCopyInstance3() throws CloneNotSupportedException {
+    // Arrange
+    CreateResponse<Offer> createResponse = mock(CreateResponse.class);
+    when(createResponse.getClone()).thenReturn(new OfferImpl());
+    Offer offer = mock(Offer.class);
+    when(offer.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any())).thenReturn(createResponse);
+    OfferRuleImpl offerRule = mock(OfferRuleImpl.class);
+    when(offerRule.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
+        .thenReturn(new CreateResponse<>(new OfferRuleImpl(), true));
+    OfferOfferRuleXrefImpl offerOfferRuleXrefImpl = new OfferOfferRuleXrefImpl(offer, offerRule,
+        "ThreadLocalManager.notify.orphans");
+
+    OfferOfferRuleXrefImpl offerOfferRuleXrefImpl2 = new OfferOfferRuleXrefImpl();
+    offerOfferRuleXrefImpl2.setId(CandidateFulfillmentGroupOfferImpl.serialVersionUID);
+    offerOfferRuleXrefImpl2.setKey("Key");
+    offerOfferRuleXrefImpl2.setOffer(new OfferImpl());
+    offerOfferRuleXrefImpl2.setOfferRule(new OfferRuleImpl());
+    CreateResponse<Object> createResponse2 = mock(CreateResponse.class);
+    when(createResponse2.isAlreadyPopulated()).thenReturn(false);
+    when(createResponse2.getClone()).thenReturn(offerOfferRuleXrefImpl2);
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse2);
+
+    // Act
+    offerOfferRuleXrefImpl.createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(createResponse2).getClone();
+    verify(createResponse).getClone();
+    verify(createResponse2).isAlreadyPopulated();
+    verify(offer).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    verify(offerRule).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
+  }
+
+  /**
+   * Method under test:
+   * {@link OfferOfferRuleXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  public void testCreateOrRetrieveCopyInstance4() throws CloneNotSupportedException {
+    // Arrange
+    CreateResponse<Offer> createResponse = mock(CreateResponse.class);
+    when(createResponse.getClone()).thenReturn(new OfferImpl());
+    Offer offer = mock(Offer.class);
+    when(offer.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any())).thenReturn(createResponse);
+    OfferRuleImpl offerRule = mock(OfferRuleImpl.class);
+    when(offerRule.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
+        .thenThrow(new CloneNotSupportedException("foo"));
+    OfferOfferRuleXrefImpl offerOfferRuleXrefImpl = new OfferOfferRuleXrefImpl(offer, offerRule,
+        "ThreadLocalManager.notify.orphans");
+
+    OfferOfferRuleXrefImpl offerOfferRuleXrefImpl2 = new OfferOfferRuleXrefImpl();
+    offerOfferRuleXrefImpl2.setId(CandidateFulfillmentGroupOfferImpl.serialVersionUID);
+    offerOfferRuleXrefImpl2.setKey("Key");
+    offerOfferRuleXrefImpl2.setOffer(new OfferImpl());
+    offerOfferRuleXrefImpl2.setOfferRule(new OfferRuleImpl());
+    CreateResponse<Object> createResponse2 = mock(CreateResponse.class);
+    when(createResponse2.isAlreadyPopulated()).thenReturn(false);
+    when(createResponse2.getClone()).thenReturn(offerOfferRuleXrefImpl2);
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse2);
+
+    // Act and Assert
+    assertThrows(CloneNotSupportedException.class, () -> offerOfferRuleXrefImpl.createOrRetrieveCopyInstance(context));
+    verify(createResponse2).getClone();
+    verify(createResponse).getClone();
+    verify(createResponse2).isAlreadyPopulated();
+    verify(offer).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    verify(offerRule).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
+  }
+
+  /**
+   * Method under test:
+   * {@link OfferOfferRuleXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  public void testCreateOrRetrieveCopyInstance5() throws CloneNotSupportedException {
+    // Arrange
+    OfferImpl offer = mock(OfferImpl.class);
+    when(offer.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
+        .thenThrow(new CloneNotSupportedException("foo"));
+
+    OfferOfferRuleXrefImpl offerOfferRuleXrefImpl = new OfferOfferRuleXrefImpl();
+    offerOfferRuleXrefImpl.setId(CandidateFulfillmentGroupOfferImpl.serialVersionUID);
+    offerOfferRuleXrefImpl.setKey("Key");
+    offerOfferRuleXrefImpl.setOffer(offer);
+    offerOfferRuleXrefImpl.setOfferRule(new OfferRuleImpl());
+
+    OfferOfferRuleXrefImpl offerOfferRuleXrefImpl2 = new OfferOfferRuleXrefImpl();
+    offerOfferRuleXrefImpl2.setId(CandidateFulfillmentGroupOfferImpl.serialVersionUID);
+    offerOfferRuleXrefImpl2.setKey("Key");
+    offerOfferRuleXrefImpl2.setOffer(new OfferImpl());
+    offerOfferRuleXrefImpl2.setOfferRule(new OfferRuleImpl());
+    CreateResponse<Object> createResponse = mock(CreateResponse.class);
+    when(createResponse.isAlreadyPopulated()).thenReturn(false);
+    when(createResponse.getClone()).thenReturn(offerOfferRuleXrefImpl2);
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act and Assert
+    assertThrows(CloneNotSupportedException.class, () -> offerOfferRuleXrefImpl.createOrRetrieveCopyInstance(context));
+    verify(createResponse).getClone();
+    verify(createResponse).isAlreadyPopulated();
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    verify(offer).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
+  }
+
+  /**
+   * Methods under test:
    * <ul>
    *   <li>{@link OfferOfferRuleXrefImpl#OfferOfferRuleXrefImpl()}
    *   <li>{@link OfferOfferRuleXrefImpl#setId(Long)}
@@ -65,20 +315,6 @@ public class OfferOfferRuleXrefImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OfferOfferRuleXrefImpl.<init>()",
-    "void OfferOfferRuleXrefImpl.<init>(Offer, OfferRule, String)",
-    "Long OfferOfferRuleXrefImpl.getId()",
-    "String OfferOfferRuleXrefImpl.getKey()",
-    "Offer OfferOfferRuleXrefImpl.getOffer()",
-    "OfferRule OfferOfferRuleXrefImpl.getOfferRule()",
-    "void OfferOfferRuleXrefImpl.setId(Long)",
-    "void OfferOfferRuleXrefImpl.setKey(String)",
-    "void OfferOfferRuleXrefImpl.setOffer(Offer)",
-    "void OfferOfferRuleXrefImpl.setOfferRule(OfferRule)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     OfferOfferRuleXrefImpl actualOfferOfferRuleXrefImpl = new OfferOfferRuleXrefImpl();
@@ -93,7 +329,7 @@ public class OfferOfferRuleXrefImplDiffblueTest {
     Offer actualOffer = actualOfferOfferRuleXrefImpl.getOffer();
     OfferRule actualOfferRule = actualOfferOfferRuleXrefImpl.getOfferRule();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("Key", actualKey);
     assertEquals(CandidateFulfillmentGroupOfferImpl.serialVersionUID, actualId.longValue());
     assertSame(offer, actualOffer);
@@ -101,16 +337,10 @@ public class OfferOfferRuleXrefImplDiffblueTest {
   }
 
   /**
-   * Test getters and setters.
-   *
+   * Methods under test:
    * <ul>
-   *   <li>When {@link OfferImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
-   * <ul>
-   *   <li>{@link OfferOfferRuleXrefImpl#OfferOfferRuleXrefImpl(Offer, OfferRule, String)}
+   *   <li>
+   * {@link OfferOfferRuleXrefImpl#OfferOfferRuleXrefImpl(Offer, OfferRule, String)}
    *   <li>{@link OfferOfferRuleXrefImpl#setId(Long)}
    *   <li>{@link OfferOfferRuleXrefImpl#setKey(String)}
    *   <li>{@link OfferOfferRuleXrefImpl#setOffer(Offer)}
@@ -122,27 +352,12 @@ public class OfferOfferRuleXrefImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void OfferOfferRuleXrefImpl.<init>()",
-    "void OfferOfferRuleXrefImpl.<init>(Offer, OfferRule, String)",
-    "Long OfferOfferRuleXrefImpl.getId()",
-    "String OfferOfferRuleXrefImpl.getKey()",
-    "Offer OfferOfferRuleXrefImpl.getOffer()",
-    "OfferRule OfferOfferRuleXrefImpl.getOfferRule()",
-    "void OfferOfferRuleXrefImpl.setId(Long)",
-    "void OfferOfferRuleXrefImpl.setKey(String)",
-    "void OfferOfferRuleXrefImpl.setOffer(Offer)",
-    "void OfferOfferRuleXrefImpl.setOfferRule(OfferRule)"
-  })
-  public void testGettersAndSetters_whenOfferImpl() {
+  public void testGettersAndSetters2() {
     // Arrange
     OfferImpl offer = new OfferImpl();
 
     // Act
-    OfferOfferRuleXrefImpl actualOfferOfferRuleXrefImpl =
-        new OfferOfferRuleXrefImpl(offer, new OfferRuleImpl(), "Key");
+    OfferOfferRuleXrefImpl actualOfferOfferRuleXrefImpl = new OfferOfferRuleXrefImpl(offer, new OfferRuleImpl(), "Key");
     actualOfferOfferRuleXrefImpl.setId(CandidateFulfillmentGroupOfferImpl.serialVersionUID);
     actualOfferOfferRuleXrefImpl.setKey("Key");
     OfferImpl offer2 = new OfferImpl();
@@ -154,340 +369,10 @@ public class OfferOfferRuleXrefImplDiffblueTest {
     Offer actualOffer = actualOfferOfferRuleXrefImpl.getOffer();
     OfferRule actualOfferRule = actualOfferOfferRuleXrefImpl.getOfferRule();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("Key", actualKey);
     assertEquals(CandidateFulfillmentGroupOfferImpl.serialVersionUID, actualId.longValue());
     assertSame(offer2, actualOffer);
     assertSame(offerRule, actualOfferRule);
-  }
-
-  /**
-   * Test {@link OfferOfferRuleXrefImpl#getMatchRule()}.
-   *
-   * <ul>
-   *   <li>Given {@link OfferOfferRuleXrefImpl#OfferOfferRuleXrefImpl()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OfferOfferRuleXrefImpl#getMatchRule()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String OfferOfferRuleXrefImpl.getMatchRule()"})
-  public void testGetMatchRule_givenOfferOfferRuleXrefImpl() {
-    // Arrange, Act and Assert
-    assertNull(new OfferOfferRuleXrefImpl().getMatchRule());
-  }
-
-  /**
-   * Test {@link OfferOfferRuleXrefImpl#getMatchRule()}.
-   *
-   * <ul>
-   *   <li>Given {@link OfferOfferRuleXrefImpl#OfferOfferRuleXrefImpl()} Id is {@link
-   *       CandidateFulfillmentGroupOfferImpl#serialVersionUID}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OfferOfferRuleXrefImpl#getMatchRule()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String OfferOfferRuleXrefImpl.getMatchRule()"})
-  public void testGetMatchRule_givenOfferOfferRuleXrefImplIdIsSerialVersionUID() {
-    // Arrange
-    OfferOfferRuleXrefImpl offerOfferRuleXrefImpl = new OfferOfferRuleXrefImpl();
-    offerOfferRuleXrefImpl.setId(CandidateFulfillmentGroupOfferImpl.serialVersionUID);
-    offerOfferRuleXrefImpl.setKey("Key");
-    offerOfferRuleXrefImpl.setOffer(new OfferImpl());
-    offerOfferRuleXrefImpl.setOfferRule(new OfferRuleImpl());
-
-    // Act and Assert
-    assertNull(offerOfferRuleXrefImpl.getMatchRule());
-  }
-
-  /**
-   * Test {@link OfferOfferRuleXrefImpl#setMatchRule(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link OfferOfferRuleXrefImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OfferOfferRuleXrefImpl#setMatchRule(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void OfferOfferRuleXrefImpl.setMatchRule(String)"})
-  public void testSetMatchRule_givenOfferOfferRuleXrefImpl() {
-    // Arrange and Act
-    offerOfferRuleXrefImpl.setMatchRule("Match Rule");
-
-    // Assert
-    OfferRule offerRule = offerOfferRuleXrefImpl.getOfferRule();
-    assertTrue(offerRule instanceof OfferRuleImpl);
-    assertEquals("Match Rule", offerOfferRuleXrefImpl.getMatchRule());
-    assertEquals("Match Rule", offerRule.getMatchRule());
-  }
-
-  /**
-   * Test {@link OfferOfferRuleXrefImpl#setMatchRule(String)}.
-   *
-   * <ul>
-   *   <li>Given {@link OfferOfferRuleXrefImpl} OfferRule is {@link OfferRuleImpl} (default
-   *       constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link OfferOfferRuleXrefImpl#setMatchRule(String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void OfferOfferRuleXrefImpl.setMatchRule(String)"})
-  public void testSetMatchRule_givenOfferOfferRuleXrefImplOfferRuleIsOfferRuleImpl() {
-    // Arrange
-    offerOfferRuleXrefImpl.setOfferRule(new OfferRuleImpl());
-
-    // Act
-    offerOfferRuleXrefImpl.setMatchRule("Match Rule");
-
-    // Assert
-    OfferRule offerRule = offerOfferRuleXrefImpl.getOfferRule();
-    assertTrue(offerRule instanceof OfferRuleImpl);
-    assertEquals("Match Rule", offerOfferRuleXrefImpl.getMatchRule());
-    assertEquals("Match Rule", offerRule.getMatchRule());
-  }
-
-  /**
-   * Test {@link OfferOfferRuleXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * OfferOfferRuleXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse OfferOfferRuleXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
-    // Arrange
-    OfferOfferRuleXrefImpl offerOfferRuleXrefImpl = new OfferOfferRuleXrefImpl();
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse =
-        new CreateResponse<>(new OfferOfferRuleXrefImpl(), true);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    CreateResponse<OfferOfferRuleXref> actualCreateOrRetrieveCopyInstanceResult =
-        offerOfferRuleXrefImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
-  }
-
-  /**
-   * Test {@link OfferOfferRuleXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * OfferOfferRuleXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse OfferOfferRuleXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
-    // Arrange
-    OfferOfferRuleXrefImpl offerOfferRuleXrefImpl = new OfferOfferRuleXrefImpl();
-
-    OfferOfferRuleXrefImpl offerOfferRuleXrefImpl2 = new OfferOfferRuleXrefImpl();
-    offerOfferRuleXrefImpl2.setId(CandidateFulfillmentGroupOfferImpl.serialVersionUID);
-    offerOfferRuleXrefImpl2.setKey("Key");
-    offerOfferRuleXrefImpl2.setOffer(new OfferImpl());
-    offerOfferRuleXrefImpl2.setOfferRule(new OfferRuleImpl());
-    CreateResponse<Object> createResponse = new CreateResponse<>(offerOfferRuleXrefImpl2, false);
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    CreateResponse<OfferOfferRuleXref> actualCreateOrRetrieveCopyInstanceResult =
-        offerOfferRuleXrefImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
-  }
-
-  /**
-   * Test {@link OfferOfferRuleXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * OfferOfferRuleXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse OfferOfferRuleXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance3() throws CloneNotSupportedException {
-    // Arrange
-    OfferImpl offer = mock(OfferImpl.class);
-    when(offer.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
-        .thenThrow(new CloneNotSupportedException());
-
-    OfferOfferRuleXrefImpl offerOfferRuleXrefImpl = new OfferOfferRuleXrefImpl();
-    offerOfferRuleXrefImpl.setOffer(offer);
-
-    CreateResponse<Object> createResponse = mock(CreateResponse.class);
-    when(createResponse.isAlreadyPopulated()).thenReturn(false);
-    when(createResponse.getClone()).thenReturn(new OfferOfferRuleXrefImpl());
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act and Assert
-    assertThrows(
-        CloneNotSupportedException.class,
-        () -> offerOfferRuleXrefImpl.createOrRetrieveCopyInstance(context));
-    verify(createResponse).getClone();
-    verify(createResponse).isAlreadyPopulated();
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    verify(offer).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
-  }
-
-  /**
-   * Test {@link OfferOfferRuleXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * OfferOfferRuleXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse OfferOfferRuleXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance4() throws CloneNotSupportedException {
-    // Arrange
-    OfferImpl offer = mock(OfferImpl.class);
-    when(offer.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
-        .thenReturn(new CreateResponse<>(new OfferImpl(), true));
-
-    OfferRuleImpl offerRule = mock(OfferRuleImpl.class);
-    when(offerRule.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
-        .thenReturn(new CreateResponse<>(new OfferRuleImpl(), true));
-
-    OfferOfferRuleXrefImpl offerOfferRuleXrefImpl = new OfferOfferRuleXrefImpl();
-    offerOfferRuleXrefImpl.setOfferRule(offerRule);
-    offerOfferRuleXrefImpl.setOffer(offer);
-
-    CreateResponse<Object> createResponse = mock(CreateResponse.class);
-    when(createResponse.isAlreadyPopulated()).thenReturn(false);
-    when(createResponse.getClone()).thenReturn(new OfferOfferRuleXrefImpl());
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    offerOfferRuleXrefImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(createResponse).getClone();
-    verify(createResponse).isAlreadyPopulated();
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    verify(offer).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
-    verify(offerRule).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
-  }
-
-  /**
-   * Test {@link OfferOfferRuleXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * OfferOfferRuleXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse OfferOfferRuleXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance5() throws CloneNotSupportedException {
-    // Arrange
-    OfferImpl offer = mock(OfferImpl.class);
-    when(offer.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
-        .thenReturn(new CreateResponse<>(new OfferImpl(), true));
-
-    OfferRuleImpl offerRule = mock(OfferRuleImpl.class);
-    when(offerRule.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
-        .thenThrow(new CloneNotSupportedException());
-
-    OfferOfferRuleXrefImpl offerOfferRuleXrefImpl = new OfferOfferRuleXrefImpl();
-    offerOfferRuleXrefImpl.setOfferRule(offerRule);
-    offerOfferRuleXrefImpl.setOffer(offer);
-
-    CreateResponse<Object> createResponse = mock(CreateResponse.class);
-    when(createResponse.isAlreadyPopulated()).thenReturn(false);
-    when(createResponse.getClone()).thenReturn(new OfferOfferRuleXrefImpl());
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act and Assert
-    assertThrows(
-        CloneNotSupportedException.class,
-        () -> offerOfferRuleXrefImpl.createOrRetrieveCopyInstance(context));
-    verify(createResponse).getClone();
-    verify(createResponse).isAlreadyPopulated();
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    verify(offer).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
-    verify(offerRule).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
-  }
-
-  /**
-   * Test {@link OfferOfferRuleXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link CreateResponse#getClone()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * OfferOfferRuleXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse OfferOfferRuleXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance_thenCallsGetClone()
-      throws CloneNotSupportedException {
-    // Arrange
-    OfferImpl offer = mock(OfferImpl.class);
-    when(offer.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
-        .thenReturn(new CreateResponse<>(new OfferImpl(), true));
-
-    OfferOfferRuleXrefImpl offerOfferRuleXrefImpl = new OfferOfferRuleXrefImpl();
-    offerOfferRuleXrefImpl.setOffer(offer);
-
-    CreateResponse<Object> createResponse = mock(CreateResponse.class);
-    when(createResponse.isAlreadyPopulated()).thenReturn(false);
-    when(createResponse.getClone()).thenReturn(new OfferOfferRuleXrefImpl());
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    offerOfferRuleXrefImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(createResponse).getClone();
-    verify(createResponse).isAlreadyPopulated();
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    verify(offer).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
   }
 }

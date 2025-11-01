@@ -21,15 +21,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -38,8 +33,6 @@ import java.util.HashMap;
 import org.broadleafcommerce.common.audit.Auditable;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
-import org.broadleafcommerce.common.extension.ExtensionResultHolder;
-import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.core.catalog.domain.SkuImpl;
@@ -48,65 +41,53 @@ import org.broadleafcommerce.core.order.domain.DiscreteOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderImpl;
-import org.broadleafcommerce.core.order.service.call.OrderItemRequestDTO;
+import org.broadleafcommerce.core.order.service.call.UpdateCartResponse;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
-import org.broadleafcommerce.core.web.order.security.exception.OrderLockAcquisitionFailureException;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(MockitoExtension.class)
 class UpdateCartServiceImplDiffblueTest {
-  @Mock private UpdateCartServiceExtensionManager updateCartServiceExtensionManager;
-
-  @InjectMocks private UpdateCartServiceImpl updateCartServiceImpl;
-
   /**
-   * Test {@link UpdateCartServiceImpl#currencyHasChanged()}.
-   *
-   * <p>Method under test: {@link UpdateCartServiceImpl#currencyHasChanged()}
+   * Method under test: {@link UpdateCartServiceImpl#currencyHasChanged()}
    */
   @Test
-  @DisplayName("Test currencyHasChanged()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean UpdateCartServiceImpl.currencyHasChanged()"})
   void testCurrencyHasChanged() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertTrue(updateCartServiceImpl.currencyHasChanged());
+    assertTrue((new UpdateCartServiceImpl()).currencyHasChanged());
   }
 
   /**
-   * Test {@link UpdateCartServiceImpl#copyCartToCurrentContext(Order)}.
-   *
-   * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link UpdateCartServiceImpl#copyCartToCurrentContext(Order)}
+   * Method under test:
+   * {@link UpdateCartServiceImpl#copyCartToCurrentContext(Order)}
    */
   @Test
-  @DisplayName(
-      "Test copyCartToCurrentContext(Order); given Auditable (default constructor) CreatedBy is one")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.core.order.service.call.UpdateCartResponse UpdateCartServiceImpl.copyCartToCurrentContext(Order)"
-  })
-  void testCopyCartToCurrentContext_givenAuditableCreatedByIsOne() {
+  void testCopyCartToCurrentContext() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    UpdateCartServiceImpl updateCartServiceImpl = new UpdateCartServiceImpl();
+
+    // Act and Assert
+    assertNull(updateCartServiceImpl.copyCartToCurrentContext(new NullOrderImpl()));
+  }
+
+  /**
+   * Method under test:
+   * {@link UpdateCartServiceImpl#copyCartToCurrentContext(Order)}
+   */
+  @Test
+  void testCopyCartToCurrentContext2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    UpdateCartServiceImpl updateCartServiceImpl = new UpdateCartServiceImpl();
+
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     OrderImpl currentCart = new OrderImpl();
@@ -127,11 +108,11 @@ class UpdateCartServiceImplDiffblueTest {
     currentCart.setPayments(new ArrayList<>());
     currentCart.setStatus(new OrderStatus("Type", "Friendly Type"));
     currentCart.setSubTotal(new Money());
-    currentCart.setSubmitDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    currentCart.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     currentCart.setTaxOverride(true);
     currentCart.setTotal(new Money());
     currentCart.setTotalFulfillmentCharges(new Money());
+    currentCart.setTotalShipping(new Money());
     currentCart.setTotalTax(new Money());
 
     // Act and Assert
@@ -139,332 +120,73 @@ class UpdateCartServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link UpdateCartServiceImpl#copyCartToCurrentContext(Order)}.
-   *
-   * <ul>
-   *   <li>When {@link NullOrderImpl} (default constructor).
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link UpdateCartServiceImpl#copyCartToCurrentContext(Order)}
+   * Method under test:
+   * {@link UpdateCartServiceImpl#copyCartToCurrentContext(Order)}
    */
   @Test
-  @DisplayName(
-      "Test copyCartToCurrentContext(Order); when NullOrderImpl (default constructor); then return 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.broadleafcommerce.core.order.service.call.UpdateCartResponse UpdateCartServiceImpl.copyCartToCurrentContext(Order)"
-  })
-  void testCopyCartToCurrentContext_whenNullOrderImpl_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(updateCartServiceImpl.copyCartToCurrentContext(new NullOrderImpl()));
-  }
+  void testCopyCartToCurrentContext3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-  /**
-   * Test {@link UpdateCartServiceImpl#validateAddToCartRequest(OrderItemRequestDTO, Order)}.
-   *
-   * <p>Method under test: {@link
-   * UpdateCartServiceImpl#validateAddToCartRequest(OrderItemRequestDTO, Order)}
-   */
-  @Test
-  @DisplayName("Test validateAddToCartRequest(OrderItemRequestDTO, Order)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void UpdateCartServiceImpl.validateAddToCartRequest(OrderItemRequestDTO, Order)"
-  })
-  void testValidateAddToCartRequest() {
     // Arrange
-    when(updateCartServiceExtensionManager.getProxy())
-        .thenReturn(new i18nUpdateCartServiceExtensionHandler());
-    OrderItemRequestDTO itemRequest = new OrderItemRequestDTO();
+    UpdateCartServiceImpl updateCartServiceImpl = new UpdateCartServiceImpl();
+    NullOrderImpl currentCart = mock(NullOrderImpl.class);
+    when(currentCart.getOrderItems()).thenReturn(new ArrayList<>());
 
     // Act
-    updateCartServiceImpl.validateAddToCartRequest(itemRequest, new NullOrderImpl());
+    UpdateCartResponse actualCopyCartToCurrentContextResult = updateCartServiceImpl
+        .copyCartToCurrentContext(currentCart);
 
     // Assert
-    verify(updateCartServiceExtensionManager).getProxy();
+    verify(currentCart).getOrderItems();
+    assertNull(actualCopyCartToCurrentContextResult);
   }
 
   /**
-   * Test {@link UpdateCartServiceImpl#validateAddToCartRequest(OrderItemRequestDTO, Order)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link OrderLockAcquisitionFailureException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * UpdateCartServiceImpl#validateAddToCartRequest(OrderItemRequestDTO, Order)}
+   * Method under test: {@link UpdateCartServiceImpl#lockOrder(Order, Object)}
    */
   @Test
-  @DisplayName(
-      "Test validateAddToCartRequest(OrderItemRequestDTO, Order); then throw OrderLockAcquisitionFailureException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void UpdateCartServiceImpl.validateAddToCartRequest(OrderItemRequestDTO, Order)"
-  })
-  void testValidateAddToCartRequest_thenThrowOrderLockAcquisitionFailureException() {
-    // Arrange
-    when(updateCartServiceExtensionManager.getProxy())
-        .thenThrow(new OrderLockAcquisitionFailureException("An error occurred"));
-    OrderItemRequestDTO itemRequest = new OrderItemRequestDTO();
+  void testLockOrder() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
-    // Act and Assert
-    assertThrows(
-        OrderLockAcquisitionFailureException.class,
-        () -> updateCartServiceImpl.validateAddToCartRequest(itemRequest, new NullOrderImpl()));
-    verify(updateCartServiceExtensionManager).getProxy();
-  }
-
-  /**
-   * Test {@link UpdateCartServiceImpl#updateAndValidateCart(Order)}.
-   *
-   * <p>Method under test: {@link UpdateCartServiceImpl#updateAndValidateCart(Order)}
-   */
-  @Test
-  @DisplayName("Test updateAndValidateCart(Order)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void UpdateCartServiceImpl.updateAndValidateCart(Order)"})
-  void testUpdateAndValidateCart() {
-    // Arrange
-    when(updateCartServiceExtensionManager.getProxy())
-        .thenReturn(new i18nUpdateCartServiceExtensionHandler());
-
-    // Act
-    updateCartServiceImpl.updateAndValidateCart(new NullOrderImpl());
-
-    // Assert
-    verify(updateCartServiceExtensionManager).getProxy();
-  }
-
-  /**
-   * Test {@link UpdateCartServiceImpl#updateAndValidateCart(Order)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link i18nUpdateCartServiceExtensionHandler#updateAndValidateCart(Order,
-   *       ExtensionResultHolder)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link UpdateCartServiceImpl#updateAndValidateCart(Order)}
-   */
-  @Test
-  @DisplayName(
-      "Test updateAndValidateCart(Order); then calls updateAndValidateCart(Order, ExtensionResultHolder)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void UpdateCartServiceImpl.updateAndValidateCart(Order)"})
-  void testUpdateAndValidateCart_thenCallsUpdateAndValidateCart() {
-    // Arrange
-    i18nUpdateCartServiceExtensionHandler i18nUpdateCartServiceExtensionHandler =
-        mock(i18nUpdateCartServiceExtensionHandler.class);
-    when(i18nUpdateCartServiceExtensionHandler.updateAndValidateCart(
-            Mockito.<Order>any(), Mockito.<ExtensionResultHolder<Object>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(updateCartServiceExtensionManager.getProxy())
-        .thenReturn(i18nUpdateCartServiceExtensionHandler);
-
-    // Act
-    updateCartServiceImpl.updateAndValidateCart(new NullOrderImpl());
-
-    // Assert
-    verify(updateCartServiceExtensionManager).getProxy();
-    verify(i18nUpdateCartServiceExtensionHandler)
-        .updateAndValidateCart(isA(Order.class), isA(ExtensionResultHolder.class));
-  }
-
-  /**
-   * Test {@link UpdateCartServiceImpl#updateAndValidateCart(Order)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link OrderLockAcquisitionFailureException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link UpdateCartServiceImpl#updateAndValidateCart(Order)}
-   */
-  @Test
-  @DisplayName("Test updateAndValidateCart(Order); then throw OrderLockAcquisitionFailureException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void UpdateCartServiceImpl.updateAndValidateCart(Order)"})
-  void testUpdateAndValidateCart_thenThrowOrderLockAcquisitionFailureException() {
-    // Arrange
-    when(updateCartServiceExtensionManager.getProxy())
-        .thenThrow(new OrderLockAcquisitionFailureException("An error occurred"));
-
-    // Act and Assert
-    assertThrows(
-        OrderLockAcquisitionFailureException.class,
-        () -> updateCartServiceImpl.updateAndValidateCart(new NullOrderImpl()));
-    verify(updateCartServiceExtensionManager).getProxy();
-  }
-
-  /**
-   * Test {@link UpdateCartServiceImpl#lockOrder(Order, Object)}.
-   *
-   * <ul>
-   *   <li>When {@code Lock Object}.
-   *   <li>Then return {@code Lock Object}.
-   * </ul>
-   *
-   * <p>Method under test: {@link UpdateCartServiceImpl#lockOrder(Order, Object)}
-   */
-  @Test
-  @DisplayName("Test lockOrder(Order, Object); when 'Lock Object'; then return 'Lock Object'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object UpdateCartServiceImpl.lockOrder(Order, Object)"})
-  void testLockOrder_whenLockObject_thenReturnLockObject() {
-    // Arrange, Act and Assert
-    assertEquals(
-        "Lock Object", updateCartServiceImpl.lockOrder(new NullOrderImpl(), "Lock Object"));
-  }
-
-  /**
-   * Test {@link UpdateCartServiceImpl#findActiveCurrency()}.
-   *
-   * <p>Method under test: {@link UpdateCartServiceImpl#findActiveCurrency()}
-   */
-  @Test
-  @DisplayName("Test findActiveCurrency()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"BroadleafCurrency UpdateCartServiceImpl.findActiveCurrency()"})
-  void testFindActiveCurrency() {
-    // Arrange, Act and Assert
-    assertNull(updateCartServiceImpl.findActiveCurrency());
-  }
-
-  /**
-   * Test {@link UpdateCartServiceImpl#checkAvailabilityInLocale(DiscreteOrderItem,
-   * BroadleafCurrency)}.
-   *
-   * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor).
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link UpdateCartServiceImpl#checkAvailabilityInLocale(DiscreteOrderItem,
-   * BroadleafCurrency)}
-   */
-  @Test
-  @DisplayName(
-      "Test checkAvailabilityInLocale(DiscreteOrderItem, BroadleafCurrency); given SkuImpl (default constructor); then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean UpdateCartServiceImpl.checkAvailabilityInLocale(DiscreteOrderItem, BroadleafCurrency)"
-  })
-  void testCheckAvailabilityInLocale_givenSkuImpl_thenReturnTrue() {
-    // Arrange
-    DiscreteOrderItem doi = mock(DiscreteOrderItem.class);
-    when(doi.getSku()).thenReturn(new SkuImpl());
-
-    // Act
-    boolean actualCheckAvailabilityInLocaleResult =
-        updateCartServiceImpl.checkAvailabilityInLocale(doi, new BroadleafCurrencyImpl());
-
-    // Assert
-    verify(doi, atLeast(1)).getSku();
-    assertTrue(actualCheckAvailabilityInLocaleResult);
-  }
-
-  /**
-   * Test {@link UpdateCartServiceImpl#checkAvailabilityInLocale(DiscreteOrderItem,
-   * BroadleafCurrency)}.
-   *
-   * <ul>
-   *   <li>Given {@link UpdateCartServiceImpl} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link UpdateCartServiceImpl#checkAvailabilityInLocale(DiscreteOrderItem,
-   * BroadleafCurrency)}
-   */
-  @Test
-  @DisplayName(
-      "Test checkAvailabilityInLocale(DiscreteOrderItem, BroadleafCurrency); given UpdateCartServiceImpl (default constructor); then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean UpdateCartServiceImpl.checkAvailabilityInLocale(DiscreteOrderItem, BroadleafCurrency)"
-  })
-  void testCheckAvailabilityInLocale_givenUpdateCartServiceImpl_thenReturnFalse() {
     // Arrange
     UpdateCartServiceImpl updateCartServiceImpl = new UpdateCartServiceImpl();
 
-    DiscreteOrderItem doi = mock(DiscreteOrderItem.class);
-    when(doi.getSku()).thenReturn(new SkuImpl());
-
-    // Act
-    boolean actualCheckAvailabilityInLocaleResult =
-        updateCartServiceImpl.checkAvailabilityInLocale(doi, new BroadleafCurrencyImpl());
-
-    // Assert
-    verify(doi).getSku();
-    assertFalse(actualCheckAvailabilityInLocaleResult);
-  }
-
-  /**
-   * Test {@link UpdateCartServiceImpl#checkAvailabilityInLocale(DiscreteOrderItem,
-   * BroadleafCurrency)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link OrderLockAcquisitionFailureException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link UpdateCartServiceImpl#checkAvailabilityInLocale(DiscreteOrderItem,
-   * BroadleafCurrency)}
-   */
-  @Test
-  @DisplayName(
-      "Test checkAvailabilityInLocale(DiscreteOrderItem, BroadleafCurrency); then throw OrderLockAcquisitionFailureException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean UpdateCartServiceImpl.checkAvailabilityInLocale(DiscreteOrderItem, BroadleafCurrency)"
-  })
-  void testCheckAvailabilityInLocale_thenThrowOrderLockAcquisitionFailureException() {
-    // Arrange
-    SkuImpl skuImpl = mock(SkuImpl.class);
-    when(skuImpl.isAvailable())
-        .thenThrow(new OrderLockAcquisitionFailureException("An error occurred"));
-
-    DiscreteOrderItem doi = mock(DiscreteOrderItem.class);
-    when(doi.getSku()).thenReturn(skuImpl);
-
     // Act and Assert
-    assertThrows(
-        OrderLockAcquisitionFailureException.class,
-        () -> updateCartServiceImpl.checkAvailabilityInLocale(doi, new BroadleafCurrencyImpl()));
-    verify(skuImpl).isAvailable();
-    verify(doi, atLeast(1)).getSku();
+    assertEquals("Lock Object", updateCartServiceImpl.lockOrder(new NullOrderImpl(), "Lock Object"));
   }
 
   /**
-   * Test {@link UpdateCartServiceImpl#checkAvailabilityInLocale(DiscreteOrderItem,
-   * BroadleafCurrency)}.
-   *
-   * <ul>
-   *   <li>When {@link DiscreteOrderItemImpl} (default constructor).
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link UpdateCartServiceImpl#checkAvailabilityInLocale(DiscreteOrderItem,
-   * BroadleafCurrency)}
+   * Method under test: {@link UpdateCartServiceImpl#lockOrder(Order, Object)}
    */
   @Test
-  @DisplayName(
-      "Test checkAvailabilityInLocale(DiscreteOrderItem, BroadleafCurrency); when DiscreteOrderItemImpl (default constructor); then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean UpdateCartServiceImpl.checkAvailabilityInLocale(DiscreteOrderItem, BroadleafCurrency)"
-  })
-  void testCheckAvailabilityInLocale_whenDiscreteOrderItemImpl_thenReturnFalse() {
+  void testLockOrder2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertEquals("Lock Object", (new UpdateCartServiceImpl()).lockOrder(mock(NullOrderImpl.class), "Lock Object"));
+  }
+
+  /**
+   * Method under test: {@link UpdateCartServiceImpl#findActiveCurrency()}
+   */
+  @Test
+  void testFindActiveCurrency() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange, Act and Assert
+    assertNull((new UpdateCartServiceImpl()).findActiveCurrency());
+  }
+
+  /**
+   * Method under test:
+   * {@link UpdateCartServiceImpl#checkAvailabilityInLocale(DiscreteOrderItem, BroadleafCurrency)}
+   */
+  @Test
+  void testCheckAvailabilityInLocale() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
+    UpdateCartServiceImpl updateCartServiceImpl = new UpdateCartServiceImpl();
     DiscreteOrderItemImpl doi = new DiscreteOrderItemImpl();
 
     // Act and Assert
@@ -472,23 +194,35 @@ class UpdateCartServiceImplDiffblueTest {
   }
 
   /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Method under test:
+   * {@link UpdateCartServiceImpl#checkAvailabilityInLocale(DiscreteOrderItem, BroadleafCurrency)}
+   */
+  @Test
+  void testCheckAvailabilityInLocale2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    UpdateCartServiceImpl updateCartServiceImpl = new UpdateCartServiceImpl();
+    DiscreteOrderItem doi = mock(DiscreteOrderItem.class);
+    when(doi.getSku()).thenReturn(new SkuImpl());
+
+    // Act
+    boolean actualCheckAvailabilityInLocaleResult = updateCartServiceImpl.checkAvailabilityInLocale(doi,
+        new BroadleafCurrencyImpl());
+
+    // Assert
+    verify(doi).getSku();
+    assertFalse(actualCheckAvailabilityInLocaleResult);
+  }
+
+  /**
+   * Methods under test:
    * <ul>
    *   <li>{@link UpdateCartServiceImpl#setSavedCurrency(BroadleafCurrency)}
    *   <li>{@link UpdateCartServiceImpl#getSavedCurrency()}
    * </ul>
    */
   @Test
-  @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "BroadleafCurrency UpdateCartServiceImpl.getSavedCurrency()",
-    "void UpdateCartServiceImpl.setSavedCurrency(BroadleafCurrency)"
-  })
   void testGettersAndSetters() {
     // Arrange
     UpdateCartServiceImpl updateCartServiceImpl = new UpdateCartServiceImpl();
@@ -497,7 +231,7 @@ class UpdateCartServiceImplDiffblueTest {
     // Act
     updateCartServiceImpl.setSavedCurrency(savedCurrency);
 
-    // Assert
+    // Assert that nothing has changed
     assertSame(savedCurrency, updateCartServiceImpl.getSavedCurrency());
   }
 }

@@ -20,63 +20,134 @@ package org.broadleafcommerce.openadmin.web.controller.config;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Predicate;
 import org.broadleafcommerce.openadmin.web.controller.AdminRequestMappingHandlerMapping;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.util.AntPathMatcher;
+import org.springframework.web.accept.ContentNegotiationManager;
+import org.springframework.web.accept.ContentNegotiationStrategy;
+import org.springframework.web.accept.HeaderContentNegotiationStrategy;
 import org.springframework.web.cors.DefaultCorsProcessor;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMethodMappingNamingStrategy;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-@RunWith(MockitoJUnitRunner.class)
 public class AdminWebMvcConfigurationSupportDiffblueTest {
-  @InjectMocks private AdminWebMvcConfigurationSupport adminWebMvcConfigurationSupport;
-
   /**
-   * Test {@link AdminWebMvcConfigurationSupport#createRequestMappingHandlerMapping()}.
-   *
-   * <p>Method under test: {@link
-   * AdminWebMvcConfigurationSupport#createRequestMappingHandlerMapping()}
+   * Method under test:
+   * {@link AdminWebMvcConfigurationSupport#createRequestMappingHandlerMapping()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "RequestMappingHandlerMapping AdminWebMvcConfigurationSupport.createRequestMappingHandlerMapping()"
-  })
   public void testCreateRequestMappingHandlerMapping() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange and Act
-    RequestMappingHandlerMapping actualCreateRequestMappingHandlerMappingResult =
-        adminWebMvcConfigurationSupport.createRequestMappingHandlerMapping();
+    RequestMappingHandlerMapping actualCreateRequestMappingHandlerMappingResult = (new AdminWebMvcConfigurationSupport())
+        .createRequestMappingHandlerMapping();
 
     // Assert
-    assertTrue(
-        actualCreateRequestMappingHandlerMappingResult
-            instanceof AdminRequestMappingHandlerMapping);
-    assertTrue(
-        actualCreateRequestMappingHandlerMappingResult.getPathMatcher() instanceof AntPathMatcher);
-    assertTrue(
-        actualCreateRequestMappingHandlerMappingResult.getCorsProcessor()
-            instanceof DefaultCorsProcessor);
-    assertTrue(
-        actualCreateRequestMappingHandlerMappingResult.getNamingStrategy()
-            instanceof RequestMappingInfoHandlerMethodMappingNamingStrategy);
+    assertTrue(actualCreateRequestMappingHandlerMappingResult instanceof AdminRequestMappingHandlerMapping);
+    assertTrue(actualCreateRequestMappingHandlerMappingResult.getPathMatcher() instanceof AntPathMatcher);
+    ContentNegotiationManager contentNegotiationManager = actualCreateRequestMappingHandlerMappingResult
+        .getContentNegotiationManager();
+    List<ContentNegotiationStrategy> strategies = contentNegotiationManager.getStrategies();
+    assertEquals(1, strategies.size());
+    assertTrue(strategies.get(0) instanceof HeaderContentNegotiationStrategy);
+    assertTrue(actualCreateRequestMappingHandlerMappingResult.getCorsProcessor() instanceof DefaultCorsProcessor);
+    assertTrue(actualCreateRequestMappingHandlerMappingResult
+        .getNamingStrategy() instanceof RequestMappingInfoHandlerMethodMappingNamingStrategy);
     assertNull(actualCreateRequestMappingHandlerMappingResult.getDefaultHandler());
+    RequestMappingInfo.BuilderConfiguration builderConfiguration = actualCreateRequestMappingHandlerMappingResult
+        .getBuilderConfiguration();
+    assertNull(builderConfiguration.getFileExtensions());
     assertNull(actualCreateRequestMappingHandlerMappingResult.getFileExtensions());
+    assertNull(builderConfiguration.getPathMatcher());
+    assertNull(builderConfiguration.getContentNegotiationManager());
     assertNull(actualCreateRequestMappingHandlerMappingResult.getCorsConfigurationSource());
     assertNull(actualCreateRequestMappingHandlerMappingResult.getPatternParser());
+    assertNull(builderConfiguration.getPatternParser());
     assertFalse(actualCreateRequestMappingHandlerMappingResult.useRegisteredSuffixPatternMatch());
     assertFalse(actualCreateRequestMappingHandlerMappingResult.useSuffixPatternMatch());
+    assertTrue(contentNegotiationManager.getAllFileExtensions().isEmpty());
     assertTrue(actualCreateRequestMappingHandlerMappingResult.getHandlerMethods().isEmpty());
-    assertTrue(actualCreateRequestMappingHandlerMappingResult.getPathPrefixes().isEmpty());
+    Map<String, Predicate<Class<?>>> pathPrefixes = actualCreateRequestMappingHandlerMappingResult.getPathPrefixes();
+    assertTrue(pathPrefixes.isEmpty());
     assertTrue(actualCreateRequestMappingHandlerMappingResult.useTrailingSlashMatch());
+    assertTrue(actualCreateRequestMappingHandlerMappingResult.getUrlPathHelper().isUrlDecode());
+    assertTrue(builderConfiguration.getUrlPathHelper().isUrlDecode());
     assertEquals(Integer.MAX_VALUE, actualCreateRequestMappingHandlerMappingResult.getOrder());
+    assertSame(pathPrefixes, contentNegotiationManager.getMediaTypeMappings());
+  }
+
+  /**
+   * Method under test:
+   * {@link AdminWebMvcConfigurationSupport#createRequestMappingHandlerMapping()}
+   */
+  @Test
+  public void testCreateRequestMappingHandlerMapping2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AdminWebMvcConfigurationSupport adminWebMvcConfigurationSupport = new AdminWebMvcConfigurationSupport();
+    adminWebMvcConfigurationSupport.setApplicationContext(mock(AnnotationConfigApplicationContext.class));
+
+    // Act
+    RequestMappingHandlerMapping actualCreateRequestMappingHandlerMappingResult = adminWebMvcConfigurationSupport
+        .createRequestMappingHandlerMapping();
+
+    // Assert
+    assertTrue(actualCreateRequestMappingHandlerMappingResult instanceof AdminRequestMappingHandlerMapping);
+    assertTrue(actualCreateRequestMappingHandlerMappingResult.getPathMatcher() instanceof AntPathMatcher);
+    ContentNegotiationManager contentNegotiationManager = actualCreateRequestMappingHandlerMappingResult
+        .getContentNegotiationManager();
+    List<ContentNegotiationStrategy> strategies = contentNegotiationManager.getStrategies();
+    assertEquals(1, strategies.size());
+    assertTrue(strategies.get(0) instanceof HeaderContentNegotiationStrategy);
+    assertTrue(actualCreateRequestMappingHandlerMappingResult.getCorsProcessor() instanceof DefaultCorsProcessor);
+    assertTrue(actualCreateRequestMappingHandlerMappingResult
+        .getNamingStrategy() instanceof RequestMappingInfoHandlerMethodMappingNamingStrategy);
+    assertNull(actualCreateRequestMappingHandlerMappingResult.getDefaultHandler());
+    RequestMappingInfo.BuilderConfiguration builderConfiguration = actualCreateRequestMappingHandlerMappingResult
+        .getBuilderConfiguration();
+    assertNull(builderConfiguration.getFileExtensions());
+    assertNull(actualCreateRequestMappingHandlerMappingResult.getFileExtensions());
+    assertNull(builderConfiguration.getPathMatcher());
+    assertNull(builderConfiguration.getContentNegotiationManager());
+    assertNull(actualCreateRequestMappingHandlerMappingResult.getCorsConfigurationSource());
+    assertNull(actualCreateRequestMappingHandlerMappingResult.getPatternParser());
+    assertNull(builderConfiguration.getPatternParser());
+    assertFalse(actualCreateRequestMappingHandlerMappingResult.useRegisteredSuffixPatternMatch());
+    assertFalse(actualCreateRequestMappingHandlerMappingResult.useSuffixPatternMatch());
+    assertTrue(contentNegotiationManager.getAllFileExtensions().isEmpty());
+    assertTrue(actualCreateRequestMappingHandlerMappingResult.getHandlerMethods().isEmpty());
+    Map<String, Predicate<Class<?>>> pathPrefixes = actualCreateRequestMappingHandlerMappingResult.getPathPrefixes();
+    assertTrue(pathPrefixes.isEmpty());
+    assertTrue(actualCreateRequestMappingHandlerMappingResult.useTrailingSlashMatch());
+    assertTrue(actualCreateRequestMappingHandlerMappingResult.getUrlPathHelper().isUrlDecode());
+    assertTrue(builderConfiguration.getUrlPathHelper().isUrlDecode());
+    assertEquals(Integer.MAX_VALUE, actualCreateRequestMappingHandlerMappingResult.getOrder());
+    assertSame(pathPrefixes, contentNegotiationManager.getMediaTypeMappings());
+  }
+
+  /**
+   * Method under test: default or parameterless constructor of
+   * {@link AdminWebMvcConfigurationSupport}
+   */
+  @Test
+  public void testNewAdminWebMvcConfigurationSupport() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange and Act
+    AdminWebMvcConfigurationSupport actualAdminWebMvcConfigurationSupport = new AdminWebMvcConfigurationSupport();
+
+    // Assert
+    assertNull(actualAdminWebMvcConfigurationSupport.getServletContext());
+    assertNull(actualAdminWebMvcConfigurationSupport.getApplicationContext());
   }
 }

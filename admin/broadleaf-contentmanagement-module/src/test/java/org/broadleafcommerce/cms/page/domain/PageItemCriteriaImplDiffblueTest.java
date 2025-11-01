@@ -18,45 +18,33 @@
 package org.broadleafcommerce.cms.page.domain;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.copy.CreateResponse;
+import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
+import org.broadleafcommerce.common.service.GenericEntityService;
+import org.broadleafcommerce.common.site.domain.CatalogImpl;
+import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 
 public class PageItemCriteriaImplDiffblueTest {
   /**
-   * Test {@link PageItemCriteriaImpl#equals(Object)}, and {@link PageItemCriteriaImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link PageItemCriteriaImpl#equals(Object)}
    *   <li>{@link PageItemCriteriaImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PageItemCriteriaImpl.equals(Object)",
-    "int PageItemCriteriaImpl.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     PageItemCriteriaImpl pageItemCriteriaImpl = new PageItemCriteriaImpl();
@@ -73,31 +61,18 @@ public class PageItemCriteriaImplDiffblueTest {
 
     // Act and Assert
     assertEquals(pageItemCriteriaImpl, pageItemCriteriaImpl2);
-    assertEquals(pageItemCriteriaImpl.hashCode(), pageItemCriteriaImpl2.hashCode());
+    int expectedHashCodeResult = pageItemCriteriaImpl.hashCode();
+    assertEquals(expectedHashCodeResult, pageItemCriteriaImpl2.hashCode());
   }
 
   /**
-   * Test {@link PageItemCriteriaImpl#equals(Object)}, and {@link PageItemCriteriaImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link PageItemCriteriaImpl#equals(Object)}
    *   <li>{@link PageItemCriteriaImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PageItemCriteriaImpl.equals(Object)",
-    "int PageItemCriteriaImpl.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     PageItemCriteriaImpl pageItemCriteriaImpl = new PageItemCriteriaImpl();
@@ -114,32 +89,47 @@ public class PageItemCriteriaImplDiffblueTest {
 
     // Act and Assert
     assertEquals(pageItemCriteriaImpl, pageItemCriteriaImpl2);
-    assertNotEquals(pageItemCriteriaImpl.hashCode(), pageItemCriteriaImpl2.hashCode());
+    int notExpectedHashCodeResult = pageItemCriteriaImpl.hashCode();
+    assertNotEquals(notExpectedHashCodeResult, pageItemCriteriaImpl2.hashCode());
   }
 
   /**
-   * Test {@link PageItemCriteriaImpl#equals(Object)}, and {@link PageItemCriteriaImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link PageItemCriteriaImpl#equals(Object)}
    *   <li>{@link PageItemCriteriaImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PageItemCriteriaImpl.equals(Object)",
-    "int PageItemCriteriaImpl.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
+    // Arrange
+    PageItemCriteriaImpl pageItemCriteriaImpl = new PageItemCriteriaImpl();
+    pageItemCriteriaImpl.setId(PageItemCriteriaImpl.serialVersionUID);
+    pageItemCriteriaImpl.setMatchRule("Match Rule");
+    pageItemCriteriaImpl.setPage(mock(Page.class));
+    pageItemCriteriaImpl.setQuantity(1);
+
+    PageItemCriteriaImpl pageItemCriteriaImpl2 = new PageItemCriteriaImpl();
+    pageItemCriteriaImpl2.setId(PageItemCriteriaImpl.serialVersionUID);
+    pageItemCriteriaImpl2.setMatchRule("Match Rule");
+    pageItemCriteriaImpl2.setPage(new PageImpl());
+    pageItemCriteriaImpl2.setQuantity(1);
+
+    // Act and Assert
+    assertEquals(pageItemCriteriaImpl, pageItemCriteriaImpl2);
+    int expectedHashCodeResult = pageItemCriteriaImpl.hashCode();
+    assertEquals(expectedHashCodeResult, pageItemCriteriaImpl2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link PageItemCriteriaImpl#equals(Object)}
+   *   <li>{@link PageItemCriteriaImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
     PageItemCriteriaImpl pageItemCriteriaImpl = new PageItemCriteriaImpl();
     pageItemCriteriaImpl.setId(PageItemCriteriaImpl.serialVersionUID);
@@ -155,32 +145,47 @@ public class PageItemCriteriaImplDiffblueTest {
 
     // Act and Assert
     assertEquals(pageItemCriteriaImpl, pageItemCriteriaImpl2);
-    assertNotEquals(pageItemCriteriaImpl.hashCode(), pageItemCriteriaImpl2.hashCode());
+    int notExpectedHashCodeResult = pageItemCriteriaImpl.hashCode();
+    assertNotEquals(notExpectedHashCodeResult, pageItemCriteriaImpl2.hashCode());
   }
 
   /**
-   * Test {@link PageItemCriteriaImpl#equals(Object)}, and {@link PageItemCriteriaImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link PageItemCriteriaImpl#equals(Object)}
    *   <li>{@link PageItemCriteriaImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PageItemCriteriaImpl.equals(Object)",
-    "int PageItemCriteriaImpl.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
+    // Arrange
+    PageItemCriteriaImpl pageItemCriteriaImpl = new PageItemCriteriaImpl();
+    pageItemCriteriaImpl.setId(null);
+    pageItemCriteriaImpl.setMatchRule(null);
+    pageItemCriteriaImpl.setPage(new PageImpl());
+    pageItemCriteriaImpl.setQuantity(1);
+
+    PageItemCriteriaImpl pageItemCriteriaImpl2 = new PageItemCriteriaImpl();
+    pageItemCriteriaImpl2.setId(PageItemCriteriaImpl.serialVersionUID);
+    pageItemCriteriaImpl2.setMatchRule(null);
+    pageItemCriteriaImpl2.setPage(new PageImpl());
+    pageItemCriteriaImpl2.setQuantity(1);
+
+    // Act and Assert
+    assertEquals(pageItemCriteriaImpl, pageItemCriteriaImpl2);
+    int notExpectedHashCodeResult = pageItemCriteriaImpl.hashCode();
+    assertNotEquals(notExpectedHashCodeResult, pageItemCriteriaImpl2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link PageItemCriteriaImpl#equals(Object)}
+   *   <li>{@link PageItemCriteriaImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual6() {
     // Arrange
     PageItemCriteriaImpl pageItemCriteriaImpl = new PageItemCriteriaImpl();
     pageItemCriteriaImpl.setId(null);
@@ -196,31 +201,18 @@ public class PageItemCriteriaImplDiffblueTest {
 
     // Act and Assert
     assertEquals(pageItemCriteriaImpl, pageItemCriteriaImpl2);
-    assertNotEquals(pageItemCriteriaImpl.hashCode(), pageItemCriteriaImpl2.hashCode());
+    int notExpectedHashCodeResult = pageItemCriteriaImpl.hashCode();
+    assertNotEquals(notExpectedHashCodeResult, pageItemCriteriaImpl2.hashCode());
   }
 
   /**
-   * Test {@link PageItemCriteriaImpl#equals(Object)}, and {@link PageItemCriteriaImpl#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>{@link PageItemCriteriaImpl#equals(Object)}
    *   <li>{@link PageItemCriteriaImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PageItemCriteriaImpl.equals(Object)",
-    "int PageItemCriteriaImpl.hashCode()"
-  })
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     PageItemCriteriaImpl pageItemCriteriaImpl = new PageItemCriteriaImpl();
@@ -236,22 +228,78 @@ public class PageItemCriteriaImplDiffblueTest {
   }
 
   /**
-   * Test {@link PageItemCriteriaImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link PageItemCriteriaImpl#equals(Object)}
+   * Method under test: {@link PageItemCriteriaImpl#cloneEntity()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PageItemCriteriaImpl.equals(Object)",
-    "int PageItemCriteriaImpl.hashCode()"
-  })
+  public void testCloneEntity() {
+    // Arrange
+    PageItemCriteriaImpl pageItemCriteriaImpl = new PageItemCriteriaImpl();
+
+    // Act
+    PageItemCriteria actualCloneEntityResult = pageItemCriteriaImpl.cloneEntity();
+
+    // Assert
+    assertTrue(actualCloneEntityResult instanceof PageItemCriteriaImpl);
+    assertEquals(pageItemCriteriaImpl, actualCloneEntityResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link PageItemCriteriaImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
+    // Arrange
+    PageItemCriteriaImpl pageItemCriteriaImpl = new PageItemCriteriaImpl();
+    GenericEntityService genericEntityService = mock(GenericEntityService.class);
+    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
+
+    // Act
+    CreateResponse<PageItemCriteria> actualCreateOrRetrieveCopyInstanceResult = pageItemCriteriaImpl
+        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+            genericEntityService, new MultiTenantCopierExtensionManager()));
+
+    // Assert
+    verify(genericEntityService).getCeilingImplClass(eq("org.broadleafcommerce.cms.page.domain.PageItemCriteriaImpl"));
+    verify(genericEntityService).getIdentifier(isA(Object.class));
+    PageItemCriteria clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
+    assertTrue(clone instanceof PageItemCriteriaImpl);
+    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
+    assertEquals(pageItemCriteriaImpl, clone);
+  }
+
+  /**
+   * Method under test:
+   * {@link PageItemCriteriaImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
+    // Arrange
+    PageItemCriteriaImpl pageItemCriteriaImpl = new PageItemCriteriaImpl();
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    CreateResponse<PageItemCriteria> actualCreateOrRetrieveCopyInstanceResult = pageItemCriteriaImpl
+        .createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+  }
+
+  /**
+   * Method under test: {@link PageItemCriteriaImpl#equals(Object)}
+   */
+  @Test
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     PageItemCriteriaImpl pageItemCriteriaImpl = new PageItemCriteriaImpl();
@@ -271,23 +319,32 @@ public class PageItemCriteriaImplDiffblueTest {
   }
 
   /**
-   * Test {@link PageItemCriteriaImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link PageItemCriteriaImpl#equals(Object)}
+   * Method under test: {@link PageItemCriteriaImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PageItemCriteriaImpl.equals(Object)",
-    "int PageItemCriteriaImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange
+    PageItemCriteriaImpl pageItemCriteriaImpl = new PageItemCriteriaImpl();
+    pageItemCriteriaImpl.setId(null);
+    pageItemCriteriaImpl.setMatchRule(null);
+    pageItemCriteriaImpl.setPage(new PageImpl());
+    pageItemCriteriaImpl.setQuantity(1);
+
+    PageItemCriteriaImpl pageItemCriteriaImpl2 = new PageItemCriteriaImpl();
+    pageItemCriteriaImpl2.setId(PageItemCriteriaImpl.serialVersionUID);
+    pageItemCriteriaImpl2.setMatchRule("Match Rule");
+    pageItemCriteriaImpl2.setPage(new PageImpl());
+    pageItemCriteriaImpl2.setQuantity(1);
+
+    // Act and Assert
+    assertNotEquals(pageItemCriteriaImpl, pageItemCriteriaImpl2);
+  }
+
+  /**
+   * Method under test: {@link PageItemCriteriaImpl#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     PageItemCriteriaImpl pageItemCriteriaImpl = new PageItemCriteriaImpl();
     pageItemCriteriaImpl.setId(null);
@@ -306,23 +363,10 @@ public class PageItemCriteriaImplDiffblueTest {
   }
 
   /**
-   * Test {@link PageItemCriteriaImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link PageItemCriteriaImpl#equals(Object)}
+   * Method under test: {@link PageItemCriteriaImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PageItemCriteriaImpl.equals(Object)",
-    "int PageItemCriteriaImpl.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     PageItemCriteriaImpl pageItemCriteriaImpl = new PageItemCriteriaImpl();
     pageItemCriteriaImpl.setId(null);
@@ -341,23 +385,10 @@ public class PageItemCriteriaImplDiffblueTest {
   }
 
   /**
-   * Test {@link PageItemCriteriaImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link PageItemCriteriaImpl#equals(Object)}
+   * Method under test: {@link PageItemCriteriaImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PageItemCriteriaImpl.equals(Object)",
-    "int PageItemCriteriaImpl.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     PageItemCriteriaImpl pageItemCriteriaImpl = new PageItemCriteriaImpl();
     pageItemCriteriaImpl.setId(null);
@@ -376,22 +407,9 @@ public class PageItemCriteriaImplDiffblueTest {
   }
 
   /**
-   * Test {@link PageItemCriteriaImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link PageItemCriteriaImpl#equals(Object)}
+   * Method under test: {@link PageItemCriteriaImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PageItemCriteriaImpl.equals(Object)",
-    "int PageItemCriteriaImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     PageItemCriteriaImpl pageItemCriteriaImpl = new PageItemCriteriaImpl();
@@ -405,22 +423,9 @@ public class PageItemCriteriaImplDiffblueTest {
   }
 
   /**
-   * Test {@link PageItemCriteriaImpl#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link PageItemCriteriaImpl#equals(Object)}
+   * Method under test: {@link PageItemCriteriaImpl#equals(Object)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean PageItemCriteriaImpl.equals(Object)",
-    "int PageItemCriteriaImpl.hashCode()"
-  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     PageItemCriteriaImpl pageItemCriteriaImpl = new PageItemCriteriaImpl();
@@ -434,95 +439,7 @@ public class PageItemCriteriaImplDiffblueTest {
   }
 
   /**
-   * Test {@link PageItemCriteriaImpl#cloneEntity()}.
-   *
-   * <p>Method under test: {@link PageItemCriteriaImpl#cloneEntity()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"PageItemCriteria PageItemCriteriaImpl.cloneEntity()"})
-  public void testCloneEntity() {
-    // Arrange
-    PageItemCriteriaImpl pageItemCriteriaImpl = new PageItemCriteriaImpl();
-
-    // Act
-    PageItemCriteria actualCloneEntityResult = pageItemCriteriaImpl.cloneEntity();
-
-    // Assert
-    assertTrue(actualCloneEntityResult instanceof PageItemCriteriaImpl);
-    assertEquals(pageItemCriteriaImpl, actualCloneEntityResult);
-  }
-
-  /**
-   * Test {@link PageItemCriteriaImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * PageItemCriteriaImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse PageItemCriteriaImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
-    // Arrange
-    PageItemCriteriaImpl pageItemCriteriaImpl = new PageItemCriteriaImpl();
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(new PageItemCriteriaImpl(), true);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    CreateResponse<PageItemCriteria> actualCreateOrRetrieveCopyInstanceResult =
-        pageItemCriteriaImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
-  }
-
-  /**
-   * Test {@link PageItemCriteriaImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   *
-   * <p>Method under test: {@link
-   * PageItemCriteriaImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "CreateResponse PageItemCriteriaImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
-  })
-  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
-    // Arrange
-    PageItemCriteriaImpl pageItemCriteriaImpl = new PageItemCriteriaImpl();
-
-    PageItemCriteriaImpl pageItemCriteriaImpl2 = new PageItemCriteriaImpl();
-    pageItemCriteriaImpl2.setId(PageItemCriteriaImpl.serialVersionUID);
-    pageItemCriteriaImpl2.setMatchRule("Match Rule");
-    pageItemCriteriaImpl2.setPage(new PageImpl());
-    pageItemCriteriaImpl2.setQuantity(1);
-    CreateResponse<Object> createResponse = new CreateResponse<>(pageItemCriteriaImpl2, false);
-
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    CreateResponse<PageItemCriteria> actualCreateOrRetrieveCopyInstanceResult =
-        pageItemCriteriaImpl.createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
-  }
-
-  /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link PageItemCriteriaImpl}
    *   <li>{@link PageItemCriteriaImpl#setId(Long)}
@@ -536,19 +453,6 @@ public class PageItemCriteriaImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void PageItemCriteriaImpl.<init>()",
-    "Long PageItemCriteriaImpl.getId()",
-    "String PageItemCriteriaImpl.getMatchRule()",
-    "Page PageItemCriteriaImpl.getPage()",
-    "Integer PageItemCriteriaImpl.getQuantity()",
-    "void PageItemCriteriaImpl.setId(Long)",
-    "void PageItemCriteriaImpl.setMatchRule(String)",
-    "void PageItemCriteriaImpl.setPage(Page)",
-    "void PageItemCriteriaImpl.setQuantity(Integer)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     PageItemCriteriaImpl actualPageItemCriteriaImpl = new PageItemCriteriaImpl();
@@ -561,7 +465,7 @@ public class PageItemCriteriaImplDiffblueTest {
     String actualMatchRule = actualPageItemCriteriaImpl.getMatchRule();
     Page actualPage = actualPageItemCriteriaImpl.getPage();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("Match Rule", actualMatchRule);
     assertEquals(1, actualPageItemCriteriaImpl.getQuantity().intValue());
     assertEquals(PageItemCriteriaImpl.serialVersionUID, actualId.longValue());

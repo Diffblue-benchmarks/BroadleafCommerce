@@ -20,32 +20,28 @@ package org.broadleafcommerce.common.exception;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class ServiceExceptionDiffblueTest {
   /**
-   * Test {@link ServiceException#ServiceException()}.
-   *
-   * <ul>
-   *   <li>Then return Message is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ServiceException#ServiceException()}
+   * Method under test: {@link ServiceException#containsCause(Class)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ServiceException.<init>()",
-    "void ServiceException.<init>(String)",
-    "void ServiceException.<init>(String, Throwable)",
-    "void ServiceException.<init>(Throwable)"
-  })
-  public void testNewServiceException_thenReturnMessageIsNull() {
+  public void testContainsCause() {
+    // Arrange
+    ServiceException serviceException = new ServiceException("An error occurred");
+    Class<Throwable> clazz = Throwable.class;
+
+    // Act and Assert
+    assertTrue(serviceException.containsCause(clazz));
+  }
+
+  /**
+   * Method under test: {@link ServiceException#ServiceException()}
+   */
+  @Test
+  public void testNewServiceException() {
     // Arrange and Act
     ServiceException actualServiceException = new ServiceException();
 
@@ -56,25 +52,10 @@ public class ServiceExceptionDiffblueTest {
   }
 
   /**
-   * Test {@link ServiceException#ServiceException(String)}.
-   *
-   * <ul>
-   *   <li>When {@code An error occurred}.
-   *   <li>Then return Message is {@code An error occurred}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ServiceException#ServiceException(String)}
+   * Method under test: {@link ServiceException#ServiceException(String)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ServiceException.<init>()",
-    "void ServiceException.<init>(String)",
-    "void ServiceException.<init>(String, Throwable)",
-    "void ServiceException.<init>(Throwable)"
-  })
-  public void testNewServiceException_whenAnErrorOccurred_thenReturnMessageIsAnErrorOccurred() {
+  public void testNewServiceException2() {
     // Arrange and Act
     ServiceException actualServiceException = new ServiceException("An error occurred");
 
@@ -85,25 +66,11 @@ public class ServiceExceptionDiffblueTest {
   }
 
   /**
-   * Test {@link ServiceException#ServiceException(String, Throwable)}.
-   *
-   * <ul>
-   *   <li>When {@code An error occurred}.
-   *   <li>Then return Message is {@code An error occurred}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ServiceException#ServiceException(String, Throwable)}
+   * Method under test:
+   * {@link ServiceException#ServiceException(String, Throwable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ServiceException.<init>()",
-    "void ServiceException.<init>(String)",
-    "void ServiceException.<init>(String, Throwable)",
-    "void ServiceException.<init>(Throwable)"
-  })
-  public void testNewServiceException_whenAnErrorOccurred_thenReturnMessageIsAnErrorOccurred2() {
+  public void testNewServiceException3() {
     // Arrange
     Throwable cause = new Throwable();
 
@@ -117,25 +84,10 @@ public class ServiceExceptionDiffblueTest {
   }
 
   /**
-   * Test {@link ServiceException#ServiceException(Throwable)}.
-   *
-   * <ul>
-   *   <li>When {@link Throwable#Throwable()}.
-   *   <li>Then return Message is {@code Throwable}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ServiceException#ServiceException(Throwable)}
+   * Method under test: {@link ServiceException#ServiceException(Throwable)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ServiceException.<init>()",
-    "void ServiceException.<init>(String)",
-    "void ServiceException.<init>(String, Throwable)",
-    "void ServiceException.<init>(Throwable)"
-  })
-  public void testNewServiceException_whenThrowable_thenReturnMessageIsJavaLangThrowable() {
+  public void testNewServiceException4() {
     // Arrange
     Throwable cause = new Throwable();
 

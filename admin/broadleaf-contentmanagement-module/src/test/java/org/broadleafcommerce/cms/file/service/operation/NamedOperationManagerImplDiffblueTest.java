@@ -23,122 +23,16 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = {NamedOperationManagerImpl.class})
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@RunWith(SpringJUnit4ClassRunner.class)
 public class NamedOperationManagerImplDiffblueTest {
-  @Autowired private NamedOperationManagerImpl namedOperationManagerImpl;
-
   /**
-   * Test {@link NamedOperationManagerImpl#manageNamedParameters(Map)}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@code foo}.
-   *   <li>Then calls {@link NamedOperationComponent#setOperationValues(Map, Map)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link NamedOperationManagerImpl#manageNamedParameters(Map)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map NamedOperationManagerImpl.manageNamedParameters(Map)"})
-  public void testManageNamedParameters_givenArrayListAddFoo_thenCallsSetOperationValues() {
-    // Arrange
-    ArrayList<String> stringList = new ArrayList<>();
-    stringList.add("foo");
-
-    NamedOperationComponent namedOperationComponent = mock(NamedOperationComponent.class);
-    when(namedOperationComponent.setOperationValues(
-            Mockito.<Map<String, String>>any(), Mockito.<Map<String, String>>any()))
-        .thenReturn(stringList);
-
-    ArrayList<NamedOperationComponent> namedOperationComponents = new ArrayList<>();
-    namedOperationComponents.add(namedOperationComponent);
-    namedOperationManagerImpl.setNamedOperationComponents(namedOperationComponents);
-
-    // Act
-    Map<String, String> actualManageNamedParametersResult =
-        namedOperationManagerImpl.manageNamedParameters(new HashMap<>());
-
-    // Assert
-    verify(namedOperationComponent).setOperationValues(isA(Map.class), isA(Map.class));
-    assertTrue(actualManageNamedParametersResult.isEmpty());
-  }
-
-  /**
-   * Test {@link NamedOperationManagerImpl#manageNamedParameters(Map)}.
-   *
-   * <ul>
-   *   <li>Given {@link NamedOperationManagerImpl}.
-   * </ul>
-   *
-   * <p>Method under test: {@link NamedOperationManagerImpl#manageNamedParameters(Map)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map NamedOperationManagerImpl.manageNamedParameters(Map)"})
-  public void testManageNamedParameters_givenNamedOperationManagerImpl() {
-    // Arrange, Act and Assert
-    assertTrue(namedOperationManagerImpl.manageNamedParameters(new HashMap<>()).isEmpty());
-  }
-
-  /**
-   * Test {@link NamedOperationManagerImpl#manageNamedParameters(Map)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link NamedOperationComponent#setOperationValues(Map, Map)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link NamedOperationManagerImpl#manageNamedParameters(Map)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Map NamedOperationManagerImpl.manageNamedParameters(Map)"})
-  public void testManageNamedParameters_thenCallsSetOperationValues() {
-    // Arrange
-    NamedOperationComponent namedOperationComponent = mock(NamedOperationComponent.class);
-    when(namedOperationComponent.setOperationValues(
-            Mockito.<Map<String, String>>any(), Mockito.<Map<String, String>>any()))
-        .thenReturn(new ArrayList<>());
-
-    ArrayList<NamedOperationComponent> namedOperationComponents = new ArrayList<>();
-    namedOperationComponents.add(namedOperationComponent);
-    namedOperationManagerImpl.setNamedOperationComponents(namedOperationComponents);
-
-    // Act
-    Map<String, String> actualManageNamedParametersResult =
-        namedOperationManagerImpl.manageNamedParameters(new HashMap<>());
-
-    // Assert
-    verify(namedOperationComponent).setOperationValues(isA(Map.class), isA(Map.class));
-    assertTrue(actualManageNamedParametersResult.isEmpty());
-  }
-
-  /**
-   * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link NamedOperationManagerImpl}
    *   <li>{@link NamedOperationManagerImpl#setNamedOperationComponents(List)}
@@ -146,23 +40,89 @@ public class NamedOperationManagerImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void NamedOperationManagerImpl.<init>()",
-    "List NamedOperationManagerImpl.getNamedOperationComponents()",
-    "void NamedOperationManagerImpl.setNamedOperationComponents(List)"
-  })
   public void testGettersAndSetters() {
     // Arrange and Act
     NamedOperationManagerImpl actualNamedOperationManagerImpl = new NamedOperationManagerImpl();
     ArrayList<NamedOperationComponent> namedOperationComponents = new ArrayList<>();
     actualNamedOperationManagerImpl.setNamedOperationComponents(namedOperationComponents);
-    List<NamedOperationComponent> actualNamedOperationComponents =
-        actualNamedOperationManagerImpl.getNamedOperationComponents();
+    List<NamedOperationComponent> actualNamedOperationComponents = actualNamedOperationManagerImpl
+        .getNamedOperationComponents();
 
-    // Assert
+    // Assert that nothing has changed
     assertTrue(actualNamedOperationComponents.isEmpty());
     assertSame(namedOperationComponents, actualNamedOperationComponents);
+  }
+
+  /**
+   * Method under test:
+   * {@link NamedOperationManagerImpl#manageNamedParameters(Map)}
+   */
+  @Test
+  public void testManageNamedParameters() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    NamedOperationManagerImpl namedOperationManagerImpl = new NamedOperationManagerImpl();
+
+    // Act and Assert
+    assertTrue(namedOperationManagerImpl.manageNamedParameters(new HashMap<>()).isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link NamedOperationManagerImpl#manageNamedParameters(Map)}
+   */
+  @Test
+  public void testManageNamedParameters2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    NamedOperationComponent namedOperationComponent = mock(NamedOperationComponent.class);
+    when(namedOperationComponent.setOperationValues(Mockito.<Map<String, String>>any(),
+        Mockito.<Map<String, String>>any())).thenReturn(new ArrayList<>());
+
+    ArrayList<NamedOperationComponent> namedOperationComponents = new ArrayList<>();
+    namedOperationComponents.add(namedOperationComponent);
+
+    NamedOperationManagerImpl namedOperationManagerImpl = new NamedOperationManagerImpl();
+    namedOperationManagerImpl.setNamedOperationComponents(namedOperationComponents);
+
+    // Act
+    Map<String, String> actualManageNamedParametersResult = namedOperationManagerImpl
+        .manageNamedParameters(new HashMap<>());
+
+    // Assert
+    verify(namedOperationComponent).setOperationValues(isA(Map.class), isA(Map.class));
+    assertTrue(actualManageNamedParametersResult.isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link NamedOperationManagerImpl#manageNamedParameters(Map)}
+   */
+  @Test
+  public void testManageNamedParameters3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ArrayList<String> stringList = new ArrayList<>();
+    stringList.add("foo");
+    NamedOperationComponent namedOperationComponent = mock(NamedOperationComponent.class);
+    when(namedOperationComponent.setOperationValues(Mockito.<Map<String, String>>any(),
+        Mockito.<Map<String, String>>any())).thenReturn(stringList);
+
+    ArrayList<NamedOperationComponent> namedOperationComponents = new ArrayList<>();
+    namedOperationComponents.add(namedOperationComponent);
+
+    NamedOperationManagerImpl namedOperationManagerImpl = new NamedOperationManagerImpl();
+    namedOperationManagerImpl.setNamedOperationComponents(namedOperationComponents);
+
+    // Act
+    Map<String, String> actualManageNamedParametersResult = namedOperationManagerImpl
+        .manageNamedParameters(new HashMap<>());
+
+    // Assert
+    verify(namedOperationComponent).setOperationValues(isA(Map.class), isA(Map.class));
+    assertTrue(actualManageNamedParametersResult.isEmpty());
   }
 }

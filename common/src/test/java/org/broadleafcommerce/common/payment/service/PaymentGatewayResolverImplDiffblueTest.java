@@ -19,60 +19,58 @@ package org.broadleafcommerce.common.payment.service;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
-import javax.servlet.http.HttpServletRequestWrapper;
+import static org.mockito.Mockito.mock;
 import org.broadleafcommerce.common.payment.PaymentGatewayType;
 import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrapper;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 
-@ContextConfiguration(classes = {PaymentGatewayResolverImpl.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class PaymentGatewayResolverImplDiffblueTest {
-  @Autowired private PaymentGatewayResolverImpl paymentGatewayResolverImpl;
-
   /**
-   * Test {@link PaymentGatewayResolverImpl#isHandlerCompatible(PaymentGatewayType)}.
-   *
-   * <p>Method under test: {@link
-   * PaymentGatewayResolverImpl#isHandlerCompatible(PaymentGatewayType)}
+   * Method under test:
+   * {@link PaymentGatewayResolverImpl#isHandlerCompatible(PaymentGatewayType)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PaymentGatewayResolverImpl.isHandlerCompatible(PaymentGatewayType)"})
   public void testIsHandlerCompatible() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertTrue(paymentGatewayResolverImpl.isHandlerCompatible(PaymentGatewayType.PASSTHROUGH));
+    assertTrue((new PaymentGatewayResolverImpl()).isHandlerCompatible(PaymentGatewayType.PASSTHROUGH));
+    assertTrue((new PaymentGatewayResolverImpl()).isHandlerCompatible(mock(PaymentGatewayType.class)));
   }
 
   /**
-   * Test {@link PaymentGatewayResolverImpl#resolvePaymentGateway(WebRequest)}.
-   *
-   * <p>Method under test: {@link PaymentGatewayResolverImpl#resolvePaymentGateway(WebRequest)}
+   * Method under test:
+   * {@link PaymentGatewayResolverImpl#resolvePaymentGateway(WebRequest)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PaymentGatewayType PaymentGatewayResolverImpl.resolvePaymentGateway(WebRequest)"
-  })
   public void testResolvePaymentGateway() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    HttpServletRequestWrapper request =
-        new HttpServletRequestWrapper(
-            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
+    PaymentGatewayResolverImpl paymentGatewayResolverImpl = new PaymentGatewayResolverImpl();
 
     // Act and Assert
-    assertNull(paymentGatewayResolverImpl.resolvePaymentGateway(new ServletWebRequest(request)));
+    assertNull(paymentGatewayResolverImpl.resolvePaymentGateway(
+        new ServletWebRequest(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()))));
+  }
+
+  /**
+   * Method under test:
+   * {@link PaymentGatewayResolverImpl#resolvePaymentGateway(WebRequest)}
+   */
+  @Test
+  public void testResolvePaymentGateway2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PaymentGatewayResolverImpl paymentGatewayResolverImpl = new PaymentGatewayResolverImpl();
+
+    // Act and Assert
+    assertNull(paymentGatewayResolverImpl.resolvePaymentGateway(new ServletWebRequest(
+        new SessionlessHttpServletRequestWrapper(mock(DefaultMultipartHttpServletRequest.class)))));
   }
 }

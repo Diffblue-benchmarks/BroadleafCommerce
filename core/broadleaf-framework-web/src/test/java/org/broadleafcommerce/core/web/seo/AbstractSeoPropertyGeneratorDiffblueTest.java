@@ -18,9 +18,12 @@
 package org.broadleafcommerce.core.web.seo;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import java.util.HashMap;
+import java.util.Map;
+import org.broadleafcommerce.common.page.dto.NullPageDTO;
 import org.broadleafcommerce.common.page.dto.PageDTO;
 import org.broadleafcommerce.core.catalog.domain.Category;
 import org.broadleafcommerce.core.catalog.domain.CategoryAttribute;
@@ -30,175 +33,186 @@ import org.broadleafcommerce.core.catalog.domain.Product;
 import org.broadleafcommerce.core.catalog.domain.ProductAttribute;
 import org.broadleafcommerce.core.catalog.domain.ProductAttributeImpl;
 import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 class AbstractSeoPropertyGeneratorDiffblueTest {
   /**
-   * Test {@link AbstractSeoPropertyGenerator#getSimpleProperties(Category)} with {@code category}.
-   *
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@link CategoryAttributeImpl} (default
-   *       constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractSeoPropertyGenerator#getSimpleProperties(Category)}
+   * Method under test:
+   * {@link AbstractSeoPropertyGenerator#getSimpleProperties(PageDTO)}
    */
   @Test
-  @DisplayName(
-      "Test getSimpleProperties(Category) with 'category'; given HashMap() 'foo' is CategoryAttributeImpl (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.util.Map AbstractSeoPropertyGenerator.getSimpleProperties(Category)"})
-  void testGetSimplePropertiesWithCategory_givenHashMapFooIsCategoryAttributeImpl() {
+  void testGetSimpleProperties() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl =
-        new BasicSeoPropertyGeneratorImpl();
-
-    HashMap<String, CategoryAttribute> categoryAttributes = new HashMap<>();
-    categoryAttributes.put("foo", new CategoryAttributeImpl());
-
-    CategoryImpl category = new CategoryImpl();
-    category.setCategoryAttributesMap(categoryAttributes);
-
-    // Act and Assert
-    assertTrue(basicSeoPropertyGeneratorImpl.getSimpleProperties(category).isEmpty());
-  }
-
-  /**
-   * Test {@link AbstractSeoPropertyGenerator#getSimpleProperties(Category)} with {@code category}.
-   *
-   * <ul>
-   *   <li>When {@link CategoryImpl} (default constructor).
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractSeoPropertyGenerator#getSimpleProperties(Category)}
-   */
-  @Test
-  @DisplayName(
-      "Test getSimpleProperties(Category) with 'category'; when CategoryImpl (default constructor); then return Empty")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.util.Map AbstractSeoPropertyGenerator.getSimpleProperties(Category)"})
-  void testGetSimplePropertiesWithCategory_whenCategoryImpl_thenReturnEmpty() {
-    // Arrange
-    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl =
-        new BasicSeoPropertyGeneratorImpl();
-
-    // Act and Assert
-    assertTrue(basicSeoPropertyGeneratorImpl.getSimpleProperties(new CategoryImpl()).isEmpty());
-  }
-
-  /**
-   * Test {@link AbstractSeoPropertyGenerator#getSimpleProperties(PageDTO)} with {@code page}.
-   *
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@code foo}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractSeoPropertyGenerator#getSimpleProperties(PageDTO)}
-   */
-  @Test
-  @DisplayName("Test getSimpleProperties(PageDTO) with 'page'; given HashMap() 'foo' is 'foo'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.util.Map AbstractSeoPropertyGenerator.getSimpleProperties(PageDTO)"})
-  void testGetSimplePropertiesWithPage_givenHashMapFooIsFoo() {
-    // Arrange
-    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl =
-        new BasicSeoPropertyGeneratorImpl();
-
-    HashMap<String, String> pageAttributes = new HashMap<>();
-    pageAttributes.put("foo", "foo");
-
-    PageDTO page = new PageDTO();
-    page.setPageAttributes(pageAttributes);
-
-    // Act and Assert
-    assertTrue(basicSeoPropertyGeneratorImpl.getSimpleProperties(page).isEmpty());
-  }
-
-  /**
-   * Test {@link AbstractSeoPropertyGenerator#getSimpleProperties(PageDTO)} with {@code page}.
-   *
-   * <ul>
-   *   <li>When {@link PageDTO} (default constructor).
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractSeoPropertyGenerator#getSimpleProperties(PageDTO)}
-   */
-  @Test
-  @DisplayName(
-      "Test getSimpleProperties(PageDTO) with 'page'; when PageDTO (default constructor); then return Empty")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.util.Map AbstractSeoPropertyGenerator.getSimpleProperties(PageDTO)"})
-  void testGetSimplePropertiesWithPage_whenPageDTO_thenReturnEmpty() {
-    // Arrange
-    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl =
-        new BasicSeoPropertyGeneratorImpl();
+    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl = new BasicSeoPropertyGeneratorImpl();
 
     // Act and Assert
     assertTrue(basicSeoPropertyGeneratorImpl.getSimpleProperties(new PageDTO()).isEmpty());
   }
 
   /**
-   * Test {@link AbstractSeoPropertyGenerator#getSimpleProperties(Product)} with {@code product}.
-   *
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@link ProductAttributeImpl} (default
-   *       constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractSeoPropertyGenerator#getSimpleProperties(Product)}
+   * Method under test:
+   * {@link AbstractSeoPropertyGenerator#getSimpleProperties(PageDTO)}
    */
   @Test
-  @DisplayName(
-      "Test getSimpleProperties(Product) with 'product'; given HashMap() 'foo' is ProductAttributeImpl (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.util.Map AbstractSeoPropertyGenerator.getSimpleProperties(Product)"})
-  void testGetSimplePropertiesWithProduct_givenHashMapFooIsProductAttributeImpl() {
+  void testGetSimpleProperties2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl =
-        new BasicSeoPropertyGeneratorImpl();
+    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl = new BasicSeoPropertyGeneratorImpl();
+    NullPageDTO page = mock(NullPageDTO.class);
+    when(page.getPageAttributes()).thenReturn(new HashMap<>());
 
-    HashMap<String, ProductAttribute> productAttributes = new HashMap<>();
-    productAttributes.put("foo", new ProductAttributeImpl());
+    // Act
+    Map<String, String> actualSimpleProperties = basicSeoPropertyGeneratorImpl.getSimpleProperties(page);
 
-    ProductBundleImpl product = new ProductBundleImpl();
-    product.setProductAttributes(productAttributes);
-
-    // Act and Assert
-    assertTrue(basicSeoPropertyGeneratorImpl.getSimpleProperties(product).isEmpty());
+    // Assert
+    verify(page).getPageAttributes();
+    assertTrue(actualSimpleProperties.isEmpty());
   }
 
   /**
-   * Test {@link AbstractSeoPropertyGenerator#getSimpleProperties(Product)} with {@code product}.
-   *
-   * <ul>
-   *   <li>When {@link ProductBundleImpl} (default constructor).
-   *   <li>Then return Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractSeoPropertyGenerator#getSimpleProperties(Product)}
+   * Method under test:
+   * {@link AbstractSeoPropertyGenerator#getSimpleProperties(PageDTO)}
    */
   @Test
-  @DisplayName(
-      "Test getSimpleProperties(Product) with 'product'; when ProductBundleImpl (default constructor); then return Empty")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.util.Map AbstractSeoPropertyGenerator.getSimpleProperties(Product)"})
-  void testGetSimplePropertiesWithProduct_whenProductBundleImpl_thenReturnEmpty() {
+  void testGetSimpleProperties3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
-    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl =
-        new BasicSeoPropertyGeneratorImpl();
+    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl = new BasicSeoPropertyGeneratorImpl();
+
+    HashMap<String, String> stringStringMap = new HashMap<>();
+    stringStringMap.put("foo", "foo");
+    NullPageDTO page = mock(NullPageDTO.class);
+    when(page.getPageAttributes()).thenReturn(stringStringMap);
+
+    // Act
+    Map<String, String> actualSimpleProperties = basicSeoPropertyGeneratorImpl.getSimpleProperties(page);
+
+    // Assert
+    verify(page).getPageAttributes();
+    assertTrue(actualSimpleProperties.isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractSeoPropertyGenerator#getSimpleProperties(Category)}
+   */
+  @Test
+  void testGetSimpleProperties4() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl = new BasicSeoPropertyGeneratorImpl();
 
     // Act and Assert
-    assertTrue(
-        basicSeoPropertyGeneratorImpl.getSimpleProperties(new ProductBundleImpl()).isEmpty());
+    assertTrue(basicSeoPropertyGeneratorImpl.getSimpleProperties(new CategoryImpl()).isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractSeoPropertyGenerator#getSimpleProperties(Category)}
+   */
+  @Test
+  void testGetSimpleProperties5() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl = new BasicSeoPropertyGeneratorImpl();
+    CategoryImpl category = mock(CategoryImpl.class);
+    when(category.getCategoryAttributesMap()).thenReturn(new HashMap<>());
+
+    // Act
+    Map<String, String> actualSimpleProperties = basicSeoPropertyGeneratorImpl.getSimpleProperties(category);
+
+    // Assert
+    verify(category).getCategoryAttributesMap();
+    assertTrue(actualSimpleProperties.isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractSeoPropertyGenerator#getSimpleProperties(Category)}
+   */
+  @Test
+  void testGetSimpleProperties6() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl = new BasicSeoPropertyGeneratorImpl();
+
+    HashMap<String, CategoryAttribute> stringCategoryAttributeMap = new HashMap<>();
+    stringCategoryAttributeMap.put("foo", new CategoryAttributeImpl());
+    CategoryImpl category = mock(CategoryImpl.class);
+    when(category.getCategoryAttributesMap()).thenReturn(stringCategoryAttributeMap);
+
+    // Act
+    Map<String, String> actualSimpleProperties = basicSeoPropertyGeneratorImpl.getSimpleProperties(category);
+
+    // Assert
+    verify(category).getCategoryAttributesMap();
+    assertTrue(actualSimpleProperties.isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractSeoPropertyGenerator#getSimpleProperties(Product)}
+   */
+  @Test
+  void testGetSimpleProperties7() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl = new BasicSeoPropertyGeneratorImpl();
+
+    // Act and Assert
+    assertTrue(basicSeoPropertyGeneratorImpl.getSimpleProperties(new ProductBundleImpl()).isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractSeoPropertyGenerator#getSimpleProperties(Product)}
+   */
+  @Test
+  void testGetSimpleProperties8() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl = new BasicSeoPropertyGeneratorImpl();
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getProductAttributes()).thenReturn(new HashMap<>());
+
+    // Act
+    Map<String, String> actualSimpleProperties = basicSeoPropertyGeneratorImpl.getSimpleProperties(product);
+
+    // Assert
+    verify(product).getProductAttributes();
+    assertTrue(actualSimpleProperties.isEmpty());
+  }
+
+  /**
+   * Method under test:
+   * {@link AbstractSeoPropertyGenerator#getSimpleProperties(Product)}
+   */
+  @Test
+  void testGetSimpleProperties9() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl = new BasicSeoPropertyGeneratorImpl();
+
+    HashMap<String, ProductAttribute> stringProductAttributeMap = new HashMap<>();
+    stringProductAttributeMap.put("foo", new ProductAttributeImpl());
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getProductAttributes()).thenReturn(stringProductAttributeMap);
+
+    // Act
+    Map<String, String> actualSimpleProperties = basicSeoPropertyGeneratorImpl.getSimpleProperties(product);
+
+    // Assert
+    verify(product).getProductAttributes();
+    assertTrue(actualSimpleProperties.isEmpty());
   }
 }

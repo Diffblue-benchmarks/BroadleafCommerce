@@ -18,30 +18,42 @@
 package org.broadleafcommerce.common.email.service.message;
 
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import org.broadleafcommerce.common.email.service.LoggingMailSender;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 public class MessageCreatorDiffblueTest {
   /**
-   * Test {@link MessageCreator#getMailSender()}.
-   *
-   * <p>Method under test: {@link MessageCreator#getMailSender()}
+   * Method under test: {@link MessageCreator#getMailSender()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "org.springframework.mail.javamail.JavaMailSender MessageCreator.getMailSender()"
-  })
   public void testGetMailSender() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange
     LoggingMailSender mailSender = new LoggingMailSender();
 
     // Act and Assert
-    assertSame(mailSender, new NullMessageCreator(mailSender).getMailSender());
+    assertSame(mailSender, (new NullMessageCreator(mailSender)).getMailSender());
+  }
+
+  /**
+   * Method under test: {@link MessageCreator#setMailSender(JavaMailSender)}
+   */
+  @Test
+  public void testSetMailSender() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    NullMessageCreator nullMessageCreator = new NullMessageCreator(mock(JavaMailSenderImpl.class));
+    LoggingMailSender mailSender = new LoggingMailSender();
+
+    // Act
+    nullMessageCreator.setMailSender(mailSender);
+
+    // Assert
+    assertSame(mailSender, nullMessageCreator.getMailSender());
   }
 }

@@ -18,32 +18,33 @@
 package org.broadleafcommerce.common.web.payment.processor;
 
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = {TRCreditCardExtensionManager.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class TRCreditCardExtensionManagerDiffblueTest {
-  @Autowired private TRCreditCardExtensionManager tRCreditCardExtensionManager;
-
   /**
-   * Test {@link TRCreditCardExtensionManager#continueOnHandled()}.
-   *
-   * <p>Method under test: {@link TRCreditCardExtensionManager#continueOnHandled()}
+   * Method under test: {@link TRCreditCardExtensionManager#continueOnHandled()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean TRCreditCardExtensionManager.continueOnHandled()"})
   public void testContinueOnHandled() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
     // Arrange, Act and Assert
-    assertTrue(tRCreditCardExtensionManager.continueOnHandled());
+    assertTrue((new TRCreditCardExtensionManager()).continueOnHandled());
+  }
+
+  /**
+   * Method under test: {@link TRCreditCardExtensionManager#continueOnHandled()}
+   */
+  @Test
+  public void testContinueOnHandled2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    TRCreditCardExtensionManager trCreditCardExtensionManager = new TRCreditCardExtensionManager();
+    trCreditCardExtensionManager.registerHandler(mock(TRCreditCardExtensionHandler.class));
+
+    // Act and Assert
+    assertTrue(trCreditCardExtensionManager.continueOnHandled());
   }
 }

@@ -20,30 +20,45 @@ package org.broadleafcommerce.common.event;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.ContributionFromDiffblue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiFunction;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class ItemsCancelledEventDiffblueTest {
   /**
-   * Test {@link ItemsCancelledEvent#ItemsCancelledEvent(Long, Map)}.
-   *
-   * <ul>
-   *   <li>Given one.
-   *   <li>Then return CatalogId is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ItemsCancelledEvent#ItemsCancelledEvent(Long, Map)}
+   * Method under test: {@link ItemsCancelledEvent#getFulfillmentGroupId()}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ItemsCancelledEvent.<init>(Long, Map)"})
-  public void testNewItemsCancelledEvent_givenOne_thenReturnCatalogIdIsNull() {
+  public void testGetFulfillmentGroupId() {
+    // Arrange
+    HashMap<Long, Integer> cancelledItems = new HashMap<>();
+    cancelledItems.put(1L, 1);
+
+    // Act and Assert
+    assertEquals(1L, (new ItemsCancelledEvent(1L, cancelledItems)).getFulfillmentGroupId().longValue());
+  }
+
+  /**
+   * Method under test: {@link ItemsCancelledEvent#getFulfillmentGroupId()}
+   */
+  @Test
+  public void testGetFulfillmentGroupId2() {
+    // Arrange
+    HashMap<Long, Integer> cancelledItems = new HashMap<>();
+    cancelledItems.computeIfPresent(1L, mock(BiFunction.class));
+    cancelledItems.put(1L, 1);
+
+    // Act and Assert
+    assertEquals(1L, (new ItemsCancelledEvent(1L, cancelledItems)).getFulfillmentGroupId().longValue());
+  }
+
+  /**
+   * Method under test: {@link ItemsCancelledEvent#ItemsCancelledEvent(Long, Map)}
+   */
+  @Test
+  public void testNewItemsCancelledEvent() {
     // Arrange
     HashMap<Long, Integer> cancelledItems = new HashMap<>();
     cancelledItems.put(1L, 1);
@@ -58,33 +73,37 @@ public class ItemsCancelledEventDiffblueTest {
     assertNull(actualItemsCancelledEvent.getCurrencyCode());
     assertNull(actualItemsCancelledEvent.getLocaleCode());
     assertNull(actualItemsCancelledEvent.getTimeZoneId());
+    Map<Long, Integer> itemsAndQuantitiesCancelled = actualItemsCancelledEvent.getItemsAndQuantitiesCancelled();
+    assertEquals(1, itemsAndQuantitiesCancelled.size());
+    assertEquals(1, itemsAndQuantitiesCancelled.get(1L).intValue());
     assertEquals(1L, actualItemsCancelledEvent.getFulfillmentGroupId().longValue());
-    assertEquals(1L, ((Long) actualItemsCancelledEvent.getSource()).longValue());
     assertTrue(actualItemsCancelledEvent.getContext().isEmpty());
-    assertEquals(cancelledItems, actualItemsCancelledEvent.getItemsAndQuantitiesCancelled());
   }
 
   /**
-   * Test {@link ItemsCancelledEvent#getFulfillmentGroupId()}.
-   *
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} one is one.
-   *   <li>Then return longValue is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link ItemsCancelledEvent#getFulfillmentGroupId()}
+   * Method under test: {@link ItemsCancelledEvent#ItemsCancelledEvent(Long, Map)}
    */
   @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Long ItemsCancelledEvent.getFulfillmentGroupId()"})
-  public void testGetFulfillmentGroupId_givenHashMapOneIsOne_thenReturnLongValueIsOne() {
+  public void testNewItemsCancelledEvent2() {
     // Arrange
     HashMap<Long, Integer> cancelledItems = new HashMap<>();
+    cancelledItems.computeIfPresent(1L, mock(BiFunction.class));
     cancelledItems.put(1L, 1);
-    ItemsCancelledEvent itemsCancelledEvent = new ItemsCancelledEvent(1L, cancelledItems);
 
-    // Act and Assert
-    assertEquals(1L, itemsCancelledEvent.getFulfillmentGroupId().longValue());
+    // Act
+    ItemsCancelledEvent actualItemsCancelledEvent = new ItemsCancelledEvent(1L, cancelledItems);
+
+    // Assert
+    assertNull(actualItemsCancelledEvent.getCatalogId());
+    assertNull(actualItemsCancelledEvent.getProfileId());
+    assertNull(actualItemsCancelledEvent.getSiteId());
+    assertNull(actualItemsCancelledEvent.getCurrencyCode());
+    assertNull(actualItemsCancelledEvent.getLocaleCode());
+    assertNull(actualItemsCancelledEvent.getTimeZoneId());
+    Map<Long, Integer> itemsAndQuantitiesCancelled = actualItemsCancelledEvent.getItemsAndQuantitiesCancelled();
+    assertEquals(1, itemsAndQuantitiesCancelled.size());
+    assertEquals(1, itemsAndQuantitiesCancelled.get(1L).intValue());
+    assertEquals(1L, actualItemsCancelledEvent.getFulfillmentGroupId().longValue());
+    assertTrue(actualItemsCancelledEvent.getContext().isEmpty());
   }
 }
