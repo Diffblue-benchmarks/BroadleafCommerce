@@ -294,7 +294,7 @@
                         <goals>
                             <goal>update-file-header</goal>
                         </goals>
-                        <phase>process-sources</phase>
+                        <phase>none</phase>
                         <configuration>
                             <roots>
                                 <root>src/main</root>
