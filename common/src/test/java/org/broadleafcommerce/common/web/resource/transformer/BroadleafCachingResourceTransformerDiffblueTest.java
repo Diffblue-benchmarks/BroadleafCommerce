@@ -1,0 +1,129 @@
+package org.broadleafcommerce.common.web.resource.transformer;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThrows;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
+import org.broadleafcommerce.common.resource.GeneratedResource;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.mockito.Mockito;
+import org.springframework.cache.concurrent.ConcurrentMapCache;
+import org.springframework.core.io.Resource;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.web.servlet.resource.ResourceTransformerChain;
+
+public class BroadleafCachingResourceTransformerDiffblueTest {
+  /**
+   * Test {@link BroadleafCachingResourceTransformer#transform(HttpServletRequest, Resource,
+   * ResourceTransformerChain)}.
+   *
+   * <ul>
+   *   <li>Given {@link GeneratedResource#GeneratedResource()}.
+   *   <li>Then return {@link GeneratedResource#GeneratedResource()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link BroadleafCachingResourceTransformer#transform(HttpServletRequest,
+   * Resource, ResourceTransformerChain)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Resource BroadleafCachingResourceTransformer.transform(HttpServletRequest, Resource, ResourceTransformerChain)"
+  })
+  public void testTransform_givenGeneratedResource_thenReturnGeneratedResource()
+      throws IOException {
+    // Arrange
+    BroadleafCachingResourceTransformer broadleafCachingResourceTransformer =
+        new BroadleafCachingResourceTransformer(new ConcurrentMapCache("Name"));
+    MockHttpServletRequest request = new MockHttpServletRequest();
+    GeneratedResource resource = new GeneratedResource();
+
+    ResourceTransformerChain transformerChain = mock(ResourceTransformerChain.class);
+    GeneratedResource generatedResource = new GeneratedResource();
+    when(transformerChain.transform(Mockito.<HttpServletRequest>any(), Mockito.<Resource>any()))
+        .thenReturn(generatedResource);
+
+    // Act
+    Resource actualTransformResult =
+        broadleafCachingResourceTransformer.transform(request, resource, transformerChain);
+
+    // Assert
+    verify(transformerChain).transform(isA(HttpServletRequest.class), isA(Resource.class));
+    assertSame(generatedResource, actualTransformResult);
+  }
+
+  /**
+   * Test {@link BroadleafCachingResourceTransformer#transform(HttpServletRequest, Resource,
+   * ResourceTransformerChain)}.
+   *
+   * <ul>
+   *   <li>Given {@link IOException#IOException()}.
+   *   <li>Then throw {@link IOException}.
+   * </ul>
+   *
+   * <p>Method under test: {@link BroadleafCachingResourceTransformer#transform(HttpServletRequest,
+   * Resource, ResourceTransformerChain)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Resource BroadleafCachingResourceTransformer.transform(HttpServletRequest, Resource, ResourceTransformerChain)"
+  })
+  public void testTransform_givenIOException_thenThrowIOException() throws IOException {
+    // Arrange
+    BroadleafCachingResourceTransformer broadleafCachingResourceTransformer =
+        new BroadleafCachingResourceTransformer(new ConcurrentMapCache("Name"));
+    MockHttpServletRequest request = new MockHttpServletRequest();
+    GeneratedResource resource = new GeneratedResource();
+
+    ResourceTransformerChain transformerChain = mock(ResourceTransformerChain.class);
+    when(transformerChain.transform(Mockito.<HttpServletRequest>any(), Mockito.<Resource>any()))
+        .thenThrow(new IOException());
+
+    // Act and Assert
+    assertThrows(
+        IOException.class,
+        () -> broadleafCachingResourceTransformer.transform(request, resource, transformerChain));
+    verify(transformerChain).transform(isA(HttpServletRequest.class), isA(Resource.class));
+  }
+
+  /**
+   * Test getters and setters.
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link BroadleafCachingResourceTransformer#setOrder(int)}
+   *   <li>{@link BroadleafCachingResourceTransformer#getOrder()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "int BroadleafCachingResourceTransformer.getOrder()",
+    "void BroadleafCachingResourceTransformer.setOrder(int)"
+  })
+  public void testGettersAndSetters() {
+    // Arrange
+    BroadleafCachingResourceTransformer broadleafCachingResourceTransformer =
+        new BroadleafCachingResourceTransformer(new ConcurrentMapCache("Name"));
+
+    // Act
+    broadleafCachingResourceTransformer.setOrder(1);
+
+    // Assert
+    assertEquals(1, broadleafCachingResourceTransformer.getOrder());
+  }
+}

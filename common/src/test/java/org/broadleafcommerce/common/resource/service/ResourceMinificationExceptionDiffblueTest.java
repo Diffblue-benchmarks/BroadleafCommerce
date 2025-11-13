@@ -1,0 +1,137 @@
+package org.broadleafcommerce.common.resource.service;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+public class ResourceMinificationExceptionDiffblueTest {
+  /**
+   * Test {@link ResourceMinificationException#ResourceMinificationException(String)}.
+   *
+   * <ul>
+   *   <li>Then return Message is {@code An error occurred}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * ResourceMinificationException#ResourceMinificationException(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void ResourceMinificationException.<init>()",
+    "void ResourceMinificationException.<init>(String)",
+    "void ResourceMinificationException.<init>(String, Throwable)",
+    "void ResourceMinificationException.<init>(Throwable)"
+  })
+  public void testNewResourceMinificationException_thenReturnMessageIsAnErrorOccurred() {
+    // Arrange and Act
+    ResourceMinificationException actualResourceMinificationException =
+        new ResourceMinificationException("An error occurred");
+
+    // Assert
+    assertEquals("An error occurred", actualResourceMinificationException.getMessage());
+    assertNull(actualResourceMinificationException.getCause());
+    assertEquals(0, actualResourceMinificationException.getSuppressed().length);
+  }
+
+  /**
+   * Test {@link ResourceMinificationException#ResourceMinificationException(String, Throwable)}.
+   *
+   * <ul>
+   *   <li>Then return Message is {@code An error occurred}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * ResourceMinificationException#ResourceMinificationException(String, Throwable)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void ResourceMinificationException.<init>()",
+    "void ResourceMinificationException.<init>(String)",
+    "void ResourceMinificationException.<init>(String, Throwable)",
+    "void ResourceMinificationException.<init>(Throwable)"
+  })
+  public void testNewResourceMinificationException_thenReturnMessageIsAnErrorOccurred2() {
+    // Arrange
+    Throwable cause = new Throwable();
+
+    // Act
+    ResourceMinificationException actualResourceMinificationException =
+        new ResourceMinificationException("An error occurred", cause);
+
+    // Assert
+    assertEquals("An error occurred", actualResourceMinificationException.getMessage());
+    assertEquals(0, actualResourceMinificationException.getSuppressed().length);
+    assertSame(cause, actualResourceMinificationException.getCause());
+  }
+
+  /**
+   * Test {@link ResourceMinificationException#ResourceMinificationException(Throwable)}.
+   *
+   * <ul>
+   *   <li>Then return Message is {@code Throwable}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * ResourceMinificationException#ResourceMinificationException(Throwable)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void ResourceMinificationException.<init>()",
+    "void ResourceMinificationException.<init>(String)",
+    "void ResourceMinificationException.<init>(String, Throwable)",
+    "void ResourceMinificationException.<init>(Throwable)"
+  })
+  public void testNewResourceMinificationException_thenReturnMessageIsJavaLangThrowable() {
+    // Arrange
+    Throwable cause = new Throwable();
+
+    // Act
+    ResourceMinificationException actualResourceMinificationException =
+        new ResourceMinificationException(cause);
+
+    // Assert
+    assertEquals("java.lang.Throwable", actualResourceMinificationException.getMessage());
+    assertEquals(0, actualResourceMinificationException.getSuppressed().length);
+    assertSame(cause, actualResourceMinificationException.getCause());
+  }
+
+  /**
+   * Test {@link ResourceMinificationException#ResourceMinificationException()}.
+   *
+   * <ul>
+   *   <li>Then return Message is {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link ResourceMinificationException#ResourceMinificationException()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void ResourceMinificationException.<init>()",
+    "void ResourceMinificationException.<init>(String)",
+    "void ResourceMinificationException.<init>(String, Throwable)",
+    "void ResourceMinificationException.<init>(Throwable)"
+  })
+  public void testNewResourceMinificationException_thenReturnMessageIsNull() {
+    // Arrange and Act
+    ResourceMinificationException actualResourceMinificationException =
+        new ResourceMinificationException();
+
+    // Assert
+    assertNull(actualResourceMinificationException.getMessage());
+    assertNull(actualResourceMinificationException.getCause());
+    assertEquals(0, actualResourceMinificationException.getSuppressed().length);
+  }
+}

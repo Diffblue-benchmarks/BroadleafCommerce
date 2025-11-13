@@ -1,0 +1,182 @@
+package org.broadleafcommerce.openadmin.processor;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.HashMap;
+import java.util.Map;
+import org.broadleafcommerce.openadmin.web.rulebuilder.dto.FieldWrapper;
+import org.broadleafcommerce.openadmin.web.rulebuilder.service.RuleBuilderFieldService;
+import org.broadleafcommerce.openadmin.web.rulebuilder.service.RuleBuilderFieldServiceFactory;
+import org.broadleafcommerce.openadmin.web.service.AbstractFieldBuilderProcessorExtensionHandler;
+import org.broadleafcommerce.openadmin.web.service.AdminFieldBuilderProcessorExtensionManager;
+import org.broadleafcommerce.presentation.model.BroadleafTemplateContext;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+
+@RunWith(MockitoJUnitRunner.class)
+public class AdminFieldBuilderProcessorDiffblueTest {
+  @InjectMocks private AdminFieldBuilderProcessor adminFieldBuilderProcessor;
+
+  @Mock
+  private AdminFieldBuilderProcessorExtensionManager adminFieldBuilderProcessorExtensionManager;
+
+  @Mock private RuleBuilderFieldServiceFactory ruleBuilderFieldServiceFactory;
+
+  /**
+   * Test getters and setters.
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link AdminFieldBuilderProcessor#getName()}
+   *   <li>{@link AdminFieldBuilderProcessor#getPrefix()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminFieldBuilderProcessor.getName()",
+    "String AdminFieldBuilderProcessor.getPrefix()"
+  })
+  public void testGettersAndSetters() {
+    // Arrange
+    AdminFieldBuilderProcessor adminFieldBuilderProcessor = new AdminFieldBuilderProcessor();
+
+    // Act
+    String actualName = adminFieldBuilderProcessor.getName();
+
+    // Assert
+    assertEquals("admin_field_builder", actualName);
+    assertEquals("blc_admin", adminFieldBuilderProcessor.getPrefix());
+  }
+
+  /**
+   * Test {@link AdminFieldBuilderProcessor#getPrecedence()}.
+   *
+   * <p>Method under test: {@link AdminFieldBuilderProcessor#getPrecedence()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"int AdminFieldBuilderProcessor.getPrecedence()"})
+  public void testGetPrecedence() {
+    // Arrange, Act and Assert
+    assertEquals(100, new AdminFieldBuilderProcessor().getPrecedence());
+  }
+
+  /**
+   * Test {@link AdminFieldBuilderProcessor#populateModelVariables(String, Map,
+   * BroadleafTemplateContext)}.
+   *
+   * <ul>
+   *   <li>Given {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminFieldBuilderProcessor#populateModelVariables(String, Map,
+   * BroadleafTemplateContext)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Map AdminFieldBuilderProcessor.populateModelVariables(String, Map, BroadleafTemplateContext)"
+  })
+  public void testPopulateModelVariables_givenNull() {
+    // Arrange
+    when(adminFieldBuilderProcessorExtensionManager.getProxy())
+        .thenReturn(new AbstractFieldBuilderProcessorExtensionHandler());
+    HashMap<String, String> tagAttributes = new HashMap<>();
+
+    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
+    when(context.parseExpression(Mockito.<String>any())).thenReturn(null);
+
+    // Act
+    Map<String, Object> actualPopulateModelVariablesResult =
+        adminFieldBuilderProcessor.populateModelVariables("Tag Name", tagAttributes, context);
+
+    // Assert
+    verify(adminFieldBuilderProcessorExtensionManager).getProxy();
+    verify(context, atLeast(1)).parseExpression(null);
+    assertEquals(1, actualPopulateModelVariablesResult.size());
+    Object getResult = actualPopulateModelVariablesResult.get("fieldWrapper");
+    assertTrue(getResult instanceof FieldWrapper);
+    assertTrue(((FieldWrapper) getResult).getFields().isEmpty());
+  }
+
+  /**
+   * Test {@link AdminFieldBuilderProcessor#populateModelVariables(String, Map,
+   * BroadleafTemplateContext)}.
+   *
+   * <ul>
+   *   <li>Then return {@code fieldWrapper} is {@link FieldWrapper} (default constructor).
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminFieldBuilderProcessor#populateModelVariables(String, Map,
+   * BroadleafTemplateContext)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Map AdminFieldBuilderProcessor.populateModelVariables(String, Map, BroadleafTemplateContext)"
+  })
+  public void testPopulateModelVariables_thenReturnFieldWrapperIsFieldWrapper() {
+    // Arrange
+    when(adminFieldBuilderProcessorExtensionManager.getProxy())
+        .thenReturn(new AbstractFieldBuilderProcessorExtensionHandler());
+
+    RuleBuilderFieldService ruleBuilderFieldService = mock(RuleBuilderFieldService.class);
+    FieldWrapper fieldWrapper = new FieldWrapper();
+    when(ruleBuilderFieldService.buildFields()).thenReturn(fieldWrapper);
+    when(ruleBuilderFieldServiceFactory.createInstance(Mockito.<String>any()))
+        .thenReturn(ruleBuilderFieldService);
+    HashMap<String, String> tagAttributes = new HashMap<>();
+
+    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
+    when(context.parseExpression(Mockito.<String>any())).thenReturn("Parse Expression");
+
+    // Act
+    Map<String, Object> actualPopulateModelVariablesResult =
+        adminFieldBuilderProcessor.populateModelVariables("Tag Name", tagAttributes, context);
+
+    // Assert
+    verify(adminFieldBuilderProcessorExtensionManager).getProxy();
+    verify(ruleBuilderFieldService).buildFields();
+    verify(ruleBuilderFieldServiceFactory).createInstance("Parse Expression");
+    verify(context, atLeast(1)).parseExpression(null);
+    assertEquals(1, actualPopulateModelVariablesResult.size());
+    Object getResult = actualPopulateModelVariablesResult.get("fieldWrapper");
+    assertTrue(getResult instanceof FieldWrapper);
+    assertTrue(((FieldWrapper) getResult).getFields().isEmpty());
+    assertSame(fieldWrapper, getResult);
+  }
+
+  /**
+   * Test {@link AdminFieldBuilderProcessor#useGlobalScope()}.
+   *
+   * <p>Method under test: {@link AdminFieldBuilderProcessor#useGlobalScope()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AdminFieldBuilderProcessor.useGlobalScope()"})
+  public void testUseGlobalScope() {
+    // Arrange, Act and Assert
+    assertFalse(new AdminFieldBuilderProcessor().useGlobalScope());
+  }
+}

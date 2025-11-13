@@ -1,0 +1,216 @@
+package org.broadleafcommerce.cms.structure.service;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import org.broadleafcommerce.cms.structure.domain.StructuredContent;
+import org.broadleafcommerce.cms.structure.domain.StructuredContentImpl;
+import org.broadleafcommerce.common.extension.ExtensionResultHolder;
+import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
+import org.broadleafcommerce.common.structure.dto.StructuredContentDTO;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+@ContextConfiguration(classes = {AbstractStructuredContentServiceExtensionHandler.class})
+@RunWith(SpringJUnit4ClassRunner.class)
+public class AbstractStructuredContentServiceExtensionHandlerDiffblueTest {
+  @Autowired
+  private AbstractStructuredContentServiceExtensionHandler
+      abstractStructuredContentServiceExtensionHandler;
+
+  /**
+   * Test {@link
+   * AbstractStructuredContentServiceExtensionHandler#populateAdditionalStructuredContentFields(StructuredContent,
+   * StructuredContentDTO, boolean)}.
+   *
+   * <p>Method under test: {@link
+   * AbstractStructuredContentServiceExtensionHandler#populateAdditionalStructuredContentFields(StructuredContent,
+   * StructuredContentDTO, boolean)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ExtensionResultStatusType AbstractStructuredContentServiceExtensionHandler.populateAdditionalStructuredContentFields(StructuredContent, StructuredContentDTO, boolean)"
+  })
+  public void testPopulateAdditionalStructuredContentFields() {
+    // Arrange
+    AbstractStructuredContentServiceExtensionHandler
+        abstractStructuredContentServiceExtensionHandler =
+            new AbstractStructuredContentServiceExtensionHandler();
+    StructuredContentImpl sc = new StructuredContentImpl();
+
+    StructuredContentDTO dto = new StructuredContentDTO();
+    dto.setContentName("Not all who wander are lost");
+    dto.setContentType("text/plain");
+    dto.setId(1L);
+    dto.setItemCriteriaDTOList(new ArrayList<>());
+    dto.setLocaleCode("en");
+    dto.setPriority(1);
+    dto.setRuleExpression("Rule Expression");
+    dto.setValues(new HashMap<>());
+
+    // Act and Assert
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        abstractStructuredContentServiceExtensionHandler.populateAdditionalStructuredContentFields(
+            sc, dto, true));
+  }
+
+  /**
+   * Test {@link
+   * AbstractStructuredContentServiceExtensionHandler#modifyStructuredContentDtoList(List,
+   * ExtensionResultHolder)}.
+   *
+   * <p>Method under test: {@link
+   * AbstractStructuredContentServiceExtensionHandler#modifyStructuredContentDtoList(List,
+   * ExtensionResultHolder)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ExtensionResultStatusType AbstractStructuredContentServiceExtensionHandler.modifyStructuredContentDtoList(List, ExtensionResultHolder)"
+  })
+  public void testModifyStructuredContentDtoList() {
+    // Arrange
+    StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
+    structuredContentDTO.setContentName("Not all who wander are lost");
+    structuredContentDTO.setContentType("text/plain");
+    structuredContentDTO.setId(1L);
+    structuredContentDTO.setItemCriteriaDTOList(new ArrayList<>());
+    structuredContentDTO.setLocaleCode("en");
+    structuredContentDTO.setPriority(1);
+    structuredContentDTO.setRuleExpression("Rule Expression");
+    structuredContentDTO.setValues(new HashMap<>());
+
+    ArrayList<StructuredContentDTO> structuredContentList = new ArrayList<>();
+    structuredContentList.add(structuredContentDTO);
+
+    ExtensionResultHolder resultHolder = new ExtensionResultHolder();
+    resultHolder.setResult("Result");
+    resultHolder.setThrowable(new Throwable());
+
+    // Act and Assert
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        abstractStructuredContentServiceExtensionHandler.modifyStructuredContentDtoList(
+            structuredContentList, resultHolder));
+  }
+
+  /**
+   * Test {@link
+   * AbstractStructuredContentServiceExtensionHandler#modifyStructuredContentDtoList(List,
+   * ExtensionResultHolder)}.
+   *
+   * <p>Method under test: {@link
+   * AbstractStructuredContentServiceExtensionHandler#modifyStructuredContentDtoList(List,
+   * ExtensionResultHolder)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ExtensionResultStatusType AbstractStructuredContentServiceExtensionHandler.modifyStructuredContentDtoList(List, ExtensionResultHolder)"
+  })
+  public void testModifyStructuredContentDtoList2() {
+    // Arrange
+    StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
+    structuredContentDTO.setContentName("Not all who wander are lost");
+    structuredContentDTO.setContentType("text/plain");
+    structuredContentDTO.setId(1L);
+    structuredContentDTO.setItemCriteriaDTOList(new ArrayList<>());
+    structuredContentDTO.setLocaleCode("en");
+    structuredContentDTO.setPriority(1);
+    structuredContentDTO.setRuleExpression("Rule Expression");
+    structuredContentDTO.setValues(new HashMap<>());
+
+    StructuredContentDTO structuredContentDTO2 = new StructuredContentDTO();
+    structuredContentDTO2.setContentName("Content Name");
+    structuredContentDTO2.setContentType("Not all who wander are lost");
+    structuredContentDTO2.setId(2L);
+    structuredContentDTO2.setItemCriteriaDTOList(new ArrayList<>());
+    structuredContentDTO2.setLocaleCode("Locale Code");
+    structuredContentDTO2.setPriority(0);
+    structuredContentDTO2.setRuleExpression("42");
+    structuredContentDTO2.setValues(new HashMap<>());
+
+    ArrayList<StructuredContentDTO> structuredContentList = new ArrayList<>();
+    structuredContentList.add(structuredContentDTO2);
+    structuredContentList.add(structuredContentDTO);
+
+    ExtensionResultHolder resultHolder = new ExtensionResultHolder();
+    resultHolder.setResult("Result");
+    resultHolder.setThrowable(new Throwable());
+
+    // Act and Assert
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        abstractStructuredContentServiceExtensionHandler.modifyStructuredContentDtoList(
+            structuredContentList, resultHolder));
+  }
+
+  /**
+   * Test {@link
+   * AbstractStructuredContentServiceExtensionHandler#modifyStructuredContentDtoList(List,
+   * ExtensionResultHolder)}.
+   *
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * AbstractStructuredContentServiceExtensionHandler#modifyStructuredContentDtoList(List,
+   * ExtensionResultHolder)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ExtensionResultStatusType AbstractStructuredContentServiceExtensionHandler.modifyStructuredContentDtoList(List, ExtensionResultHolder)"
+  })
+  public void testModifyStructuredContentDtoList_whenArrayList() {
+    // Arrange
+    ArrayList<StructuredContentDTO> structuredContentList = new ArrayList<>();
+
+    ExtensionResultHolder resultHolder = new ExtensionResultHolder();
+    resultHolder.setResult("Result");
+    resultHolder.setThrowable(new Throwable());
+
+    // Act and Assert
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        abstractStructuredContentServiceExtensionHandler.modifyStructuredContentDtoList(
+            structuredContentList, resultHolder));
+  }
+
+  /**
+   * Test new {@link AbstractStructuredContentServiceExtensionHandler} (default constructor).
+   *
+   * <p>Method under test: default or parameterless constructor of {@link
+   * AbstractStructuredContentServiceExtensionHandler}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void AbstractStructuredContentServiceExtensionHandler.<init>()"})
+  public void testNewAbstractStructuredContentServiceExtensionHandler() {
+    // Arrange and Act
+    AbstractStructuredContentServiceExtensionHandler
+        actualAbstractStructuredContentServiceExtensionHandler =
+            new AbstractStructuredContentServiceExtensionHandler();
+
+    // Assert
+    assertEquals(0, actualAbstractStructuredContentServiceExtensionHandler.getPriority());
+    assertTrue(actualAbstractStructuredContentServiceExtensionHandler.isEnabled());
+  }
+}

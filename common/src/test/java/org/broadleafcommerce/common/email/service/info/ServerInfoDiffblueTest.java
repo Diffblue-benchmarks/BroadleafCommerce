@@ -1,0 +1,166 @@
+package org.broadleafcommerce.common.email.service.info;
+
+import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
+
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+public class ServerInfoDiffblueTest {
+  /**
+   * Test {@link ServerInfo#getSecureHost()}.
+   *
+   * <ul>
+   *   <li>Given {@link ServerInfo} (default constructor) SecurePort is {@code 8080}.
+   *   <li>Then return {@code Server Name:8080}.
+   * </ul>
+   *
+   * <p>Method under test: {@link ServerInfo#getSecureHost()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String ServerInfo.getSecureHost()"})
+  public void testGetSecureHost_givenServerInfoSecurePortIs8080_thenReturnServerName8080() {
+    // Arrange
+    ServerInfo serverInfo = new ServerInfo();
+    serverInfo.setAppName("App Name");
+    serverInfo.setSecurePort(8080);
+    serverInfo.setServerName("Server Name");
+    serverInfo.setServerPort(8080);
+
+    // Act and Assert
+    assertEquals("Server Name:8080", serverInfo.getSecureHost());
+  }
+
+  /**
+   * Test {@link ServerInfo#getSecureHost()}.
+   *
+   * <ul>
+   *   <li>Then return {@code Server Name}.
+   * </ul>
+   *
+   * <p>Method under test: {@link ServerInfo#getSecureHost()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String ServerInfo.getSecureHost()"})
+  public void testGetSecureHost_thenReturnServerName() {
+    // Arrange
+    ServerInfo serverInfo = new ServerInfo();
+    serverInfo.setAppName("App Name");
+    serverInfo.setSecurePort(443);
+    serverInfo.setServerName("Server Name");
+    serverInfo.setServerPort(8080);
+
+    // Act and Assert
+    assertEquals("Server Name", serverInfo.getSecureHost());
+  }
+
+  /**
+   * Test {@link ServerInfo#getHost()}.
+   *
+   * <ul>
+   *   <li>Given {@link ServerInfo} (default constructor) ServerPort is {@code 8080}.
+   *   <li>Then return {@code Server Name:8080}.
+   * </ul>
+   *
+   * <p>Method under test: {@link ServerInfo#getHost()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String ServerInfo.getHost()"})
+  public void testGetHost_givenServerInfoServerPortIs8080_thenReturnServerName8080() {
+    // Arrange
+    ServerInfo serverInfo = new ServerInfo();
+    serverInfo.setAppName("App Name");
+    serverInfo.setSecurePort(8080);
+    serverInfo.setServerName("Server Name");
+    serverInfo.setServerPort(8080);
+
+    // Act and Assert
+    assertEquals("Server Name:8080", serverInfo.getHost());
+  }
+
+  /**
+   * Test {@link ServerInfo#getHost()}.
+   *
+   * <ul>
+   *   <li>Given {@link ServerInfo} (default constructor) ServerPort is eighty.
+   *   <li>Then return {@code Server Name}.
+   * </ul>
+   *
+   * <p>Method under test: {@link ServerInfo#getHost()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String ServerInfo.getHost()"})
+  public void testGetHost_givenServerInfoServerPortIsEighty_thenReturnServerName() {
+    // Arrange
+    ServerInfo serverInfo = new ServerInfo();
+    serverInfo.setAppName("App Name");
+    serverInfo.setSecurePort(8080);
+    serverInfo.setServerName("Server Name");
+    serverInfo.setServerPort(80);
+
+    // Act and Assert
+    assertEquals("Server Name", serverInfo.getHost());
+  }
+
+  /**
+   * Test getters and setters.
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>default or parameterless constructor of {@link ServerInfo}
+   *   <li>{@link ServerInfo#setAppName(String)}
+   *   <li>{@link ServerInfo#setSecurePort(Integer)}
+   *   <li>{@link ServerInfo#setServerName(String)}
+   *   <li>{@link ServerInfo#setServerPort(Integer)}
+   *   <li>{@link ServerInfo#getAppName()}
+   *   <li>{@link ServerInfo#getSecurePort()}
+   *   <li>{@link ServerInfo#getServerName()}
+   *   <li>{@link ServerInfo#getServerPort()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void ServerInfo.<init>()",
+    "String ServerInfo.getAppName()",
+    "Integer ServerInfo.getSecurePort()",
+    "String ServerInfo.getServerName()",
+    "Integer ServerInfo.getServerPort()",
+    "void ServerInfo.setAppName(String)",
+    "void ServerInfo.setSecurePort(Integer)",
+    "void ServerInfo.setServerName(String)",
+    "void ServerInfo.setServerPort(Integer)"
+  })
+  public void testGettersAndSetters() {
+    // Arrange and Act
+    ServerInfo actualServerInfo = new ServerInfo();
+    actualServerInfo.setAppName("App Name");
+    actualServerInfo.setSecurePort(8080);
+    actualServerInfo.setServerName("Server Name");
+    actualServerInfo.setServerPort(8080);
+    String actualAppName = actualServerInfo.getAppName();
+    Integer actualSecurePort = actualServerInfo.getSecurePort();
+    String actualServerName = actualServerInfo.getServerName();
+    Integer actualServerPort = actualServerInfo.getServerPort();
+
+    // Assert
+    assertEquals("App Name", actualAppName);
+    assertEquals("Server Name", actualServerName);
+    assertEquals(8080, actualSecurePort.intValue());
+    assertEquals(8080, actualServerPort.intValue());
+  }
+}

@@ -1,0 +1,80 @@
+package org.broadleafcommerce.openadmin.web.rulebuilder.dto;
+
+import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+public class FieldDTODiffblueTest {
+  /**
+   * Test getters and setters.
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>default or parameterless constructor of {@link FieldDTO}
+   *   <li>{@link FieldDTO#setId(String)}
+   *   <li>{@link FieldDTO#setInput(String)}
+   *   <li>{@link FieldDTO#setLabel(String)}
+   *   <li>{@link FieldDTO#setOperators(String)}
+   *   <li>{@link FieldDTO#setSelectizeSectionKey(String)}
+   *   <li>{@link FieldDTO#setType(String)}
+   *   <li>{@link FieldDTO#setValues(String)}
+   *   <li>{@link FieldDTO#getId()}
+   *   <li>{@link FieldDTO#getInput()}
+   *   <li>{@link FieldDTO#getLabel()}
+   *   <li>{@link FieldDTO#getOperators()}
+   *   <li>{@link FieldDTO#getSelectizeSectionKey()}
+   *   <li>{@link FieldDTO#getType()}
+   *   <li>{@link FieldDTO#getValues()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void FieldDTO.<init>()",
+    "String FieldDTO.getId()",
+    "String FieldDTO.getInput()",
+    "String FieldDTO.getLabel()",
+    "String FieldDTO.getOperators()",
+    "String FieldDTO.getSelectizeSectionKey()",
+    "String FieldDTO.getType()",
+    "String FieldDTO.getValues()",
+    "void FieldDTO.setId(String)",
+    "void FieldDTO.setInput(String)",
+    "void FieldDTO.setLabel(String)",
+    "void FieldDTO.setOperators(String)",
+    "void FieldDTO.setSelectizeSectionKey(String)",
+    "void FieldDTO.setType(String)",
+    "void FieldDTO.setValues(String)"
+  })
+  public void testGettersAndSetters() {
+    // Arrange and Act
+    FieldDTO actualFieldDTO = new FieldDTO();
+    actualFieldDTO.setId("42");
+    actualFieldDTO.setInput("Input");
+    actualFieldDTO.setLabel("Label");
+    actualFieldDTO.setOperators("Operators");
+    actualFieldDTO.setSelectizeSectionKey("Selectize Section Key");
+    actualFieldDTO.setType("Type");
+    actualFieldDTO.setValues("42");
+    String actualId = actualFieldDTO.getId();
+    String actualInput = actualFieldDTO.getInput();
+    String actualLabel = actualFieldDTO.getLabel();
+    String actualOperators = actualFieldDTO.getOperators();
+    String actualSelectizeSectionKey = actualFieldDTO.getSelectizeSectionKey();
+    String actualType = actualFieldDTO.getType();
+
+    // Assert
+    assertEquals("42", actualId);
+    assertEquals("42", actualFieldDTO.getValues());
+    assertEquals("Input", actualInput);
+    assertEquals("Label", actualLabel);
+    assertEquals("Operators", actualOperators);
+    assertEquals("Selectize Section Key", actualSelectizeSectionKey);
+    assertEquals("Type", actualType);
+  }
+}

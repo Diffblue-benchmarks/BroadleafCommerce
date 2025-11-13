@@ -1,0 +1,143 @@
+package org.broadleafcommerce.common.web.processor.attributes;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+public class ResourceTagAttributesDiffblueTest {
+  /**
+   * Test getters and setters.
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link ResourceTagAttributes#ResourceTagAttributes()}
+   *   <li>{@link ResourceTagAttributes#async(boolean)}
+   *   <li>{@link ResourceTagAttributes#bundleCompletedEvent(String)}
+   *   <li>{@link ResourceTagAttributes#bundleDependencyEvent(String)}
+   *   <li>{@link ResourceTagAttributes#defer(boolean)}
+   *   <li>{@link ResourceTagAttributes#files(String)}
+   *   <li>{@link ResourceTagAttributes#includeAsyncDeferUnbundled(boolean)}
+   *   <li>{@link ResourceTagAttributes#mappingPrefix(String)}
+   *   <li>{@link ResourceTagAttributes#name(String)}
+   *   <li>{@link ResourceTagAttributes#src(String)}
+   *   <li>{@link ResourceTagAttributes#async()}
+   *   <li>{@link ResourceTagAttributes#bundleCompletedEvent()}
+   *   <li>{@link ResourceTagAttributes#bundleDependencyEvent()}
+   *   <li>{@link ResourceTagAttributes#defer()}
+   *   <li>{@link ResourceTagAttributes#files()}
+   *   <li>{@link ResourceTagAttributes#includeAsyncDeferUnbundled()}
+   *   <li>{@link ResourceTagAttributes#mappingPrefix()}
+   *   <li>{@link ResourceTagAttributes#name()}
+   *   <li>{@link ResourceTagAttributes#src()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void ResourceTagAttributes.<init>()",
+    "boolean ResourceTagAttributes.async()",
+    "ResourceTagAttributes ResourceTagAttributes.async(boolean)",
+    "String ResourceTagAttributes.bundleCompletedEvent()",
+    "ResourceTagAttributes ResourceTagAttributes.bundleCompletedEvent(String)",
+    "String ResourceTagAttributes.bundleDependencyEvent()",
+    "ResourceTagAttributes ResourceTagAttributes.bundleDependencyEvent(String)",
+    "boolean ResourceTagAttributes.defer()",
+    "ResourceTagAttributes ResourceTagAttributes.defer(boolean)",
+    "String ResourceTagAttributes.files()",
+    "ResourceTagAttributes ResourceTagAttributes.files(String)",
+    "boolean ResourceTagAttributes.includeAsyncDeferUnbundled()",
+    "ResourceTagAttributes ResourceTagAttributes.includeAsyncDeferUnbundled(boolean)",
+    "String ResourceTagAttributes.mappingPrefix()",
+    "ResourceTagAttributes ResourceTagAttributes.mappingPrefix(String)",
+    "String ResourceTagAttributes.name()",
+    "ResourceTagAttributes ResourceTagAttributes.name(String)",
+    "String ResourceTagAttributes.src()",
+    "ResourceTagAttributes ResourceTagAttributes.src(String)"
+  })
+  public void testGettersAndSetters() {
+    // Arrange and Act
+    ResourceTagAttributes actualResourceTagAttributes = new ResourceTagAttributes();
+    ResourceTagAttributes actualAsyncResult = actualResourceTagAttributes.async(true);
+    ResourceTagAttributes actualBundleCompletedEventResult =
+        actualResourceTagAttributes.bundleCompletedEvent("Bundle Completed Event");
+    ResourceTagAttributes actualBundleDependencyEventResult =
+        actualResourceTagAttributes.bundleDependencyEvent("Bundle Dependency Event");
+    ResourceTagAttributes actualDeferResult = actualResourceTagAttributes.defer(true);
+    ResourceTagAttributes actualFilesResult = actualResourceTagAttributes.files("Files");
+    ResourceTagAttributes actualIncludeAsyncDeferUnbundledResult =
+        actualResourceTagAttributes.includeAsyncDeferUnbundled(true);
+    ResourceTagAttributes actualMappingPrefixResult =
+        actualResourceTagAttributes.mappingPrefix("Mapping Prefix");
+    ResourceTagAttributes actualNameResult = actualResourceTagAttributes.name("Name");
+    ResourceTagAttributes actualSrcResult = actualResourceTagAttributes.src("Src");
+    boolean actualAsyncResult2 = actualResourceTagAttributes.async();
+    String actualBundleCompletedEventResult2 = actualResourceTagAttributes.bundleCompletedEvent();
+    String actualBundleDependencyEventResult2 = actualResourceTagAttributes.bundleDependencyEvent();
+    boolean actualDeferResult2 = actualResourceTagAttributes.defer();
+    String actualFilesResult2 = actualResourceTagAttributes.files();
+    boolean actualIncludeAsyncDeferUnbundledResult2 =
+        actualResourceTagAttributes.includeAsyncDeferUnbundled();
+    String actualMappingPrefixResult2 = actualResourceTagAttributes.mappingPrefix();
+    String actualNameResult2 = actualResourceTagAttributes.name();
+
+    // Assert
+    assertEquals("Bundle Completed Event", actualBundleCompletedEventResult2);
+    assertEquals("Bundle Dependency Event", actualBundleDependencyEventResult2);
+    assertEquals("Files", actualFilesResult2);
+    assertEquals("Mapping Prefix", actualMappingPrefixResult2);
+    assertEquals("Name", actualNameResult2);
+    assertEquals("Src", actualResourceTagAttributes.src());
+    assertTrue(actualAsyncResult2);
+    assertTrue(actualDeferResult2);
+    assertTrue(actualIncludeAsyncDeferUnbundledResult2);
+    assertSame(actualResourceTagAttributes, actualAsyncResult);
+    assertSame(actualResourceTagAttributes, actualBundleCompletedEventResult);
+    assertSame(actualResourceTagAttributes, actualBundleDependencyEventResult);
+    assertSame(actualResourceTagAttributes, actualDeferResult);
+    assertSame(actualResourceTagAttributes, actualFilesResult);
+    assertSame(actualResourceTagAttributes, actualIncludeAsyncDeferUnbundledResult);
+    assertSame(actualResourceTagAttributes, actualMappingPrefixResult);
+    assertSame(actualResourceTagAttributes, actualNameResult);
+    assertSame(actualResourceTagAttributes, actualSrcResult);
+  }
+
+  /**
+   * Test {@link ResourceTagAttributes#ResourceTagAttributes(ResourceTagAttributes)}.
+   *
+   * <ul>
+   *   <li>Then return bundleCompletedEvent is {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * ResourceTagAttributes#ResourceTagAttributes(ResourceTagAttributes)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void ResourceTagAttributes.<init>(ResourceTagAttributes)"})
+  public void testNewResourceTagAttributes_thenReturnBundleCompletedEventIsNull() {
+    // Arrange and Act
+    ResourceTagAttributes actualResourceTagAttributes =
+        new ResourceTagAttributes(new ResourceTagAttributes());
+
+    // Assert
+    assertNull(actualResourceTagAttributes.bundleCompletedEvent());
+    assertNull(actualResourceTagAttributes.bundleDependencyEvent());
+    assertNull(actualResourceTagAttributes.files());
+    assertNull(actualResourceTagAttributes.mappingPrefix());
+    assertNull(actualResourceTagAttributes.name());
+    assertNull(actualResourceTagAttributes.src());
+    assertFalse(actualResourceTagAttributes.async());
+    assertFalse(actualResourceTagAttributes.defer());
+    assertFalse(actualResourceTagAttributes.includeAsyncDeferUnbundled());
+  }
+}

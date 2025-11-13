@@ -1,0 +1,113 @@
+package org.broadleafcommerce.openadmin.server.security.service;
+
+import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.ArrayList;
+import java.util.Collection;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+public class EntityFormModifierDataDiffblueTest {
+  /**
+   * Test getters and setters.
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link EntityFormModifierData#EntityFormModifierData()}
+   *   <li>{@link EntityFormModifierData#setModifierType(String)}
+   *   <li>{@link EntityFormModifierData#getModifierType()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void EntityFormModifierData.<init>()",
+    "void EntityFormModifierData.<init>(int)",
+    "void EntityFormModifierData.<init>(Collection)",
+    "String EntityFormModifierData.getModifierType()",
+    "void EntityFormModifierData.setModifierType(String)"
+  })
+  public void testGettersAndSetters() {
+    // Arrange and Act
+    EntityFormModifierData<EntityFormModifierDataPoint> actualEntityFormModifierDataPointList =
+        new EntityFormModifierData<>();
+    actualEntityFormModifierDataPointList.setModifierType("Modifier Type");
+
+    // Assert
+    assertEquals("Modifier Type", actualEntityFormModifierDataPointList.getModifierType());
+  }
+
+  /**
+   * Test getters and setters.
+   *
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link EntityFormModifierData#EntityFormModifierData(Collection)}
+   *   <li>{@link EntityFormModifierData#setModifierType(String)}
+   *   <li>{@link EntityFormModifierData#getModifierType()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void EntityFormModifierData.<init>()",
+    "void EntityFormModifierData.<init>(int)",
+    "void EntityFormModifierData.<init>(Collection)",
+    "String EntityFormModifierData.getModifierType()",
+    "void EntityFormModifierData.setModifierType(String)"
+  })
+  public void testGettersAndSetters_whenArrayList() {
+    // Arrange and Act
+    EntityFormModifierData<EntityFormModifierDataPoint> actualEntityFormModifierDataPointList =
+        new EntityFormModifierData<>(new ArrayList<>());
+    actualEntityFormModifierDataPointList.setModifierType("Modifier Type");
+
+    // Assert
+    assertEquals("Modifier Type", actualEntityFormModifierDataPointList.getModifierType());
+  }
+
+  /**
+   * Test getters and setters.
+   *
+   * <ul>
+   *   <li>When one.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link EntityFormModifierData#EntityFormModifierData(int)}
+   *   <li>{@link EntityFormModifierData#setModifierType(String)}
+   *   <li>{@link EntityFormModifierData#getModifierType()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void EntityFormModifierData.<init>()",
+    "void EntityFormModifierData.<init>(int)",
+    "void EntityFormModifierData.<init>(Collection)",
+    "String EntityFormModifierData.getModifierType()",
+    "void EntityFormModifierData.setModifierType(String)"
+  })
+  public void testGettersAndSetters_whenOne() {
+    // Arrange and Act
+    EntityFormModifierData<EntityFormModifierDataPoint> actualEntityFormModifierDataPointList =
+        new EntityFormModifierData<>(1);
+    actualEntityFormModifierDataPointList.setModifierType("Modifier Type");
+
+    // Assert
+    assertEquals("Modifier Type", actualEntityFormModifierDataPointList.getModifierType());
+  }
+}

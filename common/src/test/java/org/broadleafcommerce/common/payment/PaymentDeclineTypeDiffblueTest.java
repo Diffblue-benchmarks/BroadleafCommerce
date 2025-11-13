@@ -1,0 +1,315 @@
+package org.broadleafcommerce.common.payment;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+public class PaymentDeclineTypeDiffblueTest {
+  /**
+   * Test {@link PaymentDeclineType#getInstance(String)}.
+   *
+   * <p>Method under test: {@link PaymentDeclineType#getInstance(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"PaymentDeclineType PaymentDeclineType.getInstance(String)"})
+  public void testGetInstance() {
+    // Arrange and Act
+    PaymentDeclineType actualInstance = PaymentDeclineType.getInstance("Type");
+
+    // Assert
+    assertEquals("Friendly Type", actualInstance.getFriendlyType());
+    assertEquals("Type", actualInstance.getType());
+  }
+
+  /**
+   * Test getters and setters.
+   *
+   * <ul>
+   *   <li>Then return FriendlyType is {@code null}.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link PaymentDeclineType#PaymentDeclineType()}
+   *   <li>{@link PaymentDeclineType#getFriendlyType()}
+   *   <li>{@link PaymentDeclineType#getType()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void PaymentDeclineType.<init>()",
+    "void PaymentDeclineType.<init>(String, String)",
+    "String PaymentDeclineType.getFriendlyType()",
+    "String PaymentDeclineType.getType()"
+  })
+  public void testGettersAndSetters_thenReturnFriendlyTypeIsNull() {
+    // Arrange and Act
+    PaymentDeclineType actualPaymentDeclineType = new PaymentDeclineType();
+    String actualFriendlyType = actualPaymentDeclineType.getFriendlyType();
+
+    // Assert
+    assertNull(actualFriendlyType);
+    assertNull(actualPaymentDeclineType.getType());
+  }
+
+  /**
+   * Test getters and setters.
+   *
+   * <ul>
+   *   <li>When {@code Type}.
+   *   <li>Then return {@code Friendly Type}.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link PaymentDeclineType#PaymentDeclineType(String, String)}
+   *   <li>{@link PaymentDeclineType#getFriendlyType()}
+   *   <li>{@link PaymentDeclineType#getType()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void PaymentDeclineType.<init>()",
+    "void PaymentDeclineType.<init>(String, String)",
+    "String PaymentDeclineType.getFriendlyType()",
+    "String PaymentDeclineType.getType()"
+  })
+  public void testGettersAndSetters_whenType_thenReturnFriendlyType() {
+    // Arrange and Act
+    PaymentDeclineType actualPaymentDeclineType = new PaymentDeclineType("Type", "Friendly Type");
+    String actualFriendlyType = actualPaymentDeclineType.getFriendlyType();
+
+    // Assert
+    assertEquals("Friendly Type", actualFriendlyType);
+    assertEquals("Type", actualPaymentDeclineType.getType());
+  }
+
+  /**
+   * Test {@link PaymentDeclineType#equals(Object)}, and {@link PaymentDeclineType#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link PaymentDeclineType#equals(Object)}
+   *   <li>{@link PaymentDeclineType#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean PaymentDeclineType.equals(Object)",
+    "int PaymentDeclineType.hashCode()"
+  })
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
+    // Arrange
+    PaymentDeclineType paymentDeclineType = PaymentDeclineType.HARD;
+    PaymentDeclineType paymentDeclineType2 = PaymentDeclineType.HARD;
+
+    // Act and Assert
+    assertEquals(paymentDeclineType, paymentDeclineType2);
+    assertEquals(paymentDeclineType.hashCode(), paymentDeclineType2.hashCode());
+  }
+
+  /**
+   * Test {@link PaymentDeclineType#equals(Object)}, and {@link PaymentDeclineType#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link PaymentDeclineType#equals(Object)}
+   *   <li>{@link PaymentDeclineType#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean PaymentDeclineType.equals(Object)",
+    "int PaymentDeclineType.hashCode()"
+  })
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
+    // Arrange
+    PaymentDeclineType paymentDeclineType = PaymentDeclineType.SOFT;
+    PaymentDeclineType paymentDeclineType2 = new PaymentDeclineType("SOFT", "SOFT");
+
+    // Act and Assert
+    assertEquals(paymentDeclineType, paymentDeclineType2);
+    assertEquals(paymentDeclineType.hashCode(), paymentDeclineType2.hashCode());
+  }
+
+  /**
+   * Test {@link PaymentDeclineType#equals(Object)}, and {@link PaymentDeclineType#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link PaymentDeclineType#equals(Object)}
+   *   <li>{@link PaymentDeclineType#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean PaymentDeclineType.equals(Object)",
+    "int PaymentDeclineType.hashCode()"
+  })
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
+    // Arrange
+    PaymentDeclineType paymentDeclineType = new PaymentDeclineType();
+    PaymentDeclineType paymentDeclineType2 = new PaymentDeclineType();
+
+    // Act and Assert
+    assertEquals(paymentDeclineType, paymentDeclineType2);
+    assertEquals(paymentDeclineType.hashCode(), paymentDeclineType2.hashCode());
+  }
+
+  /**
+   * Test {@link PaymentDeclineType#equals(Object)}, and {@link PaymentDeclineType#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is same.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link PaymentDeclineType#equals(Object)}
+   *   <li>{@link PaymentDeclineType#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean PaymentDeclineType.equals(Object)",
+    "int PaymentDeclineType.hashCode()"
+  })
+  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
+    // Arrange
+    PaymentDeclineType paymentDeclineType = PaymentDeclineType.HARD;
+
+    // Act and Assert
+    assertEquals(paymentDeclineType, paymentDeclineType);
+    int expectedHashCodeResult = paymentDeclineType.hashCode();
+    assertEquals(expectedHashCodeResult, paymentDeclineType.hashCode());
+  }
+
+  /**
+   * Test {@link PaymentDeclineType#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link PaymentDeclineType#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean PaymentDeclineType.equals(Object)",
+    "int PaymentDeclineType.hashCode()"
+  })
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+    // Arrange, Act and Assert
+    assertNotEquals(PaymentDeclineType.SOFT, PaymentDeclineType.HARD);
+  }
+
+  /**
+   * Test {@link PaymentDeclineType#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link PaymentDeclineType#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean PaymentDeclineType.equals(Object)",
+    "int PaymentDeclineType.hashCode()"
+  })
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
+    assertNotEquals(new PaymentDeclineType(), PaymentDeclineType.HARD);
+  }
+
+  /**
+   * Test {@link PaymentDeclineType#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link PaymentDeclineType#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean PaymentDeclineType.equals(Object)",
+    "int PaymentDeclineType.hashCode()"
+  })
+  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
+    // Arrange, Act and Assert
+    assertNotEquals(PaymentDeclineType.HARD, null);
+  }
+
+  /**
+   * Test {@link PaymentDeclineType#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link PaymentDeclineType#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean PaymentDeclineType.equals(Object)",
+    "int PaymentDeclineType.hashCode()"
+  })
+  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+    // Arrange, Act and Assert
+    assertNotEquals(PaymentDeclineType.HARD, "Different type to PaymentDeclineType");
+  }
+}

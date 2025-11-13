@@ -1,0 +1,76 @@
+package org.broadleafcommerce.profile.core.service;
+
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.anyLong;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.ArrayList;
+import java.util.List;
+import org.broadleafcommerce.profile.core.dao.ChallengeQuestionDao;
+import org.broadleafcommerce.profile.core.domain.ChallengeQuestion;
+import org.broadleafcommerce.profile.core.domain.ChallengeQuestionImpl;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+
+@RunWith(MockitoJUnitRunner.class)
+public class ChallengeQuestionServiceImplDiffblueTest {
+  @Mock private ChallengeQuestionDao challengeQuestionDao;
+
+  @InjectMocks private ChallengeQuestionServiceImpl challengeQuestionServiceImpl;
+
+  /**
+   * Test {@link ChallengeQuestionServiceImpl#readChallengeQuestions()}.
+   *
+   * <p>Method under test: {@link ChallengeQuestionServiceImpl#readChallengeQuestions()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"List ChallengeQuestionServiceImpl.readChallengeQuestions()"})
+  public void testReadChallengeQuestions() {
+    // Arrange
+    when(challengeQuestionDao.readChallengeQuestions()).thenReturn(new ArrayList<>());
+
+    // Act
+    List<ChallengeQuestion> actualReadChallengeQuestionsResult =
+        challengeQuestionServiceImpl.readChallengeQuestions();
+
+    // Assert
+    verify(challengeQuestionDao).readChallengeQuestions();
+    assertTrue(actualReadChallengeQuestionsResult.isEmpty());
+  }
+
+  /**
+   * Test {@link ChallengeQuestionServiceImpl#readChallengeQuestionById(long)}.
+   *
+   * <p>Method under test: {@link ChallengeQuestionServiceImpl#readChallengeQuestionById(long)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ChallengeQuestion ChallengeQuestionServiceImpl.readChallengeQuestionById(long)"
+  })
+  public void testReadChallengeQuestionById() {
+    // Arrange
+    ChallengeQuestionImpl challengeQuestionImpl = new ChallengeQuestionImpl();
+    when(challengeQuestionDao.readChallengeQuestionById(anyLong()))
+        .thenReturn(challengeQuestionImpl);
+
+    // Act
+    ChallengeQuestion actualReadChallengeQuestionByIdResult =
+        challengeQuestionServiceImpl.readChallengeQuestionById(1L);
+
+    // Assert
+    verify(challengeQuestionDao).readChallengeQuestionById(1L);
+    assertSame(challengeQuestionImpl, actualReadChallengeQuestionByIdResult);
+  }
+}

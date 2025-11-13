@@ -1,0 +1,176 @@
+package org.broadleafcommerce.core.search.domain;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.math.BigDecimal;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+public class SearchFacetResultDTODiffblueTest {
+  /**
+   * Test {@link SearchFacetResultDTO#getValueKey()}.
+   *
+   * <ul>
+   *   <li>Given {@link SearchFacetResultDTO} (default constructor) Active is {@code true}.
+   *   <li>Then return {@code foo}.
+   * </ul>
+   *
+   * <p>Method under test: {@link SearchFacetResultDTO#getValueKey()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String SearchFacetResultDTO.getValueKey()"})
+  public void testGetValueKey_givenSearchFacetResultDTOActiveIsTrue_thenReturnFoo() {
+    // Arrange
+    SearchFacetResultDTO searchFacetResultDTO = new SearchFacetResultDTO();
+    searchFacetResultDTO.setActive(true);
+    searchFacetResultDTO.setFacet(new SearchFacetImpl());
+    searchFacetResultDTO.setMaxValue(new BigDecimal("2.3"));
+    searchFacetResultDTO.setMinValue(new BigDecimal("2.3"));
+    searchFacetResultDTO.setQuantity(1);
+    searchFacetResultDTO.setValue("foo");
+
+    // Act and Assert
+    assertEquals("foo", searchFacetResultDTO.getValueKey());
+  }
+
+  /**
+   * Test {@link SearchFacetResultDTO#getValueKey()}.
+   *
+   * <ul>
+   *   <li>Given {@link SearchFacetResultDTO} (default constructor).
+   *   <li>Then return {@code range%5Bnull%3Anull%5D}.
+   * </ul>
+   *
+   * <p>Method under test: {@link SearchFacetResultDTO#getValueKey()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String SearchFacetResultDTO.getValueKey()"})
+  public void testGetValueKey_givenSearchFacetResultDTO_thenReturnRange5Bnull3Anull5d() {
+    // Arrange, Act and Assert
+    assertEquals("range%5Bnull%3Anull%5D", new SearchFacetResultDTO().getValueKey());
+  }
+
+  /**
+   * Test {@link SearchFacetResultDTO#getUnencodedValueKey()}.
+   *
+   * <ul>
+   *   <li>Given {@link SearchFacetResultDTO} (default constructor) Active is {@code true}.
+   *   <li>Then return {@code foo}.
+   * </ul>
+   *
+   * <p>Method under test: {@link SearchFacetResultDTO#getUnencodedValueKey()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String SearchFacetResultDTO.getUnencodedValueKey()"})
+  public void testGetUnencodedValueKey_givenSearchFacetResultDTOActiveIsTrue_thenReturnFoo() {
+    // Arrange
+    SearchFacetResultDTO searchFacetResultDTO = new SearchFacetResultDTO();
+    searchFacetResultDTO.setActive(true);
+    searchFacetResultDTO.setFacet(new SearchFacetImpl());
+    searchFacetResultDTO.setMaxValue(new BigDecimal("2.3"));
+    searchFacetResultDTO.setMinValue(new BigDecimal("2.3"));
+    searchFacetResultDTO.setQuantity(1);
+    searchFacetResultDTO.setValue("foo");
+
+    // Act and Assert
+    assertEquals("foo", searchFacetResultDTO.getUnencodedValueKey());
+  }
+
+  /**
+   * Test {@link SearchFacetResultDTO#getUnencodedValueKey()}.
+   *
+   * <ul>
+   *   <li>Given {@link SearchFacetResultDTO} (default constructor).
+   *   <li>Then return {@code range[null:null]}.
+   * </ul>
+   *
+   * <p>Method under test: {@link SearchFacetResultDTO#getUnencodedValueKey()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String SearchFacetResultDTO.getUnencodedValueKey()"})
+  public void testGetUnencodedValueKey_givenSearchFacetResultDTO_thenReturnRangeNullNull() {
+    // Arrange, Act and Assert
+    assertEquals("range[null:null]", new SearchFacetResultDTO().getUnencodedValueKey());
+  }
+
+  /**
+   * Test getters and setters.
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>default or parameterless constructor of {@link SearchFacetResultDTO}
+   *   <li>{@link SearchFacetResultDTO#setActive(boolean)}
+   *   <li>{@link SearchFacetResultDTO#setFacet(SearchFacet)}
+   *   <li>{@link SearchFacetResultDTO#setMaxValue(BigDecimal)}
+   *   <li>{@link SearchFacetResultDTO#setMinValue(BigDecimal)}
+   *   <li>{@link SearchFacetResultDTO#setQuantity(Integer)}
+   *   <li>{@link SearchFacetResultDTO#setValue(String)}
+   *   <li>{@link SearchFacetResultDTO#getFacet()}
+   *   <li>{@link SearchFacetResultDTO#getMaxValue()}
+   *   <li>{@link SearchFacetResultDTO#getMinValue()}
+   *   <li>{@link SearchFacetResultDTO#getQuantity()}
+   *   <li>{@link SearchFacetResultDTO#getValue()}
+   *   <li>{@link SearchFacetResultDTO#isActive()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void SearchFacetResultDTO.<init>()",
+    "SearchFacet SearchFacetResultDTO.getFacet()",
+    "BigDecimal SearchFacetResultDTO.getMaxValue()",
+    "BigDecimal SearchFacetResultDTO.getMinValue()",
+    "Integer SearchFacetResultDTO.getQuantity()",
+    "String SearchFacetResultDTO.getValue()",
+    "boolean SearchFacetResultDTO.isActive()",
+    "void SearchFacetResultDTO.setActive(boolean)",
+    "void SearchFacetResultDTO.setFacet(SearchFacet)",
+    "void SearchFacetResultDTO.setMaxValue(BigDecimal)",
+    "void SearchFacetResultDTO.setMinValue(BigDecimal)",
+    "void SearchFacetResultDTO.setQuantity(Integer)",
+    "void SearchFacetResultDTO.setValue(String)"
+  })
+  public void testGettersAndSetters() {
+    // Arrange and Act
+    SearchFacetResultDTO actualSearchFacetResultDTO = new SearchFacetResultDTO();
+    actualSearchFacetResultDTO.setActive(true);
+    SearchFacetImpl facet = new SearchFacetImpl();
+    actualSearchFacetResultDTO.setFacet(facet);
+    BigDecimal maxValue = new BigDecimal("2.3");
+    actualSearchFacetResultDTO.setMaxValue(maxValue);
+    BigDecimal minValue = new BigDecimal("2.3");
+    actualSearchFacetResultDTO.setMinValue(minValue);
+    actualSearchFacetResultDTO.setQuantity(1);
+    actualSearchFacetResultDTO.setValue("42");
+    SearchFacet actualFacet = actualSearchFacetResultDTO.getFacet();
+    BigDecimal actualMaxValue = actualSearchFacetResultDTO.getMaxValue();
+    BigDecimal actualMinValue = actualSearchFacetResultDTO.getMinValue();
+    Integer actualQuantity = actualSearchFacetResultDTO.getQuantity();
+    String actualValue = actualSearchFacetResultDTO.getValue();
+    boolean actualIsActiveResult = actualSearchFacetResultDTO.isActive();
+
+    // Assert
+    assertEquals("42", actualValue);
+    assertEquals(1, actualQuantity.intValue());
+    assertTrue(actualIsActiveResult);
+    assertEquals(new BigDecimal("2.3"), actualMaxValue);
+    assertEquals(new BigDecimal("2.3"), actualMinValue);
+    assertSame(maxValue, actualMaxValue);
+    assertSame(minValue, actualMinValue);
+    assertSame(facet, actualFacet);
+  }
+}

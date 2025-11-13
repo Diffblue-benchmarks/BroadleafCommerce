@@ -1,0 +1,197 @@
+package org.broadleafcommerce.core.store.domain;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import org.broadleafcommerce.profile.core.domain.Address;
+import org.broadleafcommerce.profile.core.domain.AddressImpl;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+public class StoreImplDiffblueTest {
+  /**
+   * Test getters and setters.
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link StoreImpl#setAddress(Address)}
+   *   <li>{@link StoreImpl#setId(Long)}
+   *   <li>{@link StoreImpl#setLatitude(Double)}
+   *   <li>{@link StoreImpl#setLongitude(Double)}
+   *   <li>{@link StoreImpl#setName(String)}
+   *   <li>{@link StoreImpl#setOpen(Boolean)}
+   *   <li>{@link StoreImpl#setStoreHours(String)}
+   *   <li>{@link StoreImpl#setStoreNumber(String)}
+   *   <li>{@link StoreImpl#getAddress()}
+   *   <li>{@link StoreImpl#getId()}
+   *   <li>{@link StoreImpl#getLatitude()}
+   *   <li>{@link StoreImpl#getLongitude()}
+   *   <li>{@link StoreImpl#getName()}
+   *   <li>{@link StoreImpl#getOpen()}
+   *   <li>{@link StoreImpl#getStoreHours()}
+   *   <li>{@link StoreImpl#getStoreNumber()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Address StoreImpl.getAddress()",
+    "Long StoreImpl.getId()",
+    "Double StoreImpl.getLatitude()",
+    "Double StoreImpl.getLongitude()",
+    "String StoreImpl.getName()",
+    "Boolean StoreImpl.getOpen()",
+    "String StoreImpl.getStoreHours()",
+    "String StoreImpl.getStoreNumber()",
+    "void StoreImpl.setAddress(Address)",
+    "void StoreImpl.setId(Long)",
+    "void StoreImpl.setLatitude(Double)",
+    "void StoreImpl.setLongitude(Double)",
+    "void StoreImpl.setName(String)",
+    "void StoreImpl.setOpen(Boolean)",
+    "void StoreImpl.setStoreHours(String)",
+    "void StoreImpl.setStoreNumber(String)"
+  })
+  public void testGettersAndSetters() {
+    // Arrange
+    StoreImpl storeImpl = new StoreImpl();
+    AddressImpl address = new AddressImpl();
+
+    // Act
+    storeImpl.setAddress(address);
+    storeImpl.setId(1L);
+    storeImpl.setLatitude(10.0d);
+    storeImpl.setLongitude(10.0d);
+    storeImpl.setName("Name");
+    storeImpl.setOpen(true);
+    storeImpl.setStoreHours("Store Hours");
+    storeImpl.setStoreNumber("42");
+    Address actualAddress = storeImpl.getAddress();
+    Long actualId = storeImpl.getId();
+    Double actualLatitude = storeImpl.getLatitude();
+    Double actualLongitude = storeImpl.getLongitude();
+    String actualName = storeImpl.getName();
+    Boolean actualOpen = storeImpl.getOpen();
+    String actualStoreHours = storeImpl.getStoreHours();
+
+    // Assert
+    assertEquals("42", storeImpl.getStoreNumber());
+    assertEquals("Name", actualName);
+    assertEquals("Store Hours", actualStoreHours);
+    assertEquals(10.0d, actualLatitude.doubleValue(), 0.0);
+    assertEquals(10.0d, actualLongitude.doubleValue(), 0.0);
+    assertEquals(1L, actualId.longValue());
+    assertTrue(actualOpen);
+    assertSame(address, actualAddress);
+  }
+
+  /**
+   * Test {@link StoreImpl#getArchived()}.
+   *
+   * <p>Method under test: {@link StoreImpl#getArchived()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Character StoreImpl.getArchived()"})
+  public void testGetArchived() {
+    // Arrange, Act and Assert
+    assertEquals('N', new StoreImpl().getArchived().charValue());
+  }
+
+  /**
+   * Test {@link StoreImpl#setArchived(Character)}.
+   *
+   * <p>Method under test: {@link StoreImpl#setArchived(Character)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void StoreImpl.setArchived(Character)"})
+  public void testSetArchived() {
+    // Arrange
+    StoreImpl storeImpl = new StoreImpl();
+
+    // Act
+    storeImpl.setArchived('A');
+
+    // Assert
+    assertEquals('A', storeImpl.archiveStatus.getArchived().charValue());
+    assertEquals('A', storeImpl.getArchived().charValue());
+  }
+
+  /**
+   * Test {@link StoreImpl#isActive()}.
+   *
+   * <ul>
+   *   <li>Given {@link StoreImpl} (default constructor) Archived is {@code Y}.
+   *   <li>Then return {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link StoreImpl#isActive()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean StoreImpl.isActive()"})
+  public void testIsActive_givenStoreImplArchivedIsY_thenReturnFalse() {
+    // Arrange
+    StoreImpl storeImpl = new StoreImpl();
+    storeImpl.setArchived('Y');
+
+    // Act and Assert
+    assertFalse(storeImpl.isActive());
+  }
+
+  /**
+   * Test {@link StoreImpl#isActive()}.
+   *
+   * <ul>
+   *   <li>Given {@link StoreImpl} (default constructor).
+   *   <li>Then return {@code true}.
+   * </ul>
+   *
+   * <p>Method under test: {@link StoreImpl#isActive()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean StoreImpl.isActive()"})
+  public void testIsActive_givenStoreImpl_thenReturnTrue() {
+    // Arrange, Act and Assert
+    assertTrue(new StoreImpl().isActive());
+  }
+
+  /**
+   * Test new {@link StoreImpl} (default constructor).
+   *
+   * <p>Method under test: default or parameterless constructor of {@link StoreImpl}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void StoreImpl.<init>()"})
+  public void testNewStoreImpl() {
+    // Arrange and Act
+    StoreImpl actualStoreImpl = new StoreImpl();
+
+    // Assert
+    assertEquals('N', actualStoreImpl.archiveStatus.getArchived().charValue());
+    assertEquals('N', actualStoreImpl.getArchived().charValue());
+    assertNull(actualStoreImpl.getOpen());
+    assertNull(actualStoreImpl.getLatitude());
+    assertNull(actualStoreImpl.getLongitude());
+    assertNull(actualStoreImpl.getId());
+    assertNull(actualStoreImpl.getName());
+    assertNull(actualStoreImpl.getStoreHours());
+    assertNull(actualStoreImpl.getStoreNumber());
+    assertNull(actualStoreImpl.getAddress());
+  }
+}

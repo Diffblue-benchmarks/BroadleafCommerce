@@ -1,0 +1,84 @@
+package org.broadleafcommerce.profile.core.dao;
+
+import static org.junit.Assert.assertSame;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import org.broadleafcommerce.common.i18n.domain.ISOCountryImpl;
+import org.broadleafcommerce.common.persistence.EntityConfiguration;
+import org.broadleafcommerce.profile.core.domain.Address;
+import org.broadleafcommerce.profile.core.domain.AddressImpl;
+import org.broadleafcommerce.profile.core.domain.CountryImpl;
+import org.broadleafcommerce.profile.core.domain.PhoneImpl;
+import org.broadleafcommerce.profile.core.domain.StateImpl;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+
+@RunWith(MockitoJUnitRunner.class)
+public class AddressDaoImplDiffblueTest {
+  @InjectMocks private AddressDaoImpl addressDaoImpl;
+
+  @Mock private EntityConfiguration entityConfiguration;
+
+  /**
+   * Test {@link AddressDaoImpl#create()}.
+   *
+   * <p>Method under test: {@link AddressDaoImpl#create()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Address AddressDaoImpl.create()"})
+  public void testCreate() {
+    // Arrange
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setActive(true);
+    addressImpl.setAddressLine1("42 Main St");
+    addressImpl.setAddressLine2("42 Main St");
+    addressImpl.setAddressLine3("42 Main St");
+    addressImpl.setBusiness(true);
+    addressImpl.setCity("Oxford");
+    addressImpl.setCompanyName("Company Name");
+    addressImpl.setCountry(new CountryImpl());
+    addressImpl.setCounty("3");
+    addressImpl.setDefault(true);
+    addressImpl.setEmailAddress("42 Main St");
+    addressImpl.setFax("Fax");
+    addressImpl.setFirstName("Jane");
+    addressImpl.setFullName("Dr Jane Doe");
+    addressImpl.setId(1L);
+    addressImpl.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl.setIsoCountrySubdivision("GB");
+    addressImpl.setLastName("Doe");
+    addressImpl.setMailing(true);
+    addressImpl.setPhoneFax(new PhoneImpl());
+    addressImpl.setPhonePrimary(new PhoneImpl());
+    addressImpl.setPhoneSecondary(new PhoneImpl());
+    addressImpl.setPostalCode("Postal Code");
+    addressImpl.setPrimaryPhone("6625550144");
+    addressImpl.setSecondaryPhone("6625550144");
+    addressImpl.setStandardized(true);
+    addressImpl.setState(new StateImpl());
+    addressImpl.setStateProvinceRegion("us-east-2");
+    addressImpl.setStreet(true);
+    addressImpl.setTokenizedAddress("42 Main St");
+    addressImpl.setVerificationLevel("Verification Level");
+    addressImpl.setZipFour("21654");
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(addressImpl);
+
+    // Act
+    Address actualCreateResult = addressDaoImpl.create();
+
+    // Assert
+    verify(entityConfiguration)
+        .createEntityInstance("org.broadleafcommerce.profile.core.domain.Address");
+    assertSame(addressImpl, actualCreateResult);
+  }
+}

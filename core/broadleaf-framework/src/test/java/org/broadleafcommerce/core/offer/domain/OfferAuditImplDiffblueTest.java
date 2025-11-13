@@ -1,0 +1,271 @@
+package org.broadleafcommerce.core.offer.domain;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.util.Date;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+public class OfferAuditImplDiffblueTest {
+  /**
+   * Test {@link OfferAuditImpl#equals(Object)}, and {@link OfferAuditImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link OfferAuditImpl#equals(Object)}
+   *   <li>{@link OfferAuditImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean OfferAuditImpl.equals(Object)", "int OfferAuditImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
+    // Arrange
+    OfferAuditImpl offerAuditImpl = new OfferAuditImpl();
+    offerAuditImpl.setAccountId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl.setCustomerId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl.setId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl.setOfferCodeId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl.setOfferId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl.setOrderId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl.setRedeemedDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+
+    OfferAuditImpl offerAuditImpl2 = new OfferAuditImpl();
+    offerAuditImpl2.setAccountId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl2.setCustomerId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl2.setId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl2.setOfferCodeId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl2.setOfferId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl2.setOrderId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl2.setRedeemedDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+
+    // Act and Assert
+    assertEquals(offerAuditImpl, offerAuditImpl2);
+    assertEquals(offerAuditImpl.hashCode(), offerAuditImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link OfferAuditImpl#equals(Object)}, and {@link OfferAuditImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is same.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link OfferAuditImpl#equals(Object)}
+   *   <li>{@link OfferAuditImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean OfferAuditImpl.equals(Object)", "int OfferAuditImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
+    // Arrange
+    OfferAuditImpl offerAuditImpl = new OfferAuditImpl();
+    offerAuditImpl.setAccountId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl.setCustomerId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl.setId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl.setOfferCodeId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl.setOfferId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl.setOrderId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl.setRedeemedDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+
+    // Act and Assert
+    assertEquals(offerAuditImpl, offerAuditImpl);
+    int expectedHashCodeResult = offerAuditImpl.hashCode();
+    assertEquals(expectedHashCodeResult, offerAuditImpl.hashCode());
+  }
+
+  /**
+   * Test {@link OfferAuditImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferAuditImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean OfferAuditImpl.equals(Object)", "int OfferAuditImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+    // Arrange
+    OfferAuditImpl offerAuditImpl = new OfferAuditImpl();
+    offerAuditImpl.setAccountId(2L);
+    offerAuditImpl.setCustomerId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl.setId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl.setOfferCodeId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl.setOfferId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl.setOrderId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl.setRedeemedDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+
+    OfferAuditImpl offerAuditImpl2 = new OfferAuditImpl();
+    offerAuditImpl2.setAccountId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl2.setCustomerId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl2.setId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl2.setOfferCodeId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl2.setOfferId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl2.setOrderId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl2.setRedeemedDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+
+    // Act and Assert
+    assertNotEquals(offerAuditImpl, offerAuditImpl2);
+  }
+
+  /**
+   * Test {@link OfferAuditImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferAuditImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean OfferAuditImpl.equals(Object)", "int OfferAuditImpl.hashCode()"})
+  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
+    // Arrange
+    OfferAuditImpl offerAuditImpl = new OfferAuditImpl();
+    offerAuditImpl.setAccountId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl.setCustomerId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl.setId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl.setOfferCodeId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl.setOfferId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl.setOrderId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl.setRedeemedDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+
+    // Act and Assert
+    assertNotEquals(offerAuditImpl, null);
+  }
+
+  /**
+   * Test {@link OfferAuditImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferAuditImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean OfferAuditImpl.equals(Object)", "int OfferAuditImpl.hashCode()"})
+  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+    // Arrange
+    OfferAuditImpl offerAuditImpl = new OfferAuditImpl();
+    offerAuditImpl.setAccountId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl.setCustomerId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl.setId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl.setOfferCodeId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl.setOfferId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl.setOrderId(OfferAuditImpl.serialVersionUID);
+    offerAuditImpl.setRedeemedDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+
+    // Act and Assert
+    assertNotEquals(offerAuditImpl, "Different type to OfferAuditImpl");
+  }
+
+  /**
+   * Test getters and setters.
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>default or parameterless constructor of {@link OfferAuditImpl}
+   *   <li>{@link OfferAuditImpl#setAccountId(Long)}
+   *   <li>{@link OfferAuditImpl#setCustomerId(Long)}
+   *   <li>{@link OfferAuditImpl#setId(Long)}
+   *   <li>{@link OfferAuditImpl#setOfferCodeId(Long)}
+   *   <li>{@link OfferAuditImpl#setOfferId(Long)}
+   *   <li>{@link OfferAuditImpl#setOrderId(Long)}
+   *   <li>{@link OfferAuditImpl#setRedeemedDate(Date)}
+   *   <li>{@link OfferAuditImpl#getAccountId()}
+   *   <li>{@link OfferAuditImpl#getCustomerId()}
+   *   <li>{@link OfferAuditImpl#getId()}
+   *   <li>{@link OfferAuditImpl#getOfferCodeId()}
+   *   <li>{@link OfferAuditImpl#getOfferId()}
+   *   <li>{@link OfferAuditImpl#getOrderId()}
+   *   <li>{@link OfferAuditImpl#getRedeemedDate()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void OfferAuditImpl.<init>()",
+    "Long OfferAuditImpl.getAccountId()",
+    "Long OfferAuditImpl.getCustomerId()",
+    "Long OfferAuditImpl.getId()",
+    "Long OfferAuditImpl.getOfferCodeId()",
+    "Long OfferAuditImpl.getOfferId()",
+    "Long OfferAuditImpl.getOrderId()",
+    "Date OfferAuditImpl.getRedeemedDate()",
+    "void OfferAuditImpl.setAccountId(Long)",
+    "void OfferAuditImpl.setCustomerId(Long)",
+    "void OfferAuditImpl.setId(Long)",
+    "void OfferAuditImpl.setOfferCodeId(Long)",
+    "void OfferAuditImpl.setOfferId(Long)",
+    "void OfferAuditImpl.setOrderId(Long)",
+    "void OfferAuditImpl.setRedeemedDate(Date)"
+  })
+  public void testGettersAndSetters() {
+    // Arrange and Act
+    OfferAuditImpl actualOfferAuditImpl = new OfferAuditImpl();
+    actualOfferAuditImpl.setAccountId(OfferAuditImpl.serialVersionUID);
+    actualOfferAuditImpl.setCustomerId(OfferAuditImpl.serialVersionUID);
+    actualOfferAuditImpl.setId(OfferAuditImpl.serialVersionUID);
+    actualOfferAuditImpl.setOfferCodeId(OfferAuditImpl.serialVersionUID);
+    actualOfferAuditImpl.setOfferId(OfferAuditImpl.serialVersionUID);
+    actualOfferAuditImpl.setOrderId(OfferAuditImpl.serialVersionUID);
+    Date redeemedDate =
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    actualOfferAuditImpl.setRedeemedDate(redeemedDate);
+    Long actualAccountId = actualOfferAuditImpl.getAccountId();
+    Long actualCustomerId = actualOfferAuditImpl.getCustomerId();
+    Long actualId = actualOfferAuditImpl.getId();
+    Long actualOfferCodeId = actualOfferAuditImpl.getOfferCodeId();
+    Long actualOfferId = actualOfferAuditImpl.getOfferId();
+    Long actualOrderId = actualOfferAuditImpl.getOrderId();
+    Date actualRedeemedDate = actualOfferAuditImpl.getRedeemedDate();
+
+    // Assert
+    assertEquals(OfferAuditImpl.serialVersionUID, actualAccountId.longValue());
+    assertEquals(OfferAuditImpl.serialVersionUID, actualCustomerId.longValue());
+    assertEquals(OfferAuditImpl.serialVersionUID, actualId.longValue());
+    assertEquals(OfferAuditImpl.serialVersionUID, actualOfferCodeId.longValue());
+    assertEquals(OfferAuditImpl.serialVersionUID, actualOfferId.longValue());
+    assertEquals(OfferAuditImpl.serialVersionUID, actualOrderId.longValue());
+    assertSame(redeemedDate, actualRedeemedDate);
+  }
+}

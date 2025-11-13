@@ -1,0 +1,84 @@
+package org.broadleafcommerce.openadmin.server.dao;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import com.fasterxml.classmate.types.TypePlaceHolder;
+import java.lang.reflect.Type;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+public class FieldInfoDiffblueTest {
+  /**
+   * Test getters and setters.
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>default or parameterless constructor of {@link FieldInfo}
+   *   <li>{@link FieldInfo#setGenericType(Type)}
+   *   <li>{@link FieldInfo#setManyToManyMappedBy(String)}
+   *   <li>{@link FieldInfo#setManyToManyTargetEntity(String)}
+   *   <li>{@link FieldInfo#setMapKey(String)}
+   *   <li>{@link FieldInfo#setName(String)}
+   *   <li>{@link FieldInfo#setOneToManyMappedBy(String)}
+   *   <li>{@link FieldInfo#setOneToManyTargetEntity(String)}
+   *   <li>{@link FieldInfo#getGenericType()}
+   *   <li>{@link FieldInfo#getManyToManyMappedBy()}
+   *   <li>{@link FieldInfo#getManyToManyTargetEntity()}
+   *   <li>{@link FieldInfo#getMapKey()}
+   *   <li>{@link FieldInfo#getName()}
+   *   <li>{@link FieldInfo#getOneToManyMappedBy()}
+   *   <li>{@link FieldInfo#getOneToManyTargetEntity()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void FieldInfo.<init>()",
+    "Type FieldInfo.getGenericType()",
+    "String FieldInfo.getManyToManyMappedBy()",
+    "String FieldInfo.getManyToManyTargetEntity()",
+    "String FieldInfo.getMapKey()",
+    "String FieldInfo.getName()",
+    "String FieldInfo.getOneToManyMappedBy()",
+    "String FieldInfo.getOneToManyTargetEntity()",
+    "void FieldInfo.setGenericType(Type)",
+    "void FieldInfo.setManyToManyMappedBy(String)",
+    "void FieldInfo.setManyToManyTargetEntity(String)",
+    "void FieldInfo.setMapKey(String)",
+    "void FieldInfo.setName(String)",
+    "void FieldInfo.setOneToManyMappedBy(String)",
+    "void FieldInfo.setOneToManyTargetEntity(String)"
+  })
+  public void testGettersAndSetters() {
+    // Arrange and Act
+    FieldInfo actualFieldInfo = new FieldInfo();
+    TypePlaceHolder genericType = new TypePlaceHolder(1);
+    actualFieldInfo.setGenericType(genericType);
+    actualFieldInfo.setManyToManyMappedBy("Many To Many Mapped By");
+    actualFieldInfo.setManyToManyTargetEntity("Many To Many Target Entity");
+    actualFieldInfo.setMapKey("Map Key");
+    actualFieldInfo.setName("Name");
+    actualFieldInfo.setOneToManyMappedBy("One To Many Mapped By");
+    actualFieldInfo.setOneToManyTargetEntity("One To Many Target Entity");
+    Type actualGenericType = actualFieldInfo.getGenericType();
+    String actualManyToManyMappedBy = actualFieldInfo.getManyToManyMappedBy();
+    String actualManyToManyTargetEntity = actualFieldInfo.getManyToManyTargetEntity();
+    String actualMapKey = actualFieldInfo.getMapKey();
+    String actualName = actualFieldInfo.getName();
+    String actualOneToManyMappedBy = actualFieldInfo.getOneToManyMappedBy();
+
+    // Assert
+    assertEquals("Many To Many Mapped By", actualManyToManyMappedBy);
+    assertEquals("Many To Many Target Entity", actualManyToManyTargetEntity);
+    assertEquals("Map Key", actualMapKey);
+    assertEquals("Name", actualName);
+    assertEquals("One To Many Mapped By", actualOneToManyMappedBy);
+    assertEquals("One To Many Target Entity", actualFieldInfo.getOneToManyTargetEntity());
+    assertSame(genericType, actualGenericType);
+  }
+}

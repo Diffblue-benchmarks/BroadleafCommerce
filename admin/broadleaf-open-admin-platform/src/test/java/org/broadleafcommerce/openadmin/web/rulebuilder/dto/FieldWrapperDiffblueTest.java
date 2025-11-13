@@ -1,0 +1,172 @@
+package org.broadleafcommerce.openadmin.web.rulebuilder.dto;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.io.IOException;
+import java.util.ArrayList;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+public class FieldWrapperDiffblueTest {
+  /**
+   * Test {@link FieldWrapper#serialize()}.
+   *
+   * <ul>
+   *   <li>Given {@link FieldDTO} (default constructor) Id is {@code 42}.
+   *   <li>Then return a string.
+   * </ul>
+   *
+   * <p>Method under test: {@link FieldWrapper#serialize()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"java.lang.String FieldWrapper.serialize()"})
+  public void testSerialize_givenFieldDTOIdIs42_thenReturnAString() throws IOException {
+    // Arrange
+    FieldDTO fieldDTO = new FieldDTO();
+    fieldDTO.setId("42");
+    fieldDTO.setInput("Input");
+    fieldDTO.setLabel("Label");
+    fieldDTO.setOperators("Operators");
+    fieldDTO.setSelectizeSectionKey("Selectize Section Key");
+    fieldDTO.setType("Type");
+    fieldDTO.setValues("42");
+
+    ArrayList<FieldDTO> fields = new ArrayList<>();
+    fields.add(fieldDTO);
+
+    FieldWrapper fieldWrapper = new FieldWrapper();
+    fieldWrapper.setFields(fields);
+
+    // Act and Assert
+    assertEquals(
+        "{\"fields\":[{\"id\":\"42\",\"label\":\"Label\",\"type\":\"Type\",\"input\":\"Input\",\"operators\":\"Operators\","
+            + "\"selectizeSectionKey\":\"Selectize Section Key\",\"values\":\"42\"}]}",
+        fieldWrapper.serialize());
+  }
+
+  /**
+   * Test {@link FieldWrapper#serialize()}.
+   *
+   * <ul>
+   *   <li>Given {@link FieldDTO} (default constructor) Id is {@code Id}.
+   *   <li>Then return a string.
+   * </ul>
+   *
+   * <p>Method under test: {@link FieldWrapper#serialize()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"java.lang.String FieldWrapper.serialize()"})
+  public void testSerialize_givenFieldDTOIdIsId_thenReturnAString() throws IOException {
+    // Arrange
+    FieldDTO fieldDTO = new FieldDTO();
+    fieldDTO.setId("42");
+    fieldDTO.setInput("Input");
+    fieldDTO.setLabel("Label");
+    fieldDTO.setOperators("Operators");
+    fieldDTO.setSelectizeSectionKey("Selectize Section Key");
+    fieldDTO.setType("Type");
+    fieldDTO.setValues("42");
+
+    FieldDTO fieldDTO2 = new FieldDTO();
+    fieldDTO2.setId("Id");
+    fieldDTO2.setInput("42");
+    fieldDTO2.setLabel("42");
+    fieldDTO2.setOperators("42");
+    fieldDTO2.setSelectizeSectionKey("42");
+    fieldDTO2.setType("42");
+    fieldDTO2.setValues("Values");
+
+    ArrayList<FieldDTO> fields = new ArrayList<>();
+    fields.add(fieldDTO2);
+    fields.add(fieldDTO);
+
+    FieldWrapper fieldWrapper = new FieldWrapper();
+    fieldWrapper.setFields(fields);
+
+    // Act and Assert
+    assertEquals(
+        "{\"fields\":[{\"id\":\"Id\",\"label\":\"42\",\"type\":\"42\",\"input\":\"42\",\"operators\":\"42\",\"selectizeSectionKey\":"
+            + "\"42\",\"values\":\"Values\"},{\"id\":\"42\",\"label\":\"Label\",\"type\":\"Type\",\"input\":\"Input\",\"operators\":\"Operators"
+            + "\",\"selectizeSectionKey\":\"Selectize Section Key\",\"values\":\"42\"}]}",
+        fieldWrapper.serialize());
+  }
+
+  /**
+   * Test {@link FieldWrapper#serialize()}.
+   *
+   * <ul>
+   *   <li>Given {@link FieldWrapper} (default constructor) Fields is {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@code {"fields":[]}}.
+   * </ul>
+   *
+   * <p>Method under test: {@link FieldWrapper#serialize()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"java.lang.String FieldWrapper.serialize()"})
+  public void testSerialize_givenFieldWrapperFieldsIsArrayList_thenReturnFields()
+      throws IOException {
+    // Arrange
+    FieldWrapper fieldWrapper = new FieldWrapper();
+    fieldWrapper.setFields(new ArrayList<>());
+
+    // Act and Assert
+    assertEquals("{\"fields\":[]}", fieldWrapper.serialize());
+  }
+
+  /**
+   * Test {@link FieldWrapper#serialize()}.
+   *
+   * <ul>
+   *   <li>Given {@link FieldWrapper} (default constructor).
+   *   <li>Then return {@code {"fields":[]}}.
+   * </ul>
+   *
+   * <p>Method under test: {@link FieldWrapper#serialize()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"java.lang.String FieldWrapper.serialize()"})
+  public void testSerialize_givenFieldWrapper_thenReturnFields() throws IOException {
+    // Arrange, Act and Assert
+    assertEquals("{\"fields\":[]}", new FieldWrapper().serialize());
+  }
+
+  /**
+   * Test getters and setters.
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>default or parameterless constructor of {@link FieldWrapper}
+   *   <li>{@link FieldWrapper#setFields(ArrayList)}
+   *   <li>{@link FieldWrapper#getFields()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void FieldWrapper.<init>()",
+    "ArrayList FieldWrapper.getFields()",
+    "void FieldWrapper.setFields(ArrayList)"
+  })
+  public void testGettersAndSetters() {
+    // Arrange and Act
+    FieldWrapper actualFieldWrapper = new FieldWrapper();
+    ArrayList<FieldDTO> fields = new ArrayList<>();
+    actualFieldWrapper.setFields(fields);
+
+    // Assert
+    assertSame(fields, actualFieldWrapper.getFields());
+  }
+}

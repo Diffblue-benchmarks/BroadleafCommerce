@@ -1,0 +1,649 @@
+package org.broadleafcommerce.profile.core.domain;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertSame;
+import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+public class CustomerPhoneImplDiffblueTest {
+  /**
+   * Test {@link CustomerPhoneImpl#equals(Object)}, and {@link CustomerPhoneImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link CustomerPhoneImpl#equals(Object)}
+   *   <li>{@link CustomerPhoneImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CustomerPhoneImpl.equals(Object)",
+    "int CustomerPhoneImpl.hashCode()"
+  })
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
+    // Arrange
+    CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
+    customerPhoneImpl.setCustomer(new CustomerImpl());
+    customerPhoneImpl.setId(1L);
+    customerPhoneImpl.setPhone(new PhoneImpl());
+    customerPhoneImpl.setPhoneName("6625550144");
+
+    CustomerPhoneImpl customerPhoneImpl2 = new CustomerPhoneImpl();
+    customerPhoneImpl2.setCustomer(new CustomerImpl());
+    customerPhoneImpl2.setId(1L);
+    customerPhoneImpl2.setPhone(new PhoneImpl());
+    customerPhoneImpl2.setPhoneName("6625550144");
+
+    // Act and Assert
+    assertEquals(customerPhoneImpl, customerPhoneImpl2);
+    assertEquals(customerPhoneImpl.hashCode(), customerPhoneImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link CustomerPhoneImpl#equals(Object)}, and {@link CustomerPhoneImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link CustomerPhoneImpl#equals(Object)}
+   *   <li>{@link CustomerPhoneImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CustomerPhoneImpl.equals(Object)",
+    "int CustomerPhoneImpl.hashCode()"
+  })
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
+    // Arrange
+    CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
+    customerPhoneImpl.setCustomer(new CustomerImpl());
+    customerPhoneImpl.setId(null);
+    customerPhoneImpl.setPhone(new PhoneImpl());
+    customerPhoneImpl.setPhoneName("6625550144");
+
+    CustomerPhoneImpl customerPhoneImpl2 = new CustomerPhoneImpl();
+    customerPhoneImpl2.setCustomer(new CustomerImpl());
+    customerPhoneImpl2.setId(1L);
+    customerPhoneImpl2.setPhone(new PhoneImpl());
+    customerPhoneImpl2.setPhoneName("6625550144");
+
+    // Act and Assert
+    assertEquals(customerPhoneImpl, customerPhoneImpl2);
+    assertEquals(customerPhoneImpl.hashCode(), customerPhoneImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link CustomerPhoneImpl#equals(Object)}, and {@link CustomerPhoneImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link CustomerPhoneImpl#equals(Object)}
+   *   <li>{@link CustomerPhoneImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CustomerPhoneImpl.equals(Object)",
+    "int CustomerPhoneImpl.hashCode()"
+  })
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
+    // Arrange
+    CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
+    customerPhoneImpl.setCustomer(new CustomerImpl());
+    customerPhoneImpl.setId(1L);
+    customerPhoneImpl.setPhone(new PhoneImpl());
+    customerPhoneImpl.setPhoneName("6625550144");
+
+    CustomerPhoneImpl customerPhoneImpl2 = new CustomerPhoneImpl();
+    customerPhoneImpl2.setCustomer(new CustomerImpl());
+    customerPhoneImpl2.setId(null);
+    customerPhoneImpl2.setPhone(new PhoneImpl());
+    customerPhoneImpl2.setPhoneName("6625550144");
+
+    // Act and Assert
+    assertEquals(customerPhoneImpl, customerPhoneImpl2);
+    assertEquals(customerPhoneImpl.hashCode(), customerPhoneImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link CustomerPhoneImpl#equals(Object)}, and {@link CustomerPhoneImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link CustomerPhoneImpl#equals(Object)}
+   *   <li>{@link CustomerPhoneImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CustomerPhoneImpl.equals(Object)",
+    "int CustomerPhoneImpl.hashCode()"
+  })
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
+    // Arrange
+    CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
+    customerPhoneImpl.setCustomer(null);
+    customerPhoneImpl.setId(null);
+    customerPhoneImpl.setPhone(new PhoneImpl());
+    customerPhoneImpl.setPhoneName("6625550144");
+
+    CustomerPhoneImpl customerPhoneImpl2 = new CustomerPhoneImpl();
+    customerPhoneImpl2.setCustomer(null);
+    customerPhoneImpl2.setId(1L);
+    customerPhoneImpl2.setPhone(new PhoneImpl());
+    customerPhoneImpl2.setPhoneName("6625550144");
+
+    // Act and Assert
+    assertEquals(customerPhoneImpl, customerPhoneImpl2);
+    assertEquals(customerPhoneImpl.hashCode(), customerPhoneImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link CustomerPhoneImpl#equals(Object)}, and {@link CustomerPhoneImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link CustomerPhoneImpl#equals(Object)}
+   *   <li>{@link CustomerPhoneImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CustomerPhoneImpl.equals(Object)",
+    "int CustomerPhoneImpl.hashCode()"
+  })
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
+    // Arrange
+    CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
+    customerPhoneImpl.setCustomer(new CustomerImpl());
+    customerPhoneImpl.setId(null);
+    customerPhoneImpl.setPhone(null);
+    customerPhoneImpl.setPhoneName("6625550144");
+
+    CustomerPhoneImpl customerPhoneImpl2 = new CustomerPhoneImpl();
+    customerPhoneImpl2.setCustomer(new CustomerImpl());
+    customerPhoneImpl2.setId(1L);
+    customerPhoneImpl2.setPhone(null);
+    customerPhoneImpl2.setPhoneName("6625550144");
+
+    // Act and Assert
+    assertEquals(customerPhoneImpl, customerPhoneImpl2);
+    assertEquals(customerPhoneImpl.hashCode(), customerPhoneImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link CustomerPhoneImpl#equals(Object)}, and {@link CustomerPhoneImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link CustomerPhoneImpl#equals(Object)}
+   *   <li>{@link CustomerPhoneImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CustomerPhoneImpl.equals(Object)",
+    "int CustomerPhoneImpl.hashCode()"
+  })
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual6() {
+    // Arrange
+    CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
+    customerPhoneImpl.setCustomer(new CustomerImpl());
+    customerPhoneImpl.setId(null);
+    customerPhoneImpl.setPhone(new PhoneImpl());
+    customerPhoneImpl.setPhoneName(null);
+
+    CustomerPhoneImpl customerPhoneImpl2 = new CustomerPhoneImpl();
+    customerPhoneImpl2.setCustomer(new CustomerImpl());
+    customerPhoneImpl2.setId(1L);
+    customerPhoneImpl2.setPhone(new PhoneImpl());
+    customerPhoneImpl2.setPhoneName(null);
+
+    // Act and Assert
+    assertEquals(customerPhoneImpl, customerPhoneImpl2);
+    assertEquals(customerPhoneImpl.hashCode(), customerPhoneImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link CustomerPhoneImpl#equals(Object)}, and {@link CustomerPhoneImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is same.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link CustomerPhoneImpl#equals(Object)}
+   *   <li>{@link CustomerPhoneImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CustomerPhoneImpl.equals(Object)",
+    "int CustomerPhoneImpl.hashCode()"
+  })
+  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
+    // Arrange
+    CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
+    customerPhoneImpl.setCustomer(new CustomerImpl());
+    customerPhoneImpl.setId(1L);
+    customerPhoneImpl.setPhone(new PhoneImpl());
+    customerPhoneImpl.setPhoneName("6625550144");
+
+    // Act and Assert
+    assertEquals(customerPhoneImpl, customerPhoneImpl);
+    int expectedHashCodeResult = customerPhoneImpl.hashCode();
+    assertEquals(expectedHashCodeResult, customerPhoneImpl.hashCode());
+  }
+
+  /**
+   * Test {@link CustomerPhoneImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link CustomerPhoneImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CustomerPhoneImpl.equals(Object)",
+    "int CustomerPhoneImpl.hashCode()"
+  })
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+    // Arrange
+    CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
+    customerPhoneImpl.setCustomer(new CustomerImpl());
+    customerPhoneImpl.setId(2L);
+    customerPhoneImpl.setPhone(new PhoneImpl());
+    customerPhoneImpl.setPhoneName("6625550144");
+
+    CustomerPhoneImpl customerPhoneImpl2 = new CustomerPhoneImpl();
+    customerPhoneImpl2.setCustomer(new CustomerImpl());
+    customerPhoneImpl2.setId(1L);
+    customerPhoneImpl2.setPhone(new PhoneImpl());
+    customerPhoneImpl2.setPhoneName("6625550144");
+
+    // Act and Assert
+    assertNotEquals(customerPhoneImpl, customerPhoneImpl2);
+  }
+
+  /**
+   * Test {@link CustomerPhoneImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link CustomerPhoneImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CustomerPhoneImpl.equals(Object)",
+    "int CustomerPhoneImpl.hashCode()"
+  })
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange
+    CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
+    customerPhoneImpl.setCustomer(null);
+    customerPhoneImpl.setId(null);
+    customerPhoneImpl.setPhone(new PhoneImpl());
+    customerPhoneImpl.setPhoneName("6625550144");
+
+    CustomerPhoneImpl customerPhoneImpl2 = new CustomerPhoneImpl();
+    customerPhoneImpl2.setCustomer(new CustomerImpl());
+    customerPhoneImpl2.setId(1L);
+    customerPhoneImpl2.setPhone(new PhoneImpl());
+    customerPhoneImpl2.setPhoneName("6625550144");
+
+    // Act and Assert
+    assertNotEquals(customerPhoneImpl, customerPhoneImpl2);
+  }
+
+  /**
+   * Test {@link CustomerPhoneImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link CustomerPhoneImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CustomerPhoneImpl.equals(Object)",
+    "int CustomerPhoneImpl.hashCode()"
+  })
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
+    // Arrange
+    CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
+    customerPhoneImpl.setCustomer(mock(CustomerImpl.class));
+    customerPhoneImpl.setId(null);
+    customerPhoneImpl.setPhone(new PhoneImpl());
+    customerPhoneImpl.setPhoneName("6625550144");
+
+    CustomerPhoneImpl customerPhoneImpl2 = new CustomerPhoneImpl();
+    customerPhoneImpl2.setCustomer(new CustomerImpl());
+    customerPhoneImpl2.setId(1L);
+    customerPhoneImpl2.setPhone(new PhoneImpl());
+    customerPhoneImpl2.setPhoneName("6625550144");
+
+    // Act and Assert
+    assertNotEquals(customerPhoneImpl, customerPhoneImpl2);
+  }
+
+  /**
+   * Test {@link CustomerPhoneImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link CustomerPhoneImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CustomerPhoneImpl.equals(Object)",
+    "int CustomerPhoneImpl.hashCode()"
+  })
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
+    // Arrange
+    CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
+    customerPhoneImpl.setCustomer(new CustomerImpl());
+    customerPhoneImpl.setId(null);
+    customerPhoneImpl.setPhone(null);
+    customerPhoneImpl.setPhoneName("6625550144");
+
+    CustomerPhoneImpl customerPhoneImpl2 = new CustomerPhoneImpl();
+    customerPhoneImpl2.setCustomer(new CustomerImpl());
+    customerPhoneImpl2.setId(1L);
+    customerPhoneImpl2.setPhone(new PhoneImpl());
+    customerPhoneImpl2.setPhoneName("6625550144");
+
+    // Act and Assert
+    assertNotEquals(customerPhoneImpl, customerPhoneImpl2);
+  }
+
+  /**
+   * Test {@link CustomerPhoneImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link CustomerPhoneImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CustomerPhoneImpl.equals(Object)",
+    "int CustomerPhoneImpl.hashCode()"
+  })
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
+    // Arrange
+    CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
+    customerPhoneImpl.setCustomer(new CustomerImpl());
+    customerPhoneImpl.setId(null);
+    customerPhoneImpl.setPhone(mock(Phone.class));
+    customerPhoneImpl.setPhoneName("6625550144");
+
+    CustomerPhoneImpl customerPhoneImpl2 = new CustomerPhoneImpl();
+    customerPhoneImpl2.setCustomer(new CustomerImpl());
+    customerPhoneImpl2.setId(1L);
+    customerPhoneImpl2.setPhone(new PhoneImpl());
+    customerPhoneImpl2.setPhoneName("6625550144");
+
+    // Act and Assert
+    assertNotEquals(customerPhoneImpl, customerPhoneImpl2);
+  }
+
+  /**
+   * Test {@link CustomerPhoneImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link CustomerPhoneImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CustomerPhoneImpl.equals(Object)",
+    "int CustomerPhoneImpl.hashCode()"
+  })
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
+    // Arrange
+    CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
+    customerPhoneImpl.setCustomer(new CustomerImpl());
+    customerPhoneImpl.setId(null);
+    customerPhoneImpl.setPhone(new PhoneImpl());
+    customerPhoneImpl.setPhoneName("8605550118");
+
+    CustomerPhoneImpl customerPhoneImpl2 = new CustomerPhoneImpl();
+    customerPhoneImpl2.setCustomer(new CustomerImpl());
+    customerPhoneImpl2.setId(1L);
+    customerPhoneImpl2.setPhone(new PhoneImpl());
+    customerPhoneImpl2.setPhoneName("6625550144");
+
+    // Act and Assert
+    assertNotEquals(customerPhoneImpl, customerPhoneImpl2);
+  }
+
+  /**
+   * Test {@link CustomerPhoneImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link CustomerPhoneImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CustomerPhoneImpl.equals(Object)",
+    "int CustomerPhoneImpl.hashCode()"
+  })
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
+    // Arrange
+    CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
+    customerPhoneImpl.setCustomer(new CustomerImpl());
+    customerPhoneImpl.setId(null);
+    customerPhoneImpl.setPhone(new PhoneImpl());
+    customerPhoneImpl.setPhoneName(null);
+
+    CustomerPhoneImpl customerPhoneImpl2 = new CustomerPhoneImpl();
+    customerPhoneImpl2.setCustomer(new CustomerImpl());
+    customerPhoneImpl2.setId(1L);
+    customerPhoneImpl2.setPhone(new PhoneImpl());
+    customerPhoneImpl2.setPhoneName("6625550144");
+
+    // Act and Assert
+    assertNotEquals(customerPhoneImpl, customerPhoneImpl2);
+  }
+
+  /**
+   * Test {@link CustomerPhoneImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link CustomerPhoneImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CustomerPhoneImpl.equals(Object)",
+    "int CustomerPhoneImpl.hashCode()"
+  })
+  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
+    // Arrange
+    CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
+    customerPhoneImpl.setCustomer(new CustomerImpl());
+    customerPhoneImpl.setId(1L);
+    customerPhoneImpl.setPhone(new PhoneImpl());
+    customerPhoneImpl.setPhoneName("6625550144");
+
+    // Act and Assert
+    assertNotEquals(customerPhoneImpl, null);
+  }
+
+  /**
+   * Test {@link CustomerPhoneImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link CustomerPhoneImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CustomerPhoneImpl.equals(Object)",
+    "int CustomerPhoneImpl.hashCode()"
+  })
+  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+    // Arrange
+    CustomerPhoneImpl customerPhoneImpl = new CustomerPhoneImpl();
+    customerPhoneImpl.setCustomer(new CustomerImpl());
+    customerPhoneImpl.setId(1L);
+    customerPhoneImpl.setPhone(new PhoneImpl());
+    customerPhoneImpl.setPhoneName("6625550144");
+
+    // Act and Assert
+    assertNotEquals(customerPhoneImpl, "Different type to CustomerPhoneImpl");
+  }
+
+  /**
+   * Test getters and setters.
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>default or parameterless constructor of {@link CustomerPhoneImpl}
+   *   <li>{@link CustomerPhoneImpl#setCustomer(Customer)}
+   *   <li>{@link CustomerPhoneImpl#setId(Long)}
+   *   <li>{@link CustomerPhoneImpl#setPhone(Phone)}
+   *   <li>{@link CustomerPhoneImpl#setPhoneName(String)}
+   *   <li>{@link CustomerPhoneImpl#getCustomer()}
+   *   <li>{@link CustomerPhoneImpl#getId()}
+   *   <li>{@link CustomerPhoneImpl#getPhone()}
+   *   <li>{@link CustomerPhoneImpl#getPhoneName()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void CustomerPhoneImpl.<init>()",
+    "Customer CustomerPhoneImpl.getCustomer()",
+    "Long CustomerPhoneImpl.getId()",
+    "Phone CustomerPhoneImpl.getPhone()",
+    "String CustomerPhoneImpl.getPhoneName()",
+    "void CustomerPhoneImpl.setCustomer(Customer)",
+    "void CustomerPhoneImpl.setId(Long)",
+    "void CustomerPhoneImpl.setPhone(Phone)",
+    "void CustomerPhoneImpl.setPhoneName(String)"
+  })
+  public void testGettersAndSetters() {
+    // Arrange and Act
+    CustomerPhoneImpl actualCustomerPhoneImpl = new CustomerPhoneImpl();
+    CustomerImpl customer = new CustomerImpl();
+    actualCustomerPhoneImpl.setCustomer(customer);
+    actualCustomerPhoneImpl.setId(1L);
+    PhoneImpl phone = new PhoneImpl();
+    actualCustomerPhoneImpl.setPhone(phone);
+    actualCustomerPhoneImpl.setPhoneName("6625550144");
+    Customer actualCustomer = actualCustomerPhoneImpl.getCustomer();
+    Long actualId = actualCustomerPhoneImpl.getId();
+    Phone actualPhone = actualCustomerPhoneImpl.getPhone();
+
+    // Assert
+    assertEquals("6625550144", actualCustomerPhoneImpl.getPhoneName());
+    assertEquals(1L, actualId.longValue());
+    assertSame(customer, actualCustomer);
+    assertSame(phone, actualPhone);
+  }
+}

@@ -1,0 +1,163 @@
+package org.broadleafcommerce.openadmin.web.form.entity;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.HashMap;
+import java.util.Map;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+@ContextConfiguration(classes = {ComboField.class})
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
+public class ComboFieldDiffblueTest {
+  @Autowired private ComboField comboField;
+
+  /**
+   * Test {@link ComboField#putOption(String, String)}.
+   *
+   * <p>Method under test: {@link ComboField#putOption(String, String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void ComboField.putOption(String, String)"})
+  public void testPutOption() {
+    // Arrange and Act
+    comboField.putOption("Key", "42");
+
+    // Assert
+    Map<String, String> options = comboField.getOptions();
+    assertEquals(1, options.size());
+    assertEquals("42", options.get("Key"));
+  }
+
+  /**
+   * Test {@link ComboField#setOptions(String[][])} with {@code String[][]}.
+   *
+   * <ul>
+   *   <li>Then {@link ComboField} (default constructor) Options size is one.
+   * </ul>
+   *
+   * <p>Method under test: {@link ComboField#setOptions(String[][])}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void ComboField.setOptions(String[][])"})
+  public void testSetOptionsWithString_thenComboFieldOptionsSizeIsOne() {
+    // Arrange
+    ComboField comboField = new ComboField();
+
+    // Act
+    comboField.setOptions(new String[][] {new String[] {"Options", null}});
+
+    // Assert
+    Map<String, String> options = comboField.getOptions();
+    assertEquals(1, options.size());
+    assertNull(options.get("Options"));
+  }
+
+  /**
+   * Test {@link ComboField#setOptions(String[][])} with {@code String[][]}.
+   *
+   * <ul>
+   *   <li>When {@code null}.
+   *   <li>Then {@link ComboField} (default constructor) Options Empty.
+   * </ul>
+   *
+   * <p>Method under test: {@link ComboField#setOptions(String[][])}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void ComboField.setOptions(String[][])"})
+  public void testSetOptionsWithString_whenNull_thenComboFieldOptionsEmpty() {
+    // Arrange
+    ComboField comboField = new ComboField();
+
+    // Act
+    comboField.setOptions((String[][]) null);
+
+    // Assert that nothing has changed
+    assertTrue(comboField.getOptions().isEmpty());
+  }
+
+  /**
+   * Test {@link ComboField#getOption(String)}.
+   *
+   * <p>Method under test: {@link ComboField#getOption(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String ComboField.getOption(String)"})
+  public void testGetOption() {
+    // Arrange, Act and Assert
+    assertNull(comboField.getOption("Option Key"));
+  }
+
+  /**
+   * Test getters and setters.
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>default or parameterless constructor of {@link ComboField}
+   *   <li>{@link ComboField#setOptions(Map)}
+   *   <li>{@link ComboField#getOptions()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void ComboField.<init>()",
+    "Map ComboField.getOptions()",
+    "void ComboField.setOptions(Map)"
+  })
+  public void testGettersAndSetters() {
+    // Arrange and Act
+    ComboField actualComboField = new ComboField();
+    HashMap<String, String> options = new HashMap<>();
+    actualComboField.setOptions(options);
+    Map<String, String> actualOptions = actualComboField.getOptions();
+
+    // Assert
+    assertNull(actualComboField.getOrder());
+    assertNull(actualComboField.getAssociatedFieldName());
+    assertNull(actualComboField.getColumnWidth());
+    assertNull(actualComboField.getConfirmEnabledText());
+    assertNull(actualComboField.getDisplayType());
+    assertNull(actualComboField.getFieldComponentRenderer());
+    assertNull(actualComboField.getFieldType());
+    assertNull(actualComboField.getForeignKeyClass());
+    assertNull(actualComboField.getForeignKeyDisplayValueProperty());
+    assertNull(actualComboField.getForeignKeySectionPath());
+    assertNull(actualComboField.getFriendlyName());
+    assertNull(actualComboField.getGridFieldComponentRenderer());
+    assertNull(actualComboField.getIdOverride());
+    assertNull(actualComboField.getName());
+    assertNull(actualComboField.getOnChangeTrigger());
+    assertNull(actualComboField.getOwningEntityClass());
+    assertNull(actualComboField.getRawDisplayValue());
+    assertNull(actualComboField.getValue());
+    assertFalse(actualComboField.getAllowNoValueEnumOption());
+    assertTrue(actualOptions.isEmpty());
+    assertTrue(actualComboField.getAttributes().isEmpty());
+    assertTrue(actualComboField.getShouldRender());
+    assertSame(options, actualOptions);
+  }
+}

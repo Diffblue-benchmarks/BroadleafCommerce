@@ -1,0 +1,133 @@
+package org.broadleafcommerce.common.email.service.exception;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+public class EmailExceptionDiffblueTest {
+  /**
+   * Test {@link EmailException#EmailException()}.
+   *
+   * <ul>
+   *   <li>Then return Message is {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link EmailException#EmailException()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void EmailException.<init>()",
+    "void EmailException.<init>(String)",
+    "void EmailException.<init>(String, Throwable)",
+    "void EmailException.<init>(Throwable)"
+  })
+  public void testNewEmailException_thenReturnMessageIsNull() {
+    // Arrange and Act
+    EmailException actualEmailException = new EmailException();
+
+    // Assert
+    assertNull(actualEmailException.getMessage());
+    assertNull(actualEmailException.getCause());
+    assertEquals(0, actualEmailException.getSuppressed().length);
+  }
+
+  /**
+   * Test {@link EmailException#EmailException(String)}.
+   *
+   * <ul>
+   *   <li>When {@code Arg0}.
+   *   <li>Then return Message is {@code Arg0}.
+   * </ul>
+   *
+   * <p>Method under test: {@link EmailException#EmailException(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void EmailException.<init>()",
+    "void EmailException.<init>(String)",
+    "void EmailException.<init>(String, Throwable)",
+    "void EmailException.<init>(Throwable)"
+  })
+  public void testNewEmailException_whenArg0_thenReturnMessageIsArg0() {
+    // Arrange and Act
+    EmailException actualEmailException = new EmailException("Arg0");
+
+    // Assert
+    assertEquals("Arg0", actualEmailException.getMessage());
+    assertNull(actualEmailException.getCause());
+    assertEquals(0, actualEmailException.getSuppressed().length);
+  }
+
+  /**
+   * Test {@link EmailException#EmailException(String, Throwable)}.
+   *
+   * <ul>
+   *   <li>When {@code Arg0}.
+   *   <li>Then return Message is {@code Arg0}.
+   * </ul>
+   *
+   * <p>Method under test: {@link EmailException#EmailException(String, Throwable)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void EmailException.<init>()",
+    "void EmailException.<init>(String)",
+    "void EmailException.<init>(String, Throwable)",
+    "void EmailException.<init>(Throwable)"
+  })
+  public void testNewEmailException_whenArg0_thenReturnMessageIsArg02() {
+    // Arrange
+    Throwable arg1 = new Throwable();
+
+    // Act
+    EmailException actualEmailException = new EmailException("Arg0", arg1);
+
+    // Assert
+    assertEquals("Arg0", actualEmailException.getMessage());
+    assertEquals(0, actualEmailException.getSuppressed().length);
+    assertSame(arg1, actualEmailException.getCause());
+  }
+
+  /**
+   * Test {@link EmailException#EmailException(Throwable)}.
+   *
+   * <ul>
+   *   <li>When {@link Throwable#Throwable()}.
+   *   <li>Then return Message is {@code Throwable}.
+   * </ul>
+   *
+   * <p>Method under test: {@link EmailException#EmailException(Throwable)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void EmailException.<init>()",
+    "void EmailException.<init>(String)",
+    "void EmailException.<init>(String, Throwable)",
+    "void EmailException.<init>(Throwable)"
+  })
+  public void testNewEmailException_whenThrowable_thenReturnMessageIsJavaLangThrowable() {
+    // Arrange
+    Throwable arg0 = new Throwable();
+
+    // Act
+    EmailException actualEmailException = new EmailException(arg0);
+
+    // Assert
+    assertEquals("java.lang.Throwable", actualEmailException.getMessage());
+    assertEquals(0, actualEmailException.getSuppressed().length);
+    assertSame(arg0, actualEmailException.getCause());
+  }
+}

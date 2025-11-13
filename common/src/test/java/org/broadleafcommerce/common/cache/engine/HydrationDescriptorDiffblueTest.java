@@ -1,0 +1,65 @@
+package org.broadleafcommerce.common.cache.engine;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+public class HydrationDescriptorDiffblueTest {
+  /**
+   * Test getters and setters.
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>default or parameterless constructor of {@link HydrationDescriptor}
+   *   <li>{@link HydrationDescriptor#setCacheRegion(String)}
+   *   <li>{@link HydrationDescriptor#setHydratedMutators(Map)}
+   *   <li>{@link HydrationDescriptor#setIdMutators(Method[])}
+   *   <li>{@link HydrationDescriptor#getCacheRegion()}
+   *   <li>{@link HydrationDescriptor#getHydratedMutators()}
+   *   <li>{@link HydrationDescriptor#getIdMutators()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void HydrationDescriptor.<init>()",
+    "String HydrationDescriptor.getCacheRegion()",
+    "Map HydrationDescriptor.getHydratedMutators()",
+    "Method[] HydrationDescriptor.getIdMutators()",
+    "void HydrationDescriptor.setCacheRegion(String)",
+    "void HydrationDescriptor.setHydratedMutators(Map)",
+    "void HydrationDescriptor.setIdMutators(Method[])"
+  })
+  public void testGettersAndSetters() {
+    // Arrange and Act
+    HydrationDescriptor actualHydrationDescriptor = new HydrationDescriptor();
+    actualHydrationDescriptor.setCacheRegion("us-east-2");
+    HashMap<String, HydrationItemDescriptor> hydratedMutators = new HashMap<>();
+    actualHydrationDescriptor.setHydratedMutators(hydratedMutators);
+    Method[] idMutators = new Method[] {null};
+    actualHydrationDescriptor.setIdMutators(idMutators);
+    String actualCacheRegion = actualHydrationDescriptor.getCacheRegion();
+    Map<String, HydrationItemDescriptor> actualHydratedMutators =
+        actualHydrationDescriptor.getHydratedMutators();
+    Method[] actualIdMutators = actualHydrationDescriptor.getIdMutators();
+
+    // Assert
+    assertEquals("us-east-2", actualCacheRegion);
+    assertNull(actualIdMutators[0]);
+    assertEquals(1, actualIdMutators.length);
+    assertTrue(actualHydratedMutators.isEmpty());
+    assertSame(hydratedMutators, actualHydratedMutators);
+    assertSame(idMutators, actualIdMutators);
+  }
+}

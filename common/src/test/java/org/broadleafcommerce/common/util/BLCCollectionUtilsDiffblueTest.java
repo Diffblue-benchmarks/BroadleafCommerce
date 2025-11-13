@@ -1,0 +1,663 @@
+package org.broadleafcommerce.common.util;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.mockito.Mockito;
+
+public class BLCCollectionUtilsDiffblueTest {
+  /**
+   * Test {@link BLCCollectionUtils#collect(Collection, TypedTransformer)}.
+   *
+   * <ul>
+   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.
+   *   <li>When {@link ArrayList#ArrayList()} add {@link BLCFieldUtils#NULL_FIELD}.
+   *   <li>Then calls {@link TypedTransformer#transform(Object)}.
+   * </ul>
+   *
+   * <p>Method under test: {@link BLCCollectionUtils#collect(Collection, TypedTransformer)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Collection BLCCollectionUtils.collect(Collection, TypedTransformer)"})
+  public void testCollect_givenNull_field_whenArrayListAddNull_field_thenCallsTransform() {
+    // Arrange
+    ArrayList<Object> inputCollection = new ArrayList<>();
+    inputCollection.add(BLCFieldUtils.NULL_FIELD);
+
+    TypedTransformer<Object> transformer = mock(TypedTransformer.class);
+    when(transformer.transform(Mockito.<Object>any())).thenReturn(BLCFieldUtils.NULL_FIELD);
+
+    // Act
+    Collection<Object> actualCollectResult =
+        BLCCollectionUtils.collect(inputCollection, transformer);
+
+    // Assert
+    verify(transformer).transform(isA(Object.class));
+    assertEquals(inputCollection, actualCollectResult);
+  }
+
+  /**
+   * Test {@link BLCCollectionUtils#collect(Collection, TypedTransformer)}.
+   *
+   * <ul>
+   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.
+   *   <li>When {@link ArrayList#ArrayList()} add {@link BLCFieldUtils#NULL_FIELD}.
+   *   <li>Then calls {@link TypedTransformer#transform(Object)}.
+   * </ul>
+   *
+   * <p>Method under test: {@link BLCCollectionUtils#collect(Collection, TypedTransformer)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Collection BLCCollectionUtils.collect(Collection, TypedTransformer)"})
+  public void testCollect_givenNull_field_whenArrayListAddNull_field_thenCallsTransform2() {
+    // Arrange
+    ArrayList<Object> inputCollection = new ArrayList<>();
+    inputCollection.add(BLCFieldUtils.NULL_FIELD);
+    inputCollection.add(BLCFieldUtils.NULL_FIELD);
+
+    TypedTransformer<Object> transformer = mock(TypedTransformer.class);
+    when(transformer.transform(Mockito.<Object>any())).thenReturn(BLCFieldUtils.NULL_FIELD);
+
+    // Act
+    Collection<Object> actualCollectResult =
+        BLCCollectionUtils.collect(inputCollection, transformer);
+
+    // Assert
+    verify(transformer, atLeast(1)).transform(isA(Object.class));
+    assertEquals(inputCollection, actualCollectResult);
+  }
+
+  /**
+   * Test {@link BLCCollectionUtils#collect(Collection, TypedTransformer)}.
+   *
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@link ArrayList#ArrayList()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link BLCCollectionUtils#collect(Collection, TypedTransformer)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Collection BLCCollectionUtils.collect(Collection, TypedTransformer)"})
+  public void testCollect_whenArrayList_thenReturnArrayList() {
+    // Arrange
+    ArrayList<Object> inputCollection = new ArrayList<>();
+
+    // Act
+    Collection<Object> actualCollectResult =
+        BLCCollectionUtils.collect(inputCollection, mock(TypedTransformer.class));
+
+    // Assert
+    assertEquals(inputCollection, actualCollectResult);
+  }
+
+  /**
+   * Test {@link BLCCollectionUtils#collect(Collection, TypedTransformer)}.
+   *
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@link ArrayList#ArrayList()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link BLCCollectionUtils#collect(Collection, TypedTransformer)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Collection BLCCollectionUtils.collect(Collection, TypedTransformer)"})
+  public void testCollect_whenArrayList_thenReturnArrayList2() {
+    // Arrange
+    ArrayList<Object> inputCollection = new ArrayList<>();
+
+    // Act
+    Collection<Object> actualCollectResult = BLCCollectionUtils.collect(inputCollection, null);
+
+    // Assert
+    assertEquals(inputCollection, actualCollectResult);
+  }
+
+  /**
+   * Test {@link BLCCollectionUtils#collectList(Collection, TypedTransformer)}.
+   *
+   * <ul>
+   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.
+   *   <li>When {@link ArrayList#ArrayList()} add {@link BLCFieldUtils#NULL_FIELD}.
+   *   <li>Then return {@link ArrayList#ArrayList()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link BLCCollectionUtils#collectList(Collection, TypedTransformer)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"List BLCCollectionUtils.collectList(Collection, TypedTransformer)"})
+  public void testCollectList_givenNull_field_whenArrayListAddNull_field_thenReturnArrayList() {
+    // Arrange
+    ArrayList<Object> inputCollection = new ArrayList<>();
+    inputCollection.add(BLCFieldUtils.NULL_FIELD);
+
+    TypedTransformer<Object> transformer = mock(TypedTransformer.class);
+    when(transformer.transform(Mockito.<Object>any())).thenReturn(BLCFieldUtils.NULL_FIELD);
+
+    // Act
+    List<Object> actualCollectListResult =
+        BLCCollectionUtils.collectList(inputCollection, transformer);
+
+    // Assert
+    verify(transformer).transform(isA(Object.class));
+    assertEquals(inputCollection, actualCollectListResult);
+  }
+
+  /**
+   * Test {@link BLCCollectionUtils#collectList(Collection, TypedTransformer)}.
+   *
+   * <ul>
+   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.
+   *   <li>When {@link ArrayList#ArrayList()} add {@link BLCFieldUtils#NULL_FIELD}.
+   *   <li>Then return {@link ArrayList#ArrayList()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link BLCCollectionUtils#collectList(Collection, TypedTransformer)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"List BLCCollectionUtils.collectList(Collection, TypedTransformer)"})
+  public void testCollectList_givenNull_field_whenArrayListAddNull_field_thenReturnArrayList2() {
+    // Arrange
+    ArrayList<Object> inputCollection = new ArrayList<>();
+    inputCollection.add(BLCFieldUtils.NULL_FIELD);
+    inputCollection.add(BLCFieldUtils.NULL_FIELD);
+
+    TypedTransformer<Object> transformer = mock(TypedTransformer.class);
+    when(transformer.transform(Mockito.<Object>any())).thenReturn(BLCFieldUtils.NULL_FIELD);
+
+    // Act
+    List<Object> actualCollectListResult =
+        BLCCollectionUtils.collectList(inputCollection, transformer);
+
+    // Assert
+    verify(transformer, atLeast(1)).transform(isA(Object.class));
+    assertEquals(inputCollection, actualCollectListResult);
+  }
+
+  /**
+   * Test {@link BLCCollectionUtils#collectList(Collection, TypedTransformer)}.
+   *
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return Empty.
+   * </ul>
+   *
+   * <p>Method under test: {@link BLCCollectionUtils#collectList(Collection, TypedTransformer)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"List BLCCollectionUtils.collectList(Collection, TypedTransformer)"})
+  public void testCollectList_whenArrayList_thenReturnEmpty() {
+    // Arrange and Act
+    List<Object> actualCollectListResult =
+        BLCCollectionUtils.collectList(new ArrayList<>(), mock(TypedTransformer.class));
+
+    // Assert
+    assertTrue(actualCollectListResult.isEmpty());
+  }
+
+  /**
+   * Test {@link BLCCollectionUtils#collectArray(Collection, TypedTransformer, Class)}.
+   *
+   * <ul>
+   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.
+   *   <li>When {@code Object}.
+   *   <li>Then return array length is one.
+   * </ul>
+   *
+   * <p>Method under test: {@link BLCCollectionUtils#collectArray(Collection, TypedTransformer,
+   * Class)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Object[] BLCCollectionUtils.collectArray(Collection, TypedTransformer, Class)"
+  })
+  public void testCollectArray_givenNull_field_whenJavaLangObject_thenReturnArrayLengthIsOne() {
+    // Arrange
+    ArrayList<Object> inputCollection = new ArrayList<>();
+    inputCollection.add(BLCFieldUtils.NULL_FIELD);
+
+    TypedTransformer<Object> transformer = mock(TypedTransformer.class);
+    when(transformer.transform(Mockito.<Object>any())).thenReturn(BLCFieldUtils.NULL_FIELD);
+    Class<Object> clazz = Object.class;
+
+    // Act
+    Object[] actualCollectArrayResult =
+        BLCCollectionUtils.collectArray(inputCollection, transformer, clazz);
+
+    // Assert
+    verify(transformer).transform(isA(Object.class));
+    assertEquals(1, actualCollectArrayResult.length);
+  }
+
+  /**
+   * Test {@link BLCCollectionUtils#collectArray(Collection, TypedTransformer, Class)}.
+   *
+   * <ul>
+   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.
+   *   <li>When {@code Object}.
+   *   <li>Then return array length is two.
+   * </ul>
+   *
+   * <p>Method under test: {@link BLCCollectionUtils#collectArray(Collection, TypedTransformer,
+   * Class)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Object[] BLCCollectionUtils.collectArray(Collection, TypedTransformer, Class)"
+  })
+  public void testCollectArray_givenNull_field_whenJavaLangObject_thenReturnArrayLengthIsTwo() {
+    // Arrange
+    ArrayList<Object> inputCollection = new ArrayList<>();
+    inputCollection.add(BLCFieldUtils.NULL_FIELD);
+    inputCollection.add(BLCFieldUtils.NULL_FIELD);
+
+    TypedTransformer<Object> transformer = mock(TypedTransformer.class);
+    when(transformer.transform(Mockito.<Object>any())).thenReturn(BLCFieldUtils.NULL_FIELD);
+    Class<Object> clazz = Object.class;
+
+    // Act
+    Object[] actualCollectArrayResult =
+        BLCCollectionUtils.collectArray(inputCollection, transformer, clazz);
+
+    // Assert
+    verify(transformer, atLeast(1)).transform(isA(Object.class));
+    assertEquals(2, actualCollectArrayResult.length);
+    Object expectedObject = actualCollectArrayResult[0];
+    assertSame(expectedObject, actualCollectArrayResult[1]);
+  }
+
+  /**
+   * Test {@link BLCCollectionUtils#collectArray(Collection, TypedTransformer, Class)}.
+   *
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return array length is zero.
+   * </ul>
+   *
+   * <p>Method under test: {@link BLCCollectionUtils#collectArray(Collection, TypedTransformer,
+   * Class)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Object[] BLCCollectionUtils.collectArray(Collection, TypedTransformer, Class)"
+  })
+  public void testCollectArray_whenArrayList_thenReturnArrayLengthIsZero() {
+    // Arrange
+    ArrayList<Object> inputCollection = new ArrayList<>();
+    TypedTransformer<Object> transformer = mock(TypedTransformer.class);
+    Class<Object> clazz = Object.class;
+
+    // Act
+    Object[] actualCollectArrayResult =
+        BLCCollectionUtils.collectArray(inputCollection, transformer, clazz);
+
+    // Assert
+    assertEquals(0, actualCollectArrayResult.length);
+  }
+
+  /**
+   * Test {@link BLCCollectionUtils#selectList(Collection, TypedPredicate)}.
+   *
+   * <ul>
+   *   <li>Given {@code false}.
+   *   <li>When {@link TypedPredicate} {@link TypedPredicate#evaluate(Object)} return {@code false}.
+   *   <li>Then return Empty.
+   * </ul>
+   *
+   * <p>Method under test: {@link BLCCollectionUtils#selectList(Collection, TypedPredicate)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"List BLCCollectionUtils.selectList(Collection, TypedPredicate)"})
+  public void testSelectList_givenFalse_whenTypedPredicateEvaluateReturnFalse_thenReturnEmpty() {
+    // Arrange
+    ArrayList<Object> inputCollection = new ArrayList<>();
+    inputCollection.add(BLCFieldUtils.NULL_FIELD);
+
+    TypedPredicate<Object> predicate = mock(TypedPredicate.class);
+    when(predicate.evaluate(Mockito.<Object>any())).thenReturn(false);
+
+    // Act
+    List<Object> actualSelectListResult = BLCCollectionUtils.selectList(inputCollection, predicate);
+
+    // Assert
+    verify(predicate).evaluate(isA(Object.class));
+    assertTrue(actualSelectListResult.isEmpty());
+  }
+
+  /**
+   * Test {@link BLCCollectionUtils#selectList(Collection, TypedPredicate)}.
+   *
+   * <ul>
+   *   <li>Given {@code true}.
+   *   <li>Then return {@link ArrayList#ArrayList()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link BLCCollectionUtils#selectList(Collection, TypedPredicate)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"List BLCCollectionUtils.selectList(Collection, TypedPredicate)"})
+  public void testSelectList_givenTrue_thenReturnArrayList() {
+    // Arrange
+    ArrayList<Object> inputCollection = new ArrayList<>();
+    inputCollection.add(BLCFieldUtils.NULL_FIELD);
+
+    TypedPredicate<Object> predicate = mock(TypedPredicate.class);
+    when(predicate.evaluate(Mockito.<Object>any())).thenReturn(true);
+
+    // Act
+    List<Object> actualSelectListResult = BLCCollectionUtils.selectList(inputCollection, predicate);
+
+    // Assert
+    verify(predicate).evaluate(isA(Object.class));
+    assertEquals(inputCollection, actualSelectListResult);
+  }
+
+  /**
+   * Test {@link BLCCollectionUtils#selectList(Collection, TypedPredicate)}.
+   *
+   * <ul>
+   *   <li>Given {@code true}.
+   *   <li>Then return {@link ArrayList#ArrayList()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link BLCCollectionUtils#selectList(Collection, TypedPredicate)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"List BLCCollectionUtils.selectList(Collection, TypedPredicate)"})
+  public void testSelectList_givenTrue_thenReturnArrayList2() {
+    // Arrange
+    ArrayList<Object> inputCollection = new ArrayList<>();
+    inputCollection.add(BLCFieldUtils.NULL_FIELD);
+    inputCollection.add(BLCFieldUtils.NULL_FIELD);
+
+    TypedPredicate<Object> predicate = mock(TypedPredicate.class);
+    when(predicate.evaluate(Mockito.<Object>any())).thenReturn(true);
+
+    // Act
+    List<Object> actualSelectListResult = BLCCollectionUtils.selectList(inputCollection, predicate);
+
+    // Assert
+    verify(predicate, atLeast(1)).evaluate(isA(Object.class));
+    assertEquals(inputCollection, actualSelectListResult);
+  }
+
+  /**
+   * Test {@link BLCCollectionUtils#selectList(Collection, TypedPredicate)}.
+   *
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return Empty.
+   * </ul>
+   *
+   * <p>Method under test: {@link BLCCollectionUtils#selectList(Collection, TypedPredicate)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"List BLCCollectionUtils.selectList(Collection, TypedPredicate)"})
+  public void testSelectList_whenArrayList_thenReturnEmpty() {
+    // Arrange and Act
+    List<Object> actualSelectListResult = BLCCollectionUtils.selectList(new ArrayList<>(), null);
+
+    // Assert
+    assertTrue(actualSelectListResult.isEmpty());
+  }
+
+  /**
+   * Test {@link BLCCollectionUtils#selectList(Collection, TypedPredicate)}.
+   *
+   * <ul>
+   *   <li>When {@link TypedPredicate}.
+   *   <li>Then return Empty.
+   * </ul>
+   *
+   * <p>Method under test: {@link BLCCollectionUtils#selectList(Collection, TypedPredicate)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"List BLCCollectionUtils.selectList(Collection, TypedPredicate)"})
+  public void testSelectList_whenTypedPredicate_thenReturnEmpty() {
+    // Arrange and Act
+    List<Object> actualSelectListResult =
+        BLCCollectionUtils.selectList(new ArrayList<>(), mock(TypedPredicate.class));
+
+    // Assert
+    assertTrue(actualSelectListResult.isEmpty());
+  }
+
+  /**
+   * Test {@link BLCCollectionUtils#createIfNull(List)}.
+   *
+   * <ul>
+   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.
+   *   <li>When {@link ArrayList#ArrayList()} add {@link BLCFieldUtils#NULL_FIELD}.
+   *   <li>Then return size is one.
+   * </ul>
+   *
+   * <p>Method under test: {@link BLCCollectionUtils#createIfNull(List)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"List BLCCollectionUtils.createIfNull(List)"})
+  public void testCreateIfNull_givenNull_field_whenArrayListAddNull_field_thenReturnSizeIsOne() {
+    // Arrange
+    ArrayList<Object> list = new ArrayList<>();
+    list.add(BLCFieldUtils.NULL_FIELD);
+
+    // Act
+    List<Object> actualCreateIfNullResult = BLCCollectionUtils.createIfNull(list);
+
+    // Assert
+    assertEquals(1, actualCreateIfNullResult.size());
+  }
+
+  /**
+   * Test {@link BLCCollectionUtils#createIfNull(List)}.
+   *
+   * <ul>
+   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.
+   *   <li>When {@link ArrayList#ArrayList()} add {@link BLCFieldUtils#NULL_FIELD}.
+   *   <li>Then return size is two.
+   * </ul>
+   *
+   * <p>Method under test: {@link BLCCollectionUtils#createIfNull(List)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"List BLCCollectionUtils.createIfNull(List)"})
+  public void testCreateIfNull_givenNull_field_whenArrayListAddNull_field_thenReturnSizeIsTwo() {
+    // Arrange
+    ArrayList<Object> list = new ArrayList<>();
+    list.add(BLCFieldUtils.NULL_FIELD);
+    list.add(BLCFieldUtils.NULL_FIELD);
+
+    // Act
+    List<Object> actualCreateIfNullResult = BLCCollectionUtils.createIfNull(list);
+
+    // Assert
+    assertEquals(2, actualCreateIfNullResult.size());
+    Object expectedGetResult = actualCreateIfNullResult.get(0);
+    assertSame(expectedGetResult, actualCreateIfNullResult.get(1));
+  }
+
+  /**
+   * Test {@link BLCCollectionUtils#createIfNull(List)}.
+   *
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return Empty.
+   * </ul>
+   *
+   * <p>Method under test: {@link BLCCollectionUtils#createIfNull(List)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"List BLCCollectionUtils.createIfNull(List)"})
+  public void testCreateIfNull_whenArrayList_thenReturnEmpty() {
+    // Arrange and Act
+    List<Object> actualCreateIfNullResult = BLCCollectionUtils.createIfNull(new ArrayList<>());
+
+    // Assert
+    assertTrue(actualCreateIfNullResult.isEmpty());
+  }
+
+  /**
+   * Test {@link BLCCollectionUtils#createIfNull(List)}.
+   *
+   * <ul>
+   *   <li>When {@code null}.
+   *   <li>Then return Empty.
+   * </ul>
+   *
+   * <p>Method under test: {@link BLCCollectionUtils#createIfNull(List)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"List BLCCollectionUtils.createIfNull(List)"})
+  public void testCreateIfNull_whenNull_thenReturnEmpty() {
+    // Arrange and Act
+    List<Object> actualCreateIfNullResult = BLCCollectionUtils.createIfNull(null);
+
+    // Assert
+    assertTrue(actualCreateIfNullResult.isEmpty());
+  }
+
+  /**
+   * Test {@link BLCCollectionUtils#createChangeAwareCollection(WorkOnChange, Collection)}.
+   *
+   * <ul>
+   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.
+   *   <li>When {@link ArrayList#ArrayList()} add {@link BLCFieldUtils#NULL_FIELD}.
+   * </ul>
+   *
+   * <p>Method under test: {@link BLCCollectionUtils#createChangeAwareCollection(WorkOnChange,
+   * Collection)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Collection BLCCollectionUtils.createChangeAwareCollection(WorkOnChange, Collection)"
+  })
+  public void testCreateChangeAwareCollection_givenNull_field_whenArrayListAddNull_field() {
+    // Arrange
+    WorkOnChange work = mock(WorkOnChange.class);
+
+    ArrayList<Object> original = new ArrayList<>();
+    original.add(BLCFieldUtils.NULL_FIELD);
+
+    // Act
+    Collection actualCreateChangeAwareCollectionResult =
+        BLCCollectionUtils.createChangeAwareCollection(work, original);
+
+    // Assert
+    assertEquals(original, actualCreateChangeAwareCollectionResult);
+  }
+
+  /**
+   * Test {@link BLCCollectionUtils#createChangeAwareCollection(WorkOnChange, Collection)}.
+   *
+   * <ul>
+   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.
+   *   <li>When {@link ArrayList#ArrayList()} add {@link BLCFieldUtils#NULL_FIELD}.
+   * </ul>
+   *
+   * <p>Method under test: {@link BLCCollectionUtils#createChangeAwareCollection(WorkOnChange,
+   * Collection)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Collection BLCCollectionUtils.createChangeAwareCollection(WorkOnChange, Collection)"
+  })
+  public void testCreateChangeAwareCollection_givenNull_field_whenArrayListAddNull_field2() {
+    // Arrange
+    WorkOnChange work = mock(WorkOnChange.class);
+
+    ArrayList<Object> original = new ArrayList<>();
+    original.add(BLCFieldUtils.NULL_FIELD);
+    original.add(BLCFieldUtils.NULL_FIELD);
+
+    // Act
+    Collection actualCreateChangeAwareCollectionResult =
+        BLCCollectionUtils.createChangeAwareCollection(work, original);
+
+    // Assert
+    assertEquals(original, actualCreateChangeAwareCollectionResult);
+  }
+
+  /**
+   * Test {@link BLCCollectionUtils#createChangeAwareCollection(WorkOnChange, Collection)}.
+   *
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link BLCCollectionUtils#createChangeAwareCollection(WorkOnChange,
+   * Collection)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Collection BLCCollectionUtils.createChangeAwareCollection(WorkOnChange, Collection)"
+  })
+  public void testCreateChangeAwareCollection_whenArrayList() {
+    // Arrange
+    WorkOnChange work = mock(WorkOnChange.class);
+    ArrayList<Object> original = new ArrayList<>();
+
+    // Act
+    Collection actualCreateChangeAwareCollectionResult =
+        BLCCollectionUtils.createChangeAwareCollection(work, original);
+
+    // Assert
+    assertEquals(original, actualCreateChangeAwareCollectionResult);
+  }
+}

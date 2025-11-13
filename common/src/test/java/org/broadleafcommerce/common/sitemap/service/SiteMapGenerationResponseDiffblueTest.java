@@ -1,0 +1,66 @@
+package org.broadleafcommerce.common.sitemap.service;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.ArrayList;
+import java.util.List;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+public class SiteMapGenerationResponseDiffblueTest {
+  /**
+   * Test getters and setters.
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>default or parameterless constructor of {@link SiteMapGenerationResponse}
+   *   <li>{@link SiteMapGenerationResponse#setErrorCode(String)}
+   *   <li>{@link SiteMapGenerationResponse#setHasError(boolean)}
+   *   <li>{@link SiteMapGenerationResponse#setSiteMapFilePaths(List)}
+   *   <li>{@link SiteMapGenerationResponse#setSitemapIndexFileName(String)}
+   *   <li>{@link SiteMapGenerationResponse#getErrorCode()}
+   *   <li>{@link SiteMapGenerationResponse#getSiteMapFilePaths()}
+   *   <li>{@link SiteMapGenerationResponse#getSitemapIndexFileName()}
+   *   <li>{@link SiteMapGenerationResponse#isHasError()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void SiteMapGenerationResponse.<init>()",
+    "String SiteMapGenerationResponse.getErrorCode()",
+    "List SiteMapGenerationResponse.getSiteMapFilePaths()",
+    "String SiteMapGenerationResponse.getSitemapIndexFileName()",
+    "boolean SiteMapGenerationResponse.isHasError()",
+    "void SiteMapGenerationResponse.setErrorCode(String)",
+    "void SiteMapGenerationResponse.setHasError(boolean)",
+    "void SiteMapGenerationResponse.setSiteMapFilePaths(List)",
+    "void SiteMapGenerationResponse.setSitemapIndexFileName(String)"
+  })
+  public void testGettersAndSetters() {
+    // Arrange and Act
+    SiteMapGenerationResponse actualSiteMapGenerationResponse = new SiteMapGenerationResponse();
+    actualSiteMapGenerationResponse.setErrorCode("An error occurred");
+    actualSiteMapGenerationResponse.setHasError(true);
+    ArrayList<String> siteMapFilePaths = new ArrayList<>();
+    actualSiteMapGenerationResponse.setSiteMapFilePaths(siteMapFilePaths);
+    actualSiteMapGenerationResponse.setSitemapIndexFileName("foo.txt");
+    String actualErrorCode = actualSiteMapGenerationResponse.getErrorCode();
+    List<String> actualSiteMapFilePaths = actualSiteMapGenerationResponse.getSiteMapFilePaths();
+    String actualSitemapIndexFileName = actualSiteMapGenerationResponse.getSitemapIndexFileName();
+    boolean actualIsHasErrorResult = actualSiteMapGenerationResponse.isHasError();
+
+    // Assert
+    assertEquals("An error occurred", actualErrorCode);
+    assertEquals("foo.txt", actualSitemapIndexFileName);
+    assertTrue(actualSiteMapFilePaths.isEmpty());
+    assertTrue(actualIsHasErrorResult);
+    assertSame(siteMapFilePaths, actualSiteMapFilePaths);
+  }
+}

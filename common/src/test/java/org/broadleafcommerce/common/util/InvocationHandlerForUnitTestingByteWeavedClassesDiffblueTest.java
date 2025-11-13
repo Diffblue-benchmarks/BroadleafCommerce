@@ -1,0 +1,84 @@
+package org.broadleafcommerce.common.util;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.lang.reflect.Method;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+public class InvocationHandlerForUnitTestingByteWeavedClassesDiffblueTest {
+  /**
+   * Test getters and setters.
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link
+   *       InvocationHandlerForUnitTestingByteWeavedClasses#InvocationHandlerForUnitTestingByteWeavedClasses(Object[])}
+   *   <li>{@link
+   *       InvocationHandlerForUnitTestingByteWeavedClasses#setObjectsForByteWeaving(Object[])}
+   *   <li>{@link InvocationHandlerForUnitTestingByteWeavedClasses#getObjectsForByteWeaving()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void InvocationHandlerForUnitTestingByteWeavedClasses.<init>(Object[])",
+    "Object[] InvocationHandlerForUnitTestingByteWeavedClasses.getObjectsForByteWeaving()",
+    "void InvocationHandlerForUnitTestingByteWeavedClasses.setObjectsForByteWeaving(Object[])"
+  })
+  public void testGettersAndSetters() {
+    // Arrange
+    Object[] objectsForByteWeaving = new Object[] {BLCFieldUtils.NULL_FIELD};
+
+    // Act
+    InvocationHandlerForUnitTestingByteWeavedClasses
+        actualInvocationHandlerForUnitTestingByteWeavedClasses =
+            new InvocationHandlerForUnitTestingByteWeavedClasses(objectsForByteWeaving);
+    Object[] objects = new Object[] {BLCFieldUtils.NULL_FIELD};
+    actualInvocationHandlerForUnitTestingByteWeavedClasses.setObjectsForByteWeaving(objects);
+    Object[] actualObjectsForByteWeaving =
+        actualInvocationHandlerForUnitTestingByteWeavedClasses.getObjectsForByteWeaving();
+
+    // Assert
+    assertEquals(1, actualObjectsForByteWeaving.length);
+    assertSame(objects, actualObjectsForByteWeaving);
+  }
+
+  /**
+   * Test {@link InvocationHandlerForUnitTestingByteWeavedClasses#invoke(Object, Method, Object[])}.
+   *
+   * <ul>
+   *   <li>Then return {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link InvocationHandlerForUnitTestingByteWeavedClasses#invoke(Object,
+   * Method, Object[])}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Object InvocationHandlerForUnitTestingByteWeavedClasses.invoke(Object, Method, Object[])"
+  })
+  public void testInvoke_thenReturnNull() throws Throwable {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    InvocationHandlerForUnitTestingByteWeavedClasses
+        invocationHandlerForUnitTestingByteWeavedClasses =
+            new InvocationHandlerForUnitTestingByteWeavedClasses(new Object[] {});
+
+    // Act and Assert
+    assertNull(
+        invocationHandlerForUnitTestingByteWeavedClasses.invoke(
+            BLCFieldUtils.NULL_FIELD, null, new Object[] {BLCFieldUtils.NULL_FIELD}));
+  }
+}

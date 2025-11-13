@@ -1,0 +1,96 @@
+package org.broadleafcommerce.admin.web.rulebuilder.service;
+
+import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.ArrayList;
+import org.broadleafcommerce.openadmin.web.rulebuilder.dto.FieldData;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
+
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+public class SkuFieldServiceImplDiffblueTest {
+  /**
+   * Test {@link SkuFieldServiceImpl#init()}.
+   *
+   * <ul>
+   *   <li>Given {@link SkuFieldServiceImpl} (default constructor).
+   *   <li>Then {@link SkuFieldServiceImpl} (default constructor) Fields size is five.
+   * </ul>
+   *
+   * <p>Method under test: {@link SkuFieldServiceImpl#init()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void SkuFieldServiceImpl.init()"})
+  public void testInit_givenSkuFieldServiceImpl_thenSkuFieldServiceImplFieldsSizeIsFive() {
+    // Arrange
+    SkuFieldServiceImpl skuFieldServiceImpl = new SkuFieldServiceImpl();
+
+    // Act
+    skuFieldServiceImpl.init();
+
+    // Assert
+    assertEquals(5, skuFieldServiceImpl.getFields().size());
+  }
+
+  /**
+   * Test {@link SkuFieldServiceImpl#init()}.
+   *
+   * <ul>
+   *   <li>Then {@link SkuFieldServiceImpl} (default constructor) Fields is {@link
+   *       ArrayList#ArrayList()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link SkuFieldServiceImpl#init()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void SkuFieldServiceImpl.init()"})
+  public void testInit_thenSkuFieldServiceImplFieldsIsArrayList() {
+    // Arrange
+    SkuFieldServiceImpl skuFieldServiceImpl = new SkuFieldServiceImpl();
+    ArrayList<FieldData> fields = new ArrayList<>();
+    skuFieldServiceImpl.setFields(fields);
+
+    // Act
+    skuFieldServiceImpl.init();
+
+    // Assert
+    assertEquals(fields, skuFieldServiceImpl.getFields());
+  }
+
+  /**
+   * Test getters and setters.
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link SkuFieldServiceImpl#getDtoClassName()}
+   *   <li>{@link SkuFieldServiceImpl#getName()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String SkuFieldServiceImpl.getDtoClassName()",
+    "String SkuFieldServiceImpl.getName()"
+  })
+  public void testGettersAndSetters() {
+    // Arrange
+    SkuFieldServiceImpl skuFieldServiceImpl = new SkuFieldServiceImpl();
+
+    // Act
+    String actualDtoClassName = skuFieldServiceImpl.getDtoClassName();
+
+    // Assert
+    assertEquals("SKU_FIELDS", skuFieldServiceImpl.getName());
+    assertEquals("org.broadleafcommerce.core.catalog.domain.SkuImpl", actualDtoClassName);
+  }
+}

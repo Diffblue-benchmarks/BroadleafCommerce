@@ -1,0 +1,161 @@
+package org.broadleafcommerce.openadmin.web.rulebuilder.dto;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
+import org.broadleafcommerce.openadmin.web.rulebuilder.dto.FieldData.Builder;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+@ContextConfiguration(classes = {Builder.class})
+@RunWith(SpringJUnit4ClassRunner.class)
+public class FieldDataDiffblueTest {
+  @Autowired private Builder builder;
+
+  /**
+   * Test Builder {@link Builder#build()}.
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link Builder#build()}
+   *   <li>default or parameterless constructor of {@link Builder}
+   *   <li>{@link Builder#label(String)}
+   *   <li>{@link Builder#name(String)}
+   *   <li>{@link Builder#operators(String)}
+   *   <li>{@link Builder#options(String)}
+   *   <li>{@link Builder#overrideEntityKey(String)}
+   *   <li>{@link Builder#secondaryType(SupportedFieldType)}
+   *   <li>{@link Builder#selectizeSectionKey(String)}
+   *   <li>{@link Builder#skipValidation(boolean)}
+   *   <li>{@link Builder#type(SupportedFieldType)}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void Builder.<init>()",
+    "FieldData Builder.build()",
+    "Builder Builder.label(String)",
+    "Builder Builder.name(String)",
+    "Builder Builder.operators(String)",
+    "Builder Builder.options(String)",
+    "Builder Builder.overrideDtoClassName(String)",
+    "Builder Builder.overrideEntityKey(String)",
+    "Builder Builder.secondaryType(SupportedFieldType)",
+    "Builder Builder.selectizeSectionKey(String)",
+    "Builder Builder.skipValidation(boolean)",
+    "Builder Builder.type(SupportedFieldType)"
+  })
+  public void testBuilderBuild() {
+    // Arrange and Act
+    FieldData actualFieldData =
+        new Builder()
+            .label("Field Label")
+            .name("Field Name")
+            .operators("Operators")
+            .options("Options")
+            .overrideEntityKey("Override Entity Key")
+            .secondaryType(SupportedFieldType.UNKNOWN)
+            .selectizeSectionKey("Selectize Section Key")
+            .skipValidation(true)
+            .type(SupportedFieldType.UNKNOWN)
+            .build();
+
+    // Assert
+    assertEquals("Field Label", actualFieldData.getFieldLabel());
+    assertEquals("Field Name", actualFieldData.getFieldName());
+    assertEquals("Operators", actualFieldData.getOperators());
+    assertEquals("Options", actualFieldData.getOptions());
+    assertEquals("Override Entity Key", actualFieldData.getOverrideEntityKey());
+    assertEquals("Selectize Section Key", actualFieldData.getSelectizeSectionKey());
+    assertNull(actualFieldData.getOverrideDtoClassName());
+    assertEquals(SupportedFieldType.UNKNOWN, actualFieldData.getFieldType());
+    assertEquals(SupportedFieldType.UNKNOWN, actualFieldData.getSecondaryFieldType());
+    assertTrue(actualFieldData.getSkipValidation());
+  }
+
+  /**
+   * Test getters and setters.
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link FieldData#setSkipValidation(boolean)}
+   *   <li>{@link FieldData#getFieldLabel()}
+   *   <li>{@link FieldData#getFieldName()}
+   *   <li>{@link FieldData#getFieldType()}
+   *   <li>{@link FieldData#getOperators()}
+   *   <li>{@link FieldData#getOptions()}
+   *   <li>{@link FieldData#getOverrideDtoClassName()}
+   *   <li>{@link FieldData#getOverrideEntityKey()}
+   *   <li>{@link FieldData#getSecondaryFieldType()}
+   *   <li>{@link FieldData#getSelectizeSectionKey()}
+   *   <li>{@link FieldData#getSkipValidation()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String FieldData.getFieldLabel()",
+    "String FieldData.getFieldName()",
+    "SupportedFieldType FieldData.getFieldType()",
+    "String FieldData.getOperators()",
+    "String FieldData.getOptions()",
+    "String FieldData.getOverrideDtoClassName()",
+    "String FieldData.getOverrideEntityKey()",
+    "SupportedFieldType FieldData.getSecondaryFieldType()",
+    "String FieldData.getSelectizeSectionKey()",
+    "boolean FieldData.getSkipValidation()",
+    "void FieldData.setSkipValidation(boolean)"
+  })
+  public void testGettersAndSetters() {
+    // Arrange
+    FieldData fieldData =
+        new Builder()
+            .label("Field Label")
+            .name("Field Name")
+            .type(SupportedFieldType.UNKNOWN)
+            .operators("Operators")
+            .options("Options")
+            .overrideEntityKey("Override Entity Key")
+            .secondaryType(SupportedFieldType.UNKNOWN)
+            .selectizeSectionKey("Selectize Section Key")
+            .skipValidation(true)
+            .build();
+
+    // Act
+    fieldData.setSkipValidation(true);
+    String actualFieldLabel = fieldData.getFieldLabel();
+    String actualFieldName = fieldData.getFieldName();
+    SupportedFieldType actualFieldType = fieldData.getFieldType();
+    String actualOperators = fieldData.getOperators();
+    String actualOptions = fieldData.getOptions();
+    String actualOverrideDtoClassName = fieldData.getOverrideDtoClassName();
+    String actualOverrideEntityKey = fieldData.getOverrideEntityKey();
+    SupportedFieldType actualSecondaryFieldType = fieldData.getSecondaryFieldType();
+    String actualSelectizeSectionKey = fieldData.getSelectizeSectionKey();
+
+    // Assert
+    assertEquals("Field Label", actualFieldLabel);
+    assertEquals("Field Name", actualFieldName);
+    assertEquals("Operators", actualOperators);
+    assertEquals("Options", actualOptions);
+    assertEquals("Override Entity Key", actualOverrideEntityKey);
+    assertEquals("Selectize Section Key", actualSelectizeSectionKey);
+    assertNull(actualOverrideDtoClassName);
+    assertEquals(SupportedFieldType.UNKNOWN, actualFieldType);
+    assertEquals(SupportedFieldType.UNKNOWN, actualSecondaryFieldType);
+    assertTrue(fieldData.getSkipValidation());
+  }
+}

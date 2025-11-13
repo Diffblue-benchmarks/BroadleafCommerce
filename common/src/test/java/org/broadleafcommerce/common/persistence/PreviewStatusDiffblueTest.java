@@ -1,0 +1,232 @@
+package org.broadleafcommerce.common.persistence;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+public class PreviewStatusDiffblueTest {
+  /**
+   * Test {@link PreviewStatus#equals(Object)}, and {@link PreviewStatus#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link PreviewStatus#equals(Object)}
+   *   <li>{@link PreviewStatus#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean PreviewStatus.equals(Object)", "int PreviewStatus.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
+    // Arrange
+    PreviewStatus previewStatus = new PreviewStatus();
+    previewStatus.setPreview(true);
+
+    PreviewStatus previewStatus2 = new PreviewStatus();
+    previewStatus2.setPreview(true);
+
+    // Act and Assert
+    assertEquals(previewStatus, previewStatus2);
+    assertEquals(previewStatus.hashCode(), previewStatus2.hashCode());
+  }
+
+  /**
+   * Test {@link PreviewStatus#equals(Object)}, and {@link PreviewStatus#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link PreviewStatus#equals(Object)}
+   *   <li>{@link PreviewStatus#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean PreviewStatus.equals(Object)", "int PreviewStatus.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
+    // Arrange
+    PreviewStatus previewStatus = new PreviewStatus();
+    previewStatus.setPreview(null);
+
+    PreviewStatus previewStatus2 = new PreviewStatus();
+    previewStatus2.setPreview(null);
+
+    // Act and Assert
+    assertEquals(previewStatus, previewStatus2);
+    assertEquals(previewStatus.hashCode(), previewStatus2.hashCode());
+  }
+
+  /**
+   * Test {@link PreviewStatus#equals(Object)}, and {@link PreviewStatus#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is same.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link PreviewStatus#equals(Object)}
+   *   <li>{@link PreviewStatus#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean PreviewStatus.equals(Object)", "int PreviewStatus.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
+    // Arrange
+    PreviewStatus previewStatus = new PreviewStatus();
+    previewStatus.setPreview(true);
+
+    // Act and Assert
+    assertEquals(previewStatus, previewStatus);
+    int expectedHashCodeResult = previewStatus.hashCode();
+    assertEquals(expectedHashCodeResult, previewStatus.hashCode());
+  }
+
+  /**
+   * Test {@link PreviewStatus#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link PreviewStatus#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean PreviewStatus.equals(Object)", "int PreviewStatus.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+    // Arrange
+    PreviewStatus previewStatus = new PreviewStatus();
+    previewStatus.setPreview(false);
+
+    PreviewStatus previewStatus2 = new PreviewStatus();
+    previewStatus2.setPreview(true);
+
+    // Act and Assert
+    assertNotEquals(previewStatus, previewStatus2);
+  }
+
+  /**
+   * Test {@link PreviewStatus#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link PreviewStatus#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean PreviewStatus.equals(Object)", "int PreviewStatus.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange
+    PreviewStatus previewStatus = new PreviewStatus();
+    previewStatus.setPreview(null);
+
+    PreviewStatus previewStatus2 = new PreviewStatus();
+    previewStatus2.setPreview(true);
+
+    // Act and Assert
+    assertNotEquals(previewStatus, previewStatus2);
+  }
+
+  /**
+   * Test {@link PreviewStatus#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link PreviewStatus#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean PreviewStatus.equals(Object)", "int PreviewStatus.hashCode()"})
+  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
+    // Arrange
+    PreviewStatus previewStatus = new PreviewStatus();
+    previewStatus.setPreview(true);
+
+    // Act and Assert
+    assertNotEquals(previewStatus, null);
+  }
+
+  /**
+   * Test {@link PreviewStatus#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link PreviewStatus#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean PreviewStatus.equals(Object)", "int PreviewStatus.hashCode()"})
+  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+    // Arrange
+    PreviewStatus previewStatus = new PreviewStatus();
+    previewStatus.setPreview(true);
+
+    // Act and Assert
+    assertNotEquals(previewStatus, "Different type to PreviewStatus");
+  }
+
+  /**
+   * Test getters and setters.
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>default or parameterless constructor of {@link PreviewStatus}
+   *   <li>{@link PreviewStatus#setPreview(Boolean)}
+   *   <li>{@link PreviewStatus#getPreview()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void PreviewStatus.<init>()",
+    "Boolean PreviewStatus.getPreview()",
+    "void PreviewStatus.setPreview(Boolean)"
+  })
+  public void testGettersAndSetters() {
+    // Arrange and Act
+    PreviewStatus actualPreviewStatus = new PreviewStatus();
+    actualPreviewStatus.setPreview(true);
+
+    // Assert
+    assertTrue(actualPreviewStatus.getPreview());
+  }
+}

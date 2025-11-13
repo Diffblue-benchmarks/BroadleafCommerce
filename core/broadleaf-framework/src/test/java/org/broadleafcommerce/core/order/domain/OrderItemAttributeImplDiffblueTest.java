@@ -1,0 +1,303 @@
+package org.broadleafcommerce.core.order.domain;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
+public class OrderItemAttributeImplDiffblueTest {
+  @Autowired private OrderItemAttributeImpl orderItemAttributeImpl;
+
+  /**
+   * Test {@link OrderItemAttributeImpl#clone()}.
+   *
+   * <p>Method under test: {@link OrderItemAttributeImpl#clone()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"OrderItemAttribute OrderItemAttributeImpl.clone()"})
+  public void testClone() {
+    // Arrange and Act
+    OrderItemAttribute actualCloneResult = orderItemAttributeImpl.clone();
+
+    // Assert
+    assertTrue(actualCloneResult instanceof OrderItemAttributeImpl);
+    assertNull(actualCloneResult.getId());
+    assertNull(actualCloneResult.toString());
+    assertNull(actualCloneResult.getName());
+    assertNull(actualCloneResult.getValue());
+    assertNull(actualCloneResult.getOrderItem());
+  }
+
+  /**
+   * Test {@link OrderItemAttributeImpl#equals(Object)}, and {@link
+   * OrderItemAttributeImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link OrderItemAttributeImpl#equals(Object)}
+   *   <li>{@link OrderItemAttributeImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemAttributeImpl.equals(Object)",
+    "int OrderItemAttributeImpl.hashCode()"
+  })
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
+    // Arrange
+    OrderItemAttributeImpl orderItemAttributeImpl = new OrderItemAttributeImpl();
+    orderItemAttributeImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItemAttributeImpl.setName("Name");
+    orderItemAttributeImpl.setOrderItem(new BundleOrderItemImpl());
+    orderItemAttributeImpl.setValue("42");
+
+    OrderItemAttributeImpl orderItemAttributeImpl2 = new OrderItemAttributeImpl();
+    orderItemAttributeImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItemAttributeImpl2.setName("Name");
+    orderItemAttributeImpl2.setOrderItem(new BundleOrderItemImpl());
+    orderItemAttributeImpl2.setValue("42");
+
+    // Act and Assert
+    assertEquals(orderItemAttributeImpl, orderItemAttributeImpl2);
+    assertEquals(orderItemAttributeImpl.hashCode(), orderItemAttributeImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link OrderItemAttributeImpl#equals(Object)}, and {@link
+   * OrderItemAttributeImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is same.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link OrderItemAttributeImpl#equals(Object)}
+   *   <li>{@link OrderItemAttributeImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemAttributeImpl.equals(Object)",
+    "int OrderItemAttributeImpl.hashCode()"
+  })
+  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
+    // Arrange
+    OrderItemAttributeImpl orderItemAttributeImpl = new OrderItemAttributeImpl();
+    orderItemAttributeImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItemAttributeImpl.setName("Name");
+    orderItemAttributeImpl.setOrderItem(new BundleOrderItemImpl());
+    orderItemAttributeImpl.setValue("42");
+
+    // Act and Assert
+    assertEquals(orderItemAttributeImpl, orderItemAttributeImpl);
+    int expectedHashCodeResult = orderItemAttributeImpl.hashCode();
+    assertEquals(expectedHashCodeResult, orderItemAttributeImpl.hashCode());
+  }
+
+  /**
+   * Test {@link OrderItemAttributeImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderItemAttributeImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemAttributeImpl.equals(Object)",
+    "int OrderItemAttributeImpl.hashCode()"
+  })
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+    // Arrange
+    OrderItemAttributeImpl orderItemAttributeImpl = new OrderItemAttributeImpl();
+    orderItemAttributeImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItemAttributeImpl.setName("Name");
+    orderItemAttributeImpl.setOrderItem(new BundleOrderItemImpl());
+    orderItemAttributeImpl.setValue("Value");
+
+    OrderItemAttributeImpl orderItemAttributeImpl2 = new OrderItemAttributeImpl();
+    orderItemAttributeImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItemAttributeImpl2.setName("Name");
+    orderItemAttributeImpl2.setOrderItem(new BundleOrderItemImpl());
+    orderItemAttributeImpl2.setValue("42");
+
+    // Act and Assert
+    assertNotEquals(orderItemAttributeImpl, orderItemAttributeImpl2);
+  }
+
+  /**
+   * Test {@link OrderItemAttributeImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderItemAttributeImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemAttributeImpl.equals(Object)",
+    "int OrderItemAttributeImpl.hashCode()"
+  })
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange
+    OrderItemAttributeImpl orderItemAttributeImpl = new OrderItemAttributeImpl();
+    orderItemAttributeImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItemAttributeImpl.setName("Name");
+    orderItemAttributeImpl.setOrderItem(new BundleOrderItemImpl());
+    orderItemAttributeImpl.setValue(null);
+
+    OrderItemAttributeImpl orderItemAttributeImpl2 = new OrderItemAttributeImpl();
+    orderItemAttributeImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItemAttributeImpl2.setName("Name");
+    orderItemAttributeImpl2.setOrderItem(new BundleOrderItemImpl());
+    orderItemAttributeImpl2.setValue("42");
+
+    // Act and Assert
+    assertNotEquals(orderItemAttributeImpl, orderItemAttributeImpl2);
+  }
+
+  /**
+   * Test {@link OrderItemAttributeImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderItemAttributeImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemAttributeImpl.equals(Object)",
+    "int OrderItemAttributeImpl.hashCode()"
+  })
+  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
+    // Arrange
+    OrderItemAttributeImpl orderItemAttributeImpl = new OrderItemAttributeImpl();
+    orderItemAttributeImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItemAttributeImpl.setName("Name");
+    orderItemAttributeImpl.setOrderItem(new BundleOrderItemImpl());
+    orderItemAttributeImpl.setValue("42");
+
+    // Act and Assert
+    assertNotEquals(orderItemAttributeImpl, null);
+  }
+
+  /**
+   * Test {@link OrderItemAttributeImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderItemAttributeImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemAttributeImpl.equals(Object)",
+    "int OrderItemAttributeImpl.hashCode()"
+  })
+  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+    // Arrange
+    OrderItemAttributeImpl orderItemAttributeImpl = new OrderItemAttributeImpl();
+    orderItemAttributeImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItemAttributeImpl.setName("Name");
+    orderItemAttributeImpl.setOrderItem(new BundleOrderItemImpl());
+    orderItemAttributeImpl.setValue("42");
+
+    // Act and Assert
+    assertNotEquals(orderItemAttributeImpl, "Different type to OrderItemAttributeImpl");
+  }
+
+  /**
+   * Test getters and setters.
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>default or parameterless constructor of {@link OrderItemAttributeImpl}
+   *   <li>{@link OrderItemAttributeImpl#setId(Long)}
+   *   <li>{@link OrderItemAttributeImpl#setName(String)}
+   *   <li>{@link OrderItemAttributeImpl#setOrderItem(OrderItem)}
+   *   <li>{@link OrderItemAttributeImpl#setValue(String)}
+   *   <li>{@link OrderItemAttributeImpl#getId()}
+   *   <li>{@link OrderItemAttributeImpl#getName()}
+   *   <li>{@link OrderItemAttributeImpl#getOrderItem()}
+   *   <li>{@link OrderItemAttributeImpl#toString()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void OrderItemAttributeImpl.<init>()",
+    "Long OrderItemAttributeImpl.getId()",
+    "String OrderItemAttributeImpl.getName()",
+    "OrderItem OrderItemAttributeImpl.getOrderItem()",
+    "void OrderItemAttributeImpl.setId(Long)",
+    "void OrderItemAttributeImpl.setName(String)",
+    "void OrderItemAttributeImpl.setOrderItem(OrderItem)",
+    "void OrderItemAttributeImpl.setValue(String)",
+    "String OrderItemAttributeImpl.toString()"
+  })
+  public void testGettersAndSetters() {
+    // Arrange and Act
+    OrderItemAttributeImpl actualOrderItemAttributeImpl = new OrderItemAttributeImpl();
+    actualOrderItemAttributeImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    actualOrderItemAttributeImpl.setName("Name");
+    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
+    actualOrderItemAttributeImpl.setOrderItem(orderItem);
+    actualOrderItemAttributeImpl.setValue("42");
+    Long actualId = actualOrderItemAttributeImpl.getId();
+    String actualName = actualOrderItemAttributeImpl.getName();
+    OrderItem actualOrderItem = actualOrderItemAttributeImpl.getOrderItem();
+    String actualToStringResult = actualOrderItemAttributeImpl.toString();
+
+    // Assert
+    assertEquals("42", actualOrderItemAttributeImpl.getValue());
+    assertEquals("42", actualToStringResult);
+    assertEquals("Name", actualName);
+    assertEquals(OrderItemQualifierImpl.serialVersionUID, actualId.longValue());
+    assertSame(orderItem, actualOrderItem);
+  }
+}

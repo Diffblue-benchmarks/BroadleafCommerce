@@ -1,0 +1,497 @@
+package org.broadleafcommerce.profile.core.domain;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+public class CustomerRoleImplDiffblueTest {
+  /**
+   * Test {@link CustomerRoleImpl#getRoleName()}.
+   *
+   * <ul>
+   *   <li>Given {@link CustomerRoleImpl} (default constructor) Customer is {@link CustomerImpl}
+   *       (default constructor).
+   *   <li>Then return {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link CustomerRoleImpl#getRoleName()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"java.lang.String CustomerRoleImpl.getRoleName()"})
+  public void testGetRoleName_givenCustomerRoleImplCustomerIsCustomerImpl_thenReturnNull() {
+    // Arrange
+    CustomerRoleImpl customerRoleImpl = new CustomerRoleImpl();
+    customerRoleImpl.setCustomer(new CustomerImpl());
+    customerRoleImpl.setId(1L);
+    customerRoleImpl.setRole(new RoleImpl());
+
+    // Act and Assert
+    assertNull(customerRoleImpl.getRoleName());
+  }
+
+  /**
+   * Test {@link CustomerRoleImpl#equals(Object)}, and {@link CustomerRoleImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link CustomerRoleImpl#equals(Object)}
+   *   <li>{@link CustomerRoleImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean CustomerRoleImpl.equals(Object)", "int CustomerRoleImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
+    // Arrange
+    CustomerRoleImpl customerRoleImpl = new CustomerRoleImpl();
+    customerRoleImpl.setCustomer(new CustomerImpl());
+    customerRoleImpl.setId(1L);
+    customerRoleImpl.setRole(new RoleImpl());
+
+    CustomerRoleImpl customerRoleImpl2 = new CustomerRoleImpl();
+    customerRoleImpl2.setCustomer(new CustomerImpl());
+    customerRoleImpl2.setId(1L);
+    customerRoleImpl2.setRole(new RoleImpl());
+
+    // Act and Assert
+    assertEquals(customerRoleImpl, customerRoleImpl2);
+    assertEquals(customerRoleImpl.hashCode(), customerRoleImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link CustomerRoleImpl#equals(Object)}, and {@link CustomerRoleImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link CustomerRoleImpl#equals(Object)}
+   *   <li>{@link CustomerRoleImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean CustomerRoleImpl.equals(Object)", "int CustomerRoleImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
+    // Arrange
+    CustomerRoleImpl customerRoleImpl = new CustomerRoleImpl();
+    customerRoleImpl.setCustomer(new CustomerImpl());
+    customerRoleImpl.setId(null);
+    customerRoleImpl.setRole(new RoleImpl());
+
+    CustomerRoleImpl customerRoleImpl2 = new CustomerRoleImpl();
+    customerRoleImpl2.setCustomer(new CustomerImpl());
+    customerRoleImpl2.setId(1L);
+    customerRoleImpl2.setRole(new RoleImpl());
+
+    // Act and Assert
+    assertEquals(customerRoleImpl, customerRoleImpl2);
+    assertEquals(customerRoleImpl.hashCode(), customerRoleImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link CustomerRoleImpl#equals(Object)}, and {@link CustomerRoleImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link CustomerRoleImpl#equals(Object)}
+   *   <li>{@link CustomerRoleImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean CustomerRoleImpl.equals(Object)", "int CustomerRoleImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
+    // Arrange
+    CustomerRoleImpl customerRoleImpl = new CustomerRoleImpl();
+    customerRoleImpl.setCustomer(new CustomerImpl());
+    customerRoleImpl.setId(1L);
+    customerRoleImpl.setRole(new RoleImpl());
+
+    CustomerRoleImpl customerRoleImpl2 = new CustomerRoleImpl();
+    customerRoleImpl2.setCustomer(new CustomerImpl());
+    customerRoleImpl2.setId(null);
+    customerRoleImpl2.setRole(new RoleImpl());
+
+    // Act and Assert
+    assertEquals(customerRoleImpl, customerRoleImpl2);
+    assertEquals(customerRoleImpl.hashCode(), customerRoleImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link CustomerRoleImpl#equals(Object)}, and {@link CustomerRoleImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link CustomerRoleImpl#equals(Object)}
+   *   <li>{@link CustomerRoleImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean CustomerRoleImpl.equals(Object)", "int CustomerRoleImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
+    // Arrange
+    CustomerRoleImpl customerRoleImpl = new CustomerRoleImpl();
+    customerRoleImpl.setCustomer(null);
+    customerRoleImpl.setId(null);
+    customerRoleImpl.setRole(new RoleImpl());
+
+    CustomerRoleImpl customerRoleImpl2 = new CustomerRoleImpl();
+    customerRoleImpl2.setCustomer(null);
+    customerRoleImpl2.setId(1L);
+    customerRoleImpl2.setRole(new RoleImpl());
+
+    // Act and Assert
+    assertEquals(customerRoleImpl, customerRoleImpl2);
+    assertEquals(customerRoleImpl.hashCode(), customerRoleImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link CustomerRoleImpl#equals(Object)}, and {@link CustomerRoleImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link CustomerRoleImpl#equals(Object)}
+   *   <li>{@link CustomerRoleImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean CustomerRoleImpl.equals(Object)", "int CustomerRoleImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
+    // Arrange
+    CustomerRoleImpl customerRoleImpl = new CustomerRoleImpl();
+    customerRoleImpl.setCustomer(new CustomerImpl());
+    customerRoleImpl.setId(null);
+    customerRoleImpl.setRole(null);
+
+    CustomerRoleImpl customerRoleImpl2 = new CustomerRoleImpl();
+    customerRoleImpl2.setCustomer(new CustomerImpl());
+    customerRoleImpl2.setId(1L);
+    customerRoleImpl2.setRole(null);
+
+    // Act and Assert
+    assertEquals(customerRoleImpl, customerRoleImpl2);
+    assertEquals(customerRoleImpl.hashCode(), customerRoleImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link CustomerRoleImpl#equals(Object)}, and {@link CustomerRoleImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is same.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link CustomerRoleImpl#equals(Object)}
+   *   <li>{@link CustomerRoleImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean CustomerRoleImpl.equals(Object)", "int CustomerRoleImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
+    // Arrange
+    CustomerRoleImpl customerRoleImpl = new CustomerRoleImpl();
+    customerRoleImpl.setCustomer(new CustomerImpl());
+    customerRoleImpl.setId(1L);
+    customerRoleImpl.setRole(new RoleImpl());
+
+    // Act and Assert
+    assertEquals(customerRoleImpl, customerRoleImpl);
+    int expectedHashCodeResult = customerRoleImpl.hashCode();
+    assertEquals(expectedHashCodeResult, customerRoleImpl.hashCode());
+  }
+
+  /**
+   * Test {@link CustomerRoleImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link CustomerRoleImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean CustomerRoleImpl.equals(Object)", "int CustomerRoleImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+    // Arrange
+    CustomerRoleImpl customerRoleImpl = new CustomerRoleImpl();
+    customerRoleImpl.setCustomer(new CustomerImpl());
+    customerRoleImpl.setId(2L);
+    customerRoleImpl.setRole(new RoleImpl());
+
+    CustomerRoleImpl customerRoleImpl2 = new CustomerRoleImpl();
+    customerRoleImpl2.setCustomer(new CustomerImpl());
+    customerRoleImpl2.setId(1L);
+    customerRoleImpl2.setRole(new RoleImpl());
+
+    // Act and Assert
+    assertNotEquals(customerRoleImpl, customerRoleImpl2);
+  }
+
+  /**
+   * Test {@link CustomerRoleImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link CustomerRoleImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean CustomerRoleImpl.equals(Object)", "int CustomerRoleImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange
+    CustomerRoleImpl customerRoleImpl = new CustomerRoleImpl();
+    customerRoleImpl.setCustomer(null);
+    customerRoleImpl.setId(null);
+    customerRoleImpl.setRole(new RoleImpl());
+
+    CustomerRoleImpl customerRoleImpl2 = new CustomerRoleImpl();
+    customerRoleImpl2.setCustomer(new CustomerImpl());
+    customerRoleImpl2.setId(1L);
+    customerRoleImpl2.setRole(new RoleImpl());
+
+    // Act and Assert
+    assertNotEquals(customerRoleImpl, customerRoleImpl2);
+  }
+
+  /**
+   * Test {@link CustomerRoleImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link CustomerRoleImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean CustomerRoleImpl.equals(Object)", "int CustomerRoleImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
+    // Arrange
+    CustomerRoleImpl customerRoleImpl = new CustomerRoleImpl();
+    customerRoleImpl.setCustomer(mock(CustomerImpl.class));
+    customerRoleImpl.setId(null);
+    customerRoleImpl.setRole(new RoleImpl());
+
+    CustomerRoleImpl customerRoleImpl2 = new CustomerRoleImpl();
+    customerRoleImpl2.setCustomer(new CustomerImpl());
+    customerRoleImpl2.setId(1L);
+    customerRoleImpl2.setRole(new RoleImpl());
+
+    // Act and Assert
+    assertNotEquals(customerRoleImpl, customerRoleImpl2);
+  }
+
+  /**
+   * Test {@link CustomerRoleImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link CustomerRoleImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean CustomerRoleImpl.equals(Object)", "int CustomerRoleImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
+    // Arrange
+    CustomerRoleImpl customerRoleImpl = new CustomerRoleImpl();
+    customerRoleImpl.setCustomer(new CustomerImpl());
+    customerRoleImpl.setId(null);
+    customerRoleImpl.setRole(null);
+
+    CustomerRoleImpl customerRoleImpl2 = new CustomerRoleImpl();
+    customerRoleImpl2.setCustomer(new CustomerImpl());
+    customerRoleImpl2.setId(1L);
+    customerRoleImpl2.setRole(new RoleImpl());
+
+    // Act and Assert
+    assertNotEquals(customerRoleImpl, customerRoleImpl2);
+  }
+
+  /**
+   * Test {@link CustomerRoleImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link CustomerRoleImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean CustomerRoleImpl.equals(Object)", "int CustomerRoleImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
+    // Arrange
+    CustomerRoleImpl customerRoleImpl = new CustomerRoleImpl();
+    customerRoleImpl.setCustomer(new CustomerImpl());
+    customerRoleImpl.setId(null);
+    customerRoleImpl.setRole(mock(Role.class));
+
+    CustomerRoleImpl customerRoleImpl2 = new CustomerRoleImpl();
+    customerRoleImpl2.setCustomer(new CustomerImpl());
+    customerRoleImpl2.setId(1L);
+    customerRoleImpl2.setRole(new RoleImpl());
+
+    // Act and Assert
+    assertNotEquals(customerRoleImpl, customerRoleImpl2);
+  }
+
+  /**
+   * Test {@link CustomerRoleImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link CustomerRoleImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean CustomerRoleImpl.equals(Object)", "int CustomerRoleImpl.hashCode()"})
+  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
+    // Arrange
+    CustomerRoleImpl customerRoleImpl = new CustomerRoleImpl();
+    customerRoleImpl.setCustomer(new CustomerImpl());
+    customerRoleImpl.setId(1L);
+    customerRoleImpl.setRole(new RoleImpl());
+
+    // Act and Assert
+    assertNotEquals(customerRoleImpl, null);
+  }
+
+  /**
+   * Test {@link CustomerRoleImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link CustomerRoleImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean CustomerRoleImpl.equals(Object)", "int CustomerRoleImpl.hashCode()"})
+  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+    // Arrange
+    CustomerRoleImpl customerRoleImpl = new CustomerRoleImpl();
+    customerRoleImpl.setCustomer(new CustomerImpl());
+    customerRoleImpl.setId(1L);
+    customerRoleImpl.setRole(new RoleImpl());
+
+    // Act and Assert
+    assertNotEquals(customerRoleImpl, "Different type to CustomerRoleImpl");
+  }
+
+  /**
+   * Test getters and setters.
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>default or parameterless constructor of {@link CustomerRoleImpl}
+   *   <li>{@link CustomerRoleImpl#setCustomer(Customer)}
+   *   <li>{@link CustomerRoleImpl#setId(Long)}
+   *   <li>{@link CustomerRoleImpl#setRole(Role)}
+   *   <li>{@link CustomerRoleImpl#getCustomer()}
+   *   <li>{@link CustomerRoleImpl#getId()}
+   *   <li>{@link CustomerRoleImpl#getRole()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void CustomerRoleImpl.<init>()",
+    "Customer CustomerRoleImpl.getCustomer()",
+    "Long CustomerRoleImpl.getId()",
+    "Role CustomerRoleImpl.getRole()",
+    "void CustomerRoleImpl.setCustomer(Customer)",
+    "void CustomerRoleImpl.setId(Long)",
+    "void CustomerRoleImpl.setRole(Role)"
+  })
+  public void testGettersAndSetters() {
+    // Arrange and Act
+    CustomerRoleImpl actualCustomerRoleImpl = new CustomerRoleImpl();
+    CustomerImpl customer = new CustomerImpl();
+    actualCustomerRoleImpl.setCustomer(customer);
+    actualCustomerRoleImpl.setId(1L);
+    RoleImpl role = new RoleImpl();
+    actualCustomerRoleImpl.setRole(role);
+    Customer actualCustomer = actualCustomerRoleImpl.getCustomer();
+    Long actualId = actualCustomerRoleImpl.getId();
+    Role actualRole = actualCustomerRoleImpl.getRole();
+
+    // Assert
+    assertEquals(1L, actualId.longValue());
+    assertSame(customer, actualCustomer);
+    assertSame(role, actualRole);
+  }
+}

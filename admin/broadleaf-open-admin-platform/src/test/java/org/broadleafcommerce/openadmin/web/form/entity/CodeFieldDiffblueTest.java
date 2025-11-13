@@ -1,0 +1,69 @@
+package org.broadleafcommerce.openadmin.web.form.entity;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+public class CodeFieldDiffblueTest {
+  /**
+   * Test getters and setters.
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>default or parameterless constructor of {@link CodeField}
+   *   <li>{@link CodeField#setFetchUrlSuffix(String)}
+   *   <li>{@link CodeField#setFileType(String)}
+   *   <li>{@link CodeField#getFetchUrlSuffix()}
+   *   <li>{@link CodeField#getFileType()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void CodeField.<init>()",
+    "String CodeField.getFetchUrlSuffix()",
+    "String CodeField.getFileType()",
+    "void CodeField.setFetchUrlSuffix(String)",
+    "void CodeField.setFileType(String)"
+  })
+  public void testGettersAndSetters() {
+    // Arrange and Act
+    CodeField actualCodeField = new CodeField();
+    actualCodeField.setFetchUrlSuffix("https://example.org/example");
+    actualCodeField.setFileType("File Type");
+    String actualFetchUrlSuffix = actualCodeField.getFetchUrlSuffix();
+
+    // Assert
+    assertEquals("File Type", actualCodeField.getFileType());
+    assertEquals("https://example.org/example", actualFetchUrlSuffix);
+    assertNull(actualCodeField.getOrder());
+    assertNull(actualCodeField.getAssociatedFieldName());
+    assertNull(actualCodeField.getColumnWidth());
+    assertNull(actualCodeField.getConfirmEnabledText());
+    assertNull(actualCodeField.getDisplayType());
+    assertNull(actualCodeField.getFieldComponentRenderer());
+    assertNull(actualCodeField.getFieldType());
+    assertNull(actualCodeField.getForeignKeyClass());
+    assertNull(actualCodeField.getForeignKeyDisplayValueProperty());
+    assertNull(actualCodeField.getForeignKeySectionPath());
+    assertNull(actualCodeField.getFriendlyName());
+    assertNull(actualCodeField.getGridFieldComponentRenderer());
+    assertNull(actualCodeField.getIdOverride());
+    assertNull(actualCodeField.getName());
+    assertNull(actualCodeField.getOnChangeTrigger());
+    assertNull(actualCodeField.getOwningEntityClass());
+    assertNull(actualCodeField.getRawDisplayValue());
+    assertNull(actualCodeField.getValue());
+    assertFalse(actualCodeField.getAllowNoValueEnumOption());
+    assertTrue(actualCodeField.getAttributes().isEmpty());
+    assertTrue(actualCodeField.getShouldRender());
+  }
+}

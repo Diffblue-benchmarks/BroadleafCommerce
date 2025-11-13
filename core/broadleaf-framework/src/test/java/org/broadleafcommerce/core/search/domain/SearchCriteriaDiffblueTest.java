@@ -1,0 +1,146 @@
+package org.broadleafcommerce.core.search.domain;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.broadleafcommerce.core.catalog.domain.Category;
+import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+@ContextConfiguration(classes = {SearchCriteria.class})
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
+public class SearchCriteriaDiffblueTest {
+  @Autowired private SearchCriteria searchCriteria;
+
+  /**
+   * Test {@link SearchCriteria#addFilterQuery(String)}.
+   *
+   * <p>Method under test: {@link SearchCriteria#addFilterQuery(String)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void SearchCriteria.addFilterQuery(String)"})
+  public void testAddFilterQuery() {
+    // Arrange and Act
+    searchCriteria.addFilterQuery("Query");
+
+    // Assert
+    Collection<String> filterQueries = searchCriteria.getFilterQueries();
+    assertEquals(1, filterQueries.size());
+    assertTrue(filterQueries instanceof List);
+    assertEquals("Query", ((List<String>) filterQueries).get(0));
+  }
+
+  /**
+   * Test getters and setters.
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>default or parameterless constructor of {@link SearchCriteria}
+   *   <li>{@link SearchCriteria#setCategory(Category)}
+   *   <li>{@link SearchCriteria#setFilterCriteria(Map)}
+   *   <li>{@link SearchCriteria#setFilterQueries(Collection)}
+   *   <li>{@link SearchCriteria#setPage(Integer)}
+   *   <li>{@link SearchCriteria#setPageSize(Integer)}
+   *   <li>{@link SearchCriteria#setQuery(String)}
+   *   <li>{@link SearchCriteria#setRequestHandler(String)}
+   *   <li>{@link SearchCriteria#setSearchExplicitCategory(boolean)}
+   *   <li>{@link SearchCriteria#setSortQuery(String)}
+   *   <li>{@link SearchCriteria#setStartIndex(Integer)}
+   *   <li>{@link SearchCriteria#getCategory()}
+   *   <li>{@link SearchCriteria#getFilterCriteria()}
+   *   <li>{@link SearchCriteria#getFilterQueries()}
+   *   <li>{@link SearchCriteria#getPage()}
+   *   <li>{@link SearchCriteria#getPageSize()}
+   *   <li>{@link SearchCriteria#getQuery()}
+   *   <li>{@link SearchCriteria#getRequestHandler()}
+   *   <li>{@link SearchCriteria#getSearchExplicitCategory()}
+   *   <li>{@link SearchCriteria#getSortQuery()}
+   *   <li>{@link SearchCriteria#getStartIndex()}
+   * </ul>
+   */
+  @Test
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void SearchCriteria.<init>()",
+    "Category SearchCriteria.getCategory()",
+    "Map SearchCriteria.getFilterCriteria()",
+    "Collection SearchCriteria.getFilterQueries()",
+    "Integer SearchCriteria.getPage()",
+    "Integer SearchCriteria.getPageSize()",
+    "String SearchCriteria.getQuery()",
+    "String SearchCriteria.getRequestHandler()",
+    "boolean SearchCriteria.getSearchExplicitCategory()",
+    "String SearchCriteria.getSortQuery()",
+    "Integer SearchCriteria.getStartIndex()",
+    "void SearchCriteria.setCategory(Category)",
+    "void SearchCriteria.setFilterCriteria(Map)",
+    "void SearchCriteria.setFilterQueries(Collection)",
+    "void SearchCriteria.setPage(Integer)",
+    "void SearchCriteria.setPageSize(Integer)",
+    "void SearchCriteria.setQuery(String)",
+    "void SearchCriteria.setRequestHandler(String)",
+    "void SearchCriteria.setSearchExplicitCategory(boolean)",
+    "void SearchCriteria.setSortQuery(String)",
+    "void SearchCriteria.setStartIndex(Integer)"
+  })
+  public void testGettersAndSetters() {
+    // Arrange and Act
+    SearchCriteria actualSearchCriteria = new SearchCriteria();
+    CategoryImpl category = new CategoryImpl();
+    actualSearchCriteria.setCategory(category);
+    HashMap<String, String[]> filterCriteria = new HashMap<>();
+    actualSearchCriteria.setFilterCriteria(filterCriteria);
+    ArrayList<String> filterQueries = new ArrayList<>();
+    actualSearchCriteria.setFilterQueries(filterQueries);
+    actualSearchCriteria.setPage(1);
+    actualSearchCriteria.setPageSize(3);
+    actualSearchCriteria.setQuery("Query");
+    actualSearchCriteria.setRequestHandler("Request Handler");
+    actualSearchCriteria.setSearchExplicitCategory(true);
+    actualSearchCriteria.setSortQuery("Sort Query");
+    actualSearchCriteria.setStartIndex(1);
+    Category actualCategory = actualSearchCriteria.getCategory();
+    Map<String, String[]> actualFilterCriteria = actualSearchCriteria.getFilterCriteria();
+    Collection<String> actualFilterQueries = actualSearchCriteria.getFilterQueries();
+    Integer actualPage = actualSearchCriteria.getPage();
+    Integer actualPageSize = actualSearchCriteria.getPageSize();
+    String actualQuery = actualSearchCriteria.getQuery();
+    String actualRequestHandler = actualSearchCriteria.getRequestHandler();
+    boolean actualSearchExplicitCategory = actualSearchCriteria.getSearchExplicitCategory();
+    String actualSortQuery = actualSearchCriteria.getSortQuery();
+    Integer actualStartIndex = actualSearchCriteria.getStartIndex();
+
+    // Assert
+    assertTrue(actualFilterQueries instanceof List);
+    assertEquals("Query", actualQuery);
+    assertEquals("Request Handler", actualRequestHandler);
+    assertEquals("Sort Query", actualSortQuery);
+    assertEquals(1, actualPage.intValue());
+    assertEquals(1, actualStartIndex.intValue());
+    assertEquals(3, actualPageSize.intValue());
+    assertTrue(actualFilterCriteria.isEmpty());
+    assertTrue(actualSearchExplicitCategory);
+    assertSame(filterQueries, actualFilterQueries);
+    assertSame(filterCriteria, actualFilterCriteria);
+    assertSame(category, actualCategory);
+  }
+}

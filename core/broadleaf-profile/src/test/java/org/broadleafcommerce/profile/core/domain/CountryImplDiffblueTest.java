@@ -1,0 +1,372 @@
+package org.broadleafcommerce.profile.core.domain;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+@ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
+public class CountryImplDiffblueTest {
+  @Autowired private CountryImpl countryImpl;
+
+  /**
+   * Test {@link CountryImpl#getName()}.
+   *
+   * <p>Method under test: {@link CountryImpl#getName()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String CountryImpl.getName()"})
+  public void testGetName() {
+    // Arrange, Act and Assert
+    assertNull(countryImpl.getName());
+  }
+
+  /**
+   * Test {@link CountryImpl#equals(Object)}, and {@link CountryImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link CountryImpl#equals(Object)}
+   *   <li>{@link CountryImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean CountryImpl.equals(Object)", "int CountryImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
+    // Arrange
+    CountryImpl countryImpl = new CountryImpl();
+    countryImpl.setAbbreviation("Abbreviation");
+    countryImpl.setName("Name");
+
+    CountryImpl countryImpl2 = new CountryImpl();
+    countryImpl2.setAbbreviation("Abbreviation");
+    countryImpl2.setName("Name");
+
+    // Act and Assert
+    assertEquals(countryImpl, countryImpl2);
+    assertEquals(countryImpl.hashCode(), countryImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link CountryImpl#equals(Object)}, and {@link CountryImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link CountryImpl#equals(Object)}
+   *   <li>{@link CountryImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean CountryImpl.equals(Object)", "int CountryImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
+    // Arrange
+    CountryImpl countryImpl = new CountryImpl();
+    countryImpl.setAbbreviation(null);
+    countryImpl.setName("Name");
+
+    CountryImpl countryImpl2 = new CountryImpl();
+    countryImpl2.setAbbreviation(null);
+    countryImpl2.setName("Name");
+
+    // Act and Assert
+    assertEquals(countryImpl, countryImpl2);
+    assertEquals(countryImpl.hashCode(), countryImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link CountryImpl#equals(Object)}, and {@link CountryImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link CountryImpl#equals(Object)}
+   *   <li>{@link CountryImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean CountryImpl.equals(Object)", "int CountryImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
+    // Arrange
+    CountryImpl countryImpl = new CountryImpl();
+    countryImpl.setAbbreviation("Abbreviation");
+    countryImpl.setName(null);
+
+    CountryImpl countryImpl2 = new CountryImpl();
+    countryImpl2.setAbbreviation("Abbreviation");
+    countryImpl2.setName(null);
+
+    // Act and Assert
+    assertEquals(countryImpl, countryImpl2);
+    assertEquals(countryImpl.hashCode(), countryImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link CountryImpl#equals(Object)}, and {@link CountryImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is same.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link CountryImpl#equals(Object)}
+   *   <li>{@link CountryImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean CountryImpl.equals(Object)", "int CountryImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
+    // Arrange
+    CountryImpl countryImpl = new CountryImpl();
+    countryImpl.setAbbreviation("Abbreviation");
+    countryImpl.setName("Name");
+
+    // Act and Assert
+    assertEquals(countryImpl, countryImpl);
+    int expectedHashCodeResult = countryImpl.hashCode();
+    assertEquals(expectedHashCodeResult, countryImpl.hashCode());
+  }
+
+  /**
+   * Test {@link CountryImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link CountryImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean CountryImpl.equals(Object)", "int CountryImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+    // Arrange
+    CountryImpl countryImpl = new CountryImpl();
+    countryImpl.setAbbreviation("Name");
+    countryImpl.setName("Name");
+
+    CountryImpl countryImpl2 = new CountryImpl();
+    countryImpl2.setAbbreviation("Abbreviation");
+    countryImpl2.setName("Name");
+
+    // Act and Assert
+    assertNotEquals(countryImpl, countryImpl2);
+  }
+
+  /**
+   * Test {@link CountryImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link CountryImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean CountryImpl.equals(Object)", "int CountryImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange
+    CountryImpl countryImpl = new CountryImpl();
+    countryImpl.setAbbreviation(null);
+    countryImpl.setName("Name");
+
+    CountryImpl countryImpl2 = new CountryImpl();
+    countryImpl2.setAbbreviation("Abbreviation");
+    countryImpl2.setName("Name");
+
+    // Act and Assert
+    assertNotEquals(countryImpl, countryImpl2);
+  }
+
+  /**
+   * Test {@link CountryImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link CountryImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean CountryImpl.equals(Object)", "int CountryImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
+    // Arrange
+    CountryImpl countryImpl = new CountryImpl();
+    countryImpl.setAbbreviation("Abbreviation");
+    countryImpl.setName("Abbreviation");
+
+    CountryImpl countryImpl2 = new CountryImpl();
+    countryImpl2.setAbbreviation("Abbreviation");
+    countryImpl2.setName("Name");
+
+    // Act and Assert
+    assertNotEquals(countryImpl, countryImpl2);
+  }
+
+  /**
+   * Test {@link CountryImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link CountryImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean CountryImpl.equals(Object)", "int CountryImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
+    // Arrange
+    CountryImpl countryImpl = new CountryImpl();
+    countryImpl.setAbbreviation("Abbreviation");
+    countryImpl.setName(null);
+
+    CountryImpl countryImpl2 = new CountryImpl();
+    countryImpl2.setAbbreviation("Abbreviation");
+    countryImpl2.setName("Name");
+
+    // Act and Assert
+    assertNotEquals(countryImpl, countryImpl2);
+  }
+
+  /**
+   * Test {@link CountryImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link CountryImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean CountryImpl.equals(Object)", "int CountryImpl.hashCode()"})
+  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
+    // Arrange
+    CountryImpl countryImpl = new CountryImpl();
+    countryImpl.setAbbreviation("Abbreviation");
+    countryImpl.setName("Name");
+
+    // Act and Assert
+    assertNotEquals(countryImpl, null);
+  }
+
+  /**
+   * Test {@link CountryImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link CountryImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean CountryImpl.equals(Object)", "int CountryImpl.hashCode()"})
+  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+    // Arrange
+    CountryImpl countryImpl = new CountryImpl();
+    countryImpl.setAbbreviation("Abbreviation");
+    countryImpl.setName("Name");
+
+    // Act and Assert
+    assertNotEquals(countryImpl, "Different type to CountryImpl");
+  }
+
+  /**
+   * Test {@link CountryImpl#getMainEntityName()}.
+   *
+   * <p>Method under test: {@link CountryImpl#getMainEntityName()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String CountryImpl.getMainEntityName()"})
+  public void testGetMainEntityName() {
+    // Arrange, Act and Assert
+    assertNull(countryImpl.getMainEntityName());
+  }
+
+  /**
+   * Test getters and setters.
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>default or parameterless constructor of {@link CountryImpl}
+   *   <li>{@link CountryImpl#setAbbreviation(String)}
+   *   <li>{@link CountryImpl#setName(String)}
+   *   <li>{@link CountryImpl#getAbbreviation()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void CountryImpl.<init>()",
+    "String CountryImpl.getAbbreviation()",
+    "void CountryImpl.setAbbreviation(String)",
+    "void CountryImpl.setName(String)"
+  })
+  public void testGettersAndSetters() {
+    // Arrange and Act
+    CountryImpl actualCountryImpl = new CountryImpl();
+    actualCountryImpl.setAbbreviation("Abbreviation");
+    actualCountryImpl.setName("Name");
+
+    // Assert
+    assertEquals("Abbreviation", actualCountryImpl.getAbbreviation());
+  }
+}

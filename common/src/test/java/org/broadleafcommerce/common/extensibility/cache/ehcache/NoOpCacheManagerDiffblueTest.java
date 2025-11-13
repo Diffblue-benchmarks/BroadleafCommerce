@@ -1,0 +1,218 @@
+package org.broadleafcommerce.common.extensibility.cache.ehcache;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.List;
+import javax.cache.Cache;
+import javax.cache.configuration.Configuration;
+import javax.cache.configuration.MutableConfiguration;
+import javax.cache.spi.CachingProvider;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+@ContextConfiguration(classes = {NoOpCacheManager.class})
+@RunWith(SpringJUnit4ClassRunner.class)
+public class NoOpCacheManagerDiffblueTest {
+  @Autowired private NoOpCacheManager noOpCacheManager;
+
+  /**
+   * Test {@link NoOpCacheManager#getURI()}.
+   *
+   * <p>Method under test: {@link NoOpCacheManager#getURI()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"java.net.URI NoOpCacheManager.getURI()"})
+  public void testGetURI() {
+    // Arrange, Act and Assert
+    assertEquals("noop:cachemanager", new NoOpCacheManager().getURI().toString());
+  }
+
+  /**
+   * Test {@link NoOpCacheManager#getProperties()}.
+   *
+   * <p>Method under test: {@link NoOpCacheManager#getProperties()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"java.util.Properties NoOpCacheManager.getProperties()"})
+  public void testGetProperties() {
+    // Arrange, Act and Assert
+    assertTrue(new NoOpCacheManager().getProperties().isEmpty());
+  }
+
+  /**
+   * Test {@link NoOpCacheManager#createCache(String, Configuration)}.
+   *
+   * <p>Method under test: {@link NoOpCacheManager#createCache(String, Configuration)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Cache NoOpCacheManager.createCache(String, Configuration)"})
+  public void testCreateCache() throws IllegalArgumentException {
+    // Arrange and Act
+    Cache<Object, Object> actualCreateCacheResult =
+        noOpCacheManager.createCache("foo", new MutableConfiguration<>());
+
+    // Assert
+    assertTrue(actualCreateCacheResult instanceof NoOpCache);
+    assertEquals("NoOpCache", actualCreateCacheResult.getName());
+    assertNull(actualCreateCacheResult.iterator());
+    assertFalse(actualCreateCacheResult.isClosed());
+    assertSame(noOpCacheManager, actualCreateCacheResult.getCacheManager());
+  }
+
+  /**
+   * Test {@link NoOpCacheManager#getCache(String)} with {@code s}.
+   *
+   * <p>Method under test: {@link NoOpCacheManager#getCache(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Cache NoOpCacheManager.getCache(String)"})
+  public void testGetCacheWithS() {
+    // Arrange and Act
+    Cache<Object, Object> actualCache = noOpCacheManager.getCache("foo");
+
+    // Assert
+    assertTrue(actualCache instanceof NoOpCache);
+    assertEquals("NoOpCache", actualCache.getName());
+    assertNull(actualCache.iterator());
+    assertFalse(actualCache.isClosed());
+    assertSame(noOpCacheManager, actualCache.getCacheManager());
+  }
+
+  /**
+   * Test {@link NoOpCacheManager#getCache(String, Class, Class)} with {@code s}, {@code aClass},
+   * {@code aClass1}.
+   *
+   * <p>Method under test: {@link NoOpCacheManager#getCache(String, Class, Class)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Cache NoOpCacheManager.getCache(String, Class, Class)"})
+  public void testGetCacheWithSAClassAClass1() {
+    // Arrange
+    Class<Object> aClass = Object.class;
+    Class<Object> aClass1 = Object.class;
+
+    // Act
+    Cache<Object, Object> actualCache = noOpCacheManager.getCache("foo", aClass, aClass1);
+
+    // Assert
+    assertTrue(actualCache instanceof NoOpCache);
+    assertEquals("NoOpCache", actualCache.getName());
+    assertNull(actualCache.iterator());
+    assertFalse(actualCache.isClosed());
+    assertSame(noOpCacheManager, actualCache.getCacheManager());
+  }
+
+  /**
+   * Test getters and setters.
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link NoOpCacheManager#close()}
+   *   <li>{@link NoOpCacheManager#destroyCache(String)}
+   *   <li>{@link NoOpCacheManager#enableManagement(String, boolean)}
+   *   <li>{@link NoOpCacheManager#enableStatistics(String, boolean)}
+   *   <li>{@link NoOpCacheManager#getCacheNames()}
+   *   <li>{@link NoOpCacheManager#getCachingProvider()}
+   *   <li>{@link NoOpCacheManager#getClassLoader()}
+   *   <li>{@link NoOpCacheManager#isClosed()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void NoOpCacheManager.close()",
+    "void NoOpCacheManager.destroyCache(String)",
+    "void NoOpCacheManager.enableManagement(String, boolean)",
+    "void NoOpCacheManager.enableStatistics(String, boolean)",
+    "Iterable NoOpCacheManager.getCacheNames()",
+    "CachingProvider NoOpCacheManager.getCachingProvider()",
+    "ClassLoader NoOpCacheManager.getClassLoader()",
+    "boolean NoOpCacheManager.isClosed()"
+  })
+  public void testGettersAndSetters() {
+    // Arrange
+    NoOpCacheManager noOpCacheManager = new NoOpCacheManager();
+
+    // Act
+    noOpCacheManager.close();
+    noOpCacheManager.destroyCache("foo");
+    noOpCacheManager.enableManagement("foo", true);
+    noOpCacheManager.enableStatistics("foo", true);
+    Iterable<String> actualCacheNames = noOpCacheManager.getCacheNames();
+    CachingProvider actualCachingProvider = noOpCacheManager.getCachingProvider();
+    ClassLoader actualClassLoader = noOpCacheManager.getClassLoader();
+
+    // Assert
+    assertTrue(actualCacheNames instanceof List);
+    assertNull(actualClassLoader);
+    assertNull(actualCachingProvider);
+    assertFalse(noOpCacheManager.isClosed());
+  }
+
+  /**
+   * Test {@link NoOpCacheManager#unwrap(Class)}.
+   *
+   * <p>Method under test: {@link NoOpCacheManager#unwrap(Class)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Object NoOpCacheManager.unwrap(Class)"})
+  public void testUnwrap() {
+    // Arrange
+    NoOpCacheManager noOpCacheManager = new NoOpCacheManager();
+    Class<Object> aClass = Object.class;
+
+    // Act
+    Object actualUnwrapResult = noOpCacheManager.unwrap(aClass);
+
+    // Assert
+    assertSame(noOpCacheManager, actualUnwrapResult);
+  }
+
+  /**
+   * Test new {@link NoOpCacheManager} (default constructor).
+   *
+   * <p>Method under test: default or parameterless constructor of {@link NoOpCacheManager}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void NoOpCacheManager.<init>()"})
+  public void testNewNoOpCacheManager() {
+    // Arrange and Act
+    NoOpCacheManager actualNoOpCacheManager = new NoOpCacheManager();
+
+    // Assert
+    Iterable<String> cacheNames = actualNoOpCacheManager.getCacheNames();
+    assertTrue(cacheNames instanceof List);
+    assertEquals("noop:cachemanager", actualNoOpCacheManager.getURI().toString());
+    assertNull(actualNoOpCacheManager.getClassLoader());
+    assertNull(actualNoOpCacheManager.getCachingProvider());
+    assertFalse(actualNoOpCacheManager.isClosed());
+    assertTrue(actualNoOpCacheManager.getProperties().isEmpty());
+    assertTrue(((List<String>) cacheNames).isEmpty());
+  }
+}
