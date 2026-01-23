@@ -13,3 +13,9 @@ bin/
 **/*externalToolBuilders
 .sts4-cache
 **/*rebel.xml
+
+.diffblue/cache
+**.diffblue/cache
+**/.diffblue/cache
+**/**.diffblue/cache
+**/**/.diffblue/cache
