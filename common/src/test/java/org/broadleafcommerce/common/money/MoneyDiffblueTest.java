@@ -1834,7 +1834,7 @@ public class MoneyDiffblueTest {
   @Category(ContributionFromDiffblue.class)
   @ManagedByDiffblue
   @MethodsUnderTest({"boolean Money.equals(Object)", "int Money.hashCode()"})
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     Money money = new Money(10.0d);
     Money money2 = new Money(10.0d);

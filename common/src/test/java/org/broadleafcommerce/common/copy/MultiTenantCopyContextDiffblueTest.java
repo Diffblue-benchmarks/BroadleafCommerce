@@ -502,7 +502,7 @@ public class MultiTenantCopyContextDiffblueTest {
   @MethodsUnderTest({"boolean MultiTenantCopyContext.checkCloneStatus(Object)"})
   public void testCheckCloneStatus() {
     // Arrange
-    when(multiTenantCopierExtensionManager2.getProxy())
+    when(this.multiTenantCopierExtensionManager2.getProxy())
         .thenReturn(new AbstractMultiTenantCopierExtensionHandler());
 
     // Act
@@ -510,7 +510,7 @@ public class MultiTenantCopyContextDiffblueTest {
         multiTenantCopyContext.checkCloneStatus(BLCFieldUtils.NULL_FIELD);
 
     // Assert
-    verify(multiTenantCopierExtensionManager2).getProxy();
+    verify(this.multiTenantCopierExtensionManager2).getProxy();
     assertTrue(actualCheckCloneStatusResult);
   }
 
@@ -553,13 +553,14 @@ public class MultiTenantCopyContextDiffblueTest {
   @MethodsUnderTest({"boolean MultiTenantCopyContext.checkCloneStatus(Object)"})
   public void testCheckCloneStatus_thenThrowIllegalArgumentException() {
     // Arrange
-    when(multiTenantCopierExtensionManager2.getProxy()).thenThrow(new IllegalArgumentException());
+    when(this.multiTenantCopierExtensionManager2.getProxy())
+        .thenThrow(new IllegalArgumentException());
 
     // Act and Assert
     assertThrows(
         IllegalArgumentException.class,
         () -> multiTenantCopyContext.checkCloneStatus(BLCFieldUtils.NULL_FIELD));
-    verify(multiTenantCopierExtensionManager2).getProxy();
+    verify(this.multiTenantCopierExtensionManager2).getProxy();
   }
 
   /**

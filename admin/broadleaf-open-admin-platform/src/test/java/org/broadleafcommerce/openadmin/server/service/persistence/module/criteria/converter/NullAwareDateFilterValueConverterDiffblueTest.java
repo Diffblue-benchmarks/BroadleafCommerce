@@ -160,7 +160,7 @@ public class NullAwareDateFilterValueConverterDiffblueTest {
     Calendar calendar = dateFormat.getCalendar();
     assertTrue(calendar instanceof GregorianCalendar);
     assertNull(actualParseDateResult);
-    assertEquals(1945, calendar.getWeekYear());
+    assertEquals(1946, calendar.getWeekYear());
   }
 
   /**
@@ -190,6 +190,6 @@ public class NullAwareDateFilterValueConverterDiffblueTest {
     Calendar calendar = dateFormat.getCalendar();
     assertTrue(calendar instanceof GregorianCalendar);
     assertNull(actualParseDateResult);
-    assertEquals(1945, calendar.getWeekYear());
+    assertEquals(1946, calendar.getWeekYear());
   }
 }

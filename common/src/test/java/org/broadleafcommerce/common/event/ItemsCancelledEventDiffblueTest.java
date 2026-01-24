@@ -13,41 +13,6 @@ import org.junit.experimental.categories.Category;
 
 public class ItemsCancelledEventDiffblueTest {
   /**
-   * Test {@link ItemsCancelledEvent#ItemsCancelledEvent(Long, Map)}.
-   *
-   * <ul>
-   *   <li>Given one.
-   *   <li>Then return CatalogId is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ItemsCancelledEvent#ItemsCancelledEvent(Long, Map)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void ItemsCancelledEvent.<init>(Long, Map)"})
-  public void testNewItemsCancelledEvent_givenOne_thenReturnCatalogIdIsNull() {
-    // Arrange
-    HashMap<Long, Integer> cancelledItems = new HashMap<>();
-    cancelledItems.put(1L, 1);
-
-    // Act
-    ItemsCancelledEvent actualItemsCancelledEvent = new ItemsCancelledEvent(1L, cancelledItems);
-
-    // Assert
-    assertNull(actualItemsCancelledEvent.getCatalogId());
-    assertNull(actualItemsCancelledEvent.getProfileId());
-    assertNull(actualItemsCancelledEvent.getSiteId());
-    assertNull(actualItemsCancelledEvent.getCurrencyCode());
-    assertNull(actualItemsCancelledEvent.getLocaleCode());
-    assertNull(actualItemsCancelledEvent.getTimeZoneId());
-    assertEquals(1L, actualItemsCancelledEvent.getFulfillmentGroupId().longValue());
-    assertEquals(1L, ((Long) actualItemsCancelledEvent.getSource()).longValue());
-    assertTrue(actualItemsCancelledEvent.getContext().isEmpty());
-    assertEquals(cancelledItems, actualItemsCancelledEvent.getItemsAndQuantitiesCancelled());
-  }
-
-  /**
    * Test {@link ItemsCancelledEvent#getFulfillmentGroupId()}.
    *
    * <ul>

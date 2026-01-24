@@ -24,6 +24,7 @@ import org.broadleafcommerce.common.site.domain.SiteCatalogXref;
 import org.broadleafcommerce.common.site.domain.SiteCatalogXrefImpl;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.broadleafcommerce.common.util.StreamingTransactionCapableUtil;
+import org.hibernate.engine.spi.SessionFactoryDelegatingImpl;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -31,6 +32,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.orm.jpa.JpaTransactionManager;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SiteServiceImplDiffblueTest {
@@ -374,9 +376,32 @@ public class SiteServiceImplDiffblueTest {
   /**
    * Test {@link SiteServiceImpl#retrieveNonPersistentSiteByIdentifer(String)}.
    *
+   * <p>Method under test: {@link SiteServiceImpl#retrieveNonPersistentSiteByIdentifer(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Site SiteServiceImpl.retrieveNonPersistentSiteByIdentifer(String)"})
+  public void testRetrieveNonPersistentSiteByIdentifer() {
+    // Arrange
+    when(streamingTransactionCapableUtil.getTransactionManager())
+        .thenReturn(new JpaTransactionManager(new SessionFactoryDelegatingImpl(null)));
+
+    // Act
+    Site actualRetrieveNonPersistentSiteByIdentiferResult =
+        siteServiceImpl.retrieveNonPersistentSiteByIdentifer("42");
+
+    // Assert
+    verify(streamingTransactionCapableUtil).getTransactionManager();
+    assertNull(actualRetrieveNonPersistentSiteByIdentiferResult);
+  }
+
+  /**
+   * Test {@link SiteServiceImpl#retrieveNonPersistentSiteByIdentifer(String)}.
+   *
    * <ul>
+   *   <li>Given {@link SiteServiceImpl} (default constructor).
    *   <li>When {@code null}.
-   *   <li>Then return {@code null}.
    * </ul>
    *
    * <p>Method under test: {@link SiteServiceImpl#retrieveNonPersistentSiteByIdentifer(String)}
@@ -385,21 +410,63 @@ public class SiteServiceImplDiffblueTest {
   @Category(ContributionFromDiffblue.class)
   @ManagedByDiffblue
   @MethodsUnderTest({"Site SiteServiceImpl.retrieveNonPersistentSiteByIdentifer(String)"})
-  public void testRetrieveNonPersistentSiteByIdentifer_whenNull_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
+  public void testRetrieveNonPersistentSiteByIdentifer_givenSiteServiceImpl_whenNull() {
     // Arrange, Act and Assert
     assertNull(new SiteServiceImpl().retrieveNonPersistentSiteByIdentifer(null));
+  }
+
+  /**
+   * Test {@link SiteServiceImpl#retrieveNonPersistentSiteByIdentifer(String)}.
+   *
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.
+   * </ul>
+   *
+   * <p>Method under test: {@link SiteServiceImpl#retrieveNonPersistentSiteByIdentifer(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Site SiteServiceImpl.retrieveNonPersistentSiteByIdentifer(String)"})
+  public void testRetrieveNonPersistentSiteByIdentifer_thenThrowRuntimeException() {
+    // Arrange
+    when(streamingTransactionCapableUtil.getTransactionManager()).thenThrow(new RuntimeException());
+
+    // Act and Assert
+    assertThrows(
+        RuntimeException.class, () -> siteServiceImpl.retrieveNonPersistentSiteByIdentifer("42"));
+    verify(streamingTransactionCapableUtil).getTransactionManager();
+  }
+
+  /**
+   * Test {@link SiteServiceImpl#retrievePersistentSiteByIdentifier(String)}.
+   *
+   * <p>Method under test: {@link SiteServiceImpl#retrievePersistentSiteByIdentifier(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Site SiteServiceImpl.retrievePersistentSiteByIdentifier(String)"})
+  public void testRetrievePersistentSiteByIdentifier() {
+    // Arrange
+    when(streamingTransactionCapableUtil.getTransactionManager())
+        .thenReturn(new JpaTransactionManager(new SessionFactoryDelegatingImpl(null)));
+
+    // Act
+    Site actualRetrievePersistentSiteByIdentifierResult =
+        siteServiceImpl.retrievePersistentSiteByIdentifier("42");
+
+    // Assert
+    verify(streamingTransactionCapableUtil).getTransactionManager();
+    assertNull(actualRetrievePersistentSiteByIdentifierResult);
   }
 
   /**
    * Test {@link SiteServiceImpl#retrievePersistentSiteByIdentifier(String)}.
    *
    * <ul>
+   *   <li>Given {@link SiteServiceImpl} (default constructor).
    *   <li>When {@code null}.
-   *   <li>Then return {@code null}.
    * </ul>
    *
    * <p>Method under test: {@link SiteServiceImpl#retrievePersistentSiteByIdentifier(String)}
@@ -408,19 +475,68 @@ public class SiteServiceImplDiffblueTest {
   @Category(ContributionFromDiffblue.class)
   @ManagedByDiffblue
   @MethodsUnderTest({"Site SiteServiceImpl.retrievePersistentSiteByIdentifier(String)"})
-  public void testRetrievePersistentSiteByIdentifier_whenNull_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
+  public void testRetrievePersistentSiteByIdentifier_givenSiteServiceImpl_whenNull() {
     // Arrange, Act and Assert
     assertNull(new SiteServiceImpl().retrievePersistentSiteByIdentifier(null));
+  }
+
+  /**
+   * Test {@link SiteServiceImpl#retrievePersistentSiteByIdentifier(String)}.
+   *
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.
+   * </ul>
+   *
+   * <p>Method under test: {@link SiteServiceImpl#retrievePersistentSiteByIdentifier(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Site SiteServiceImpl.retrievePersistentSiteByIdentifier(String)"})
+  public void testRetrievePersistentSiteByIdentifier_thenThrowRuntimeException() {
+    // Arrange
+    when(streamingTransactionCapableUtil.getTransactionManager()).thenThrow(new RuntimeException());
+
+    // Act and Assert
+    assertThrows(
+        RuntimeException.class, () -> siteServiceImpl.retrievePersistentSiteByIdentifier("42"));
+    verify(streamingTransactionCapableUtil).getTransactionManager();
   }
 
   /**
    * Test {@link SiteServiceImpl#retrieveSiteByIdentifier(String, boolean)}.
    *
    * <ul>
+   *   <li>Given {@link
+   *       SessionFactoryDelegatingImpl#SessionFactoryDelegatingImpl(SessionFactoryImplementor)}
+   *       with delegate is {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link SiteServiceImpl#retrieveSiteByIdentifier(String, boolean)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Site SiteServiceImpl.retrieveSiteByIdentifier(String, boolean)"})
+  public void testRetrieveSiteByIdentifier_givenSessionFactoryDelegatingImplWithDelegateIsNull() {
+    // Arrange
+    when(streamingTransactionCapableUtil.getTransactionManager())
+        .thenReturn(new JpaTransactionManager(new SessionFactoryDelegatingImpl(null)));
+
+    // Act
+    Site actualRetrieveSiteByIdentifierResult =
+        siteServiceImpl.retrieveSiteByIdentifier("42", true);
+
+    // Assert
+    verify(streamingTransactionCapableUtil).getTransactionManager();
+    assertNull(actualRetrieveSiteByIdentifierResult);
+  }
+
+  /**
+   * Test {@link SiteServiceImpl#retrieveSiteByIdentifier(String, boolean)}.
+   *
+   * <ul>
+   *   <li>Given {@link SiteServiceImpl} (default constructor).
    *   <li>When {@code null}.
    *   <li>Then return {@code null}.
    * </ul>
@@ -431,13 +547,32 @@ public class SiteServiceImplDiffblueTest {
   @Category(ContributionFromDiffblue.class)
   @ManagedByDiffblue
   @MethodsUnderTest({"Site SiteServiceImpl.retrieveSiteByIdentifier(String, boolean)"})
-  public void testRetrieveSiteByIdentifier_whenNull_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
+  public void testRetrieveSiteByIdentifier_givenSiteServiceImpl_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(new SiteServiceImpl().retrieveSiteByIdentifier(null, true));
+  }
+
+  /**
+   * Test {@link SiteServiceImpl#retrieveSiteByIdentifier(String, boolean)}.
+   *
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.
+   * </ul>
+   *
+   * <p>Method under test: {@link SiteServiceImpl#retrieveSiteByIdentifier(String, boolean)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Site SiteServiceImpl.retrieveSiteByIdentifier(String, boolean)"})
+  public void testRetrieveSiteByIdentifier_thenThrowRuntimeException() {
+    // Arrange
+    when(streamingTransactionCapableUtil.getTransactionManager()).thenThrow(new RuntimeException());
+
+    // Act and Assert
+    assertThrows(
+        RuntimeException.class, () -> siteServiceImpl.retrieveSiteByIdentifier("42", true));
+    verify(streamingTransactionCapableUtil).getTransactionManager();
   }
 
   /**

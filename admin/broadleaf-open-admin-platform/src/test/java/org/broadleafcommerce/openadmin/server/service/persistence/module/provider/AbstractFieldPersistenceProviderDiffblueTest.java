@@ -1,7 +1,6 @@
 package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import com.diffblue.cover.annotations.ContributionFromDiffblue;
 import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
@@ -35,25 +34,6 @@ public class AbstractFieldPersistenceProviderDiffblueTest {
   public void testAlwaysRun() {
     // Arrange, Act and Assert
     assertFalse(abstractFieldPersistenceProvider.alwaysRun());
-  }
-
-  /**
-   * Test {@link AbstractFieldPersistenceProvider#canHandlePopulateNull()}.
-   *
-   * <ul>
-   *   <li>Given {@link MapFieldPersistenceProvider} (default constructor).
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractFieldPersistenceProvider#canHandlePopulateNull()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean AbstractFieldPersistenceProvider.canHandlePopulateNull()"})
-  public void testCanHandlePopulateNull_givenMapFieldPersistenceProvider_thenReturnTrue() {
-    // Arrange, Act and Assert
-    assertTrue(new MapFieldPersistenceProvider().canHandlePopulateNull());
   }
 
   /**

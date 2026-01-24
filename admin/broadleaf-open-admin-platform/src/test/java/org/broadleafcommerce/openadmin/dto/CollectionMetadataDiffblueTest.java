@@ -707,34 +707,6 @@ public class CollectionMetadataDiffblueTest {
   }
 
   /**
-   * Test {@link CollectionMetadata#equals(Object)}, and {@link CollectionMetadata#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link CollectionMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CollectionMetadata.equals(Object)",
-    "int CollectionMetadata.hashCode()"
-  })
-  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
-    // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
-
-    // Act and Assert
-    assertEquals(adornedTargetCollectionMetadata, adornedTargetCollectionMetadata);
-    int expectedHashCodeResult = adornedTargetCollectionMetadata.hashCode();
-    assertEquals(expectedHashCodeResult, adornedTargetCollectionMetadata.hashCode());
-  }
-
-  /**
    * Test {@link CollectionMetadata#equals(Object)}.
    *
    * <ul>
@@ -752,28 +724,6 @@ public class CollectionMetadataDiffblueTest {
     "int CollectionMetadata.hashCode()"
   })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
-    // Arrange, Act and Assert
-    assertNotEquals(new AdornedTargetCollectionMetadata(), 1);
-  }
-
-  /**
-   * Test {@link CollectionMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link CollectionMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CollectionMetadata.equals(Object)",
-    "int CollectionMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange, Act and Assert
     assertNotEquals(
         new AdornedTargetCollectionMetadata(), mock(AdornedTargetCollectionMetadata.class));
@@ -796,7 +746,7 @@ public class CollectionMetadataDiffblueTest {
     "boolean CollectionMetadata.equals(Object)",
     "int CollectionMetadata.hashCode()"
   })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
         new AdornedTargetCollectionMetadata();
@@ -823,7 +773,7 @@ public class CollectionMetadataDiffblueTest {
     "boolean CollectionMetadata.equals(Object)",
     "int CollectionMetadata.hashCode()"
   })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
         new AdornedTargetCollectionMetadata();
@@ -850,7 +800,7 @@ public class CollectionMetadataDiffblueTest {
     "boolean CollectionMetadata.equals(Object)",
     "int CollectionMetadata.hashCode()"
   })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
         new AdornedTargetCollectionMetadata();
@@ -877,7 +827,7 @@ public class CollectionMetadataDiffblueTest {
     "boolean CollectionMetadata.equals(Object)",
     "int CollectionMetadata.hashCode()"
   })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
         new AdornedTargetCollectionMetadata();
@@ -907,7 +857,7 @@ public class CollectionMetadataDiffblueTest {
     "boolean CollectionMetadata.equals(Object)",
     "int CollectionMetadata.hashCode()"
   })
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
         new AdornedTargetCollectionMetadata();
@@ -918,49 +868,5 @@ public class CollectionMetadataDiffblueTest {
 
     // Act and Assert
     assertNotEquals(adornedTargetCollectionMetadata, adornedTargetCollectionMetadata2);
-  }
-
-  /**
-   * Test {@link CollectionMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link CollectionMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CollectionMetadata.equals(Object)",
-    "int CollectionMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
-    // Arrange, Act and Assert
-    assertNotEquals(new AdornedTargetCollectionMetadata(), null);
-  }
-
-  /**
-   * Test {@link CollectionMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link CollectionMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean CollectionMetadata.equals(Object)",
-    "int CollectionMetadata.hashCode()"
-  })
-  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
-    // Arrange, Act and Assert
-    assertNotEquals(new AdornedTargetCollectionMetadata(), "Different type to CollectionMetadata");
   }
 }

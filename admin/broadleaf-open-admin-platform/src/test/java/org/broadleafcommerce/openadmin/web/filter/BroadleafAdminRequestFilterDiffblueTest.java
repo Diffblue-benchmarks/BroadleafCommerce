@@ -8,6 +8,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import com.diffblue.cover.annotations.ContributionFromDiffblue;
@@ -15,6 +16,7 @@ import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.util.Map;
+import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -55,6 +57,184 @@ public class BroadleafAdminRequestFilterDiffblueTest {
 
   @MockBean(name = "blStaleStateProtectionService")
   private StaleStateProtectionService staleStateProtectionService;
+
+  /**
+   * Test {@link BroadleafAdminRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest,
+   * HttpServletResponse, FilterChain)}.
+   *
+   * <p>Method under test: {@link
+   * BroadleafAdminRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest,
+   * HttpServletResponse, FilterChain)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void BroadleafAdminRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"
+  })
+  public void testDoFilterInternalUnlessIgnored() throws IOException, ServletException {
+    // Arrange
+    when(classNameRequestParamValidationService.validateClassNameParams(
+            Mockito.<Map<String, String>>any(), Mockito.<String>any()))
+        .thenThrow(new SiteNotFoundException());
+    MockHttpServletRequest request = new MockHttpServletRequest();
+
+    // Act and Assert
+    assertThrows(
+        SiteNotFoundException.class,
+        () ->
+            broadleafAdminRequestFilter.doFilterInternalUnlessIgnored(
+                request, new MockHttpServletResponse(), mock(FilterChain.class)));
+    verify(classNameRequestParamValidationService)
+        .validateClassNameParams(isA(Map.class), eq("blPU"));
+  }
+
+  /**
+   * Test {@link BroadleafAdminRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest,
+   * HttpServletResponse, FilterChain)}.
+   *
+   * <p>Method under test: {@link
+   * BroadleafAdminRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest,
+   * HttpServletResponse, FilterChain)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void BroadleafAdminRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"
+  })
+  public void testDoFilterInternalUnlessIgnored2() throws IOException, ServletException {
+    // Arrange
+    doThrow(new SiteNotFoundException())
+        .when(broadleafWebRequestProcessor)
+        .postProcess(Mockito.<WebRequest>any());
+    when(classNameRequestParamValidationService.validateClassNameParams(
+            Mockito.<Map<String, String>>any(), Mockito.<String>any()))
+        .thenReturn(true);
+    MockHttpServletRequest request = new MockHttpServletRequest();
+
+    // Act and Assert
+    assertThrows(
+        SiteNotFoundException.class,
+        () ->
+            broadleafAdminRequestFilter.doFilterInternalUnlessIgnored(
+                request, new MockHttpServletResponse(), mock(FilterChain.class)));
+    verify(broadleafWebRequestProcessor).postProcess(isA(WebRequest.class));
+    verify(classNameRequestParamValidationService)
+        .validateClassNameParams(isA(Map.class), eq("blPU"));
+  }
+
+  /**
+   * Test {@link BroadleafAdminRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest,
+   * HttpServletResponse, FilterChain)}.
+   *
+   * <p>Method under test: {@link
+   * BroadleafAdminRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest,
+   * HttpServletResponse, FilterChain)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void BroadleafAdminRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"
+  })
+  public void testDoFilterInternalUnlessIgnored3() throws IOException, ServletException {
+    // Arrange
+    when(classNameRequestParamValidationService.validateClassNameParams(
+            Mockito.<Map<String, String>>any(), Mockito.<String>any()))
+        .thenReturn(false);
+    MockHttpServletRequest request = new MockHttpServletRequest();
+    MockHttpServletResponse response = new MockHttpServletResponse();
+
+    // Act
+    broadleafAdminRequestFilter.doFilterInternalUnlessIgnored(
+        request, response, mock(FilterChain.class));
+
+    // Assert
+    verify(classNameRequestParamValidationService)
+        .validateClassNameParams(isA(Map.class), eq("blPU"));
+    assertEquals(404, response.getStatus());
+    assertTrue(response.isCommitted());
+  }
+
+  /**
+   * Test {@link BroadleafAdminRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest,
+   * HttpServletResponse, FilterChain)}.
+   *
+   * <ul>
+   *   <li>Given {@code /translations}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * BroadleafAdminRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest,
+   * HttpServletResponse, FilterChain)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void BroadleafAdminRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"
+  })
+  public void testDoFilterInternalUnlessIgnored_givenTranslations()
+      throws IOException, ServletException {
+    // Arrange
+    when(classNameRequestParamValidationService.validateClassNameParams(
+            Mockito.<Map<String, String>>any(), Mockito.<String>any()))
+        .thenThrow(new SiteNotFoundException());
+
+    MockMultipartHttpServletRequest request =
+        new MockMultipartHttpServletRequest(new MockServletContext());
+    request.setServletPath("/translations");
+
+    // Act and Assert
+    assertThrows(
+        SiteNotFoundException.class,
+        () ->
+            broadleafAdminRequestFilter.doFilterInternalUnlessIgnored(
+                request, new MockHttpServletResponse(), mock(FilterChain.class)));
+    verify(classNameRequestParamValidationService)
+        .validateClassNameParams(isA(Map.class), eq("blPU"));
+  }
+
+  /**
+   * Test {@link BroadleafAdminRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest,
+   * HttpServletResponse, FilterChain)}.
+   *
+   * <ul>
+   *   <li>Then {@link MockHttpServletResponse} (default constructor) Status is two hundred.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * BroadleafAdminRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest,
+   * HttpServletResponse, FilterChain)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void BroadleafAdminRequestFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"
+  })
+  public void testDoFilterInternalUnlessIgnored_thenMockHttpServletResponseStatusIsTwoHundred()
+      throws IOException, ServletException {
+    // Arrange
+    doNothing().when(broadleafWebRequestProcessor).postProcess(Mockito.<WebRequest>any());
+    when(classNameRequestParamValidationService.validateClassNameParams(
+            Mockito.<Map<String, String>>any(), Mockito.<String>any()))
+        .thenReturn(true);
+    MockHttpServletRequest request = new MockHttpServletRequest();
+    MockHttpServletResponse response = new MockHttpServletResponse();
+
+    // Act
+    broadleafAdminRequestFilter.doFilterInternalUnlessIgnored(
+        request, response, mock(FilterChain.class));
+
+    // Assert that nothing has changed
+    verify(broadleafWebRequestProcessor).postProcess(isA(WebRequest.class));
+    verify(classNameRequestParamValidationService)
+        .validateClassNameParams(isA(Map.class), eq("blPU"));
+    assertEquals(200, response.getStatus());
+    assertFalse(response.isCommitted());
+  }
 
   /**
    * Test {@link BroadleafAdminRequestFilter#validateClassNameParams(HttpServletRequest)}.

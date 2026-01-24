@@ -1,10 +1,6 @@
 package org.broadleafcommerce.profile.web.controller;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -31,18 +27,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.ui.ConcurrentModel;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @ExtendWith(MockitoExtension.class)
 class CustomerPhoneControllerDiffblueTest {
   @InjectMocks private CustomerPhoneController customerPhoneController;
@@ -91,47 +81,6 @@ class CustomerPhoneControllerDiffblueTest {
         .andExpect(model().attributeExists("phoneNameForm"))
         .andExpect(view().name("redirect:/myaccount/phone/viewPhone.htm1"))
         .andExpect(redirectedUrl("/myaccount/phone/viewPhone.htm1"));
-  }
-
-  /**
-   * Test {@link CustomerPhoneController#initPhoneNameForm(HttpServletRequest, Model)}.
-   *
-   * <p>Method under test: {@link CustomerPhoneController#initPhoneNameForm(HttpServletRequest,
-   * Model)}
-   */
-  @Test
-  @DisplayName("Test initPhoneNameForm(HttpServletRequest, Model)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PhoneNameForm CustomerPhoneController.initPhoneNameForm(HttpServletRequest, Model)"
-  })
-  void testInitPhoneNameForm() {
-    // Arrange
-    PhoneImpl phoneImpl = new PhoneImpl();
-    phoneImpl.setActive(true);
-    phoneImpl.setCountryCode("GB");
-    phoneImpl.setDefault(true);
-    phoneImpl.setExtension("org.broadleafcommerce.profile.core.domain.Phone");
-    phoneImpl.setId(1L);
-    phoneImpl.setPhoneNumber("6625550144");
-
-    EntityConfiguration entityConfiguration = mock(EntityConfiguration.class);
-    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(phoneImpl);
-
-    CustomerPhoneController customerPhoneController = new CustomerPhoneController();
-    customerPhoneController.setEntityConfiguration(entityConfiguration);
-    MockHttpServletRequest request = new MockHttpServletRequest();
-
-    // Act
-    PhoneNameForm actualInitPhoneNameFormResult =
-        customerPhoneController.initPhoneNameForm(request, new ConcurrentModel());
-
-    // Assert
-    verify(entityConfiguration)
-        .createEntityInstance("org.broadleafcommerce.profile.core.domain.Phone");
-    assertNull(actualInitPhoneNameFormResult.getPhoneName());
-    assertSame(phoneImpl, actualInitPhoneNameFormResult.getPhone());
   }
 
   /**

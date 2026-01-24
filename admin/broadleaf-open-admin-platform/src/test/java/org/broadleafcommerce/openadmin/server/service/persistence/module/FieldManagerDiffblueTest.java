@@ -12,24 +12,26 @@ import static org.mockito.Mockito.when;
 import com.diffblue.cover.annotations.ContributionFromDiffblue;
 import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
 import javax.persistence.EntityManager;
 import org.broadleafcommerce.common.persistence.EntityConfiguration;
 import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(MockitoJUnitRunner.class)
+@ContextConfiguration(classes = {FieldManager.class})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class FieldManagerDiffblueTest {
-  @Mock private EntityManager entityManager;
+  @MockBean(name = "blEntityConfiguration")
+  private EntityConfiguration entityConfiguration;
 
-  @InjectMocks private FieldManager fieldManager;
+  @MockBean private EntityManager entityManager;
+
+  @Autowired private FieldManager fieldManager;
 
   /**
    * Test {@link FieldManager#FieldManager(EntityConfiguration, EntityManager)}.
@@ -56,6 +58,23 @@ public class FieldManagerDiffblueTest {
   /**
    * Test {@link FieldManager#getSingleField(Class, String)}.
    *
+   * <p>Method under test: {@link FieldManager#getSingleField(Class, String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"java.lang.reflect.Field FieldManager.getSingleField(Class, String)"})
+  public void testGetSingleField() throws IllegalStateException {
+    // Arrange
+    Class<FieldManager> clazz = FieldManager.class;
+
+    // Act and Assert
+    assertNull(FieldManager.getSingleField(clazz, "Field Name"));
+  }
+
+  /**
+   * Test {@link FieldManager#getSingleField(Class, String)}.
+   *
    * <ul>
    *   <li>When {@code Object}.
    *   <li>Then return {@code null}.
@@ -76,6 +95,29 @@ public class FieldManagerDiffblueTest {
   }
 
   /**
+   * Test {@link FieldManager#getSingleField(Class, String)}.
+   *
+   * <ul>
+   *   <li>When {@link FieldManager#MAPFIELDSEPARATOR}.
+   *   <li>Then return {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link FieldManager#getSingleField(Class, String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"java.lang.reflect.Field FieldManager.getSingleField(Class, String)"})
+  public void testGetSingleField_whenMapfieldseparator_thenReturnNull()
+      throws IllegalStateException {
+    // Arrange
+    Class<Object> clazz = Object.class;
+
+    // Act and Assert
+    assertNull(FieldManager.getSingleField(clazz, FieldManager.MAPFIELDSEPARATOR));
+  }
+
+  /**
    * Test {@link FieldManager#getField(Class, String)}.
    *
    * <ul>
@@ -90,35 +132,14 @@ public class FieldManagerDiffblueTest {
   @MethodsUnderTest({"java.lang.reflect.Field FieldManager.getField(Class, String)"})
   public void testGetField_thenThrowRuntimeException() throws IllegalStateException {
     // Arrange
+    SessionDelegatorBaseImpl entityManager = mock(SessionDelegatorBaseImpl.class);
     when(entityManager.getMetamodel()).thenThrow(new RuntimeException());
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), entityManager);
     Class<Object> clazz = Object.class;
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> fieldManager.getField(clazz, "Field Name"));
     verify(entityManager).getMetamodel();
-  }
-
-  /**
-   * Test {@link FieldManager#getFieldValue(Object, String)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link FieldNotAvailableException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldManager#getFieldValue(Object, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object FieldManager.getFieldValue(Object, String)"})
-  public void testGetFieldValue_thenThrowFieldNotAvailableException()
-      throws IllegalAccessException, FieldNotAvailableException {
-    // Arrange
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-
-    // Act and Assert
-    assertThrows(
-        FieldNotAvailableException.class, () -> fieldManager.getFieldValue("Bean", "Field Name"));
   }
 
   /**
@@ -137,11 +158,29 @@ public class FieldManagerDiffblueTest {
   @MethodsUnderTest({"Object FieldManager.getFieldValue(Object, String)"})
   public void testGetFieldValue_whenDot_thenReturnBean()
       throws IllegalAccessException, FieldNotAvailableException {
-    // Arrange
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertEquals("Bean", fieldManager.getFieldValue("Bean", "."));
+  }
+
+  /**
+   * Test {@link FieldManager#getFieldValue(Object, String)}.
+   *
+   * <ul>
+   *   <li>When {@code Field Name}.
+   *   <li>Then throw {@link FieldNotAvailableException}.
+   * </ul>
+   *
+   * <p>Method under test: {@link FieldManager#getFieldValue(Object, String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Object FieldManager.getFieldValue(Object, String)"})
+  public void testGetFieldValue_whenFieldName_thenThrowFieldNotAvailableException()
+      throws IllegalAccessException, FieldNotAvailableException {
+    // Arrange, Act and Assert
+    assertThrows(
+        FieldNotAvailableException.class, () -> fieldManager.getFieldValue("Bean", "Field Name"));
   }
 
   /**
@@ -164,6 +203,27 @@ public class FieldManagerDiffblueTest {
     assertThrows(
         FieldNotAvailableException.class,
         () -> fieldManager.getFieldValue("Bean", FieldManager.MAPFIELDSEPARATOR));
+  }
+
+  /**
+   * Test {@link FieldManager#getFieldValue(Object, String)}.
+   *
+   * <ul>
+   *   <li>When one.
+   *   <li>Then throw {@link FieldNotAvailableException}.
+   * </ul>
+   *
+   * <p>Method under test: {@link FieldManager#getFieldValue(Object, String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Object FieldManager.getFieldValue(Object, String)"})
+  public void testGetFieldValue_whenOne_thenThrowFieldNotAvailableException()
+      throws IllegalAccessException, FieldNotAvailableException {
+    // Arrange, Act and Assert
+    assertThrows(
+        FieldNotAvailableException.class, () -> fieldManager.getFieldValue(1, "Field Name"));
   }
 
   /**
@@ -255,259 +315,5 @@ public class FieldManagerDiffblueTest {
 
     // Act and Assert
     assertFalse(fieldManager.isPersistentClass(entityClass));
-  }
-
-  /**
-   * Test {@link FieldManager#handleMapFieldExtraction(Object, String, Class, Object, String,
-   * String)}.
-   *
-   * <ul>
-   *   <li>When a string.
-   *   <li>Then throw {@link FieldNotAvailableException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldManager#handleMapFieldExtraction(Object, String, Class,
-   * Object, String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Object FieldManager.handleMapFieldExtraction(Object, String, Class, Object, String, String)"
-  })
-  public void testHandleMapFieldExtraction_whenAString_thenThrowFieldNotAvailableException()
-      throws IllegalAccessException, FieldNotAvailableException {
-    // Arrange
-    Class<Object> componentClass = Object.class;
-
-    // Act and Assert
-    assertThrows(
-        FieldNotAvailableException.class,
-        () ->
-            fieldManager.handleMapFieldExtraction(
-                "Bean",
-                "A field containing a map field separator was requested (%s), but no Map type field or method returning"
-                    + " a Map was found using the following tests (%s)",
-                componentClass,
-                new ArrayList<>(),
-                ")",
-                "Map Key"));
-  }
-
-  /**
-   * Test {@link FieldManager#handleMapFieldExtraction(Object, String, Class, Object, String,
-   * String)}.
-   *
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then throw {@link IllegalArgumentException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldManager#handleMapFieldExtraction(Object, String, Class,
-   * Object, String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Object FieldManager.handleMapFieldExtraction(Object, String, Class, Object, String, String)"
-  })
-  public void testHandleMapFieldExtraction_whenArrayList_thenThrowIllegalArgumentException()
-      throws IllegalAccessException, FieldNotAvailableException {
-    // Arrange
-    Class<Object> componentClass = Object.class;
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            fieldManager.handleMapFieldExtraction(
-                "Bean", ")", componentClass, new ArrayList<>(), ")", "Map Key"));
-  }
-
-  /**
-   * Test {@link FieldManager#handleMapFieldExtraction(Object, String, Class, Object, String,
-   * String)}.
-   *
-   * <ul>
-   *   <li>When {@code ,}.
-   *   <li>Then throw {@link FieldNotAvailableException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldManager#handleMapFieldExtraction(Object, String, Class,
-   * Object, String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Object FieldManager.handleMapFieldExtraction(Object, String, Class, Object, String, String)"
-  })
-  public void testHandleMapFieldExtraction_whenComma_thenThrowFieldNotAvailableException()
-      throws IllegalAccessException, FieldNotAvailableException {
-    // Arrange
-    Class<Object> componentClass = Object.class;
-
-    // Act and Assert
-    assertThrows(
-        FieldNotAvailableException.class,
-        () ->
-            fieldManager.handleMapFieldExtraction(
-                "Bean",
-                "A field containing a map field separator was requested (%s), but no Map type field or method returning"
-                    + " a Map was found using the following tests (%s)",
-                componentClass,
-                new ArrayList<>(),
-                ",",
-                "Map Key"));
-  }
-
-  /**
-   * Test {@link FieldManager#handleMapFieldExtraction(Object, String, Class, Object, String,
-   * String)}.
-   *
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldManager#handleMapFieldExtraction(Object, String, Class,
-   * Object, String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Object FieldManager.handleMapFieldExtraction(Object, String, Class, Object, String, String)"
-  })
-  public void testHandleMapFieldExtraction_whenHashMap_thenReturnNull()
-      throws IllegalAccessException, FieldNotAvailableException {
-    // Arrange
-    Class<Object> componentClass = Object.class;
-
-    // Act and Assert
-    assertNull(
-        fieldManager.handleMapFieldExtraction(
-            "Bean", ")", componentClass, new HashMap<>(), ")", "Map Key"));
-  }
-
-  /**
-   * Test {@link FieldManager#handleMapFieldExtraction(Object, String, Class, Object, String,
-   * String)}.
-   *
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldManager#handleMapFieldExtraction(Object, String, Class,
-   * Object, String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Object FieldManager.handleMapFieldExtraction(Object, String, Class, Object, String, String)"
-  })
-  public void testHandleMapFieldExtraction_whenHashMap_thenReturnNull2()
-      throws IllegalAccessException, FieldNotAvailableException {
-    // Arrange
-    HashMap<Object, Object> objectObjectMap = new HashMap<>();
-    Class<Object> componentClass = Object.class;
-
-    // Act and Assert
-    assertNull(
-        fieldManager.handleMapFieldExtraction(
-            objectObjectMap, ")", componentClass, new ArrayList<>(), ")", "Map Key"));
-  }
-
-  /**
-   * Test {@link FieldManager#handleMapFieldExtraction(Object, String, Class, Object, String,
-   * String)}.
-   *
-   * <ul>
-   *   <li>When {@link LinkedList#LinkedList()}.
-   *   <li>Then throw {@link IllegalArgumentException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldManager#handleMapFieldExtraction(Object, String, Class,
-   * Object, String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Object FieldManager.handleMapFieldExtraction(Object, String, Class, Object, String, String)"
-  })
-  public void testHandleMapFieldExtraction_whenLinkedList_thenThrowIllegalArgumentException()
-      throws IllegalAccessException, FieldNotAvailableException {
-    // Arrange
-    Class<Object> componentClass = Object.class;
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            fieldManager.handleMapFieldExtraction(
-                "Bean", ")", componentClass, new LinkedList<>(), ")", "Map Key"));
-  }
-
-  /**
-   * Test {@link FieldManager#handleMapFieldExtraction(Object, String, Class, Object, String,
-   * String)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldManager#handleMapFieldExtraction(Object, String, Class,
-   * Object, String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Object FieldManager.handleMapFieldExtraction(Object, String, Class, Object, String, String)"
-  })
-  public void testHandleMapFieldExtraction_whenNull_thenReturnNull()
-      throws IllegalAccessException, FieldNotAvailableException {
-    // Arrange
-    Class<Object> componentClass = Object.class;
-
-    // Act and Assert
-    assertNull(
-        fieldManager.handleMapFieldExtraction("Bean", ")", componentClass, null, ")", "Map Key"));
-  }
-
-  /**
-   * Test {@link FieldManager#handleMapFieldExtraction(Object, String, Class, Object, String,
-   * String)}.
-   *
-   * <ul>
-   *   <li>When {@code Value}.
-   *   <li>Then throw {@link IllegalArgumentException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldManager#handleMapFieldExtraction(Object, String, Class,
-   * Object, String, String)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Object FieldManager.handleMapFieldExtraction(Object, String, Class, Object, String, String)"
-  })
-  public void testHandleMapFieldExtraction_whenValue_thenThrowIllegalArgumentException()
-      throws IllegalAccessException, FieldNotAvailableException {
-    // Arrange
-    Class<Object> componentClass = Object.class;
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            fieldManager.handleMapFieldExtraction(
-                "Bean", ")", componentClass, "Value", ")", "Map Key"));
   }
 }

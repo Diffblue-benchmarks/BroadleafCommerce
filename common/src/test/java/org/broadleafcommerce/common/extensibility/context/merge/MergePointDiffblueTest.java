@@ -56,14 +56,14 @@ public class MergePointDiffblueTest {
             Mockito.<List<Node>>any(), Mockito.<List<Node>>any(), Mockito.<List<Node>>any()))
         .thenReturn(new Node[] {iioMetadataNode});
     when(mergeHandler.getXPath()).thenReturn("X Path");
-    when(mergeHandler.getChildren()).thenReturn(new MergeHandler[] {});
+    when(mergeHandler.getChildren()).thenReturn(null);
     when(mergeHandler.getXPath()).thenReturn("X Path");
 
     // Act
     Node[] actualMergeResult = mergePoint.merge(new ArrayList<>());
 
     // Assert
-    verify(mergeHandler, atLeast(1)).getChildren();
+    verify(mergeHandler).getChildren();
     verify(mergeHandler, atLeast(1)).getXPath();
     verify(mergeHandler).merge(isA(List.class), isA(List.class), isA(List.class));
     assertEquals(1, actualMergeResult.length);

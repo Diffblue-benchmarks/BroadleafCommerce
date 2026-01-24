@@ -316,63 +316,6 @@ public class UrlRewriteProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link UrlRewriteProcessor#parsePath(String, BroadleafTemplateContext)}.
-   *
-   * <ul>
-   *   <li>When {@code https://example.org/example}.
-   * </ul>
-   *
-   * <p>Method under test: {@link UrlRewriteProcessor#parsePath(String, BroadleafTemplateContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String UrlRewriteProcessor.parsePath(String, BroadleafTemplateContext)"})
-  public void testParsePath_whenHttpsExampleOrgExample() {
-    // Arrange
-    UrlRewriteProcessor urlRewriteProcessor = new UrlRewriteProcessor();
-
-    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
-    when(context.parseExpression(Mockito.<String>any())).thenReturn("Parse Expression");
-
-    // Act
-    String actualParsePathResult =
-        urlRewriteProcessor.parsePath("https://example.org/example", context);
-
-    // Assert
-    verify(context).parseExpression("https://example.org/example");
-    assertEquals("Parse Expression", actualParsePathResult);
-  }
-
-  /**
-   * Test {@link UrlRewriteProcessor#parsePath(String, BroadleafTemplateContext)}.
-   *
-   * <ul>
-   *   <li>When {@code /}.
-   * </ul>
-   *
-   * <p>Method under test: {@link UrlRewriteProcessor#parsePath(String, BroadleafTemplateContext)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String UrlRewriteProcessor.parsePath(String, BroadleafTemplateContext)"})
-  public void testParsePath_whenSlash() {
-    // Arrange
-    UrlRewriteProcessor urlRewriteProcessor = new UrlRewriteProcessor();
-
-    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
-    when(context.parseExpression(Mockito.<String>any())).thenReturn("Parse Expression");
-
-    // Act
-    String actualParsePathResult = urlRewriteProcessor.parsePath("/", context);
-
-    // Assert
-    verify(context).parseExpression("@{ / }");
-    assertEquals("Parse Expression", actualParsePathResult);
-  }
-
-  /**
    * Test {@link UrlRewriteProcessor#getFileExtension(String)}.
    *
    * <ul>

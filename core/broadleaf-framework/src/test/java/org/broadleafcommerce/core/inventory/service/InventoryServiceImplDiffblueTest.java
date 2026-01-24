@@ -4909,6 +4909,38 @@ public class InventoryServiceImplDiffblueTest {
     assertThrows(
         IllegalArgumentException.class,
         () -> inventoryServiceImpl.incrementSku(skuQuantities, new HashMap<>()));
+    verify(skuImpl).getInventoryType();
+  }
+
+  /**
+   * Test {@link InventoryServiceImpl#incrementSku(Map, Map)}.
+   *
+   * <ul>
+   *   <li>Given {@link SkuImpl} {@link SkuImpl#getInventoryType()} return {@link
+   *       InventoryType#ALWAYS_AVAILABLE}.
+   * </ul>
+   *
+   * <p>Method under test: {@link InventoryServiceImpl#incrementSku(Map, Map)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void InventoryServiceImpl.incrementSku(Map, Map)"})
+  public void testIncrementSku_givenSkuImplGetInventoryTypeReturnAlways_available() {
+    // Arrange
+    InventoryServiceImpl inventoryServiceImpl = new InventoryServiceImpl();
+
+    SkuImpl skuImpl = mock(SkuImpl.class);
+    when(skuImpl.getInventoryType()).thenReturn(InventoryType.ALWAYS_AVAILABLE);
+
+    HashMap<Sku, Integer> skuQuantities = new HashMap<>();
+    skuQuantities.put(skuImpl, 1);
+
+    // Act
+    inventoryServiceImpl.incrementSku(skuQuantities, new HashMap<>());
+
+    // Assert
+    verify(skuImpl).getInventoryType();
   }
 
   /**
@@ -4962,36 +4994,6 @@ public class InventoryServiceImplDiffblueTest {
 
     // Act and Assert
     inventoryServiceImpl.incrementSku(skuQuantities, new HashMap<>());
-  }
-
-  /**
-   * Test {@link InventoryServiceImpl#incrementSku(Map, Map)}.
-   *
-   * <ul>
-   *   <li>Then calls {@link SkuImpl#getInventoryType()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link InventoryServiceImpl#incrementSku(Map, Map)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void InventoryServiceImpl.incrementSku(Map, Map)"})
-  public void testIncrementSku_thenCallsGetInventoryType() {
-    // Arrange
-    InventoryServiceImpl inventoryServiceImpl = new InventoryServiceImpl();
-
-    SkuImpl skuImpl = mock(SkuImpl.class);
-    when(skuImpl.getInventoryType()).thenReturn(InventoryType.ALWAYS_AVAILABLE);
-
-    HashMap<Sku, Integer> skuQuantities = new HashMap<>();
-    skuQuantities.put(skuImpl, 1);
-
-    // Act
-    inventoryServiceImpl.incrementSku(skuQuantities, new HashMap<>());
-
-    // Assert
-    verify(skuImpl).getInventoryType();
   }
 
   /**

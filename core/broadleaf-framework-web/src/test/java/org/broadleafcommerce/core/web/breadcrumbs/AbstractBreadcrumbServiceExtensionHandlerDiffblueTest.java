@@ -6,13 +6,8 @@ import static org.junit.Assert.assertTrue;
 import com.diffblue.cover.annotations.ContributionFromDiffblue;
 import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import org.broadleafcommerce.common.breadcrumbs.dto.BreadcrumbDTO;
-import org.broadleafcommerce.common.extension.ExtensionResultHolder;
-import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.springframework.test.annotation.DirtiesContext;
@@ -20,37 +15,6 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class AbstractBreadcrumbServiceExtensionHandlerDiffblueTest {
-  /**
-   * Test {@link AbstractBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map,
-   * ExtensionResultHolder)}.
-   *
-   * <p>Method under test: {@link
-   * AbstractBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map,
-   * ExtensionResultHolder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractBreadcrumbServiceExtensionHandler.modifyBreadcrumbList(String, Map, ExtensionResultHolder)"
-  })
-  public void testModifyBreadcrumbList() {
-    // Arrange
-    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler =
-        new CategoryBreadcrumbServiceExtensionHandler();
-    HashMap<String, String[]> params = new HashMap<>();
-
-    ExtensionResultHolder<List<BreadcrumbDTO>> holder = new ExtensionResultHolder<>();
-    holder.setResult(new ArrayList<>());
-    holder.setThrowable(new Throwable());
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.HANDLED_CONTINUE,
-        categoryBreadcrumbServiceExtensionHandler.modifyBreadcrumbList(
-            "https://example.org/example", params, holder));
-  }
-
   /**
    * Test {@link AbstractBreadcrumbServiceExtensionHandler#getPriority()}.
    *

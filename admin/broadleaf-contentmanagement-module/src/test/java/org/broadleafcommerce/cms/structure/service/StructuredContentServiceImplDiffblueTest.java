@@ -642,60 +642,6 @@ public class StructuredContentServiceImplDiffblueTest {
   /**
    * Test {@link StructuredContentServiceImpl#evaluateAndPriortizeContent(List, int, Map)}.
    *
-   * <p>Method under test: {@link StructuredContentServiceImpl#evaluateAndPriortizeContent(List,
-   * int, Map)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "List StructuredContentServiceImpl.evaluateAndPriortizeContent(List, int, Map)"
-  })
-  public void testEvaluateAndPriortizeContent2() {
-    // Arrange
-    ArrayList<RuleProcessor<StructuredContentDTO>> ruleProcessorList = new ArrayList<>();
-    when(list.iterator()).thenReturn(ruleProcessorList.iterator());
-    when(structuredContentServiceExtensionManager.getProxy())
-        .thenReturn(new AbstractStructuredContentServiceExtensionHandler());
-
-    StructuredContentDTO structuredContentDTO = new StructuredContentDTO();
-    structuredContentDTO.setContentName("Not all who wander are lost");
-    structuredContentDTO.setContentType("text/plain");
-    structuredContentDTO.setId(1L);
-    structuredContentDTO.setItemCriteriaDTOList(new ArrayList<>());
-    structuredContentDTO.setLocaleCode("en");
-    structuredContentDTO.setPriority(1);
-    structuredContentDTO.setRuleExpression("Rule Expression");
-    structuredContentDTO.setValues(new HashMap<>());
-
-    StructuredContentDTO structuredContentDTO2 = new StructuredContentDTO();
-    structuredContentDTO2.setContentName("Content Name");
-    structuredContentDTO2.setContentType("Not all who wander are lost");
-    structuredContentDTO2.setId(2L);
-    structuredContentDTO2.setItemCriteriaDTOList(new ArrayList<>());
-    structuredContentDTO2.setLocaleCode("Locale Code");
-    structuredContentDTO2.setPriority(0);
-    structuredContentDTO2.setRuleExpression("42");
-    structuredContentDTO2.setValues(new HashMap<>());
-
-    ArrayList<StructuredContentDTO> structuredContentList = new ArrayList<>();
-    structuredContentList.add(structuredContentDTO2);
-    structuredContentList.add(structuredContentDTO);
-
-    // Act
-    List<StructuredContentDTO> actualEvaluateAndPriortizeContentResult =
-        structuredContentServiceImpl.evaluateAndPriortizeContent(
-            structuredContentList, 3, new HashMap<>());
-
-    // Assert
-    verify(list, atLeast(1)).iterator();
-    verify(structuredContentServiceExtensionManager).getProxy();
-    assertEquals(structuredContentList, actualEvaluateAndPriortizeContentResult);
-  }
-
-  /**
-   * Test {@link StructuredContentServiceImpl#evaluateAndPriortizeContent(List, int, Map)}.
-   *
    * <ul>
    *   <li>Given {@link StructuredContentServiceImpl} (default constructor).
    * </ul>
@@ -805,19 +751,7 @@ public class StructuredContentServiceImplDiffblueTest {
   })
   public void testEvaluateAndPriortizeContent_thenReturnSizeIsTwo() {
     // Arrange
-    RuleProcessor<StructuredContentDTO> ruleProcessor = mock(RuleProcessor.class);
-    when(ruleProcessor.checkForMatch(
-            Mockito.<StructuredContentDTO>any(), Mockito.<Map<String, Object>>any()))
-        .thenReturn(true);
-
-    RuleProcessor<StructuredContentDTO> ruleProcessor2 = mock(RuleProcessor.class);
-    when(ruleProcessor2.checkForMatch(
-            Mockito.<StructuredContentDTO>any(), Mockito.<Map<String, Object>>any()))
-        .thenReturn(true);
-
     ArrayList<RuleProcessor<StructuredContentDTO>> ruleProcessorList = new ArrayList<>();
-    ruleProcessorList.add(ruleProcessor2);
-    ruleProcessorList.add(ruleProcessor);
     when(list.iterator()).thenReturn(ruleProcessorList.iterator());
     when(structuredContentServiceExtensionManager.getProxy())
         .thenReturn(new AbstractStructuredContentServiceExtensionHandler());
@@ -833,13 +767,13 @@ public class StructuredContentServiceImplDiffblueTest {
     structuredContentDTO.setValues(new HashMap<>());
 
     StructuredContentDTO structuredContentDTO2 = new StructuredContentDTO();
-    structuredContentDTO2.setContentName("Not all who wander are lost");
-    structuredContentDTO2.setContentType("text/plain");
-    structuredContentDTO2.setId(1L);
+    structuredContentDTO2.setContentName("Content Name");
+    structuredContentDTO2.setContentType("Not all who wander are lost");
+    structuredContentDTO2.setId(2L);
     structuredContentDTO2.setItemCriteriaDTOList(new ArrayList<>());
-    structuredContentDTO2.setLocaleCode("en");
-    structuredContentDTO2.setPriority(1);
-    structuredContentDTO2.setRuleExpression("Rule Expression");
+    structuredContentDTO2.setLocaleCode("Locale Code");
+    structuredContentDTO2.setPriority(0);
+    structuredContentDTO2.setRuleExpression("42");
     structuredContentDTO2.setValues(new HashMap<>());
 
     ArrayList<StructuredContentDTO> structuredContentList = new ArrayList<>();
@@ -854,9 +788,21 @@ public class StructuredContentServiceImplDiffblueTest {
     // Assert
     verify(list, atLeast(1)).iterator();
     verify(structuredContentServiceExtensionManager).getProxy();
-    verify(ruleProcessor2).checkForMatch(isA(StructuredContentDTO.class), isA(Map.class));
-    verify(ruleProcessor).checkForMatch(isA(StructuredContentDTO.class), isA(Map.class));
     assertEquals(2, actualEvaluateAndPriortizeContentResult.size());
+    StructuredContentDTO getResult = actualEvaluateAndPriortizeContentResult.get(0);
+    assertEquals("42", getResult.getRuleExpression());
+    StructuredContentDTO clone = getResult.getClone();
+    assertEquals("42", clone.getRuleExpression());
+    assertEquals("Content Name", getResult.getContentName());
+    assertEquals("Content Name", clone.getContentName());
+    assertEquals("Locale Code", getResult.getLocaleCode());
+    assertEquals("Locale Code", clone.getLocaleCode());
+    assertEquals("Not all who wander are lost", getResult.getContentType());
+    assertEquals("Not all who wander are lost", clone.getContentType());
+    assertEquals(0, getResult.getPriority().intValue());
+    assertEquals(0, clone.getPriority().intValue());
+    assertEquals(2L, getResult.getId().longValue());
+    assertEquals(2L, clone.getId().longValue());
   }
 
   /**

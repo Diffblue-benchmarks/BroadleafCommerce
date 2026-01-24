@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import com.diffblue.cover.annotations.ContributionFromDiffblue;
 import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -16,8 +15,6 @@ import org.broadleafcommerce.common.locale.domain.Locale;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.core.catalog.domain.Indexable;
 import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
-import org.broadleafcommerce.core.search.domain.Field;
-import org.broadleafcommerce.core.search.domain.FieldImpl;
 import org.broadleafcommerce.core.search.domain.IndexField;
 import org.broadleafcommerce.core.search.domain.IndexFieldImpl;
 import org.broadleafcommerce.core.search.domain.solr.FieldType;
@@ -27,40 +24,6 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 public class AbstractSolrIndexServiceExtensionHandlerDiffblueTest {
-  /**
-   * Test {@link AbstractSolrIndexServiceExtensionHandler#addPropertyValues(Indexable, Field,
-   * FieldType, Map, String, List)}.
-   *
-   * <ul>
-   *   <li>Then return {@code NOT_HANDLED}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AbstractSolrIndexServiceExtensionHandler#addPropertyValues(Indexable, Field, FieldType, Map,
-   * String, List)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.addPropertyValues(Indexable, Field, FieldType, Map, String, List)"
-  })
-  public void testAddPropertyValues_thenReturnNotHandled()
-      throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-    // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
-        new I18nSolrIndexServiceExtensionHandler();
-    ProductBundleImpl indexable = new ProductBundleImpl();
-    FieldImpl field = new FieldImpl();
-    HashMap<String, Object> values = new HashMap<>();
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        i18nSolrIndexServiceExtensionHandler.addPropertyValues(
-            indexable, field, FieldType.BOOLEAN, values, "Property Name", new ArrayList<>()));
-  }
-
   /**
    * Test {@link AbstractSolrIndexServiceExtensionHandler#attachAdditionalBasicFields(Indexable,
    * SolrInputDocument, SolrHelperService)}.

@@ -1821,7 +1821,6 @@ public class OrderServiceImplDiffblueTest {
    *
    * <ul>
    *   <li>Given {@link OfferImpl} (default constructor).
-   *   <li>When {@link OrderImpl} (default constructor).
    *   <li>Then throw {@link OfferExpiredException}.
    * </ul>
    *
@@ -1831,7 +1830,7 @@ public class OrderServiceImplDiffblueTest {
   @Category(ContributionFromDiffblue.class)
   @ManagedByDiffblue
   @MethodsUnderTest({"Order OrderServiceImpl.addOfferCode(Order, OfferCode, boolean)"})
-  public void testAddOfferCode_givenOfferImpl_whenOrderImpl_thenThrowOfferExpiredException()
+  public void testAddOfferCode_givenOfferImpl_thenThrowOfferExpiredException()
       throws OfferException, PricingException {
     // Arrange
     when(orderServiceExtensionManager.getProxy())

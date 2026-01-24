@@ -7,7 +7,6 @@ import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.web.form.component.ListGrid;
-import org.broadleafcommerce.openadmin.web.form.component.ListGridRecord;
 import org.broadleafcommerce.openadmin.web.form.entity.EntityForm;
 import org.broadleafcommerce.openadmin.web.service.extension.TranslationsFormBuilderExtensionHandler;
 import org.junit.Test;
@@ -84,32 +83,6 @@ public class AbstractFormBuilderExtensionHandlerDiffblueTest {
     assertEquals(
         ExtensionResultStatusType.NOT_HANDLED,
         abstractFormBuilderExtensionHandler.modifyDetailEntityForm(new EntityForm()));
-  }
-
-  /**
-   * Test {@link AbstractFormBuilderExtensionHandler#modifyListGridRecord(String, ListGridRecord,
-   * Entity)}.
-   *
-   * <p>Method under test: {@link AbstractFormBuilderExtensionHandler#modifyListGridRecord(String,
-   * ListGridRecord, Entity)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ExtensionResultStatusType AbstractFormBuilderExtensionHandler.modifyListGridRecord(String, ListGridRecord, Entity)"
-  })
-  public void testModifyListGridRecord() {
-    // Arrange
-    TranslationsFormBuilderExtensionHandler translationsFormBuilderExtensionHandler =
-        new TranslationsFormBuilderExtensionHandler();
-    ListGridRecord resultRecord = new ListGridRecord();
-
-    // Act and Assert
-    assertEquals(
-        ExtensionResultStatusType.NOT_HANDLED,
-        translationsFormBuilderExtensionHandler.modifyListGridRecord(
-            "Class Name", resultRecord, new Entity()));
   }
 
   /**

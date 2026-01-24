@@ -14,18 +14,10 @@ import org.broadleafcommerce.core.demo.ImportSQLConfig.AssetFoldersExistConditio
 import org.broadleafcommerce.core.demo.ImportSQLConfig.GiftCardAndCustomerCreditExistCondition;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.type.AnnotatedTypeMetadata;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = {ImportSQLConfig.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 public class ImportSQLConfigDiffblueTest {
-  @Autowired private ImportSQLConfig importSQLConfig;
-
   /**
    * Test AssetFoldersExistCondition {@link AssetFoldersExistCondition#matches(ConditionContext,
    * AnnotatedTypeMetadata)}.
@@ -59,32 +51,6 @@ public class ImportSQLConfigDiffblueTest {
    * Test {@link ImportSQLConfig#blFrameworkSecurityData()}.
    *
    * <ul>
-   *   <li>Given {@link ImportSQLConfig}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ImportSQLConfig#blFrameworkSecurityData()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"AutoImportSql ImportSQLConfig.blFrameworkSecurityData()"})
-  public void testBlFrameworkSecurityData_givenImportSQLConfig() {
-    // Arrange and Act
-    AutoImportSql actualBlFrameworkSecurityDataResult = importSQLConfig.blFrameworkSecurityData();
-
-    // Assert
-    assertEquals("blPU", actualBlFrameworkSecurityDataResult.getPersistenceUnit());
-    assertEquals(
-        "config/bc/sql/load_admin_permissions.sql,config/bc/sql/load_admin_roles.sql,config/bc/sql/load_admin"
-            + "_menu.sql",
-        actualBlFrameworkSecurityDataResult.getSqlFilePath());
-    assertEquals(1000, actualBlFrameworkSecurityDataResult.getOrder());
-  }
-
-  /**
-   * Test {@link ImportSQLConfig#blFrameworkSecurityData()}.
-   *
-   * <ul>
    *   <li>Given {@link ImportSQLConfig} (default constructor).
    * </ul>
    *
@@ -94,7 +60,7 @@ public class ImportSQLConfigDiffblueTest {
   @Category(ContributionFromDiffblue.class)
   @ManagedByDiffblue
   @MethodsUnderTest({"AutoImportSql ImportSQLConfig.blFrameworkSecurityData()"})
-  public void testBlFrameworkSecurityData_givenImportSQLConfig2() {
+  public void testBlFrameworkSecurityData_givenImportSQLConfig() {
     // Arrange and Act
     AutoImportSql actualBlFrameworkSecurityDataResult =
         new ImportSQLConfig().blFrameworkSecurityData();
@@ -134,32 +100,6 @@ public class ImportSQLConfigDiffblueTest {
    * Test {@link ImportSQLConfig#blFrameworkPreBasicData()}.
    *
    * <ul>
-   *   <li>Given {@link ImportSQLConfig}.
-   * </ul>
-   *
-   * <p>Method under test: {@link ImportSQLConfig#blFrameworkPreBasicData()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"AutoImportSql ImportSQLConfig.blFrameworkPreBasicData()"})
-  public void testBlFrameworkPreBasicData_givenImportSQLConfig() {
-    // Arrange and Act
-    AutoImportSql actualBlFrameworkPreBasicDataResult = importSQLConfig.blFrameworkPreBasicData();
-
-    // Assert
-    assertEquals("blPU", actualBlFrameworkPreBasicDataResult.getPersistenceUnit());
-    assertEquals(
-        "config/bc/sql/demo/load_catalog_data.sql,config/bc/sql/demo/load_catalog_i18n_data_ES.sql,config/bc"
-            + "/sql/demo/load_catalog_i18n_data_FR.sql",
-        actualBlFrameworkPreBasicDataResult.getSqlFilePath());
-    assertEquals(5000, actualBlFrameworkPreBasicDataResult.getOrder());
-  }
-
-  /**
-   * Test {@link ImportSQLConfig#blFrameworkPreBasicData()}.
-   *
-   * <ul>
    *   <li>Given {@link ImportSQLConfig} (default constructor).
    * </ul>
    *
@@ -169,7 +109,7 @@ public class ImportSQLConfigDiffblueTest {
   @Category(ContributionFromDiffblue.class)
   @ManagedByDiffblue
   @MethodsUnderTest({"AutoImportSql ImportSQLConfig.blFrameworkPreBasicData()"})
-  public void testBlFrameworkPreBasicData_givenImportSQLConfig2() {
+  public void testBlFrameworkPreBasicData_givenImportSQLConfig() {
     // Arrange and Act
     AutoImportSql actualBlFrameworkPreBasicDataResult =
         new ImportSQLConfig().blFrameworkPreBasicData();

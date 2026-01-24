@@ -91,6 +91,53 @@ public class DefaultSolrIndexQueueProviderDiffblueTest {
   }
 
   /**
+   * Test {@link DefaultSolrIndexQueueProvider#createOrRetrieveCommandQueue(String)}.
+   *
+   * <ul>
+   *   <li>When {@code LockQueue Name}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * DefaultSolrIndexQueueProvider#createOrRetrieveCommandQueue(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "java.util.concurrent.BlockingQueue DefaultSolrIndexQueueProvider.createOrRetrieveCommandQueue(String)"
+  })
+  public void testCreateOrRetrieveCommandQueue_whenJavaUtilConcurrentLocksLockQueueName() {
+    // Arrange, Act and Assert
+    assertTrue(
+        new DefaultSolrIndexQueueProvider()
+            .createOrRetrieveCommandQueue("java.util.concurrent.locks.LockQueue Name")
+            .isEmpty());
+  }
+
+  /**
+   * Test {@link DefaultSolrIndexQueueProvider#createOrRetrieveCommandQueue(String)}.
+   *
+   * <ul>
+   *   <li>When {@code not blank}.
+   *   <li>Then return Empty.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * DefaultSolrIndexQueueProvider#createOrRetrieveCommandQueue(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "java.util.concurrent.BlockingQueue DefaultSolrIndexQueueProvider.createOrRetrieveCommandQueue(String)"
+  })
+  public void testCreateOrRetrieveCommandQueue_whenNotBlank_thenReturnEmpty() {
+    // Arrange, Act and Assert
+    assertTrue(
+        new DefaultSolrIndexQueueProvider().createOrRetrieveCommandQueue("not blank").isEmpty());
+  }
+
+  /**
    * Test {@link DefaultSolrIndexQueueProvider#createLocalQueue(String)}.
    *
    * <p>Method under test: {@link DefaultSolrIndexQueueProvider#createLocalQueue(String)}
@@ -110,7 +157,7 @@ public class DefaultSolrIndexQueueProviderDiffblueTest {
    * Test {@link DefaultSolrIndexQueueProvider#createLocalLock(String)}.
    *
    * <ul>
-   *   <li>When {@link DefaultSolrIndexQueueProvider#LOCK_PATH}.
+   *   <li>When {@code /solr-index/command-queue/}.
    *   <li>Then return {@link ReentrantLock}.
    * </ul>
    *
@@ -120,15 +167,14 @@ public class DefaultSolrIndexQueueProviderDiffblueTest {
   @Category(ContributionFromDiffblue.class)
   @ManagedByDiffblue
   @MethodsUnderTest({"Lock DefaultSolrIndexQueueProvider.createLocalLock(String)"})
-  public void testCreateLocalLock_whenLock_path_thenReturnReentrantLock() {
+  public void testCreateLocalLock_whenSolrIndexCommandQueue_thenReturnReentrantLock() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
     //   Run dcover create --keep-partial-tests to gain insights into why
     //   a non-Spring test was created.
 
     // Arrange and Act
     Lock actualCreateLocalLockResult =
-        new DefaultSolrIndexQueueProvider()
-            .createLocalLock(DefaultSolrIndexQueueProvider.LOCK_PATH);
+        new DefaultSolrIndexQueueProvider().createLocalLock("/solr-index/command-queue/");
 
     // Assert
     assertTrue(actualCreateLocalLockResult instanceof ReentrantLock);

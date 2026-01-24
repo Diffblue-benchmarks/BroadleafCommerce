@@ -34,7 +34,6 @@ import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.core.offer.domain.Offer;
 import org.broadleafcommerce.core.offer.domain.OfferImpl;
-import org.broadleafcommerce.core.offer.domain.OrderAdjustment;
 import org.broadleafcommerce.core.offer.service.type.CustomerMaxUsesStrategyType;
 import org.broadleafcommerce.core.offer.service.type.OfferAdjustmentType;
 import org.broadleafcommerce.core.offer.service.type.OfferDiscountType;
@@ -1531,164 +1530,23 @@ public class PromotableItemFactoryImplDiffblueTest {
   })
   public void testCreatePromotableOrderAdjustmentWithPromotableCandidateOrderOfferOrder() {
     // Arrange
-    PromotableItemFactoryImpl promotableItemFactoryImpl = new PromotableItemFactoryImpl(null);
-
-    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
-    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
-
-    PromotableOrderImpl promotableOrder = mock(PromotableOrderImpl.class);
-    when(promotableOrder.getOrderCurrency()).thenReturn(broadleafCurrency);
-    when(promotableOrder.calculateSubtotalWithoutAdjustments()).thenReturn(new Money());
-
-    OfferImpl offer = mock(OfferImpl.class);
-    when(offer.isFutureCredit()).thenReturn(true);
-    when(offer.getValue()).thenReturn(new BigDecimal("2.3"));
-    when(offer.getDiscountType()).thenReturn(OfferDiscountType.AMOUNT_OFF);
-
-    PromotableCandidateOrderOfferImpl promotableCandidateOrderOffer =
-        new PromotableCandidateOrderOfferImpl(promotableOrder, offer);
-    OrderImpl order = new OrderImpl();
-    PromotableOrderImpl order2 =
-        new PromotableOrderImpl(
-            order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-
-    // Act
-    PromotableOrderAdjustment actualCreatePromotableOrderAdjustmentResult =
-        promotableItemFactoryImpl.createPromotableOrderAdjustment(
-            promotableCandidateOrderOffer, order2);
-
-    // Assert
-    verify(broadleafCurrency, atLeast(1)).getCurrencyCode();
-    verify(offer, atLeast(1)).getDiscountType();
-    verify(offer, atLeast(1)).getValue();
-    verify(offer).isFutureCredit();
-    verify(promotableOrder).calculateSubtotalWithoutAdjustments();
-    verify(promotableOrder, atLeast(1)).getOrderCurrency();
-    assertTrue(
-        ((PromotableOrderAdjustmentImpl) actualCreatePromotableOrderAdjustmentResult)
-                .promotableCandidateOrderOffer
-            instanceof PromotableCandidateOrderOfferImpl);
-    assertTrue(
-        actualCreatePromotableOrderAdjustmentResult instanceof PromotableOrderAdjustmentImpl);
-    assertSame(order2, actualCreatePromotableOrderAdjustmentResult.getPromotableOrder());
-  }
-
-  /**
-   * Test {@link
-   * PromotableItemFactoryImpl#createPromotableOrderAdjustment(PromotableCandidateOrderOffer,
-   * PromotableOrder)} with {@code promotableCandidateOrderOffer}, {@code order}.
-   *
-   * <p>Method under test: {@link
-   * PromotableItemFactoryImpl#createPromotableOrderAdjustment(PromotableCandidateOrderOffer,
-   * PromotableOrder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PromotableOrderAdjustment PromotableItemFactoryImpl.createPromotableOrderAdjustment(PromotableCandidateOrderOffer, PromotableOrder)"
-  })
-  public void testCreatePromotableOrderAdjustmentWithPromotableCandidateOrderOfferOrder2() {
-    // Arrange
-    PromotableItemFactoryImpl promotableItemFactoryImpl = new PromotableItemFactoryImpl(null);
-
-    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
-    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
-
-    PromotableOrderImpl promotableOrder = mock(PromotableOrderImpl.class);
-    when(promotableOrder.getOrderCurrency()).thenReturn(broadleafCurrency);
-    when(promotableOrder.calculateSubtotalWithoutAdjustments()).thenReturn(new Money());
-
-    OfferImpl offer = mock(OfferImpl.class);
-    when(offer.isFutureCredit()).thenReturn(true);
-    when(offer.getValue()).thenReturn(new BigDecimal("2.3"));
-    when(offer.getDiscountType()).thenReturn(OfferDiscountType.AMOUNT_OFF);
-
-    PromotableCandidateOrderOfferImpl promotableCandidateOrderOffer =
-        new PromotableCandidateOrderOfferImpl(promotableOrder, offer);
-
-    BroadleafCurrency broadleafCurrency2 = mock(BroadleafCurrency.class);
-    when(broadleafCurrency2.getCurrencyCode()).thenReturn("GBP");
-
-    Order order = mock(Order.class);
-    when(order.getOrderAdjustments()).thenReturn(new ArrayList<>());
-    when(order.getOrderItems()).thenReturn(new ArrayList<>());
-    when(order.getCurrency()).thenReturn(broadleafCurrency2);
-    PromotableOrderImpl order2 =
-        new PromotableOrderImpl(
-            order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-
-    // Act
-    PromotableOrderAdjustment actualCreatePromotableOrderAdjustmentResult =
-        promotableItemFactoryImpl.createPromotableOrderAdjustment(
-            promotableCandidateOrderOffer, order2);
-
-    // Assert
-    verify(broadleafCurrency, atLeast(1)).getCurrencyCode();
-    verify(broadleafCurrency2, atLeast(1)).getCurrencyCode();
-    verify(offer, atLeast(1)).getDiscountType();
-    verify(offer, atLeast(1)).getValue();
-    verify(offer).isFutureCredit();
-    verify(promotableOrder).calculateSubtotalWithoutAdjustments();
-    verify(promotableOrder, atLeast(1)).getOrderCurrency();
-    verify(order, atLeast(1)).getCurrency();
-    verify(order, atLeast(1)).getOrderAdjustments();
-    verify(order).getOrderItems();
-    PromotableCandidateOrderOffer promotableCandidateOrderOffer2 =
-        ((PromotableOrderAdjustmentImpl) actualCreatePromotableOrderAdjustmentResult)
-            .promotableCandidateOrderOffer;
-    assertTrue(promotableCandidateOrderOffer2 instanceof PromotableCandidateOrderOfferImpl);
-    assertTrue(
-        actualCreatePromotableOrderAdjustmentResult instanceof PromotableOrderAdjustmentImpl);
-    assertTrue(
-        actualCreatePromotableOrderAdjustmentResult.getPromotableOrder()
-            instanceof PromotableOrderImpl);
-    Money potentialSavings = promotableCandidateOrderOffer2.getPotentialSavings();
-    Money actualAbsResult = potentialSavings.abs();
-    assertEquals(potentialSavings, actualAbsResult);
-    Money actualZeroResult = potentialSavings.zero();
-    assertEquals(potentialSavings, actualZeroResult);
-    Money adjustmentValue = actualCreatePromotableOrderAdjustmentResult.getAdjustmentValue();
-    Money actualAbsResult2 = adjustmentValue.abs();
-    assertEquals(adjustmentValue, actualAbsResult2);
-    Money actualZeroResult2 = adjustmentValue.zero();
-    assertEquals(adjustmentValue, actualZeroResult2);
-  }
-
-  /**
-   * Test {@link
-   * PromotableItemFactoryImpl#createPromotableOrderAdjustment(PromotableCandidateOrderOffer,
-   * PromotableOrder)} with {@code promotableCandidateOrderOffer}, {@code order}.
-   *
-   * <p>Method under test: {@link
-   * PromotableItemFactoryImpl#createPromotableOrderAdjustment(PromotableCandidateOrderOffer,
-   * PromotableOrder)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "PromotableOrderAdjustment PromotableItemFactoryImpl.createPromotableOrderAdjustment(PromotableCandidateOrderOffer, PromotableOrder)"
-  })
-  public void testCreatePromotableOrderAdjustmentWithPromotableCandidateOrderOfferOrder3() {
-    // Arrange
-    PromotableItemFactoryImpl promotableItemFactoryImpl = new PromotableItemFactoryImpl(null);
+    PromotableItemFactoryImpl promotableItemFactoryImpl =
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl());
 
     OfferImpl offerImpl = mock(OfferImpl.class);
     when(offerImpl.getValue()).thenReturn(new BigDecimal("2.3"));
     when(offerImpl.isFutureCredit()).thenReturn(true);
     when(offerImpl.getDiscountType()).thenReturn(OfferDiscountType.AMOUNT_OFF);
 
-    PromotableCandidateOrderOffer promotableCandidateOrderOffer =
-        mock(PromotableCandidateOrderOffer.class);
+    PromotableCandidateOrderOfferImpl promotableCandidateOrderOffer =
+        mock(PromotableCandidateOrderOfferImpl.class);
     when(promotableCandidateOrderOffer.getOffer()).thenReturn(offerImpl);
 
     BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
     when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
 
     Order order = mock(Order.class);
-    ArrayList<OrderAdjustment> orderAdjustmentList = new ArrayList<>();
-    when(order.getOrderAdjustments()).thenReturn(orderAdjustmentList);
+    when(order.getOrderAdjustments()).thenReturn(new ArrayList<>());
     when(order.getOrderItems()).thenReturn(new ArrayList<>());
     when(order.getCurrency()).thenReturn(broadleafCurrency);
     PromotableOrderImpl order2 =
@@ -1711,11 +1569,142 @@ public class PromotableItemFactoryImplDiffblueTest {
     verify(order).getOrderItems();
     assertTrue(
         actualCreatePromotableOrderAdjustmentResult instanceof PromotableOrderAdjustmentImpl);
-    assertTrue(
-        actualCreatePromotableOrderAdjustmentResult.getPromotableOrder()
-            instanceof PromotableOrderImpl);
-    assertEquals(orderAdjustmentList, order2.allOrderItems);
     Money adjustmentValue = actualCreatePromotableOrderAdjustmentResult.getAdjustmentValue();
+    assertEquals(new BigDecimal("0.00"), adjustmentValue.getAmount());
+    Money actualAbsResult = adjustmentValue.abs();
+    assertEquals(adjustmentValue, actualAbsResult);
+    Money actualZeroResult = adjustmentValue.zero();
+    assertEquals(adjustmentValue, actualZeroResult);
+  }
+
+  /**
+   * Test {@link
+   * PromotableItemFactoryImpl#createPromotableOrderAdjustment(PromotableCandidateOrderOffer,
+   * PromotableOrder)} with {@code promotableCandidateOrderOffer}, {@code order}.
+   *
+   * <p>Method under test: {@link
+   * PromotableItemFactoryImpl#createPromotableOrderAdjustment(PromotableCandidateOrderOffer,
+   * PromotableOrder)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "PromotableOrderAdjustment PromotableItemFactoryImpl.createPromotableOrderAdjustment(PromotableCandidateOrderOffer, PromotableOrder)"
+  })
+  public void testCreatePromotableOrderAdjustmentWithPromotableCandidateOrderOfferOrder2() {
+    // Arrange
+    PromotableItemFactoryImpl promotableItemFactoryImpl =
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl());
+
+    OfferImpl offerImpl = mock(OfferImpl.class);
+    when(offerImpl.getValue()).thenReturn(new BigDecimal("-2.3"));
+    when(offerImpl.isFutureCredit()).thenReturn(true);
+    when(offerImpl.getDiscountType()).thenReturn(OfferDiscountType.AMOUNT_OFF);
+
+    PromotableCandidateOrderOfferImpl promotableCandidateOrderOffer =
+        mock(PromotableCandidateOrderOfferImpl.class);
+    when(promotableCandidateOrderOffer.getOffer()).thenReturn(offerImpl);
+
+    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
+    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
+
+    Order order = mock(Order.class);
+    when(order.getOrderAdjustments()).thenReturn(new ArrayList<>());
+    when(order.getOrderItems()).thenReturn(new ArrayList<>());
+    when(order.getCurrency()).thenReturn(broadleafCurrency);
+    PromotableOrderImpl order2 =
+        new PromotableOrderImpl(
+            order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act
+    PromotableOrderAdjustment actualCreatePromotableOrderAdjustmentResult =
+        promotableItemFactoryImpl.createPromotableOrderAdjustment(
+            promotableCandidateOrderOffer, order2);
+
+    // Assert
+    verify(broadleafCurrency, atLeast(1)).getCurrencyCode();
+    verify(offerImpl).getDiscountType();
+    verify(offerImpl).getValue();
+    verify(offerImpl).isFutureCredit();
+    verify(promotableCandidateOrderOffer).getOffer();
+    verify(order, atLeast(1)).getCurrency();
+    verify(order, atLeast(1)).getOrderAdjustments();
+    verify(order).getOrderItems();
+    assertTrue(
+        actualCreatePromotableOrderAdjustmentResult instanceof PromotableOrderAdjustmentImpl);
+    Money adjustmentValue = actualCreatePromotableOrderAdjustmentResult.getAdjustmentValue();
+    assertEquals(new BigDecimal("-2.30"), adjustmentValue.getAmount());
+    BigDecimal expectedAmount = new BigDecimal("0.00");
+    Money zeroResult = adjustmentValue.zero();
+    assertEquals(expectedAmount, zeroResult.getAmount());
+    BigDecimal expectedAmount2 = new BigDecimal("2.30");
+    Money absResult = adjustmentValue.abs();
+    assertEquals(expectedAmount2, absResult.getAmount());
+    Money zeroResult2 = zeroResult.zero();
+    assertEquals(zeroResult2, absResult.abs().zero());
+    assertEquals(zeroResult2, absResult.zero());
+    assertEquals(zeroResult2, zeroResult2);
+    Money actualAbsResult = zeroResult.abs();
+    assertEquals(zeroResult, actualAbsResult);
+  }
+
+  /**
+   * Test {@link
+   * PromotableItemFactoryImpl#createPromotableOrderAdjustment(PromotableCandidateOrderOffer,
+   * PromotableOrder)} with {@code promotableCandidateOrderOffer}, {@code order}.
+   *
+   * <p>Method under test: {@link
+   * PromotableItemFactoryImpl#createPromotableOrderAdjustment(PromotableCandidateOrderOffer,
+   * PromotableOrder)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "PromotableOrderAdjustment PromotableItemFactoryImpl.createPromotableOrderAdjustment(PromotableCandidateOrderOffer, PromotableOrder)"
+  })
+  public void testCreatePromotableOrderAdjustmentWithPromotableCandidateOrderOfferOrder3() {
+    // Arrange
+    PromotableItemFactoryImpl promotableItemFactoryImpl =
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl());
+
+    OfferImpl offerImpl = mock(OfferImpl.class);
+    when(offerImpl.isFutureCredit()).thenReturn(true);
+    when(offerImpl.getDiscountType()).thenReturn(OfferDiscountType.FIX_PRICE);
+
+    PromotableCandidateOrderOfferImpl promotableCandidateOrderOffer =
+        mock(PromotableCandidateOrderOfferImpl.class);
+    when(promotableCandidateOrderOffer.getOffer()).thenReturn(offerImpl);
+
+    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
+    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
+
+    Order order = mock(Order.class);
+    when(order.getOrderAdjustments()).thenReturn(new ArrayList<>());
+    when(order.getOrderItems()).thenReturn(new ArrayList<>());
+    when(order.getCurrency()).thenReturn(broadleafCurrency);
+    PromotableOrderImpl order2 =
+        new PromotableOrderImpl(
+            order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act
+    PromotableOrderAdjustment actualCreatePromotableOrderAdjustmentResult =
+        promotableItemFactoryImpl.createPromotableOrderAdjustment(
+            promotableCandidateOrderOffer, order2);
+
+    // Assert
+    verify(broadleafCurrency, atLeast(1)).getCurrencyCode();
+    verify(offerImpl, atLeast(1)).getDiscountType();
+    verify(offerImpl).isFutureCredit();
+    verify(promotableCandidateOrderOffer).getOffer();
+    verify(order, atLeast(1)).getCurrency();
+    verify(order, atLeast(1)).getOrderAdjustments();
+    verify(order).getOrderItems();
+    assertTrue(
+        actualCreatePromotableOrderAdjustmentResult instanceof PromotableOrderAdjustmentImpl);
+    Money adjustmentValue = actualCreatePromotableOrderAdjustmentResult.getAdjustmentValue();
+    assertEquals(new BigDecimal("0.00"), adjustmentValue.getAmount());
     Money actualAbsResult = adjustmentValue.abs();
     assertEquals(adjustmentValue, actualAbsResult);
     Money actualZeroResult = adjustmentValue.zero();
@@ -1739,38 +1728,184 @@ public class PromotableItemFactoryImplDiffblueTest {
   })
   public void testCreatePromotableOrderAdjustmentWithPromotableCandidateOrderOfferOrder4() {
     // Arrange
-    PromotableItemFactoryImpl promotableItemFactoryImpl = new PromotableItemFactoryImpl(null);
+    PromotableItemFactoryImpl promotableItemFactoryImpl =
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl());
+
+    InternalNumber internalNumber = mock(InternalNumber.class);
+    when(internalNumber.divide(Mockito.<BigDecimal>any(), anyInt(), Mockito.<RoundingMode>any()))
+        .thenReturn(new BigDecimal("2.3"));
 
     OfferImpl offerImpl = mock(OfferImpl.class);
-    when(offerImpl.getValue()).thenReturn(new BigDecimal("2.3"));
+    when(offerImpl.getValue()).thenReturn(internalNumber);
     when(offerImpl.isFutureCredit()).thenReturn(true);
-    when(offerImpl.getDiscountType()).thenReturn(OfferDiscountType.AMOUNT_OFF);
+    when(offerImpl.getDiscountType()).thenReturn(OfferDiscountType.PERCENT_OFF);
 
-    PromotableCandidateOrderOffer promotableCandidateOrderOffer =
-        mock(PromotableCandidateOrderOffer.class);
+    PromotableCandidateOrderOfferImpl promotableCandidateOrderOffer =
+        mock(PromotableCandidateOrderOfferImpl.class);
     when(promotableCandidateOrderOffer.getOffer()).thenReturn(offerImpl);
 
-    PromotableOrder order = mock(PromotableOrder.class);
-    when(order.getOrderCurrency()).thenReturn(null);
-    when(order.calculateOrderAdjustmentTotal()).thenReturn(new Money());
-    when(order.calculateSubtotalWithAdjustments()).thenReturn(new Money());
+    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
+    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
+
+    Order order = mock(Order.class);
+    when(order.getOrderAdjustments()).thenReturn(new ArrayList<>());
+    when(order.getOrderItems()).thenReturn(new ArrayList<>());
+    when(order.getCurrency()).thenReturn(broadleafCurrency);
+    PromotableOrderImpl order2 =
+        new PromotableOrderImpl(
+            order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
 
     // Act
     PromotableOrderAdjustment actualCreatePromotableOrderAdjustmentResult =
         promotableItemFactoryImpl.createPromotableOrderAdjustment(
-            promotableCandidateOrderOffer, order);
+            promotableCandidateOrderOffer, order2);
 
     // Assert
-    verify(offerImpl).getDiscountType();
+    verify(internalNumber).divide(isA(BigDecimal.class), eq(5), eq(RoundingMode.HALF_EVEN));
+    verify(broadleafCurrency, atLeast(1)).getCurrencyCode();
+    verify(offerImpl, atLeast(1)).getDiscountType();
     verify(offerImpl).getValue();
     verify(offerImpl).isFutureCredit();
     verify(promotableCandidateOrderOffer).getOffer();
-    verify(order).calculateOrderAdjustmentTotal();
-    verify(order).calculateSubtotalWithAdjustments();
-    verify(order, atLeast(1)).getOrderCurrency();
+    verify(order, atLeast(1)).getCurrency();
+    verify(order, atLeast(1)).getOrderAdjustments();
+    verify(order).getOrderItems();
     assertTrue(
         actualCreatePromotableOrderAdjustmentResult instanceof PromotableOrderAdjustmentImpl);
-    assertSame(order, actualCreatePromotableOrderAdjustmentResult.getPromotableOrder());
+    BigDecimal expectedAmount = new BigDecimal("0.00");
+    Money adjustmentValue = actualCreatePromotableOrderAdjustmentResult.getAdjustmentValue();
+    Money absResult = adjustmentValue.abs();
+    assertEquals(expectedAmount, absResult.getAmount());
+    assertEquals(new BigDecimal("0.00000"), adjustmentValue.getAmount());
+    Money absResult2 = absResult.abs();
+    Money actualZeroResult = absResult2.zero();
+    assertEquals(absResult2, actualZeroResult);
+    assertEquals(absResult2, absResult.zero());
+    assertEquals(absResult2, adjustmentValue.zero());
+  }
+
+  /**
+   * Test {@link
+   * PromotableItemFactoryImpl#createPromotableOrderAdjustment(PromotableCandidateOrderOffer,
+   * PromotableOrder)} with {@code promotableCandidateOrderOffer}, {@code order}.
+   *
+   * <p>Method under test: {@link
+   * PromotableItemFactoryImpl#createPromotableOrderAdjustment(PromotableCandidateOrderOffer,
+   * PromotableOrder)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "PromotableOrderAdjustment PromotableItemFactoryImpl.createPromotableOrderAdjustment(PromotableCandidateOrderOffer, PromotableOrder)"
+  })
+  public void testCreatePromotableOrderAdjustmentWithPromotableCandidateOrderOfferOrder5() {
+    // Arrange
+    PromotableItemFactoryImpl promotableItemFactoryImpl =
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl());
+
+    OfferImpl offerImpl = mock(OfferImpl.class);
+    when(offerImpl.isFutureCredit()).thenReturn(true);
+    when(offerImpl.getDiscountType()).thenReturn(new OfferDiscountType());
+
+    PromotableCandidateOrderOfferImpl promotableCandidateOrderOffer =
+        mock(PromotableCandidateOrderOfferImpl.class);
+    when(promotableCandidateOrderOffer.getOffer()).thenReturn(offerImpl);
+
+    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
+    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
+
+    Order order = mock(Order.class);
+    when(order.getOrderAdjustments()).thenReturn(new ArrayList<>());
+    when(order.getOrderItems()).thenReturn(new ArrayList<>());
+    when(order.getCurrency()).thenReturn(broadleafCurrency);
+    PromotableOrderImpl order2 =
+        new PromotableOrderImpl(
+            order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act
+    PromotableOrderAdjustment actualCreatePromotableOrderAdjustmentResult =
+        promotableItemFactoryImpl.createPromotableOrderAdjustment(
+            promotableCandidateOrderOffer, order2);
+
+    // Assert
+    verify(broadleafCurrency, atLeast(1)).getCurrencyCode();
+    verify(offerImpl, atLeast(1)).getDiscountType();
+    verify(offerImpl).isFutureCredit();
+    verify(promotableCandidateOrderOffer).getOffer();
+    verify(order, atLeast(1)).getCurrency();
+    verify(order, atLeast(1)).getOrderAdjustments();
+    verify(order).getOrderItems();
+    assertTrue(
+        actualCreatePromotableOrderAdjustmentResult instanceof PromotableOrderAdjustmentImpl);
+    Money adjustmentValue = actualCreatePromotableOrderAdjustmentResult.getAdjustmentValue();
+    assertEquals(new BigDecimal("0.00"), adjustmentValue.getAmount());
+    Money actualAbsResult = adjustmentValue.abs();
+    assertEquals(adjustmentValue, actualAbsResult);
+    Money actualZeroResult = adjustmentValue.zero();
+    assertEquals(adjustmentValue, actualZeroResult);
+  }
+
+  /**
+   * Test {@link
+   * PromotableItemFactoryImpl#createPromotableOrderAdjustment(PromotableCandidateOrderOffer,
+   * PromotableOrder)} with {@code promotableCandidateOrderOffer}, {@code order}.
+   *
+   * <p>Method under test: {@link
+   * PromotableItemFactoryImpl#createPromotableOrderAdjustment(PromotableCandidateOrderOffer,
+   * PromotableOrder)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "PromotableOrderAdjustment PromotableItemFactoryImpl.createPromotableOrderAdjustment(PromotableCandidateOrderOffer, PromotableOrder)"
+  })
+  public void testCreatePromotableOrderAdjustmentWithPromotableCandidateOrderOfferOrder6() {
+    // Arrange
+    PromotableItemFactoryImpl promotableItemFactoryImpl =
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl());
+
+    OfferImpl offerImpl = mock(OfferImpl.class);
+    when(offerImpl.isFutureCredit()).thenReturn(true);
+    when(offerImpl.getDiscountType()).thenReturn(mock(OfferDiscountType.class));
+
+    PromotableCandidateOrderOfferImpl promotableCandidateOrderOffer =
+        mock(PromotableCandidateOrderOfferImpl.class);
+    when(promotableCandidateOrderOffer.getOffer()).thenReturn(offerImpl);
+
+    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
+    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
+
+    Order order = mock(Order.class);
+    when(order.getOrderAdjustments()).thenReturn(new ArrayList<>());
+    when(order.getOrderItems()).thenReturn(new ArrayList<>());
+    when(order.getCurrency()).thenReturn(broadleafCurrency);
+    PromotableOrderImpl order2 =
+        new PromotableOrderImpl(
+            order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act
+    PromotableOrderAdjustment actualCreatePromotableOrderAdjustmentResult =
+        promotableItemFactoryImpl.createPromotableOrderAdjustment(
+            promotableCandidateOrderOffer, order2);
+
+    // Assert
+    verify(broadleafCurrency, atLeast(1)).getCurrencyCode();
+    verify(offerImpl, atLeast(1)).getDiscountType();
+    verify(offerImpl).isFutureCredit();
+    verify(promotableCandidateOrderOffer).getOffer();
+    verify(order, atLeast(1)).getCurrency();
+    verify(order, atLeast(1)).getOrderAdjustments();
+    verify(order).getOrderItems();
+    assertTrue(
+        actualCreatePromotableOrderAdjustmentResult instanceof PromotableOrderAdjustmentImpl);
+    Money adjustmentValue = actualCreatePromotableOrderAdjustmentResult.getAdjustmentValue();
+    assertEquals(new BigDecimal("0.00"), adjustmentValue.getAmount());
+    Money actualAbsResult = adjustmentValue.abs();
+    assertEquals(adjustmentValue, actualAbsResult);
+    Money actualZeroResult = adjustmentValue.zero();
+    assertEquals(adjustmentValue, actualZeroResult);
   }
 
   /**
@@ -1988,12 +2123,9 @@ public class PromotableItemFactoryImplDiffblueTest {
         mock(PromotableCandidateOrderOfferImpl.class);
     when(promotableCandidateOrderOffer.getOffer()).thenReturn(offerImpl);
 
-    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
-    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
-
     NullOrderImpl order = mock(NullOrderImpl.class);
     when(order.getOrderItems()).thenReturn(new ArrayList<>());
-    when(order.getCurrency()).thenReturn(broadleafCurrency);
+    when(order.getCurrency()).thenReturn(null);
     when(order.getOrderAdjustments()).thenReturn(new ArrayList<>());
     PromotableOrderImpl order2 =
         new PromotableOrderImpl(
@@ -2006,7 +2138,6 @@ public class PromotableItemFactoryImplDiffblueTest {
             promotableCandidateOrderOffer, order2, adjustmentValue);
 
     // Assert
-    verify(broadleafCurrency, atLeast(1)).getCurrencyCode();
     verify(offerImpl, atLeast(1)).getDiscountType();
     verify(offerImpl).isFutureCredit();
     verify(promotableCandidateOrderOffer).getOffer();
@@ -2054,12 +2185,9 @@ public class PromotableItemFactoryImplDiffblueTest {
         mock(PromotableCandidateOrderOfferImpl.class);
     when(promotableCandidateOrderOffer.getOffer()).thenReturn(offerImpl);
 
-    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
-    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
-
     NullOrderImpl order = mock(NullOrderImpl.class);
     when(order.getOrderItems()).thenReturn(new ArrayList<>());
-    when(order.getCurrency()).thenReturn(broadleafCurrency);
+    when(order.getCurrency()).thenReturn(null);
     when(order.getOrderAdjustments()).thenReturn(new ArrayList<>());
     PromotableOrderImpl order2 =
         new PromotableOrderImpl(
@@ -2073,7 +2201,6 @@ public class PromotableItemFactoryImplDiffblueTest {
 
     // Assert
     verify(internalNumber).divide(isA(BigDecimal.class), eq(5), eq(RoundingMode.HALF_EVEN));
-    verify(broadleafCurrency, atLeast(1)).getCurrencyCode();
     verify(offerImpl, atLeast(1)).getDiscountType();
     verify(offerImpl).getValue();
     verify(offerImpl).isFutureCredit();
@@ -2117,12 +2244,9 @@ public class PromotableItemFactoryImplDiffblueTest {
         mock(PromotableCandidateOrderOfferImpl.class);
     when(promotableCandidateOrderOffer.getOffer()).thenReturn(offerImpl);
 
-    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
-    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
-
     NullOrderImpl order = mock(NullOrderImpl.class);
     when(order.getOrderItems()).thenReturn(new ArrayList<>());
-    when(order.getCurrency()).thenReturn(broadleafCurrency);
+    when(order.getCurrency()).thenReturn(null);
     when(order.getOrderAdjustments()).thenReturn(new ArrayList<>());
     PromotableOrderImpl order2 =
         new PromotableOrderImpl(
@@ -2135,7 +2259,6 @@ public class PromotableItemFactoryImplDiffblueTest {
             promotableCandidateOrderOffer, order2, adjustmentValue);
 
     // Assert
-    verify(broadleafCurrency, atLeast(1)).getCurrencyCode();
     verify(offerImpl, atLeast(1)).getDiscountType();
     verify(offerImpl).isFutureCredit();
     verify(promotableCandidateOrderOffer).getOffer();
@@ -2178,12 +2301,9 @@ public class PromotableItemFactoryImplDiffblueTest {
         mock(PromotableCandidateOrderOfferImpl.class);
     when(promotableCandidateOrderOffer.getOffer()).thenReturn(offerImpl);
 
-    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
-    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
-
     NullOrderImpl order = mock(NullOrderImpl.class);
     when(order.getOrderItems()).thenReturn(new ArrayList<>());
-    when(order.getCurrency()).thenReturn(broadleafCurrency);
+    when(order.getCurrency()).thenReturn(null);
     when(order.getOrderAdjustments()).thenReturn(new ArrayList<>());
     PromotableOrderImpl order2 =
         new PromotableOrderImpl(
@@ -2196,7 +2316,6 @@ public class PromotableItemFactoryImplDiffblueTest {
             promotableCandidateOrderOffer, order2, adjustmentValue);
 
     // Assert
-    verify(broadleafCurrency, atLeast(1)).getCurrencyCode();
     verify(offerImpl, atLeast(1)).getDiscountType();
     verify(offerImpl).isFutureCredit();
     verify(promotableCandidateOrderOffer).getOffer();

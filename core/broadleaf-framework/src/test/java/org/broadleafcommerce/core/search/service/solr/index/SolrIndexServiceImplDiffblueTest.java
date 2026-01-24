@@ -60,6 +60,7 @@ import org.broadleafcommerce.core.search.service.solr.index.SolrIndexCachedOpera
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -324,21 +325,6 @@ public class SolrIndexServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link SolrIndexServiceImpl#buildPageNumberMessage(int, Long)}.
-   *
-   * <p>Method under test: {@link SolrIndexServiceImpl#buildPageNumberMessage(int, Long)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"String SolrIndexServiceImpl.buildPageNumberMessage(int, Long)"})
-  public void testBuildPageNumberMessage() {
-    // Arrange, Act and Assert
-    assertEquals(
-        "Building page number 1 of 1", new SolrIndexServiceImpl().buildPageNumberMessage(1, 1L));
-  }
-
-  /**
    * Test {@link SolrIndexServiceImpl#countIndexableItems()}.
    *
    * <ul>
@@ -565,7 +551,7 @@ public class SolrIndexServiceImplDiffblueTest {
     when(solrIndexServiceExtensionManager.getProxy())
         .thenReturn(i18nSolrIndexServiceExtensionHandler);
     when(localeService.findAllLocales()).thenThrow(new IllegalStateException());
-    doNothing().when(sandBoxHelper).ignoreCloneCache(anyBoolean());
+    doNothing().when(sandBoxHelper).ignoreCloneCache(ArgumentMatchers.anyBoolean());
 
     TransactionStatus transactionStatus = mock(TransactionStatus.class);
     when(transactionStatus.isRollbackOnly()).thenReturn(true);
@@ -579,7 +565,7 @@ public class SolrIndexServiceImplDiffblueTest {
         () -> solrIndexServiceImpl.buildIncrementalIndex("Collection", new ArrayList<>(), null));
     verify(solrIndexServiceExtensionManager, atLeast(1)).getProxy();
     verify(localeService).findAllLocales();
-    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(anyBoolean());
+    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(ArgumentMatchers.anyBoolean());
     verify(i18nSolrIndexServiceExtensionHandler).endBatchEvent(isA(List.class));
     verify(i18nSolrIndexServiceExtensionHandler).startBatchEvent(isA(List.class));
     verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
@@ -612,7 +598,7 @@ public class SolrIndexServiceImplDiffblueTest {
     when(solrIndexServiceExtensionManager.getProxy())
         .thenReturn(i18nSolrIndexServiceExtensionHandler);
     when(localeService.findAllLocales()).thenReturn(new ArrayList<>());
-    doNothing().when(sandBoxHelper).ignoreCloneCache(anyBoolean());
+    doNothing().when(sandBoxHelper).ignoreCloneCache(ArgumentMatchers.anyBoolean());
     doThrow(new IllegalStateException())
         .when(solrIndexDao)
         .populateProductCatalogStructure(
@@ -630,7 +616,7 @@ public class SolrIndexServiceImplDiffblueTest {
         () -> solrIndexServiceImpl.buildIncrementalIndex("Collection", new ArrayList<>(), null));
     verify(solrIndexServiceExtensionManager, atLeast(1)).getProxy();
     verify(localeService).findAllLocales();
-    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(anyBoolean());
+    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(ArgumentMatchers.anyBoolean());
     verify(solrIndexDao).populateProductCatalogStructure(isA(List.class), isNull());
     verify(i18nSolrIndexServiceExtensionHandler).endBatchEvent(isA(List.class));
     verify(i18nSolrIndexServiceExtensionHandler).startBatchEvent(isA(List.class));
@@ -666,7 +652,7 @@ public class SolrIndexServiceImplDiffblueTest {
     when(indexFieldDao.readFieldsByEntityType(Mockito.<FieldEntity>any()))
         .thenReturn(new ArrayList<>());
     when(localeService.findAllLocales()).thenReturn(new ArrayList<>());
-    doNothing().when(sandBoxHelper).ignoreCloneCache(anyBoolean());
+    doNothing().when(sandBoxHelper).ignoreCloneCache(ArgumentMatchers.anyBoolean());
     when(solrHelperService.getCurrentProductId(Mockito.<Indexable>any())).thenReturn(1L);
     doNothing()
         .when(solrIndexDao)
@@ -688,7 +674,7 @@ public class SolrIndexServiceImplDiffblueTest {
         () -> solrIndexServiceImpl.buildIncrementalIndex("Collection", indexables, null));
     verify(solrIndexServiceExtensionManager, atLeast(1)).getProxy();
     verify(localeService).findAllLocales();
-    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(anyBoolean());
+    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(ArgumentMatchers.anyBoolean());
     verify(indexFieldDao).readFieldsByEntityType(isA(FieldEntity.class));
     verify(solrIndexDao).populateProductCatalogStructure(isA(List.class), isNull());
     verify(solrHelperService).getCurrentProductId(isA(Indexable.class));
@@ -726,7 +712,7 @@ public class SolrIndexServiceImplDiffblueTest {
     when(indexFieldDao.readFieldsByEntityType(Mockito.<FieldEntity>any()))
         .thenReturn(new ArrayList<>());
     when(localeService.findAllLocales()).thenReturn(new ArrayList<>());
-    doNothing().when(sandBoxHelper).ignoreCloneCache(anyBoolean());
+    doNothing().when(sandBoxHelper).ignoreCloneCache(ArgumentMatchers.anyBoolean());
     when(solrHelperService.getCurrentProductId(Mockito.<Indexable>any())).thenReturn(1L);
     doNothing()
         .when(solrIndexDao)
@@ -749,7 +735,7 @@ public class SolrIndexServiceImplDiffblueTest {
         () -> solrIndexServiceImpl.buildIncrementalIndex("Collection", indexables, null));
     verify(solrIndexServiceExtensionManager, atLeast(1)).getProxy();
     verify(localeService).findAllLocales();
-    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(anyBoolean());
+    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(ArgumentMatchers.anyBoolean());
     verify(indexFieldDao).readFieldsByEntityType(isA(FieldEntity.class));
     verify(solrIndexDao).populateProductCatalogStructure(isA(List.class), isNull());
     verify(solrHelperService, atLeast(1)).getCurrentProductId(isA(Indexable.class));
@@ -787,7 +773,7 @@ public class SolrIndexServiceImplDiffblueTest {
     when(indexFieldDao.readFieldsByEntityType(Mockito.<FieldEntity>any()))
         .thenThrow(new IllegalStateException());
     when(localeService.findAllLocales()).thenReturn(new ArrayList<>());
-    doNothing().when(sandBoxHelper).ignoreCloneCache(anyBoolean());
+    doNothing().when(sandBoxHelper).ignoreCloneCache(ArgumentMatchers.anyBoolean());
     when(solrHelperService.getCurrentProductId(Mockito.<Indexable>any())).thenReturn(1L);
     doNothing()
         .when(solrIndexDao)
@@ -809,7 +795,7 @@ public class SolrIndexServiceImplDiffblueTest {
         () -> solrIndexServiceImpl.buildIncrementalIndex("Collection", indexables, null));
     verify(solrIndexServiceExtensionManager, atLeast(1)).getProxy();
     verify(localeService).findAllLocales();
-    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(anyBoolean());
+    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(ArgumentMatchers.anyBoolean());
     verify(indexFieldDao).readFieldsByEntityType(isA(FieldEntity.class));
     verify(solrIndexDao).populateProductCatalogStructure(isA(List.class), isNull());
     verify(solrHelperService).getCurrentProductId(isA(Indexable.class));
@@ -855,7 +841,7 @@ public class SolrIndexServiceImplDiffblueTest {
     when(solrIndexServiceExtensionManager.getProxy())
         .thenReturn(i18nSolrIndexServiceExtensionHandler);
     when(localeService.findAllLocales()).thenReturn(new ArrayList<>());
-    doNothing().when(sandBoxHelper).ignoreCloneCache(anyBoolean());
+    doNothing().when(sandBoxHelper).ignoreCloneCache(ArgumentMatchers.anyBoolean());
     doNothing()
         .when(solrIndexDao)
         .populateProductCatalogStructure(
@@ -874,7 +860,7 @@ public class SolrIndexServiceImplDiffblueTest {
     // Assert
     verify(solrIndexServiceExtensionManager, atLeast(1)).getProxy();
     verify(localeService).findAllLocales();
-    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(anyBoolean());
+    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(ArgumentMatchers.anyBoolean());
     verify(solrIndexDao).populateProductCatalogStructure(isA(List.class), isNull());
     verify(i18nSolrIndexServiceExtensionHandler)
         .modifyBuiltDocuments(isA(Collection.class), isA(List.class), isNull(), isA(List.class));
@@ -909,7 +895,7 @@ public class SolrIndexServiceImplDiffblueTest {
     when(solrIndexServiceExtensionManager.getProxy())
         .thenReturn(i18nSolrIndexServiceExtensionHandler);
     when(localeService.findAllLocales()).thenThrow(new IllegalStateException());
-    doNothing().when(sandBoxHelper).ignoreCloneCache(anyBoolean());
+    doNothing().when(sandBoxHelper).ignoreCloneCache(ArgumentMatchers.anyBoolean());
 
     TransactionStatus transactionStatus = mock(TransactionStatus.class);
     when(transactionStatus.isRollbackOnly()).thenReturn(true);
@@ -923,7 +909,7 @@ public class SolrIndexServiceImplDiffblueTest {
         () -> solrIndexServiceImpl.buildIncrementalIndex(new ArrayList<>(), null));
     verify(solrIndexServiceExtensionManager, atLeast(1)).getProxy();
     verify(localeService).findAllLocales();
-    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(anyBoolean());
+    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(ArgumentMatchers.anyBoolean());
     verify(i18nSolrIndexServiceExtensionHandler).endBatchEvent(isA(List.class));
     verify(i18nSolrIndexServiceExtensionHandler).startBatchEvent(isA(List.class));
     verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
@@ -953,7 +939,7 @@ public class SolrIndexServiceImplDiffblueTest {
     when(solrIndexServiceExtensionManager.getProxy())
         .thenReturn(i18nSolrIndexServiceExtensionHandler);
     when(localeService.findAllLocales()).thenReturn(new ArrayList<>());
-    doNothing().when(sandBoxHelper).ignoreCloneCache(anyBoolean());
+    doNothing().when(sandBoxHelper).ignoreCloneCache(ArgumentMatchers.anyBoolean());
     doThrow(new IllegalStateException())
         .when(solrIndexDao)
         .populateProductCatalogStructure(
@@ -971,7 +957,7 @@ public class SolrIndexServiceImplDiffblueTest {
         () -> solrIndexServiceImpl.buildIncrementalIndex(new ArrayList<>(), null));
     verify(solrIndexServiceExtensionManager, atLeast(1)).getProxy();
     verify(localeService).findAllLocales();
-    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(anyBoolean());
+    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(ArgumentMatchers.anyBoolean());
     verify(solrIndexDao).populateProductCatalogStructure(isA(List.class), isNull());
     verify(i18nSolrIndexServiceExtensionHandler).endBatchEvent(isA(List.class));
     verify(i18nSolrIndexServiceExtensionHandler).startBatchEvent(isA(List.class));
@@ -1004,7 +990,7 @@ public class SolrIndexServiceImplDiffblueTest {
     when(indexFieldDao.readFieldsByEntityType(Mockito.<FieldEntity>any()))
         .thenReturn(new ArrayList<>());
     when(localeService.findAllLocales()).thenReturn(new ArrayList<>());
-    doNothing().when(sandBoxHelper).ignoreCloneCache(anyBoolean());
+    doNothing().when(sandBoxHelper).ignoreCloneCache(ArgumentMatchers.anyBoolean());
     when(solrHelperService.getCurrentProductId(Mockito.<Indexable>any())).thenReturn(1L);
     doNothing()
         .when(solrIndexDao)
@@ -1026,7 +1012,7 @@ public class SolrIndexServiceImplDiffblueTest {
         () -> solrIndexServiceImpl.buildIncrementalIndex(indexables, null));
     verify(solrIndexServiceExtensionManager, atLeast(1)).getProxy();
     verify(localeService).findAllLocales();
-    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(anyBoolean());
+    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(ArgumentMatchers.anyBoolean());
     verify(indexFieldDao).readFieldsByEntityType(isA(FieldEntity.class));
     verify(solrIndexDao).populateProductCatalogStructure(isA(List.class), isNull());
     verify(solrHelperService).getCurrentProductId(isA(Indexable.class));
@@ -1061,7 +1047,7 @@ public class SolrIndexServiceImplDiffblueTest {
     when(indexFieldDao.readFieldsByEntityType(Mockito.<FieldEntity>any()))
         .thenReturn(new ArrayList<>());
     when(localeService.findAllLocales()).thenReturn(new ArrayList<>());
-    doNothing().when(sandBoxHelper).ignoreCloneCache(anyBoolean());
+    doNothing().when(sandBoxHelper).ignoreCloneCache(ArgumentMatchers.anyBoolean());
     when(solrHelperService.getCurrentProductId(Mockito.<Indexable>any())).thenReturn(1L);
     doNothing()
         .when(solrIndexDao)
@@ -1084,7 +1070,7 @@ public class SolrIndexServiceImplDiffblueTest {
         () -> solrIndexServiceImpl.buildIncrementalIndex(indexables, null));
     verify(solrIndexServiceExtensionManager, atLeast(1)).getProxy();
     verify(localeService).findAllLocales();
-    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(anyBoolean());
+    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(ArgumentMatchers.anyBoolean());
     verify(indexFieldDao).readFieldsByEntityType(isA(FieldEntity.class));
     verify(solrIndexDao).populateProductCatalogStructure(isA(List.class), isNull());
     verify(solrHelperService, atLeast(1)).getCurrentProductId(isA(Indexable.class));
@@ -1119,7 +1105,7 @@ public class SolrIndexServiceImplDiffblueTest {
     when(indexFieldDao.readFieldsByEntityType(Mockito.<FieldEntity>any()))
         .thenThrow(new IllegalStateException());
     when(localeService.findAllLocales()).thenReturn(new ArrayList<>());
-    doNothing().when(sandBoxHelper).ignoreCloneCache(anyBoolean());
+    doNothing().when(sandBoxHelper).ignoreCloneCache(ArgumentMatchers.anyBoolean());
     when(solrHelperService.getCurrentProductId(Mockito.<Indexable>any())).thenReturn(1L);
     doNothing()
         .when(solrIndexDao)
@@ -1141,7 +1127,7 @@ public class SolrIndexServiceImplDiffblueTest {
         () -> solrIndexServiceImpl.buildIncrementalIndex(indexables, null));
     verify(solrIndexServiceExtensionManager, atLeast(1)).getProxy();
     verify(localeService).findAllLocales();
-    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(anyBoolean());
+    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(ArgumentMatchers.anyBoolean());
     verify(indexFieldDao).readFieldsByEntityType(isA(FieldEntity.class));
     verify(solrIndexDao).populateProductCatalogStructure(isA(List.class), isNull());
     verify(solrHelperService).getCurrentProductId(isA(Indexable.class));
@@ -1184,7 +1170,7 @@ public class SolrIndexServiceImplDiffblueTest {
     when(solrIndexServiceExtensionManager.getProxy())
         .thenReturn(i18nSolrIndexServiceExtensionHandler);
     when(localeService.findAllLocales()).thenReturn(new ArrayList<>());
-    doNothing().when(sandBoxHelper).ignoreCloneCache(anyBoolean());
+    doNothing().when(sandBoxHelper).ignoreCloneCache(ArgumentMatchers.anyBoolean());
     doNothing()
         .when(solrIndexDao)
         .populateProductCatalogStructure(
@@ -1203,7 +1189,7 @@ public class SolrIndexServiceImplDiffblueTest {
     // Assert
     verify(solrIndexServiceExtensionManager, atLeast(1)).getProxy();
     verify(localeService).findAllLocales();
-    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(anyBoolean());
+    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(ArgumentMatchers.anyBoolean());
     verify(solrIndexDao).populateProductCatalogStructure(isA(List.class), isNull());
     verify(i18nSolrIndexServiceExtensionHandler)
         .modifyBuiltDocuments(isA(Collection.class), isA(List.class), isNull(), isA(List.class));
@@ -1237,7 +1223,8 @@ public class SolrIndexServiceImplDiffblueTest {
     doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
 
     SolrIndexOperation operation = mock(SolrIndexOperation.class);
-    Mockito.<List<? extends Indexable>>when(operation.readIndexables(anyInt(), Mockito.<Long>any()))
+    Mockito.<List<? extends Indexable>>when(
+            operation.readIndexables(ArgumentMatchers.anyInt(), Mockito.<Long>any()))
         .thenReturn(new ArrayList<>());
     doNothing().when(operation).afterBuildPage();
     doNothing().when(operation).afterReadIndexables();
@@ -1285,7 +1272,8 @@ public class SolrIndexServiceImplDiffblueTest {
     indexableList.add(new ProductBundleImpl());
 
     SolrIndexOperation operation = mock(SolrIndexOperation.class);
-    Mockito.<List<? extends Indexable>>when(operation.readIndexables(anyInt(), Mockito.<Long>any()))
+    Mockito.<List<? extends Indexable>>when(
+            operation.readIndexables(ArgumentMatchers.anyInt(), Mockito.<Long>any()))
         .thenReturn(indexableList);
     doNothing().when(operation).afterBuildPage();
     doNothing().when(operation).afterReadIndexables();
@@ -1334,7 +1322,8 @@ public class SolrIndexServiceImplDiffblueTest {
         .thenReturn(new SimpleTransactionStatus());
 
     SolrIndexOperation operation = mock(SolrIndexOperation.class);
-    Mockito.<List<? extends Indexable>>when(operation.readIndexables(anyInt(), Mockito.<Long>any()))
+    Mockito.<List<? extends Indexable>>when(
+            operation.readIndexables(ArgumentMatchers.anyInt(), Mockito.<Long>any()))
         .thenReturn(new ArrayList<>());
     doNothing().when(operation).afterBuildPage();
     doNothing().when(operation).afterReadIndexables();
@@ -1385,7 +1374,8 @@ public class SolrIndexServiceImplDiffblueTest {
     doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
 
     SolrIndexOperation operation = mock(SolrIndexOperation.class);
-    Mockito.<List<? extends Indexable>>when(operation.readIndexables(anyInt(), Mockito.<Long>any()))
+    Mockito.<List<? extends Indexable>>when(
+            operation.readIndexables(ArgumentMatchers.anyInt(), Mockito.<Long>any()))
         .thenReturn(new ArrayList<>());
     doNothing().when(operation).afterBuildPage();
     doNothing().when(operation).afterReadIndexables();

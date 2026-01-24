@@ -30,6 +30,41 @@ public class ReindexStateHolderDiffblueTest {
   }
 
   /**
+   * Test {@link ReindexStateHolder#isFailed()}.
+   *
+   * <p>Method under test: {@link ReindexStateHolder#isFailed()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean ReindexStateHolder.isFailed()"})
+  public void testIsFailed() {
+    // Arrange, Act and Assert
+    assertTrue(ReindexStateHolder.getInstance("Collection Name", true, true).isFailed());
+  }
+
+  /**
+   * Test {@link ReindexStateHolder#getFailure()}.
+   *
+   * <p>Method under test: {@link ReindexStateHolder#getFailure()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Exception ReindexStateHolder.getFailure()"})
+  public void testGetFailure() {
+    // Arrange and Act
+    Exception actualFailure =
+        ReindexStateHolder.getInstance("Collection Name", true, true).getFailure();
+
+    // Assert
+    assertNull(actualFailure.getLocalizedMessage());
+    assertNull(actualFailure.getMessage());
+    assertNull(actualFailure.getCause());
+    assertEquals(0, actualFailure.getSuppressed().length);
+  }
+
+  /**
    * Test getters and setters.
    *
    * <p>Methods under test:

@@ -1,6 +1,7 @@
 package org.broadleafcommerce.openadmin.web.service.extension;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -11,6 +12,7 @@ import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.web.form.component.ListGridRecord;
 import org.broadleafcommerce.openadmin.web.form.entity.Field;
+import org.broadleafcommerce.openadmin.web.service.FormBuilderExtensionHandler;
 import org.broadleafcommerce.openadmin.web.service.FormBuilderExtensionManager;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -18,10 +20,13 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {TranslationsFormBuilderExtensionHandler.class})
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TranslationsFormBuilderExtensionHandlerDiffblueTest {
   @MockBean(name = "blFormBuilderExtensionManager")
@@ -29,6 +34,32 @@ public class TranslationsFormBuilderExtensionHandlerDiffblueTest {
 
   @Autowired
   private TranslationsFormBuilderExtensionHandler translationsFormBuilderExtensionHandler;
+
+  /**
+   * Test {@link TranslationsFormBuilderExtensionHandler#init()}.
+   *
+   * <ul>
+   *   <li>Then calls {@link FormBuilderExtensionManager#registerHandler(ExtensionHandler)}.
+   * </ul>
+   *
+   * <p>Method under test: {@link TranslationsFormBuilderExtensionHandler#init()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void TranslationsFormBuilderExtensionHandler.init()"})
+  public void testInit_thenCallsRegisterHandler() {
+    // Arrange
+    when(formBuilderExtensionManager.registerHandler(Mockito.<FormBuilderExtensionHandler>any()))
+        .thenReturn(true);
+    translationsFormBuilderExtensionHandler.setEnabled(true);
+
+    // Act
+    translationsFormBuilderExtensionHandler.init();
+
+    // Assert
+    verify(formBuilderExtensionManager).registerHandler(isA(FormBuilderExtensionHandler.class));
+  }
 
   /**
    * Test {@link TranslationsFormBuilderExtensionHandler#modifyListGridRecord(String,

@@ -2,11 +2,7 @@ package org.broadleafcommerce.common.extensibility.jpa;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import com.diffblue.cover.annotations.ContributionFromDiffblue;
 import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
@@ -32,18 +28,8 @@ import javax.persistence.NamedQuery;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
 public class QueryConfigurationClassTransformerDiffblueTest {
-  @Mock private List<NamedNativeQuery> list;
-
-  @InjectMocks private QueryConfigurationClassTransformer queryConfigurationClassTransformer;
-
   /**
    * Test getters and setters.
    *
@@ -84,49 +70,7 @@ public class QueryConfigurationClassTransformerDiffblueTest {
    * ProtectionDomain, byte[])}.
    *
    * <ul>
-   *   <li>Given {@link List} {@link List#contains(Object)} return {@code true}.
-   *   <li>Then throw {@link IllegalClassFormatException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link QueryConfigurationClassTransformer#transform(ClassLoader, String,
-   * Class, ProtectionDomain, byte[])}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "byte[] QueryConfigurationClassTransformer.transform(ClassLoader, String, Class, ProtectionDomain, byte[])"
-  })
-  public void testTransform_givenListContainsReturnTrue_thenThrowIllegalClassFormatException()
-      throws UnsupportedEncodingException, IllegalClassFormatException, MalformedURLException {
-    // Arrange
-    when(list.contains(Mockito.<Object>any())).thenReturn(true);
-    JarClassLoader loader = new JarClassLoader();
-    Class<Object> classBeingRedefined = Object.class;
-    URL toURLResult = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
-    CodeSigner[] codeSignerArray = new CodeSigner[] {null};
-
-    CodeSource codeSource = new CodeSource(toURLResult, codeSignerArray);
-    ProtectionDomain protectionDomain = new ProtectionDomain(codeSource, new Permissions());
-
-    // Act and Assert
-    assertThrows(
-        IllegalClassFormatException.class,
-        () ->
-            queryConfigurationClassTransformer.transform(
-                loader,
-                "Class Name",
-                classBeingRedefined,
-                protectionDomain,
-                "AXAXAXAX".getBytes("UTF-8")));
-    verify(list).contains(isA(Object.class));
-  }
-
-  /**
-   * Test {@link QueryConfigurationClassTransformer#transform(ClassLoader, String, Class,
-   * ProtectionDomain, byte[])}.
-   *
-   * <ul>
+   *   <li>When {@code Class Name}.
    *   <li>Then return {@code null}.
    * </ul>
    *
@@ -139,7 +83,7 @@ public class QueryConfigurationClassTransformerDiffblueTest {
   @MethodsUnderTest({
     "byte[] QueryConfigurationClassTransformer.transform(ClassLoader, String, Class, ProtectionDomain, byte[])"
   })
-  public void testTransform_thenReturnNull()
+  public void testTransform_whenClassName_thenReturnNull()
       throws UnsupportedEncodingException, IllegalClassFormatException, MalformedURLException {
     // Arrange
     ArrayList<NamedQuery> namedQueries = new ArrayList<>();

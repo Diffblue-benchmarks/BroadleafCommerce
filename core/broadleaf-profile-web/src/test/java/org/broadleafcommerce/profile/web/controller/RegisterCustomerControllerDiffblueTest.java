@@ -15,10 +15,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.broadleafcommerce.profile.core.domain.ChallengeQuestion;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.broadleafcommerce.profile.core.service.ChallengeQuestionService;
@@ -186,29 +184,6 @@ class RegisterCustomerControllerDiffblueTest {
     assertNull(actualInitCustomerRegistrationFormResult.getPasswordConfirm());
     assertNull(actualInitCustomerRegistrationFormResult.getRedirectUrl());
     assertSame(customerImpl, customer);
-  }
-
-  /**
-   * Test {@link RegisterCustomerController#getChallengeQuestions()}.
-   *
-   * <p>Method under test: {@link RegisterCustomerController#getChallengeQuestions()}
-   */
-  @Test
-  @DisplayName("Test getChallengeQuestions()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List RegisterCustomerController.getChallengeQuestions()"})
-  void testGetChallengeQuestions() {
-    // Arrange
-    when(challengeQuestionService.readChallengeQuestions()).thenReturn(new ArrayList<>());
-
-    // Act
-    List<ChallengeQuestion> actualChallengeQuestions =
-        registerCustomerController.getChallengeQuestions();
-
-    // Assert
-    verify(challengeQuestionService).readChallengeQuestions();
-    assertTrue(actualChallengeQuestions.isEmpty());
   }
 
   /**

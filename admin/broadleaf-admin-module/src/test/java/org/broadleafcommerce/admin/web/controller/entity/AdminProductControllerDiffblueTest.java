@@ -30,7 +30,6 @@ import org.broadleafcommerce.admin.web.controller.extension.AdminOfferController
 import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
-import org.broadleafcommerce.core.catalog.domain.ProductOptionImpl;
 import org.broadleafcommerce.core.catalog.service.CatalogService;
 import org.broadleafcommerce.openadmin.dto.AdornedTargetCollectionMetadata;
 import org.broadleafcommerce.openadmin.dto.AdornedTargetList;
@@ -39,11 +38,13 @@ import org.broadleafcommerce.openadmin.dto.ClassTree;
 import org.broadleafcommerce.openadmin.dto.DynamicResultSet;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
+import org.broadleafcommerce.openadmin.dto.FilterAndSortCriteria;
 import org.broadleafcommerce.openadmin.dto.OperationTypes;
 import org.broadleafcommerce.openadmin.dto.Property;
 import org.broadleafcommerce.openadmin.dto.SectionCrumb;
 import org.broadleafcommerce.openadmin.dto.TabMetadata;
 import org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService;
+import org.broadleafcommerce.openadmin.server.domain.FetchPageRequest;
 import org.broadleafcommerce.openadmin.server.domain.PersistencePackageRequest;
 import org.broadleafcommerce.openadmin.server.domain.PersistencePackageRequest.Type;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminSectionImpl;
@@ -56,6 +57,7 @@ import org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExt
 import org.broadleafcommerce.openadmin.web.form.component.ListGrid;
 import org.broadleafcommerce.openadmin.web.form.entity.CodeField;
 import org.broadleafcommerce.openadmin.web.form.entity.EntityForm;
+import org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator;
 import org.broadleafcommerce.openadmin.web.form.entity.Field;
 import org.broadleafcommerce.openadmin.web.service.FormBuilderService;
 import org.junit.Test;
@@ -75,6 +77,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AdminProductControllerDiffblueTest {
@@ -91,6 +94,8 @@ public class AdminProductControllerDiffblueTest {
   @Mock private CatalogService catalogService;
 
   @Mock private ClassNameRequestParamValidationService classNameRequestParamValidationService;
+
+  @Mock private EntityFormValidator entityFormValidator;
 
   @Mock private FormBuilderService formBuilderService;
 
@@ -2829,8 +2834,17 @@ public class AdminProductControllerDiffblueTest {
   public void testConstructSelectizeOptionMap_thenReturnOptionsFirstEmpty() {
     // Arrange
     AdminProductController adminProductController = new AdminProductController();
-    Entity[] records = new Entity[] {new Entity()};
-    DynamicResultSet drs = new DynamicResultSet(records, 1);
+
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("Type");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("Security Ceiling Type");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+
+    DynamicResultSet drs = new DynamicResultSet(classMetaData);
+    drs.setRecords(new Entity[] {new Entity()});
 
     ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
@@ -2913,49 +2927,6 @@ public class AdminProductControllerDiffblueTest {
       testAddCollectionItemWithRequestResponseModelPathVarsIdCollectionFieldEntityFormResult()
           throws Exception {
     // Arrange
-    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
-        .thenThrow(new RuntimeException());
-    MockHttpServletRequest request = new MockHttpServletRequest();
-    MockHttpServletResponse response = new MockHttpServletResponse();
-    ConcurrentModel model = new ConcurrentModel();
-    HashMap<String, String> pathVars = new HashMap<>();
-    EntityForm entityForm = new EntityForm();
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            adminProductController.addCollectionItem(
-                request,
-                response,
-                model,
-                pathVars,
-                "42",
-                "Collection Field",
-                entityForm,
-                new BindException("Target", "Object Name")));
-    verify(classNameRequestParamValidationService).getClassNameForSection("product");
-  }
-
-  /**
-   * Test {@link AdminProductController#addCollectionItem(HttpServletRequest, HttpServletResponse,
-   * Model, Map, String, String, EntityForm, BindingResult)} with {@code request}, {@code response},
-   * {@code model}, {@code pathVars}, {@code id}, {@code collectionField}, {@code entityForm},
-   * {@code result}.
-   *
-   * <p>Method under test: {@link AdminProductController#addCollectionItem(HttpServletRequest,
-   * HttpServletResponse, Model, Map, String, String, EntityForm, BindingResult)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "String AdminProductController.addCollectionItem(HttpServletRequest, HttpServletResponse, Model, Map, String, String, EntityForm, BindingResult)"
-  })
-  public void
-      testAddCollectionItemWithRequestResponseModelPathVarsIdCollectionFieldEntityFormResult2()
-          throws Exception {
-    // Arrange
     when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
             Mockito.<String>any(), Mockito.<String[]>any()))
         .thenReturn(new String[] {"Merge Section Custom Criteria"});
@@ -3036,6 +3007,91 @@ public class AdminProductControllerDiffblueTest {
     "String AdminProductController.addCollectionItem(HttpServletRequest, HttpServletResponse, Model, Map, String, String, EntityForm, BindingResult)"
   })
   public void
+      testAddCollectionItemWithRequestResponseModelPathVarsIdCollectionFieldEntityFormResult2()
+          throws Exception {
+    // Arrange
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
+            Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[] {"Merge Section Custom Criteria"});
+
+    Property property = mock(Property.class);
+    when(property.getName()).thenReturn("Name");
+
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType(AdminProductController.PRODUCT_OPTIONS_COLLECTION_FIELD);
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {property});
+    classMetaData.setSecurityCeilingType(AdminProductController.PRODUCT_OPTIONS_COLLECTION_FIELD);
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+
+    DynamicResultSet dynamicResultSet = new DynamicResultSet();
+    dynamicResultSet.setClassMetaData(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getRecord(
+            Mockito.<PersistencePackageRequest>any(),
+            Mockito.<String>any(),
+            Mockito.<ClassMetadata>any(),
+            anyBoolean()))
+        .thenThrow(new ServiceException("An error occurred"));
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+    MockHttpServletRequest request = new MockHttpServletRequest();
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    ConcurrentModel model = new ConcurrentModel();
+
+    HashMap<String, String> pathVars = new HashMap<>();
+    pathVars.put("sectionKey", "sectionKey");
+
+    EntityForm entityForm = new EntityForm();
+    entityForm.setEntityType(AdminProductController.PRODUCT_OPTIONS_COLLECTION_FIELD);
+
+    // Act and Assert
+    assertThrows(
+        ServiceException.class,
+        () ->
+            adminProductController.addCollectionItem(
+                request,
+                response,
+                model,
+                pathVars,
+                "42",
+                "Collection Field",
+                entityForm,
+                new BindException("Target", "Object Name")));
+    verify(property).getName();
+    verify(classNameRequestParamValidationService).getClassNameForSection("sectionKey");
+    verify(classNameRequestParamValidationService).getSectionCrumbs(null);
+    verify(adminEntityService).getClassMetadata(isA(PersistencePackageRequest.class));
+    verify(adminEntityService)
+        .getRecord(
+            isA(PersistencePackageRequest.class), eq("42"), isA(ClassMetadata.class), eq(false));
+    verify(adminSectionCustomCriteriaService, atLeast(1))
+        .mergeSectionCustomCriteria(eq("Class Name For Section"), isNull());
+  }
+
+  /**
+   * Test {@link AdminProductController#addCollectionItem(HttpServletRequest, HttpServletResponse,
+   * Model, Map, String, String, EntityForm, BindingResult)} with {@code request}, {@code response},
+   * {@code model}, {@code pathVars}, {@code id}, {@code collectionField}, {@code entityForm},
+   * {@code result}.
+   *
+   * <p>Method under test: {@link AdminProductController#addCollectionItem(HttpServletRequest,
+   * HttpServletResponse, Model, Map, String, String, EntityForm, BindingResult)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminProductController.addCollectionItem(HttpServletRequest, HttpServletResponse, Model, Map, String, String, EntityForm, BindingResult)"
+  })
+  public void
       testAddCollectionItemWithRequestResponseModelPathVarsIdCollectionFieldEntityFormResult3()
           throws Exception {
     // Arrange
@@ -3059,12 +3115,25 @@ public class AdminProductControllerDiffblueTest {
 
     PersistenceResponse persistenceResponse = new PersistenceResponse();
     persistenceResponse.setDynamicResultSet(dynamicResultSet);
+
+    PersistenceResponse persistenceResponse2 = new PersistenceResponse();
+    Entity[] records = new Entity[] {new Entity()};
+    DynamicResultSet dynamicResultSet2 = new DynamicResultSet(records, 1);
+    persistenceResponse2.setDynamicResultSet(dynamicResultSet2);
+    when(adminEntityService.addSubCollectionEntity(
+            Mockito.<EntityForm>any(),
+            Mockito.<ClassMetadata>any(),
+            Mockito.<Property>any(),
+            Mockito.<Entity>any(),
+            Mockito.<List<SectionCrumb>>any()))
+        .thenThrow(new ServiceException("An error occurred"));
+    doNothing().when(adminEntityService).clearEntityManager();
     when(adminEntityService.getRecord(
             Mockito.<PersistencePackageRequest>any(),
             Mockito.<String>any(),
             Mockito.<ClassMetadata>any(),
             anyBoolean()))
-        .thenThrow(new RuntimeException());
+        .thenReturn(persistenceResponse2);
     when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
         .thenReturn(persistenceResponse);
     when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
@@ -3076,18 +3145,14 @@ public class AdminProductControllerDiffblueTest {
     ConcurrentModel model = new ConcurrentModel();
     HashMap<String, String> pathVars = new HashMap<>();
 
-    HashMap<String, Field> stringFieldMap = new HashMap<>();
-    stringFieldMap.put("productOption.id", new Field());
-
     EntityForm entityForm = mock(EntityForm.class);
-    when(entityForm.getFields()).thenReturn(stringFieldMap);
     when(entityForm.getEntityType()).thenReturn("Entity Type");
     doNothing().when(entityForm).setEntityType(Mockito.<String>any());
     entityForm.setEntityType(AdminProductController.PRODUCT_OPTIONS_COLLECTION_FIELD);
 
     // Act and Assert
     assertThrows(
-        RuntimeException.class,
+        ServiceException.class,
         () ->
             adminProductController.addCollectionItem(
                 request,
@@ -3095,12 +3160,20 @@ public class AdminProductControllerDiffblueTest {
                 model,
                 pathVars,
                 "42",
-                AdminProductController.PRODUCT_OPTIONS_COLLECTION_FIELD,
+                "Collection Field",
                 entityForm,
                 new BindException("Target", "Object Name")));
     verify(property).getName();
     verify(classNameRequestParamValidationService).getClassNameForSection("product");
     verify(classNameRequestParamValidationService).getSectionCrumbs(null);
+    verify(adminEntityService)
+        .addSubCollectionEntity(
+            isA(EntityForm.class),
+            isA(ClassMetadata.class),
+            isNull(),
+            isA(Entity.class),
+            isA(List.class));
+    verify(adminEntityService).clearEntityManager();
     verify(adminEntityService).getClassMetadata(isA(PersistencePackageRequest.class));
     verify(adminEntityService)
         .getRecord(
@@ -3108,7 +3181,6 @@ public class AdminProductControllerDiffblueTest {
     verify(adminSectionCustomCriteriaService, atLeast(1))
         .mergeSectionCustomCriteria(eq("Class Name For Section"), isNull());
     verify(entityForm).getEntityType();
-    verify(entityForm, atLeast(1)).getFields();
     verify(entityForm).setEntityType("productOptions");
   }
 
@@ -3131,9 +3203,25 @@ public class AdminProductControllerDiffblueTest {
       testAddCollectionItemWithRequestResponseModelPathVarsIdCollectionFieldEntityFormResult4()
           throws Exception {
     // Arrange
+    AdminSectionImpl adminSectionImpl = new AdminSectionImpl();
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenReturn(adminSectionImpl);
     when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
             Mockito.<String>any(), Mockito.<String[]>any()))
         .thenReturn(new String[] {"Merge Section Custom Criteria"});
+    when(entityFormValidator.validate(
+            Mockito.<EntityForm>any(), Mockito.<Entity>any(), Mockito.<Errors>any()))
+        .thenReturn(true);
+    when(adminAbstractControllerExtensionManager.getProxy())
+        .thenReturn(new AdminOfferControllerExtensionHandler());
+    ListGrid listGrid = new ListGrid();
+    when(formBuilderService.buildCollectionListGrid(
+            Mockito.<String>any(),
+            Mockito.<DynamicResultSet>any(),
+            Mockito.<Property>any(),
+            Mockito.<String>any(),
+            Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(listGrid);
 
     Property property = mock(Property.class);
     when(property.getName()).thenReturn("Name");
@@ -3151,12 +3239,38 @@ public class AdminProductControllerDiffblueTest {
 
     PersistenceResponse persistenceResponse = new PersistenceResponse();
     persistenceResponse.setDynamicResultSet(dynamicResultSet);
+
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property());
+    Entity[] records = new Entity[] {entity};
+    DynamicResultSet dynamicResultSet2 = new DynamicResultSet(records, 1);
+
+    PersistenceResponse persistenceResponse2 = new PersistenceResponse();
+    persistenceResponse2.setDynamicResultSet(dynamicResultSet2);
+    when(adminEntityService.getIdProperty(Mockito.<ClassMetadata>any())).thenReturn("Id Property");
+    when(adminEntityService.getPagedRecordsForCollection(
+            Mockito.<ClassMetadata>any(),
+            Mockito.<Entity>any(),
+            Mockito.<Property>any(),
+            Mockito.<FilterAndSortCriteria[]>any(),
+            Mockito.<FetchPageRequest>any(),
+            Mockito.<String>any(),
+            Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(new PersistenceResponse());
+    when(adminEntityService.addSubCollectionEntity(
+            Mockito.<EntityForm>any(),
+            Mockito.<ClassMetadata>any(),
+            Mockito.<Property>any(),
+            Mockito.<Entity>any(),
+            Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(new PersistenceResponse());
+    doNothing().when(adminEntityService).clearEntityManager();
     when(adminEntityService.getRecord(
             Mockito.<PersistencePackageRequest>any(),
             Mockito.<String>any(),
             Mockito.<ClassMetadata>any(),
             anyBoolean()))
-        .thenThrow(new RuntimeException());
+        .thenReturn(persistenceResponse2);
     when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
         .thenReturn(persistenceResponse);
     when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
@@ -3168,40 +3282,70 @@ public class AdminProductControllerDiffblueTest {
     ConcurrentModel model = new ConcurrentModel();
     HashMap<String, String> pathVars = new HashMap<>();
 
-    HashMap<String, Field> stringFieldMap = new HashMap<>();
-    stringFieldMap.put("product.id", new Field());
-
     EntityForm entityForm = mock(EntityForm.class);
-    when(entityForm.getFields()).thenReturn(stringFieldMap);
     when(entityForm.getEntityType()).thenReturn("Entity Type");
     doNothing().when(entityForm).setEntityType(Mockito.<String>any());
     entityForm.setEntityType(AdminProductController.PRODUCT_OPTIONS_COLLECTION_FIELD);
 
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            adminProductController.addCollectionItem(
-                request,
-                response,
-                model,
-                pathVars,
-                "42",
-                AdminProductController.PRODUCT_OPTIONS_COLLECTION_FIELD,
-                entityForm,
-                new BindException("Target", "Object Name")));
+    // Act
+    String actualAddCollectionItemResult =
+        adminProductController.addCollectionItem(
+            request,
+            response,
+            model,
+            pathVars,
+            "42",
+            "Collection Field",
+            entityForm,
+            new BindException("Target", "Object Name"));
+
+    // Assert
+    verify(adminAbstractControllerExtensionManager).getProxy();
+    verify(entity).findProperty("Id Property");
     verify(property).getName();
     verify(classNameRequestParamValidationService).getClassNameForSection("product");
     verify(classNameRequestParamValidationService).getSectionCrumbs(null);
+    verify(adminNavigationService).findAdminSectionByURI("/product");
+    verify(adminEntityService)
+        .addSubCollectionEntity(
+            isA(EntityForm.class),
+            isA(ClassMetadata.class),
+            isNull(),
+            isA(Entity.class),
+            isA(List.class));
+    verify(adminEntityService).clearEntityManager();
     verify(adminEntityService).getClassMetadata(isA(PersistencePackageRequest.class));
+    verify(adminEntityService).getIdProperty(isA(ClassMetadata.class));
+    verify(adminEntityService)
+        .getPagedRecordsForCollection(
+            isA(ClassMetadata.class),
+            isA(Entity.class),
+            isNull(),
+            isA(FilterAndSortCriteria[].class),
+            isA(FetchPageRequest.class),
+            isNull(),
+            isA(List.class));
     verify(adminEntityService)
         .getRecord(
             isA(PersistencePackageRequest.class), eq("42"), isA(ClassMetadata.class), eq(false));
     verify(adminSectionCustomCriteriaService, atLeast(1))
         .mergeSectionCustomCriteria(eq("Class Name For Section"), isNull());
     verify(entityForm).getEntityType();
-    verify(entityForm, atLeast(1)).getFields();
     verify(entityForm).setEntityType("productOptions");
+    verify(entityFormValidator)
+        .validate(isA(EntityForm.class), (Entity) isNull(), isA(Errors.class));
+    verify(formBuilderService)
+        .buildCollectionListGrid(isNull(), isNull(), isNull(), eq("product"), isA(List.class));
+    assertEquals(4, model.size());
+    Object getResult = model.get("currentAdminSection");
+    assertTrue(getResult instanceof AdminSectionImpl);
+    Object getResult2 = model.get("listGrid");
+    assertTrue(getResult2 instanceof ListGrid);
+    assertEquals("42", model.get("actualEntityId"));
+    assertEquals("views/standaloneListGrid", actualAddCollectionItemResult);
+    assertEquals(AdminProductController.SECTION_KEY, model.get("sectionKey"));
+    assertSame(adminSectionImpl, getResult);
+    assertSame(listGrid, getResult2);
   }
 
   /**
@@ -3223,9 +3367,25 @@ public class AdminProductControllerDiffblueTest {
       testAddCollectionItemWithRequestResponseModelPathVarsIdCollectionFieldEntityFormResult5()
           throws Exception {
     // Arrange
+    AdminSectionImpl adminSectionImpl = new AdminSectionImpl();
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenReturn(adminSectionImpl);
     when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
             Mockito.<String>any(), Mockito.<String[]>any()))
-        .thenReturn(new String[] {"Merge Section Custom Criteria"});
+        .thenReturn(null);
+    when(entityFormValidator.validate(
+            Mockito.<EntityForm>any(), Mockito.<Entity>any(), Mockito.<Errors>any()))
+        .thenReturn(true);
+    when(adminAbstractControllerExtensionManager.getProxy())
+        .thenReturn(new AdminOfferControllerExtensionHandler());
+    ListGrid listGrid = new ListGrid();
+    when(formBuilderService.buildCollectionListGrid(
+            Mockito.<String>any(),
+            Mockito.<DynamicResultSet>any(),
+            Mockito.<Property>any(),
+            Mockito.<String>any(),
+            Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(listGrid);
 
     Property property = mock(Property.class);
     when(property.getName()).thenReturn("Name");
@@ -3243,12 +3403,38 @@ public class AdminProductControllerDiffblueTest {
 
     PersistenceResponse persistenceResponse = new PersistenceResponse();
     persistenceResponse.setDynamicResultSet(dynamicResultSet);
+
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property());
+    Entity[] records = new Entity[] {entity};
+    DynamicResultSet dynamicResultSet2 = new DynamicResultSet(records, 1);
+
+    PersistenceResponse persistenceResponse2 = new PersistenceResponse();
+    persistenceResponse2.setDynamicResultSet(dynamicResultSet2);
+    when(adminEntityService.getIdProperty(Mockito.<ClassMetadata>any())).thenReturn("Id Property");
+    when(adminEntityService.getPagedRecordsForCollection(
+            Mockito.<ClassMetadata>any(),
+            Mockito.<Entity>any(),
+            Mockito.<Property>any(),
+            Mockito.<FilterAndSortCriteria[]>any(),
+            Mockito.<FetchPageRequest>any(),
+            Mockito.<String>any(),
+            Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(new PersistenceResponse());
+    when(adminEntityService.addSubCollectionEntity(
+            Mockito.<EntityForm>any(),
+            Mockito.<ClassMetadata>any(),
+            Mockito.<Property>any(),
+            Mockito.<Entity>any(),
+            Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(new PersistenceResponse());
+    doNothing().when(adminEntityService).clearEntityManager();
     when(adminEntityService.getRecord(
             Mockito.<PersistencePackageRequest>any(),
             Mockito.<String>any(),
             Mockito.<ClassMetadata>any(),
             anyBoolean()))
-        .thenThrow(new RuntimeException());
+        .thenReturn(persistenceResponse2);
     when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
         .thenReturn(persistenceResponse);
     when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
@@ -3261,36 +3447,69 @@ public class AdminProductControllerDiffblueTest {
     HashMap<String, String> pathVars = new HashMap<>();
 
     EntityForm entityForm = mock(EntityForm.class);
-    when(entityForm.getFields()).thenThrow(new RuntimeException());
     when(entityForm.getEntityType()).thenReturn("Entity Type");
     doNothing().when(entityForm).setEntityType(Mockito.<String>any());
     entityForm.setEntityType(AdminProductController.PRODUCT_OPTIONS_COLLECTION_FIELD);
 
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            adminProductController.addCollectionItem(
-                request,
-                response,
-                model,
-                pathVars,
-                "42",
-                AdminProductController.PRODUCT_OPTIONS_COLLECTION_FIELD,
-                entityForm,
-                new BindException("Target", "Object Name")));
+    // Act
+    String actualAddCollectionItemResult =
+        adminProductController.addCollectionItem(
+            request,
+            response,
+            model,
+            pathVars,
+            "42",
+            "Collection Field",
+            entityForm,
+            new BindException("Target", "Object Name"));
+
+    // Assert
+    verify(adminAbstractControllerExtensionManager).getProxy();
+    verify(entity).findProperty("Id Property");
     verify(property).getName();
     verify(classNameRequestParamValidationService).getClassNameForSection("product");
     verify(classNameRequestParamValidationService).getSectionCrumbs(null);
+    verify(adminNavigationService).findAdminSectionByURI("/product");
+    verify(adminEntityService)
+        .addSubCollectionEntity(
+            isA(EntityForm.class),
+            isA(ClassMetadata.class),
+            isNull(),
+            isA(Entity.class),
+            isA(List.class));
+    verify(adminEntityService).clearEntityManager();
     verify(adminEntityService).getClassMetadata(isA(PersistencePackageRequest.class));
+    verify(adminEntityService).getIdProperty(isA(ClassMetadata.class));
+    verify(adminEntityService)
+        .getPagedRecordsForCollection(
+            isA(ClassMetadata.class),
+            isA(Entity.class),
+            isNull(),
+            isA(FilterAndSortCriteria[].class),
+            isA(FetchPageRequest.class),
+            isNull(),
+            isA(List.class));
     verify(adminEntityService)
         .getRecord(
             isA(PersistencePackageRequest.class), eq("42"), isA(ClassMetadata.class), eq(false));
     verify(adminSectionCustomCriteriaService, atLeast(1))
         .mergeSectionCustomCriteria(eq("Class Name For Section"), isNull());
     verify(entityForm).getEntityType();
-    verify(entityForm).getFields();
     verify(entityForm).setEntityType("productOptions");
+    verify(entityFormValidator)
+        .validate(isA(EntityForm.class), (Entity) isNull(), isA(Errors.class));
+    verify(formBuilderService)
+        .buildCollectionListGrid(isNull(), isNull(), isNull(), eq("product"), isA(List.class));
+    assertEquals(4, model.size());
+    Object getResult = model.get("currentAdminSection");
+    assertTrue(getResult instanceof AdminSectionImpl);
+    Object getResult2 = model.get("listGrid");
+    assertTrue(getResult2 instanceof ListGrid);
+    assertEquals("42", model.get("actualEntityId"));
+    assertEquals("views/standaloneListGrid", actualAddCollectionItemResult);
+    assertEquals(AdminProductController.SECTION_KEY, model.get("sectionKey"));
+    assertSame(adminSectionImpl, getResult);
+    assertSame(listGrid, getResult2);
   }
 
   /**
@@ -3312,11 +3531,25 @@ public class AdminProductControllerDiffblueTest {
       testAddCollectionItemWithRequestResponseModelPathVarsIdCollectionFieldEntityFormResult6()
           throws Exception {
     // Arrange
-    when(catalogService.findProductOptionById(Mockito.<Long>any()))
-        .thenReturn(new ProductOptionImpl());
+    AdminSectionImpl adminSectionImpl = new AdminSectionImpl();
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenReturn(adminSectionImpl);
     when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
             Mockito.<String>any(), Mockito.<String[]>any()))
         .thenReturn(new String[] {"Merge Section Custom Criteria"});
+    when(entityFormValidator.validate(
+            Mockito.<EntityForm>any(), Mockito.<Entity>any(), Mockito.<Errors>any()))
+        .thenReturn(true);
+    when(adminAbstractControllerExtensionManager.getProxy())
+        .thenReturn(new AdminOfferControllerExtensionHandler());
+    ListGrid listGrid = new ListGrid();
+    when(formBuilderService.buildCollectionListGrid(
+            Mockito.<String>any(),
+            Mockito.<DynamicResultSet>any(),
+            Mockito.<Property>any(),
+            Mockito.<String>any(),
+            Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(listGrid);
 
     Property property = mock(Property.class);
     when(property.getName()).thenReturn("Name");
@@ -3334,12 +3567,41 @@ public class AdminProductControllerDiffblueTest {
 
     PersistenceResponse persistenceResponse = new PersistenceResponse();
     persistenceResponse.setDynamicResultSet(dynamicResultSet);
+
+    Property property2 = mock(Property.class);
+    when(property2.getValue()).thenReturn("42");
+
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(property2);
+    Entity[] records = new Entity[] {entity};
+    DynamicResultSet dynamicResultSet2 = new DynamicResultSet(records, 1);
+
+    PersistenceResponse persistenceResponse2 = new PersistenceResponse();
+    persistenceResponse2.setDynamicResultSet(dynamicResultSet2);
+    when(adminEntityService.getIdProperty(Mockito.<ClassMetadata>any())).thenReturn("Id Property");
+    when(adminEntityService.getPagedRecordsForCollection(
+            Mockito.<ClassMetadata>any(),
+            Mockito.<Entity>any(),
+            Mockito.<Property>any(),
+            Mockito.<FilterAndSortCriteria[]>any(),
+            Mockito.<FetchPageRequest>any(),
+            Mockito.<String>any(),
+            Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(new PersistenceResponse());
+    when(adminEntityService.addSubCollectionEntity(
+            Mockito.<EntityForm>any(),
+            Mockito.<ClassMetadata>any(),
+            Mockito.<Property>any(),
+            Mockito.<Entity>any(),
+            Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(new PersistenceResponse());
+    doNothing().when(adminEntityService).clearEntityManager();
     when(adminEntityService.getRecord(
             Mockito.<PersistencePackageRequest>any(),
             Mockito.<String>any(),
             Mockito.<ClassMetadata>any(),
             anyBoolean()))
-        .thenThrow(new RuntimeException());
+        .thenReturn(persistenceResponse2);
     when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
         .thenReturn(persistenceResponse);
     when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
@@ -3351,45 +3613,71 @@ public class AdminProductControllerDiffblueTest {
     ConcurrentModel model = new ConcurrentModel();
     HashMap<String, String> pathVars = new HashMap<>();
 
-    CodeField codeField = mock(CodeField.class);
-    when(codeField.getValue()).thenReturn("42");
-
-    HashMap<String, Field> stringFieldMap = new HashMap<>();
-    stringFieldMap.put("productOption.id", codeField);
-
     EntityForm entityForm = mock(EntityForm.class);
-    when(entityForm.getFields()).thenReturn(stringFieldMap);
     when(entityForm.getEntityType()).thenReturn("Entity Type");
     doNothing().when(entityForm).setEntityType(Mockito.<String>any());
     entityForm.setEntityType(AdminProductController.PRODUCT_OPTIONS_COLLECTION_FIELD);
 
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            adminProductController.addCollectionItem(
-                request,
-                response,
-                model,
-                pathVars,
-                "42",
-                AdminProductController.PRODUCT_OPTIONS_COLLECTION_FIELD,
-                entityForm,
-                new BindException("Target", "Object Name")));
-    verify(catalogService).findProductOptionById(42L);
+    // Act
+    String actualAddCollectionItemResult =
+        adminProductController.addCollectionItem(
+            request,
+            response,
+            model,
+            pathVars,
+            "42",
+            "Collection Field",
+            entityForm,
+            new BindException("Target", "Object Name"));
+
+    // Assert
+    verify(adminAbstractControllerExtensionManager).getProxy();
+    verify(entity).findProperty("Id Property");
     verify(property).getName();
+    verify(property2).getValue();
     verify(classNameRequestParamValidationService).getClassNameForSection("product");
     verify(classNameRequestParamValidationService).getSectionCrumbs(null);
+    verify(adminNavigationService).findAdminSectionByURI("/product");
+    verify(adminEntityService)
+        .addSubCollectionEntity(
+            isA(EntityForm.class),
+            isA(ClassMetadata.class),
+            isNull(),
+            isA(Entity.class),
+            isA(List.class));
+    verify(adminEntityService).clearEntityManager();
     verify(adminEntityService).getClassMetadata(isA(PersistencePackageRequest.class));
+    verify(adminEntityService).getIdProperty(isA(ClassMetadata.class));
+    verify(adminEntityService)
+        .getPagedRecordsForCollection(
+            isA(ClassMetadata.class),
+            isA(Entity.class),
+            isNull(),
+            isA(FilterAndSortCriteria[].class),
+            isA(FetchPageRequest.class),
+            isNull(),
+            isA(List.class));
     verify(adminEntityService)
         .getRecord(
             isA(PersistencePackageRequest.class), eq("42"), isA(ClassMetadata.class), eq(false));
     verify(adminSectionCustomCriteriaService, atLeast(1))
         .mergeSectionCustomCriteria(eq("Class Name For Section"), isNull());
     verify(entityForm).getEntityType();
-    verify(entityForm, atLeast(1)).getFields();
     verify(entityForm).setEntityType("productOptions");
-    verify(codeField).getValue();
+    verify(entityFormValidator)
+        .validate(isA(EntityForm.class), (Entity) isNull(), isA(Errors.class));
+    verify(formBuilderService)
+        .buildCollectionListGrid(eq("42"), isNull(), isNull(), eq("product"), isA(List.class));
+    assertEquals(4, model.size());
+    Object getResult = model.get("currentAdminSection");
+    assertTrue(getResult instanceof AdminSectionImpl);
+    Object getResult2 = model.get("listGrid");
+    assertTrue(getResult2 instanceof ListGrid);
+    assertEquals("42", model.get("actualEntityId"));
+    assertEquals("views/standaloneListGrid", actualAddCollectionItemResult);
+    assertEquals(AdminProductController.SECTION_KEY, model.get("sectionKey"));
+    assertSame(adminSectionImpl, getResult);
+    assertSame(listGrid, getResult2);
   }
 
   /**
@@ -3411,20 +3699,31 @@ public class AdminProductControllerDiffblueTest {
       testAddCollectionItemWithRequestResponseModelPathVarsIdCollectionFieldEntityFormResult7()
           throws Exception {
     // Arrange
-    when(catalogService.findProductOptionById(Mockito.<Long>any()))
-        .thenThrow(new RuntimeException());
+    AdminSectionImpl adminSectionImpl = new AdminSectionImpl();
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenReturn(adminSectionImpl);
     when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
             Mockito.<String>any(), Mockito.<String[]>any()))
         .thenReturn(new String[] {"Merge Section Custom Criteria"});
-
-    Property property = mock(Property.class);
-    when(property.getName()).thenReturn("Name");
+    when(entityFormValidator.validate(
+            Mockito.<EntityForm>any(), Mockito.<Entity>any(), Mockito.<Errors>any()))
+        .thenReturn(true);
+    when(adminAbstractControllerExtensionManager.getProxy())
+        .thenReturn(new AdminOfferControllerExtensionHandler());
+    ListGrid listGrid = new ListGrid();
+    when(formBuilderService.buildCollectionListGrid(
+            Mockito.<String>any(),
+            Mockito.<DynamicResultSet>any(),
+            Mockito.<Property>any(),
+            Mockito.<String>any(),
+            Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(listGrid);
 
     ClassMetadata classMetaData = new ClassMetadata();
     classMetaData.setCeilingType(AdminProductController.PRODUCT_OPTIONS_COLLECTION_FIELD);
     classMetaData.setCurrencyCode("GBP");
     classMetaData.setPolymorphicEntities(new ClassTree());
-    classMetaData.setProperties(new Property[] {property});
+    classMetaData.setProperties(null);
     classMetaData.setSecurityCeilingType(AdminProductController.PRODUCT_OPTIONS_COLLECTION_FIELD);
     classMetaData.setTabAndGroupMetadata(new HashMap<>());
 
@@ -3433,12 +3732,41 @@ public class AdminProductControllerDiffblueTest {
 
     PersistenceResponse persistenceResponse = new PersistenceResponse();
     persistenceResponse.setDynamicResultSet(dynamicResultSet);
+
+    Property property = mock(Property.class);
+    when(property.getValue()).thenReturn("42");
+
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+    Entity[] records = new Entity[] {entity};
+    DynamicResultSet dynamicResultSet2 = new DynamicResultSet(records, 1);
+
+    PersistenceResponse persistenceResponse2 = new PersistenceResponse();
+    persistenceResponse2.setDynamicResultSet(dynamicResultSet2);
+    when(adminEntityService.getIdProperty(Mockito.<ClassMetadata>any())).thenReturn("Id Property");
+    when(adminEntityService.getPagedRecordsForCollection(
+            Mockito.<ClassMetadata>any(),
+            Mockito.<Entity>any(),
+            Mockito.<Property>any(),
+            Mockito.<FilterAndSortCriteria[]>any(),
+            Mockito.<FetchPageRequest>any(),
+            Mockito.<String>any(),
+            Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(new PersistenceResponse());
+    when(adminEntityService.addSubCollectionEntity(
+            Mockito.<EntityForm>any(),
+            Mockito.<ClassMetadata>any(),
+            Mockito.<Property>any(),
+            Mockito.<Entity>any(),
+            Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(new PersistenceResponse());
+    doNothing().when(adminEntityService).clearEntityManager();
     when(adminEntityService.getRecord(
             Mockito.<PersistencePackageRequest>any(),
             Mockito.<String>any(),
             Mockito.<ClassMetadata>any(),
             anyBoolean()))
-        .thenThrow(new RuntimeException());
+        .thenReturn(persistenceResponse2);
     when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
         .thenReturn(persistenceResponse);
     when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
@@ -3450,44 +3778,234 @@ public class AdminProductControllerDiffblueTest {
     ConcurrentModel model = new ConcurrentModel();
     HashMap<String, String> pathVars = new HashMap<>();
 
-    CodeField codeField = mock(CodeField.class);
-    when(codeField.getValue()).thenReturn("42");
-
-    HashMap<String, Field> stringFieldMap = new HashMap<>();
-    stringFieldMap.put("productOption.id", codeField);
-
     EntityForm entityForm = mock(EntityForm.class);
-    when(entityForm.getFields()).thenReturn(stringFieldMap);
     when(entityForm.getEntityType()).thenReturn("Entity Type");
     doNothing().when(entityForm).setEntityType(Mockito.<String>any());
     entityForm.setEntityType(AdminProductController.PRODUCT_OPTIONS_COLLECTION_FIELD);
 
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            adminProductController.addCollectionItem(
-                request,
-                response,
-                model,
-                pathVars,
-                "42",
-                AdminProductController.PRODUCT_OPTIONS_COLLECTION_FIELD,
-                entityForm,
-                new BindException("Target", "Object Name")));
-    verify(catalogService).findProductOptionById(42L);
-    verify(property).getName();
+    // Act
+    String actualAddCollectionItemResult =
+        adminProductController.addCollectionItem(
+            request,
+            response,
+            model,
+            pathVars,
+            "42",
+            "Collection Field",
+            entityForm,
+            new BindException("Target", "Object Name"));
+
+    // Assert
+    verify(adminAbstractControllerExtensionManager).getProxy();
+    verify(entity).findProperty("Id Property");
+    verify(property).getValue();
     verify(classNameRequestParamValidationService).getClassNameForSection("product");
     verify(classNameRequestParamValidationService).getSectionCrumbs(null);
+    verify(adminNavigationService).findAdminSectionByURI("/product");
+    verify(adminEntityService)
+        .addSubCollectionEntity(
+            isA(EntityForm.class),
+            isA(ClassMetadata.class),
+            isNull(),
+            isA(Entity.class),
+            isA(List.class));
+    verify(adminEntityService).clearEntityManager();
     verify(adminEntityService).getClassMetadata(isA(PersistencePackageRequest.class));
+    verify(adminEntityService).getIdProperty(isA(ClassMetadata.class));
+    verify(adminEntityService)
+        .getPagedRecordsForCollection(
+            isA(ClassMetadata.class),
+            isA(Entity.class),
+            isNull(),
+            isA(FilterAndSortCriteria[].class),
+            isA(FetchPageRequest.class),
+            isNull(),
+            isA(List.class));
     verify(adminEntityService)
         .getRecord(
             isA(PersistencePackageRequest.class), eq("42"), isA(ClassMetadata.class), eq(false));
     verify(adminSectionCustomCriteriaService, atLeast(1))
         .mergeSectionCustomCriteria(eq("Class Name For Section"), isNull());
     verify(entityForm).getEntityType();
-    verify(entityForm, atLeast(1)).getFields();
     verify(entityForm).setEntityType("productOptions");
-    verify(codeField).getValue();
+    verify(entityFormValidator)
+        .validate(isA(EntityForm.class), (Entity) isNull(), isA(Errors.class));
+    verify(formBuilderService)
+        .buildCollectionListGrid(eq("42"), isNull(), isNull(), eq("product"), isA(List.class));
+    assertEquals(4, model.size());
+    Object getResult = model.get("currentAdminSection");
+    assertTrue(getResult instanceof AdminSectionImpl);
+    Object getResult2 = model.get("listGrid");
+    assertTrue(getResult2 instanceof ListGrid);
+    assertEquals("42", model.get("actualEntityId"));
+    assertEquals("views/standaloneListGrid", actualAddCollectionItemResult);
+    assertEquals(AdminProductController.SECTION_KEY, model.get("sectionKey"));
+    assertSame(adminSectionImpl, getResult);
+    assertSame(listGrid, getResult2);
+  }
+
+  /**
+   * Test {@link AdminProductController#addCollectionItem(HttpServletRequest, HttpServletResponse,
+   * Model, Map, String, String, EntityForm, BindingResult)} with {@code request}, {@code response},
+   * {@code model}, {@code pathVars}, {@code id}, {@code collectionField}, {@code entityForm},
+   * {@code result}.
+   *
+   * <p>Method under test: {@link AdminProductController#addCollectionItem(HttpServletRequest,
+   * HttpServletResponse, Model, Map, String, String, EntityForm, BindingResult)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminProductController.addCollectionItem(HttpServletRequest, HttpServletResponse, Model, Map, String, String, EntityForm, BindingResult)"
+  })
+  public void
+      testAddCollectionItemWithRequestResponseModelPathVarsIdCollectionFieldEntityFormResult8()
+          throws Exception {
+    // Arrange
+    AdminSectionImpl adminSectionImpl = new AdminSectionImpl();
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenReturn(adminSectionImpl);
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
+            Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[] {"Merge Section Custom Criteria"});
+    when(entityFormValidator.validate(
+            Mockito.<EntityForm>any(), Mockito.<Entity>any(), Mockito.<Errors>any()))
+        .thenReturn(true);
+    when(adminAbstractControllerExtensionManager.getProxy())
+        .thenReturn(new AdminOfferControllerExtensionHandler());
+    ListGrid listGrid = new ListGrid();
+    when(formBuilderService.buildCollectionListGrid(
+            Mockito.<String>any(),
+            Mockito.<DynamicResultSet>any(),
+            Mockito.<Property>any(),
+            Mockito.<String>any(),
+            Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(listGrid);
+
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType(AdminProductController.PRODUCT_OPTIONS_COLLECTION_FIELD);
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    Property property = new Property();
+    classMetaData.setProperties(new Property[] {property, new Property()});
+    classMetaData.setSecurityCeilingType(AdminProductController.PRODUCT_OPTIONS_COLLECTION_FIELD);
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+
+    DynamicResultSet dynamicResultSet = new DynamicResultSet();
+    dynamicResultSet.setClassMetaData(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+
+    Property property2 = mock(Property.class);
+    when(property2.getValue()).thenReturn("42");
+
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(property2);
+    Entity[] records = new Entity[] {entity};
+    DynamicResultSet dynamicResultSet2 = new DynamicResultSet(records, 1);
+
+    PersistenceResponse persistenceResponse2 = new PersistenceResponse();
+    persistenceResponse2.setDynamicResultSet(dynamicResultSet2);
+    when(adminEntityService.getIdProperty(Mockito.<ClassMetadata>any())).thenReturn("Id Property");
+    when(adminEntityService.getPagedRecordsForCollection(
+            Mockito.<ClassMetadata>any(),
+            Mockito.<Entity>any(),
+            Mockito.<Property>any(),
+            Mockito.<FilterAndSortCriteria[]>any(),
+            Mockito.<FetchPageRequest>any(),
+            Mockito.<String>any(),
+            Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(new PersistenceResponse());
+    when(adminEntityService.addSubCollectionEntity(
+            Mockito.<EntityForm>any(),
+            Mockito.<ClassMetadata>any(),
+            Mockito.<Property>any(),
+            Mockito.<Entity>any(),
+            Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(new PersistenceResponse());
+    doNothing().when(adminEntityService).clearEntityManager();
+    when(adminEntityService.getRecord(
+            Mockito.<PersistencePackageRequest>any(),
+            Mockito.<String>any(),
+            Mockito.<ClassMetadata>any(),
+            anyBoolean()))
+        .thenReturn(persistenceResponse2);
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+    MockHttpServletRequest request = new MockHttpServletRequest();
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    ConcurrentModel model = new ConcurrentModel();
+    HashMap<String, String> pathVars = new HashMap<>();
+
+    EntityForm entityForm = mock(EntityForm.class);
+    when(entityForm.getEntityType()).thenReturn("Entity Type");
+    doNothing().when(entityForm).setEntityType(Mockito.<String>any());
+    entityForm.setEntityType(AdminProductController.PRODUCT_OPTIONS_COLLECTION_FIELD);
+
+    // Act
+    String actualAddCollectionItemResult =
+        adminProductController.addCollectionItem(
+            request,
+            response,
+            model,
+            pathVars,
+            "42",
+            "Collection Field",
+            entityForm,
+            new BindException("Target", "Object Name"));
+
+    // Assert
+    verify(adminAbstractControllerExtensionManager).getProxy();
+    verify(entity).findProperty("Id Property");
+    verify(property2).getValue();
+    verify(classNameRequestParamValidationService).getClassNameForSection("product");
+    verify(classNameRequestParamValidationService).getSectionCrumbs(null);
+    verify(adminNavigationService).findAdminSectionByURI("/product");
+    verify(adminEntityService)
+        .addSubCollectionEntity(
+            isA(EntityForm.class),
+            isA(ClassMetadata.class),
+            isNull(),
+            isA(Entity.class),
+            isA(List.class));
+    verify(adminEntityService).clearEntityManager();
+    verify(adminEntityService).getClassMetadata(isA(PersistencePackageRequest.class));
+    verify(adminEntityService).getIdProperty(isA(ClassMetadata.class));
+    verify(adminEntityService)
+        .getPagedRecordsForCollection(
+            isA(ClassMetadata.class),
+            isA(Entity.class),
+            isNull(),
+            isA(FilterAndSortCriteria[].class),
+            isA(FetchPageRequest.class),
+            isNull(),
+            isA(List.class));
+    verify(adminEntityService)
+        .getRecord(
+            isA(PersistencePackageRequest.class), eq("42"), isA(ClassMetadata.class), eq(false));
+    verify(adminSectionCustomCriteriaService, atLeast(1))
+        .mergeSectionCustomCriteria(eq("Class Name For Section"), isNull());
+    verify(entityForm).getEntityType();
+    verify(entityForm).setEntityType("productOptions");
+    verify(entityFormValidator)
+        .validate(isA(EntityForm.class), (Entity) isNull(), isA(Errors.class));
+    verify(formBuilderService)
+        .buildCollectionListGrid(eq("42"), isNull(), isNull(), eq("product"), isA(List.class));
+    assertEquals(4, model.size());
+    Object getResult = model.get("currentAdminSection");
+    assertTrue(getResult instanceof AdminSectionImpl);
+    Object getResult2 = model.get("listGrid");
+    assertTrue(getResult2 instanceof ListGrid);
+    assertEquals("42", model.get("actualEntityId"));
+    assertEquals("views/standaloneListGrid", actualAddCollectionItemResult);
+    assertEquals(AdminProductController.SECTION_KEY, model.get("sectionKey"));
+    assertSame(adminSectionImpl, getResult);
+    assertSame(listGrid, getResult2);
   }
 }

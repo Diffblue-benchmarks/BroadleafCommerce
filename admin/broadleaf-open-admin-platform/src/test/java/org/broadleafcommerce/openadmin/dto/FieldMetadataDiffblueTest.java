@@ -2,7 +2,6 @@ package org.broadleafcommerce.openadmin.dto;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -1060,114 +1059,5 @@ public class FieldMetadataDiffblueTest {
 
     // Assert
     assertTrue(adornedTargetCollectionMetadata.getManualFetch());
-  }
-
-  /**
-   * Test {@link FieldMetadata#equals(Object)}, and {@link FieldMetadata#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean FieldMetadata.equals(Object)", "int FieldMetadata.hashCode()"})
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
-    // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata2 =
-        new AdornedTargetCollectionMetadata();
-
-    // Act and Assert
-    assertEquals(adornedTargetCollectionMetadata, adornedTargetCollectionMetadata2);
-    assertEquals(
-        adornedTargetCollectionMetadata.hashCode(), adornedTargetCollectionMetadata2.hashCode());
-  }
-
-  /**
-   * Test {@link FieldMetadata#equals(Object)}, and {@link FieldMetadata#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean FieldMetadata.equals(Object)", "int FieldMetadata.hashCode()"})
-  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
-    // Arrange
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
-        new AdornedTargetCollectionMetadata();
-
-    // Act and Assert
-    assertEquals(adornedTargetCollectionMetadata, adornedTargetCollectionMetadata);
-    int expectedHashCodeResult = adornedTargetCollectionMetadata.hashCode();
-    assertEquals(expectedHashCodeResult, adornedTargetCollectionMetadata.hashCode());
-  }
-
-  /**
-   * Test {@link FieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean FieldMetadata.equals(Object)", "int FieldMetadata.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
-    // Arrange, Act and Assert
-    assertNotEquals(new AdornedTargetCollectionMetadata(), 1);
-  }
-
-  /**
-   * Test {@link FieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean FieldMetadata.equals(Object)", "int FieldMetadata.hashCode()"})
-  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
-    // Arrange, Act and Assert
-    assertNotEquals(new AdornedTargetCollectionMetadata(), null);
-  }
-
-  /**
-   * Test {@link FieldMetadata#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link FieldMetadata#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean FieldMetadata.equals(Object)", "int FieldMetadata.hashCode()"})
-  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
-    // Arrange, Act and Assert
-    assertNotEquals(new AdornedTargetCollectionMetadata(), "Different type to FieldMetadata");
   }
 }

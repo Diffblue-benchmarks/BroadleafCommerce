@@ -631,46 +631,6 @@ public class RowLevelSecurityServiceImplDiffblueTest {
    * PersistencePackage)}.
    *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link AbstractRowLevelSecurityProvider} (default
-   *       constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link RowLevelSecurityServiceImpl#validateUpdateRequest(AdminUser,
-   * Entity, PersistencePackage)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "GlobalValidationResult RowLevelSecurityServiceImpl.validateUpdateRequest(AdminUser, Entity, PersistencePackage)"
-  })
-  public void testValidateUpdateRequest_givenArrayListAddAbstractRowLevelSecurityProvider() {
-    // Arrange
-    ArrayList<RowLevelSecurityProvider> providers = new ArrayList<>();
-    providers.add(new AbstractRowLevelSecurityProvider());
-
-    RowLevelSecurityServiceImpl rowLevelSecurityServiceImpl = new RowLevelSecurityServiceImpl();
-    rowLevelSecurityServiceImpl.setProviders(providers);
-    AdminUserImpl currentUser = new AdminUserImpl();
-    Entity entity = new Entity();
-
-    // Act
-    GlobalValidationResult actualValidateUpdateRequestResult =
-        rowLevelSecurityServiceImpl.validateUpdateRequest(
-            currentUser, entity, new PersistencePackage());
-
-    // Assert
-    assertNull(actualValidateUpdateRequestResult.getErrorMessage());
-    assertFalse(actualValidateUpdateRequestResult.isNotValid());
-    assertTrue(actualValidateUpdateRequestResult.getErrorMessages().isEmpty());
-    assertTrue(actualValidateUpdateRequestResult.isValid());
-  }
-
-  /**
-   * Test {@link RowLevelSecurityServiceImpl#validateUpdateRequest(AdminUser, Entity,
-   * PersistencePackage)}.
-   *
-   * <ul>
    *   <li>Given {@link GlobalValidationResult} {@link GlobalValidationResult#isNotValid()} return
    *       {@code false}.
    * </ul>
@@ -724,7 +684,7 @@ public class RowLevelSecurityServiceImplDiffblueTest {
    * PersistencePackage)}.
    *
    * <ul>
-   *   <li>Then return ErrorMessages first is {@code An error occurred}.
+   *   <li>Then return ErrorMessage is {@code null}.
    * </ul>
    *
    * <p>Method under test: {@link RowLevelSecurityServiceImpl#validateUpdateRequest(AdminUser,
@@ -736,7 +696,46 @@ public class RowLevelSecurityServiceImplDiffblueTest {
   @MethodsUnderTest({
     "GlobalValidationResult RowLevelSecurityServiceImpl.validateUpdateRequest(AdminUser, Entity, PersistencePackage)"
   })
-  public void testValidateUpdateRequest_thenReturnErrorMessagesFirstIsAnErrorOccurred() {
+  public void testValidateUpdateRequest_thenReturnErrorMessageIsNull() {
+    // Arrange
+    ArrayList<RowLevelSecurityProvider> providers = new ArrayList<>();
+    providers.add(new AbstractRowLevelSecurityProvider());
+
+    RowLevelSecurityServiceImpl rowLevelSecurityServiceImpl = new RowLevelSecurityServiceImpl();
+    rowLevelSecurityServiceImpl.setProviders(providers);
+    AdminUserImpl currentUser = new AdminUserImpl();
+    Entity entity = new Entity();
+
+    // Act
+    GlobalValidationResult actualValidateUpdateRequestResult =
+        rowLevelSecurityServiceImpl.validateUpdateRequest(
+            currentUser, entity, new PersistencePackage());
+
+    // Assert
+    assertNull(actualValidateUpdateRequestResult.getErrorMessage());
+    assertFalse(actualValidateUpdateRequestResult.isNotValid());
+    assertTrue(actualValidateUpdateRequestResult.getErrorMessages().isEmpty());
+    assertTrue(actualValidateUpdateRequestResult.isValid());
+  }
+
+  /**
+   * Test {@link RowLevelSecurityServiceImpl#validateUpdateRequest(AdminUser, Entity,
+   * PersistencePackage)}.
+   *
+   * <ul>
+   *   <li>Then return ErrorMessages size is one.
+   * </ul>
+   *
+   * <p>Method under test: {@link RowLevelSecurityServiceImpl#validateUpdateRequest(AdminUser,
+   * Entity, PersistencePackage)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "GlobalValidationResult RowLevelSecurityServiceImpl.validateUpdateRequest(AdminUser, Entity, PersistencePackage)"
+  })
+  public void testValidateUpdateRequest_thenReturnErrorMessagesSizeIsOne() {
     // Arrange
     GlobalValidationResult globalValidationResult = mock(GlobalValidationResult.class);
     when(globalValidationResult.getErrorMessage()).thenReturn("An error occurred");
@@ -771,104 +770,6 @@ public class RowLevelSecurityServiceImplDiffblueTest {
     assertEquals(1, errorMessages.size());
     assertEquals("An error occurred", errorMessages.get(0));
     assertEquals("An error occurred", actualValidateUpdateRequestResult.getErrorMessage());
-    assertFalse(actualValidateUpdateRequestResult.isValid());
-    assertTrue(actualValidateUpdateRequestResult.isNotValid());
-  }
-
-  /**
-   * Test {@link RowLevelSecurityServiceImpl#validateUpdateRequest(AdminUser, Entity,
-   * PersistencePackage)}.
-   *
-   * <ul>
-   *   <li>Then return ErrorMessages first is {@code Error Message Or Key}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RowLevelSecurityServiceImpl#validateUpdateRequest(AdminUser,
-   * Entity, PersistencePackage)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "GlobalValidationResult RowLevelSecurityServiceImpl.validateUpdateRequest(AdminUser, Entity, PersistencePackage)"
-  })
-  public void testValidateUpdateRequest_thenReturnErrorMessagesFirstIsErrorMessageOrKey() {
-    // Arrange
-    GlobalValidationResult globalValidationResult = new GlobalValidationResult(false);
-    globalValidationResult.addErrorMessage("Error Message Or Key");
-
-    AbstractRowLevelSecurityProvider abstractRowLevelSecurityProvider =
-        mock(AbstractRowLevelSecurityProvider.class);
-    when(abstractRowLevelSecurityProvider.validateUpdateRequest(
-            Mockito.<AdminUser>any(), Mockito.<Entity>any(), Mockito.<PersistencePackage>any()))
-        .thenReturn(globalValidationResult);
-
-    ArrayList<RowLevelSecurityProvider> providers = new ArrayList<>();
-    providers.add(abstractRowLevelSecurityProvider);
-    rowLevelSecurityServiceImpl.setProviders(providers);
-    AdminUserImpl currentUser = new AdminUserImpl();
-    Entity entity = new Entity();
-
-    // Act
-    GlobalValidationResult actualValidateUpdateRequestResult =
-        rowLevelSecurityServiceImpl.validateUpdateRequest(
-            currentUser, entity, new PersistencePackage());
-
-    // Assert
-    verify(abstractRowLevelSecurityProvider)
-        .validateUpdateRequest(
-            isA(AdminUser.class), isA(Entity.class), isA(PersistencePackage.class));
-    List<String> errorMessages = actualValidateUpdateRequestResult.getErrorMessages();
-    assertEquals(1, errorMessages.size());
-    assertEquals("Error Message Or Key", errorMessages.get(0));
-    assertEquals("Error Message Or Key", actualValidateUpdateRequestResult.getErrorMessage());
-    assertFalse(actualValidateUpdateRequestResult.isValid());
-    assertTrue(actualValidateUpdateRequestResult.isNotValid());
-  }
-
-  /**
-   * Test {@link RowLevelSecurityServiceImpl#validateUpdateRequest(AdminUser, Entity,
-   * PersistencePackage)}.
-   *
-   * <ul>
-   *   <li>Then return ErrorMessages first is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RowLevelSecurityServiceImpl#validateUpdateRequest(AdminUser,
-   * Entity, PersistencePackage)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "GlobalValidationResult RowLevelSecurityServiceImpl.validateUpdateRequest(AdminUser, Entity, PersistencePackage)"
-  })
-  public void testValidateUpdateRequest_thenReturnErrorMessagesFirstIsNull() {
-    // Arrange
-    AbstractRowLevelSecurityProvider abstractRowLevelSecurityProvider =
-        mock(AbstractRowLevelSecurityProvider.class);
-    when(abstractRowLevelSecurityProvider.validateUpdateRequest(
-            Mockito.<AdminUser>any(), Mockito.<Entity>any(), Mockito.<PersistencePackage>any()))
-        .thenReturn(new GlobalValidationResult(false));
-
-    ArrayList<RowLevelSecurityProvider> providers = new ArrayList<>();
-    providers.add(abstractRowLevelSecurityProvider);
-    rowLevelSecurityServiceImpl.setProviders(providers);
-    AdminUserImpl currentUser = new AdminUserImpl();
-    Entity entity = new Entity();
-
-    // Act
-    GlobalValidationResult actualValidateUpdateRequestResult =
-        rowLevelSecurityServiceImpl.validateUpdateRequest(
-            currentUser, entity, new PersistencePackage());
-
-    // Assert
-    verify(abstractRowLevelSecurityProvider)
-        .validateUpdateRequest(
-            isA(AdminUser.class), isA(Entity.class), isA(PersistencePackage.class));
-    List<String> errorMessages = actualValidateUpdateRequestResult.getErrorMessages();
-    assertEquals(1, errorMessages.size());
-    assertNull(errorMessages.get(0));
     assertFalse(actualValidateUpdateRequestResult.isValid());
     assertTrue(actualValidateUpdateRequestResult.isNotValid());
   }
@@ -911,46 +812,6 @@ public class RowLevelSecurityServiceImplDiffblueTest {
     verify(abstractRowLevelSecurityProvider)
         .validateRemoveRequest(
             isA(AdminUser.class), isA(Entity.class), isA(PersistencePackage.class));
-    assertNull(actualValidateRemoveRequestResult.getErrorMessage());
-    assertFalse(actualValidateRemoveRequestResult.isNotValid());
-    assertTrue(actualValidateRemoveRequestResult.getErrorMessages().isEmpty());
-    assertTrue(actualValidateRemoveRequestResult.isValid());
-  }
-
-  /**
-   * Test {@link RowLevelSecurityServiceImpl#validateRemoveRequest(AdminUser, Entity,
-   * PersistencePackage)}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link AbstractRowLevelSecurityProvider} (default
-   *       constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link RowLevelSecurityServiceImpl#validateRemoveRequest(AdminUser,
-   * Entity, PersistencePackage)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "GlobalValidationResult RowLevelSecurityServiceImpl.validateRemoveRequest(AdminUser, Entity, PersistencePackage)"
-  })
-  public void testValidateRemoveRequest_givenArrayListAddAbstractRowLevelSecurityProvider() {
-    // Arrange
-    ArrayList<RowLevelSecurityProvider> providers = new ArrayList<>();
-    providers.add(new AbstractRowLevelSecurityProvider());
-
-    RowLevelSecurityServiceImpl rowLevelSecurityServiceImpl = new RowLevelSecurityServiceImpl();
-    rowLevelSecurityServiceImpl.setProviders(providers);
-    AdminUserImpl currentUser = new AdminUserImpl();
-    Entity entity = new Entity();
-
-    // Act
-    GlobalValidationResult actualValidateRemoveRequestResult =
-        rowLevelSecurityServiceImpl.validateRemoveRequest(
-            currentUser, entity, new PersistencePackage());
-
-    // Assert
     assertNull(actualValidateRemoveRequestResult.getErrorMessage());
     assertFalse(actualValidateRemoveRequestResult.isNotValid());
     assertTrue(actualValidateRemoveRequestResult.getErrorMessages().isEmpty());
@@ -1015,7 +876,7 @@ public class RowLevelSecurityServiceImplDiffblueTest {
    * PersistencePackage)}.
    *
    * <ul>
-   *   <li>Then return ErrorMessages first is {@code An error occurred}.
+   *   <li>Then return ErrorMessage is {@code null}.
    * </ul>
    *
    * <p>Method under test: {@link RowLevelSecurityServiceImpl#validateRemoveRequest(AdminUser,
@@ -1027,7 +888,46 @@ public class RowLevelSecurityServiceImplDiffblueTest {
   @MethodsUnderTest({
     "GlobalValidationResult RowLevelSecurityServiceImpl.validateRemoveRequest(AdminUser, Entity, PersistencePackage)"
   })
-  public void testValidateRemoveRequest_thenReturnErrorMessagesFirstIsAnErrorOccurred() {
+  public void testValidateRemoveRequest_thenReturnErrorMessageIsNull() {
+    // Arrange
+    ArrayList<RowLevelSecurityProvider> providers = new ArrayList<>();
+    providers.add(new AbstractRowLevelSecurityProvider());
+
+    RowLevelSecurityServiceImpl rowLevelSecurityServiceImpl = new RowLevelSecurityServiceImpl();
+    rowLevelSecurityServiceImpl.setProviders(providers);
+    AdminUserImpl currentUser = new AdminUserImpl();
+    Entity entity = new Entity();
+
+    // Act
+    GlobalValidationResult actualValidateRemoveRequestResult =
+        rowLevelSecurityServiceImpl.validateRemoveRequest(
+            currentUser, entity, new PersistencePackage());
+
+    // Assert
+    assertNull(actualValidateRemoveRequestResult.getErrorMessage());
+    assertFalse(actualValidateRemoveRequestResult.isNotValid());
+    assertTrue(actualValidateRemoveRequestResult.getErrorMessages().isEmpty());
+    assertTrue(actualValidateRemoveRequestResult.isValid());
+  }
+
+  /**
+   * Test {@link RowLevelSecurityServiceImpl#validateRemoveRequest(AdminUser, Entity,
+   * PersistencePackage)}.
+   *
+   * <ul>
+   *   <li>Then return ErrorMessages size is one.
+   * </ul>
+   *
+   * <p>Method under test: {@link RowLevelSecurityServiceImpl#validateRemoveRequest(AdminUser,
+   * Entity, PersistencePackage)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "GlobalValidationResult RowLevelSecurityServiceImpl.validateRemoveRequest(AdminUser, Entity, PersistencePackage)"
+  })
+  public void testValidateRemoveRequest_thenReturnErrorMessagesSizeIsOne() {
     // Arrange
     GlobalValidationResult globalValidationResult = mock(GlobalValidationResult.class);
     when(globalValidationResult.getErrorMessage()).thenReturn("An error occurred");
@@ -1062,104 +962,6 @@ public class RowLevelSecurityServiceImplDiffblueTest {
     assertEquals(1, errorMessages.size());
     assertEquals("An error occurred", errorMessages.get(0));
     assertEquals("An error occurred", actualValidateRemoveRequestResult.getErrorMessage());
-    assertFalse(actualValidateRemoveRequestResult.isValid());
-    assertTrue(actualValidateRemoveRequestResult.isNotValid());
-  }
-
-  /**
-   * Test {@link RowLevelSecurityServiceImpl#validateRemoveRequest(AdminUser, Entity,
-   * PersistencePackage)}.
-   *
-   * <ul>
-   *   <li>Then return ErrorMessages first is {@code Error Message Or Key}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RowLevelSecurityServiceImpl#validateRemoveRequest(AdminUser,
-   * Entity, PersistencePackage)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "GlobalValidationResult RowLevelSecurityServiceImpl.validateRemoveRequest(AdminUser, Entity, PersistencePackage)"
-  })
-  public void testValidateRemoveRequest_thenReturnErrorMessagesFirstIsErrorMessageOrKey() {
-    // Arrange
-    GlobalValidationResult globalValidationResult = new GlobalValidationResult(false);
-    globalValidationResult.addErrorMessage("Error Message Or Key");
-
-    AbstractRowLevelSecurityProvider abstractRowLevelSecurityProvider =
-        mock(AbstractRowLevelSecurityProvider.class);
-    when(abstractRowLevelSecurityProvider.validateRemoveRequest(
-            Mockito.<AdminUser>any(), Mockito.<Entity>any(), Mockito.<PersistencePackage>any()))
-        .thenReturn(globalValidationResult);
-
-    ArrayList<RowLevelSecurityProvider> providers = new ArrayList<>();
-    providers.add(abstractRowLevelSecurityProvider);
-    rowLevelSecurityServiceImpl.setProviders(providers);
-    AdminUserImpl currentUser = new AdminUserImpl();
-    Entity entity = new Entity();
-
-    // Act
-    GlobalValidationResult actualValidateRemoveRequestResult =
-        rowLevelSecurityServiceImpl.validateRemoveRequest(
-            currentUser, entity, new PersistencePackage());
-
-    // Assert
-    verify(abstractRowLevelSecurityProvider)
-        .validateRemoveRequest(
-            isA(AdminUser.class), isA(Entity.class), isA(PersistencePackage.class));
-    List<String> errorMessages = actualValidateRemoveRequestResult.getErrorMessages();
-    assertEquals(1, errorMessages.size());
-    assertEquals("Error Message Or Key", errorMessages.get(0));
-    assertEquals("Error Message Or Key", actualValidateRemoveRequestResult.getErrorMessage());
-    assertFalse(actualValidateRemoveRequestResult.isValid());
-    assertTrue(actualValidateRemoveRequestResult.isNotValid());
-  }
-
-  /**
-   * Test {@link RowLevelSecurityServiceImpl#validateRemoveRequest(AdminUser, Entity,
-   * PersistencePackage)}.
-   *
-   * <ul>
-   *   <li>Then return ErrorMessages first is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RowLevelSecurityServiceImpl#validateRemoveRequest(AdminUser,
-   * Entity, PersistencePackage)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "GlobalValidationResult RowLevelSecurityServiceImpl.validateRemoveRequest(AdminUser, Entity, PersistencePackage)"
-  })
-  public void testValidateRemoveRequest_thenReturnErrorMessagesFirstIsNull() {
-    // Arrange
-    AbstractRowLevelSecurityProvider abstractRowLevelSecurityProvider =
-        mock(AbstractRowLevelSecurityProvider.class);
-    when(abstractRowLevelSecurityProvider.validateRemoveRequest(
-            Mockito.<AdminUser>any(), Mockito.<Entity>any(), Mockito.<PersistencePackage>any()))
-        .thenReturn(new GlobalValidationResult(false));
-
-    ArrayList<RowLevelSecurityProvider> providers = new ArrayList<>();
-    providers.add(abstractRowLevelSecurityProvider);
-    rowLevelSecurityServiceImpl.setProviders(providers);
-    AdminUserImpl currentUser = new AdminUserImpl();
-    Entity entity = new Entity();
-
-    // Act
-    GlobalValidationResult actualValidateRemoveRequestResult =
-        rowLevelSecurityServiceImpl.validateRemoveRequest(
-            currentUser, entity, new PersistencePackage());
-
-    // Assert
-    verify(abstractRowLevelSecurityProvider)
-        .validateRemoveRequest(
-            isA(AdminUser.class), isA(Entity.class), isA(PersistencePackage.class));
-    List<String> errorMessages = actualValidateRemoveRequestResult.getErrorMessages();
-    assertEquals(1, errorMessages.size());
-    assertNull(errorMessages.get(0));
     assertFalse(actualValidateRemoveRequestResult.isValid());
     assertTrue(actualValidateRemoveRequestResult.isNotValid());
   }
@@ -1201,46 +1003,6 @@ public class RowLevelSecurityServiceImplDiffblueTest {
     // Assert
     verify(abstractRowLevelSecurityProvider)
         .validateAddRequest(isA(AdminUser.class), isA(Entity.class), isA(PersistencePackage.class));
-    assertNull(actualValidateAddRequestResult.getErrorMessage());
-    assertFalse(actualValidateAddRequestResult.isNotValid());
-    assertTrue(actualValidateAddRequestResult.getErrorMessages().isEmpty());
-    assertTrue(actualValidateAddRequestResult.isValid());
-  }
-
-  /**
-   * Test {@link RowLevelSecurityServiceImpl#validateAddRequest(AdminUser, Entity,
-   * PersistencePackage)}.
-   *
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link AbstractRowLevelSecurityProvider} (default
-   *       constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link RowLevelSecurityServiceImpl#validateAddRequest(AdminUser, Entity,
-   * PersistencePackage)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "GlobalValidationResult RowLevelSecurityServiceImpl.validateAddRequest(AdminUser, Entity, PersistencePackage)"
-  })
-  public void testValidateAddRequest_givenArrayListAddAbstractRowLevelSecurityProvider() {
-    // Arrange
-    ArrayList<RowLevelSecurityProvider> providers = new ArrayList<>();
-    providers.add(new AbstractRowLevelSecurityProvider());
-
-    RowLevelSecurityServiceImpl rowLevelSecurityServiceImpl = new RowLevelSecurityServiceImpl();
-    rowLevelSecurityServiceImpl.setProviders(providers);
-    AdminUserImpl currentUser = new AdminUserImpl();
-    Entity entity = new Entity();
-
-    // Act
-    GlobalValidationResult actualValidateAddRequestResult =
-        rowLevelSecurityServiceImpl.validateAddRequest(
-            currentUser, entity, new PersistencePackage());
-
-    // Assert
     assertNull(actualValidateAddRequestResult.getErrorMessage());
     assertFalse(actualValidateAddRequestResult.isNotValid());
     assertTrue(actualValidateAddRequestResult.getErrorMessages().isEmpty());
@@ -1304,7 +1066,7 @@ public class RowLevelSecurityServiceImplDiffblueTest {
    * PersistencePackage)}.
    *
    * <ul>
-   *   <li>Then return ErrorMessages first is {@code An error occurred}.
+   *   <li>Then return ErrorMessage is {@code null}.
    * </ul>
    *
    * <p>Method under test: {@link RowLevelSecurityServiceImpl#validateAddRequest(AdminUser, Entity,
@@ -1316,7 +1078,46 @@ public class RowLevelSecurityServiceImplDiffblueTest {
   @MethodsUnderTest({
     "GlobalValidationResult RowLevelSecurityServiceImpl.validateAddRequest(AdminUser, Entity, PersistencePackage)"
   })
-  public void testValidateAddRequest_thenReturnErrorMessagesFirstIsAnErrorOccurred() {
+  public void testValidateAddRequest_thenReturnErrorMessageIsNull() {
+    // Arrange
+    ArrayList<RowLevelSecurityProvider> providers = new ArrayList<>();
+    providers.add(new AbstractRowLevelSecurityProvider());
+
+    RowLevelSecurityServiceImpl rowLevelSecurityServiceImpl = new RowLevelSecurityServiceImpl();
+    rowLevelSecurityServiceImpl.setProviders(providers);
+    AdminUserImpl currentUser = new AdminUserImpl();
+    Entity entity = new Entity();
+
+    // Act
+    GlobalValidationResult actualValidateAddRequestResult =
+        rowLevelSecurityServiceImpl.validateAddRequest(
+            currentUser, entity, new PersistencePackage());
+
+    // Assert
+    assertNull(actualValidateAddRequestResult.getErrorMessage());
+    assertFalse(actualValidateAddRequestResult.isNotValid());
+    assertTrue(actualValidateAddRequestResult.getErrorMessages().isEmpty());
+    assertTrue(actualValidateAddRequestResult.isValid());
+  }
+
+  /**
+   * Test {@link RowLevelSecurityServiceImpl#validateAddRequest(AdminUser, Entity,
+   * PersistencePackage)}.
+   *
+   * <ul>
+   *   <li>Then return ErrorMessages size is one.
+   * </ul>
+   *
+   * <p>Method under test: {@link RowLevelSecurityServiceImpl#validateAddRequest(AdminUser, Entity,
+   * PersistencePackage)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "GlobalValidationResult RowLevelSecurityServiceImpl.validateAddRequest(AdminUser, Entity, PersistencePackage)"
+  })
+  public void testValidateAddRequest_thenReturnErrorMessagesSizeIsOne() {
     // Arrange
     GlobalValidationResult globalValidationResult = mock(GlobalValidationResult.class);
     when(globalValidationResult.getErrorMessage()).thenReturn("An error occurred");
@@ -1350,102 +1151,6 @@ public class RowLevelSecurityServiceImplDiffblueTest {
     assertEquals(1, errorMessages.size());
     assertEquals("An error occurred", errorMessages.get(0));
     assertEquals("An error occurred", actualValidateAddRequestResult.getErrorMessage());
-    assertFalse(actualValidateAddRequestResult.isValid());
-    assertTrue(actualValidateAddRequestResult.isNotValid());
-  }
-
-  /**
-   * Test {@link RowLevelSecurityServiceImpl#validateAddRequest(AdminUser, Entity,
-   * PersistencePackage)}.
-   *
-   * <ul>
-   *   <li>Then return ErrorMessages first is {@code Error Message Or Key}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RowLevelSecurityServiceImpl#validateAddRequest(AdminUser, Entity,
-   * PersistencePackage)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "GlobalValidationResult RowLevelSecurityServiceImpl.validateAddRequest(AdminUser, Entity, PersistencePackage)"
-  })
-  public void testValidateAddRequest_thenReturnErrorMessagesFirstIsErrorMessageOrKey() {
-    // Arrange
-    GlobalValidationResult globalValidationResult = new GlobalValidationResult(false);
-    globalValidationResult.addErrorMessage("Error Message Or Key");
-
-    AbstractRowLevelSecurityProvider abstractRowLevelSecurityProvider =
-        mock(AbstractRowLevelSecurityProvider.class);
-    when(abstractRowLevelSecurityProvider.validateAddRequest(
-            Mockito.<AdminUser>any(), Mockito.<Entity>any(), Mockito.<PersistencePackage>any()))
-        .thenReturn(globalValidationResult);
-
-    ArrayList<RowLevelSecurityProvider> providers = new ArrayList<>();
-    providers.add(abstractRowLevelSecurityProvider);
-    rowLevelSecurityServiceImpl.setProviders(providers);
-    AdminUserImpl currentUser = new AdminUserImpl();
-    Entity entity = new Entity();
-
-    // Act
-    GlobalValidationResult actualValidateAddRequestResult =
-        rowLevelSecurityServiceImpl.validateAddRequest(
-            currentUser, entity, new PersistencePackage());
-
-    // Assert
-    verify(abstractRowLevelSecurityProvider)
-        .validateAddRequest(isA(AdminUser.class), isA(Entity.class), isA(PersistencePackage.class));
-    List<String> errorMessages = actualValidateAddRequestResult.getErrorMessages();
-    assertEquals(1, errorMessages.size());
-    assertEquals("Error Message Or Key", errorMessages.get(0));
-    assertEquals("Error Message Or Key", actualValidateAddRequestResult.getErrorMessage());
-    assertFalse(actualValidateAddRequestResult.isValid());
-    assertTrue(actualValidateAddRequestResult.isNotValid());
-  }
-
-  /**
-   * Test {@link RowLevelSecurityServiceImpl#validateAddRequest(AdminUser, Entity,
-   * PersistencePackage)}.
-   *
-   * <ul>
-   *   <li>Then return ErrorMessages first is {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link RowLevelSecurityServiceImpl#validateAddRequest(AdminUser, Entity,
-   * PersistencePackage)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "GlobalValidationResult RowLevelSecurityServiceImpl.validateAddRequest(AdminUser, Entity, PersistencePackage)"
-  })
-  public void testValidateAddRequest_thenReturnErrorMessagesFirstIsNull() {
-    // Arrange
-    AbstractRowLevelSecurityProvider abstractRowLevelSecurityProvider =
-        mock(AbstractRowLevelSecurityProvider.class);
-    when(abstractRowLevelSecurityProvider.validateAddRequest(
-            Mockito.<AdminUser>any(), Mockito.<Entity>any(), Mockito.<PersistencePackage>any()))
-        .thenReturn(new GlobalValidationResult(false));
-
-    ArrayList<RowLevelSecurityProvider> providers = new ArrayList<>();
-    providers.add(abstractRowLevelSecurityProvider);
-    rowLevelSecurityServiceImpl.setProviders(providers);
-    AdminUserImpl currentUser = new AdminUserImpl();
-    Entity entity = new Entity();
-
-    // Act
-    GlobalValidationResult actualValidateAddRequestResult =
-        rowLevelSecurityServiceImpl.validateAddRequest(
-            currentUser, entity, new PersistencePackage());
-
-    // Assert
-    verify(abstractRowLevelSecurityProvider)
-        .validateAddRequest(isA(AdminUser.class), isA(Entity.class), isA(PersistencePackage.class));
-    List<String> errorMessages = actualValidateAddRequestResult.getErrorMessages();
-    assertEquals(1, errorMessages.size());
-    assertNull(errorMessages.get(0));
     assertFalse(actualValidateAddRequestResult.isValid());
     assertTrue(actualValidateAddRequestResult.isNotValid());
   }

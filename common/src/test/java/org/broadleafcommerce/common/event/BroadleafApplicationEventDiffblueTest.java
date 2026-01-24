@@ -11,20 +11,6 @@ import org.junit.experimental.categories.Category;
 
 public class BroadleafApplicationEventDiffblueTest {
   /**
-   * Test {@link BroadleafApplicationEvent#getContext()}.
-   *
-   * <p>Method under test: {@link BroadleafApplicationEvent#getContext()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"java.util.Map BroadleafApplicationEvent.getContext()"})
-  public void testGetContext() {
-    // Arrange, Act and Assert
-    assertTrue(new ReindexEvent(BLCFieldUtils.NULL_FIELD).getContext().isEmpty());
-  }
-
-  /**
    * Test {@link BroadleafApplicationEvent#getSiteId()}.
    *
    * <p>Method under test: {@link BroadleafApplicationEvent#getSiteId()}

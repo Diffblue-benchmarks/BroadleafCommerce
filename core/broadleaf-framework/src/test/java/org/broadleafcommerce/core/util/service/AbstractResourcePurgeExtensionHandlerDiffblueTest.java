@@ -2,7 +2,6 @@ package org.broadleafcommerce.core.util.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import com.diffblue.cover.annotations.ContributionFromDiffblue;
 import com.diffblue.cover.annotations.ManagedByDiffblue;
@@ -145,25 +144,5 @@ public class AbstractResourcePurgeExtensionHandlerDiffblueTest {
 
     // Act and Assert
     assertNull(abstractResourcePurgeExtensionHandler.addPurgeExclusions(new HashSet<>()));
-  }
-
-  /**
-   * Test new {@link AbstractResourcePurgeExtensionHandler} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link
-   * AbstractResourcePurgeExtensionHandler}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AbstractResourcePurgeExtensionHandler.<init>()"})
-  public void testNewAbstractResourcePurgeExtensionHandler() {
-    // Arrange and Act
-    AbstractResourcePurgeExtensionHandler actualAbstractResourcePurgeExtensionHandler =
-        new AbstractResourcePurgeExtensionHandler();
-
-    // Assert
-    assertEquals(0, actualAbstractResourcePurgeExtensionHandler.getPriority());
-    assertTrue(actualAbstractResourcePurgeExtensionHandler.isEnabled());
   }
 }

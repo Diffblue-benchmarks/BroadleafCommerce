@@ -43,6 +43,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.test.web.servlet.setup.StandaloneMockMvcBuilder;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
 
@@ -490,8 +491,11 @@ public class AdminBasicOperationsControllerDiffblueTest {
     // Arrange
     MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/sessionTimerReset");
 
+    StandaloneMockMvcBuilder standaloneSetupResult =
+        MockMvcBuilders.standaloneSetup(new AdminBasicOperationsController());
+
     // Act and Assert
-    MockMvcBuilders.standaloneSetup(adminBasicOperationsController)
+    standaloneSetupResult
         .build()
         .perform(requestBuilder)
         .andExpect(status().isOk())
@@ -518,8 +522,11 @@ public class AdminBasicOperationsControllerDiffblueTest {
     MockHttpServletRequestBuilder requestBuilder =
         MockMvcRequestBuilders.post("/logJavaScriptError");
 
+    StandaloneMockMvcBuilder standaloneSetupResult =
+        MockMvcBuilders.standaloneSetup(new AdminBasicOperationsController());
+
     // Act and Assert
-    MockMvcBuilders.standaloneSetup(adminBasicOperationsController)
+    standaloneSetupResult
         .build()
         .perform(requestBuilder)
         .andExpect(status().isOk())
@@ -545,8 +552,11 @@ public class AdminBasicOperationsControllerDiffblueTest {
     // Arrange
     MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/update-navigation");
 
+    StandaloneMockMvcBuilder standaloneSetupResult =
+        MockMvcBuilders.standaloneSetup(new AdminBasicOperationsController());
+
     // Act and Assert
-    MockMvcBuilders.standaloneSetup(adminBasicOperationsController)
+    standaloneSetupResult
         .build()
         .perform(requestBuilder)
         .andExpect(status().isOk())

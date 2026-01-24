@@ -5,8 +5,11 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.anyBoolean;
+import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -39,6 +42,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.owasp.validator.html.CleanResults;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.jta.JtaTransactionManager;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DynamicEntityRemoteServiceDiffblueTest {
@@ -181,6 +185,111 @@ public class DynamicEntityRemoteServiceDiffblueTest {
   }
 
   /**
+   * Test {@link DynamicEntityRemoteService#inspect(PersistencePackage)}.
+   *
+   * <p>Method under test: {@link DynamicEntityRemoteService#inspect(PersistencePackage)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.inspect(PersistencePackage)"})
+  public void testInspect() throws ServiceException {
+    // Arrange
+    when(persistenceService.identifyTransactionManager(
+            Mockito.<String>any(), Mockito.<TargetModeType>any()))
+        .thenThrow(new RuntimeException());
+
+    // Act and Assert
+    assertThrows(
+        RuntimeException.class, () -> dynamicEntityRemoteService.inspect(new PersistencePackage()));
+    verify(persistenceService).identifyTransactionManager(isNull(), isA(TargetModeType.class));
+  }
+
+  /**
+   * Test {@link DynamicEntityRemoteService#inspect(PersistencePackage)}.
+   *
+   * <p>Method under test: {@link DynamicEntityRemoteService#inspect(PersistencePackage)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.inspect(PersistencePackage)"})
+  public void testInspect2() throws Throwable {
+    // Arrange
+    when(persistenceService.identifyTransactionManager(
+            Mockito.<String>any(), Mockito.<TargetModeType>any()))
+        .thenReturn(mock(JtaTransactionManager.class));
+    doThrow(new RuntimeException())
+        .when(streamingTransactionCapableUtil)
+        .runOptionalTransactionalOperation(
+            Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<Throwable>>any(),
+            anyBoolean(),
+            anyInt(),
+            anyInt(),
+            anyBoolean(),
+            Mockito.<PlatformTransactionManager>any());
+
+    // Act and Assert
+    assertThrows(
+        RuntimeException.class, () -> dynamicEntityRemoteService.inspect(new PersistencePackage()));
+    verify(persistenceService).identifyTransactionManager(isNull(), isA(TargetModeType.class));
+    verify(streamingTransactionCapableUtil)
+        .runOptionalTransactionalOperation(
+            isA(StreamCapableTransactionalOperation.class),
+            isA(Class.class),
+            eq(true),
+            eq(0),
+            eq(-1),
+            eq(true),
+            isA(PlatformTransactionManager.class));
+  }
+
+  /**
+   * Test {@link DynamicEntityRemoteService#inspect(PersistencePackage)}.
+   *
+   * <ul>
+   *   <li>Then throw {@link ServiceException}.
+   * </ul>
+   *
+   * <p>Method under test: {@link DynamicEntityRemoteService#inspect(PersistencePackage)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"PersistenceResponse DynamicEntityRemoteService.inspect(PersistencePackage)"})
+  public void testInspect_thenThrowServiceException() throws Throwable {
+    // Arrange
+    when(persistenceService.identifyTransactionManager(
+            Mockito.<String>any(), Mockito.<TargetModeType>any()))
+        .thenReturn(mock(JtaTransactionManager.class));
+    doThrow(new ServiceException("An error occurred"))
+        .when(streamingTransactionCapableUtil)
+        .runOptionalTransactionalOperation(
+            Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<Throwable>>any(),
+            anyBoolean(),
+            anyInt(),
+            anyInt(),
+            anyBoolean(),
+            Mockito.<PlatformTransactionManager>any());
+
+    // Act and Assert
+    assertThrows(
+        ServiceException.class, () -> dynamicEntityRemoteService.inspect(new PersistencePackage()));
+    verify(persistenceService).identifyTransactionManager(isNull(), isA(TargetModeType.class));
+    verify(streamingTransactionCapableUtil)
+        .runOptionalTransactionalOperation(
+            isA(StreamCapableTransactionalOperation.class),
+            isA(Class.class),
+            eq(true),
+            eq(0),
+            eq(-1),
+            eq(true),
+            isA(PlatformTransactionManager.class));
+  }
+
+  /**
    * Test {@link DynamicEntityRemoteService#nonTransactionalInspect(PersistencePackage)}.
    *
    * <ul>
@@ -247,6 +356,133 @@ public class DynamicEntityRemoteServiceDiffblueTest {
     verify(persistenceThreadManager)
         .operation(
             isA(TargetModeType.class), isA(PersistencePackage.class), isA(Persistable.class));
+  }
+
+  /**
+   * Test {@link DynamicEntityRemoteService#fetch(PersistencePackage, CriteriaTransferObject)}.
+   *
+   * <p>Method under test: {@link DynamicEntityRemoteService#fetch(PersistencePackage,
+   * CriteriaTransferObject)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "PersistenceResponse DynamicEntityRemoteService.fetch(PersistencePackage, CriteriaTransferObject)"
+  })
+  public void testFetch() throws Throwable {
+    // Arrange
+    when(persistenceService.identifyTransactionManager(
+            Mockito.<String>any(), Mockito.<TargetModeType>any()))
+        .thenReturn(mock(JtaTransactionManager.class));
+    doThrow(new RuntimeException())
+        .when(streamingTransactionCapableUtil)
+        .runOptionalTransactionalOperation(
+            Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<Throwable>>any(),
+            anyBoolean(),
+            anyInt(),
+            anyInt(),
+            anyBoolean(),
+            Mockito.<PlatformTransactionManager>any());
+    PersistencePackage persistencePackage = new PersistencePackage();
+
+    // Act and Assert
+    assertThrows(
+        RuntimeException.class,
+        () -> dynamicEntityRemoteService.fetch(persistencePackage, new CriteriaTransferObject()));
+    verify(persistenceService).identifyTransactionManager(isNull(), isA(TargetModeType.class));
+    verify(streamingTransactionCapableUtil)
+        .runOptionalTransactionalOperation(
+            isA(StreamCapableTransactionalOperation.class),
+            isA(Class.class),
+            eq(true),
+            eq(0),
+            eq(-1),
+            eq(true),
+            isA(PlatformTransactionManager.class));
+  }
+
+  /**
+   * Test {@link DynamicEntityRemoteService#fetch(PersistencePackage, CriteriaTransferObject)}.
+   *
+   * <ul>
+   *   <li>Given {@link PersistenceService} {@link
+   *       PersistenceService#identifyTransactionManager(String, TargetModeType)} throw {@link
+   *       RuntimeException#RuntimeException()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link DynamicEntityRemoteService#fetch(PersistencePackage,
+   * CriteriaTransferObject)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "PersistenceResponse DynamicEntityRemoteService.fetch(PersistencePackage, CriteriaTransferObject)"
+  })
+  public void testFetch_givenPersistenceServiceIdentifyTransactionManagerThrowRuntimeException()
+      throws ServiceException {
+    // Arrange
+    when(persistenceService.identifyTransactionManager(
+            Mockito.<String>any(), Mockito.<TargetModeType>any()))
+        .thenThrow(new RuntimeException());
+    PersistencePackage persistencePackage = new PersistencePackage();
+
+    // Act and Assert
+    assertThrows(
+        RuntimeException.class,
+        () -> dynamicEntityRemoteService.fetch(persistencePackage, new CriteriaTransferObject()));
+    verify(persistenceService).identifyTransactionManager(isNull(), isA(TargetModeType.class));
+  }
+
+  /**
+   * Test {@link DynamicEntityRemoteService#fetch(PersistencePackage, CriteriaTransferObject)}.
+   *
+   * <ul>
+   *   <li>Then throw {@link ServiceException}.
+   * </ul>
+   *
+   * <p>Method under test: {@link DynamicEntityRemoteService#fetch(PersistencePackage,
+   * CriteriaTransferObject)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "PersistenceResponse DynamicEntityRemoteService.fetch(PersistencePackage, CriteriaTransferObject)"
+  })
+  public void testFetch_thenThrowServiceException() throws Throwable {
+    // Arrange
+    when(persistenceService.identifyTransactionManager(
+            Mockito.<String>any(), Mockito.<TargetModeType>any()))
+        .thenReturn(mock(JtaTransactionManager.class));
+    doThrow(new ServiceException("An error occurred"))
+        .when(streamingTransactionCapableUtil)
+        .runOptionalTransactionalOperation(
+            Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<Throwable>>any(),
+            anyBoolean(),
+            anyInt(),
+            anyInt(),
+            anyBoolean(),
+            Mockito.<PlatformTransactionManager>any());
+    PersistencePackage persistencePackage = new PersistencePackage();
+
+    // Act and Assert
+    assertThrows(
+        ServiceException.class,
+        () -> dynamicEntityRemoteService.fetch(persistencePackage, new CriteriaTransferObject()));
+    verify(persistenceService).identifyTransactionManager(isNull(), isA(TargetModeType.class));
+    verify(streamingTransactionCapableUtil)
+        .runOptionalTransactionalOperation(
+            isA(StreamCapableTransactionalOperation.class),
+            isA(Class.class),
+            eq(true),
+            eq(0),
+            eq(-1),
+            eq(true),
+            isA(PlatformTransactionManager.class));
   }
 
   /**

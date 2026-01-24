@@ -573,28 +573,6 @@ public class MapStructureDiffblueTest {
   @ManagedByDiffblue
   @MethodsUnderTest({"boolean MapStructure.equals(Object)", "int MapStructure.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
-    // Arrange
-    SimpleValueMapStructure simpleValueMapStructure = new SimpleValueMapStructure();
-
-    // Act and Assert
-    assertNotEquals(simpleValueMapStructure, new MapStructure());
-  }
-
-  /**
-   * Test {@link MapStructure#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link MapStructure#equals(Object)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean MapStructure.equals(Object)", "int MapStructure.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange, Act and Assert
     assertNotEquals(new MapStructure(), mock(SimpleValueMapStructure.class));
   }
@@ -613,7 +591,7 @@ public class MapStructureDiffblueTest {
   @Category(ContributionFromDiffblue.class)
   @ManagedByDiffblue
   @MethodsUnderTest({"boolean MapStructure.equals(Object)", "int MapStructure.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     MapStructure mapStructure = new MapStructure();
     mapStructure.setValueClassName("42");
@@ -636,7 +614,7 @@ public class MapStructureDiffblueTest {
   @Category(ContributionFromDiffblue.class)
   @ManagedByDiffblue
   @MethodsUnderTest({"boolean MapStructure.equals(Object)", "int MapStructure.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     MapStructure mapStructure = new MapStructure();
     mapStructure.setMapProperty("Map Property");
@@ -659,7 +637,7 @@ public class MapStructureDiffblueTest {
   @Category(ContributionFromDiffblue.class)
   @ManagedByDiffblue
   @MethodsUnderTest({"boolean MapStructure.equals(Object)", "int MapStructure.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     MapStructure mapStructure = new MapStructure();
     mapStructure.setKeyPropertyName("Key Property Name");
@@ -682,7 +660,7 @@ public class MapStructureDiffblueTest {
   @Category(ContributionFromDiffblue.class)
   @ManagedByDiffblue
   @MethodsUnderTest({"boolean MapStructure.equals(Object)", "int MapStructure.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     MapStructure mapStructure = new MapStructure();
     mapStructure.setKeyPropertyFriendlyName("Key Property Friendly Name");
@@ -705,7 +683,7 @@ public class MapStructureDiffblueTest {
   @Category(ContributionFromDiffblue.class)
   @ManagedByDiffblue
   @MethodsUnderTest({"boolean MapStructure.equals(Object)", "int MapStructure.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     MapStructure mapStructure = new MapStructure();
     mapStructure.setManyToField("Many To Field");
@@ -728,7 +706,7 @@ public class MapStructureDiffblueTest {
   @Category(ContributionFromDiffblue.class)
   @ManagedByDiffblue
   @MethodsUnderTest({"boolean MapStructure.equals(Object)", "int MapStructure.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
     MapStructure mapStructure = new MapStructure();
     mapStructure.setMapKeyValueProperty("42");
@@ -751,7 +729,7 @@ public class MapStructureDiffblueTest {
   @Category(ContributionFromDiffblue.class)
   @ManagedByDiffblue
   @MethodsUnderTest({"boolean MapStructure.equals(Object)", "int MapStructure.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
     // Arrange
     MapStructure mapStructure = new MapStructure();
 
@@ -776,7 +754,7 @@ public class MapStructureDiffblueTest {
   @Category(ContributionFromDiffblue.class)
   @ManagedByDiffblue
   @MethodsUnderTest({"boolean MapStructure.equals(Object)", "int MapStructure.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual10() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
     // Arrange
     MapStructure mapStructure = new MapStructure();
 
@@ -801,7 +779,7 @@ public class MapStructureDiffblueTest {
   @Category(ContributionFromDiffblue.class)
   @ManagedByDiffblue
   @MethodsUnderTest({"boolean MapStructure.equals(Object)", "int MapStructure.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual11() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual10() {
     // Arrange
     MapStructure mapStructure = new MapStructure();
 
@@ -826,7 +804,7 @@ public class MapStructureDiffblueTest {
   @Category(ContributionFromDiffblue.class)
   @ManagedByDiffblue
   @MethodsUnderTest({"boolean MapStructure.equals(Object)", "int MapStructure.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual12() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual11() {
     // Arrange
     MapStructure mapStructure = new MapStructure();
 
@@ -851,7 +829,7 @@ public class MapStructureDiffblueTest {
   @Category(ContributionFromDiffblue.class)
   @ManagedByDiffblue
   @MethodsUnderTest({"boolean MapStructure.equals(Object)", "int MapStructure.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual13() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual12() {
     // Arrange
     MapStructure mapStructure = new MapStructure();
 
@@ -876,7 +854,7 @@ public class MapStructureDiffblueTest {
   @Category(ContributionFromDiffblue.class)
   @ManagedByDiffblue
   @MethodsUnderTest({"boolean MapStructure.equals(Object)", "int MapStructure.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual14() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual13() {
     // Arrange
     MapStructure mapStructure = new MapStructure();
 

@@ -59,11 +59,35 @@ public class MergePersistenceUnitManagerDiffblueTest {
   @Category(ContributionFromDiffblue.class)
   @ManagedByDiffblue
   @MethodsUnderTest({"void MergePersistenceUnitManager.afterPropertiesSet()"})
-  public void testAfterPropertiesSet() throws Exception {
+  public void testAfterPropertiesSet() {
+    // Arrange
+    MergePersistenceUnitManager mergePersistenceUnitManager = new MergePersistenceUnitManager();
+    mergePersistenceUnitManager.setMappingResources(
+        "Did not recycle through class transformation since this has already occurred");
+
+    // Act
+    mergePersistenceUnitManager.afterPropertiesSet();
+
+    // Assert
+    HashMap<String, PersistenceUnitInfo> stringPersistenceUnitInfoMap =
+        mergePersistenceUnitManager.mergedPus;
+    assertEquals(1, stringPersistenceUnitInfoMap.size());
+    assertTrue(stringPersistenceUnitInfoMap.containsKey("default"));
+  }
+
+  /**
+   * Test {@link MergePersistenceUnitManager#afterPropertiesSet()}.
+   *
+   * <p>Method under test: {@link MergePersistenceUnitManager#afterPropertiesSet()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void MergePersistenceUnitManager.afterPropertiesSet()"})
+  public void testAfterPropertiesSet2() {
     // Arrange
     MergePersistenceUnitManager mergePersistenceUnitManager = new MergePersistenceUnitManager();
     mergePersistenceUnitManager.setLoadTimeWeaver(new DefaultContextLoadTimeWeaver());
-    mergePersistenceUnitManager.addTransformersToPersistenceUnits();
 
     // Act
     mergePersistenceUnitManager.afterPropertiesSet();
@@ -85,11 +109,10 @@ public class MergePersistenceUnitManagerDiffblueTest {
   @Category(ContributionFromDiffblue.class)
   @ManagedByDiffblue
   @MethodsUnderTest({"void MergePersistenceUnitManager.afterPropertiesSet()"})
-  public void testAfterPropertiesSet_givenArrayOfStringWithJavaText() throws Exception {
+  public void testAfterPropertiesSet_givenArrayOfStringWithJavaText() {
     // Arrange
     MergePersistenceUnitManager mergePersistenceUnitManager = new MergePersistenceUnitManager();
     mergePersistenceUnitManager.setPackagesToScan("java.text");
-    mergePersistenceUnitManager.addTransformersToPersistenceUnits();
 
     // Act
     mergePersistenceUnitManager.afterPropertiesSet();
@@ -105,7 +128,7 @@ public class MergePersistenceUnitManagerDiffblueTest {
    * Test {@link MergePersistenceUnitManager#afterPropertiesSet()}.
    *
    * <ul>
-   *   <li>Given array of {@link String} with {@code Mapping Resources}.
+   *   <li>Given {@link MergePersistenceUnitManager} (default constructor).
    * </ul>
    *
    * <p>Method under test: {@link MergePersistenceUnitManager#afterPropertiesSet()}
@@ -114,41 +137,9 @@ public class MergePersistenceUnitManagerDiffblueTest {
   @Category(ContributionFromDiffblue.class)
   @ManagedByDiffblue
   @MethodsUnderTest({"void MergePersistenceUnitManager.afterPropertiesSet()"})
-  public void testAfterPropertiesSet_givenArrayOfStringWithMappingResources() throws Exception {
+  public void testAfterPropertiesSet_givenMergePersistenceUnitManager() {
     // Arrange
     MergePersistenceUnitManager mergePersistenceUnitManager = new MergePersistenceUnitManager();
-    mergePersistenceUnitManager.setMappingResources("Mapping Resources");
-    mergePersistenceUnitManager.addTransformersToPersistenceUnits();
-
-    // Act
-    mergePersistenceUnitManager.afterPropertiesSet();
-
-    // Assert
-    HashMap<String, PersistenceUnitInfo> stringPersistenceUnitInfoMap =
-        mergePersistenceUnitManager.mergedPus;
-    assertEquals(1, stringPersistenceUnitInfoMap.size());
-    assertTrue(stringPersistenceUnitInfoMap.containsKey("default"));
-  }
-
-  /**
-   * Test {@link MergePersistenceUnitManager#afterPropertiesSet()}.
-   *
-   * <ul>
-   *   <li>Then {@link MergePersistenceUnitManager} (default constructor) {@link
-   *       MergePersistenceUnitManager#mergedPus} Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link MergePersistenceUnitManager#afterPropertiesSet()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void MergePersistenceUnitManager.afterPropertiesSet()"})
-  public void testAfterPropertiesSet_thenMergePersistenceUnitManagerMergedPusEmpty()
-      throws Exception {
-    // Arrange
-    MergePersistenceUnitManager mergePersistenceUnitManager = new MergePersistenceUnitManager();
-    mergePersistenceUnitManager.addTransformersToPersistenceUnits();
 
     // Act
     mergePersistenceUnitManager.afterPropertiesSet();

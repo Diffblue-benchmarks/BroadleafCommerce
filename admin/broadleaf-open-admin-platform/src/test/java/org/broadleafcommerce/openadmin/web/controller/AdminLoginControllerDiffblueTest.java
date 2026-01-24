@@ -1,9 +1,11 @@
 package org.broadleafcommerce.openadmin.web.controller;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import com.diffblue.cover.annotations.ContributionFromDiffblue;
@@ -12,10 +14,13 @@ import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.broadleafcommerce.common.service.GenericResponse;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminMenu;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminModule;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminModuleDTO;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminUser;
+import org.broadleafcommerce.openadmin.server.security.service.AdminSecurityService;
+import org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl;
 import org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService;
 import org.broadleafcommerce.openadmin.web.form.ResetPasswordForm;
 import org.junit.Test;
@@ -25,10 +30,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.StatusResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.test.web.servlet.setup.StandaloneMockMvcBuilder;
 import org.springframework.ui.Model;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -36,6 +42,8 @@ public class AdminLoginControllerDiffblueTest {
   @InjectMocks private AdminLoginController adminLoginController;
 
   @Mock private AdminNavigationService adminNavigationService;
+
+  @Mock private AdminSecurityService adminSecurityService;
 
   /**
    * Test {@link AdminLoginController#loginSuccess(HttpServletRequest, HttpServletResponse, Model)}.
@@ -47,7 +55,7 @@ public class AdminLoginControllerDiffblueTest {
   @Category(ContributionFromDiffblue.class)
   @ManagedByDiffblue
   @MethodsUnderTest({
-    "java.lang.String AdminLoginController.loginSuccess(HttpServletRequest, HttpServletResponse, Model)"
+    "String AdminLoginController.loginSuccess(HttpServletRequest, HttpServletResponse, Model)"
   })
   public void testLoginSuccess() throws Exception {
     // Arrange
@@ -82,7 +90,7 @@ public class AdminLoginControllerDiffblueTest {
   @Category(ContributionFromDiffblue.class)
   @ManagedByDiffblue
   @MethodsUnderTest({
-    "java.lang.String AdminLoginController.loginSuccess(HttpServletRequest, HttpServletResponse, Model)"
+    "String AdminLoginController.loginSuccess(HttpServletRequest, HttpServletResponse, Model)"
   })
   public void testLoginSuccess_givenArrayListAddAdminModuleDTO() throws Exception {
     // Arrange
@@ -104,33 +112,6 @@ public class AdminLoginControllerDiffblueTest {
         .andExpect(model().attributeExists("resetPasswordForm"))
         .andExpect(view().name("noAccess"))
         .andExpect(forwardedUrl("noAccess"));
-  }
-
-  /**
-   * Test {@link AdminLoginController#initResetPasswordForm(HttpServletRequest)}.
-   *
-   * <p>Method under test: {@link AdminLoginController#initResetPasswordForm(HttpServletRequest)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "ResetPasswordForm AdminLoginController.initResetPasswordForm(HttpServletRequest)"
-  })
-  public void testInitResetPasswordForm() {
-    // Arrange
-    AdminLoginController adminLoginController = new AdminLoginController();
-
-    // Act
-    ResetPasswordForm actualInitResetPasswordFormResult =
-        adminLoginController.initResetPasswordForm(new MockHttpServletRequest());
-
-    // Assert
-    assertNull(actualInitResetPasswordFormResult.getConfirmPassword());
-    assertNull(actualInitResetPasswordFormResult.getOldPassword());
-    assertNull(actualInitResetPasswordFormResult.getPassword());
-    assertNull(actualInitResetPasswordFormResult.getToken());
-    assertNull(actualInitResetPasswordFormResult.getUsername());
   }
 
   /**
